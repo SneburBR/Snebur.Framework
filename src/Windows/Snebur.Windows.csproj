@@ -1,0 +1,214 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{d4b351a0-67ee-4751-a2c3-8619b69e9adf}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Snebur.Windows</RootNamespace>
+    <AssemblyName>Snebur.Windows</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Aplicacao\AplicacaoSneburWindows.cs" />
+    <Compile Include="Apresentacao\BaseJanela.cs" />
+    <Compile Include="Apresentacao\BaseJanelaPrincipal.cs" />
+    <Compile Include="Apresentacao\JanelaMensagem.xaml.cs">
+      <DependentUpon>JanelaMensagem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Apresentacao\JanelaOcupado.xaml.cs">
+      <DependentUpon>JanelaOcupado.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BaseAplicacao.cs" />
+    <Compile Include="Controles\BaseControle.cs" />
+    <Compile Include="Controles\BaseControleRotulo.cs" />
+    <Compile Include="Controles\CaixaTexto\BaseCaixaTexto.cs" />
+    <Compile Include="Controles\CaixaTexto\CaixaSenha.xaml.cs">
+      <DependentUpon>CaixaSenha.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controles\CaixaTexto\CaixaTexto.xaml.cs">
+      <DependentUpon>CaixaTexto.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controles\CheckBox.cs" />
+    <Compile Include="Controles\ComboBox.cs" />
+    <Compile Include="Controles\Texto.cs" />
+    <Compile Include="Controles\ControleLoading.xaml.cs">
+      <DependentUpon>ControleLoading.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\ProgressoEmAndamentoParaVisibilidadeConverter.cs" />
+    <Compile Include="Converters\MaiorZeroParaVisibilidadeConverter.cs" />
+    <Compile Include="Converters\FalsoParaMostrarConverter.cs" />
+    <Compile Include="Converters\UrlImagemConverter.cs" />
+    <Compile Include="Converters\VerdadeiroParaMostrarConverter.cs" />
+    <Compile Include="Converters\VerdadeiroParaVisibilidarConverter.cs" />
+    <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Converters\FalsoParaVisibilidadeConverter.cs" />
+    <Compile Include="Converters\EnumDescricaoConverter.cs" />
+    <Compile Include="Extensoes\CorExtensao.cs" />
+    <Compile Include="Extensoes\IImagemExtensao.cs" />
+    <Compile Include="Extensoes\TiposComplexExtensao.cs" />
+    <Compile Include="Extensoes\DispatcherExtensao.cs" />
+    <Compile Include="Extensoes\DisposeExtensao.cs" />
+    <Compile Include="Extensoes\FrameworkElementExtensao.cs" />
+    <Compile Include="Extensoes\WindowExtensao.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Controles\Botao.xaml.cs">
+      <DependentUpon>Botao.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Snebur.AcessoDados.Cliente\Snebur.AcessoDados.Cliente.csproj">
+      <Project>{20d90b61-e126-4048-ba7e-0fe69cf20180}</Project>
+      <Name>Snebur.AcessoDados.Cliente</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Snebur.AcessoDados\Snebur.AcessoDados.csproj">
+      <Project>{ae39cd55-5282-48a5-8131-6704c825f26a}</Project>
+      <Name>Snebur.AcessoDados</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Snebur.Comunicacao.Cliente\Snebur.Comunicacao.Cliente.csproj">
+      <Project>{ecf8a9a3-2544-4c75-9473-85e919c5bebc}</Project>
+      <Name>Snebur.Comunicacao.Cliente</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Snebur.Comunicacao\Snebur.Comunicacao.csproj">
+      <Project>{b44697c1-5c0c-40cf-814d-2bfba2498bf6}</Project>
+      <Name>Snebur.Comunicacao</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Snebur.Imagem\Snebur.Imagem.csproj">
+      <Project>{291b80e1-af0e-42fe-bed9-66ea6b8118e4}</Project>
+      <Name>Snebur.Imagem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Snebur.ServicoArquivo.Cliente\Snebur.ServicoArquivo.Cliente.csproj">
+      <Project>{83894101-d265-4738-96fa-9fdd91674960}</Project>
+      <Name>Snebur.ServicoArquivo.Cliente</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Snebur.ServicoArquivo\Snebur.ServicoArquivo.csproj">
+      <Project>{3f344a32-39ce-469c-a4ff-bd7ef353912b}</Project>
+      <Name>Snebur.ServicoArquivo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Snebur\Snebur.csproj">
+      <Project>{ec174c4f-8122-41a3-8360-f04c4c8fc3ba}</Project>
+      <Name>Snebur</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Estilos\Fontes\segoeuib.ttf" />
+    <None Include="Estilos\Fontes\segoeuil.ttf" />
+    <None Include="Estilos\Fontes\seguisb.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Apresentacao\JanelaMensagem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Apresentacao\JanelaOcupado.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controles\CaixaTexto\CaixaSenha.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controles\CaixaTexto\CaixaTexto.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controles\ControleLoading.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Estilos\Controles\BaseControle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Estilos\Controles\Button.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Estilos\Controles\Label.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Estilos\Controles\ListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Estilos\Animacoes\Ocupado.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Estilos\Cores.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Estilos\Estilos.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Estilos\Padrao.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Estilos\Textos\TextBlock.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Estilos\Controles\TextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controles\Botao.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Recursos\Carregando.gif" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

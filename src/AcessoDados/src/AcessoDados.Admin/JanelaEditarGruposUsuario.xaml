@@ -1,0 +1,39 @@
+﻿<local:BaseJanela x:Class="Zyoncore.AcessoDados.Admin.JanelaEditarGruposUsuario"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Zyoncore.AcessoDados.Admin"
+        mc:Ignorable="d"
+        Title="JanelaEditarGrupos" Height="300" Width="600">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <TextBlock Text="Grupos de usuario"></TextBlock>
+        </StackPanel>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Grupos"></TextBlock>
+            <TextBlock Grid.Column="2" Text="Membros de"></TextBlock>
+            
+            <ListView Grid.Row="1" ItemsSource="{Binding Grupos}" SelectedItem="{Binding GrupoSelecionado}"  MouseDoubleClick="ListView_MouseDoubleClick" PreviewMouseDoubleClick="ListView_PreviewMouseDoubleClick" SelectionMode="Single" DisplayMemberPath="Nome">
+            </ListView>
+            <ListView Grid.Row="1" Grid.Column="2" ItemsSource="{Binding MembrosDe}" SelectedItem="{Binding MembroDeSelecionado}"  DisplayMemberPath="Nome" MouseDoubleClick="ListViewMembrosDe_MouseDoubleClick" PreviewMouseDoubleClick="ListViewMembrosDe_PreviewMouseDoubleClick">
+                
+            </ListView>
+        </Grid>
+    </Grid>
+</local:BaseJanela>
+
+    

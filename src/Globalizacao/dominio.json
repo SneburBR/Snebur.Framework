@@ -1,0 +1,7 @@
+﻿{
+  "CaminhoDominioTypeScript": "../../../Snebur.Typescript/src/Snebur.Typescript/src/Globalizacao/Dominio",
+  "Globalizar": false,
+  "Namespace": "Snebur.Globalizacao",
+  "PrioridadeDominio": 1,
+  "DominiosDepentendes": []
+}

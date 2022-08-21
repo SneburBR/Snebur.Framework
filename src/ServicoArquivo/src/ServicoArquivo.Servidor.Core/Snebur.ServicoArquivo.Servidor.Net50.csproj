@@ -1,0 +1,66 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>Snebur.ServicoArquivo</RootNamespace>
+    <Version>2.0.0</Version>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Nullable>disable</Nullable>
+    <Company>Snebur Sistemas</Company>
+    <Authors>Snebur Sistemas</Authors>
+    <AssemblyName>Snebur.ServicoArquivo.Servidor</AssemblyName>
+    <Product>Snebur.ServicoArquivo.Servidor Net 5.0</Product>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>NET50; DEBUG;TRACE</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>1701;1702</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>NET50; DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Bibliotecas\**" />
+    <Compile Remove="Properties\**" />
+    <EmbeddedResource Remove="Bibliotecas\**" />
+    <EmbeddedResource Remove="Properties\**" />
+    <None Remove="Bibliotecas\**" />
+    <None Remove="Properties\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Snebur.ServicoArquivo.Cliente.Net50.csproj.vspscc" />
+    <None Remove="Snebur.ServicoArquivo.csproj.vspscc" />
+    <None Remove="Snebur.ServicoArquivo.Servidor.csproj.vspscc" />
+    <None Remove="Snebur.ServicoArquivo.Servidor.Net50.csproj.vspscc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Snebur.ServicoArquivo.Comunicacao\Seguranca\CredencialComunicacaoServicoArquivo.cs" Link="Seguranca\CredencialComunicacaoServicoArquivo.cs" />
+    <Compile Include="..\Snebur.ServicoArquivo.Comunicacao\Seguranca\CredencialUsuarioComunicacaoServicoArquivo.cs" Link="Seguranca\CredencialUsuarioComunicacaoServicoArquivo.cs" />
+  </ItemGroup>
+  
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Snebur.AspNetCore\Snebur.AspNetCore.csproj" />
+    <ProjectReference Include="..\Snebur.Comunicacao.Cliente\Snebur.Comunicacao.Cliente.Net50.csproj" />
+    <ProjectReference Include="..\Snebur.Comunicacao\Snebur.Comunicacao.Net50.csproj" />
+    <ProjectReference Include="..\Snebur.Seguranca\Snebur.Seguranca.Net50.csproj" />
+    <ProjectReference Include="..\Snebur.ServicoArquivo\Snebur.ServicoArquivo.Net50.csproj" />
+    <ProjectReference Include="..\Snebur\Snebur.Net50.csproj" />
+  </ItemGroup>
+  
+  
+  <ItemGroup>
+    <Folder Include="Seguranca\" />
+  </ItemGroup>
+ 
+ 
+
+</Project>

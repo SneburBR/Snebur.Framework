@@ -1,0 +1,71 @@
+﻿using Newtonsoft.Json.Serialization;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+
+namespace Newtonsoft.Json
+{
+    internal class JsonNetExtensaoUtil
+    {
+        internal const string NOME_TIPO_LISTA_ENTIDADE = "ListaEntidades`1";
+
+        internal const string NOME_PROPRIEDADE_ENTIDADES_REMOVIDAS = "EntidadesRemovida";
+
+        internal const string NOME_PROPRIEDADE_PROTEGIDA_ENTIDADES_REMOVIDAS = "$EntidadesRemovidas";
+
+        internal static void DeserializarListaEntidades(JsonSerializerInternalReader deserilizador, Type objectType, JsonReader reader, object newValue)
+        {
+            if (string.Equals(objectType.Name, JsonNetExtensaoUtil.NOME_TIPO_LISTA_ENTIDADE, StringComparison.Ordinal))
+            {
+                var propriedadeEntidadesRemovida = objectType.GetProperties().Single(x => x.Name == JsonNetExtensaoUtil.NOME_PROPRIEDADE_ENTIDADES_REMOVIDAS);
+                if (reader.Value != null && reader.Value.ToString() == NOME_PROPRIEDADE_PROTEGIDA_ENTIDADES_REMOVIDAS)
+                {
+                    reader.ReadAndAssert();
+
+                    var tipoItem = propriedadeEntidadesRemovida.PropertyType.GetGenericArguments().Single();
+
+                    var propriedade = new JsonProperty();
+                    propriedade.PropertyType = propriedadeEntidadesRemovida.PropertyType;
+                    propriedade.PropertyName = JsonNetExtensaoUtil.NOME_PROPRIEDADE_PROTEGIDA_ENTIDADES_REMOVIDAS;
+                    propriedade.DeclaringType = objectType.DeclaringType;
+
+                    var contrato = new JsonArrayContract(propriedadeEntidadesRemovida.PropertyType);
+
+                    var novaLista = Activator.CreateInstance(propriedadeEntidadesRemovida.PropertyType);
+
+                    object listaEntidadesRemovida = deserilizador.CreateList(reader, propriedadeEntidadesRemovida.PropertyType, contrato, propriedade, novaLista, null);
+                    propriedadeEntidadesRemovida.SetValue(newValue, listaEntidadesRemovida);
+
+                    reader.ReadAndAssert();
+                }
+            }
+        }
+
+        internal static void SerializarListaEntidades(JsonSerializerInternalWriter serializador, JsonWriter writer, JsonArrayContract contrato, JsonProperty member, IEnumerable values)
+        {
+            if (values != null)
+            {
+                if (string.Equals(contrato.CreatedType.Name, JsonNetExtensaoUtil.NOME_TIPO_LISTA_ENTIDADE, StringComparison.Ordinal))
+                {
+                    var propriedadeEntidadesRemovida = contrato.CreatedType.GetProperties().Single(x => x.Name == JsonNetExtensaoUtil.NOME_PROPRIEDADE_ENTIDADES_REMOVIDAS);
+                    var entidadesRemovidas = propriedadeEntidadesRemovida.GetValue(values) as IEnumerable;
+
+                    writer.WritePropertyName(NOME_PROPRIEDADE_PROTEGIDA_ENTIDADES_REMOVIDAS);
+                    writer.WriteStartArray();
+
+                    foreach (object value in entidadesRemovidas)
+                    {
+                        JsonContract valueContract = contrato.FinalItemContract ?? serializador.GetContractSafe(value);
+                        serializador.SerializeValue(writer, value, valueContract, null, contrato, member);
+                    }
+                    writer.WriteEndArray();
+
+                }
+            }
+        }
+    }
+}

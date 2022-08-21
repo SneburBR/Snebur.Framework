@@ -1,0 +1,24 @@
+[Info]
+Description = License file for LEADTOOLS SDK
+
+[Customer]
+Company = Brainsoft Sistemas De Informatica
+Application = Unknown
+LEADContact = licensing@leadtools.com
+UserContact = brainsoft@hotmail.com
+
+[Product]
+Version = Unknown
+PurchaseDate = 10/10/2011
+Product1 = DOCIMG175
+
+[SerialNumber]
+SN = BAAR-BT8A-AAAm-A4IA
+
+[Unlocks]
+L_SUPPORT_DOCUMENT
+L_SUPPORT_MEDIA_WRITER
+L_SUPPORT_JBIG2
+
+[License]
+License = <doc><ver>1.0</ver><code>/3GPm5Fm3eBAfQD6sroO+Q73/iiD9J/IfSBBgzCuXoxlP2pdZ8Utft/Y06SKLcQYxj7n1/5I/3raYaMZswRrh/YGPFnJEeqGIk83HvrFtyw54D7kHa2e68gFLkkiqTRMK9efw6bBmuSjEXipRw6Zl35MsZmtk9H/UDT57aK8M4n8SIsDyCKS7tV1QwmMrXiryfXUSWeE/qY6POipbTztSmTWJV79PPHomaxhA4J/znANm14zdmkN+eJIlG7nSLT1VeDsrrMLYD+kqWCaLwNiPeD8BbkDFKutVoLH0Juks5u0O28fe5fqm23HRjYD+U4Wpxb50dLJK16DxWi51UEjHsQGVOHA0WM0p1skbifuBwESPSWEqLIy3jo1jr0YtPA+VM7vkPF3/4Fw9qkyhVYqjD7t3dnBaUzlPPd2a77GyYYR4PYYvq2LUZhkNYqmoRXwyvYz7Jk7iR/Qsok2f3U6hYMRbIPBcpTYMgc9gaY8kZOWU+I9S80+mWD2lL46kV4saHKxAacuS6WgQmrgYrX3errRht5EnkEkxW1wUIJYNZKAYLfRFhvrNpFfIklAYmD7bve+yFWPrk/IB9M8Q1AJUzk4tynKWTFlTg+Lkhurs8yrES1vWotdBPEuty0+zPoJrJNSko8Z6+bc3gE+dwu37yqLEz/iBQphAmr2YT/hYX1pbPaVZDzG5xY68VKNzlRKjH8iKMmhqHNQ91Z1eB/Yo8sgf9KxF+2n6f4wggFVn7l9E/1w4TFaj9hkMP+A2WA3dfX3F9y/CUcDwDwrA+wCfpAPWAcJaPhmSIBBND/El1AHxywU6orQD5Q/sk48sklwuZ3ga7vE04HyZO8E4OnDCIU5gzlW9tpBg51OvnOyvBwE9xvmmlNUC699mgRHzUsFp9RNccuMdwTySoo1+TnFoJpKyGineBSte39oMgGUrunJJq57hP92oimL36tEJFIzvWYiHMSN2OOxWnYQfH2HHtyY5hChkifQjLwuyua2pvg+1r3RS7/4qbZXq86XtrzncgrexhX1nGWq3u6Ra6UOKkWk92cLbj7yCy55Yx6nXbmD0IPZyxaJ2xDdMnqHFIFcfAzxhUrQNqpCwHD5vILsU7D80yKhf0N1OYwVFqa73Ye8IfR6JEA8w20QrMGjqSxszUG888E6LdaXLrFB4PW06thwR8AbrNlpHe9ZiW85/exLdQsqhBbRsBDgZfUGKo2Z7f6jRpvA0X4DnAfBISPISw==</code></doc>

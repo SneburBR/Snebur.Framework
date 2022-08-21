@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <Product>Snebur.AspNetCore</Product>
+    <Company>Snebur Sistemas</Company>
+    <Authors>Snebur Sistemas</Authors>
+    <Description>Snebur.AspNetCore Net 5.0</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Snebur.AspCore.csproj.vspscc" />
+    <None Remove="Snebur.AspNetCore.csproj.vspscc" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Snebur\Snebur.Net50.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="Zyoncore.AcessoDados.Admin.ControleRegraOperacao"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Zyoncore.AcessoDados.Admin"
+             mc:Ignorable="d"  x:Name="Controle"
+             d:DesignHeight="30" d:DesignWidth="520">
+    <Grid>
+        
+        <StackPanel Orientation="Horizontal"  Margin="5">
+            <CheckBox  IsEnabled="{Binding RegraOperacao.IsAtivo}" Width="100"  
+                       IsChecked="{Binding RegraOperacao.Autorizado}" VerticalAlignment="Center">
+
+                <TextBlock VerticalAlignment="Center" Text="{Binding RegraOperacao.NomeOperacao, Mode=OneWay, FallbackValue=Operacao}"></TextBlock>
+                
+            </CheckBox>
+            <CheckBox  Width="135" IsEnabled="{Binding RegraOperacao.Autorizado}" IsChecked="{Binding RegraOperacao.AvalistaRequerido}"  VerticalAlignment="Center">
+                <TextBlock VerticalAlignment="Center" Text="Avalista requerido"></TextBlock>
+            </CheckBox>
+
+            <CheckBox  Width="135" IsEnabled="{Binding RegraOperacao.Autorizado}"  IsChecked="{Binding RegraOperacao.AtivarLogAlteracao}"  VerticalAlignment="Center">
+                <TextBlock VerticalAlignment="Center" Text="Log de alteração"></TextBlock>
+            </CheckBox>
+            <CheckBox  Width="135" IsEnabled="{Binding RegraOperacao.Autorizado}"   IsChecked="{Binding RegraOperacao.AtivarLogSeguranca}" VerticalAlignment="Center">
+                <TextBlock VerticalAlignment="Center" Text="Log de segurança"></TextBlock>
+            </CheckBox>
+
+            <TextBox IsEnabled="{Binding RegraOperacao.Autorizado}" Text="{Binding RegraOperacao.MaximoRegistro}"  Width="50" FontSize="12" VerticalAlignment="Center"  Margin="10 0" ToolTip="Máximo de registros"  >
+            </TextBox>
+            
+        </StackPanel>
+    </Grid>
+</UserControl>

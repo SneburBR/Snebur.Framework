@@ -1,0 +1,86 @@
+JPG	469
+JPEG	379
+PSD	224
+BMP	224
+TIFF	146
+TIF	125
+pdf	93
+PNG	77
+CDR	71
+GIF	52
+raw	34
+rar	33
+zip	27
+imx	22
+	22
+xml	20
+eps	16
+xls	10
+AI	10
+XLSX	9
+doc	8
+txt	7
+Jpe	6
+JPGE	6
+docx	5
+NEF	5
+CR2	5
+tmp	4
+DNG	4
+tga	3
+pdd	3
+iof	3-Não achei
+dgl	2-Não achei
+INDD 	2
+dlp	2-Não achei
+PS	2
+mbf	2-Não achei
+CMYK	2
+ppt	2
+Jfif	2
+mbk	2-Não achei
+CRW	1
+jif	1-Não achei
+dat	1
+DVD	1
+lbm	1-Não achei
+job	1-Não achei
+MDB	1
+emf	1
+html	1
+ISO	1
+GMT	1-Não achei
+Nif	1-Não achei
+IND	1
+tdi	1-Não achei
+pxr	1-Não achei
+pptx	1
+DSC	1-Não achei
+Pix	1
+BIMAP	1-Não achei, não seria bmp? 
+SFL	1-SIGI Fotolivro?
+EXE	1-Esse aqui não vai ser permitido, tá na 477 de teste
+7Z	1-Não é zip?
+MP4	1
+taman	1
+dwg	1
+ram	1
+NDD	1
+SVG	1
+.cdr	1
+cmd	1
+sct	1
+paj	1
+teste	1
+avi	1
+rle	1
+crd	1
+XLXS	1
+BPM	1
+il	1
+img	1
+WEBP	1
+ tif	1
+XPS	1
+BNP	1
+rgb	1

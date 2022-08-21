@@ -1,0 +1,74 @@
+﻿<zs:BaseJanela x:Class="Zyoncore.Windows.JanelaMensagem"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:zs="clr-namespace:Zyoncore.Windows"
+        mc:Ignorable="d"
+        Title="JanelaMensagem" 
+        WindowStyle="None"  
+        ShowInTaskbar="False" 
+        ResizeMode="NoResize"
+        Background="Transparent" 
+        AllowsTransparency="True" 
+        >
+    <Grid>
+        <Grid Background="#AA000000">
+
+        </Grid>
+
+        <Grid VerticalAlignment="Center" Background="White"  Width="600" Height="280">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition Height="20"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="1" 
+                           HorizontalAlignment="Center" 
+                           VerticalAlignment="Center"
+                           FontSize="50" 
+                           Text="{Binding Titulo, FallbackValue=Título}"/>
+
+                <TextBlock Grid.Row="2"
+                           HorizontalAlignment="Center" 
+                           VerticalAlignment="Center"
+                           TextWrapping="WrapWithOverflow" 
+                           Text="{Binding Mensagem, FallbackValue=Mensagem}"/>
+
+                <StackPanel Grid.Row="3" 
+                            Orientation="Horizontal" 
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" 
+                            Height="40">
+
+                    <!--PERSONALIZADO-->
+                    <zs:Botao x:Name="btnPersonalizado" Width="100" TextoBotao="{Binding TextoBotao, FallbackValue=OK}" MouseLeftButtonUp="BotaoSimOkFechar_MouseLeftButtonUp"/>
+
+                    <!--NAO-->
+                    <zs:Botao x:Name="btnNao" Width="100" TextoBotao="Não" MouseLeftButtonUp="BotaoNaoCancelar_MouseLeftButtonUp"/>
+
+                    <!--SIM-->
+                    <zs:Botao x:Name="btnSim" Width="100" TextoBotao="Sim" MouseLeftButtonUp="BotaoSimOkFechar_MouseLeftButtonUp" />
+
+                    <!--OK-->
+                    <zs:Botao x:Name="btnOk" Width="100" TextoBotao="Ok" MouseLeftButtonUp="BotaoSimOkFechar_MouseLeftButtonUp"/>
+
+                    <!--CANCELAR-->
+                    <zs:Botao x:Name="btnCancelar" Width="100" TextoBotao="Cancelar" MouseLeftButtonUp="BotaoNaoCancelar_MouseLeftButtonUp"/>
+
+                    <!--FECHAR-->
+                    <zs:Botao x:Name="btnFechar" Width="100" TextoBotao="Fechar" MouseLeftButtonUp="BotaoSimOkFechar_MouseLeftButtonUp"/>
+
+                    <!--VOLTAR-->
+                    <zs:Botao x:Name="btnVoltar" Width="100" TextoBotao="Voltar" MouseLeftButtonUp="BotaoNaoCancelar_MouseLeftButtonUp"/>
+
+                </StackPanel>
+
+            </Grid>
+        </Grid>
+    </Grid>
+</zs:BaseJanela>

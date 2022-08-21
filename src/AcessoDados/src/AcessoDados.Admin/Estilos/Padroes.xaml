@@ -1,0 +1,47 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!--Fontes-->
+    <FontFamily x:Key="FonteLight">Segoe UI Light</FontFamily>
+    <FontFamily x:Key="FonteSemilight">Segoe UI Semilight</FontFamily>
+    <FontFamily x:Key="FonteUI">Segoe UI</FontFamily>
+    <FontFamily x:Key="FonteSemibold">Segoe UI Semibold</FontFamily>
+
+    <!--Tamanhos de fonte-->
+    <system:Double x:Key="TamanhoFonteGrande">48</system:Double>
+    <system:Double x:Key="TamanhoFonteMedia">24</system:Double>
+    <system:Double x:Key="TamanhoFontePequena">14</system:Double>
+    
+    <!--Controles - Cores-->
+    <Color x:Key="CorFundoControleNormal">#FFFDFDFD</Color>
+    <Color x:Key="CorFundoControleMouseOver">#FFFEFEFE</Color>
+    <Color x:Key="CorFundoControleFocused">#FFFFFFFF</Color>
+    <Color x:Key="CorFundoTile">#FF6390AD</Color>
+
+    <Color x:Key="CorBordaControleNormal">#FFB2B2B2</Color>
+    <Color x:Key="CorBordaControleNormalContraste">#FFA1C5FF</Color>
+    <Color x:Key="CorBordaControleMouseOver">#FF898989</Color>
+    <Color x:Key="CorBordaControleFocused">#FF2671EB</Color>
+
+    <Color x:Key="CorTexto">#FF000000</Color>
+    <Color x:Key="CorTextoContraste">#FFFFFFFF</Color>
+    <Color x:Key="CorTextoErro">#FFD04836</Color>
+    
+    <!--Controles - Brushes-->
+    <SolidColorBrush x:Key="BrushFundoControleNormal" Color="{StaticResource CorFundoControleNormal}"/>
+    <SolidColorBrush x:Key="BrushFundoControleMouseOver" Color="{StaticResource CorFundoControleMouseOver}"/>
+    <SolidColorBrush x:Key="BrushFundoControleFocused" Color="{StaticResource CorFundoControleFocused}"/>
+    <SolidColorBrush x:Key="BrushFundoTile" Color="{StaticResource CorFundoTile}"/>
+
+    <SolidColorBrush x:Key="BrushBordaControleNormal" Color="{StaticResource CorBordaControleNormal}"/>
+    <SolidColorBrush x:Key="BrushBordaControleNormalContraste" Color="{StaticResource CorBordaControleNormalContraste}"/>
+    <SolidColorBrush x:Key="BrushBordaControleMouseOver" Color="{StaticResource CorBordaControleMouseOver}"/>
+    <SolidColorBrush x:Key="BrushBordaControleFocused" Color="{StaticResource CorBordaControleFocused}"/>
+
+    <SolidColorBrush x:Key="BrushTexto" Color="{StaticResource CorTexto}"/>
+    <SolidColorBrush x:Key="BrushTextoContraste" Color="{StaticResource CorTextoContraste}"/>
+    <SolidColorBrush x:Key="BrushTextoErro" Color="{StaticResource CorTextoErro}"/>
+
+
+</ResourceDictionary>

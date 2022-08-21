@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" >
+
+    <ResourceDictionary.MergedDictionaries>
+
+        <ResourceDictionary Source="Cores.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="Padrao.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="Textos/TextBlock.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="Controles/BaseControle.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="Controles/TextBox.xaml"></ResourceDictionary>
+        
+    </ResourceDictionary.MergedDictionaries>
+    
+
+</ResourceDictionary>

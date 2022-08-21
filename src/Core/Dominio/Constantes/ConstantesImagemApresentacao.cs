@@ -1,0 +1,31 @@
+﻿using Snebur.Dominio.Atributos;
+
+namespace Snebur.Imagem
+{
+    [ConstantesTSAttribute]
+    public class ConstantesImagemApresentacao
+    {
+        public const int ALTURA_IMAGEM_MINIATURA = 90;
+
+        public const int LARGURA_IMAGEM_MINIATURA = 90;
+
+        public const int ALTURA_IMAGEM_PEQUENA = 290;
+
+        public const int LARGURA_IMAGEM_PEQUENA = 290;
+
+        public const int ALTURA_IMAGEM_MEDIA = 800;
+
+        public const int LARGURA_IMAGEM_MEDIA = 800;
+
+        public const int ALTURA_IMAGEM_GRANDE = 1080;
+
+        public const int LARGURA_IMAGEM_GRANDE = 1920;
+
+        public const int QUALIDADE_PADRAO = 87;
+
+        public const int QUALIDADE_PADRAO_THUMBNAIL = 70;
+
+        public const int QUALIDADE_PADRAO_IMAGEM_REDIMENSIONADA = 70;
+
+    }
+}

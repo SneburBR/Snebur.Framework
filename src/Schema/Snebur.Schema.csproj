@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BF4D9A7F-6FE7-4FD1-A864-7A916AD19D7E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Snebur.Schema</RootNamespace>
+    <AssemblyName>Snebur.Schema</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseSchemna.cs" />
+    <Compile Include="Campo\Boolean\SchemaAtributosCampoBoolean.cs" />
+    <Compile Include="Campo\Boolean\SchemaCampoBoolean.cs" />
+    <Compile Include="Campo\Data\EnumFormatacaoData.cs" />
+    <Compile Include="Campo\Data\EnumFormatacaoHora.cs" />
+    <Compile Include="Campo\Data\SchemaAtributosCampoData.cs" />
+    <Compile Include="Campo\Data\SchemaCampoData.cs" />
+    <Compile Include="Campo\Numero\Decimal\SchemaAtributosCampoDecimal.cs" />
+    <Compile Include="Campo\Numero\Decimal\SchemaCampoDecimal.cs" />
+    <Compile Include="Campo\Numero\Inteiro\SchemaAtributosCampoInteiro.cs" />
+    <Compile Include="Campo\Numero\Inteiro\SchemaCampoInteiro.cs" />
+    <Compile Include="Campo\Numero\SchemaAtributosCampoNumero.cs" />
+    <Compile Include="Campo\Numero\SchemaCampoNumero.cs" />
+    <Compile Include="Campo\Numero\String\EnumFormatacaoString.cs" />
+    <Compile Include="Campo\Numero\String\SchemaAtributosCampoString.cs" />
+    <Compile Include="Campo\Numero\String\SchemaCampoString.cs" />
+    <Compile Include="Campo\Numero\Tempo\EnumCondicaoVisibilidade.cs" />
+    <Compile Include="Campo\Numero\Tempo\SchemaAtributosCampoTempo.cs" />
+    <Compile Include="Campo\Numero\Tempo\SchemaCampoTempo.cs" />
+    <Compile Include="Campo\SchemaAtributosCampo.cs" />
+    <Compile Include="Campo\SchemaCampo.cs" />
+    <Compile Include="Campo\ValueCampo.cs" />
+    <Compile Include="Conteudo\BaseSchemaConteudo.cs" />
+    <Compile Include="Conteudo\SchemaAtributosConteudo.cs" />
+    <Compile Include="Conteudo\SchemaConteudo.cs" />
+    <Compile Include="Dominio\Entidade\SchemaAtributosEntidade.cs" />
+    <Compile Include="Dominio\Entidade\SchemaEntidade.cs" />
+    <Compile Include="Dominio\ListaEntidades\SchemaAtributosListaEntidades.cs" />
+    <Compile Include="Dominio\ListaEntidades\SchemaListaEntidades.cs" />
+    <Compile Include="Dominio\SchemaAtributosModelagem.cs" />
+    <Compile Include="Dominio\SchemaModelagem.cs" />
+    <Compile Include="Dominio\TipoComplexo\SchemaAtributosTipoComplexo.cs" />
+    <Compile Include="Dominio\TipoComplexo\SchemaTipoComplexo.cs" />
+    <Compile Include="Dominio\ViewModel\SchemaAtributosConsulta.cs" />
+    <Compile Include="Dominio\ViewModel\SchemaConsulta.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Schema.cs" />
+    <Compile Include="SchemaAtributos.cs" />
+    <Compile Include="Utilidade\ReflexaoSchemaUtil.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Snebur.csproj">
+      <Project>{ec174c4f-8122-41a3-8360-f04c4c8fc3ba}</Project>
+      <Name>Snebur</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

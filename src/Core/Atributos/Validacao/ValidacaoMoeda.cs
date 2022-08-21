@@ -1,0 +1,78 @@
+﻿using Snebur.Utilidade;
+using System;
+using System.Reflection;
+
+namespace Snebur.Dominio.Atributos
+{
+    [AttributeUsage(AttributeTargets.Property)]
+    public class ValidacaoMoedaAttribute : BaseAtributoValidacao, IAtributoValidacao
+    {
+        public static string MensagemValidacaoPadrao { get; set; } = "O valor campo {0} é invalido.";
+
+        [MensagemValidacao]
+        public static string MensagemValidacaoNegativa { get; set; } = "O valor do campo {0} não pode ser negativo";
+
+        [MensagemValidacao]
+        public static string MensagemValidacaoNaoNulo { get; set; } = "O  valor do campo {0} não pode ser zero";
+
+        [MensagemValidacao]
+        public static string MensagemValidacaoValorMaximo { get; set; } = "O  valor do campo {0} não pode ser superior a {1}";
+
+        [MensagemValidacao]
+        public static string MensagemValidacaoValorMinimo { get; set; } = "O  valor do campo {0} não pode ser inferior a {1}";
+
+        public bool AceitarNegativo { get; set; } = false;
+
+        public bool AceitarNulo { get; set; } = false;
+
+        public double ValorMaximo { get; set; } = Int32.MaxValue;
+
+        public double ValorMinimo { get; set; } = (Int32.MaxValue * -1);
+
+        [IgnorarConstrutorTS]
+        public ValidacaoMoedaAttribute() : this(false, false, (Int32.MaxValue * -1), Int32.MaxValue)
+        {
+        }
+        [IgnorarConstrutorTS]
+        public ValidacaoMoedaAttribute(bool aceitarNulo, bool aceitarNegativo) : this(aceitarNulo, false, (Int32.MaxValue * -1), Int32.MaxValue)
+        {
+        }
+        [IgnorarConstrutorTS]
+        public ValidacaoMoedaAttribute(bool aceitarNulo, double valorMinimo, double valorMaximo) : this(aceitarNulo, valorMinimo < 0, valorMinimo, valorMaximo)
+        {
+        }
+
+        public ValidacaoMoedaAttribute(bool aceitarNulo, bool aceitarNegativo, double valorMinimo, double valorMaximo)
+        {
+            this.AceitarNulo = aceitarNulo;
+            this.AceitarNegativo = aceitarNegativo;
+            this.ValorMinimo = valorMinimo;
+            this.ValorMaximo = valorMaximo;
+
+            if (!this.AceitarNegativo && this.ValorMinimo < 0)
+            {
+                this.ValorMinimo = 0;
+            }
+        }
+
+
+        #region IAtributoValidacao
+
+        public override bool IsValido(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
+        {
+            if (!ValidacaoUtil.IsValidacaoRequerido(propriedade, valorPropriedade))
+            {
+                return true;
+            }
+            var valor = Convert.ToDouble(valorPropriedade);
+            return (valor >= this.ValorMinimo && valor <= this.ValorMaximo);
+        }
+
+        public override string RetornarMensagemValidacao(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
+        {
+            var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
+            return String.Format(ValidacaoMoedaAttribute.MensagemValidacaoPadrao, rotulo);
+        }
+        #endregion
+    }
+}

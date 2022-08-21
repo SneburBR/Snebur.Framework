@@ -1,0 +1,20 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Zyoncore.SigiX.Control.Temp">
+
+    <Style x:Key="EstiloBaseTextBox" TargetType="{x:Type TextBox}"/>
+
+
+    <Style x:Key="EstiloTextoLogin" TargetType="{x:Type TextBox}" BasedOn="{StaticResource EstiloBaseTextBox}">
+
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin">
+            <Setter.Value>
+                <Thickness Top="6" Left="4" Bottom="4" Right="4"></Thickness>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+    
+</ResourceDictionary>

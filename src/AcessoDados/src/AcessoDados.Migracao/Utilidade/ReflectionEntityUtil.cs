@@ -1,0 +1,35 @@
+﻿using System.Linq;
+using System.Reflection;
+using Snebur.Dominio;
+using Snebur.Utilidade;
+
+namespace Snebur.AcessoDados.Migracao
+{
+    public partial class ReflectionEntityUtil
+    {
+
+        public static bool PropriedadeRetornaBaseEntidade(PropertyInfo pi)
+        {
+            if (pi.PropertyType.IsSubclassOf(typeof(Entidade)))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static bool PropriedadeRetornaColecaoBaseEntidade(PropertyInfo pi)
+        {
+            if (ReflexaoUtil.PropriedadeRetornaColecao(pi) && pi.PropertyType.IsGenericType && pi.PropertyType.GetGenericArguments().Count() == 1 && pi.PropertyType.GetGenericArguments().Single().IsSubclassOf(typeof(Entidade)))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+}

@@ -1,0 +1,59 @@
+﻿
+ResizeInterpolateCommandType 
+
+https://www.leadtools.com/help/v175/dh/po/leadtools.imageprocessing.core~leadtools.imageprocessing.core.resizeinterpolatecommandtype.html
+
+JAVASCRIPT
+
+https://www.leadtools.com/help/leadtools/v19m/dh/javascript/to/javascriptimageprocessing.html
+
+
+5 for Triangle, 
+6 for Hermite, 
+7 for Bell, 
+8 for QuadraticBSpline, 
+9 for CubicBSpline,
+10 for BoxFilter, 
+11 for Lanczos,
+12 for Michell, 
+13 for Cosine,
+14 for Catrom, 
+15 for Quadratic, 
+16 for CubicConvolution, 
+17 for Bilinear,
+18 for Bresenham
+
+
+var myCanvas = document.getElementById("myCanvas"); 
+var context = myCanvas.getContext("2d"); 
+var imageProcessing = new lt.ImageProcessing(); 
+imageProcessing.jsFilePath = "Scripts/Leadtools.ImageProcessing.Core.js"; 
+imageProcessing.command = "ResizeInterpolate"; 
+imageProcessing.arguments["width"] = 1024; 
+imageProcessing.arguments["height"] = 1024; 
+imageProcessing.arguments["type"] = 17; // Bilinear 
+imageProcessing.imageData = context.getImageData(0, 0, myCanvas.width, myCanvas.height); 
+
+imageProcessing.completed.add(function(sender, e) 
+{ 
+
+  var resultImage = e.results.resultImage; 
+  var canvas = document.createElement("canvas"); 
+  canvas.width = resultImage.width; 
+  canvas.height = resultImage.height; 
+             
+  var ctx = canvas.getContext("2d"); 
+  var imgData = ctx.createImageData(canvas.width, canvas.height); 
+  for (var i = 0; i < imgData.data.length; i += 4) 
+  { 
+     imgData.data[i + 0] = resultImage.data[i + 0]; 
+     imgData.data[i + 1] = resultImage.data[i + 1]; 
+     imgData.data[i + 2] = resultImage.data[i + 2]; 
+     imgData.data[i + 3] = resultImage.data[i + 3]; 
+  } 
+  ctx.putImageData(imgData, 0, 0); 
+
+  var src = canvas1.toDataURL("image/png"); // now we get the new image in base64 form 
+}); 
+
+imageProcessing.run();

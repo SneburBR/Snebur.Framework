@@ -1,0 +1,272 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Target Name="SpicNSpan" AfterTargets="Clean">
+    <!-- Remove obj folder -->
+    <RemoveDir Directories="$(BaseIntermediateOutputPath)" />
+    <!-- Remove bin folder -->
+    <RemoveDir Directories="$(BaseOutputPath)" />
+  </Target>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{31462775-BADC-4D17-9242-41E4EA2507C7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Snebur.AcessoDados</RootNamespace>
+    <AssemblyName>Snebur.AcessoDados.Servidor</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Conexao\AjudanteConexaoDB.cs" />
+    <Compile Include="Conexao\BaseConexao.cs" />
+    <Compile Include="Conexao\ConexaoPostgreSql.cs" />
+    <Compile Include="Conexao\ConexaoSqlServer.cs" />
+    <Compile Include="Conexao\IConexaoBancoDados.cs" />
+    <Compile Include="Consulta\FiltroMapeamento\FiltroMapeamentoIdsReverso.cs" />
+    <Compile Include="Contexto\ContextoDados.cs" />
+    <Compile Include="Contexto\ContextoDados.Static.cs" />
+    <Compile Include="Contexto\IContextoDadosSeguranca.cs" />
+    <Compile Include="Contexto\IContextoDadosSemNotificar.cs" />
+    <Compile Include="Contexto\TiposSeguranca.cs" />
+    <Compile Include="Erro\ErroAcessoDados.cs" />
+    <Compile Include="Erro\ErroConsultaSql.cs" />
+    <Compile Include="Erro\ErroExecutarSql.cs" />
+    <Compile Include="Erro\ErroFalhaConexao.cs" />
+    <Compile Include="Erro\ErroFalhaManutencao.cs" />
+    <Compile Include="Erro\ErroMigration.cs" />
+    <Compile Include="Erro\ErroParametro.cs" />
+    <Compile Include="Erro\ErroPermissao.cs" />
+    <Compile Include="Erro\ErroSenhaIncorreta.cs" />
+    <Compile Include="Erro\ErroSeguranca.cs" />
+    <Compile Include="Erro\ErroValidacao.cs" />
+    <Compile Include="Estrutura\EnumOpcaoRetornarRelacao.cs" />
+    <Compile Include="Estrutura\EnumInterfaceEntidade.cs" />
+    <Compile Include="Estrutura\EstruturaAlteracaoPropriedade.cs" />
+    <Compile Include="Estrutura\EstruturaAlteracaoPropriedadeGenerica.cs" />
+    <Compile Include="Estrutura\EstruturaBancoDados.Static.cs" />
+    <Compile Include="Estrutura\EstruturaEntidade.RetornarEstruturaRelacao.cs" />
+    <Compile Include="Estrutura\EstruturaRelacaoChaveEstrangeira.cs" />
+    <Compile Include="Estrutura\EstruturaRelacaoUmUm.cs" />
+    <Compile Include="Consulta\Ajudantes\AjudanteDataSetMapeamento.cs" />
+    <Compile Include="Consulta\BaseMapeamentoConsulta.cs" />
+    <Compile Include="Consulta\Entidade\BaseMapeamentoEntidade.Sql.cs" />
+    <Compile Include="Consulta\Entidade\BaseMapeamentoEntidade.SqlFiltroMapeamento.cs" />
+    <Compile Include="Consulta\Entidade\GrupoIdTipoEntidade.cs" />
+    <Compile Include="Consulta\Entidade\MapeamentoEntidade.ValorScalar.cs" />
+    <Compile Include="Consulta\Entidade\IdsTipoEntidade.cs" />
+    <Compile Include="Consulta\Entidade\RetornarEstruturaEntidadeApelido\BaseMapeamentoEntidade.EstruturaEntidadeApelido.cs" />
+    <Compile Include="Consulta\EstruturaApelido\BaseEstruturaMepeada.cs" />
+    <Compile Include="Consulta\EstruturaApelido\EstruturaCampo\BaseEstruturaApelido.cs" />
+    <Compile Include="Consulta\EstruturaApelido\EstruturaEntidade\BaseEstruturaEntidadeApelido.cs" />
+    <Compile Include="Consulta\Entidade\BaseMapeamentoEntidade.SqlFiltros.cs" />
+    <Compile Include="Consulta\EstruturaApelido\EstruturaEntidade\EstruturaEntidadeApelidoBase.cs" />
+    <Compile Include="Consulta\EstruturaApelido\EstruturaEntidade\EstruturaEntidadeApelido.cs" />
+    <Compile Include="Consulta\EstruturaApelido\EstruturaEntidade\EstruturaEntidadeApelidoRelacao.cs" />
+    <Compile Include="Consulta\EstruturaApelido\EstruturaEntidade\EstruturaEntidadeApelidoRelacaoPai.cs" />
+    <Compile Include="Consulta\FiltroMapeamento\FiltroMapeamentoEntre.cs" />
+    <Compile Include="Consulta\MapeamentoConsulta.AbrirRelacao.cs" />
+    <Compile Include="Consulta\MapeamentoConsulta.AbrirRelacaoNn.cs" />
+    <Compile Include="Consulta\RelacaoAberta\IMapeamentosRelacaoAberta.cs" />
+    <Compile Include="Consulta\RelacaoAberta\MapeamentoConsultaRelacaoAberta.cs" />
+    <Compile Include="Consulta\FiltroMapeamento\BaseFiltroMapeamento.cs" />
+    <Compile Include="Consulta\FiltroMapeamento\FiltroMapeamentoIds.cs" />
+    <Compile Include="Consulta\FiltroMapeamento\FiltroMapeamentoVazio.cs" />
+    <Compile Include="Consulta\MapeamentoConsulta.cs" />
+    <Compile Include="Consulta\MapeamentoConsultaSql.cs" />
+    <Compile Include="Consulta\Entidade\BaseMapeamentoEntidade.cs" />
+    <Compile Include="Consulta\Entidade\MapeamentoEntidade.cs" />
+    <Compile Include="Estrutura\EstruturaTipoComplexo.cs" />
+    <Compile Include="Extensao\ContextoDadosExtensao.cs" />
+    <Compile Include="Extensao\Entidade.Extensao.cs" />
+    <Compile Include="Extensao\ISessaoUsuarioExtensao.cs" />
+    <Compile Include="Extensao\IUsuarioExtensao.cs" />
+    <Compile Include="Extensao\TimerExensao.cs" />
+    <Compile Include="Extensao\IRegraOperacaoExtensao.cs" />
+    <Compile Include="Manutencao\BaseManutencao.cs" />
+    <Compile Include="Manutencao\CriarTabelaHistoricoManutencao.cs" />
+    <Compile Include="Manutencao\GerenciadorManutencao.cs" />
+    <Compile Include="Manutencao\GerenciadorManutencao.Static.cs" />
+    <Compile Include="Migracao\AjudanteMigration.cs" />
+    <Compile Include="Migracao\GerenciadorMigracao.Static.cs" />
+    <Compile Include="Migracao\SqlIndexarTextoCompleto.cs" />
+    <Compile Include="Migracao\SqlIndexar.cs" />
+    <Compile Include="Migracao\BaseSqlIndice.cs" />
+    <Compile Include="Migracao\SqlMigracao.cs" />
+    <Compile Include="Migracao\SqlOrdenacao.cs" />
+    <Compile Include="Migracao\SqlValidacaoUnico.cs" />
+    <Compile Include="Migracao\SqlValorPadraoDataHoraServidor.cs" />
+    <Compile Include="Salvar\AtualizarValorPadrao.cs" />
+    <Compile Include="Salvar\ExcluirEntidades.cs" />
+    <Compile Include="Salvar\NormalizarEntidadeAlterada.cs" />
+    <Compile Include="Salvar\NormalizarEntidadeAlterada.Static.cs" />
+    <Compile Include="Salvar\RelacaoChaveEstrageniraDependente.cs" />
+    <Compile Include="Salvar\RetornarAlteracaoPropriedade.cs" />
+    <Compile Include="Salvar\SalvarEntidades.AlteracaoPropriedade.cs" />
+    <Compile Include="Seguranca\AutorizacaoEntidadeLeitura.cs" />
+    <Compile Include="Seguranca\AutorizacaoEntidadeSalvar.cs" />
+    <Compile Include="Seguranca\AutorizacaoPermissaoEntidade.cs" />
+    <Compile Include="Seguranca\EstruturaPermissaoCampo.cs" />
+    <Compile Include="Seguranca\EstruturaRestricaoFiltro.cs" />
+    <Compile Include="Seguranca\LogSeguranca.cs" />
+    <Compile Include="SQL\SeguracaContextoDados.Static.cs" />
+    <Compile Include="Seguranca\EnumOperacao.cs" />
+    <Compile Include="Seguranca\EstruturaIdentificacao.cs" />
+    <Compile Include="Seguranca\EstruturaPermissaoEntidade.cs" />
+    <Compile Include="Seguranca\AutorizacaoEntidade.cs" />
+    <Compile Include="Seguranca\SeguracaContextoDados.cs" />
+    <Compile Include="Seguranca\SeguracaContextoDados.RestricaoFiltro.cs" />
+    <Compile Include="SQL\AjudanteSql.cs" />
+    <Compile Include="SQL\StringBuilderSql.cs" />
+    <Compile Include="Extensao\BaseEntidadeExtensao.cs" />
+    <Compile Include="Extensao\ConsultaEntidadeExtensao.cs" />
+    <Compile Include="Estrutura\EnumTipoBancoDados.cs" />
+    <Compile Include="Estrutura\Ajudante\AjudanteEstruturaBancoDados.cs" />
+    <Compile Include="Estrutura\DicionarioEstrutura.cs" />
+    <Compile Include="Estrutura\EstruturaEntidade.cs" />
+    <Compile Include="Estrutura\EstruturaBancoDados.cs" />
+    <Compile Include="Estrutura\EstruturaCampo.cs" />
+    <Compile Include="Estrutura\EstruturaPropriedade.cs" />
+    <Compile Include="Estrutura\EstruturaRelacao.cs" />
+    <Compile Include="Estrutura\EstruturaRelacaoUmUmReversa.cs" />
+    <Compile Include="Estrutura\EstruturaRelacaoFilhos.cs" />
+    <Compile Include="Estrutura\EstruturaRelacaoNn.cs" />
+    <Compile Include="Estrutura\EstruturaRelacaoNnEspecializada.cs" />
+    <Compile Include="Estrutura\EstruturaRelacaoPai.cs" />
+    <Compile Include="Estrutura\NivelEstruturaEntidadeEspecializada.cs" />
+    <Compile Include="Extensao\BaseRelacaoAbertaExtensao.cs" />
+    <Compile Include="Extensao\ConsultaAcessoDadosExtensao.cs" />
+    <Compile Include="Consulta\RelacaoAberta\MapeamentoConsultaRelacaoAbertaNn.cs" />
+    <Compile Include="Consulta\RelacaoAberta\MapeamentoConsultaRelacaoAbertaUmUm.cs" />
+    <Compile Include="Consulta\RelacaoAberta\MapeamentoConsultaRelacaoAbertaUmUmReversa.cs" />
+    <Compile Include="Consulta\RelacaoAberta\MapeamentoConsultaRelacaoAbertaPai.cs" />
+    <Compile Include="Consulta\RelacaoAberta\MapeamentoConsultaRelacaoAbertaFilhos.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ConfiguracaoAcessoDados.cs" />
+    <Compile Include="Salvar\ComandoDelete.cs" />
+    <Compile Include="Salvar\ComandoUltimoId.cs" />
+    <Compile Include="Salvar\Comando.cs" />
+    <Compile Include="Salvar\ComandoCampoComputado.cs" />
+    <Compile Include="Salvar\ComandoInsert.cs" />
+    <Compile Include="Salvar\ComandoUpdate.cs" />
+    <Compile Include="Salvar\EntidadeAlterada.cs" />
+    <Compile Include="Salvar\EnumTipoAlteracao.cs" />
+    <Compile Include="Salvar\FilaEntidadeAlterada.cs" />
+    <Compile Include="Salvar\NormalizarEntidade.cs" />
+    <Compile Include="Salvar\ParametroCampo.cs" />
+    <Compile Include="Salvar\CampoComputado.cs" />
+    <Compile Include="Salvar\SalvarEntidades.cs" />
+    <Compile Include="Usuario\AjudanteUsuario.cs" />
+    <Compile Include="Usuario\CacheSessaoUsuario.cs" />
+    <Compile Include="Usuario\ResultadoSessaoUsuario.cs" />
+    <Compile Include="Utilidade\DepuracaoUtil.cs" />
+    <Compile Include="Utilidade\PaginacaoUtil.cs" />
+    <Compile Include="Utilidade\RetornarTabelasDepedencias.cs" />
+    <Compile Include="Utilidade\TipoEntidadeUtil.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Bibliotecas\Entityframework\net45\EntityFramework.dll" />
+    <Content Include="Bibliotecas\Entityframework\net45\EntityFramework.SqlServer.dll" />
+    <Content Include="Bibliotecas\Postgree\net45\EntityFramework6.Npgsql.dll" />
+    <Content Include="Bibliotecas\Postgree\net45\Npgsql.dll" />
+    <Content Include="SQL\Scripts\SQL Server\Isolamento Instaneo.sql" />
+    <Content Include="SQL\Scripts\SQL Server\AlterarCollate.sql" />
+    <Content Include="SQL\Scripts\SQL Server\TamanhoIndices.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Consulta\MapeamentoConsultaValorSclar.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Consulta\Entidade\RetornarEstruturaEntidadeApelido\BaseMapeamentoEntidade.EstruturaEntidadeApelido.Imob..cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Consulta\MapeamentoConsulta.MapamentosConsultaRelacaoAberta.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Salvar\NormalizarEntidade.Static.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Salvar\FilaEntidadeAlterada.Static.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Usuario\AjudanteUsuario.Static.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Contexto\ContextoDados.Seguranca.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Atributos\" />
+    <Folder Include="Temp\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Estrutura\EstruturaBancoDados.Alertas.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AcessoDados\Snebur.AcessoDados.csproj">
+      <Project>{ae39cd55-5282-48a5-8131-6704c825f26a}</Project>
+      <Name>Snebur.AcessoDados</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Core\Snebur.csproj">
+      <Project>{ec174c4f-8122-41a3-8360-f04c4c8fc3ba}</Project>
+      <Name>Snebur</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Usuario\CacheSessaoUsuario.Static.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Contexto\ContextoDados.Excluir.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.Sql.UnitTesting.targets" Condition="'$(SQLDBExtensionsRefPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.Sql.UnitTesting.targets" Condition="'$(SQLDBExtensionsRefPath)' == ''" />
+  <PropertyGroup>
+    <SsdtUnitTestVersion>2.0</SsdtUnitTestVersion>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
