@@ -371,3 +371,4 @@ bin/
 *.sql
 *.js
 *.css
+*.ts
