@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("Zyoncore")]
+[assembly: AssemblyTitle("Snebur")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Zyoncore Sistemas")]
-[assembly: AssemblyProduct("Zyoncore")]
+[assembly: AssemblyCompany("Snebur Sistemas")]
+[assembly: AssemblyProduct("Snebur")]
 [assembly: AssemblyCopyright("Copyright © Snebur  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

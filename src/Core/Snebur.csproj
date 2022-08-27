@@ -216,6 +216,7 @@
     <Compile Include="Extensao\IUsuarioExtensao.cs" />
     <Compile Include="Dominio\TipoComplexo\FiltroImagem.cs" />
     <Compile Include="Extensao\ReflexaoExtension.cs" />
+    <Compile Include="Extensao\UriExtensao.cs" />
     <Compile Include="Imagem\Filtro\EfeitoImagem.cs" />
     <Compile Include="Imagem\Filtro\EfeitosImagem.cs" />
     <Compile Include="Imagem\Filtro\EnumDirecaoGradiente.cs" />

@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Policy;
 using System.Text;
 
 #if NET50 == false
@@ -64,24 +65,43 @@ namespace Snebur.Utilidade
         {
             return HttpUtil.RetornarString(url, TimeSpan.FromSeconds(TIMEOUT_PADRAO), false);
         }
+        public static string RetornarString(Uri uri, bool ignorarErro)
+        {
+            return HttpUtil.RetornarString(uri, TimeSpan.FromSeconds(TIMEOUT_PADRAO), ignorarErro);
+        }
 
         public static string RetornarString(string url, bool ignorarErro)
         {
             return HttpUtil.RetornarString(url, TimeSpan.FromSeconds(TIMEOUT_PADRAO), ignorarErro);
         }
 
+        public static string RetornarString(Uri uri, TimeSpan timeout, bool ignorarErro)
+        {
+            return HttpUtil.RetornarString(uri, null, timeout, ignorarErro);
+        }
         public static string RetornarString(string url, TimeSpan timeout, bool ignorarErro)
         {
             return HttpUtil.RetornarString(url, null, timeout, ignorarErro);
         }
 
+        public static string RetornarString(Uri uri, Dictionary<string, string> cabecalho, TimeSpan timeout, bool ignorarErro)
+        {
+            var resultado = HttpUtil.RetornarStringCabecalhoResposta(uri, cabecalho, timeout, ignorarErro);
+            return resultado.Item1;
+        }
         public static string RetornarString(string url, Dictionary<string, string> cabecalho, TimeSpan timeout, bool ignorarErro)
         {
             var resultado = HttpUtil.RetornarStringCabecalhoResposta(url, cabecalho, timeout, ignorarErro);
             return resultado.Item1;
+
         }
 
+
         public static Tuple<string, WebHeaderCollection> RetornarStringCabecalhoResposta(string url, Dictionary<string, string> cabecalho, TimeSpan timeout, bool ignorarErro)
+        {
+            return RetornarStringCabecalhoResposta(new Uri(url), cabecalho, timeout, ignorarErro);
+        }
+        public static Tuple<string, WebHeaderCollection> RetornarStringCabecalhoResposta(Uri url, Dictionary<string, string> cabecalho, TimeSpan timeout, bool ignorarErro)
         {
             var resultado = HttpUtil.RetornarBytesCabecalhoResposta(url, cabecalho, timeout, ignorarErro);
             var resultadoString = (resultado?.Item1 == null) ? String.Empty : Encoding.UTF8.GetString(resultado.Item1);
@@ -122,9 +142,13 @@ namespace Snebur.Utilidade
 
         public static Tuple<byte[], WebHeaderCollection> RetornarBytesCabecalhoResposta(string url, Dictionary<string, string> cabecalho, TimeSpan timeout, bool ignorarErro)
         {
+            return RetornarBytesCabecalhoResposta(new Uri(url), cabecalho, timeout, ignorarErro);
+        }
+        public static Tuple<byte[], WebHeaderCollection> RetornarBytesCabecalhoResposta(Uri uri, Dictionary<string, string> cabecalho, TimeSpan timeout, bool ignorarErro)
+        {
             try
             {
-                var requisicao = (HttpWebRequest)WebRequest.Create(url);
+                var requisicao = (HttpWebRequest)WebRequest.Create(uri);
                 if (cabecalho != null)
                 {
                     foreach (var item in cabecalho)
@@ -135,6 +159,7 @@ namespace Snebur.Utilidade
                 //requisicao.Method = metodo;
                 requisicao.Timeout = HttpUtil.RetornarTimeout(timeout);
                 requisicao.Proxy = null;
+                requisicao.ContentType = "text/json";
 
                 using (var resposta = (HttpWebResponse)requisicao.GetResponse())
                 {
@@ -161,18 +186,30 @@ namespace Snebur.Utilidade
         {
             return RetornarMemoryStream(url, null, TimeSpan.FromSeconds(30), false);
         }
+        public static MemoryStream RetornarMemoryStream(Uri url)
+        {
+            return RetornarMemoryStream(url, null, TimeSpan.FromSeconds(30), false);
+        }
 
         public static MemoryStream RetornarMemoryStream(string url, Dictionary<string, string> cabecalho, TimeSpan timeout, bool ignorarErro)
         {
-            var resultado = RetornarMemoryStreamCabecalhoResposta(url, cabecalho, timeout, ignorarErro);
+            return RetornarMemoryStream(new Uri(url), cabecalho, timeout, ignorarErro);
+        }
+        public static MemoryStream RetornarMemoryStream(Uri uri, Dictionary<string, string> cabecalho, TimeSpan timeout, bool ignorarErro)
+        {
+            var resultado = RetornarMemoryStreamCabecalhoResposta(uri, cabecalho, timeout, ignorarErro);
             return resultado.Item1;
         }
 
         public static Tuple<MemoryStream, WebHeaderCollection> RetornarMemoryStreamCabecalhoResposta(string url, Dictionary<string, string> cabecalho, TimeSpan timeout, bool ignorarErro)
         {
+            return RetornarMemoryStreamCabecalhoResposta(new Uri(url), cabecalho, timeout, ignorarErro);
+        }
+        public static Tuple<MemoryStream, WebHeaderCollection> RetornarMemoryStreamCabecalhoResposta(Uri uri, Dictionary<string, string> cabecalho, TimeSpan timeout, bool ignorarErro)
+        {
             try
             {
-                var requisicao = (HttpWebRequest)WebRequest.Create(url);
+                var requisicao = (HttpWebRequest)WebRequest.Create(uri);
                 if (cabecalho != null)
                 {
                     foreach (var item in cabecalho)
@@ -225,6 +262,19 @@ namespace Snebur.Utilidade
                 retorno.Add(chave, valor);
             }
             return retorno;
+        }
+
+        public static NameValueCollection AddRange(this NameValueCollection origem, NameValueCollection items)
+        {
+            foreach (var chave in items.AllKeys)
+            {
+                if (!origem.AllKeys.Contains(chave))
+                {
+                    var valor = items[chave];
+                    origem.Add(chave, valor);
+                }
+            }
+            return origem;
         }
     }
 }
