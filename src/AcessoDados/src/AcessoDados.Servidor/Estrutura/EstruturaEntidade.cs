@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Snebur.Dominio;
+using Snebur.Dominio.Atributos;
+using Snebur.Utilidade;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Snebur.Dominio;
-using Snebur.Dominio.Atributos;
-using Snebur.Utilidade;
 
 namespace Snebur.AcessoDados.Estrutura
 {
@@ -22,7 +22,7 @@ namespace Snebur.AcessoDados.Estrutura
 
         internal Type TipoEntidade { get; }
 
-        public bool IsBancoDadosNaoGerenciavel { get; }
+        public SqlSuporte SqlSuporte { get; }
 
         internal string Schema { get; }
 
@@ -170,11 +170,13 @@ namespace Snebur.AcessoDados.Estrutura
 
         #region Construtor
 
-        internal EstruturaEntidade(Type tipo, EstruturaEntidade estruturaEntidadeBase, bool isBancoDadosNaoGerenciavel)
+        internal EstruturaEntidade(Type tipo, 
+                                   EstruturaEntidade estruturaEntidadeBase, 
+                                   SqlSuporte sqlSuporte)
         {
             this.TipoEntidade = tipo;
             this.NomeTipoEntidade = tipo.Name;
-            this.IsBancoDadosNaoGerenciavel = isBancoDadosNaoGerenciavel;
+            this.SqlSuporte = sqlSuporte;
 
             this.IsAbstrata = tipo.IsAbstract || ReflexaoUtil.TipoPossuiAtributo(tipo, typeof(AbstratoAttribute));
             this.InterfacesImplementasEnum = this.RetornarInterfacesEntidade();
@@ -213,15 +215,14 @@ namespace Snebur.AcessoDados.Estrutura
             this.IsAutorizarInstanciaNaoEspecializada = ReflexaoUtil.TipoPossuiAtributo(this.TipoEntidade, typeof(AutorizarInstanciaNaoEspecializadaAttribute), true);
             this.IsSomenteLeitura = this.RetornarIsSomenteLeitura();
 
-            if (this.IsChavePrimariaAutoIncrimento)
-            {
-                if (this.IsAbstrata && isBancoDadosNaoGerenciavel || !isBancoDadosNaoGerenciavel)
-                {
-                    this.EstruturaCampoNomeTipoEntidade = this.EstruturasCampos[EntidadeUtil.PropriedadeNomeTipoEntidade.Name];
-                }
-                //this.EstruturaCampoNomeTipoEntidade = this.RetornarEstruturaCampoNomeTipoEntidade();
-
-            }
+            //if (this.IsChavePrimariaAutoIncrimento)
+            //{
+            //    if (this.IsAbstrata && isBancoDadosNaoGerenciavel || !isBancoDadosNaoGerenciavel)
+            //    {
+            //        this.EstruturaCampoNomeTipoEntidade = this.EstruturasCampos[EntidadeUtil.PropriedadeNomeTipoEntidade.Name];
+            //    }
+            //    //this.EstruturaCampoNomeTipoEntidade = this.RetornarEstruturaCampoNomeTipoEntidade();
+            //}
             this.EstruturasCamposComputadoBanco = this.RetornarEstruturasCamposComputadoBanco();
             this.EstruturasCamposComputadoServico = this.RetornarEstruturasCamposComputadoServico();
             this.MaximoRegistroPorConsulta = this.RetornarMaximoRegistroPorConsulta();
@@ -273,12 +274,7 @@ namespace Snebur.AcessoDados.Estrutura
             foreach (var estruturaRelacaoFilhos in estruturasRelacaoFilhos)
             {
                 //var estruturaRelacaoPai = estruturaRelacaoFilhos.EstruturaEntidadeFilho.EstruturasRelacoes.Values.OfType<EstruturaRelacaoPai>().Where(x => x.EstruturaEntidadePai == estruturaRelacaoFilhos.EstruturaEntidade).Single();
-                var todasRelacoesPai = estruturaRelacaoFilhos.EstruturaEntidadeFilho.RetornarTodasRelacoesPai();
-                var estruturaRelacaoPai = todasRelacoesPai.Where(x => x.EstruturaEntidadeChaveEstrangeiraDeclarada == estruturaRelacaoFilhos.EstruturaEntidade).SingleOrDefault();
-                if (estruturaRelacaoPai == null)
-                {
-                    throw new Exception($"Não foi encontrado a propriedade de relação pai do tipo {estruturaRelacaoFilhos.EstruturaEntidade.TipoEntidade.Name} na entidade {estruturaRelacaoFilhos.EstruturaEntidadeFilho.TipoEntidade.Name}");
-                }
+                var estruturaRelacaoPai = estruturaRelacaoFilhos.EstruturaEntidadeFilho.RetornarEstruturaRelacaoPai(estruturaRelacaoFilhos);
                 estruturaRelacaoFilhos.EstruturaRelacaoPai = estruturaRelacaoPai;
             }
             var estruturasRelacaoNn = this.EstruturasRelacoes.Values.OfType<EstruturaRelacaoNn>().ToList();
@@ -289,6 +285,32 @@ namespace Snebur.AcessoDados.Estrutura
                 estruturaRelacaoNn.EstruturaRelacaoPaiEntidadePai = relacoesPai.Where(x => x.EstruturaEntidadeChaveEstrangeiraDeclarada == estruturaRelacaoNn.EstruturaEntidadePai).Single();
                 estruturaRelacaoNn.EstruturaRelacaoPaiEntidadeFilho = relacoesPai.Where(x => x.EstruturaEntidadeChaveEstrangeiraDeclarada == estruturaRelacaoNn.EstruturaEntidadeFilho).Single();
             }
+        }
+
+        private EstruturaRelacaoPai RetornarEstruturaRelacaoPai(EstruturaRelacaoFilhos estruturaRelacaoFilhos)
+        {
+            var todasRelacoesPai = estruturaRelacaoFilhos.EstruturaEntidadeFilho.RetornarTodasRelacoesPai();
+            var estruturaCampoChaveEstragentira = estruturaRelacaoFilhos.EstruturaCampoChaveEstrangeira;
+            if (estruturaCampoChaveEstragentira == null)
+            {
+                throw new Erro($"A estrutura do campo chave estrangeira não foi definida na relação filhos {estruturaRelacaoFilhos.Propriedade.Name} na entidade {estruturaRelacaoFilhos.EstruturaEntidade.TipoEntidade.Name}");
+            }
+
+            var estruturasRelacaoPai = todasRelacoesPai.Where(x => x.EstruturaEntidadeChaveEstrangeiraDeclarada == estruturaRelacaoFilhos.EstruturaEntidade &&
+                                                                   x.EstruturaCampoChaveEstrangeira == estruturaRelacaoFilhos.EstruturaCampoChaveEstrangeira).ToList();
+            if (estruturasRelacaoPai.Count == 0)
+            {
+                throw new Exception($"Não foi encontrado a propriedade de relação pai do tipo {estruturaRelacaoFilhos.EstruturaEntidade.TipoEntidade.Name} na entidade {estruturaRelacaoFilhos.EstruturaEntidadeFilho.TipoEntidade.Name}");
+            }
+
+            if (estruturasRelacaoPai.Count > 1)
+            {
+                throw new Exception($"Existe mais uma propriedade de relação pai do tipo {estruturaRelacaoFilhos.EstruturaEntidade.TipoEntidade.Name} na entidade {estruturaRelacaoFilhos.EstruturaEntidadeFilho.TipoEntidade.Name}." +
+                                    $"Defina a propriedade na relaçao no atributop RelacaoFilhos. ");
+            }
+            return estruturasRelacaoPai.Single();
+
+
         }
 
         internal void PreencherRelacoes(DicionarioEstrutura<EstruturaEntidade> estruturasEntidade)
@@ -346,7 +368,7 @@ namespace Snebur.AcessoDados.Estrutura
             {
                 return this.EstruturaCampoNomeTipoEntidade;
             }
-            if (System.Diagnostics.Debugger.IsAttached)
+            if (DebugUtil.IsAttached)
             {
                 if (this.EstruturasCampos.Any(x => x.Key.Equals(chave, StringComparison.InvariantCultureIgnoreCase)))
                 {
@@ -444,7 +466,7 @@ namespace Snebur.AcessoDados.Estrutura
             var propriedadesCampo = AjudanteEstruturaBancoDados.RetornarPropriedadesCampos(this.TipoEntidade);
             foreach (var propriedadeCampo in propriedadesCampo)
             {
-                if (!this.IsAbstrata && this.IsBancoDadosNaoGerenciavel &&
+                if (!this.IsAbstrata && this.SqlSuporte.IsColunaNomeTipoEntidade &&
                     propriedadeCampo.Name == "__NomeTipoEntidade")
                 {
                     continue;
@@ -576,9 +598,9 @@ namespace Snebur.AcessoDados.Estrutura
             var atributoRelacaoFilhos = propriedade.GetCustomAttribute<RelacaoFilhosAttribute>();
             if (!String.IsNullOrEmpty(atributoRelacaoFilhos.NomePropriedadeChaveEstrangeira))
             {
-                if (System.Diagnostics.Debugger.IsAttached)
+                if (DebugUtil.IsAttached)
                 {
-                    System.Diagnostics.Trace.TraceWarning($" Testear relacao filhos  {propriedade.DeclaringType.Name}{propriedade.Name} ");
+                    System.Diagnostics.Trace.TraceWarning($"Testear relação filhos  {propriedade.DeclaringType.Name}{propriedade.Name} ");
                 }
                 return atributoRelacaoFilhos.NomePropriedadeChaveEstrangeira;
             }

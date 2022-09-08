@@ -1,13 +1,10 @@
-﻿using System;
+﻿using Snebur.Dominio;
+using Snebur.Dominio.Atributos;
+using Snebur.Utilidade;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur;
-using Snebur.Dominio;
-using Snebur.Dominio.Atributos;
-using Snebur.Utilidade;
 
 namespace Snebur.AcessoDados
 {
@@ -88,13 +85,13 @@ namespace Snebur.AcessoDados
             var tipoEntidade = Type.GetType(tipoEntiadeAssemblyQualifiedName);
             if (tipoEntidade == null)
             {
-                throw new Exception($"O tipo da entidade não foi encontrado { tipoEntiadeAssemblyQualifiedName} ");
+                throw new Exception($"O tipo da entidade não foi encontrado {tipoEntiadeAssemblyQualifiedName} ");
             }
-            var chave = String.Format($"{ tipoEntidade.Namespace}.{tipoEntidade.Name}");
+            var chave = String.Format($"{tipoEntidade.Namespace}.{tipoEntidade.Name}");
 
             if (!TipoEntidadeUtil.TiposEntidade.ContainsKey(chave))
             {
-                throw new Exception($"O tipo da entidade não foi encontrado na coleção do repositorio { tipoEntiadeAssemblyQualifiedName}");
+                throw new Exception($"O tipo da entidade não foi encontrado na coleção do repositorio {tipoEntiadeAssemblyQualifiedName}");
             }
             return tipoEntidade;
         }

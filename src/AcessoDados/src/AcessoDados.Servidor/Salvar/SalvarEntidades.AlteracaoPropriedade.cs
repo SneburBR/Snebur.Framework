@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using Snebur.AcessoDados.Estrutura;
+﻿using Snebur.AcessoDados.Estrutura;
 using Snebur.Dominio;
 using Snebur.Dominio.Atributos;
 using Snebur.Serializacao;
 using Snebur.Utilidade;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 
 namespace Snebur.AcessoDados.Servidor.Salvar
 {
@@ -172,7 +172,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 
         private HashSet<Entidade> RetornarEntidadesAlteracaoPropriedadeGenericas(HashSet<Entidade> entidades)
         {
-            var alteracoesPropriedade = new  HashSet<Entidade>();
+            var alteracoesPropriedade = new HashSet<Entidade>();
             foreach (var entidade in entidades)
             {
                 var estruturaEntidade = this.Contexto.EstruturaBancoDados.EstruturasEntidade[entidade.GetType().Name];
@@ -211,7 +211,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             return alteracoesPropriedade;
         }
 
-        private IAlteracaoPropriedadeGenerica RetornarUtlimaAlteracaoGenerica(Entidade entidade, 
+        private IAlteracaoPropriedadeGenerica RetornarUtlimaAlteracaoGenerica(Entidade entidade,
                                                                               EstruturaEntidade estruturaEntidade,
                                                                               EstruturaAlteracaoPropriedadeGenerica estruturaAlteracaoPropriedade)
         {
@@ -229,7 +229,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                                                                                                   EstruturaAlteracaoPropriedadeGenerica estruturaAlteracaoPropriedadeGenerica)
         {
             var estruturaEntidade = estruturaAlteracaoPropriedadeGenerica.EstruturaEntidade;
-            if (entidade.Id == 0 )
+            if (entidade.Id == 0)
             {
                 return (false, null);
             }

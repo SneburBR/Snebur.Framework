@@ -1,12 +1,9 @@
-﻿using System;
+﻿using Snebur.Dominio;
+using Snebur.Dominio.Atributos;
+using Snebur.Utilidade;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur;
-using Snebur.Utilidade;
-using Snebur.Dominio;
-using Snebur.Dominio.Atributos;
 using System.Reflection;
 
 namespace Snebur.AcessoDados.Servidor.Salvar
@@ -82,7 +79,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                 var atributoSessaoUsuario = atributos.OfType<ValorPadraoIDSessaoUsuarioAttribute>().SingleOrDefault();
                 if (atributoSessaoUsuario != null)
                 {
-                    if(atributoSessaoUsuario.IsSomenteCadastro && entidade.Id > 0)
+                    if (atributoSessaoUsuario.IsSomenteCadastro && entidade.Id > 0)
                     {
                         return null;
                     }

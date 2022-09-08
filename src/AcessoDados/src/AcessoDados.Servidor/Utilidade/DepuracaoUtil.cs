@@ -21,7 +21,7 @@ namespace Snebur.AcessoDados
 
         internal static void EscreverSaida(BaseContextoDados contexto, List<DbParameter> parametros, string sql)
         {
-            if (Debugger.IsAttached && false)
+            if (DebugUtil.IsAttached && false)
             {
                 Task.Factory.StartNew(() =>
                 {
@@ -40,7 +40,7 @@ namespace Snebur.AcessoDados
             }
 
 #if DEBUG
-            if (Debugger.IsAttached && false)
+            if (DebugUtil.IsAttached && false)
             {
                 lock (((ICollection)contexto.Comandos).SyncRoot)
                 {

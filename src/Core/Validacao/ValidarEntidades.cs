@@ -1,6 +1,7 @@
 ﻿using Snebur.Utilidade;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Snebur.Dominio
 {
@@ -40,7 +41,7 @@ namespace Snebur.Dominio
                                         NomeTipoValidacao = atributoValidacao.GetType().Name
                                     };
 
-                                    if (System.Diagnostics.Debugger.IsAttached)
+                                    if (DebugUtil.IsAttached)
                                     {
                                         throw new Erro(erroValidacao.Mensagem);
                                     }
@@ -67,7 +68,7 @@ namespace Snebur.Dominio
                                 NomeTipoValidacao = atributoEntidade.GetType().Name
                             };
 
-                            if (System.Diagnostics.Debugger.IsAttached)
+                            if (DebugUtil.IsAttached)
                             {
                                 throw new Erro(erroValidacao.Mensagem);
                             }

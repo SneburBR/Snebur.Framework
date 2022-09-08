@@ -20,7 +20,7 @@ namespace Snebur.AcessoDados
                                  nomeMetodo,
                                  caminhoArquivo,
                                  linhaDoErro)
-        {                   
+        {
         }
 
         public static string RetornarMensagemErro(List<Snebur.Dominio.ErroValidacao> erros)

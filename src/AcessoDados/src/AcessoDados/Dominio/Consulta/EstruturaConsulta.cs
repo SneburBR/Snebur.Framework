@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using Snebur.AcessoDados.Seguranca;
+﻿using Snebur.AcessoDados.Seguranca;
 using Snebur.Dominio.Atributos;
+using System;
+using System.Collections.Generic;
 
 namespace Snebur.AcessoDados
 {
     public class EstruturaConsulta : BaseAcessoDados, IEstruturaConsultaSeguranca
     {
-		#region Campos Privados
+        #region Campos Privados
 
         private string _nomeTipoEntidade;
         private string _tipoEntidadeAssemblyQualifiedName;
@@ -21,7 +21,7 @@ namespace Snebur.AcessoDados
         private EnumTipoFuncao _tipoFuncaoEnum;
         private bool _contarRegistros;
 
-		#endregion
+        #endregion
 
         [IgnorarPropriedadeTS]
         [IgnorarPropriedadeTSReflexao]

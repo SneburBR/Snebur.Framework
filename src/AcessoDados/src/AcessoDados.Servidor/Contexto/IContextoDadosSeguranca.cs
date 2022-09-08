@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Snebur.Dominio;
+using System;
 using System.Collections.Generic;
-using Snebur.Dominio;
 
 namespace Snebur.AcessoDados
 {
@@ -10,7 +10,7 @@ namespace Snebur.AcessoDados
 
         bool InicializandoContexto { get; }
 
-        TiposSeguranca TiposSeguranca { get;  }
+        TiposSeguranca TiposSeguranca { get; }
 
         //IUsuario UsuarioLogado { get; }
 
@@ -29,7 +29,7 @@ namespace Snebur.AcessoDados
         IConsultaEntidade<TEntidade> RetornarConsulta<TEntidade>(Type tipoConsulta) where TEntidade : IEntidade;
 
         //List<IEntidade> RetornarResultadoConsulta(EstruturaConsulta estruturaConsulta);
-       
+
         IUsuario RetornarUsuarioAnonimo();
     }
 }

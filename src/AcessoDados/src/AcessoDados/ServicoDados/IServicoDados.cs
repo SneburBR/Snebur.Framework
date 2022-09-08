@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Snebur.Comunicacao;
 using Snebur.Dominio;
-using Snebur.Comunicacao;
+using System;
+using System.Collections.Generic;
 
 namespace Snebur.AcessoDados
 {

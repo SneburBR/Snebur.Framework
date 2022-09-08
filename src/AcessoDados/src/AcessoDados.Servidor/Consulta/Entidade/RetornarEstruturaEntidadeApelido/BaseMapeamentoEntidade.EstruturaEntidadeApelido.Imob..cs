@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Snebur.AcessoDados.Estrutura;
+using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur;
-using Snebur.Utilidade;
-using Snebur.Dominio;
-using Snebur.AcessoDados.Estrutura;
 
 namespace Snebur.AcessoDados.Mapeamento
 {

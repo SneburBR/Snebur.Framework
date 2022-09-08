@@ -1,21 +1,16 @@
-﻿using System;
-using System.Linq;
-using System.Text;
+﻿using Snebur.Reflexao;
 using System.Collections.Generic;
-using Snebur.Dominio.Atributos;
-using Snebur.Dominio;
-using Snebur.Reflexao;
 
 namespace Snebur.Comunicacao
 {
 
     public class ParametroChamadaListaTipoPrimario : ParametroChamadaLista
     {
-		#region Campos Privados
+        #region Campos Privados
 
         private EnumTipoPrimario _tipoPrimarioEnum;
 
-		#endregion
+        #endregion
 
         public List<object> Lista { get; set; }
 

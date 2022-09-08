@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Snebur.Dominio;
+﻿using Snebur.Dominio;
+using System.Collections.Generic;
 
 namespace Snebur.AcessoDados
 {

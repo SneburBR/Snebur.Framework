@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Snebur.AcessoDados.Servidor.Salvar;
+﻿using Snebur.AcessoDados.Servidor.Salvar;
 using Snebur.Dominio;
 using Snebur.Dominio.Atributos;
 using Snebur.Linq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Snebur.AcessoDados
 {
@@ -73,7 +73,7 @@ namespace Snebur.AcessoDados
         }
 
         bool IContextoDadosSeguranca.InicializandoContexto { get => this.InicializandoContexto; }
-    
+
 
         #endregion
     }

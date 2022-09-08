@@ -87,7 +87,7 @@ namespace Snebur.Utilidade
             var strCript = Encoding.ASCII.GetString(bytes.Reverse().ToArray());
             var idCripgrafado = HexUtil.Encode(strCript);
 
-            if (Debugger.IsAttached)
+            if (DebugUtil.IsAttached)
             {
                 var idValida = DescriptografarID(idCripgrafado);
                 if (id != idValida)

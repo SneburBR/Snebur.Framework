@@ -3,12 +3,12 @@
     public class ResultadoExcluir : BaseComunicao
     {
 
-		#region Campos Privados
+        #region Campos Privados
 
         private bool _isSucesso;
         private string _mensagemErro;
 
-		#endregion
+        #endregion
 
         public bool IsSucesso { get => this.RetornarValorPropriedade(this._isSucesso); set => this.NotificarValorPropriedadeAlterada(this._isSucesso, this._isSucesso = value); }
 

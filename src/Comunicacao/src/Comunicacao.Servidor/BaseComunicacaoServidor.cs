@@ -1,4 +1,9 @@
-﻿using System;
+﻿using Snebur.AcessoDados;
+using Snebur.Dominio;
+using Snebur.Seguranca;
+using Snebur.Servicos;
+using Snebur.Utilidade;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,17 +13,12 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Web;
-using Snebur.AcessoDados;
-using Snebur.Dominio;
-using Snebur.Seguranca;
-using Snebur.Servicos;
-using Snebur.Utilidade;
 
 namespace Snebur.Comunicacao
 {
     public abstract partial class BaseComunicacaoServidor : IHttpHandler, IDisposable, IBaseServico
     {
-        private static readonly long TEMPO_LIMITE_PADRAO_LOG_DESEMPEHO = (System.Diagnostics.Debugger.IsAttached) ? (long)TimeSpan.FromSeconds(5).TotalMilliseconds : (long)TimeSpan.FromSeconds(2).TotalMilliseconds;
+        private static readonly long TEMPO_LIMITE_PADRAO_LOG_DESEMPEHO = (DebugUtil.IsAttached) ? (long)TimeSpan.FromSeconds(5).TotalMilliseconds : (long)TimeSpan.FromSeconds(2).TotalMilliseconds;
 
         #region Propriedades
 
@@ -93,7 +93,7 @@ namespace Snebur.Comunicacao
                     else
                     {
                         var mensagemSeguranca = String.Format("A credencial do serviço não autorizada '{0}' '{1}' - '{2}' ", this.GetType().Name, this.CredencialServico.IdentificadorUsuario, this.CredencialServico.Senha);
-                        if (Debugger.IsAttached)
+                        if (DebugUtil.IsAttached)
                         {
                             throw new Exception(mensagemSeguranca);
                         }
@@ -138,7 +138,7 @@ namespace Snebur.Comunicacao
                 return this.RetornarResultadoChamadaSerializadoCache(requisicao, httpContext);
             }
             return this.RetornarResultadoChamadaSerializadoInterno(requisicao, httpContext);
-           
+
         }
 
         private string RetornarResultadoChamadaSerializadoCache(Requisicao requisicao, HttpContext httpContext)
@@ -197,7 +197,7 @@ namespace Snebur.Comunicacao
 
         private void NotificarLogLentidaoAsync(Requisicao requisicao, Stopwatch tempo)
         {
-            if (!System.Diagnostics.Debugger.IsAttached)
+            if (!DebugUtil.IsAttached)
             {
                 var mensagem = this.RetornarMensagemLogLentidao(requisicao.Operacao, tempo);
                 LogUtil.DesempenhoAsync(mensagem, tempo, Servicos.EnumTipoLogDesempenho.LentidaoServicoComunicacao, false,
@@ -206,7 +206,7 @@ namespace Snebur.Comunicacao
                     var json = JsonUtil.Serializar(requisicao, true);
                     var nomeArquivo = identificador.ToString() + ".json";
                     var caminho = Path.Combine(ConfiguracaoUtil.CaminhoAppDataAplicacaoLogs, "Desempenho", nomeArquivo);
-                    ArquivoUtil.SalvarArquivoTexto(caminho, json, true);
+                    ArquivoUtil.SalvarArquivoTexto(caminho, json, Encoding.UTF8);
                 });
             }
         }
@@ -487,7 +487,7 @@ namespace Snebur.Comunicacao
 
         protected virtual object RetornarObjetoBloqueioThread()
         {
-            
+
             throw new Erro($" esse método deve ser sobre escrito quando {nameof(this.IsBloqueiarThreadSessaoUsuario)} for true .");
         }
 

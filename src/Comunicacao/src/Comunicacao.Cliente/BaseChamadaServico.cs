@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Snebur.Seguranca;
+using Snebur.Utilidade;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
-using Snebur.Seguranca;
-using Snebur.Utilidade;
 
 namespace Snebur.Comunicacao
 {
@@ -57,7 +57,7 @@ namespace Snebur.Comunicacao
 
                 case ResultadoChamadaVazio resultadoChamadaVazio:
 
-                    return true;
+                    return null;
 
                 case ResultadoSessaoUsuarioInvalida resultadoSessaoUsuarioInvalida:
 
@@ -151,7 +151,7 @@ namespace Snebur.Comunicacao
             requisicaoHttp.Headers.Add(ParametrosComunicacao.MANIPULADOR, this.NomeManipulador);
 
 #if DEBUG
-            if (System.Diagnostics.Debugger.IsAttached)
+            if (DebugUtil.IsAttached)
             {
                 requisicaoHttp.Timeout = (int)TimeSpan.FromHours(1).TotalMilliseconds;
             }
@@ -177,7 +177,7 @@ namespace Snebur.Comunicacao
                     }
                 }
             }
-            catch (Exception )
+            catch (Exception)
             {
                 if (!RedeUtil.InternetConectada())
                 {

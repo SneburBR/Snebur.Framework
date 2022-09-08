@@ -150,7 +150,7 @@ namespace Snebur.Utilidade
 
 #if DEBUG
 
-            //if (ATIVAR_CONTROLADOR_THREAD || System.Diagnostics.Debugger.IsAttached)
+            //if (ATIVAR_CONTROLADOR_THREAD || DebugUtil.IsAttached)
             //{
             //    if (!ThreadUtil.DicionarioThreadsInfo.ContainsKey(nomeThread))
             //    {

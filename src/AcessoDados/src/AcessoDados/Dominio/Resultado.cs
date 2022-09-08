@@ -5,12 +5,12 @@ namespace Snebur.AcessoDados
     public abstract class Resultado : BaseAcessoDados
     {
 
-		#region Campos Privados
+        #region Campos Privados
 
         private bool _isSucesso;
         private EnumPermissao _permissao;
 
-		#endregion
+        #endregion
 
         public bool IsSucesso { get => this.RetornarValorPropriedade(this._isSucesso); set => this.NotificarValorPropriedadeAlterada(this._isSucesso, this._isSucesso = value); }
 

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Linq;
-using Snebur.AcessoDados.Estrutura;
+﻿using Snebur.AcessoDados.Estrutura;
 using Snebur.Dominio;
+using System;
+using System.Linq;
 
 namespace Snebur.AcessoDados
 {

@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Snebur.Seguranca;
+using Snebur.Servicos;
+using Snebur.Utilidade;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web;
-using Snebur.Seguranca;
-using Snebur.Servicos;
-using Snebur.Utilidade;
 
 namespace Snebur.Comunicacao
 {
@@ -74,7 +74,7 @@ namespace Snebur.Comunicacao
                         response.StatusCode = (int)HttpStatusCode.NotFound;
                     }
 
-                    if (System.Diagnostics.Debugger.IsAttached)
+                    if (DebugUtil.IsAttached)
                     {
                         throw ex;
                     }
@@ -149,7 +149,6 @@ namespace Snebur.Comunicacao
                     }
                 }
                 return false;
-
             }
             return true;
 
@@ -295,11 +294,16 @@ namespace Snebur.Comunicacao
             this.ArquivosAutorizados.Add(nomeArquivo.ToLower(), isIgnorarValidacaoTokenAplicacao);
         }
 
+        protected void AdicionarServico<T>(string nomeServico) where T : BaseComunicacaoServidor
+        {
+            var tipo = typeof(T);
+            this.AdicionarServico(nomeServico, tipo);
+        }
+
         protected void AdicionarServico<T>() where T : BaseComunicacaoServidor
         {
             var tipo = typeof(T);
             this.AdicionarServico(tipo.Name, tipo);
-
         }
         protected void AdicionarServico(string nome, Type tipo)
         {

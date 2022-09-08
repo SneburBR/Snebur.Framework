@@ -101,7 +101,7 @@ namespace Snebur.Aplicacao.Configuracao
                     this.Dicionario[value.Name] = setting;
                 }
             }
-            SalvarArquivoConfigruacao();
+            this.SalvarArquivoConfigruacao();
         }
 
         private static object _bloqueio = new object();

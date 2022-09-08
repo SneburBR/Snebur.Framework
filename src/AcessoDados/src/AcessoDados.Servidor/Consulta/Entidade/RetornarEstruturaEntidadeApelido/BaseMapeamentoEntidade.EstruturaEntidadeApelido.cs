@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Snebur.AcessoDados.Estrutura;
+using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur;
-using Snebur.Utilidade;
-using Snebur.Dominio;
-using Snebur.AcessoDados.Estrutura;
 
 namespace Snebur.AcessoDados.Mapeamento
 {
@@ -23,7 +17,7 @@ namespace Snebur.AcessoDados.Mapeamento
             if (ConfiguracaoAcessoDados.TipoBancoDadosEnum == EnumTipoBancoDados.PostgreSQLImob)
             {
                 return this.RetornarEstruturaEntidadeApelidoImob(estruturaEntidade, caminhoBancoParcial, caminhoPropriedadeParcial, estruturaEntidadeApelidoOrigem, estruturaRelacao, estruturaCampoChaveEstrangeiraApelido);
-            } 
+            }
             else
             {
                 return this.RetornarEstruturaEntidadeApelidoPadrao(estruturaEntidade, caminhoBancoParcial, caminhoPropriedadeParcial, estruturaEntidadeApelidoOrigem, estruturaRelacao, estruturaCampoChaveEstrangeiraApelido);
@@ -70,17 +64,17 @@ namespace Snebur.AcessoDados.Mapeamento
                 estruturaEntidadeApelido = estruturaEntidadeMapeadaBase;
             }
             var estruturasCampo = estruturaEntidade.EstruturasCampos.Values.ToList();
-            if (  this.Contexto.IsBancoDadosNaoGerencivel)
-            {
-                if (!this.TipoEntidade.IsAbstract)
-                {
-                    estruturasCampo.Remove(this.EstruturaEntidade.EstruturaCampoNomeTipoEntidade);
-                }
-                
-            }
+            //if (this.Contexto.IsSuportaOffsetFetch)
+            //{
+            //    if (!this.TipoEntidade.IsAbstract)
+            //    {
+            //        estruturasCampo.Remove(this.EstruturaEntidade.EstruturaCampoNomeTipoEntidade);
+            //    }
+
+            //}
             foreach (var estruturaCampo in estruturasCampo)
             {
-                
+
                 var estruturaCampoApelido = this.RetornarEstruturaCampoApelido(estruturaCampo, caminhoPropriedadeParcial, estruturaEntidadeApelido);
                 if (estruturaCampoApelido.EstruturaCampo.IsTipoComplexo)
                 {
@@ -95,7 +89,7 @@ namespace Snebur.AcessoDados.Mapeamento
             }
             return estruturaEntidadeApelidoOrigem;
         }
- 
+
         private EstruturaCampoApelido RetornarEstruturaCampoApelido(EstruturaCampo estruturaCampo, string caminhoPropriedadeParcial, EstruturaEntidadeApelido estruturaEntidadeApelido)
         {
             var ponto = String.IsNullOrWhiteSpace(caminhoPropriedadeParcial) ? "" : ".";

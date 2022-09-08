@@ -5,11 +5,11 @@ namespace Snebur.Comunicacao.Mensageiro
     public class ContratoMensageiro : BaseDominio
     {
 
-		#region Campos Privados
+        #region Campos Privados
 
         private string _nomeRecurso;
 
-		#endregion
+        #endregion
 
         public BaseDominio Remetente { get; set; }
 

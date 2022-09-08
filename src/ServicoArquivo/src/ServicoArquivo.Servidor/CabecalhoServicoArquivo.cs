@@ -1,18 +1,12 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
-using Snebur.Utilidade;
-using Snebur.Dominio;
-using System.Web;
-using Snebur.ServicoArquivo;
+﻿using Snebur.Net;
 using Snebur.Seguranca;
-using Snebur.Net;
+using Snebur.Utilidade;
+using System;
 
 namespace Snebur.ServicoArquivo
 {
 
-    public partial class CabecalhoServicoArquivo : Cabecalho , IInformacaoRepositorioArquivo
+    public partial class CabecalhoServicoArquivo : Cabecalho, IInformacaoRepositorioArquivo
     {
         public long IdArquivo { get; set; }
         public Guid IdentificadorSessaoUsuario { get; set; }
@@ -39,7 +33,7 @@ namespace Snebur.ServicoArquivo
             get
             {
                 return new CredencialUsuario(this.IdentificadorUsuario, this.Senha);
-           }
+            }
         }
 
         public CabecalhoServicoArquivo(SnHttpContext context, bool enviarArquivo = false) : base(context)

@@ -1,7 +1,6 @@
-﻿using System;
-using Snebur.Dominio;
-using System.Web;
+﻿using Snebur.Dominio;
 using Snebur.Net;
+using System;
 
 namespace Snebur.ServicoArquivo
 {
@@ -15,7 +14,7 @@ namespace Snebur.ServicoArquivo
         {
             this.TamanhoImagem = (EnumTamanhoImagem)this.RetornarInteger(ConstantesServicoImagem.TAMANHO_IMAGEM);
             this.Formato = (EnumFormatoImagem)this.RetornarInteger(ConstantesServicoImagem.FORMATO_IMAGEM);
-            
+
 
             if (!Enum.IsDefined(typeof(EnumFormatoImagem), this.Formato))
             {

@@ -9,7 +9,7 @@ namespace Snebur.AcessoDados.Estrutura
                                       EstruturaEntidade estruturaEntidade,
                                       EstruturaEntidade estruturaEntidadeUmUm,
                                       EstruturaCampo estruturaCampoChaveEstrangeira) : base(propriedade, estruturaEntidade, estruturaEntidadeUmUm, estruturaCampoChaveEstrangeira)
-             
+
         {
             //this.EstruturaEntidadeRelavaoUmUm = estruturaEntidadeUmUm;
             //this.EstruturaCampoChaveEstrangeira = estruturaCampoChaveEstrangeira;

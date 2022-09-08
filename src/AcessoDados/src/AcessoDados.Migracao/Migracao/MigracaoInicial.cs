@@ -1,12 +1,12 @@
 ﻿using global::Snebur.Dominio;
+using Snebur.Dominio.Atributos;
+using Snebur.Utilidade;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Snebur.Dominio.Atributos;
-using Snebur.Utilidade;
 
 
 namespace Snebur.Migracao
@@ -15,7 +15,7 @@ namespace Snebur.Migracao
 
     public class MigracaoInicial
     {
-      
+
         //public const string CAMINHO_BANCO_DADOS = @"C:\Program Files\Microsoft SQL Server\MSSQL13.SQLEXPRESS\MSSQL\DATA\";
         //public const string CAMINHO_BANCO_DADOS = @"C:\Program Files\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\DATA\";
 
@@ -57,8 +57,8 @@ namespace Snebur.Migracao
             var diretorioBanco = RetornarDiretorioBancoDados(nomeFonteDados);
             var caminhoArquivo = Path.Combine(diretorioBanco, nomeArquivo);
 
-            var sql = $" IF NOT EXISTS(select * from sys.filegroups where name = '{nomeGrupoArquivo}')" 
-                            +  $"\n      ALTER DATABASE[{nomeBancoDados}] ADD FILEGROUP [{nomeGrupoArquivo}];";
+            var sql = $" IF NOT EXISTS(select * from sys.filegroups where name = '{nomeGrupoArquivo}')"
+                            + $"\n      ALTER DATABASE[{nomeBancoDados}] ADD FILEGROUP [{nomeGrupoArquivo}];";
 
             sqls.Add(sql);
             sqls.Add(MigracaoInicial.RetornarSqlAdicioanarFileGroup(nomeBancoDados, nomeGrupoArquivo, caminhoArquivo));

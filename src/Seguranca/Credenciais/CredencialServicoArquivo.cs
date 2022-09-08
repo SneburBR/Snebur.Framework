@@ -1,10 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
-using Snebur.Dominio;
-
-namespace Snebur.Seguranca
+﻿namespace Snebur.Seguranca
 {
     public class CredencialServicoArquivo
     {
@@ -22,10 +16,10 @@ namespace Snebur.Seguranca
         }
 
         private const string IDENTIFICADOR_USUARIO = "ServicoArquivo";
-    
-    	private const string SENHA = "3e74aef0-0177-4ef7-a6cb-fa9d23a58b85";
+
+        private const string SENHA = "3e74aef0-0177-4ef7-a6cb-fa9d23a58b85";
     }
-    
-    
-    
+
+
+
 }

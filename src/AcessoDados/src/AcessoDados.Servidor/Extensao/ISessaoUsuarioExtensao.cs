@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Concurrent;
+﻿using Snebur.Dominio;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur.Dominio;
 
 namespace Snebur
 {
@@ -37,5 +32,5 @@ namespace Snebur
         }
     }
 
-  
+
 }

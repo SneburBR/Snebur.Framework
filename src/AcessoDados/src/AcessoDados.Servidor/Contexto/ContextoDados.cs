@@ -24,7 +24,7 @@ namespace Snebur.AcessoDados
 {
     public abstract partial class BaseContextoDados : __BaseContextoDados, IServicoDados, IContextoDadosSemNotificar, IDisposable
     {
-        public bool IsBancoDadosNaoGerencivel { get; }
+        public SqlSuporte SqlSuporte { get; }
 
         #region Propriedades
 
@@ -83,13 +83,12 @@ namespace Snebur.AcessoDados
         #region Construtor
 
         private BaseContextoDados(string configuracaoAcessoDados,
-                               string identificadorProprietario,
-                               bool isBancoDadosNaoGerencivel)
+                                  string identificadorProprietario,
+                                  EnumFlagBancoNaoSuporte flagsNaoSuporta)
         {
             ErroUtil.ValidarReferenciaNula(configuracaoAcessoDados, nameof(configuracaoAcessoDados));
 
-            this.IsBancoDadosNaoGerencivel = isBancoDadosNaoGerencivel;
-
+            this.SqlSuporte = new SqlSuporte(flagsNaoSuporta);
             this.ConectionString = AplicacaoSnebur.Atual.ConnectionStrings[configuracaoAcessoDados] ?? throw new ErroNaoDefinido($"Não foi encontrada o String de conexao '{configuracaoAcessoDados}' no arquivo de configuração da aplicação ConnectionStrings App.Config ou Web.Config ");
 
             if (String.IsNullOrWhiteSpace(identificadorProprietario))
@@ -102,9 +101,9 @@ namespace Snebur.AcessoDados
             this.IsFiltrarIdentificadorProprietario = !this.IsIdentificadorProprietarioGlobal;
 
             this.Conexao = AjudanteConexaoDB.RetornarConexao(this, this.ConectionString);
-            this.EstruturaBancoDados = EstruturaBancoDados.RetornarEstruturaBancoDados(this.GetType(), isBancoDadosNaoGerencivel);
+            this.EstruturaBancoDados = EstruturaBancoDados.RetornarEstruturaBancoDados(this.GetType(), this.SqlSuporte);
 
-            if (!isBancoDadosNaoGerencivel)
+            if (this.SqlSuporte.IsMigracao)
             {
                 GerenciadorMigracao.Inicializar(this);
 
@@ -125,34 +124,21 @@ namespace Snebur.AcessoDados
 
         }
 
-
-        //public ContextoDados(string configuracaoAcessoDados,
-        //                     EnumTipoBancoDados tipoBancoDados,
-        //                     Guid IdentificadorSessaoUsuario) : this(configuracaoAcessoDados, tipoBancoDados)
-        //{
-        //    this.SessaoUsuarioLogada = this.AjudanteSessaoUsuario.RetornarSessaoUsuario(IdentificadorSessaoUsuario);
-        //    this.UsuarioLogado = this.SessaoUsuarioLogada.Usuario;
-        //    this.SalvarInternoSemNotificacao((Entidade)this.SessaoUsuarioLogada, true);
-        //    this.ValidarUsuarioSessaoUsuario = true;
-        //}
-
-        //internal bool IsSalvarScopo { get; } = true;
-
-        private BaseContextoDados(string configuracaoAcessoDados,
+        protected BaseContextoDados(string configuracaoAcessoDados,
                              CredencialUsuario credencial,
                              Guid identificadorSessaoUsario,
                              InformacaoSessaoUsuario informacaoSessaoUsuario,
                              string identificadorProprietario,
-                             bool isSalvarScopo) : this(configuracaoAcessoDados,
-                                                        identificadorProprietario,
-                                                        false)
+                             EnumFlagBancoNaoSuporte sqlNaoSuporta) : this(configuracaoAcessoDados,
+                                                                    identificadorProprietario,
+                                                                    sqlNaoSuporta)
         {
             ErroUtil.ValidarReferenciaNula(credencial, nameof(credencial));
 
             //this.IsSalvarScopo = isSalvarScopo;
-
             //ContextoDados.InicializarScopo(this);
             //this.CredencialUsuario = credencial;
+
             this.IsFiltrarIdentificadorProprietario = identificadorProprietario != null;
             this.CacheSessaoUsuario = CacheSessaoUsuario.RetornarCacheSessaoUsuario(this, credencial, identificadorSessaoUsario, informacaoSessaoUsuario);
 
@@ -180,6 +166,8 @@ namespace Snebur.AcessoDados
             this.IsValidarUsuarioSessaoUsuario = true;
             this.IsAnonimo = CredencialUtil.ValidarCredencial(this.UsuarioLogado, CredencialAnonimo.Anonimo);
 
+            this.VerificarAutorizacaoUsuarioIdentificadorGlobal();
+            this.InicializandoContexto = false;
         }
 
         protected BaseContextoDados(string configuracaoAcessoDados,
@@ -191,21 +179,25 @@ namespace Snebur.AcessoDados
                                   credencial,
                                   identificadorSessaoUsuario,
                                   informacaoSessaoUsuario,
-                                  identificadorProprietario, true)
+                                  identificadorProprietario,
+                                  EnumFlagBancoNaoSuporte.Nada)
         {
-            this.VerificarAutorizacaoUsuarioIdentificadorGlobsal();
-            this.InicializandoContexto = false;
+
         }
 
         protected BaseContextoDados(string configuracaoAcessoDados,
-                         CredencialUsuario credencialUsuario,
-                         CredencialUsuario credencialAvalista,
-                         Guid identificadorSessaoUsuario,
-                         InformacaoSessaoUsuario informacaoSessaoUsuario,
-                         string identificadorProprietario,
-                         bool isSalvarScopo) :
-                         this(configuracaoAcessoDados,
-                              credencialUsuario, identificadorSessaoUsuario, informacaoSessaoUsuario, identificadorProprietario, isSalvarScopo)
+                                    CredencialUsuario credencialUsuario,
+                                    CredencialUsuario credencialAvalista,
+                                    Guid identificadorSessaoUsuario,
+                                    InformacaoSessaoUsuario informacaoSessaoUsuario,
+                                    string identificadorProprietario,
+                                    EnumFlagBancoNaoSuporte sqlNaoSuporta = EnumFlagBancoNaoSuporte.Nada) :
+                                    this(configuracaoAcessoDados,
+                                         credencialUsuario,
+                                         identificadorSessaoUsuario,
+                                         informacaoSessaoUsuario,
+                                         identificadorProprietario,
+                                         sqlNaoSuporta)
         {
 
             if (credencialAvalista != null)
@@ -214,7 +206,7 @@ namespace Snebur.AcessoDados
                 this.UsuarioAvalista = this.CacheSessaoUsuario.RetornarUsuarioAvalista(credencialAvalista);
             }
 
-            this.VerificarAutorizacaoUsuarioIdentificadorGlobsal();
+            this.VerificarAutorizacaoUsuarioIdentificadorGlobal();
             this.InicializandoContexto = false;
             this.IsValidarUsuarioSessaoUsuario = true;
         }
@@ -359,7 +351,7 @@ namespace Snebur.AcessoDados
         {
             this.ValidarSessaoUsuario();
 
-            if (System.Diagnostics.Debugger.IsAttached)
+            if (DebugUtil.IsAttached)
             {
                 ignorarErro = false;
             }
@@ -568,7 +560,7 @@ namespace Snebur.AcessoDados
 
                 if (this.CacheSessaoUsuario.EstadoSessaoUsuario != EnumEstadoSessaoUsuario.Ativo)
                 {
-                    if (System.Diagnostics.Debugger.IsAttached)
+                    if (DebugUtil.IsAttached)
                     {
                         throw new Erro($"Usuário diferente da são ser foi um usuário global retomar no contexto, RetornarCredenciaisGlobais '{this.CacheSessaoUsuario.Usuario.Nome}'");
                     }
@@ -600,7 +592,7 @@ namespace Snebur.AcessoDados
             //}
         }
 
-        private void VerificarAutorizacaoUsuarioIdentificadorGlobsal()
+        private void VerificarAutorizacaoUsuarioIdentificadorGlobal()
         {
             if (this.IsIdentificadorProprietarioGlobal)
             {
@@ -771,5 +763,15 @@ namespace Snebur.AcessoDados
             base.DisposeInterno();
         }
         #endregion
+    }
+
+    public enum EnumFlagBancoNaoSuporte
+    {
+        Nada = 0,
+        OffsetFetch = 1,
+        ColunaNomeTipoEntidade = 2,
+        Usuario = 4,
+        Migracao = 8,
+
     }
 }

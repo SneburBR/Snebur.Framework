@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
-using Snebur.Dominio;
+﻿using Snebur.Dominio;
 using Snebur.Dominio.Atributos;
 using Snebur.Seguranca;
 using Snebur.Servicos;
 using Snebur.Utilidade;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Threading;
 
 namespace Snebur.AcessoDados
 {
@@ -267,7 +267,7 @@ namespace Snebur.AcessoDados
                     this.Contexto.Salvar(novoIpInformacao as Entidade);
                     return novoIpInformacao;
                 }
-                catch (Exception )
+                catch (Exception)
                 {
                     if (tentativa > 2)
                     {
@@ -322,7 +322,7 @@ namespace Snebur.AcessoDados
                 }
             }
 
-            private ISessaoUsuario RetornarNovaSessaoUsuario(IUsuario usuario, 
+            private ISessaoUsuario RetornarNovaSessaoUsuario(IUsuario usuario,
                                                              InformacaoSessaoUsuario informacaoSessaoUsuario)
             {
                 var sessaoUsuario = (ISessaoUsuario)Activator.CreateInstance(this.TipoSessaoUsuario);

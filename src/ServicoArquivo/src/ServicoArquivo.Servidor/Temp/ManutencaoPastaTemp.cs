@@ -1,9 +1,5 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
-using Snebur.Utilidade;
-using Snebur.Dominio;
+﻿using Snebur.Utilidade;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 

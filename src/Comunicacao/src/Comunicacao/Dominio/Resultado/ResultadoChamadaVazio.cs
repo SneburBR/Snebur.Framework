@@ -1,9 +1,9 @@
 ﻿namespace Snebur.Comunicacao
 {
-    public class ResultadoChamadaVazio :ResultadoChamada
+    public class ResultadoChamadaVazio : ResultadoChamada
     {
-		#region Campos Privados
+        #region Campos Privados
 
-		#endregion
+        #endregion
     }
 }

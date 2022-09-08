@@ -83,6 +83,15 @@ namespace System
             return CultureInfo.InvariantCulture.CompareInfo.IndexOf(source, value, options) >= 0;
         }
 
+        public static string NullIfEmpty(this string s)
+        {
+            return string.IsNullOrEmpty(s) ? null : s;
+        }
+        public static string NullIfWhiteSpace(this string s)
+        {
+            return string.IsNullOrWhiteSpace(s) ? null : s;
+        }
+
     }
 
     public static class EncodingUtil

@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur;
-using Snebur.Utilidade;
-using Snebur.Dominio;
 
 namespace Snebur.AcessoDados.Mapeamento
 {
@@ -14,7 +7,7 @@ namespace Snebur.AcessoDados.Mapeamento
         internal string ApelidoOriginal { get; set; }
 
         internal string Apelido { get; set; }
-        
+
         internal string CaminhoBanco { get; set; }
 
         private int ContadorApelido { get; set; }
@@ -23,7 +16,7 @@ namespace Snebur.AcessoDados.Mapeamento
 
         public BaseEstruturaApelido(BaseMapeamentoConsulta mapeamentoConsulta,
                                     string apelido,
-                                    string caminhoBanco )
+                                    string caminhoBanco)
         {
             this.MapeamentoConsulta = mapeamentoConsulta;
             this.ContadorApelido = this.MapeamentoConsulta.RetornarContadorApelido();
@@ -51,7 +44,7 @@ namespace Snebur.AcessoDados.Mapeamento
                 }
                 if (apelido.EndsWith("]"))
                 {
-                    apelido = apelido.Substring(0, apelido.Length -1);
+                    apelido = apelido.Substring(0, apelido.Length - 1);
                 }
                 if (apelido.Length > 60 || unico)
                 {
@@ -60,7 +53,8 @@ namespace Snebur.AcessoDados.Mapeamento
                     apelido = String.Format("[{0}]", apelido);
                     return apelido;
 
-                } else
+                }
+                else
                 {
                     apelido = String.Format("[{0}]", apelido);
                     if (this.MapeamentoConsulta.EstruturasApelido.ContainsKey(apelido))

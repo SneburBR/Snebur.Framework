@@ -1,5 +1,10 @@
 ﻿using Snebur.Utilidade;
+using System.Net.Security;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 using System.Web;
+using Ionic.BZip2;
 
 namespace System
 {
@@ -90,5 +95,103 @@ namespace System
             };
             return uriBuilder.Uri;
         }
+
+        public static Uri UriSchemeHttps(this Uri uri)
+        {
+            if (uri.Scheme == Uri.UriSchemeHttps)
+            {
+                return uri;
+            }
+
+            return (new UriBuilder(uri)
+            {
+                Scheme = Uri.UriSchemeHttps,
+                Port = -1 // default port for scheme
+            }).Uri;
+        }
+        public static Uri UriSchemeHttp(this Uri uri)
+        {
+            if (uri.Scheme == Uri.UriSchemeHttp)
+            {
+                return uri;
+            }
+            return (new UriBuilder(uri)
+            {
+                Scheme = Uri.UriSchemeHttp,
+                Port = -1 // default port for scheme
+            }).Uri;
+        }
+
+        public static Uri NormalizarWWW(this Uri uri)
+        {
+            var host = uri.Host.ToLower();
+            if (!host.StartsWith("www."))
+            {
+                return (new UriBuilder(uri)
+                {
+                    Host = "www." + uri.Host,
+                }).Uri;
+            }
+            return uri;
+        }
+        public static Uri RemoverWWW(this Uri uri)
+        {
+            var host = uri.Host.ToLower();
+            if (host.StartsWith("www."))
+            {
+                return (new UriBuilder(uri)
+                {
+                    Host = uri.Host.Substring(4),
+                }).Uri;
+            }
+            return uri;
+        }
+
+        public static Task<bool> IsSslValidoAsync(this Uri uri)
+        {
+            var uriHttps = uri.UriSchemeHttp();
+            var promise = new TaskCompletionSource<bool>();
+
+            Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    var request = WebRequest.CreateHttp(uriHttps);
+                    request.ServerCertificateValidationCallback += (object sender,
+                                                                    X509Certificate certificate,
+                                                                    X509Chain chain,
+                                                                    SslPolicyErrors sslPolicyErrors) =>
+                    {
+                        if (sslPolicyErrors == SslPolicyErrors.None)
+                        {
+                            promise.SetResult(true);
+                            return true;
+                        }
+                        else
+                        {
+                            promise.SetResult(false);
+                            return false;
+                        }
+                    };
+                    request.GetResponse();
+                }
+                catch
+                {
+                    promise.SetResult(false);
+                }
+
+            });
+            return promise.Task;
+        }
+
+
+        public static bool IsWWW(this Uri uri)
+        {
+            return uri.Host.ToLower().StartsWith("www");
+        }
+
+
     }
+
+
 }

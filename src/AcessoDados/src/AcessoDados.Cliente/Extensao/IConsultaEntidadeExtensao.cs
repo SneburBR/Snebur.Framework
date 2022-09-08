@@ -1,95 +1,65 @@
-﻿using System;
+﻿using Snebur.Dominio;
+using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Snebur.Dominio;
 
 namespace Snebur.AcessoDados
 {
     public static class IConsultaEntidadeExtensao
     {
-        public static Task<ListaEntidades<TEntidade>> ToListAwait<TEntidade>(this IConsultaEntidade<TEntidade> consulta) where TEntidade : IEntidade
+        public static Task<ListaEntidades<TEntidade>> ToListAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta) where TEntidade : IEntidade
         {
-            return Task.Factory.StartNew<ListaEntidades<TEntidade>>(() =>
-            {
-                return consulta.ToList();
-            });
+            return Task.Factory.StartNew(() => consulta.ToList());
         }
 
-        public static Task<TEntidade> SingleAwait<TEntidade>(this IConsultaEntidade<TEntidade> consulta) where TEntidade : IEntidade
+        public static Task<TEntidade> SingleAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta) where TEntidade : IEntidade
         {
-            return Task.Factory.StartNew<TEntidade>(() =>
-            {
-                return consulta.Single();
-            });
+            return Task.Factory.StartNew(() => consulta.Single());
         }
 
-        public static Task<TEntidade> SingleOrDefaultAwait<TEntidade>(this IConsultaEntidade<TEntidade> consulta) where TEntidade : IEntidade
+        public static Task<TEntidade> SingleOrDefaultAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta) where TEntidade : IEntidade
         {
-            return Task.Factory.StartNew<TEntidade>(() =>
-            {
-                return consulta.SingleOrDefault();
-            });
+            return Task.Factory.StartNew(() => consulta.SingleOrDefault());
         }
 
-        public static Task<TEntidade> FirstAwait<TEntidade>(this IConsultaEntidade<TEntidade> consulta) where TEntidade : IEntidade
+        public static Task<TEntidade> FirstAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta) where TEntidade : IEntidade
         {
-            return Task.Factory.StartNew<TEntidade>(() =>
-            {
-                return consulta.First();
-            });
+            return Task.Factory.StartNew(() => consulta.First());
         }
 
         public static Task<TEntidade> FirstOrDefault<TEntidade>(this IConsultaEntidade<TEntidade> consulta) where TEntidade : IEntidade
         {
-            return Task.Factory.StartNew<TEntidade>(() =>
-            {
-                return consulta.FirstOrDefault();
-            });
+            return Task.Factory.StartNew(() => consulta.FirstOrDefault());
         }
 
         #region Sum 
 
         public static Task<int> Sum<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, int>> propriedade) where TEntidade : IEntidade
         {
-            return Task.Factory.StartNew<int>(() =>
-            {
-                return consulta.Sum(propriedade);
-            });
+            return Task.Factory.StartNew(() => consulta.Sum(propriedade));
         }
 
         public static Task<int?> Sum<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, int?>> propriedade) where TEntidade : IEntidade
         {
-            return Task.Factory.StartNew<int?>(() =>
-            {
-                return consulta.Sum(propriedade);
-            });
+            return Task.Factory.StartNew(() => consulta.Sum(propriedade));
         }
 
-        public static Task<long> Sum<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, long>> propriedade) where TEntidade : IEntidade
+        public static Task<long> SumAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, long>> propriedade) where TEntidade : IEntidade
         {
-            return Task.Factory.StartNew<long>(() =>
-            {
-                return consulta.Sum(propriedade);
-            });
+            return Task.Factory.StartNew(() => consulta.Sum(propriedade));
         }
 
-        public static Task<decimal> Sum<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, decimal>> propriedade) where TEntidade : IEntidade
+        public static Task<decimal> SumAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, decimal>> propriedade) where TEntidade : IEntidade
         {
-            return Task.Factory.StartNew<decimal>(() =>
-            {
-                return consulta.Sum(propriedade);
-            });
+            return Task.Factory.StartNew(() => consulta.Sum(propriedade));
         }
 
-        public static Task<decimal?> Sum<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, decimal?>> propriedade) where TEntidade : IEntidade
+        public static Task<decimal?> SumAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, decimal?>> propriedade) where TEntidade : IEntidade
         {
-            return Task.Factory.StartNew<decimal?>(() =>
-            {
-                return consulta.Sum(propriedade);
-            });
+            return Task.Factory.StartNew(() => consulta.Sum(propriedade));
         }
 
-        public static Task<double> Sum<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, double>> propriedade) where TEntidade : IEntidade
+        public static Task<double> SumAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, double>> propriedade) where TEntidade : IEntidade
         {
             return Task.Factory.StartNew<double>(() =>
             {
@@ -97,19 +67,16 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task<double?> Sum<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, double?>> propriedade) where TEntidade : IEntidade
+        public static Task<double?> SumAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, double?>> propriedade) where TEntidade : IEntidade
         {
-            return Task.Factory.StartNew<double?>(() =>
-            {
-                return consulta.Sum(propriedade);
-            });
+            return Task.Factory.StartNew(() => consulta.Sum(propriedade));
         }
 
         #endregion
 
         #region Max
 
-        public static Task<int> Max<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, int>> propriedade) where TEntidade : IEntidade
+        public static Task<int> MaxAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, int>> propriedade) where TEntidade : IEntidade
         {
             return Task.Factory.StartNew<int>(() =>
             {
@@ -117,7 +84,7 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task<int?> Max<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, int?>> propriedade) where TEntidade : IEntidade
+        public static Task<int?> MaxAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, int?>> propriedade) where TEntidade : IEntidade
         {
             return Task.Factory.StartNew<int?>(() =>
             {
@@ -125,7 +92,7 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task<long> Max<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, long>> propriedade) where TEntidade : IEntidade
+        public static Task<long> MaxAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, long>> propriedade) where TEntidade : IEntidade
         {
             return Task.Factory.StartNew<long>(() =>
             {
@@ -133,7 +100,7 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task<decimal> Max<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, decimal>> propriedade) where TEntidade : IEntidade
+        public static Task<decimal> MaxAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, decimal>> propriedade) where TEntidade : IEntidade
         {
             return Task.Factory.StartNew<decimal>(() =>
             {
@@ -141,7 +108,7 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task<decimal?> Max<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, decimal?>> propriedade) where TEntidade : IEntidade
+        public static Task<decimal?> MaxAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, decimal?>> propriedade) where TEntidade : IEntidade
         {
             return Task.Factory.StartNew<decimal?>(() =>
             {
@@ -149,7 +116,7 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task<double> Max<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, double>> propriedade) where TEntidade : IEntidade
+        public static Task<double> MaxAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, double>> propriedade) where TEntidade : IEntidade
         {
             return Task.Factory.StartNew<double>(() =>
             {
@@ -157,7 +124,7 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task<double?> Max<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, double?>> propriedade) where TEntidade : IEntidade
+        public static Task<double?> MaxAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, double?>> propriedade) where TEntidade : IEntidade
         {
             return Task.Factory.StartNew<double?>(() =>
             {
@@ -178,7 +145,7 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task<int?> Min<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, int?>> propriedade) where TEntidade : IEntidade
+        public static Task<int?> MinAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, int?>> propriedade) where TEntidade : IEntidade
         {
             return Task.Factory.StartNew<int?>(() =>
             {
@@ -186,7 +153,7 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task<long> Min<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, long>> propriedade) where TEntidade : IEntidade
+        public static Task<long> MinAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, long>> propriedade) where TEntidade : IEntidade
         {
             return Task.Factory.StartNew<long>(() =>
             {
@@ -194,15 +161,15 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task<decimal> Min<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, decimal>> propriedade) where TEntidade : IEntidade
+        public static Task<decimal> MinAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, decimal>> propriedade) where TEntidade : IEntidade
         {
-            return Task.Factory.StartNew<decimal>(() =>
+            return Task.Factory.StartNew(() =>
             {
                 return consulta.Min(propriedade);
             });
         }
 
-        public static Task<decimal?> Min<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, decimal?>> propriedade) where TEntidade : IEntidade
+        public static Task<decimal?> MinAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, decimal?>> propriedade) where TEntidade : IEntidade
         {
             return Task.Factory.StartNew<decimal?>(() =>
             {
@@ -210,7 +177,7 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task<double> Min<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, double>> propriedade) where TEntidade : IEntidade
+        public static Task<double> MinAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, double>> propriedade) where TEntidade : IEntidade
         {
             return Task.Factory.StartNew<double>(() =>
             {
@@ -218,7 +185,7 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task<double?> Min<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, double?>> propriedade) where TEntidade : IEntidade
+        public static Task<double?> MinAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, double?>> propriedade) where TEntidade : IEntidade
         {
             return Task.Factory.StartNew<double?>(() =>
             {
@@ -230,7 +197,7 @@ namespace Snebur.AcessoDados
 
         #region Average
 
-        public static Task<int> Average<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, int>> propriedade) where TEntidade : IEntidade
+        public static Task<int> AverageAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, int>> propriedade) where TEntidade : IEntidade
         {
             return Task.Factory.StartNew<int>(() =>
             {
@@ -238,7 +205,7 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task<int?> Average<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, int?>> propriedade) where TEntidade : IEntidade
+        public static Task<int?> AverageAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, int?>> propriedade) where TEntidade : IEntidade
         {
             return Task.Factory.StartNew<int?>(() =>
             {
@@ -246,7 +213,7 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task<long> Average<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, long>> propriedade) where TEntidade : IEntidade
+        public static Task<long> AverageAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, long>> propriedade) where TEntidade : IEntidade
         {
             return Task.Factory.StartNew<long>(() =>
             {
@@ -254,7 +221,7 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task<decimal> Average<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, decimal>> propriedade) where TEntidade : IEntidade
+        public static Task<decimal> AverageAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, decimal>> propriedade) where TEntidade : IEntidade
         {
             return Task.Factory.StartNew<decimal>(() =>
             {
@@ -262,7 +229,7 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task<decimal?> Average<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, decimal?>> propriedade) where TEntidade : IEntidade
+        public static Task<decimal?> AverageAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, decimal?>> propriedade) where TEntidade : IEntidade
         {
             return Task.Factory.StartNew<decimal?>(() =>
             {
@@ -270,7 +237,7 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task<double> Average<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, double>> propriedade) where TEntidade : IEntidade
+        public static Task<double> AverageAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, double>> propriedade) where TEntidade : IEntidade
         {
             return Task.Factory.StartNew<double>(() =>
             {
@@ -278,7 +245,7 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task<double?> Average<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, double?>> propriedade) where TEntidade : IEntidade
+        public static Task<double?> AverageAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, double?>> propriedade) where TEntidade : IEntidade
         {
             return Task.Factory.StartNew<double?>(() =>
             {

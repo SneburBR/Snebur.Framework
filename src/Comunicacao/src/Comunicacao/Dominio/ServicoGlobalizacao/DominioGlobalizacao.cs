@@ -5,12 +5,12 @@ namespace Snebur.Comunicacao
     public class DominioGlobalizacao : BaseViewModel
     {
 
-		#region Campos Privados
+        #region Campos Privados
 
         private string _namespaceGlobalizacao;
         private string _jsonBase54;
 
-		#endregion
+        #endregion
 
         public DominioGlobalizacao()
         {

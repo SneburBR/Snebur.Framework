@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Snebur.AcessoDados.Estrutura;
+using System;
 using System.Linq;
-using Snebur.AcessoDados.Estrutura;
 
 namespace Snebur.AcessoDados.Servidor.Salvar
 {
@@ -13,7 +13,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             this.IsRecuperarUltimoId = isRecuperarUltimoId;
             this.SqlCommando = this.RetornarSqlCommando();
         }
-         
+
         private string RetornarSqlCommando()
         {
             if (this.EstruturaEntidade.IsChavePrimariaAutoIncrimento)
@@ -37,7 +37,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             sb.Append($"( {String.Join(",", campos)} ) ");
             sb.Append(" VALUES ");
             sb.AppendLine($"( {String.Join(",", camposParametros)} ); ");
-            
+
 
             if (this.IsRecuperarUltimoId)
             {
@@ -47,4 +47,4 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             return sb.ToString();
         }
     }
-}   
+}

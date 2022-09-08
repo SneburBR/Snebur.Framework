@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Snebur.AcessoDados.Ajudantes;
+using Snebur.Dominio;
+using Snebur.Utilidade;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Snebur.AcessoDados.Ajudantes;
-using Snebur.Dominio;
-using Snebur.Utilidade;
 
 namespace Snebur.AcessoDados
 {
@@ -44,7 +44,7 @@ namespace Snebur.AcessoDados
 
         public ConsultaEntidade<TEntidade> WhereIn(Expression<Func<TEntidade, long>> expressaoPropriedade, IEnumerable<long> lista)
         {
-            return this.WhereInInterno(expressaoPropriedade, lista.Select(x=> x.ToString()).ToList());
+            return this.WhereInInterno(expressaoPropriedade, lista.Select(x => x.ToString()).ToList());
         }
 
         public ConsultaEntidade<TEntidade> WhereIn(Expression<Func<TEntidade, Enum>> expressaoPropriedade, IEnumerable<int> lista)

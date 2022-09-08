@@ -4,14 +4,14 @@ namespace Snebur.Comunicacao
 {
     public abstract class ResultadoChamada : BaseComunicao
     {
-		#region Campos Privados
+        #region Campos Privados
 
         private string _nomeServico;
         private DateTime _dataHora;
         private string _operacao;
         private int _tempoOperacao;
 
-		#endregion
+        #endregion
 
         public string NomeServico { get => this.RetornarValorPropriedade(this._nomeServico); set => this.NotificarValorPropriedadeAlterada(this._nomeServico, this._nomeServico = value); }
 

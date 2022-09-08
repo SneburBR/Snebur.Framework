@@ -1,7 +1,7 @@
-﻿using System;
-using System.IO;
-using Snebur.Dominio;
+﻿using Snebur.Dominio;
 using Snebur.Net;
+using System;
+using System.IO;
 
 namespace Snebur.ServicoArquivo
 {

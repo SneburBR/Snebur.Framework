@@ -1,9 +1,5 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
+﻿using Snebur.Dominio;
 using Snebur.Dominio.Atributos;
-using Snebur.Dominio;
 
 namespace Snebur.Comunicacao
 {
@@ -11,8 +7,8 @@ namespace Snebur.Comunicacao
     [IgnorarGlobalizacao]
     public class BaseComunicao : BaseDominio
     {
-		#region Campos Privados
+        #region Campos Privados
 
-		#endregion
+        #endregion
     }
 }

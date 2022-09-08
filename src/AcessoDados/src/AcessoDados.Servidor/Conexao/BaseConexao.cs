@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Snebur.AcessoDados.Estrutura;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using Snebur.AcessoDados.Estrutura;
 
 namespace Snebur.AcessoDados
 {
@@ -12,7 +12,7 @@ namespace Snebur.AcessoDados
         internal protected string ConnectionString { get; set; }
         private static bool IsTesteConexaoPendente = true;
 
-        public BaseConexao(BaseContextoDados contexto, 
+        public BaseConexao(BaseContextoDados contexto,
                            string connectionString)
         {
             this.ConnectionString = connectionString;
@@ -137,7 +137,7 @@ namespace Snebur.AcessoDados
             }
             return valorEscalor;
         }
-         
+
         internal int ExecutarComando(string sql, List<DbParameter> parametros)
         {
             if (this.ContextoDados.IsExisteTransacao)
@@ -164,7 +164,7 @@ namespace Snebur.AcessoDados
                         return cmd.ExecuteNonQuery();
                     }
                 }
-                catch (Exception )
+                catch (Exception)
                 {
                     throw;
                 }

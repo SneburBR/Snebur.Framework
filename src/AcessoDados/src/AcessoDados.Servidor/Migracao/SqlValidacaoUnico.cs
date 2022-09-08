@@ -1,22 +1,22 @@
-﻿using System.Collections.Generic;
-using Snebur.AcessoDados.Estrutura;
+﻿using Snebur.AcessoDados.Estrutura;
 using Snebur.Dominio.Atributos;
+using System.Collections.Generic;
 
 namespace Snebur.AcessoDados
 {
     internal class SqlValidacaoUnico : BaseSqlIndice
     {
-        internal SqlValidacaoUnico(EstruturaEntidade estruturaEntidade, PropriedadeIndexar propriedade) : 
+        internal SqlValidacaoUnico(EstruturaEntidade estruturaEntidade, PropriedadeIndexar propriedade) :
             this(estruturaEntidade,
                 new List<PropriedadeIndexar>() { propriedade },
                 new List<FiltroPropriedadeIndexar>())
         {
         }
 
-        internal SqlValidacaoUnico(EstruturaEntidade estruturaEntidade, 
+        internal SqlValidacaoUnico(EstruturaEntidade estruturaEntidade,
                                    List<PropriedadeIndexar> propriedades,
                                    List<FiltroPropriedadeIndexar> filtros) :
-            base(estruturaEntidade, propriedades, filtros,true)
+            base(estruturaEntidade, propriedades, filtros, true)
         {
         }
     }

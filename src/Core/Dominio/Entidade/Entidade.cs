@@ -95,7 +95,7 @@ namespace Snebur.Dominio
                     if (isValidarTipoComplexo)
                     {
                         throw new Exception($"  A propriedade {propriedadeTipoComplexo.Name} do tipo complexo {propriedadeTipoComplexo.PropertyType.Name} " +
-                                            $"   não foi definina no campo privado na entidade '{propriedadeTipoComplexo.DeclaringType.Name}'. Atualize os projetos na  extensão Snebur");
+                                            $"   não foi definida no campo privado na entidade '{propriedadeTipoComplexo.DeclaringType.Name}'. Atualize os projetos na  extensão Snebur");
                     }
                 }
             }
@@ -110,7 +110,7 @@ namespace Snebur.Dominio
             catch (Exception ex)
             {
                 throw new Exception($"A propriedade {propriedadeTipoComplexo.Name} do tipo complexo {propriedadeTipoComplexo.PropertyType.Name} " +
-                                    $" não foi possivel retornar o valor, na entidade '{propriedadeTipoComplexo.DeclaringType.Name}'. " +
+                                    $" não foi possível retornar o valor, na entidade '{propriedadeTipoComplexo.DeclaringType.Name}'. " +
                                     $"Analise e mensagem de erro interna", ex);
             }
         }
@@ -454,13 +454,13 @@ namespace Snebur.Dominio
         }
         #endregion
 
-        #region  Validacao - IDataErrorInfo
+        #region  Validação - IDataErrorInfo
 
         public bool IsExistePedencia
         {
             get
             {
-                return this.RetornarValidacoes().Count == 0;
+                return this.RetornarValidacoes().Count > 0;
             }
         }
         string IDataErrorInfo.this[string columnName]

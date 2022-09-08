@@ -21,11 +21,11 @@ namespace Snebur.Aplicacao.Configuracao
         {
             get
             {
-                if (_caminhoArquivoConfiguracao == null)
+                if (this._caminhoArquivoConfiguracao == null)
                 {
-                    _caminhoArquivoConfiguracao = ConfiguracaoUtil.RetornarCaminhoArquivoApplicationSettingsPadrao();
+                    this._caminhoArquivoConfiguracao = ConfiguracaoUtil.RetornarCaminhoArquivoApplicationSettingsPadrao();
                 }
-                return _caminhoArquivoConfiguracao;
+                return this._caminhoArquivoConfiguracao;
             }
         }
 

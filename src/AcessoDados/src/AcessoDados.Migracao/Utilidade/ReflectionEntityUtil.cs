@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using System.Reflection;
-using Snebur.Dominio;
+﻿using Snebur.Dominio;
 using Snebur.Utilidade;
+using System.Linq;
+using System.Reflection;
 
 namespace Snebur.AcessoDados.Migracao
 {

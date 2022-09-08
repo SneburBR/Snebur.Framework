@@ -1,19 +1,18 @@
-﻿using System.Collections.Generic;
-using Snebur.Dominio;
+﻿using Snebur.Dominio;
+using System.Collections.Generic;
 
 namespace Snebur.AcessoDados.Comunicacao
 {
-    public abstract class BaseServicoContextoDados<TContextoDados> : BaseServicoComunicacaoDados<TContextoDados>, IServicoDados
-                    where TContextoDados : BaseContextoDados
+    public abstract class BaseServicoContextoDados<TContextoDados> : BaseServicoComunicacaoDados<TContextoDados>, IServicoDados where TContextoDados : BaseContextoDados
     {
 
         public BaseServicoContextoDados()
         {
-            
+
         }
 
         #region IServicoDados
-         
+
         public ResultadoConsulta RetornarResultadoConsulta(EstruturaConsulta estruturaConsulta)
         {
             return this.ContextoDados.RetornarResultadoConsulta(estruturaConsulta);

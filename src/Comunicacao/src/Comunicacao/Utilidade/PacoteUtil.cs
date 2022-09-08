@@ -1,8 +1,8 @@
-﻿using System.IO;
+﻿using Snebur.Utilidade;
+using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
-using Snebur.Utilidade;
 
 #if NET40
 using Ionic.Zip;

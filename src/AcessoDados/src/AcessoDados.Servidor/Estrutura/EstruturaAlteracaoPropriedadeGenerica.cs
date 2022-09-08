@@ -1,5 +1,5 @@
-﻿using System.Reflection;
-using Snebur.Dominio.Atributos;
+﻿using Snebur.Dominio.Atributos;
+using System.Reflection;
 
 namespace Snebur.AcessoDados.Estrutura
 {

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
-using Snebur.Utilidade;
-using Snebur.Dominio;
-using System.IO;
-using System.Web;
+﻿using Snebur.Dominio;
 using Snebur.Net;
+using Snebur.Utilidade;
+using System;
+using System.IO;
 
 namespace Snebur.ServicoArquivo
 {

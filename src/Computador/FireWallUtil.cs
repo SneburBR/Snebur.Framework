@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NetFwTypeLib;
-using System.Reflection;
-using Snebur;
+﻿using NetFwTypeLib;
+using System;
 
 namespace Snebur.Computador
 {

@@ -3,10 +3,10 @@
     public class ResultadoChamadaErroInternoServidor : ResultadoChamadaErro
     {
 
-		#region Campos Privados
+        #region Campos Privados
 
 
-		#endregion
+        #endregion
 
 
     }

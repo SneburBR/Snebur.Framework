@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Snebur.AcessoDados.Estrutura;
+using Snebur.Dominio.Atributos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Snebur.AcessoDados.Estrutura;
-using Snebur.Dominio.Atributos;
 
 namespace Snebur.AcessoDados
 {
@@ -141,7 +141,7 @@ namespace Snebur.AcessoDados
             return $" {estruturaCampo.NomeCampo} {operador} {propriedadeFiltro.Valor} ";
         }
 
-        class CampoFiltro
+        private class CampoFiltro
         {
             public string Campo { get; set; }
             public string Expressao { get; set; }

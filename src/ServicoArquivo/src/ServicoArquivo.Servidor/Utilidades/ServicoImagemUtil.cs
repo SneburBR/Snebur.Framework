@@ -1,7 +1,7 @@
-﻿using System;
-using System.IO;
-using Snebur.Dominio;
+﻿using Snebur.Dominio;
 using Snebur.Utilidade;
+using System;
+using System.IO;
 
 namespace Snebur.ServicoArquivo
 {
@@ -61,7 +61,7 @@ namespace Snebur.ServicoArquivo
         //    }
         //    return tamanhoImagem;
         //}
-        
+
         #endregion
     }
 }

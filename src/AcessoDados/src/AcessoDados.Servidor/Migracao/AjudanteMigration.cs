@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Snebur.Dominio;
+using Snebur.Dominio.Atributos;
+using Snebur.Utilidade;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Reflection;
-using Snebur.Dominio;
-using Snebur.Dominio.Atributos;
-using Snebur.Utilidade;
 
 namespace Snebur.AcessoDados
 {
@@ -18,13 +18,13 @@ namespace Snebur.AcessoDados
         private List<SqlMigracao> SqlsMigration { get; set; }
 
         private const string NOME_CAMPO_MIGRACAO_SNEBUR = "MigracaoSnebur";
-        
+
 
         private const string SQL_CRIAR_CAMPO_MIGRACAO_SNEBUR = "IF NOT EXISTS (select * from sys.columns where object_id = OBJECT_ID(N'[dbo].[__MigrationHistory]')  and [name] ='" + NOME_CAMPO_MIGRACAO_SNEBUR + "') ALTER TABLE [dbo].[__MigrationHistory] ADD [" + NOME_CAMPO_MIGRACAO_SNEBUR + "] [bit] NOT NULL DEFAULT 0 ";
         private const string SQL_EXISTE_MIGRACAO_SNEBUR_PENDENTE = "select top 1 " + NOME_CAMPO_MIGRACAO_SNEBUR + " from [dbo].[__MigrationHistory] order by MigrationId desc";
         private const string SQL_MIGRACAO_SNEBUR_FINALIZADA = " UPDATE [dbo].[__MigrationHistory] SET " + NOME_CAMPO_MIGRACAO_SNEBUR + " = 1 WHERE MigracaoSnebur = 0 ";
 
-       
+
         private GerenciadorMigracao(BaseContextoDados contexto)
         {
             this.Contexto = contexto;
@@ -98,7 +98,7 @@ namespace Snebur.AcessoDados
         }
 
 
-      
+
 
         private bool ExisteMigracao(DbConnection conexao, SqlMigracao sqlMigration)
         {
@@ -128,8 +128,8 @@ namespace Snebur.AcessoDados
                     var atributos = tipoEntidade.GetCustomAttributes<ValidacaoUnicoCompostaAttribute>(false);
                     foreach (var atributo in atributos)
                     {
-                        sqlsMigration.Add(new SqlValidacaoUnico(estruturaEntidade, 
-                                                                atributo.Propriedades, 
+                        sqlsMigration.Add(new SqlValidacaoUnico(estruturaEntidade,
+                                                                atributo.Propriedades,
                                                                 atributo.Filtros));
                     }
                 }

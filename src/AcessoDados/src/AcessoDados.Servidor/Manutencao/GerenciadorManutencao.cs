@@ -86,7 +86,7 @@ namespace Snebur.AcessoDados.Manutencao
                     {
                         this.Contexto.Rollback();
                         this.SalvarHistoricoManutencao(historico, manutencao, ex);
-                        throw ;
+                        throw;
                     }
                 }
                 this.NotificarManutecaoFinalizacao(conexao, historico);

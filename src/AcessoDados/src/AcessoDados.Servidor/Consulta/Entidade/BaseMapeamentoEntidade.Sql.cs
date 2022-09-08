@@ -1,12 +1,8 @@
-﻿using System;
+﻿using Snebur.Dominio;
+using Snebur.Utilidade;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur;
-using Snebur.Utilidade;
-using Snebur.Dominio;
-using Snebur.AcessoDados.Dominio;
 
 namespace Snebur.AcessoDados.Mapeamento
 {
@@ -53,10 +49,10 @@ namespace Snebur.AcessoDados.Mapeamento
                 if (estrutaCampoIdentificadorProprietario != null)
                 {
                     var identificadorProprietario = this.Contexto.IdentificadorProprietario;
-       
+
                     var estruturaApelido = this.TodasEstruturaCampoApelidoMapeado[estrutaCampoIdentificadorProprietario.Propriedade.Name];
                     sb.AppendLine(" WHERE ( ");
-                    sb.AppendLine($"{estruturaApelido.CaminhoBanco} = {identificadorProprietario.ToString() } ");
+                    sb.AppendLine($"{estruturaApelido.CaminhoBanco} = {identificadorProprietario.ToString()} ");
 
                     sb.AppendLine(" ) ");
 
@@ -64,7 +60,7 @@ namespace Snebur.AcessoDados.Mapeamento
                 }
             }
 
-             
+
             if (!(filtroMapeamento is FiltroMapeamentoIds) || isRelacaoFilhos)
             {
                 if (!this.EstruturaConsulta.IsMostrarDeletados && this.EstruturaEntidade.EstruturaCampoDelatado != null)
@@ -108,7 +104,7 @@ namespace Snebur.AcessoDados.Mapeamento
 
                     sb.AppendLine($" {operadorFiltro} ( {sqlFiltros} ) ");
                 }
-             
+
             }
             if (ordenacao)
             {
@@ -118,7 +114,7 @@ namespace Snebur.AcessoDados.Mapeamento
                 }
                 else
                 {
-                    if (!this.EstruturaConsulta.IsDesativarOrdenacao && 
+                    if (!this.EstruturaConsulta.IsDesativarOrdenacao &&
                         this.EstruturaEntidade.EstruturaCampoOrdenacao != null)
                     {
                         //if (!filtroMapeamento.IsIdTipoEntidade)
@@ -232,7 +228,7 @@ namespace Snebur.AcessoDados.Mapeamento
 
         private string RetornarSqlLimite()
         {
-            if (!this.Contexto.IsBancoDadosNaoGerencivel)
+            if (this.Contexto.SqlSuporte.IsOffsetFetch)
             {
                 string sqlLimite = "";
                 sqlLimite += " OFFSET  " + this.RetornarSkip();
@@ -248,7 +244,7 @@ namespace Snebur.AcessoDados.Mapeamento
                 return sqlLimite;
             }
             return String.Empty;
-            
+
         }
 
         private int RetornarSkip()

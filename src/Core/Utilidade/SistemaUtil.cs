@@ -35,7 +35,7 @@ namespace Snebur.Utilidade
         {
             get
             {
-                if (System.Diagnostics.Debugger.IsAttached)
+                if (DebugUtil.IsAttached)
                 {
                     return false;
                 }
@@ -49,6 +49,14 @@ namespace Snebur.Utilidade
         public static Version VersaoAplicacao => ThreadUtil.RetornarValorComBloqueio(ref _versaoAplicacao,
                                                                                  ReflexaoUtil.RetornarVersaoEntrada);
         public static bool IsAplicacao64Bits => System.Environment.Is64BitProcess;
+
+        public static bool IsAdministrator
+        {
+            get
+            {
+                return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+            }
+        }
 
         private static EnumTipoAplicacao RetornarTipoAplicacaoInterno()
         {

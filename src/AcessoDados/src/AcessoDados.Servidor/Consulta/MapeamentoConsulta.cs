@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur;
-using Snebur.Utilidade;
+﻿using Snebur.AcessoDados.Estrutura;
 using Snebur.Dominio;
-using Snebur.AcessoDados.Dominio;
-using Snebur.AcessoDados.Estrutura;
+using Snebur.Utilidade;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Snebur.AcessoDados.Mapeamento
 {
@@ -40,7 +36,7 @@ namespace Snebur.AcessoDados.Mapeamento
         {
             if (this is MapeamentoConsultaRelacaoAbertaNn)
             {
-                if (System.Diagnostics.Debugger.IsAttached)
+                if (DebugUtil.IsAttached)
                 {
                     throw new NotImplementedException("debugar linha por linha");
                 }
@@ -121,7 +117,7 @@ namespace Snebur.AcessoDados.Mapeamento
                         var menorId = grupo.Ids.First();
                         var maiorId = grupo.Ids.Last();
 
-                        if (Debugger.IsAttached)
+                        if (DebugUtil.IsAttached)
                         {
                             if (menorId != grupo.Ids.Min())
                             {

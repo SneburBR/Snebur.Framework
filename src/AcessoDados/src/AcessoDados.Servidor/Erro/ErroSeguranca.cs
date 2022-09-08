@@ -25,7 +25,7 @@
 //                                 caminhoArquivo,
 //                                 linhaDoErro)
 //        {
-//            if (!System.Diagnostics.Debugger.IsAttached)
+//            if (!DebugUtil.IsAttached)
 //            {
 //                LogUtil.SegurancaAsync(mensagem, tipoErroSeguranca);
 //            }

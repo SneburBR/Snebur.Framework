@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Snebur.Dominio;
+using Snebur.Utilidade;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using Snebur.Dominio;
-using Snebur.Utilidade;
 
 namespace Snebur.AcessoDados.Estrutura
 {
@@ -31,7 +31,7 @@ namespace Snebur.AcessoDados.Estrutura
 
         internal Type TipoIpInformacao { get; }
 
-        internal Type TipoHistoricoManutencao { get;  }
+        internal Type TipoHistoricoManutencao { get; }
 
         internal Type TipoEntidadeNotificaoPropriedadeAlteradaGenerica { get; }
 
@@ -43,17 +43,17 @@ namespace Snebur.AcessoDados.Estrutura
 
         #region  Construtor 
 
-        internal EstruturaBancoDados(Type tipoContexto, bool isBancoDadosNaoGerenciavel)
+        internal EstruturaBancoDados(Type tipoContexto, SqlSuporte sqlSuporte)
         {
             this.TipoContexto = tipoContexto;
             this.EstruturasEntidade = new DicionarioEstrutura<EstruturaEntidade>();
             this.TiposEntidade = new DicionarioEstrutura<Type>();
-            this.MontarEstruturaBancoDados(this.TipoContexto, isBancoDadosNaoGerenciavel);
+            this.MontarEstruturaBancoDados(this.TipoContexto, sqlSuporte);
 
             this.TipoEntidadeArquivo = this.RetornarTipoEntidadeArquivo();
             this.TipoEntidadeImagem = this.RetornarTipoEntidadeImagem();
 
-            if (!isBancoDadosNaoGerenciavel)
+            if (sqlSuporte.IsUsuario)
             {
                 this.TipoUsuario = this.RetornarTipoUsuario();
                 this.TipoSessaoUsuario = this.RetornarTipoSessaoUsuario();
@@ -62,7 +62,7 @@ namespace Snebur.AcessoDados.Estrutura
                 this.TipoEntidadeNotificaoPropriedadeAlteradaGenerica = this.RetornarTipoEntidadeNotificaoPropriedadeAlteradaGenerica();
                 this.TiposSeguranca = new TiposSeguranca(this);
             }
-         
+
         }
         #endregion
 
@@ -81,7 +81,8 @@ namespace Snebur.AcessoDados.Estrutura
 
         #region  Metodos privados
 
-        private void MontarEstruturaBancoDados(Type tipoContexto, bool isBancoDadosNaoGerenciavel)
+        private void MontarEstruturaBancoDados(Type tipoContexto,
+                                              SqlSuporte sqlSuporte)
         {
             Debug.WriteLine("Montando estrutura do BancoDados ");
 
@@ -107,7 +108,12 @@ namespace Snebur.AcessoDados.Estrutura
                 {
                     throw new Erro(String.Format("Tipo {0} genérico da consulta {1} não herda de BaseEntidade ", tipoEntidade.Name, tipoEntidade.Name));
                 }
-                this.MontarEstruturaEntidades(tipoEntidade, isBancoDadosNaoGerenciavel);
+                if (tipoEntidade.BaseType.IsSubclassOf(typeof(Entidade)))
+                {
+                    throw new Erro($"O tipo base {tipoEntidade.BaseType.Name} da entidade {tipoEntidade.Name} não foi mapeado. " +
+                                   $"Mapiei sempre o tipo mais abstrato da entidade. Você pode configurar um atalho ");
+                }
+                this.MontarEstruturaEntidades(tipoEntidade, sqlSuporte);
             }
             foreach (var estruturaEntidade in this.EstruturasEntidade.Values)
             {
@@ -133,7 +139,7 @@ namespace Snebur.AcessoDados.Estrutura
             foreach (var estruturaEntidade in this.EstruturasEntidade.Values)
             {
                 var camposInvalidos = estruturaEntidade.EstruturasCampos.Values.Where(x => !x.IsTipoComplexo && !x.IsRelacaoChaveEstrangeira &&
-                !x.Propriedade.Name.StartsWith("__") &&   !x.Propriedade.Name.EndsWith("_Id") &&
+                !x.Propriedade.Name.StartsWith("__") && !x.Propriedade.Name.EndsWith("_Id") &&
                 x.Propriedade.Name.Contains("_"));
                 foreach (var estrutura in camposInvalidos)
                 {
@@ -141,13 +147,13 @@ namespace Snebur.AcessoDados.Estrutura
                 }
                 estruturaEntidade.AssociarEstruturaRalacaos();
             }
-            if (System.Diagnostics.Debugger.IsAttached)
+            if (DebugUtil.IsAttached)
             {
                 this.AnalisarAlertasEstruturaEntidade();
             }
         }
 
-        private void MontarEstruturaEntidades(Type tipoEntidade, bool isBancoDadosNaoGerenciavel)
+        private void MontarEstruturaEntidades(Type tipoEntidade, SqlSuporte sqlSuporte)
         {
             if (this.TiposEntidade.ContainsKey(tipoEntidade.Name))
             {
@@ -161,13 +167,13 @@ namespace Snebur.AcessoDados.Estrutura
             {
                 estruturaEntidadeBase = this.EstruturasEntidade[tipoEntidade.BaseType.Name];
             }
-            this.EstruturasEntidade.Add(tipoEntidade.Name, new EstruturaEntidade(tipoEntidade, estruturaEntidadeBase, isBancoDadosNaoGerenciavel));
+            this.EstruturasEntidade.Add(tipoEntidade.Name, new EstruturaEntidade(tipoEntidade, estruturaEntidadeBase, sqlSuporte));
 
             var tiposEspecializado = tipoEntidade.Assembly.GetTypes().Where(x => x.BaseType == tipoEntidade).ToList();
 
             foreach (var tipoEspecializado in tiposEspecializado)
             {
-                this.MontarEstruturaEntidades(tipoEspecializado, isBancoDadosNaoGerenciavel);
+                this.MontarEstruturaEntidades(tipoEspecializado, sqlSuporte);
             }
         }
 

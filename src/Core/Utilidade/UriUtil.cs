@@ -23,7 +23,7 @@ namespace Snebur.Utilidade
             return uriBuilder.Uri;
         }
 
-      
+
         public static string CombinarCaminhos(string endereco1, string endereco2)
         {
             return UriUtil.AjustarBarraFinal(endereco1) + UriUtil.RemoverBarraInicial(endereco2);
@@ -141,7 +141,7 @@ namespace Snebur.Utilidade
         {
             return ConstruirQuery(parametros.ToDictionary());
         }
-            public static string ConstruirQuery(IDictionary<string, string> di)
+        public static string ConstruirQuery(IDictionary<string, string> di)
         {
             return String.Join("&", di.Select(x => String.Format("{0}={1}", x.Key, Uri.EscapeUriString(x.Value))));
         }

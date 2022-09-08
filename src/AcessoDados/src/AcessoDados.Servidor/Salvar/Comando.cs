@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur;
-using Snebur.Utilidade;
+﻿using Snebur.AcessoDados.Estrutura;
 using Snebur.Dominio;
+using Snebur.Utilidade;
+using System;
+using System.Collections.Generic;
 using System.Data.Common;
-using Snebur.AcessoDados.Estrutura;
 
 namespace Snebur.AcessoDados.Servidor.Salvar
 {

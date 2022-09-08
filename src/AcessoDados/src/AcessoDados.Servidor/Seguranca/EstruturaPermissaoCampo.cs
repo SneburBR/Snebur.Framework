@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur.Dominio;
+﻿using Snebur.Dominio;
 using Snebur.Utilidade;
 
 namespace Snebur.AcessoDados.Seguranca

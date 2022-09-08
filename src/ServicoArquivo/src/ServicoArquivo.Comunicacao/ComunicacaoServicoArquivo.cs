@@ -1,8 +1,8 @@
-﻿using System;
-using Snebur.AcessoDados;
+﻿using Snebur.AcessoDados;
 using Snebur.Comunicacao;
 using Snebur.Dominio;
 using Snebur.Seguranca;
+using System;
 
 namespace Snebur.ServicoArquivo.Comunicacao
 {
@@ -41,7 +41,7 @@ namespace Snebur.ServicoArquivo.Comunicacao
                 {
                     throw new ErroOperacaoInvalida(String.Format("Não foi encontrado o arquivo com ID : {0}", idArquivo));
                 }
-                if(arquivo.Estado!= EnumEstadoArquivo.Enviando)
+                if (arquivo.Estado != EnumEstadoArquivo.Enviando)
                 {
                     arquivo.DataHoraInicioEnvio = DateTime.UtcNow;
                     arquivo.IsExisteArquivo = false;
@@ -99,9 +99,9 @@ namespace Snebur.ServicoArquivo.Comunicacao
             }
         }
         #endregion
-  
+
         public abstract BaseContextoDados RetornarContextoDados();
- 
+
         #region Credencial 
 
         protected override CredencialServico CredencialServico

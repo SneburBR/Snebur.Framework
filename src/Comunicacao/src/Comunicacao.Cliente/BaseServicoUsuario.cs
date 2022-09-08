@@ -1,18 +1,20 @@
-﻿using System;
-using System.Reflection;
-using Snebur.AcessoDados;
+﻿using Snebur.AcessoDados;
 using Snebur.Dominio;
 using Snebur.Seguranca;
+using System;
+using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Snebur.Comunicacao.Cliente
 {
-    public abstract class BaseServicoUsuarioCliente : BaseComunicacaoCliente, IServicoUsuario
+    public abstract class BaseServicoUsuarioCliente  : BaseComunicacaoCliente, IServicoUsuario, IServicoUsuarioAsync  
     {
         public BaseServicoUsuarioCliente(string urlServico) : base(urlServico)
         {
 
         }
 
+        #region IServicoUsuario
         public ResultadoAlterarSenha AlterarSenha(CredencialUsuario credencial, string novaSenha)
         {
             var parametros = new object[] { novaSenha };
@@ -52,7 +54,7 @@ namespace Snebur.Comunicacao.Cliente
         public ResultadoRecuperarSenha RecuperarSenha(string identificadorAmigavel, string codigoRecuperarSenha, string novaSenha)
         {
             var parametros = new object[] { identificadorAmigavel, codigoRecuperarSenha, novaSenha };
-           return this.ChamarServico<ResultadoRecuperarSenha>(MethodBase.GetCurrentMethod(), parametros);
+            return this.ChamarServico<ResultadoRecuperarSenha>(MethodBase.GetCurrentMethod(), parametros);
         }
 
         public ISessaoUsuario RetornarSessaoUsuario(Guid identificadorSessaoUsuario)
@@ -91,5 +93,69 @@ namespace Snebur.Comunicacao.Cliente
             var parametros = new object[] { credencial };
             return this.ChamarServico<EnumResultadoValidacaoCredencial>(MethodBase.GetCurrentMethod(), parametros);
         }
+        #endregion
+
+        #region IServicoUsuarioAsync
+        public Task<ResultadoExisteIdentificadoUsuario> ExisteIdentificadorUsuarioAsync(string identificadorUsuario)
+        {
+            return Task.Factory.StartNew(() => this.ExisteIdentificadorUsuario(identificadorUsuario));
+        }
+
+        public Task<EnumResultadoValidacaoCredencial> ValidarCredencialAsync(CredencialUsuario credencial)
+        {
+            return Task.Factory.StartNew(() => this.ValidarCredencial(credencial));
+        }
+
+        public Task<bool> SessaoUsuarioAtivaAsync(CredencialUsuario credencial, Guid identificadorSessaoUsuario)
+        {
+            return Task.Factory.StartNew(() => this.SessaoUsuarioAtiva(credencial, identificadorSessaoUsuario));
+        }
+
+        public Task<IUsuario> RetornarUsuarioAsync(CredencialUsuario credencial)
+        {
+            return Task.Factory.StartNew(() => this.RetornarUsuario(credencial));
+        }
+
+        public Task<ResultadoAutenticacao> AutenticarAsync(CredencialUsuario credencial)
+        {
+            return Task.Factory.StartNew(() => this.Autenticar(credencial));
+        }
+
+        public Task<ISessaoUsuario> RetornarSessaoUsuarioAsync(Guid identificadorSessaoUsuario)
+        {
+            return Task.Factory.StartNew(() => this.RetornarSessaoUsuario(identificadorSessaoUsuario));
+        }
+
+        public Task<IUsuario> CadastrarNovoUsuarioAsync(NovoUsuario novoUsuario, bool isAlterarSenhaProximoAcesso)
+        {
+            return Task.Factory.StartNew(() => this.CadastrarNovoUsuario(novoUsuario, isAlterarSenhaProximoAcesso));
+        }
+
+        public Task<ResultadoEnviarCodigoRecuperarSenha> EnviarCodigoRecuperarSenhaAsync(string identificadorAmigavel)
+        {
+            return Task.Factory.StartNew(() => this.EnviarCodigoRecuperarSenha(identificadorAmigavel));
+        }
+
+        public Task<ResultadoValidarCodigoRecuperarSenha> ValidarCodigRecuperarSenhaAsync(string identificadorAmigavel, string codigoRecuperarSenha)
+        {
+            return Task.Factory.StartNew(() => this.ValidarCodigRecuperarSenha(identificadorAmigavel, codigoRecuperarSenha));
+        }
+
+        public Task<ResultadoRecuperarSenha> RecuperarSenhaAsync(string identificadorAmigavel, string codigoRecuperarSenha, string novaSenha)
+        {
+            return Task.Factory.StartNew(() => this.RecuperarSenha(identificadorAmigavel, codigoRecuperarSenha, novaSenha));
+        }
+
+        public Task<ResultadoAlterarSenha> AlterarSenhaAsync(CredencialUsuario credencial, string novaSenha)
+        {
+            return Task.Factory.StartNew(() => this.AlterarSenha(credencial, novaSenha));
+        }
+
+        public Task FinalizarSessaoUsuarioAsync(Guid identificadorSessaoUsuario)
+        {
+            return Task.Factory.StartNew(() => this.FinalizarSessaoUsuario(identificadorSessaoUsuario));
+        }
+
+        #endregion
     }
 }

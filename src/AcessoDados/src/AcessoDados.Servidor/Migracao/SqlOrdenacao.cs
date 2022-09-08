@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Snebur.AcessoDados.Estrutura;
+using Snebur.Dominio.Atributos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Snebur.AcessoDados.Estrutura;
-using Snebur.Dominio.Atributos;
 
 namespace Snebur.AcessoDados
 {

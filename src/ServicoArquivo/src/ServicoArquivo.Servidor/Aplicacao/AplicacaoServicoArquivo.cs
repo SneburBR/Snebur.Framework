@@ -1,7 +1,7 @@
-﻿using System;
-using System.Configuration;
-using Snebur.Computador;
+﻿using Snebur.Computador;
 using Snebur.Utilidade;
+using System;
+using System.Configuration;
 //using Snebur.Computador;
 
 namespace Snebur.ServicoArquivo.Servidor
@@ -27,7 +27,7 @@ namespace Snebur.ServicoArquivo.Servidor
 
         public BaseAplicacaoServicoArquivo() : base()
         {
-            
+
         }
 
         public void AcessarRede()

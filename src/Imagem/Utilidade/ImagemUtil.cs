@@ -14,7 +14,7 @@ namespace Snebur.Utilidade
 {
     public partial class ImagemUtil
     {
- 
+
 
         public static EnumTamanhoImagem[] TamanhosApresentacao => new EnumTamanhoImagem[] { EnumTamanhoImagem.Miniatura, EnumTamanhoImagem.Pequena, EnumTamanhoImagem.Media, EnumTamanhoImagem.Grande };
 
@@ -77,7 +77,7 @@ namespace Snebur.Utilidade
                 stream.Seek(0, SeekOrigin.Begin);
             }
             return ImagemUtil.RetornarImagemVisualizacao(stream, alturaMaxima, true);
- 
+
             //var bmitmap = new BitmapImage();
             //bmitmap.BeginInit();
             //bmitmap.CacheOption = BitmapCacheOption.OnLoad;
@@ -86,7 +86,7 @@ namespace Snebur.Utilidade
             //bmitmap.EndInit();
             //bmitmap.Freeze();
             //return bmitmap;
- 
+
             //var decoder = BitmapDecoder.Create(stream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
             //var frame = decoder.Frames.First();
 
@@ -106,7 +106,7 @@ namespace Snebur.Utilidade
             var cache = new CachedBitmap(transformaBitmap, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
             cache.Freeze();
             return cache;
-            
+
             //BitmapSourceUtil.AjustarDpi(cache, 96);
             //return cache;
         }
@@ -675,12 +675,12 @@ namespace Snebur.Utilidade
                 File.WriteAllBytes(caminho, ms.ToArray());
             }
         }
-      
 
-            /// <summary>
-            /// Salvar a imagem no formato JPEG
-            /// </summary>
-            public static MemoryStream RetornarMemoryStream(BitmapSource imagem, EnumFormatoImagem formato, int qualidade = 100)
+
+        /// <summary>
+        /// Salvar a imagem no formato JPEG
+        /// </summary>
+        public static MemoryStream RetornarMemoryStream(BitmapSource imagem, EnumFormatoImagem formato, int qualidade = 100)
         {
             var ms = new MemoryStream();
             if (formato == EnumFormatoImagem.PNG && PngResolver.UsarPng)
@@ -787,7 +787,7 @@ namespace Snebur.Utilidade
 
                 //System.Threading.Thread.Sleep(5000);
                 //System.Threading.Thread.Sleep(5000);
- 
+
                 using (var streamOrigem = new MemoryStream(File.ReadAllBytes(caminhoArquivo)))
                 {
 
@@ -863,35 +863,7 @@ namespace Snebur.Utilidade
             {
                 using (var fs = StreamUtil.OpenRead(caminhoArquivo))
                 {
-                    using (var br = new BinaryReader(fs))
-                    {
-                        var soi = br.ReadUInt16();  // Start of Image (SOI) marker (FFD8)
-                        var marker = br.ReadUInt16(); // JFIF marker (FFE0) EXIF marker (FFE1)
-                        var markerSize = br.ReadUInt16(); // size of marker data (incl. marker)
-                        var four = br.ReadUInt32(); // JFIF 0x4649464a or Exif  0x66697845
-
-                        var isJpeg = soi == 0xd8ff && (marker & 0xe0ff) == 0xe0ff;
-                        var isExif = isJpeg && four == 0x66697845;
-                        var isJfif = isJpeg && four == 0x4649464a;
-
-                        if (isJpeg)
-                        {
-                            if (isExif)
-                            {
-                                Console.WriteLine("EXIF: {0}", caminhoArquivo);
-                            }
-                            else if (isJfif)
-                            {
-                                Console.WriteLine("JFIF: {0}", caminhoArquivo);
-                            }
-                            else
-                            {
-                                Console.WriteLine("JPEG: {0}", caminhoArquivo);
-                            }
-                        }
-
-                        return isJpeg || isJfif;
-                    }
+                    return IsStreamJpeg(fs);
                 }
             }
             catch
@@ -900,26 +872,92 @@ namespace Snebur.Utilidade
             }
         }
 
+        public static bool IsStreamJpeg(Stream stream)
+        {
+         
+
+            using (var br = new BinaryReader(stream))
+            {
+                var soi = br.ReadUInt16();  // Start of Image (SOI) marker (FFD8)
+                var marker = br.ReadUInt16(); // JFIF marker (FFE0) EXIF marker (FFE1)
+                var markerSize = br.ReadUInt16(); // size of marker data (incl. marker)
+                var four = br.ReadUInt32(); // JFIF 0x4649464a or Exif  0x66697845
+
+                var isJpeg = soi == 0xd8ff && (marker & 0xe0ff) == 0xe0ff;
+                var isExif = isJpeg && four == 0x66697845;
+                var isJfif = isJpeg && four == 0x4649464a;
+
+                //if (isJpeg)
+                //{
+                //    if (isExif)
+                //    {
+                //        Console.WriteLine("EXIF: {0}", caminhoArquivo);
+                //    }
+                //    else if (isJfif)
+                //    {
+                //        Console.WriteLine("JFIF: {0}", caminhoArquivo);
+                //    }
+                //    else
+                //    {
+                //        Console.WriteLine("JPEG: {0}", caminhoArquivo);
+                //    }
+                //}
+
+                return isJpeg || isJfif;
+            }
+        }
+
         public static bool IsArquivoBinarioImagem(string caminhoArquivo)
         {
             if (File.Exists(caminhoArquivo))
             {
-                using (var fs = StreamUtil.OpenRead(caminhoArquivo))
+                try
                 {
-                    try
+                    using (var fs = StreamUtil.OpenRead(caminhoArquivo))
                     {
-                        var decoder = DecoderUtil.RetornarDecoder(fs, BitmapCacheOption.None);
-                        var frame = decoder.Frames[0];
-                        return frame.PixelHeight > 0 && frame.PixelWidth > 0;
-                    }
-                    catch
-                    {
-                        return false;
+                        return IsStreamImagem(fs);
                     }
                 }
+                catch
+                {
+                    return false;
+                }
             }
+
             return false;
         }
+
+        public static bool IsStreamImagem(Stream stream)
+        {
+            if (stream.CanSeek)
+            {
+                stream.Seek(0, SeekOrigin.Begin);
+            }
+            var decoder = DecoderUtil.RetornarDecoder(stream, BitmapCacheOption.None);
+            var frame = decoder.Frames[0];
+            return frame.PixelHeight > 0 && frame.PixelWidth > 0;
+        }
+
+        //public static bool IsArquivoBinarioImagem(string caminhoArquivo)
+        //{
+        //    if (File.Exists(caminhoArquivo))
+        //    {
+        //        using (var fs = StreamUtil.OpenRead(caminhoArquivo))
+        //        {
+        //            try
+        //            {
+        //                var decoder = DecoderUtil.RetornarDecoder(fs, BitmapCacheOption.None);
+        //                var frame = decoder.Frames[0];
+        //                return frame.PixelHeight > 0 && frame.PixelWidth > 0;
+        //            }
+        //            catch
+        //            {
+        //                return false;
+        //            }
+        //        }
+        //    }
+        //    return false;
+        //}
 
 
         public static EnumTamanhoImagem RetornarTamanhoImagem(IImagem imagem, Dimensao dimensaoRecipiente)

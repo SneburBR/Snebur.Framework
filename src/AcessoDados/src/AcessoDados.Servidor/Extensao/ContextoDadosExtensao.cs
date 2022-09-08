@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Snebur.Dominio;
+using Snebur.Utilidade;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Snebur.Dominio;
-using Snebur.Utilidade;
 
 namespace Snebur.AcessoDados
 {
@@ -28,11 +28,11 @@ namespace Snebur.AcessoDados
             foreach (var expressao in expressoesPropriedade)
             {
                 var propriedade = ExpressaoUtil.RetornarPropriedade(expressao);
-                if(propriedade.CanRead && propriedade.CanWrite)
+                if (propriedade.CanRead && propriedade.CanWrite)
                 {
                     propriedade.SetValue(clone, propriedade.GetValue(entidade));
                 }
-                
+
                 propriedadesAbertas.Add(propriedade.Name);
             }
             var entidadeInterna = (IEntidadeInterna)clone;
@@ -111,7 +111,7 @@ namespace Snebur.AcessoDados
                 propriedade.SetValue(entidade, propriedade.GetValue(entidadeRecuperada));
             }
         }
-         
+
         public static void AbrirColecoes<TEntidade>(this __BaseContextoDados contexto, TEntidade entidade, params Expression<Func<TEntidade, IEnumerable>>[] expressoesColecao) where TEntidade : Entidade
         {
             var entidadeRecuperada = contexto.RetornarConsulta<TEntidade>(entidade.GetType()).

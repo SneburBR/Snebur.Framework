@@ -2,6 +2,7 @@
 using Snebur.Utilidade;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -51,7 +52,7 @@ namespace Snebur.Utilidade
         /// <returns></returns>
         public static DadosIPInformacao RetornarIPInformacao(string ip)
         {
-            if (System.Diagnostics.Debugger.IsAttached ||
+            if (DebugUtil.IsAttached ||
                 ip == "177.128.0.19" ||
                 ip == "186.215.185.154")
             {

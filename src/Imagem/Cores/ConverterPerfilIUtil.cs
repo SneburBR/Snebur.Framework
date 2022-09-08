@@ -194,7 +194,7 @@
 //                    encoder.QualityLevel = 100;
 //                    encoder.Save(msDestino_sRGB);
 
-//                    //if (System.Diagnostics.Debugger.IsAttached)
+//                    //if (DebugUtil.IsAttached)
 //                    //{
 //                    //    var caminhoTemp = @"c:\temp\grayscale\grayscale_srgb_convertido.jpg";
 //                    //    File.WriteAllBytes(caminhoTemp, msDestino_sRGB.ToArray());
@@ -222,7 +222,7 @@
 //            var perfilSRgb = new ColorProfile(bytessGray);
 //            ConverterPerfilIUtil.ConverterMagickImage(streamOrigem, mssGray, perfilSRgb);
 
-//            //if (System.Diagnostics.Debugger.IsAttached)
+//            //if (DebugUtil.IsAttached)
 //            //{
 //            //    var caminhoTemp = @"c:\temp\grayscale\sgray_convertido.jpg";
 //            //    File.WriteAllBytes(caminhoTemp, mssGray.ToArray());
@@ -350,7 +350,7 @@
 //                    bitmapConvertido.Freeze();
 
 //                    //bitmapSourceDestino = null;
-//                    //if (SistemaUtil.IsWindowsXp || System.Diagnostics.Debugger.IsAttached)
+//                    //if (SistemaUtil.IsWindowsXp || DebugUtil.IsAttached)
 //                    //{
 //                    //    var bitmapImage = new BitmapImage();
 //                    //    bitmapImage.BeginInit();

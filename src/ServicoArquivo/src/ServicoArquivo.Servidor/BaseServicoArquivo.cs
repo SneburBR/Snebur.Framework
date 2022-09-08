@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Snebur.Net;
+using Snebur.ServicoArquivo.Servidor;
+using Snebur.Utilidade;
+using System;
+using System.IO;
 using System.Text;
 using System.Web;
-using Snebur.Net;
-using Snebur.Utilidade;
-using System.IO;
-using Snebur.ServicoArquivo.Servidor;
 
 #if NET50
 using Microsoft.AspNetCore.Http;
@@ -297,15 +297,15 @@ namespace Snebur.ServicoArquivo
 #endif
 
 
-#endregion
+        #endregion
 
-#region IDisposable
+        #region IDisposable
 
         public void Dispose()
         {
             //ZyonHttpContext.Current?.Dispose();
         }
 
-#endregion
+        #endregion
     }
 }

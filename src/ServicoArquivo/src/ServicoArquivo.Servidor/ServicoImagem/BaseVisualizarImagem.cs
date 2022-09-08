@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Web;
-using Snebur.Dominio;
+﻿using Snebur.Dominio;
 using Snebur.Net;
 using Snebur.ServicoArquivo.Servidor;
 using Snebur.Utilidade;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Web;
 
 #if NET50
 using Microsoft.AspNetCore.Http;

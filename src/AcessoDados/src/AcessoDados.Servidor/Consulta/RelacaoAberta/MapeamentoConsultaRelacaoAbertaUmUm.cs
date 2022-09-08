@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur;
-using Snebur.Utilidade;
-using Snebur.Dominio;
-using Snebur.AcessoDados.Estrutura;
-using Snebur.AcessoDados.Dominio;
+﻿using Snebur.AcessoDados.Estrutura;
 
 namespace Snebur.AcessoDados.Mapeamento
 {
@@ -22,7 +13,7 @@ namespace Snebur.AcessoDados.Mapeamento
             }
         }
 
-        internal MapeamentoConsultaRelacaoAbertaUmUm(EstruturaConsulta estruturaConsulta, 
+        internal MapeamentoConsultaRelacaoAbertaUmUm(EstruturaConsulta estruturaConsulta,
                                                      EstruturaBancoDados estruturaBancoDados,
                                                      BaseConexao conexaoDB,
                                                      MapeamentoConsulta mapeamentoConsultaPai,
@@ -34,7 +25,7 @@ namespace Snebur.AcessoDados.Mapeamento
                                                           conexaoDB,
                                                           mapeamentoConsultaPai,
                                                           estruturaRelacaoUmUm,
-                                                          relacaoAberta, 
+                                                          relacaoAberta,
                                                           contexto)
         {
         }

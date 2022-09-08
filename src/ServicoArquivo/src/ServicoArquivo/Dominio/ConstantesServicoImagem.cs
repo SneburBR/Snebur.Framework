@@ -1,10 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
-using Snebur.Utilidade;
-using Snebur.Dominio;
-using Snebur.Dominio.Atributos;
+﻿using Snebur.Dominio.Atributos;
 
 namespace Snebur.ServicoArquivo
 {
@@ -31,7 +25,7 @@ namespace Snebur.ServicoArquivo
 
         //public const string NOME_TIPO_IMAGEM = "NomeTipoImagem";
 
-       
+
 
         #endregion
     }

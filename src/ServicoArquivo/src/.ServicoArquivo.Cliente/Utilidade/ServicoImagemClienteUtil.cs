@@ -1,10 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
+﻿using Snebur.Dominio;
 using Snebur.Utilidade;
-using Snebur.Dominio;
-using System.Net;
+using System;
+using System.Collections.Generic;
 
 namespace Snebur.ServicoArquivo
 {
@@ -18,6 +15,11 @@ namespace Snebur.ServicoArquivo
 
         public static string RetornarEnderecoEnviarImagem(string enderecoServicoImagem)
         {
+            if (String.IsNullOrWhiteSpace(enderecoServicoImagem))
+            {
+                throw new ArgumentNullException($"O argumento {nameof(enderecoServicoImagem)} não foi definido");
+            }
+
             var nomeArquivo = ConstantesServicoImagem.NOME_ARQUIVO_ENVIAR_IMAGEM + "?" + Guid.NewGuid().ToString();
             return UriUtil.CombinarCaminhos(enderecoServicoImagem, nomeArquivo);
         }

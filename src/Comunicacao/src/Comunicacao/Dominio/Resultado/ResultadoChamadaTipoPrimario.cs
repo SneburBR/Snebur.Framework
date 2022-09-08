@@ -4,12 +4,12 @@ namespace Snebur.Comunicacao
 {
     public class ResultadoChamadaTipoPrimario : ResultadoChamada
     {
-		#region Campos Privados
+        #region Campos Privados
 
         private object _valor;
         private EnumTipoPrimario _tipoPrimarioEnum;
 
-		#endregion
+        #endregion
 
         public object Valor { get => this.RetornarValorPropriedade(this._valor); set => this.NotificarValorPropriedadeAlterada(this._valor, this._valor = value); }
 

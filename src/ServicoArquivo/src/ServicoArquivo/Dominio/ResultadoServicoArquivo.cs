@@ -1,23 +1,18 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
-using Snebur.Utilidade;
-using Snebur.Dominio;
+﻿using Snebur.Dominio;
 
 namespace Snebur.ServicoArquivo
 {
     public class ResultadoServicoArquivo : BaseDominio
     {
 
-		#region Campos Privados
+        #region Campos Privados
 
         private long _id;
         private bool _isSucesso;
         private string _mensagemErro;
         private EnumTipoErroServicoArquivo _tipoErroServicoArquivo;
 
-		#endregion
+        #endregion
 
         public long Id { get => this.RetornarValorPropriedade(this._id); set => this.NotificarValorPropriedadeAlterada(this._id, this._id = value); }
 

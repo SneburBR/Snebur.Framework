@@ -51,9 +51,9 @@ namespace Snebur.Dominio
         {
             if (this.DpiVisualizacao == 0 && !this.IsSerializando)
             {
-                if (Debugger.IsAttached)
+                if (DebugUtil.IsAttached)
                 {
-                    throw new Exception($"O Dpi visualização nao foi definidio, utilizar o metodo statico {nameof(MedidaUtil)}.{nameof(MedidaUtil.DefinirDpiVisualizacao)} e passar o bojeto");
+                    throw new Exception($"O Dpi visualização não foi definido, utilizar o método estático {nameof(MedidaUtil)}.{nameof(MedidaUtil.DefinirDpiVisualizacao)} e passar o bojeto");
                 }
             }
             return MedidaUtil.RetornarPixelsVisualizacao(valor, this.DpiVisualizacao);

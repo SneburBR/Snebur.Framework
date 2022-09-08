@@ -1,21 +1,18 @@
 ﻿using System;
-using System.Linq;
-using System.Text;
 using System.Collections.Generic;
-using Snebur.Dominio.Atributos;
 
 namespace Snebur.AcessoDados
 {
     public class EntidadeSalva : BaseAcessoDados
     {
 
-		#region Campos Privados
+        #region Campos Privados
 
         private long _id;
         private Guid _identificadorUnicoEntidade;
         private string _caminhoTipoEntidadeSalva;
 
-		#endregion
+        #endregion
 
         public long Id { get => this.RetornarValorPropriedade(this._id); set => this.NotificarValorPropriedadeAlterada(this._id, this._id = value); }
 

@@ -87,9 +87,10 @@ namespace Snebur.Net
                 return this.Request.UserAgent;
 #endif
             }
-        } 
+        }
 
-        public override Uri Url {
+        public override Uri Url
+        {
 
             get
             {

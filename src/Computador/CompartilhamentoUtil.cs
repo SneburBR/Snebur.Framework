@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Snebur.Utilidade;
+using System;
 using System.Management;
 using System.Security.AccessControl;
 using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur.Utilidade;
 
 namespace Snebur.Computador
 {
@@ -16,7 +12,7 @@ namespace Snebur.Computador
         {
             CompartilhamentoUtil.CompartilhaDiretorio(caminhoDiretorio, nomeCompartilhamento, null);
         }
-      
+
         public static void CompartilhaDiretorio(string caminhoDiretorio, string nomeCompartilhamento, NTAccount conta)
         {
             DiretorioUtil.CriarDiretorio(caminhoDiretorio);

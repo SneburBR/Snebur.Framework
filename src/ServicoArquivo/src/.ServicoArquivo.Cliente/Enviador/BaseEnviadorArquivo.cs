@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Snebur.Comunicacao;
+using Snebur.Dominio;
+using Snebur.Seguranca;
+using Snebur.Utilidade;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using Snebur.Comunicacao;
-using Snebur.Dominio;
-using Snebur.Seguranca;
-using Snebur.Utilidade;
 
 namespace Snebur.ServicoArquivo.Cliente
 {
@@ -48,9 +48,16 @@ namespace Snebur.ServicoArquivo.Cliente
 
         }
 
-        public BaseEnviadorArquivo(string urlServicoArquivo, TArquivo arquivo,
-                                  CredencialUsuario credencialUsuario, Guid IdentificadorSessaoUsuario, string IdentificadorProprietario)
+        public BaseEnviadorArquivo(string urlServicoArquivo, 
+                                  TArquivo arquivo,
+                                  CredencialUsuario credencialUsuario, 
+                                  Guid IdentificadorSessaoUsuario, 
+                                  string IdentificadorProprietario)
         {
+            if (String.IsNullOrWhiteSpace(urlServicoArquivo))
+            {
+                throw new ArgumentNullException(nameof(urlServicoArquivo));
+            }
             this.Arquivo = arquivo;
             this.UrlServicoArquivo = urlServicoArquivo;
             this.CredencialUsuario = credencialUsuario;
@@ -145,7 +152,8 @@ namespace Snebur.ServicoArquivo.Cliente
             this.ChecksumPacoteAtual = ChecksumUtil.RetornarChecksum(pacote);
 
             var parametros = this.RetornarParametros(pacote.Length);
-            var urlEnviarImagem = ServicoImagemClienteUtil.RetornarEnderecoEnviarImagem(this.UrlServicoArquivo);
+            var urlEnviarImagem = this.RetornarUrlEnviarArquivo();
+                
             var requisicao = (HttpWebRequest)WebRequest.Create(urlEnviarImagem);
 
             requisicao.Headers.Add(ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO, this.IdentificadorProprietario.ToString()); ; ;
@@ -179,6 +187,8 @@ namespace Snebur.ServicoArquivo.Cliente
                 }
             }
         }
+
+        protected abstract string RetornarUrlEnviarArquivo();
 
         private byte[] RetornarPacote()
         {
@@ -355,7 +365,7 @@ namespace Snebur.ServicoArquivo.Cliente
 
         public void Dispose()
         {
-            this.StreamArquivo?.Dispose();
+            //this.StreamArquivo?.Dispose();
             this.StreamArquivo = null;
         }
 

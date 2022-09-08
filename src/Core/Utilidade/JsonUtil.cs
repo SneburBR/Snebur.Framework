@@ -17,8 +17,6 @@ namespace Snebur.Utilidade
 {
     public static class JsonUtil
     {
-        //IsoDateFormat varios problemas
-        //MicrosoftDateFormat 
 
         private static readonly JsonSerializerSettings ConfiguracoesDeserializar = new JsonSerializerSettings
         {
@@ -48,7 +46,14 @@ namespace Snebur.Utilidade
             ContractResolver = new JsonPropertiesResolver()
         };
 
-        public static T DeserializaArquivor<T>(string caminhoArquivo, Encoding encoding, bool isJavascript = true)
+        public static T DeserializaArquivor<T>(string caminhoArquivo, bool isJavascript = true)
+        {
+            return DeserializaArquivor<T>(caminhoArquivo, Encoding.UTF8, isJavascript);
+        }
+
+        public static T DeserializaArquivor<T>(string caminhoArquivo, 
+                                              Encoding encoding, 
+                                              bool isJavascript = true)
         {
             using (var fs = StreamUtil.OpenRead(caminhoArquivo))
             using (var sr = new StreamReader(fs, encoding))
@@ -107,9 +112,15 @@ namespace Snebur.Utilidade
         //    return JsonUtil.Serializar(objeto, false);
         //}
 
+        public static void Serializar(object objeto,
+                                      bool isJavascript,
+                                      string caminhoArquivo)
+        {
+            SalvarSerializacao(objeto, isJavascript, caminhoArquivo);
+        }
         public static string Serializar(object objeto, bool isJavascript)
         {
-            return JsonUtil.Serializar(objeto, isJavascript, Debugger.IsAttached);
+            return JsonUtil.Serializar(objeto, isJavascript, DebugUtil.IsAttached);
         }
 
         public static string Serializar(object objeto, bool isJavascript, bool isIdentar)

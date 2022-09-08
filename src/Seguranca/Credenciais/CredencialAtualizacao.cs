@@ -1,14 +1,8 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
-using Snebur.Dominio;
-
-namespace Snebur.Seguranca
+﻿namespace Snebur.Seguranca
 {
     public class CredencialAtualizacao
     {
-    
+
         public static Credencial Atualizacao
         {
             get
@@ -22,7 +16,7 @@ namespace Snebur.Seguranca
         }
 
         private const string IDENTIFICADOR_USUARIO = "Atualizacao";
-    
-    	private const string SENHA = "bf73ae7d-552f-4fe4-88bc-5d4e2b9abf34";
+
+        private const string SENHA = "bf73ae7d-552f-4fe4-88bc-5d4e2b9abf34";
     }
 }

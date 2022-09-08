@@ -1,4 +1,6 @@
-﻿using System;
+﻿/* Unmerged change from project 'Snebur.ServicoArquivo.Servidor'
+Before:
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +9,45 @@ using Snebur;
 using Snebur.Utilidade;
 using Snebur.Dominio;
 using Snebur.Dominio.Atributos;
+using Snebur.Seguranca;
+After:
+using Snebur;
+using Snebur.Dominio;
+using Snebur.Dominio.Atributos;
+using Snebur.Seguranca;
+using Snebur.Utilidade;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Seguranca;
+*/
+
+/* Unmerged change from project 'Snebur.ServicoArquivo.Comunicacao'
+Before:
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Snebur;
+using Snebur.Utilidade;
+using Snebur.Dominio;
+using Snebur.Dominio.Atributos;
+using Snebur.Seguranca;
+After:
+using Snebur;
+using Snebur.Dominio;
+using Snebur.Dominio.Atributos;
+using Snebur.Seguranca;
+using Snebur.Utilidade;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Seguranca;
+*/
+
 using Snebur.Seguranca;
 
 namespace Snebur.ServicoArquivo

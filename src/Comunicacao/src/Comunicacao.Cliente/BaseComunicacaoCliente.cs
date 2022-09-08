@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Snebur.AcessoDados;
+using Snebur.Dominio;
+using Snebur.Seguranca;
+using Snebur.Utilidade;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using Snebur.AcessoDados;
-using Snebur.Dominio;
-using Snebur.Seguranca;
-using Snebur.Utilidade;
 
 namespace Snebur.Comunicacao
 {
@@ -17,7 +17,7 @@ namespace Snebur.Comunicacao
 
         #region Propriedades
 
-        private string UrlServico { get;  }
+        private string UrlServico { get; }
 
         #endregion
 
@@ -65,7 +65,7 @@ namespace Snebur.Comunicacao
 
             if (AplicacaoSnebur.Atual.IsMainThread)
             {
-                throw new ErroComunicacao("As chamadas sincronas não podem ser executadas na MainThread");
+                throw new ErroComunicacao("As chamadas síncronas não podem ser executadas na MainThread");
             }
 
             var tipoRetorno = typeof(T);
@@ -73,13 +73,13 @@ namespace Snebur.Comunicacao
 
             var chamdaServico = new ChamadaServico(this.RetornarNomeManipulador(), contrato, this.UrlServico, tipoRetorno, this.ParametrosCabecalhoAdicionais);
             var resultado = chamdaServico.ExecutarChamada();
-            if(resultado is ResultadoSessaoUsuarioInvalida resultadoSessaoUsuarioInvalida)
+            if (resultado is ResultadoSessaoUsuarioInvalida resultadoSessaoUsuarioInvalida)
             {
                 AplicacaoSnebur.Atual.IniciarNovaSessaoAnonima();
 
-                throw new ErroSessaoUsuarioExpirada(resultadoSessaoUsuarioInvalida.EstadoSessaoUsuario, 
-                                                    resultadoSessaoUsuarioInvalida.IdentificadorSessaoUsuario,  
-                                                    "Sessão do usuario foi finalizada");
+                throw new ErroSessaoUsuarioExpirada(resultadoSessaoUsuarioInvalida.EstadoSessaoUsuario,
+                                                    resultadoSessaoUsuarioInvalida.IdentificadorSessaoUsuario,
+                                                    "Sessão do usuário foi finalizada");
             }
             return (T)resultado;
         }
@@ -189,7 +189,7 @@ namespace Snebur.Comunicacao
 
         protected virtual List<ParametroChamada> RetornarParametrosChamada(MethodBase metodoChamada, MethodBase metodoParametros, bool isAsync, object[] valoresParametro)
         {
-          
+
             var parametros = metodoParametros.GetParameters().ToList();
             if (isAsync)
             {

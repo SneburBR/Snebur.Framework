@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Snebur.Dominio;
+using Snebur.Servicos;
+using Snebur.Utilidade;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Snebur.Dominio;
-using Snebur.Servicos;
-using Snebur.Utilidade;
 
 namespace Snebur.AcessoDados.Seguranca
 {
@@ -69,7 +69,7 @@ namespace Snebur.AcessoDados.Seguranca
                     sb.AppendFormat(" Ids  '{0}'", String.Join(",", autorizacaoSalvar.Entidades.Select(x => x.Id)));
                 }
             }
-            if (System.Diagnostics.Debugger.IsAttached)
+            if (DebugUtil.IsAttached)
             {
                 if (autorizacoes.Any(x => x.Permissao == EnumPermissao.Negado))
                 {

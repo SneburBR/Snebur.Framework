@@ -307,7 +307,7 @@ namespace Snebur
         {
             get
             {
-                if (System.Diagnostics.Debugger.IsAttached)
+                if (DebugUtil.IsAttached)
                 {
                     // return TimeSpan.FromHours(10);
                 }
@@ -399,6 +399,8 @@ namespace Snebur
         }
 
         public event EventHandler NovaSessaoUsuarioInicializada;
+        public event EventHandler CredencialAlterada;
+        
 
 #if NetCore
         protected Func<HttpContext> FuncaoRetornaHttpContextAtual { get; set; }
@@ -534,12 +536,19 @@ namespace Snebur
         public virtual void IniciarNovaSessaoAnonima()
         {
             this.AcaoIniciarNovaSessaoUsuario.Invoke();
-            this.OnNovaSessaoUsuarioInicializada();
+            this.NotificarNovaSessaoUsuarioInicializada();
         }
-        protected virtual void OnNovaSessaoUsuarioInicializada()
+        public virtual void NotificarNovaSessaoUsuarioInicializada()
         {
             this.NovaSessaoUsuarioInicializada?.Invoke(this, EventArgs.Empty);
         }
+
+        public virtual void NotificarCredencialAlterada()
+        {
+            this.CredencialAlterada?.Invoke(this, EventArgs.Empty);
+        }
+      
+
         #endregion
 
         #region Log aplicação inicializada
@@ -548,7 +557,7 @@ namespace Snebur
         {
             if (!this.Inicializada)
             {
-                //if (System.Diagnostics.Debugger.IsAttached)
+                //if (DebugUtil.IsAttached)
                 //{
                 //    throw new Exception("Chamar o método Inicializar logo apos instanciar a AplicacaoSnebur");
                 //}

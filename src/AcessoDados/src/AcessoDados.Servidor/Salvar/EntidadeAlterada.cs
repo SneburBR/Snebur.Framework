@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Snebur.AcessoDados.Estrutura;
+using Snebur.Dominio;
+using Snebur.Dominio.Atributos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Snebur.AcessoDados.Estrutura;
-using Snebur.Dominio;
-using Snebur.Dominio.Atributos;
 
 namespace Snebur.AcessoDados.Servidor.Salvar
 {
@@ -156,7 +156,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 
                     case EnumTipoAlteracao.Atualizar:
 
-                        
+
                         var comandoUpdate = new ComandoUpdate(this, estruturaEntidade);
                         if (comandoUpdate.ExisteAtualizacao)
                         {

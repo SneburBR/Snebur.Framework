@@ -1,12 +1,8 @@
-﻿using System;
+﻿using Snebur.Dominio;
+using Snebur.Utilidade;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur;
-using Snebur.Utilidade;
-using Snebur.Dominio;
-using System.Diagnostics;
 
 namespace Snebur.AcessoDados.Mapeamento
 {
@@ -35,7 +31,7 @@ namespace Snebur.AcessoDados.Mapeamento
             var gruposEntidadeFilhos = new Dictionary<long, List<Entidade>>();
             var propriedadeRelacaoNn = mapeamentoNn.EstruturaRelacaoNn.Propriedade;
 
-            //if (Debugger.IsAttached)
+            //if (DebugUtil.IsAttached)
             //{
             //    var entidadesPossuiPropriedade = this.Entidades.Values.Where(x => ReflexaoUtil.TipoPossuiPropriedade(x.GetType(), propriedadeRelacaoNn)).ToList();
             //    if (entidadesPossuiPropriedade.Count != this.Entidades.Count)
@@ -43,10 +39,10 @@ namespace Snebur.AcessoDados.Mapeamento
             //        var xxx = "testar";
             //    }
             //}
-           
+
             foreach (var entidade in this.Entidades)
             {
-                if(ReflexaoUtil.TipoPossuiPropriedade(entidade.Value.GetType(), propriedadeRelacaoNn))
+                if (ReflexaoUtil.TipoPossuiPropriedade(entidade.Value.GetType(), propriedadeRelacaoNn))
                 {
                     gruposEntidadeFilhos.Add(entidade.Key, new List<Entidade>());
                 }

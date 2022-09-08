@@ -227,7 +227,7 @@ namespace System.Windows.Media
             if (colorContext.RetornarTamanhoPerfil() == colorContextComparar.RetornarTamanhoPerfil()
                 && colorContext.RetornarCorFormato() == colorContextComparar.RetornarCorFormato())
             {
-                if (System.Diagnostics.Debugger.IsAttached)
+                if (DebugUtil.IsAttached)
                 {
                     if (colorContext.RetornarChecksum() != colorContextComparar.RetornarChecksum())
                     {

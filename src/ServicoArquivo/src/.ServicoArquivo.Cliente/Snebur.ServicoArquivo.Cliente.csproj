@@ -58,9 +58,11 @@
     <Compile Include="Enviador\BaseEnviadorArquivo.cs" />
     <Compile Include="Enviador\EnviadorArquivo.cs" />
     <Compile Include="Enviador\EnviadorImagem.cs" />
+    <Compile Include="EnviarArquivoUtil.cs" />
     <Compile Include="EnviarImagemUtil.cs" />
     <Compile Include="Extensao\IImagemExtensao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilidade\ServicoArquivoUtil.cs" />
     <Compile Include="Utilidade\ServicoImagemClienteUtil.cs" />
     <Compile Include="Utilidade\ServicoArquivoClienteUtil.cs" />
   </ItemGroup>

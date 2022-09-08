@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur;
-using Snebur.Utilidade;
-using Snebur.Dominio;
+﻿using Snebur.Dominio.Atributos;
 using System.Reflection;
-using Snebur.Dominio.Atributos;
 
 namespace Snebur.AcessoDados
 {
     public class RelacaoAbertaColecao : BaseRelacaoAberta
     {
-		#region Campos Privados
+        #region Campos Privados
 
-		#endregion
+        #endregion
 
         public EstruturaConsulta EstruturaConsulta { get; set; } = new EstruturaConsulta();
 

@@ -1,12 +1,7 @@
-﻿using System;
+﻿using Snebur.AcessoDados.Estrutura;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur;
-using Snebur.Utilidade;
-using Snebur.Dominio;
-using Snebur.AcessoDados.Estrutura;
 
 namespace Snebur.AcessoDados.Mapeamento
 {
@@ -29,7 +24,7 @@ namespace Snebur.AcessoDados.Mapeamento
                                               ) :
                                               base(mapeamentoConsulta,
                                                    apelidoEntidadeMapeada, String.Format("[{0}].[{1}]", estruturaEntidade.Schema, estruturaEntidade.NomeTabela))
-                                                   
+
         {
             this.EstruturaEntidade = estruturaEntidade;
             this.EstruturasEntidadeMapeadaBase = new List<EstruturaEntidadeApelidoBase>();
@@ -47,7 +42,7 @@ namespace Snebur.AcessoDados.Mapeamento
         {
             if (this.EstruturasEntidadeMapeadaBase.Count() > 0)
             {
-                return this.EstruturasEntidadeMapeadaBase.Where(x=> x.EstruturaEntidade.EstruturaEntidadeBase == null).Single();
+                return this.EstruturasEntidadeMapeadaBase.Where(x => x.EstruturaEntidade.EstruturaEntidadeBase == null).Single();
             }
             return this;
         }

@@ -15,7 +15,7 @@
                     {
                         migration.Migrar();
                     }
-                     
+
                     GerenciadorMigracao.Inicializado = true;
                 }
             }

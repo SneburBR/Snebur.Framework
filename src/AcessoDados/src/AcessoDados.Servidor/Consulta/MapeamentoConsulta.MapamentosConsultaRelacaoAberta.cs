@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur;
+﻿using Snebur.AcessoDados.Estrutura;
 using Snebur.Utilidade;
-using Snebur.Dominio;
-using Snebur.AcessoDados.Estrutura;
-using Snebur.AcessoDados.Dominio;
+using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace Snebur.AcessoDados.Mapeamento
@@ -35,12 +29,12 @@ namespace Snebur.AcessoDados.Mapeamento
                     {
                         var mapeamentoRelacaoAberta = this.RetornarNovoMapeamentoConsultaRelacaoAberta(mapeamentoAtual, nomePropriedade, relacaoAberta);
 
-                        if (System.Diagnostics.Debugger.IsAttached)
+                        if (DebugUtil.IsAttached)
                         {
                             //validação de rotina
                             if (mapeamentoRelacaoAberta.EstruturaRelacao.Propriedade.Name != nomePropriedade)
                             {
-                                throw new Exception("O nome da propriedade é diferenca relacação mapaeamento ");
+                                throw new Exception("O nome da propriedade é diferença relação mapeamento ");
                             }
                         }
                         mapeamentoAtual.MapeamentosRelacaoAberta.Add(nomePropriedade, mapeamentoRelacaoAberta);
@@ -69,7 +63,7 @@ namespace Snebur.AcessoDados.Mapeamento
                                                               this.ConexaoDB,
                                                               mapeamentoConsultaPai,
                                                               estruturaRelacaoPai,
-                                                              relacaoAberta, 
+                                                              relacaoAberta,
                                                               this.Contexto);
             }
             if (estruturaRelacao is EstruturaRelacaoUmUm)
@@ -93,7 +87,7 @@ namespace Snebur.AcessoDados.Mapeamento
                                                                       this.ConexaoDB,
                                                                       mapeamentoConsultaPai,
                                                                       estruturaRelacaoUmUmReversa,
-                                                                      relacaoAberta, 
+                                                                      relacaoAberta,
                                                                       this.Contexto);
             }
             if (estruturaRelacao is EstruturaRelacaoFilhos estruturaRelacaoFilhos)

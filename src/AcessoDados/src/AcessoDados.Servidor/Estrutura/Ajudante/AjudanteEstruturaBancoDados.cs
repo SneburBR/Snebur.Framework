@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Snebur.Dominio;
+using Snebur.Dominio.Atributos;
+using Snebur.Utilidade;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using Snebur.Dominio;
-using Snebur.Dominio.Atributos;
-using Snebur.Utilidade;
 
 namespace Snebur.AcessoDados.Estrutura
 {
@@ -38,16 +38,16 @@ namespace Snebur.AcessoDados.Estrutura
             return atributoTable.Schema;
         }
 
-        internal static List<PropertyInfo> RetornarPropriedadesCampos(Type tipoEntidade )
+        internal static List<PropertyInfo> RetornarPropriedadesCampos(Type tipoEntidade)
         {
-            return EntidadeUtil.RetornarPropriedadesCampos(tipoEntidade, EnumFiltroPropriedadeCampo.IgnorarTipoBase | 
+            return EntidadeUtil.RetornarPropriedadesCampos(tipoEntidade, EnumFiltroPropriedadeCampo.IgnorarTipoBase |
                                                                          EnumFiltroPropriedadeCampo.IgnorarChavePrimaria);
         }
 
         internal static string RetornarSchema(Type tipo)
         {
             var atributoTable = (TabelaAttribute)tipo.GetCustomAttribute(typeof(TabelaAttribute), false);
-            if(atributoTable == null)
+            if (atributoTable == null)
             {
                 throw new Exception($"O atriburo {nameof(TabelaAttribute)} não foi encontrado no tipo {tipo.RetornarCaminhoTipo()}");
             }
@@ -116,7 +116,10 @@ namespace Snebur.AcessoDados.Estrutura
             return resultado;
         }
 
-        internal static PropertyInfo RetornarPropriedadeRelacao(Type tipoEntidade, Type tipoPropriedadeRelacao, EnumTipoRelacao tipoRelacaoEnum, bool ignorarPropridadesClasseBase = true)
+        internal static PropertyInfo RetornarPropriedadeRelacao(Type tipoEntidade,
+                                                                Type tipoPropriedadeRelacao,
+                                                                EnumTipoRelacao tipoRelacaoEnum,
+                                                                bool ignorarPropridadesClasseBase = true)
         {
             var propriedades = ReflexaoUtil.RetornarPropriedades(tipoEntidade, ignorarPropridadesClasseBase);
             switch (tipoRelacaoEnum)
@@ -149,7 +152,7 @@ namespace Snebur.AcessoDados.Estrutura
                 {
                     throw new Erro($"A propriedade relação não foi encontrada,  Tipo dae entidade : '{tipoEntidade.Name}', " +
                                   $" Tipo da propriedade propriedade  relação : {tipoPropriedadeRelacao.Name} ," +
-                                  $" Tipo da relacao : { EnumUtil.RetornarDescricao(tipoRelacaoEnum)} ");
+                                  $" Tipo da relacao : {EnumUtil.RetornarDescricao(tipoRelacaoEnum)} ");
                 }
                 else
                 {
@@ -218,7 +221,7 @@ namespace Snebur.AcessoDados.Estrutura
 
         internal static List<PropertyInfo> RetornarPropriedadesCamposTipoComplexo(Type tipoTipoComplexo)
         {
-            var propriedadesCampo =AjudanteEstruturaBancoDados.RetornarPropriedadesCampos(tipoTipoComplexo);
+            var propriedadesCampo = AjudanteEstruturaBancoDados.RetornarPropriedadesCampos(tipoTipoComplexo);
             return propriedadesCampo;
         }
         #endregion

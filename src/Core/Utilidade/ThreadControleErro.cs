@@ -28,7 +28,7 @@ namespace Snebur.Utilidade
             }
             catch (Exception ex)
             {
-                if (!System.Diagnostics.Debugger.IsAttached)
+                if (!DebugUtil.IsAttached)
                 {
                     var mensagem = $"Erro na thread {this.NomeThread}";
                     LogUtil.ErroAsync(new Exception(mensagem, ex));
@@ -39,6 +39,6 @@ namespace Snebur.Utilidade
                 this.Acao = null;
             }
         }
-      
+
     }
 }

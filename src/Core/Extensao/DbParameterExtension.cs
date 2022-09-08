@@ -1,6 +1,6 @@
 ﻿namespace Snebur.Extensao
 {
-    class DbParameterExtension
+    internal class DbParameterExtension
     {
     }
 }

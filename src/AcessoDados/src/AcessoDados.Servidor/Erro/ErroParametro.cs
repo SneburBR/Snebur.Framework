@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 
 namespace Snebur.AcessoDados
 {
-    public class ErroParametro: ErroAcessoDados
+    public class ErroParametro : ErroAcessoDados
     {
         public ErroParametro(string mensagem = "",
                               Exception erroInterno = null,

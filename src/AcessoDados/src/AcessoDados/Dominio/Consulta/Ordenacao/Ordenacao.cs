@@ -1,21 +1,17 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
-using Snebur.Dominio.Atributos;
-using Snebur.Dominio;
+﻿using Snebur.Dominio;
 
 namespace Snebur.AcessoDados
 {
-    public class Ordenacao : BaseAcessoDados {
+    public class Ordenacao : BaseAcessoDados
+    {
 
-		#region Campos Privados
+        #region Campos Privados
 
         private string _caminhoPropriedade;
         private EnumSentidoOrdenacao _sentidoOrdenacaoEnum;
 
 
-		#endregion
+        #endregion
 
         public string CaminhoPropriedade { get => this.RetornarValorPropriedade(this._caminhoPropriedade); set => this.NotificarValorPropriedadeAlterada(this._caminhoPropriedade, this._caminhoPropriedade = value); }
 

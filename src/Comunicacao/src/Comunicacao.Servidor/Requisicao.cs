@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Snebur.Dominio;
+using Snebur.Reflexao;
+using Snebur.Seguranca;
+using Snebur.Utilidade;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Web;
-using Snebur.Dominio;
-using Snebur.Reflexao;
-using Snebur.Seguranca;
-using Snebur.Utilidade;
 
 namespace Snebur.Comunicacao
 {

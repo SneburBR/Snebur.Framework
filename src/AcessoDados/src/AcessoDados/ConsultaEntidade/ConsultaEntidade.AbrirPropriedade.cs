@@ -1,15 +1,15 @@
-﻿using System;
+﻿using Snebur.Dominio;
+using Snebur.Utilidade;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Snebur.Dominio;
-using Snebur.Utilidade;
 
 namespace Snebur.AcessoDados
 {
     public partial class ConsultaEntidade<TEntidade> where TEntidade : IEntidade
     {
-        public ConsultaEntidade<TEntidade> AbrirPropriedade<TPropriedade>(Expression<Func<TEntidade, TPropriedade>> expresssao)  
+        public ConsultaEntidade<TEntidade> AbrirPropriedade<TPropriedade>(Expression<Func<TEntidade, TPropriedade>> expresssao)
         {
             return this.AbrirPropriedade((Expression)expresssao);
         }
@@ -19,7 +19,7 @@ namespace Snebur.AcessoDados
             return this.AbrirPropriedade((Expression)expresssao);
         }
 
-        public ConsultaEntidade<TEntidade> AbrirPropriedades<TPropriedade>(params Expression<Func<TEntidade, TPropriedade>>[] expressoes)  
+        public ConsultaEntidade<TEntidade> AbrirPropriedades<TPropriedade>(params Expression<Func<TEntidade, TPropriedade>>[] expressoes)
         {
             return this.AbrirPropriedades(expressoes.Cast<Expression>());
         }

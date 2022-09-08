@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Snebur.Comunicacao;
+using Snebur.Dominio;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Snebur.Comunicacao;
-using Snebur.Dominio;
 
 namespace Snebur.AcessoDados.Cliente
 {

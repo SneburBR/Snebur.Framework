@@ -1,12 +1,5 @@
-﻿using System;
+﻿using Snebur.AcessoDados.Estrutura;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur;
-using Snebur.Utilidade;
-using Snebur.Dominio;
-using Snebur.AcessoDados.Estrutura;
 
 namespace Snebur.AcessoDados.Mapeamento
 {
@@ -14,7 +7,7 @@ namespace Snebur.AcessoDados.Mapeamento
     {
 
         internal SortedSet<long> Ids { get; }
-        
+
         internal FiltroMapeamentoIds(BaseFiltroMapeamento filtroMapeamentoBase,
                                    SortedSet<long> ids) : base(filtroMapeamentoBase)
         {

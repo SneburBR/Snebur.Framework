@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur;
+﻿using Snebur.Dominio;
+using Snebur.Reflexao;
 using Snebur.Utilidade;
-using Snebur.Dominio;
+using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
-using Snebur.Reflexao;
-using Snebur.Dominio.Atributos;
 
 namespace Snebur.AcessoDados.Ajudantes
 {

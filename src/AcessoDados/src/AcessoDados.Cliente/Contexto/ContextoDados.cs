@@ -1,23 +1,23 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Snebur.AcessoDados.Cliente;
+﻿using Snebur.AcessoDados.Cliente;
 using Snebur.Comunicacao;
 using Snebur.Dominio;
 using Snebur.Utilidade;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Snebur.AcessoDados
 {
-    public abstract class ContextoDados : __BaseContextoDados, IBaseServico, IServicoDados
+    public abstract class BaseContextoDados : __BaseContextoDados, IBaseServico, IServicoDados
     {
-        private BaseServicoDadosCliente ServicoDados { get; set; }
+        private BaseServicoDadosCliente ServicoDados { get; }
 
-        public ContextoDados() : base()
+        public BaseContextoDados() : base()
         {
             this.ServicoDados = this.RetornarServicoDadosCliente();
         }
-         
+
         #region IServicoDados
 
         public override object RetornarValorScalar(EstruturaConsulta estruturaConsulta)
@@ -98,7 +98,7 @@ namespace Snebur.AcessoDados
             return this.ServicoDados.Excluir(entidades, relacoesEmCascata);
         }
 
-       
+
 
         //public override DateTime RetornarDataHora(bool utc = true)
         //{
@@ -231,7 +231,7 @@ namespace Snebur.AcessoDados
         }
 
         #endregion
- 
+
         #region IBaseServico
 
         public override bool Ping()

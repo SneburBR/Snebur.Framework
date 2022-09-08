@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using System.Web.UI;
 
 namespace Snebur.Utilidade
 {
@@ -14,14 +16,19 @@ namespace Snebur.Utilidade
 
         #region Arquivos
 
-        public static bool DeletarArquivo(FileInfo fi, bool ignorarErro = false, bool forcar = false)
+        public static Task<bool> DeletarArquivoAsync(string caminho, bool ignorarErro = false, bool isForcar = false)
         {
-            return DeletarArquivo(fi.FullName, ignorarErro, forcar);
+            return Task.Factory.StartNew(() => DeletarArquivo(caminho, ignorarErro, isForcar));
         }
 
-        public static bool DeletarArquivo(string caminho, bool ignorarErro = false, bool forcar = false)
+        public static bool DeletarArquivo(FileInfo fi, bool ignorarErro = false, bool isForcar = false)
         {
-            return ArquivoUtil.DeletarArquivo(caminho, ignorarErro, forcar, 0);
+            return DeletarArquivo(fi.FullName, ignorarErro, isForcar);
+        }
+
+        public static bool DeletarArquivo(string caminho, bool ignorarErro = false, bool isForcar = false)
+        {
+            return ArquivoUtil.DeletarArquivo(caminho, ignorarErro, isForcar, 0);
         }
 
         public static bool SalvarStream(Stream stream,
@@ -182,7 +189,11 @@ namespace Snebur.Utilidade
             ArquivoUtil.CopiarArquivo(caminhoOrigem, caminhoDestinio, sobreEscrever, ignorarErroSobreEscrever, false);
         }
 
-        public static void CopiarArquivo(string caminhoOrigem, string caminhoDestinio, bool sobreEscrever, bool ignorarErroSobreEscrever, bool ignorarErroNaoExisteArquivoOrigem)
+        public static void CopiarArquivo(string caminhoOrigem,
+                                         string caminhoDestinio,
+                                         bool sobreEscrever,
+                                         bool ignorarErroSobreEscrever,
+                                         bool ignorarErroNaoExisteArquivoOrigem)
         {
             if (!File.Exists(caminhoOrigem))
             {
@@ -222,12 +233,28 @@ namespace Snebur.Utilidade
             {
                 File.Copy(caminhoOrigem, caminhoDestinio);
             }
-            catch (Exception erro)
+            catch
             {
-                if (!ignorarErroSobreEscrever)
+                CopiarUsandoFileStream(caminhoOrigem, caminhoDestinio, true);
+            }
+        }
+
+        public static bool CopiarUsandoFileStream(string caminhoOrigem,
+                                                  string caminhoDestinio, bool isIgnorarErro)
+        {
+            try
+            {
+                DeletarArquivo(caminhoDestinio, false, true);
+                StreamUtil.CopiarArquivo(caminhoOrigem, caminhoDestinio);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                if (isIgnorarErro)
                 {
-                    throw new Erro(String.Format("Não foi pssivel copiar o arquivo {0}", caminhoOrigem), erro);
+                    return false;
                 }
+                throw new Erro($"Não foi pssivel copiar o arquivo {caminhoOrigem} para{caminhoDestinio}", ex);
             }
         }
 
@@ -419,12 +446,29 @@ namespace Snebur.Utilidade
             }
         }
 
-        public static void SalvarArquivoTexto(string caminhoArquivo, string texto, bool utf8 = true)
+        public static Task SalvarArquivoTextoAsync(string caminhoArquivo,
+                                                   string texto,
+                                                   Encoding encoding = null)
         {
-            SalvarArquivoTexto(caminhoArquivo, texto, utf8, 0, false);
+            return Task.Factory.StartNew(() => SalvarArquivoTexto(caminhoArquivo, texto, encoding));
         }
 
-        private static void SalvarArquivoTexto(string caminhoArquivo, string texto, bool utf8, int tentatava, bool temmporario)
+        public static void SalvarArquivoTexto(string caminhoArquivo, string texto)
+        {
+            SalvarArquivoTexto(caminhoArquivo, texto, Encoding.UTF8);
+        }
+        public static void SalvarArquivoTexto(string caminhoArquivo,
+                                              string texto,
+                                              Encoding encoding)
+        {
+            SalvarArquivoTexto(caminhoArquivo, texto, encoding, 0, false);
+        }
+
+        private static void SalvarArquivoTexto(string caminhoArquivo,
+                                               string texto,
+                                               Encoding encoding,
+                                               int tentatava,
+                                               bool temmporario)
         {
             var fi = new FileInfo(caminhoArquivo);
             DiretorioUtil.CriarDiretorio(fi.Directory.FullName);
@@ -434,13 +478,7 @@ namespace Snebur.Utilidade
                 {
                     DeletarArquivo(caminhoArquivo);
                 }
-                var encoding = utf8 ? Encoding.UTF8 : Encoding.Default;
-                //if (utf8)
-                //{
-                //    byte[] bytes = Encoding.Default.GetBytes(texto);
-                //    texto = Encoding.UTF8.GetString(bytes);
-                //}
-                File.WriteAllText(caminhoArquivo, texto, encoding);
+                File.WriteAllText(caminhoArquivo, texto, encoding ?? Encoding.UTF8);
             }
             catch (Exception)
             {
@@ -464,7 +502,7 @@ namespace Snebur.Utilidade
                     }
                 }
                 System.Threading.Thread.Sleep(1000);
-                SalvarArquivoTexto(caminhoArquivo, texto, utf8, tentatava += 1, temmporario);
+                SalvarArquivoTexto(caminhoArquivo, texto, encoding, tentatava += 1, temmporario);
             }
         }
 

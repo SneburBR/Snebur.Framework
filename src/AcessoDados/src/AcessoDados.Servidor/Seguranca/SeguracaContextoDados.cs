@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur.AcessoDados.Estrutura;
+﻿using Snebur.AcessoDados.Estrutura;
 using Snebur.Dominio;
 using Snebur.Dominio.Atributos;
 using Snebur.Linq;
 using Snebur.Utilidade;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Snebur.AcessoDados.Seguranca
 {
@@ -269,7 +267,7 @@ namespace Snebur.AcessoDados.Seguranca
                 LogSegurancaUtil.LogPermissaoNegada(usuario, usuarioAvalista, autorizacoesNegada);
                 return EnumPermissao.Negado;
             }
-            throw new ErroNaoSuportado($"A permissão não é suportada { permissao.ToString() } ");
+            throw new ErroNaoSuportado($"A permissão não é suportada {permissao.ToString()} ");
         }
 
         private EnumPermissao RetornarResultadoPermissao(List<AutorizacaoEntidade> autorizacoes)
@@ -302,14 +300,14 @@ namespace Snebur.AcessoDados.Seguranca
                 this.VarrerEntidade(dicionario, entidade, entidadesAnalisadas, operacao);
             }
         }
-       
+
         private void VarrerEntidade(Dictionary<string, List<Entidade>> dicionario, IEntidade entidade, HashSet<Entidade> entidadesAnalisadas, EnumOperacao operacao)
         {
             if (entidadesAnalisadas.Contains(entidade))
             {
                 return;
             }
-            if(this.AdicionarEntidadeDicionario(entidade, operacao))
+            if (this.AdicionarEntidadeDicionario(entidade, operacao))
             {
                 if (!dicionario.ContainsKey(entidade.__NomeTipoEntidade))
                 {

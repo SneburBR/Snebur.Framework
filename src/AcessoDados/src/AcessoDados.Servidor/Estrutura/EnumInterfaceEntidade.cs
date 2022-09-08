@@ -41,6 +41,6 @@
         IVideo = 34359738368,
         IAlteracaoPropriedadeGenerica = 68719476736,
         IHistoricoManutencao = 137438953472
-        
+
     }
 }

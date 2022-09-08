@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur;
-using Snebur.Utilidade;
+﻿using Snebur.AcessoDados.Estrutura;
+using Snebur.AcessoDados.Seguranca;
 using Snebur.Dominio;
+using Snebur.Linq;
+using Snebur.Reflexao;
+using Snebur.Utilidade;
+using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
-using Snebur.Dominio.Atributos;
-using Snebur.AcessoDados.Estrutura;
-using Snebur.Reflexao;
-using Snebur.AcessoDados.Seguranca;
-using Snebur.Linq;
 
 namespace Snebur.AcessoDados.Mapeamento
 {
@@ -85,9 +80,9 @@ namespace Snebur.AcessoDados.Mapeamento
                     if (estruturaColuna.IsTipoComplexo)
                     {
                         var tipoComplexo = estruturaColuna.EstruturaCampo.PropriedadeTipoComplexo.GetValue(entidade);
-                        if(tipoComplexo == null)
+                        if (tipoComplexo == null)
                         {
-                            throw new Erro($"O a propriedade { estruturaColuna.EstruturaCampo.PropriedadeTipoComplexo.Name} <{ estruturaColuna.EstruturaCampo.PropriedadeTipoComplexo.PropertyType.Name}> na entidade {mapeamento.TipoEntidade.Name}  não foi instanciada");
+                            throw new Erro($"O a propriedade {estruturaColuna.EstruturaCampo.PropriedadeTipoComplexo.Name} <{estruturaColuna.EstruturaCampo.PropriedadeTipoComplexo.PropertyType.Name}> na entidade {mapeamento.TipoEntidade.Name}  não foi instanciada");
                         }
                         estruturaColuna.Propriedade.SetValue(tipoComplexo, valorPropriedade);
                     }

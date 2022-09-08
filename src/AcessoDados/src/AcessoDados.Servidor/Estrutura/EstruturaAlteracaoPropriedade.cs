@@ -1,5 +1,5 @@
-﻿using System.Reflection;
-using Snebur.Dominio.Atributos;
+﻿using Snebur.Dominio.Atributos;
+using System.Reflection;
 
 namespace Snebur.AcessoDados.Estrutura
 {
@@ -20,13 +20,13 @@ namespace Snebur.AcessoDados.Estrutura
             this.EstruturaCampo = estruturaCampo;
             this.Atributo = atributo;
 
-            
+
         }
 
-        internal EstruturaAlteracaoPropriedade(PropertyInfo propriedade, 
-                                             EstruturaEntidade estruturaEntidade, 
-                                             EstruturaTipoComplexo estrturaTipoComplexo, 
-                                             NotificarAlteracaoPropriedadeAttribute atributo) : 
+        internal EstruturaAlteracaoPropriedade(PropertyInfo propriedade,
+                                             EstruturaEntidade estruturaEntidade,
+                                             EstruturaTipoComplexo estrturaTipoComplexo,
+                                             NotificarAlteracaoPropriedadeAttribute atributo) :
                                              base(propriedade, estruturaEntidade)
         {
             this.Atributo = atributo;

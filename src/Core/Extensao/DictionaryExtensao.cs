@@ -14,6 +14,20 @@ namespace System
             return default(TValue);
         }
 
+        public static void AddOrUpdate<TKey, TValue>(this Dictionary<TKey, TValue> dicionario, 
+                                       TKey key,
+                                       TValue value)
+        {
+            if (dicionario.ContainsKey(key))
+            {
+                dicionario[key] = value;
+            }
+            else
+            {
+                dicionario.Add(key, value);
+            }
+        }
+
         public static TValue GetValueOrDefault<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> dicionario, TKey key)
         {
             if (dicionario.TryGetValue(key, out TValue valor))

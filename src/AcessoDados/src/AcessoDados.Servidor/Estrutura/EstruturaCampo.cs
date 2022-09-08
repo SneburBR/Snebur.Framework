@@ -1,9 +1,9 @@
-﻿using System;
-using System.Data;
-using System.Reflection;
-using Snebur.Dominio.Atributos;
+﻿using Snebur.Dominio.Atributos;
 using Snebur.Reflexao;
 using Snebur.Utilidade;
+using System;
+using System.Data;
+using System.Reflection;
 
 namespace Snebur.AcessoDados.Estrutura
 {
@@ -41,7 +41,7 @@ namespace Snebur.AcessoDados.Estrutura
 
         internal bool IsTipoComplexo { get; } = false;
 
-        internal bool IsSomenteLeitura { get;  }
+        internal bool IsSomenteLeitura { get; }
 
         internal bool IsValorFuncaoServidor { get; private set; }
 
@@ -117,7 +117,7 @@ namespace Snebur.AcessoDados.Estrutura
             this.IsFormatarSomenteNumero = this.RetornarIsFormatarSomenteNumero();
             this.ValorFuncaoServidor = this.RetornarValorParametroServidor();
 
-            if(this.IsFormatarSomenteNumero && this.Propriedade.PropertyType != typeof(string))
+            if (this.IsFormatarSomenteNumero && this.Propriedade.PropertyType != typeof(string))
             {
                 throw new Erro($"O atributo {nameof(FormatarSomenteNumerosAttribute)} é suportado apenas para propriedade do tipo {nameof(String)}");
             }

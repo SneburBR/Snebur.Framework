@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur;
-using Snebur.Utilidade;
-using Snebur.Dominio;
-using Snebur.AcessoDados.Estrutura;
+﻿using Snebur.AcessoDados.Estrutura;
+using System;
 
 namespace Snebur.AcessoDados.Mapeamento
 {
@@ -18,9 +11,9 @@ namespace Snebur.AcessoDados.Mapeamento
         internal EstruturaEntidadeApelidoBase(BaseMapeamentoConsulta mapeamentoConsutla,
                                               string apelidoEntidadeMapeada,
                                               EstruturaEntidadeApelido estruturaEntidadeMapeadaPai,
-                                              EstruturaEntidade estruturaEntidade ) :
+                                              EstruturaEntidade estruturaEntidade) :
                                               base(mapeamentoConsutla,
-                                                   apelidoEntidadeMapeada, 
+                                                   apelidoEntidadeMapeada,
                                                    estruturaEntidade)
         {
             this.EstruturaEntidadeMapeadaPai = estruturaEntidadeMapeadaPai;

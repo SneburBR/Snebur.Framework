@@ -1,10 +1,6 @@
-﻿using Snebur.AcessoDados.Ajudantes;
-using Snebur.Dominio;
-using Snebur.Utilidade;
+﻿using Snebur.Dominio;
 using System;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Collections.Generic;
 
 namespace Snebur.AcessoDados
 {
@@ -65,7 +61,7 @@ namespace Snebur.AcessoDados
             lista.AddRange(resultadoConsulta.Entidades.Cast<TEntidade>());
             return lista;
         }
-         
+
 
         public TEntidade Single()
         {

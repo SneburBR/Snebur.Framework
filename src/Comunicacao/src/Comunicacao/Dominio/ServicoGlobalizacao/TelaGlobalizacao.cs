@@ -5,12 +5,12 @@ namespace Snebur.Comunicacao
     public class TelaGlobalizacao : BaseViewModel
     {
 
-		#region Campos Privados
+        #region Campos Privados
 
         private string _namespaceGlobalizacao;
         private string _jsonBase54;
 
-		#endregion
+        #endregion
 
         public string NamespaceGlobalizacao { get => this.RetornarValorPropriedade(this._namespaceGlobalizacao); set => this.NotificarValorPropriedadeAlterada(this._namespaceGlobalizacao, this._namespaceGlobalizacao = value); }
 

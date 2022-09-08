@@ -1,19 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur;
-using Snebur.Utilidade;
-using Snebur.Dominio;
-using Snebur.Dominio.Atributos;
-using System.Drawing;
+﻿using Snebur.Dominio;
 
 namespace Snebur.ServicoArquivo
 {
     public class ImagemUtil
     {
-       
+
 
         public static Dimensao RetornaDimencaoMaximaProporcional(int larguraImagem, int alturaImagem, int larguraMaxima, int alturaMaxima)
         {
@@ -61,6 +52,6 @@ namespace Snebur.ServicoArquivo
             return new Dimensao(novaLargura, novaAltura);
         }
 
-     
+
     }
 }

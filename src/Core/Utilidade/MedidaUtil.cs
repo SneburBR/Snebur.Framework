@@ -135,7 +135,7 @@ namespace Snebur.Utilidade
                 return MedidaUtil.DPI_IMPRESSAO_PADRAO;
             }
             var dpi = MedidaUtil.DPI_IMPRESSAO_PADRAO * escala;
-            if (Debugger.IsAttached)
+            if (DebugUtil.IsAttached)
             {
                 var larguraPixelsNormalizada = MedidaUtil.RetornarPixelsVisualizacao(dimensao.Largura, dpi);
                 var alturaPixelsNormalizada = MedidaUtil.RetornarPixelsVisualizacao(dimensao.Altura, dpi);

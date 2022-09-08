@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Snebur.Comunicacao;
+using Snebur.Servicos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Snebur.Comunicacao;
-using Snebur.Servicos;
 
 namespace Snebur.AcessoDados.Comunicacao
 {

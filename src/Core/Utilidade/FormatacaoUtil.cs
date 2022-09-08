@@ -56,7 +56,7 @@ namespace Snebur.Utilidade
                 nomeArquivoFormatado = nomeArquivoFormatado.Replace("  ", " ");
             }
             nomeArquivoFormatado = nomeArquivoFormatado.Replace(" ", "_");
-            nomeArquivoFormatado = TextoUtil.RemoverAcentos(nomeArquivoFormatado.ToLower());
+            nomeArquivoFormatado = TextoUtil.RemoverAcentos(nomeArquivoFormatado);
             nomeArquivoFormatado = TextoUtil.RemoverCaracteresEspecial(nomeArquivoFormatado, '_');
 
             nomeArquivoFormatado = TextoUtil.RemoverCaracteres(nomeArquivoFormatado, Path.GetInvalidFileNameChars());

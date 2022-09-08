@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Snebur.Utilidade;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,7 +14,7 @@ namespace Snebur.Comunicacao
         private static readonly ConcurrentDictionary<string, ConteudoCache> Caches = new ConcurrentDictionary<string, ConteudoCache>();
 
 #if DEBUG
-        private static bool __isManterCacheDebug = !Debugger.IsAttached || true;
+        private static bool __isManterCacheDebug = !DebugUtil.IsAttached || true;
 #else
         private static bool __isManterCacheDebug = true;
 #endif
@@ -50,7 +51,7 @@ namespace Snebur.Comunicacao
             if (this.IsManterCache && __isManterCacheDebug &&
                 !this.OperacoesIgnorarCaches.Contains(requisicao.Operacao))
             {
-               
+
                 var chave = this.RetornarChaveCache(requisicao);
                 if (Caches.TryGetValue(chave, out var conteudo))
                 {

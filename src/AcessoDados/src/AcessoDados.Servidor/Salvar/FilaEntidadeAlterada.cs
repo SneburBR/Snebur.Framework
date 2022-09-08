@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Snebur.Utilidade;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Snebur.Utilidade;
 
 namespace Snebur.AcessoDados.Servidor.Salvar
 {
@@ -50,7 +50,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             {
                 var detalhesRestante = String.Join(System.Environment.NewLine, this.Restantes.Select(x =>
                 {
-                    return $"{x.Entidade.__NomeTipoEntidade} - { x.Entidade.Id} - {x.Entidade.GetHashCode()}";
+                    return $"{x.Entidade.__NomeTipoEntidade} - {x.Entidade.Id} - {x.Entidade.GetHashCode()}";
                 }));
 
                 throw new Erro(String.Format("Não foi encontrada a proxima entidade alterada da relacao depedente  Restante: {0}", detalhesRestante));

@@ -15,7 +15,7 @@ namespace Snebur.ServicoArquivo
 #if NET50
                 ip = httpContext.Connection.RemoteIpAddress.ToString();
 #else
-                    ip = httpContext.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+                ip = httpContext.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
                 if (!ValidacaoUtil.IsIp(ip))
                 {
                     ip = httpContext.Request.ServerVariables["REMOTE_ADDR"];

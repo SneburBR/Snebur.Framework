@@ -15,7 +15,7 @@ namespace Snebur.Dominio.Atributos
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            if (!Debugger.IsAttached)
+            if (!DebugUtil.IsAttached)
             {
                 return ValidationResult.Success;
             }

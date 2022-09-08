@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Snebur.Comunicacao;
+using Snebur.Dominio;
+using Snebur.Seguranca;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Web;
-using Snebur.Comunicacao;
-using Snebur.Dominio;
-using Snebur.Seguranca;
 
 #if NET50
 using Microsoft.AspNetCore.Http;
@@ -56,7 +56,12 @@ namespace Snebur.ServicoArquivo
             this.FuncaoNormalizadorOrigem = funcaoNormalizadorOrigem;
         }
 
-#region  IComunicacaoServicoArquivo
+        protected override string RetornarNomeManipulador()
+        {
+            return base.RetornarNomeManipulador();
+        }
+
+        #region  IComunicacaoServicoArquivo
 
         public bool ExisteIdArquivo(long idArquivo)
         {
@@ -93,9 +98,9 @@ namespace Snebur.ServicoArquivo
             object[] parametros = { idArquivo, progresso };
             return this.ChamarServico<bool>(MethodBase.GetCurrentMethod(), parametros);
         }
-#endregion
+        #endregion
 
-#region Métodos protedidos
+        #region Métodos protedidos
 
         protected override InformacaoSessaoUsuario RetornarInformacaoSessaoUsuario()
         {
@@ -112,12 +117,12 @@ namespace Snebur.ServicoArquivo
                 return CredencialUsuarioComunicacaoServicoArquivo.UsuarioComunicacaoServicoArquivo;
             }
         }
-#endregion
+        #endregion
 
-#region Credenciais
+        #region Credenciais
 
         protected override CredencialServico CredencialServico => CredencialComunicacaoServicoArquivo.ServicoArquivo;
 
-#endregion
+        #endregion
     }
 }

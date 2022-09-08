@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data.Common;
 using Snebur.AcessoDados.Estrutura;
 
@@ -56,7 +55,7 @@ namespace Snebur.AcessoDados
         }
 
 
-        internal protected override DbParameter RetornarNovoParametro(EstruturaCampo estruturaCampo, string nomeParametro,  object valor)
+        internal protected override DbParameter RetornarNovoParametro(EstruturaCampo estruturaCampo, string nomeParametro, object valor)
         {
             var parametro = new SqlParameter(nomeParametro, estruturaCampo.TipoSql)
             {

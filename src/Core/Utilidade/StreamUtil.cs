@@ -97,6 +97,7 @@ namespace Snebur.Utilidade
             {
                 ArquivoUtil.DeletarArquivo(caminhoArquivo, false, true);
             }
+            DiretorioUtil.CriarDiretorio(Path.GetDirectoryName(caminhoArquivo));
             return new FileStream(caminhoArquivo, FileMode.Create, FileAccess.Write, FileShare.Write);
         }
         public static FileStream CreateOrOpenWrite(string caminhoArquivo, bool isForcar = false)
@@ -150,5 +151,20 @@ namespace Snebur.Utilidade
                 stream.Seek(0, SeekOrigin.Begin);
             }
         }
+
+        public static void CopiarArquivo(string caminhoOrigem, string caminhoDestinio)
+        {
+            if (!File.Exists(caminhoOrigem))
+            {
+                throw new FileNotFoundException(caminhoOrigem);
+            }
+            using (var sr = StreamUtil.OpenRead(caminhoOrigem))
+            using (var sw = StreamUtil.CreateOrOpenWrite(caminhoDestinio))
+            {
+                StreamUtil.SalvarStreamBufferizada(sr, sw);
+            }
+        }
+
+       
     }
 }

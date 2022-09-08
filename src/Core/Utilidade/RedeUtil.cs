@@ -19,7 +19,7 @@ namespace Snebur.Utilidade
 
         public static bool InternetConectada()
         {
-            //if (System.Diagnostics.Debugger.IsAttached)
+            //if (DebugUtil.IsAttached)
             //{
             //    return true;
             //}

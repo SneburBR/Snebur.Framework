@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Snebur.AcessoDados.Estrutura;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Snebur.AcessoDados.Estrutura;
 
 namespace Snebur.AcessoDados
 {

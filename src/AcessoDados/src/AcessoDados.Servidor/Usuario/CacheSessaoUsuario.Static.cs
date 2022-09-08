@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Snebur.Dominio;
+using Snebur.Seguranca;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using Snebur.Dominio;
-using Snebur.Seguranca;
 
 namespace Snebur.AcessoDados
 {
@@ -37,7 +37,7 @@ namespace Snebur.AcessoDados
             return CacheSessaoUsuario.RetornarCacheSessaoUsuarioInterno(contexto, credencial, identificadorSessaoUsuario, informacaoSessaoUsuario);
         }
 
-        public static CacheSessaoUsuario RetornarCacheSessaoUsuario(Guid identificadorSessaoUsuario, 
+        public static CacheSessaoUsuario RetornarCacheSessaoUsuario(Guid identificadorSessaoUsuario,
                                                                      bool isIgnorarErro = false)
         {
             if (CacheSessaoUsuario.CachesSessaoUsuario.ContainsKey(identificadorSessaoUsuario))

@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Snebur.Utilidade;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Snebur.Utilidade;
 
 namespace Snebur.AcessoDados.Estrutura
 {
     internal partial class EstruturaEntidade
     {
-     
+
 
         internal EstruturaRelacao RetornarEstruturaRelacao(string chave,
                                                            bool incluirEstruuraBase = true,

@@ -147,7 +147,7 @@ namespace Snebur.Utilidade
 
         public void ExecutarComandos(IEnumerable<string> sqls)
         {
-            ExecutarComandos(sqls, null);
+            this.ExecutarComandos(sqls, null);
         }
         /// <summary>
         /// Executa o varios scripts 'sql' transacionado

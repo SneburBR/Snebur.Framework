@@ -1,21 +1,21 @@
-﻿using System;
-using Snebur.Dominio;
+﻿using Snebur.Dominio;
+using System;
 
 namespace Snebur.Comunicacao
 {
     public class ResultadoSessaoUsuarioInvalida : ResultadoChamada
     {
 
-		#region Campos Privados
+        #region Campos Privados
 
 
-		#endregion
+        #endregion
 
         public EnumEstadoSessaoUsuario EstadoSessaoUsuario { get; }
 
         public Guid IdentificadorSessaoUsuario { get; }
 
-        public ResultadoSessaoUsuarioInvalida(EnumEstadoSessaoUsuario estadoSessaoUsuario, 
+        public ResultadoSessaoUsuarioInvalida(EnumEstadoSessaoUsuario estadoSessaoUsuario,
                                               Guid identificadorSessaoUsuario)
         {
             this.EstadoSessaoUsuario = estadoSessaoUsuario;

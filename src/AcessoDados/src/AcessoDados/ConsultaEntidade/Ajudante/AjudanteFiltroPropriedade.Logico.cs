@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur;
-using Snebur.Utilidade;
-using Snebur.Dominio;
 using System.Linq.Expressions;
 
 namespace Snebur.AcessoDados.Ajudantes
@@ -29,7 +22,7 @@ namespace Snebur.AcessoDados.Ajudantes
                 var esquerdaString = esquerda.ToString();
                 var direitoString = direita.ToString();
 
-                if ( IsExpressaoLabda(esquerdaString)  && IsExpressaoLabda(direitoString))
+                if (IsExpressaoLabda(esquerdaString) && IsExpressaoLabda(direitoString))
                 {
                     throw new Erro($"A expressão lambda não é suportada em ambos lados '{esquerdaString}' '{direitoString}'");
                 }
@@ -67,9 +60,9 @@ namespace Snebur.AcessoDados.Ajudantes
             var valorPropriedade = AjudanteFiltroPropriedade.RetornarValorPropriedade(expressaoValorPropreidade);
             var operadorFiltro = AjudanteFiltroPropriedade.RetornarOperadorDoFiltroPropriedade(expressao.NodeType);
 
-            return AjudanteFiltroPropriedade.RetornarFiltroPropriedade(estruturaConsulta, 
+            return AjudanteFiltroPropriedade.RetornarFiltroPropriedade(estruturaConsulta,
                                                                        expressaoPropriedade,
-                                                                       valorPropriedade, 
+                                                                       valorPropriedade,
                                                                        operadorFiltro);
         }
 
@@ -83,19 +76,19 @@ namespace Snebur.AcessoDados.Ajudantes
             if (expressao.NodeType == ExpressionType.MemberAccess)
             {
                 var expressaoInterna = ((MemberExpression)expressao).Expression;
-                if(expressaoInterna == null)
+                if (expressaoInterna == null)
                 {
                     return false;
                 }
 
-                if (expressaoInterna.NodeType == ExpressionType.MemberAccess || 
+                if (expressaoInterna.NodeType == ExpressionType.MemberAccess ||
                     expressaoInterna.NodeType == ExpressionType.Parameter)
                 {
                     return expressaoInterna.GetType().Name != "FieldExpression";
                 }
 
-                
-                if(expressaoInterna.NodeType == ExpressionType.Convert &&
+
+                if (expressaoInterna.NodeType == ExpressionType.Convert &&
                     expressao.ToString() == "Convert(x).Id")
                 {
                     return true;

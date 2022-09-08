@@ -1,8 +1,8 @@
-﻿using System;
-using System.Timers;
-using Snebur.Dominio;
+﻿using Snebur.Dominio;
 using Snebur.Seguranca;
 using Snebur.Utilidade;
+using System;
+using System.Timers;
 
 namespace Snebur.AcessoDados
 {
@@ -40,9 +40,9 @@ namespace Snebur.AcessoDados
         public object BloqueioInicializar = new object();
         public bool IsInicializado = false;
 
-        private CacheSessaoUsuario(BaseContextoDados contexto, 
-                                   Credencial credencial, 
-                                   Guid identificadorSessaoUsuario, 
+        private CacheSessaoUsuario(BaseContextoDados contexto,
+                                   Credencial credencial,
+                                   Guid identificadorSessaoUsuario,
                                    InformacaoSessaoUsuario informacaoSessaoUsuario)
         {
             this.IdentificadorSessaoUsuario = identificadorSessaoUsuario;
@@ -100,7 +100,7 @@ namespace Snebur.AcessoDados
                 //throw new Erro($"Não foi possível retornar o usuário para a credencial  {this.Credencial.IdentificadorUsuario}");
             }
             this.SessaoUsuario = this.AjudanteSessaoUsuario.RetornarSessaoUsuario(this.Usuario, this.IdentificadorSessaoUsuario, this.InformacaoSessaoUsuario);
-          
+
             this.NotificarSessaoUsuarioAtivaInterno();
             this.TimerAtualizarEstado = new Timer(CacheSessaoUsuario.TIMEOUT_ATUALIZAR_ESTADO_SESSAO);
             this.TimerAtualizarEstado.AutoReset = true;

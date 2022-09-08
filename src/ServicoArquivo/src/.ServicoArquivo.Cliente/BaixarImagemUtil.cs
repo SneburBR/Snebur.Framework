@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur.Dominio;
+﻿using Snebur.Dominio;
 using Snebur.Utilidade;
+using System;
+using System.IO;
 
 namespace Snebur.ServicoArquivo.Cliente
 {

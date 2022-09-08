@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Snebur.Utilidade;
+using System;
 
 namespace Snebur.Servicos
 {
@@ -12,7 +13,7 @@ namespace Snebur.Servicos
             }
             catch (Exception)
             {
-                if (System.Diagnostics.Debugger.IsAttached)
+                if (DebugUtil.IsAttached)
                 {
                     throw;
                 }

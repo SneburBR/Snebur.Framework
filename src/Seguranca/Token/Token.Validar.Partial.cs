@@ -1,10 +1,8 @@
-﻿using System;
+﻿using Snebur.Utilidade;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur.Utilidade;
 
 namespace Snebur.Seguranca
 {

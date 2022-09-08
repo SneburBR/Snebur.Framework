@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using Snebur.AcessoDados.Estrutura;
+﻿using Snebur.AcessoDados.Estrutura;
 using Snebur.Dominio;
 using Snebur.Utilidade;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace Snebur.AcessoDados
 {
@@ -18,7 +18,7 @@ namespace Snebur.AcessoDados
         internal List<string> Campos { get; }
         internal List<PropertyInfo> Propriedades { get; }
 
-        internal SqlMigracao(EstruturaEntidade estruturaEntidade, 
+        internal SqlMigracao(EstruturaEntidade estruturaEntidade,
                              List<PropertyInfo> propriedades)
         {
             this.EstruturasCampo = new List<EstruturaCampo>();
@@ -66,7 +66,7 @@ namespace Snebur.AcessoDados
         {
             return String.Format("{0}-{1}({2})", this.GetType().Name, this.EstruturaEntidade.TipoEntidade.Name, String.Join(",", this.Campos));
         }
-        
+
         #region Métodos privados
 
         protected EstruturaCampo RetornarEstruturaCampo(PropertyInfo propriedade)

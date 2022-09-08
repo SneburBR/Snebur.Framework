@@ -1,15 +1,11 @@
 ﻿using Snebur.AcessoDados.Ajudantes;
 using Snebur.Dominio;
+using Snebur.Dominio.Atributos;
 using Snebur.Utilidade;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur.Dominio.Atributos;
 
 namespace Snebur.AcessoDados
 {
@@ -96,7 +92,7 @@ namespace Snebur.AcessoDados
 
             foreach (var p in propriedades)
             {
-                var propriedade = this.NormalizarPropriedadeRelacaoEspecializda(p); 
+                var propriedade = this.NormalizarPropriedadeRelacaoEspecializda(p);
                 propriedadesCaminho.Add(propriedade);
 
                 var caminhoPropriedadeParcial = AjudanteConsultaEntidade.RetornarCaminhoPropriedade(propriedadesCaminho);
@@ -187,10 +183,10 @@ namespace Snebur.AcessoDados
         private PropertyInfo NormalizarPropriedadeRelacaoEspecializda(PropertyInfo propriedade)
         {
             var atributoPropriedadeEspecializada = propriedade.GetCustomAttribute<PropriedadeTSEspecializadaAttribute>();
-            if (atributoPropriedadeEspecializada!= null)
+            if (atributoPropriedadeEspecializada != null)
             {
                 var propridadeEspecializada = propriedade.DeclaringType.GetProperty(atributoPropriedadeEspecializada.NomePropriedade);
-                if(propridadeEspecializada == null)
+                if (propridadeEspecializada == null)
                 {
                     throw new Erro($"A propriedade {propriedade.Name} com especializacao especializada  {atributoPropriedadeEspecializada.NomePropriedade} não foi encontrada,talvez não seja uma relação mapeaada.");
                 }

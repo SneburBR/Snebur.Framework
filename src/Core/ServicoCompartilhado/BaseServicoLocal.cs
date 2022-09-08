@@ -48,7 +48,7 @@ namespace Snebur.Servicos
 
         protected void SalvarLog(string log)
         {
-            if (!System.Diagnostics.Debugger.IsAttached)
+            if (!DebugUtil.IsAttached)
             {
                 ThreadUtil.ExecutarAsync((Action)(() =>
                 {
@@ -77,7 +77,7 @@ namespace Snebur.Servicos
             }
             catch (Exception)
             {
-                if (System.Diagnostics.Debugger.IsAttached)
+                if (DebugUtil.IsAttached)
                 {
                     throw;
                 }

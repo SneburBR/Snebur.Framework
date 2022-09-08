@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Snebur.IO;
+using Snebur.Utilidade;
+using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
-using Snebur.IO;
-using Snebur.Utilidade;
 
 namespace Snebur.Computador
 {
@@ -228,7 +228,7 @@ namespace Snebur.Computador
 
         private void DesconectarDoCompartilhamento(string remoteUnc)
         {
-            int result = WNetCancelConnection2(remoteUnc, 
+            int result = WNetCancelConnection2(remoteUnc,
                                               CONNECT_UPDATE_PROFILE, false);
 
             if (result != NO_ERROR)

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Snebur.AcessoDados.Seguranca;
+using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
-using Snebur.AcessoDados.Seguranca;
 
 namespace Snebur.AcessoDados
 {

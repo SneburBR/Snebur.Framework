@@ -150,12 +150,14 @@
     <Compile Include="Atributos\Validacao\ValidacaoDataPublicacao.cs" />
     <Compile Include="Atributos\Validacao\ValidacaoEmailOuTelefone.cs" />
     <Compile Include="Atributos\Validacao\ValidacaoImagem.cs" />
+    <Compile Include="Atributos\Validacao\ValidacaoIPAttribute.cs" />
     <Compile Include="Atributos\Validacao\ValidacaoPalavraTamanhoAttribute.cs" />
     <Compile Include="Atributos\Validacao\ValidacaoPrimeiroNome.cs" />
     <Compile Include="Atributos\Validacao\ValidacaoNomeCompleto.cs" />
     <Compile Include="Atributos\Validacao\ValidacaoRequericoCondicional.cs" />
     <Compile Include="Atributos\Validacao\ValidacaoFlagsEnumRequerido.cs" />
     <Compile Include="Atributos\Validacao\ValidacaoRequeridoDebug.cs" />
+    <Compile Include="Atributos\Validacao\ValidacaoUrlAttribute.cs" />
     <Compile Include="Atributos\Validacao\ValidacaoVersao.cs" />
     <Compile Include="Comparer\ComparNomePropriedade.cs" />
     <Compile Include="Comparer\IgnorarCasoSensivel.cs" />
@@ -252,6 +254,7 @@
     <Compile Include="Serializacao\Referencia.cs" />
     <Compile Include="ServicoCompartilhado\EnumTipoErroCritico.cs" />
     <Compile Include="Servicos\IServicoUsuario.cs" />
+    <Compile Include="Servicos\IServicoUsuarioAsync.cs" />
     <Compile Include="Servicos\ServicoUsuario\BaseResultadoRecuperarSenha.cs" />
     <Compile Include="Servicos\ServicoUsuario\NovoUsuario.cs" />
     <Compile Include="Servicos\ServicoUsuario\ResultadoAlterarSenha.cs" />
@@ -553,6 +556,7 @@
     <Compile Include="Utilidade\CredencialUtil.cs" />
     <Compile Include="Utilidade\DataFeriadoUtil.cs" />
     <Compile Include="Utilidade\DataHoraUtil.cs" />
+    <Compile Include="Utilidade\DebugUtil.cs" />
     <Compile Include="Utilidade\DimensaoUtil.cs" />
     <Compile Include="Utilidade\DiretorioUtil.cs" />
     <Compile Include="Utilidade\DispensarUtil.cs" />
@@ -587,6 +591,7 @@
     <Compile Include="Utilidade\SessaoUtil.cs" />
     <Compile Include="Utilidade\SistemaUtil.cs" />
     <Compile Include="Utilidade\StreamUtil.cs" />
+    <Compile Include="Utilidade\StringCompressionUtil.cs" />
     <Compile Include="Utilidade\TextoUtil.cs" />
     <Compile Include="Utilidade\TextoUtil.Partial.cs" />
     <Compile Include="Utilidade\ThreadControleErro.cs">

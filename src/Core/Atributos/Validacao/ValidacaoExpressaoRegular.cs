@@ -1,8 +1,10 @@
-﻿using Snebur.Utilidade;
+﻿using Microsoft.VisualBasic;
+using Snebur.Utilidade;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace Snebur.Dominio.Atributos
 {
@@ -42,11 +44,13 @@ namespace Snebur.Dominio.Atributos
 
         public bool IsValido(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
         {
-            if (!ValidacaoUtil.IsDefinido(valorPropriedade))
+            var valorPropriedadeString = valorPropriedade?.ToString();
+            if (!ValidacaoUtil.IsDefinido(valorPropriedadeString))
             {
                 return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
             }
-            throw new NotImplementedException();
+            var match = Regex.Match(valorPropriedadeString, this.ExpressaoRegular);
+            return match.Success;
         }
 
         public string RetornarMensagemValidacao(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)

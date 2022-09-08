@@ -67,6 +67,7 @@
     <Compile Include="Contexto\ContextoDados.Static.cs" />
     <Compile Include="Contexto\IContextoDadosSeguranca.cs" />
     <Compile Include="Contexto\IContextoDadosSemNotificar.cs" />
+    <Compile Include="Contexto\SqlSuporte.cs" />
     <Compile Include="Contexto\TiposSeguranca.cs" />
     <Compile Include="Erro\ErroAcessoDados.cs" />
     <Compile Include="Erro\ErroConsultaSql.cs" />

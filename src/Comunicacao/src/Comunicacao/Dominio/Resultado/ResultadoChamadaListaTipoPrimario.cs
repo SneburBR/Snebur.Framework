@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
-using Snebur.Reflexao;
+﻿using Snebur.Reflexao;
+using System.Collections.Generic;
 
 namespace Snebur.Comunicacao
 {
     public class ResultadoChamadaListaTipoPrimario : ResultadoChamadaLista
     {
-		#region Campos Privados
+        #region Campos Privados
 
         private EnumTipoPrimario _tipoPrimarioEnum;
 
-		#endregion
+        #endregion
 
         public List<object> Valores { get; set; }
 

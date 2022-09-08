@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Snebur.AcessoDados.Estrutura;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using Snebur.AcessoDados.Estrutura;
 
 namespace Snebur.AcessoDados
 {
@@ -30,7 +30,7 @@ namespace Snebur.AcessoDados
 
             return sqlCatalogo + sqlIndice;
 
-            
+
         }
 
         public string RetornarSqlCriarCatalago()
@@ -45,7 +45,7 @@ namespace Snebur.AcessoDados
 
         public string RetornarSqlIndiceTextoCompleto()
         {
- 
+
             var sb = new StringBuilder();
             var sqlExiste = this.RetornarSqlExisteIndice();
 

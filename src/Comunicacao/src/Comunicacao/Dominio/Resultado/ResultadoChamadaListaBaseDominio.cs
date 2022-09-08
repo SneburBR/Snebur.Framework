@@ -1,16 +1,16 @@
-﻿using System.Collections.Generic;
-using Snebur.Dominio;
+﻿using Snebur.Dominio;
+using System.Collections.Generic;
 
 namespace Snebur.Comunicacao
 {
     public class ResultadoChamadaListaBaseDominio : ResultadoChamadaLista
     {
-		#region Campos Privados
+        #region Campos Privados
 
         private string _nomeTipoBaseDominio;
         private string _nomeNamespaceTipoBaseDominio;
 
-		#endregion
+        #endregion
 
         public string NomeTipoBaseDominio { get => this.RetornarValorPropriedade(this._nomeTipoBaseDominio); set => this.NotificarValorPropriedadeAlterada(this._nomeTipoBaseDominio, this._nomeTipoBaseDominio = value); }
 

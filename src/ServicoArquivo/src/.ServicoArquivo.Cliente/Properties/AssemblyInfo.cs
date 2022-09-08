@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("Snebur.ServicoStream.Cliente")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("pt-BR")]
+[assembly: AssemblyCulture("")]
 
 
 [assembly: ComVisible(false)]

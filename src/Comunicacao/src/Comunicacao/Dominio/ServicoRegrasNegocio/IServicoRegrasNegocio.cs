@@ -1,6 +1,6 @@
-﻿using System.Reflection;
-using Snebur.Comunicacao;
+﻿using Snebur.Comunicacao;
 using Snebur.Dominio.Atributos;
+using System.Reflection;
 
 namespace Snebur.AcessoDados
 {

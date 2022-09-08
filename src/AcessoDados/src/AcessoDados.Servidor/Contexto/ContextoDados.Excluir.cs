@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Snebur.Dominio;
+using Snebur.Linq;
+using Snebur.Utilidade;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using Snebur.Dominio;
-using Snebur.Linq;
-using Snebur.Utilidade;
 
 namespace Snebur.AcessoDados
 {
@@ -20,7 +20,7 @@ namespace Snebur.AcessoDados
             foreach (var entidade in entidades)
             {
                 var consulta = this.RetornarConsulta<Entidade>(entidade.GetType());
-                if (Debugger.IsAttached)
+                if (DebugUtil.IsAttached)
                 {
                     consulta.IncluirDeletados();
                 }
@@ -156,7 +156,7 @@ namespace Snebur.AcessoDados
             Entidade RecuperarEntidade(Entidade entidadeAtual, string nomePropriedade, Type tipoEntidadeAtual)
             {
                 var consulta = this.RetornarConsulta<Entidade>(tipoEntidadeAtual);
-                if (Debugger.IsAttached)
+                if (DebugUtil.IsAttached)
                 {
                     consulta.IncluirDeletados();
                 }
@@ -173,7 +173,7 @@ namespace Snebur.AcessoDados
         private List<Entidade> RecuperarEntidades(Entidade entidadeAtual, PropertyInfo propriedadeRelacao, Type tipoEntidadeAtual)
         {
             var consulta = this.RetornarConsulta<Entidade>(tipoEntidadeAtual);
-            if (Debugger.IsAttached)
+            if (DebugUtil.IsAttached)
             {
                 consulta.IncluirDeletados();
             }
@@ -199,7 +199,7 @@ namespace Snebur.AcessoDados
             {
                 if (entidadeDeletada.IsDeletado)
                 {
-                    if (!Debugger.IsAttached)
+                    if (!DebugUtil.IsAttached)
                     {
                         throw new Erro($"A entidade do tipo '{entidade.GetType().Name}' (id: {entidade.Id}) já foi deletada");
                     }

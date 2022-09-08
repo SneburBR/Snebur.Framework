@@ -1,9 +1,5 @@
-﻿using System;
+﻿using Snebur.Dominio;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur.Dominio;
 
 namespace Snebur.AcessoDados.Seguranca
 {
@@ -16,8 +12,8 @@ namespace Snebur.AcessoDados.Seguranca
         internal EstruturaIdentificacao(IIdentificacao identificacao, List<IPermissaoEntidade> permissoes)
         {
             this.Identificacao = identificacao;
-            
-            foreach(var permissao in permissoes)
+
+            foreach (var permissao in permissoes)
             {
                 this.PermissoesEntidade.Add(permissao.NomeTipoEntidadePermissao, new EstruturaPermissaoEntidade(permissao));
             }

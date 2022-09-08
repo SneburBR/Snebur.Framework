@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Snebur.Dominio;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
-using Snebur.Dominio;
 
 namespace Snebur.AcessoDados
 {

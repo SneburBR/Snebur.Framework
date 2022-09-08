@@ -1,14 +1,11 @@
-﻿using System;
+﻿using Snebur.AcessoDados.Estrutura;
+using Snebur.Dominio;
+using Snebur.Linq;
+using Snebur.Servicos;
+using Snebur.Utilidade;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur;
-using Snebur.Utilidade;
-using Snebur.Dominio;
-using Snebur.AcessoDados.Estrutura;
-using Snebur.Servicos;
-using Snebur.Linq;
 
 namespace Snebur.AcessoDados.Servidor.Salvar
 {
@@ -22,7 +19,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
         {
 
             this.PropriedadesAlterada = this.RetornarPropriedadesAlterada();
-              
+
             this.EstruturasCampoParametro.AddRange(this.RetornarEstrutasCamposAlterados());
 
             if (this.EstruturaEntidade.IsSomenteLeitura)

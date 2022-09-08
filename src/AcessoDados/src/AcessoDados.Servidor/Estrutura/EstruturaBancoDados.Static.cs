@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Snebur.AcessoDados.Estrutura
 {
@@ -20,7 +16,7 @@ namespace Snebur.AcessoDados.Estrutura
             }
         }
 
-        internal static EstruturaBancoDados RetornarEstruturaBancoDados(Type tipoContexto, bool IsSemUsuario)
+        internal static EstruturaBancoDados RetornarEstruturaBancoDados(Type tipoContexto, SqlSuporte sqlSuporte)
         {
             if (EstruturaBancoDados._estruturaBancoDados == null)
             {
@@ -28,7 +24,7 @@ namespace Snebur.AcessoDados.Estrutura
                 {
                     if (EstruturaBancoDados._estruturaBancoDados == null)
                     {
-                        EstruturaBancoDados._estruturaBancoDados = new EstruturaBancoDados(tipoContexto, IsSemUsuario);
+                        EstruturaBancoDados._estruturaBancoDados = new EstruturaBancoDados(tipoContexto, sqlSuporte);
                     }
                 }
             }

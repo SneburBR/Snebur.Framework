@@ -1,8 +1,7 @@
-﻿using System;
-using System.Data;
-using Snebur.AcessoDados.Estrutura;
+﻿using Snebur.AcessoDados.Estrutura;
 using Snebur.Utilidade;
-using Snebur.AcessoDados;
+using System;
+using System.Data;
 
 namespace Snebur.AcessoDados.Servidor.Salvar
 {
@@ -27,7 +26,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 
             if (!estruturaCampo.IsAceitaNulo && valor == null)
             {
-                var mensagem = $" O parâmetro { this.EstruturaCampo.NomeParametro} em {this.EstruturaCampo.EstruturaEntidade.NomeTabela} não aceita valor nulo";
+                var mensagem = $" O parâmetro {this.EstruturaCampo.NomeParametro} em {this.EstruturaCampo.EstruturaEntidade.NomeTabela} não aceita valor nulo";
                 throw new ErroParametro(mensagem);
             }
         }

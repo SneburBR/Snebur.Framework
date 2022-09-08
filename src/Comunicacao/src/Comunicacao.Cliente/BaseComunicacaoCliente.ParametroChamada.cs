@@ -1,14 +1,10 @@
-﻿using System;
+﻿using Snebur.Dominio;
+using Snebur.Utilidade;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur;
-using Snebur.Utilidade;
-using Snebur.Dominio;
 using System.Reflection;
-using System.Collections;
-using Snebur.Comunicacao;
 
 namespace Snebur.Comunicacao
 {

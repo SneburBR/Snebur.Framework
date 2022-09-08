@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Snebur.Dominio.Atributos;
+﻿using Snebur.Dominio.Atributos;
+using System.Collections.Generic;
 
 namespace Snebur.AcessoDados.Seguranca
 {

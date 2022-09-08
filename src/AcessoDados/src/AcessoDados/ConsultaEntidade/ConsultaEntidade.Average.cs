@@ -1,10 +1,6 @@
 ﻿using Snebur.Dominio;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Snebur.AcessoDados
 
@@ -64,7 +60,7 @@ namespace Snebur.AcessoDados
 
         private T RetonrarValorAverage<T>(Expression expressao)
         {
-            return this.RetornarValorFuncao<T>(EnumTipoFuncao.Media,expressao);
+            return this.RetornarValorFuncao<T>(EnumTipoFuncao.Media, expressao);
         }
     }
 }

@@ -6,13 +6,13 @@
 
 //namespace Snebur.Seguranca
 //{
-    
+
 //    public class Cabecalho : BaseCabecalho
 //    {
-    
+
 //    	public long IdCliente { get; set; }
 //    	public Guid IdentificadorUsuario { get; set; }
-    
+
 //    	public Cabecalho(HttpContext context) :base(context)
 //    	{
 //            Guid identificadorUsuario;
@@ -22,6 +22,6 @@
 //                this.IdentificadorUsuario = identificadorUsuario;
 //            }
 //    	}
-    
+
 //    }
 //}

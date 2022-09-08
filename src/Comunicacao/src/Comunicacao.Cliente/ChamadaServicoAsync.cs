@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Linq;
-using System.Text;
 using System.Collections.Generic;
-using Snebur.Utilidade;
-using Snebur.Dominio;
 using System.Threading.Tasks;
-using Snebur.Comunicacao;
 
 namespace Snebur.Comunicacao
 {
@@ -16,11 +11,11 @@ namespace Snebur.Comunicacao
         public Action<ArgsResultadoChamadaServico> Callback { get; set; }
         public object UserState { get; set; }
 
-        public ChamadaServicoAsync(string nomeManipulador, 
-                                   ContratoChamada informacaoChamada, 
-                                   string urlServico, 
+        public ChamadaServicoAsync(string nomeManipulador,
+                                   ContratoChamada informacaoChamada,
+                                   string urlServico,
                                    Type tipoRetorno,
-                                   Dictionary<string, string> parametrosCabeacalhoAdicionais) : 
+                                   Dictionary<string, string> parametrosCabeacalhoAdicionais) :
                                    base(nomeManipulador, informacaoChamada, urlServico, tipoRetorno, parametrosCabeacalhoAdicionais)
         {
         }
@@ -29,7 +24,7 @@ namespace Snebur.Comunicacao
         {
             this.Callback = callback;
             this.UserState = userState;
-            Task.Factory.StartNew(ExecutarChamada);
+            Task.Factory.StartNew(this.ExecutarChamada);
         }
 
 

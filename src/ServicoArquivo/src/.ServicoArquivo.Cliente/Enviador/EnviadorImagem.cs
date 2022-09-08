@@ -1,11 +1,8 @@
-﻿using System;
+﻿using Snebur.Dominio;
+using Snebur.Seguranca;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur.Dominio;
-using Snebur.Seguranca;
 
 namespace Snebur.ServicoArquivo.Cliente
 {
@@ -14,13 +11,13 @@ namespace Snebur.ServicoArquivo.Cliente
         public EnumTamanhoImagem TamanhoImagem { get; }
         private Stream StreamImagem { get; }
 
-        public EnviadorImagem(string urlServicoArquivo, IImagem imagem, EnumTamanhoImagem tamanhoImagem, Stream streamImagem) : 
+        public EnviadorImagem(string urlServicoArquivo, IImagem imagem, EnumTamanhoImagem tamanhoImagem, Stream streamImagem) :
                              this(urlServicoArquivo, imagem, tamanhoImagem, streamImagem,
                                                              AplicacaoSnebur.Atual.CredencialUsuario,
                                                              AplicacaoSnebur.Atual.IdentificadorSessaoUsuario,
                                                              AplicacaoSnebur.Atual.IdentificadorProprietario)
         {
-         
+
         }
 
         public EnviadorImagem(string urlServicoArquivo, IImagem imagem, EnumTamanhoImagem tamanhoImagem, Stream streamImagem,
@@ -37,13 +34,18 @@ namespace Snebur.ServicoArquivo.Cliente
             var parametros = base.RetornarParametros(tamanhoPacote);
             parametros.Add(ConstantesServicoImagem.TAMANHO_IMAGEM, ((int)this.TamanhoImagem).ToString());
             parametros.Add(ConstantesServicoImagem.FORMATO_IMAGEM, ((int)this.Arquivo.FormatoImagem).ToString());
-            
+
             return parametros;
         }
 
         protected override Stream RetornarStreamArquivo()
         {
             return this.StreamImagem;
+        }
+
+        protected override string RetornarUrlEnviarArquivo()
+        {
+            return ServicoImagemClienteUtil.RetornarEnderecoEnviarImagem(this.UrlServicoArquivo);
         }
     }
 }

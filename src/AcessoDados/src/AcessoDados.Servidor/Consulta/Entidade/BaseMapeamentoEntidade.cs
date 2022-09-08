@@ -1,15 +1,8 @@
-﻿using System;
+﻿using Snebur.AcessoDados.Estrutura;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur;
-using Snebur.Utilidade;
-using Snebur.Dominio;
-using Snebur.AcessoDados.Estrutura;
-using Snebur.AcessoDados.Dominio;
-using System.Diagnostics;
 using System.Data.Common;
+using System.Linq;
 
 namespace Snebur.AcessoDados.Mapeamento
 {
@@ -75,21 +68,19 @@ namespace Snebur.AcessoDados.Mapeamento
             this.MontarEstruturasRelacoesAbertasFiltro();
         }
 
-        internal string RetornarSql(bool ordenacao, bool limitePaginacao, BaseFiltroMapeamento filtroMapeamento)
+        internal string RetornarSql(bool ordenacao, bool isLimitarPaginacao, BaseFiltroMapeamento filtroMapeamento)
         {
-
-            
             var isRelacaoFilhos = this.MapeamentoConsulta is MapeamentoConsultaRelacaoAbertaFilhos;
             var sqlCampos = this.RetornarSqlCampos();
-            var sqlJoin = this.RetornarSqlConsulta(ordenacao, limitePaginacao, filtroMapeamento, isRelacaoFilhos);
-            if (!limitePaginacao && this.EstruturaConsulta.Take > 0 || this.Contexto.IsBancoDadosNaoGerencivel)
+            var sqlJoin = this.RetornarSqlConsulta(ordenacao, isLimitarPaginacao, filtroMapeamento, isRelacaoFilhos);
+            if ((!isLimitarPaginacao && this.EstruturaConsulta.Take > 0) || !this.Contexto.SqlSuporte.IsOffsetFetch)
             {
                 var take = this.EstruturaConsulta.Take == 0 ? 1000 : this.EstruturaConsulta.Take;
-                return String.Format("SELECT Top {0} {1} FROM {2}", this.EstruturaConsulta.Take, sqlCampos, sqlJoin);
+                return $"SELECT Top {take} {sqlCampos} FROM {sqlJoin}";
             }
             else
             {
-                return String.Format("SELECT  {0} FROM {1} ", sqlCampos, sqlJoin);
+                return $"SELECT  {sqlCampos} FROM {sqlJoin}";
             }
         }
 
@@ -101,7 +92,7 @@ namespace Snebur.AcessoDados.Mapeamento
         }
 
         #region Mapeamentos das Estruturas
-        
+
         private void MontarEstruturasRelacoesAbertasFiltro()
         {
             var estruturaEntidade = this.EstruturaEntidade;

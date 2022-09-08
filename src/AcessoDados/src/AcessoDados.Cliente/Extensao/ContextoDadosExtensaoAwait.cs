@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Snebur.Dominio;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Snebur.Dominio;
 
 namespace Snebur.AcessoDados
 {
     public static class ContextoDadosExtensaoAwait
     {
-        public static Task SalvarPropriedadesAwait<TEntidade>(this ContextoDados contexto,
+        public static Task SalvarPropriedadesAsync<TEntidade>(this BaseContextoDados contexto,
                                                         TEntidade entidade,
                                                         params Expression<Func<TEntidade, object>>[] expressoesPropriedade) where TEntidade : Entidade
         {
@@ -18,7 +18,7 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task RecuperarPropriedadeAwait<TEntidade>(this ContextoDados contexto, 
+        public static Task RecuperarPropriedadeAsync<TEntidade>(this BaseContextoDados contexto,
                                                                 TEntidade entidade, Expression<Func<TEntidade, object>> expressaoPropriedade)
                                                                 where TEntidade : Entidade
         {
@@ -28,7 +28,8 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task RecuperarPropriedadeAwait<TEntidade>(this ContextoDados contexto, List<TEntidade> entidades,
+        public static Task RecuperarPropriedadeAsync<TEntidade>(this BaseContextoDados contexto, 
+                                                                List<TEntidade> entidades,
                                                                 Expression<Func<TEntidade, object>> expressaoPropriedade) where TEntidade : Entidade
         {
             return Task.Factory.StartNew(() =>
@@ -37,7 +38,7 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task RecuperarPropriedadesAwait<TEntidade>(this ContextoDados contexto, List<TEntidade> entidades, params Expression<Func<TEntidade, object>>[] expressoesPropriedade) where TEntidade : Entidade
+        public static Task RecuperarPropriedadesAsync<TEntidade>(this BaseContextoDados contexto, List<TEntidade> entidades, params Expression<Func<TEntidade, object>>[] expressoesPropriedade) where TEntidade : Entidade
         {
             return Task.Factory.StartNew(() =>
             {
@@ -45,7 +46,7 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task AbrirRelacaoAwait<TEntidade>(this ContextoDados contexto, TEntidade entidade, Expression<Func<TEntidade, object>> expressaoRelacao) where TEntidade : Entidade
+        public static Task AbrirRelacaoAsync<TEntidade>(this BaseContextoDados contexto, TEntidade entidade, Expression<Func<TEntidade, object>> expressaoRelacao) where TEntidade : Entidade
         {
             return Task.Factory.StartNew(() =>
             {
@@ -53,7 +54,7 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task AbrirRelacoesAwait<TEntidade>(this ContextoDados contexto, TEntidade entidade, params Expression<Func<TEntidade, object>>[] expressoesRelacao) where TEntidade : Entidade
+        public static Task AbrirRelacoesAsync<TEntidade>(this BaseContextoDados contexto, TEntidade entidade, params Expression<Func<TEntidade, object>>[] expressoesRelacao) where TEntidade : Entidade
         {
             return Task.Factory.StartNew(() =>
             {
@@ -61,7 +62,7 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task<ResultadoSalvar> SalvarAwait(this ContextoDados contexto,
+        public static Task<ResultadoSalvar> SalvarAsync(this BaseContextoDados contexto,
                                                         params Entidade[] entidades)
         {
             return Task.Factory.StartNew(() =>
@@ -70,7 +71,7 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task<ResultadoSalvar> SalvarAwait(this ContextoDados contexto,
+        public static Task<ResultadoSalvar> SalvarAsync(this BaseContextoDados contexto,
                                                         List<Entidade> entidades)
         {
             return Task.Factory.StartNew(() =>
@@ -79,8 +80,8 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task<ResultadoExcluir> ExcluirAwait(this ContextoDados contexto,
-                                                     List<Entidade> entidades)
+        public static Task<ResultadoExcluir> ExcluirAsync(this BaseContextoDados contexto,
+                                                         List<Entidade> entidades)
         {
             return Task.Factory.StartNew(() =>
             {
@@ -88,7 +89,7 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task<ResultadoExcluir> ExcluirAwait(this ContextoDados contexto,
+        public static Task<ResultadoExcluir> ExcluirAsync(this BaseContextoDados contexto,
                                                           List<Entidade> entidades,
                                                           string relacoesEmCascata)
         {
@@ -98,7 +99,7 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task<ResultadoExcluir> ExcluirAwait(this ContextoDados contexto,
+        public static Task<ResultadoExcluir> ExcluirAsync(this BaseContextoDados contexto,
                                                          Entidade entidade)
         {
             return Task.Factory.StartNew(() =>

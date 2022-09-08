@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using Snebur.Dominio;
+﻿using Snebur.Dominio;
 using Snebur.Linq;
+using System;
+using System.Collections.Generic;
 
 namespace Snebur.AcessoDados.Servidor.Salvar
 {
     internal partial class NormalizarEntidade : IDisposable
     {
-        internal HashSet<Entidade> Entidades { get;  private set; }
+        internal HashSet<Entidade> Entidades { get; private set; }
         internal BaseContextoDados Contexto { get; private set; }
         internal Dictionary<string, Entidade> EntidadesNormalizadas { get; private set; } = new Dictionary<string, Entidade>();
 

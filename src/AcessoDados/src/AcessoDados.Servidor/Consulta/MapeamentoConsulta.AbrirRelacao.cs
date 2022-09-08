@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur;
+﻿using Snebur.Dominio;
 using Snebur.Utilidade;
-using Snebur.Dominio;
-using System.Collections;
+using System;
+using System.Collections.Generic;
 
 namespace Snebur.AcessoDados.Mapeamento
 {
@@ -25,9 +20,9 @@ namespace Snebur.AcessoDados.Mapeamento
                     }
                     else
                     {
-                        
+
                         var filtroMapeamento = this.RetornarFiltroMapeamento(mapeamento);
-                        
+
                         var entidades = mapeamento.RetornarEntidades(filtroMapeamento);
                         this.MapearRelacaoAberta(entidades, mapeamento);
                     }
@@ -266,16 +261,16 @@ namespace Snebur.AcessoDados.Mapeamento
                 var listaEntidadeFilhos = (IListaEntidades)Activator.CreateInstance(tipoListaEntidade);
                 listaEntidadeFilhos.AdicionarEntidades(grupoEntidadeFilhos.Value);
                 listaEntidadeFilhos.IsAberta = true;
-                if(listaEntidadeFilhos.Count > 0)
+                if (listaEntidadeFilhos.Count > 0)
                 {
-                    if(propriedadeRelacaoFilhos.GetSetMethod() == null)
+                    if (propriedadeRelacaoFilhos.GetSetMethod() == null)
                     {
                         throw new Erro($"A propriedade {propriedadeRelacaoFilhos.Name} declarada na entidade {propriedadeRelacaoFilhos.DeclaringType.Name} é somente leitura, Definir {{ get; set; }}");
                     }
 
                     propriedadeRelacaoFilhos.SetValue(entidade, listaEntidadeFilhos);
                 }
-               
+
             }
         }
     }

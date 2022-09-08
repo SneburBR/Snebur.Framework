@@ -1,9 +1,9 @@
-﻿using System;
-using System.IO;
-using System.Web;
-using Snebur.Dominio;
+﻿using Snebur.Dominio;
 using Snebur.Net;
 using Snebur.Utilidade;
+using System;
+using System.IO;
+using System.Web;
 
 #if NET50
 using Microsoft.AspNetCore.Http;
@@ -63,7 +63,7 @@ namespace Snebur.ServicoArquivo
         {
             var idArquivo = this.RetornarIdArquivoVersao(zyonHttpContext);
             var nomeTipoArquivo = typeof(TArquivoVersao).Name;
-            var caminhoDiretorioImagem = this.RetornarDiretorioImagem(idArquivo, nomeTipoArquivo );
+            var caminhoDiretorioImagem = this.RetornarDiretorioImagem(idArquivo, nomeTipoArquivo);
             var nomeArquivo = ServicoArquivoUtil.RetornarNomeArquivo(idArquivo, ServicoArquivoUtil.EXTENCAO_ARQUIVO);
             var caminhoImagem = Path.Combine(caminhoDiretorioImagem, nomeArquivo);
             return caminhoImagem;
@@ -87,7 +87,7 @@ namespace Snebur.ServicoArquivo
             return idImagem;
         }
 
-          
+
         protected string RetornarValorParametro(string parametro, SnHttpContext zyonHttpContext)
         {
             var parametroBase64 = Base64Util.Encode(parametro);

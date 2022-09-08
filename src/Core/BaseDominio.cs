@@ -224,6 +224,7 @@ namespace Snebur.Dominio
             this.NotificarPropriedadeAlterada(nomePropriedade);
         }
 
+        
         internal protected virtual void NotificarValorPropriedadeAlterada(object antigoValor, object novoValor, [CallerMemberName] string nomePropriedade = "")
         {
             if (this.__IsControladorPropriedadesAlteradaAtivo)
@@ -265,6 +266,7 @@ namespace Snebur.Dominio
         {
             return valor;
         }
+
         #region INotifyPropertyChanged
 
         [NaoMapear]
@@ -340,6 +342,13 @@ namespace Snebur.Dominio
         //}
 
         #endregion
+
+
+        internal protected virtual void SetValue(object olbValue, object newValue, [CallerMemberName] string nomePropriedade = "")
+        {
+            this.NotificarValorPropriedadeAlterada(newValue, newValue, nomePropriedade);
+        }
+
 
     }
 }

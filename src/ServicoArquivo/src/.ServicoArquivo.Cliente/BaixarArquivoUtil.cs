@@ -1,17 +1,19 @@
-﻿using System;
+﻿using Snebur.Dominio;
+using Snebur.Seguranca;
+using Snebur.Utilidade;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using Snebur.Dominio;
-using Snebur.Seguranca;
-using Snebur.Utilidade;
 
 namespace Snebur.ServicoArquivo.Cliente
 {
+
     public class BaixarArquivoUtil
     {
         public static TimeSpan TIMEOUT_PADRAO { get; } = TimeSpan.FromMinutes(5);
 
+       
         public static MemoryStream RetornarStream(string urlServico,
                                                   IArquivo arquivo,
                                                   Guid identificadorSessao,

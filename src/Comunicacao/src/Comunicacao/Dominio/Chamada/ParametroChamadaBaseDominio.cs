@@ -1,18 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
-using Snebur.Dominio.Atributos;
-using Snebur.Dominio;
+﻿using Snebur.Dominio;
 
 namespace Snebur.Comunicacao
 {
     public class ParametroChamadaBaseDominio : ParametroChamada
     {
-		#region Campos Privados
+        #region Campos Privados
 
-		#endregion
+        #endregion
 
-    	public BaseDominio BaseDominio { get; set; }
+        public BaseDominio BaseDominio { get; set; }
     }
 }

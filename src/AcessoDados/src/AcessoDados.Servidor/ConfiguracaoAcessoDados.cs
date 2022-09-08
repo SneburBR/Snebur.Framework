@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Snebur.Utilidade;
+using System;
 using System.Data;
-using Snebur.Utilidade;
 
 namespace Snebur.AcessoDados
 {

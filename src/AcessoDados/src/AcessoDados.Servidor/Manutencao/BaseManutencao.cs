@@ -1,13 +1,10 @@
-﻿using System;
+﻿using Snebur.AcessoDados.Estrutura;
+using Snebur.Dominio;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Common;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur.AcessoDados.Estrutura;
-using Snebur.Dominio;
 
 namespace Snebur.AcessoDados.Manutencao
 {

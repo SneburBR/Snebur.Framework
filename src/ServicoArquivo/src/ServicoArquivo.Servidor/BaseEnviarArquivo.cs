@@ -1,7 +1,7 @@
-﻿using System;
-using System.IO;
-using Snebur.Net;
+﻿using Snebur.Net;
 using Snebur.Utilidade;
+using System;
+using System.IO;
 
 namespace Snebur.ServicoArquivo
 {
@@ -34,7 +34,7 @@ namespace Snebur.ServicoArquivo
 
         #region Métodos protegidos
 
-        protected virtual void SalvarArquivo(SnHttpContext httpContext, TCabecalhoServicoArquivo cabecalho,  MemoryStream inputStreasm)
+        protected virtual void SalvarArquivo(SnHttpContext httpContext, TCabecalhoServicoArquivo cabecalho, MemoryStream inputStreasm)
         {
             if (!(cabecalho.IdArquivo > 0))
             {

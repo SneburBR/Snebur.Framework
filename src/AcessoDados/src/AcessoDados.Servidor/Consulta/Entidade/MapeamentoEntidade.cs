@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur;
-using Snebur.Utilidade;
+﻿using Snebur.AcessoDados.Estrutura;
 using Snebur.Dominio;
-using Snebur.AcessoDados.Estrutura;
-using Snebur.AcessoDados.Dominio;
+using Snebur.Utilidade;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Snebur.AcessoDados.Mapeamento
 {
@@ -22,14 +18,14 @@ namespace Snebur.AcessoDados.Mapeamento
                                     BaseContextoDados contexto) :
                                     base(mapeamentoConsulta, estruturaEntidade, estruturaBancoDados, conexaoDB, contexto)
         {
-            if ((this.EstruturaConsulta.Take == 0) || 
+            if ((this.EstruturaConsulta.Take == 0) ||
                 (this.EstruturaConsulta.Take > estruturaEntidade.MaximoRegistroPorConsulta))
             {
                 this.EstruturaConsulta.Take = estruturaEntidade.MaximoRegistroPorConsulta;
             }
         }
 
-        internal protected ListaEntidades<Entidade> RetornarEntidades(BaseFiltroMapeamento filtro, int tentativa =0)
+        internal protected ListaEntidades<Entidade> RetornarEntidades(BaseFiltroMapeamento filtro, int tentativa = 0)
         {
             var sql = this.RetornarSql(true, true, filtro);
             try
@@ -40,18 +36,18 @@ namespace Snebur.AcessoDados.Mapeamento
             }
             catch
             {
-                if (Debugger.IsAttached && tentativa < 50)
+                if (DebugUtil.IsAttached && tentativa < 50)
                 {
                     return this.RetornarEntidades(filtro, tentativa++);
                 }
                 throw;
             }
-           
+
         }
 
         internal protected List<IdTipoEntidade> RetornarIdTipoEntidade(BaseFiltroMapeamento filtro)
         {
-            
+
             var sql = this.RetornarSqlIdTipoEntidade(filtro);
             var dataTable = this.ConexaoDB.RetornarDataTable(sql, this.Parametros);
             var idsTipoEntidade = AjudanteDataSetMapeamento.MapearIdTipoEntidade(dataTable);
@@ -105,16 +101,15 @@ namespace Snebur.AcessoDados.Mapeamento
             filtroMapeamento.IsIdTipoEntidade = true;
             var sqlCampos = this.RetornarSqlCamposIdTipoEntidade(filtroMapeamento);
             var sqlJoin = this.RetornarSqlConsulta(true, true, filtroMapeamento, isRelacaoFilhos);
-            if (this.Contexto.IsBancoDadosNaoGerencivel)
+            if (this.Contexto.SqlSuporte.IsOffsetFetch)
             {
-                var take = this.EstruturaConsulta.Take > 0 ? this.EstruturaConsulta.Take : 1000;
-                sqlJoin = sqlJoin.Replace("ORDER BY [Id]", "WHERE not __NomeTipoEntidade is null ");
-                return $"SELECT Top {take} {sqlCampos} FROM {sqlJoin} ";
+                return $"SELECT {sqlCampos} FROM {sqlJoin}";
             }
             else
             {
-                return $"SELECT {sqlCampos} FROM {sqlJoin}";
-
+                var take = this.EstruturaConsulta.Take > 0 ? this.EstruturaConsulta.Take : 1000;
+                //sqlJoin = sqlJoin.Replace("ORDER BY [Id]", "WHERE not __NomeTipoEntidade is null ");
+                return $"SELECT Top {take} {sqlCampos} FROM {sqlJoin} ";
             }
         }
 

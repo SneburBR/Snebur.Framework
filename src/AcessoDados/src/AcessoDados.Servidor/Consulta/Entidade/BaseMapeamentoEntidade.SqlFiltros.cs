@@ -1,13 +1,9 @@
-﻿using System;
+﻿using Snebur.Reflexao;
+using Snebur.Utilidade;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Snebur;
-using Snebur.Utilidade;
-using Snebur.Dominio;
-using Snebur.AcessoDados.Dominio;
-using Snebur.Reflexao;
 
 namespace Snebur.AcessoDados.Mapeamento
 {
@@ -181,7 +177,7 @@ namespace Snebur.AcessoDados.Mapeamento
 
 
                 this.ContadorParametro += 1;
-                var nomeParametro = $"{ estruturaCampo.NomeParametro }{ this.ContadorParametro }";
+                var nomeParametro = $"{estruturaCampo.NomeParametro}{this.ContadorParametro}";
                 var valorPropriedadeTipado = this.RetornarValorPropriedadeTipado(filtroPropriedade, estruturaCampo);
 
 
@@ -284,7 +280,7 @@ namespace Snebur.AcessoDados.Mapeamento
 
                     default:
 
-                        throw new ErroNaoSuportado($"O operador  {EnumUtil.RetornarDescricao(filtroPropriedade.Operador) }  não é suportado com valor da propriedade nulo  'null'  ");
+                        throw new ErroNaoSuportado($"O operador  {EnumUtil.RetornarDescricao(filtroPropriedade.Operador)}  não é suportado com valor da propriedade nulo  'null'  ");
 
                 }
 

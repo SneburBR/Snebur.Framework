@@ -56,7 +56,7 @@ namespace System
 
         protected virtual bool IsNotificar()
         {
-            if (this.IsNotificarErro && !System.Diagnostics.Debugger.IsAttached)
+            if (this.IsNotificarErro && !DebugUtil.IsAttached)
             {
                 if (this.InnerException is Erro erro && erro.NotificaoEnviada)
                 {

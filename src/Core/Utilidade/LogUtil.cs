@@ -35,7 +35,7 @@ namespace Snebur.Utilidade
                                     [CallerFilePath] string caminhoArquivo = "",
                                     [CallerLineNumber] int linhaDoErro = 0)
         {
-            if (Debugger.IsAttached && IsParaErroDepuracaoAtachada(ex))
+            if (DebugUtil.IsAttached && IsParaErroDepuracaoAtachada(ex))
             {
                 throw ex;
             }
@@ -103,7 +103,7 @@ namespace Snebur.Utilidade
         {
             if (SegurancaUtil.IsGerarLogErro(tipo))
             {
-                if (Debugger.IsAttached)
+                if (DebugUtil.IsAttached)
                 {
                     if (!erroIsAttach)
                     {
@@ -189,7 +189,7 @@ namespace Snebur.Utilidade
         public static void DesempenhoAsync(string mensagem, Stopwatch tempo, EnumTipoLogDesempenho tipo, bool erroIsAttach = true, Action<Guid> callback = null)
         {
             var informacaoAdicional = ServicoCompartilhadoUtil.RetornarInformacaoAdicionalServicoCompartilhado();
-            if (System.Diagnostics.Debugger.IsAttached && erroIsAttach)
+            if (DebugUtil.IsAttached && erroIsAttach)
             {
                 return;
             }

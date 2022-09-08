@@ -1,6 +1,6 @@
-﻿using System;
-using Snebur.Dominio;
+﻿using Snebur.Dominio;
 using Snebur.Utilidade;
+using System;
 
 namespace Snebur.ServicoArquivo.Comunicacao
 {

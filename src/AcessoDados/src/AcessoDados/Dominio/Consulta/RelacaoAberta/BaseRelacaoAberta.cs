@@ -1,16 +1,16 @@
-﻿using System;
+﻿using Snebur.Dominio;
+using Snebur.Dominio.Atributos;
+using Snebur.Utilidade;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Snebur.Dominio;
-using Snebur.Dominio.Atributos;
-using Snebur.Utilidade;
 
 namespace Snebur.AcessoDados
 {
     public abstract class BaseRelacaoAberta : BaseAcessoDados
     {
-		#region Campos Privados
+        #region Campos Privados
 
         private string _caminhoPropriedade;
         private string _nomeTipoEntidade;
@@ -18,7 +18,7 @@ namespace Snebur.AcessoDados
         private string _nomeTipoDeclarado;
         private string _tipoDeclaradoAssemblyQualifiedName;
 
-		#endregion
+        #endregion
 
         public string CaminhoPropriedade { get => this.RetornarValorPropriedade(this._caminhoPropriedade); set => this.NotificarValorPropriedadeAlterada(this._caminhoPropriedade, this._caminhoPropriedade = value); }
 
@@ -31,7 +31,7 @@ namespace Snebur.AcessoDados
         public string TipoDeclaradoAssemblyQualifiedName { get => this.RetornarValorPropriedade(this._tipoDeclaradoAssemblyQualifiedName); set => this.NotificarValorPropriedadeAlterada(this._tipoDeclaradoAssemblyQualifiedName, this._tipoDeclaradoAssemblyQualifiedName = value); }
 
         public HashSet<string> PropriedadesAbertas { get; set; } = new HashSet<string>();
-       
+
         public BaseRelacaoAberta()
         {
         }

@@ -61,6 +61,10 @@ namespace Snebur.Utilidade
             return retorno;
         }
 
+        public static Version RetornarVersaoAssembly<T>()
+        {
+            return typeof(T).Assembly.GetName().Version;
+        }
         public static Version RetornarVersaoAssembly(Assembly assembly)
         {
             //return assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.ver;
@@ -99,7 +103,7 @@ namespace Snebur.Utilidade
 
             if (String.IsNullOrWhiteSpace(atributoNomeEmpresa?.Company))
             {
-                if (System.Diagnostics.Debugger.IsAttached && SistemaUtil.TipoAplicacao != Dominio.EnumTipoAplicacao.DotNet_UnitTest)
+                if (DebugUtil.IsAttached && SistemaUtil.TipoAplicacao != Dominio.EnumTipoAplicacao.DotNet_UnitTest)
                 {
                     throw new Exception(String.Format("O atributo {0} não foi definido no AssemblyInfo", nameof(AssemblyCompanyAttribute)));
                 }

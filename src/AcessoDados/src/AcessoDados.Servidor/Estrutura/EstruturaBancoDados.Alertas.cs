@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Snebur.Dominio;
+using Snebur.Dominio.Atributos;
+using Snebur.Linq;
+using Snebur.Utilidade;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Snebur.Dominio;
-using Snebur.Dominio.Atributos;
-using Snebur.Linq;
-using Snebur.Utilidade;
 
 namespace Snebur.AcessoDados.Estrutura
 {
@@ -14,7 +14,7 @@ namespace Snebur.AcessoDados.Estrutura
     {
         private void AnalisarAlertasEstruturaEntidade()
         {
-            if (System.Diagnostics.Debugger.IsAttached)
+            if (DebugUtil.IsAttached)
             {
                 this.AnalisarPadraoNomeclaturaRelacoesChaveEstrangeira();
                 this.AnalisarPropriedaadesChaveEstrangeiraSemRelacao();
@@ -33,7 +33,7 @@ namespace Snebur.AcessoDados.Estrutura
         {
             foreach (var estruturaEntidade in this.EstruturasEntidade.Values)
             {
-                foreach(var estruturaCampo in estruturaEntidade.EstruturasCampos.Values)
+                foreach (var estruturaCampo in estruturaEntidade.EstruturasCampos.Values)
                 {
                     var propriedade = estruturaCampo.Propriedade;
                     if (propriedade.PropertyType == typeof(string))
@@ -135,7 +135,7 @@ namespace Snebur.AcessoDados.Estrutura
                     {
                         this.Alertas.Add(String.Format("O tipo entidade '{0}' não é abstrato e possui classes especializadas, Configura como Abstrato", estruturaEntidade.TipoEntidade.Name));
                     }
-                    
+
                 }
                 if (estruturaEntidade.IsAbstrata && !this.AssemblyEntidade.GetTypes().Any(x => x.IsSubclassOf(estruturaEntidade.TipoEntidade)))
                 {
@@ -178,7 +178,7 @@ namespace Snebur.AcessoDados.Estrutura
                             {
                                 this.Alertas.Add(String.Format(" A propriedade {0}  ('TipoComplexo')   não foi instancia na declaração em {1} ", propriedade.Name, propriedade.DeclaringType.Name));
                             }
-                            
+
                         }
                     }
                 }
@@ -237,7 +237,7 @@ namespace Snebur.AcessoDados.Estrutura
             foreach (var estruturaEntidade in this.EstruturasEntidade.Values)
             {
                 var tipoEntidade = estruturaEntidade.TipoEntidade;
-                foreach(var estruturaAlteracaoPropriedade in estruturaEntidade.EstruturasAlteracaoPropriedade)
+                foreach (var estruturaAlteracaoPropriedade in estruturaEntidade.EstruturasAlteracaoPropriedade)
                 {
                     var atributo = estruturaAlteracaoPropriedade.Atributo;
                     var tipoPropriedadeRelacao = atributo.PropriedadeRelacao.PropertyType;
@@ -249,7 +249,7 @@ namespace Snebur.AcessoDados.Estrutura
                     var tipoPropriedade = ReflexaoUtil.RetornarTipoSemNullable(estruturaAlteracaoPropriedade.Propriedade.PropertyType);
                     var tipoPropriedadeValorAlterado = ReflexaoUtil.RetornarTipoSemNullable(estruturaAlteracaoPropriedade.Atributo.PropriedadeValorAlterado.PropertyType);
 
-                    if(tipoPropriedade!= tipoPropriedadeValorAlterado)
+                    if (tipoPropriedade != tipoPropriedadeValorAlterado)
                     {
                         this.Alertas.Add($"O tipo '{tipoPropriedade.Name}' da propriedade {estruturaAlteracaoPropriedade.Propriedade.Name} em {tipoEntidade.Name} é diferente do tipo '{tipoPropriedadeValorAlterado.Name}' propriedade de alteracao '{atributo.PropriedadeValorAlterado.Name}' em '{atributo.TipoEntidadeAlteracaoPropriedade.Name}'");
                     }

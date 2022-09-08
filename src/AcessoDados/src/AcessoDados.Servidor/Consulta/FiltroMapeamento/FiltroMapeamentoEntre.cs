@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur;
-using Snebur.Utilidade;
-using Snebur.Dominio;
-using Snebur.AcessoDados.Estrutura;
+﻿using Snebur.AcessoDados.Estrutura;
 
 namespace Snebur.AcessoDados.Mapeamento
 {
@@ -18,10 +10,10 @@ namespace Snebur.AcessoDados.Mapeamento
 
         internal string NomeTipoEntidade { get; set; }
 
-        internal FiltroMapeamentoEntre(BaseFiltroMapeamento filtroMapeamentoBase, 
-                                       long menorId, 
-                                       long maiorId, 
-                                       string nomeTipoEntidade):base(filtroMapeamentoBase)
+        internal FiltroMapeamentoEntre(BaseFiltroMapeamento filtroMapeamentoBase,
+                                       long menorId,
+                                       long maiorId,
+                                       string nomeTipoEntidade) : base(filtroMapeamentoBase)
         {
             this.MenorId = menorId;
             this.MaiorId = maiorId;
@@ -30,16 +22,16 @@ namespace Snebur.AcessoDados.Mapeamento
 
         internal FiltroMapeamentoEntre(long menorId,
                                        long maiorId,
-                                       string nomeTipoEntidade) : 
-                                       this(new FiltroMapeamentoVazio(), 
-                                            menorId,  
-                                            maiorId, 
+                                       string nomeTipoEntidade) :
+                                       this(new FiltroMapeamentoVazio(),
+                                            menorId,
+                                            maiorId,
                                             nomeTipoEntidade)
         {
         }
 
         internal FiltroMapeamentoEntre(long menorId,
-                                       long maiorId) : 
+                                       long maiorId) :
                                        this(new FiltroMapeamentoVazio(),
                                             menorId,
                                             maiorId,

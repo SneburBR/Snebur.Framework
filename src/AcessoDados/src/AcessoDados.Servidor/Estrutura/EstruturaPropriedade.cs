@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Snebur.Utilidade;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Snebur.Utilidade;
 
 namespace Snebur.AcessoDados.Estrutura
 {

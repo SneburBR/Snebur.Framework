@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Snebur.Comunicacao;
+using Snebur.Servicos;
+using Snebur.Utilidade;
+using System;
 using System.Data;
 using System.Reflection;
 using System.Text;
-using Snebur.Comunicacao;
-using Snebur.Servicos;
-using Snebur.Utilidade;
 
 namespace Snebur.AcessoDados.Comunicacao
 {
@@ -41,7 +41,7 @@ namespace Snebur.AcessoDados.Comunicacao
                     this.ContextoDados.IniciarNovaTransacao(this.IsolamentoTransacao);
                 }
 
-                if(this.ContextoDados.IsIdentificadorProprietarioGlobal && 
+                if (this.ContextoDados.IsIdentificadorProprietarioGlobal &&
                   !this.IsPermitirIdentificadorProprietarioGlobal)
                 {
                     throw new ErroSeguranca("Identificador global não autorizado",
@@ -135,7 +135,7 @@ namespace Snebur.AcessoDados.Comunicacao
         protected override object NormalizarResultadoOperacao(object resultadoOperacao)
         {
 #if DEBUG
-            if (System.Diagnostics.Debugger.IsAttached && false)
+            if (DebugUtil.IsAttached && false)
             {
                 if (resultadoOperacao is Resultado resultadoTipoado)
                 {

@@ -1,9 +1,5 @@
-﻿using System;
+﻿using Snebur.Dominio;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur.Dominio;
 
 namespace Snebur.AcessoDados.Seguranca
 {
@@ -11,7 +7,7 @@ namespace Snebur.AcessoDados.Seguranca
     {
         public List<Entidade> Entidades { get; }
 
-        internal AutorizacaoEntidadeSalvar(string nomeTipoEntidade, EnumOperacao operacao, List<Entidade> entidades) : 
+        internal AutorizacaoEntidadeSalvar(string nomeTipoEntidade, EnumOperacao operacao, List<Entidade> entidades) :
                                           base(nomeTipoEntidade, operacao)
         {
             this.Entidades = entidades;

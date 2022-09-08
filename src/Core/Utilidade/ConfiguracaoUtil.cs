@@ -45,7 +45,7 @@ namespace Snebur.Utilidade
         }
 
         public static bool IsAttachedLocalhost => AmbienteServidor == EnumAmbienteServidor.Localhost &&
-                                                  Debugger.IsAttached;
+                                                  DebugUtil.IsAttached;
 
         public static CultureInfo CulturaPortuguesBrasil { get; } = new CultureInfo("pt-BR");
         public static NameValueCollection AppSettings => AplicacaoSnebur.Atual.AppSettings;
@@ -374,7 +374,7 @@ namespace Snebur.Utilidade
             var descricao = AplicacaoSnebur.Atual.AppSettings[NOME_CHAVE_AMBIENTE_SERVIDOR];
             if (String.IsNullOrEmpty(descricao))
             {
-                if (Debugger.IsAttached)
+                if (DebugUtil.IsAttached)
                 {
                     throw new Erro($"A chave '{NOME_CHAVE_AMBIENTE_SERVIDOR}' não foi definida no appSetting");
                 }

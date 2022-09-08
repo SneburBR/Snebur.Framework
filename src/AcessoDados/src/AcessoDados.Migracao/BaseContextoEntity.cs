@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Snebur.Dominio;
+using System;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
-using Snebur.Dominio;
 
 namespace Snebur.AcessoDados.Migracao
 {

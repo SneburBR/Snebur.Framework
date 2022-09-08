@@ -27,16 +27,16 @@
 //        [ChaveEstrangeira("ConfiguracaoAplicacao_Id")]
 //    	[ValidacaoRequerido]
 //    	public ConfiguracaoAplicacao ConfiguracaoAplicacao { get; set; }
-    
+
 //    	[Rotulo("Nome do serviço")]
 //    	[ValidacaoRequerido]
 //    	[ValidacaoTextoTamanho(100)]
 //    	public string NomeServico {  get => this.RetornarValorPropriedade(this._nomeServico); set => this.NotificarValorPropriedadeAlterada(this._nomeServico, this._nomeServico = value); }
-    
+
 //    	[Rotulo("Url do serviço")]
 //    	[ValidacaoRequerido]
 //    	[ValidacaoTextoTamanho(500)]
 //    	public string UrlServico {  get => this.RetornarValorPropriedade(this._urlServico); set => this.NotificarValorPropriedadeAlterada(this._urlServico, this._urlServico = value); }
-    
+
 //    }
 //}

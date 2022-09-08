@@ -8,7 +8,7 @@ namespace Snebur.AcessoDados.Estrutura
 
         public override string ToString()
         {
-            return String.Format("Dicionario {0} - {1}", typeof(T),  base.ToString());
+            return String.Format("Dicionario {0} - {1}", typeof(T), base.ToString());
         }
     }
 }

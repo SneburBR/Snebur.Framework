@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur;
-using Snebur.Utilidade;
-using Snebur.Dominio;
+﻿using Snebur.Dominio;
 
 namespace Snebur.AcessoDados
 {
     public class ResultadoConsulta : Resultado
     {
-		#region Campos Privados
+        #region Campos Privados
 
         private int _totalRegistros;
 
-		#endregion
+        #endregion
 
         public ListaEntidades<IEntidade> Entidades { get; set; } = new ListaEntidades<IEntidade>();
 

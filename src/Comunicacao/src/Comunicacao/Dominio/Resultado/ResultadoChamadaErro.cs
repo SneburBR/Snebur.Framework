@@ -3,12 +3,12 @@
     public abstract class ResultadoChamadaErro : ResultadoChamada
     {
 
-		#region Campos Privados
+        #region Campos Privados
 
         private string _mensagemErro;
         private object _erro;
 
-		#endregion
+        #endregion
 
         public string MensagemErro { get => this.RetornarValorPropriedade(this._mensagemErro); set => this.NotificarValorPropriedadeAlterada(this._mensagemErro, this._mensagemErro = value); }
 

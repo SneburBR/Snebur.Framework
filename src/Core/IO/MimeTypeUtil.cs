@@ -1,5 +1,6 @@
 ﻿using Snebur.Dominio;
 using System;
+using System.Diagnostics;
 
 namespace Snebur.Utilidade
 {
@@ -155,8 +156,22 @@ namespace Snebur.Utilidade
         }
         public static EnumMimeType RetornarMimeTypeEnum(string extensao)
         {
+            if (String.IsNullOrWhiteSpace(extensao))
+            {
+                throw new ArgumentNullException("A extensão não foi definida");
+            }
+
             var descricao = TextoUtil.RetornarPrimeiraLetraMaiuscula(TextoUtil.RetornarSomentesLetrasNumeros(extensao));
-            return EnumUtil.RetornarValorEnum<EnumMimeType>(descricao);
+            if (Enum.TryParse<EnumMimeType>(descricao, out var mimeTupe) &&
+                Enum.IsDefined(typeof(EnumMimeType), mimeTupe))
+            {
+                return mimeTupe;
+            }
+            if (DebugUtil.IsAttached)
+            {
+                throw new Exception($"O MimeType para extensão a {extensao} é desconhecido");
+            }
+            return EnumMimeType.Desconhecido;
         }
         public static EnumMimeType RetornarMimeTypeEnum(EnumFormatoImagem formatoImagem)
         {

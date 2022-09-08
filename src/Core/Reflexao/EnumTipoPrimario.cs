@@ -5,11 +5,14 @@ using Snebur.Dominio.Atributos;
 
 namespace Snebur.Reflexao
 {
-    [IgnorarEnumTSAttribute]
+    [IgnorarEnumTS]
     public enum EnumTipoPrimario
     {
         [Description("Desconhecido")]
-        Desconhecido = 0,
+        Desconhecido = -1,
+
+        [Description("void")]
+        Void = 0,
 
         [Description("Boolean")]
         Boolean = 1,
@@ -51,8 +54,8 @@ namespace Snebur.Reflexao
         Char = 13,
 
         [Description("Byte")]
-        Byte = 14
-
+        Byte = 14,
+         
         //[Description("Uri")]
         //Uri = 11,
 

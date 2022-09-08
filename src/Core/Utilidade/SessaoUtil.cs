@@ -167,7 +167,7 @@ namespace Snebur.Utilidade
         private static string RetornarNomeArquivoIdentificadorSessaoUsuario()
         {
             var credencialUsuario = AplicacaoSnebur.Atual.CredencialUsuario;
-            //if (System.Diagnostics.Debugger.IsAttached)
+            //if (DebugUtil.IsAttached)
             //{
             return TextoUtil.RetornarSomentesLetrasNumeros(credencialUsuario.IdentificadorUsuario).ToLower();
             //}
@@ -258,6 +258,7 @@ namespace Snebur.Utilidade
                 SessaoUtil.LimparCredencialUsuario();
                 var caminhoArquivo = RetornarCaminhoArquivoCredencialUsuario();
                 SalvarConteudoAppData(credencial, caminhoArquivo);
+                AplicacaoSnebur.Atual.NotificarCredencialAlterada();
                 _credencialUsuario = null;
             }
         }

@@ -14,7 +14,7 @@ namespace Snebur.Imagem
         public RedimensionarImagem(Stream stream, int alturaMaxima, double dpi = DPI_PADRAO) :
                                    base(stream, alturaMaxima, EnumLadoComprimento.Altura, dpi, true)
         {
-            if (System.Diagnostics.Debugger.IsAttached)
+            if (DebugUtil.IsAttached)
             {
                 if (Application.Current.Dispatcher.CheckAccess())
                 {
@@ -28,7 +28,7 @@ namespace Snebur.Imagem
                                     bool aumentarImagem = false, double dpi = DPI_PADRAO) :
                                     base(stream, tamanho, opacaoRedimensionar, aumentarImagem, dpi, true)
         {
-            if (System.Diagnostics.Debugger.IsAttached)
+            if (DebugUtil.IsAttached)
             {
                 if (Application.Current.Dispatcher.CheckAccess())
                 {

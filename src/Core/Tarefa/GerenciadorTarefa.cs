@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Snebur.Utilidade;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,7 @@ namespace Snebur.Tarefa
                 {
                     return this._maximoTarefasSimultaneas.Value;
                 }
-                if (System.Diagnostics.Debugger.IsAttached)
+                if (DebugUtil.IsAttached)
                 {
                     return MAXIMO_THEAD_SIMULTANEAS_DEBUG_ATTACH;
                 }

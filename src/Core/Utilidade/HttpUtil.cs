@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Security.Policy;
 using System.Text;
 
 #if NET50 == false
@@ -242,7 +242,7 @@ namespace Snebur.Utilidade
 
         private static int RetornarTimeout(TimeSpan timeout)
         {
-            if (System.Diagnostics.Debugger.IsAttached)
+            if (DebugUtil.IsAttached)
             {
                 return (int)TimeSpan.FromHours(1).TotalMilliseconds;
             }

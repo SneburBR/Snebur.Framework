@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur;
+﻿using Snebur.AcessoDados.Estrutura;
 using Snebur.Utilidade;
-using Snebur.Dominio;
-using System.Reflection;
-using Snebur.AcessoDados.Estrutura;
+using System;
 
 namespace Snebur.AcessoDados.Servidor.Salvar
 {
@@ -21,10 +14,11 @@ namespace Snebur.AcessoDados.Servidor.Salvar
         {
             this.EstruturaCampo = estruturaCampo;
 
-            if (valor== DBNull.Value)
+            if (valor == DBNull.Value)
             {
                 this.Valor = null;
-            }else
+            }
+            else
             {
                 this.Valor = ConverterUtil.Converter(valor, this.EstruturaCampo.Propriedade.PropertyType);
             }

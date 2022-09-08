@@ -114,6 +114,10 @@ namespace Snebur.Dominio
         [Rotulo("Tape Archive (TAR)")]
         Tar = 5200,
         [Rotulo("Tagged Image File Format (TIFF)")]
+        Txt = 5210,
+        [Rotulo("Text/Plain (TXT)")]
+        Text = 5220,
+        [Rotulo("Text/Plain (TEXT)")]
         Tif = 5300,
         [Rotulo("Tagged Image File Format (TIFF)")]
         Tiff = 5400,

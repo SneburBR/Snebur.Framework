@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur.Dominio;
+﻿using Snebur.Dominio;
 using Snebur.Utilidade;
+using System;
+using System.Collections.Generic;
 
 namespace Snebur.AcessoDados.Seguranca
 {
     internal class EstruturaPermissaoEntidade
     {
-        internal IIdentificacao Identificacao { get;   }
+        internal IIdentificacao Identificacao { get; }
 
         internal IPermissaoEntidade PermissaoEntidade { get; }
 
-        internal Dictionary<string, EstruturaPermissaoCampo> PermissoesCampo { get;  } = new Dictionary<string, EstruturaPermissaoCampo>();
+        internal Dictionary<string, EstruturaPermissaoCampo> PermissoesCampo { get; } = new Dictionary<string, EstruturaPermissaoCampo>();
 
         internal Dictionary<string, EstruturaRestricaoFiltro> RestricoesFiltro { get; } = new Dictionary<string, EstruturaRestricaoFiltro>();
 
@@ -54,12 +51,12 @@ namespace Snebur.AcessoDados.Seguranca
             ValidacaoUtil.ValidarReferenciaNula(permissaoEntidade.Atualizar, nameof(permissaoEntidade.Atualizar));
             ValidacaoUtil.ValidarReferenciaNula(permissaoEntidade.Adicionar, nameof(permissaoEntidade.Adicionar));
             ValidacaoUtil.ValidarReferenciaNula(permissaoEntidade.Excluir, nameof(permissaoEntidade.Excluir));
-            
+
             foreach (var permissaoCampo in this.PermissaoEntidade.PermissoesCampo)
             {
                 this.PermissoesCampo.Add(permissaoCampo.NomeCampo, new EstruturaPermissaoCampo(permissaoCampo));
             }
-            foreach(var restricao in this.PermissaoEntidade.RestricoesEntidade)
+            foreach (var restricao in this.PermissaoEntidade.RestricoesEntidade)
             {
                 throw new NotImplementedException();
             }

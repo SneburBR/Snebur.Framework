@@ -11,7 +11,7 @@
 //    {
 //        public static IContextoDados RetornarContextoDados(this Entidade entidade)
 //        {
-           
+
 //            return ContextoDados.RetornarContextoDados();
 //        }
 //    }

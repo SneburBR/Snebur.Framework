@@ -1,14 +1,11 @@
-﻿using System;
+﻿using Snebur.Dominio;
+using Snebur.Dominio.Atributos;
+using Snebur.Utilidade;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Snebur;
-using Snebur.Utilidade;
-using Snebur.Dominio;
-using System.Reflection;
 using System.Linq.Expressions;
-using Snebur.Dominio.Atributos;
+using System.Reflection;
 
 namespace Snebur.AcessoDados.Ajudantes
 {
@@ -74,7 +71,7 @@ namespace Snebur.AcessoDados.Ajudantes
             return AjudanteConsultaEntidade.RetornarTipoListaEntidade(propriedade.PropertyType);
         }
 
-      
+
         #endregion
 
         #region Metodos Privados

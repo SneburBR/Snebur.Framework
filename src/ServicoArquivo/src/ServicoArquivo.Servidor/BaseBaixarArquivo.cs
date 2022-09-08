@@ -1,7 +1,7 @@
-﻿using System.IO;
-using System.Text;
-using Snebur.Net;
+﻿using Snebur.Net;
 using Snebur.Utilidade;
+using System.IO;
+using System.Text;
 
 namespace Snebur.ServicoArquivo
 {
@@ -35,7 +35,7 @@ namespace Snebur.ServicoArquivo
 
             context.Response.SubStatusCode = 5;
             context.Response.StatusCode = 405;
-         
+
         }
     }
 

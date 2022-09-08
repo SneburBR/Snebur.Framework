@@ -23,7 +23,7 @@ namespace Snebur.Net
         public override NameValueCollection Headers => this.Request.Headers;
 
         public override Uri Url => this.Request.Url;
-         
+
         public override NameValueCollection QueryString
         {
             get

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
-using Snebur.Utilidade;
-using Snebur.Dominio;
-using System.Web;
+﻿using Snebur.Net;
+using System;
 using System.IO;
-using Snebur.Net;
+using System.Text;
 
 namespace Snebur.ServicoArquivo
 {
@@ -22,7 +17,7 @@ namespace Snebur.ServicoArquivo
         protected override ComunicacaoServicoArquivoCliente RetornarServicoArquivoCliente(CabecalhoServicoImagem cabecalho)
         {
             var urlServicoArquivo = this.RetornarUrlServicoArquivoCliente();
-            return new ComunicacaoServicoImagemCliente(urlServicoArquivo, 
+            return new ComunicacaoServicoImagemCliente(urlServicoArquivo,
                                                        cabecalho.CredencialRequisicao,
                                                        cabecalho.IdentificadorSessaoUsuario,
                                                        this.NormalizarOrigem);
@@ -98,7 +93,7 @@ namespace Snebur.ServicoArquivo
         {
             return this.RetornarRepositorioImagem(informacaoRepositorio);
         }
-        
+
         public string RetornarDiretorioImagem(IInformacaoRepositorioImagem informacaoRepositorioImagem)
         {
             return ServicoArquivoUtil.RetornarCaminhoDiretorioArquivo(this.RetornarRepositorioImagem(informacaoRepositorioImagem), informacaoRepositorioImagem.IdArquivo);
