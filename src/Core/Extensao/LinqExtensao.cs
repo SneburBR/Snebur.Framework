@@ -7,6 +7,24 @@ namespace Snebur.Linq
 {
     public static class LinqExtensao
     {
+        public static T TryGet<T>(this IList<T> colecao, int index)
+        {
+            if (index < colecao.Count)
+            {
+                return colecao[index];
+            }
+            return default;
+        }
+
+        public static string TryGet(this string[] colecao, int index)
+        {
+            if (index < colecao.Length)
+            {
+                return colecao[index];
+            }
+            return null;
+        }
+
         public static void AddIsNotNull<T>(this ICollection<T> colecao, T item)
         {
             if (item != null)

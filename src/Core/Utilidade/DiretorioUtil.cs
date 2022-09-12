@@ -27,9 +27,9 @@ namespace Snebur.Utilidade
             }
         }
 
-        public static string FormatarCaminho(string caminho,
-                                             bool isRemoverCaracterEspecial = false,
-                                             bool isRemoverAcento = false)
+        public static string FormatarNomePasta(string caminho,
+                                               bool isRemoverCaracterEspecial = false,
+                                               bool isRemoverAcento = false)
         {
             string retorno;
             if (DiretorioUtil.IsDireotrioRaiz(caminho))
@@ -81,7 +81,7 @@ namespace Snebur.Utilidade
 
         public static string ComibarFormatado(params string[] caminhos)
         {
-            var caminhosFormatado = caminhos.Select(x => DiretorioUtil.FormatarCaminho(x)).ToArray();
+            var caminhosFormatado = caminhos.Select(x => DiretorioUtil.FormatarNomePasta(x)).ToArray();
             return Path.Combine(caminhosFormatado);
         }
         /// <summary>

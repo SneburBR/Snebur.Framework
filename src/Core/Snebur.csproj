@@ -157,6 +157,7 @@
     <Compile Include="Atributos\Validacao\ValidacaoRequericoCondicional.cs" />
     <Compile Include="Atributos\Validacao\ValidacaoFlagsEnumRequerido.cs" />
     <Compile Include="Atributos\Validacao\ValidacaoRequeridoDebug.cs" />
+    <Compile Include="Atributos\Validacao\ValidacaoTextoSomentoNumeros.cs" />
     <Compile Include="Atributos\Validacao\ValidacaoUrlAttribute.cs" />
     <Compile Include="Atributos\Validacao\ValidacaoVersao.cs" />
     <Compile Include="Comparer\ComparNomePropriedade.cs" />
@@ -206,6 +207,7 @@
     <Compile Include="Dominio\TipoComplexo\Lista\ListaString.cs" />
     <Compile Include="Dominio\TipoComplexo\Medida\Margem.Partial.cs" />
     <Compile Include="Dominio\TipoComplexo\Medida\Posicao.Partial.cs" />
+    <Compile Include="Dominio\TipoComplexo\RedeSociais.cs" />
     <Compile Include="Dominio\TipoComplexo\PrazoTempo.cs" />
     <Compile Include="Dominio\Servidor\EnumAmbienteServidor.cs" />
     <Compile Include="Dominio\TipoComplexo\Medida\Regiao.cs" />

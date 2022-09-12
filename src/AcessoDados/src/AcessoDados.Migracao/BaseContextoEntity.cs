@@ -66,6 +66,7 @@ namespace Snebur.AcessoDados.Migracao
             modelBuilder.ComplexType<Area>();
             modelBuilder.ComplexType<Regiao>();
             modelBuilder.ComplexType<Navegador>();
+            modelBuilder.ComplexType<RedeSociais>();
             modelBuilder.ComplexType<SistemaOperacional>();
             modelBuilder.ComplexType<Borda>();
             modelBuilder.ComplexType<PrazoTempo>();
@@ -74,6 +75,8 @@ namespace Snebur.AcessoDados.Migracao
             modelBuilder.ComplexType<ListaInt32>();
             modelBuilder.ComplexType<ListaDouble>();
             modelBuilder.ComplexType<ListaString>();
+
+          
             //modelBuilder.ComplexType<ListaDouble>();
             //MontarContexto.Inicializar(modelBuilder, this);
 

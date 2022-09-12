@@ -84,7 +84,7 @@ namespace Snebur.AcessoDados
 
         private BaseContextoDados(string configuracaoAcessoDados,
                                   string identificadorProprietario,
-                                  EnumFlagBancoNaoSuporte flagsNaoSuporta)
+                                  EnumFlagBancoNaoSuportado flagsNaoSuporta)
         {
             ErroUtil.ValidarReferenciaNula(configuracaoAcessoDados, nameof(configuracaoAcessoDados));
 
@@ -129,7 +129,7 @@ namespace Snebur.AcessoDados
                              Guid identificadorSessaoUsario,
                              InformacaoSessaoUsuario informacaoSessaoUsuario,
                              string identificadorProprietario,
-                             EnumFlagBancoNaoSuporte sqlNaoSuporta) : this(configuracaoAcessoDados,
+                             EnumFlagBancoNaoSuportado sqlNaoSuporta) : this(configuracaoAcessoDados,
                                                                     identificadorProprietario,
                                                                     sqlNaoSuporta)
         {
@@ -180,7 +180,7 @@ namespace Snebur.AcessoDados
                                   identificadorSessaoUsuario,
                                   informacaoSessaoUsuario,
                                   identificadorProprietario,
-                                  EnumFlagBancoNaoSuporte.Nada)
+                                  EnumFlagBancoNaoSuportado.SemRestricao)
         {
 
         }
@@ -191,7 +191,7 @@ namespace Snebur.AcessoDados
                                     Guid identificadorSessaoUsuario,
                                     InformacaoSessaoUsuario informacaoSessaoUsuario,
                                     string identificadorProprietario,
-                                    EnumFlagBancoNaoSuporte sqlNaoSuporta = EnumFlagBancoNaoSuporte.Nada) :
+                                    EnumFlagBancoNaoSuportado sqlNaoSuporta = EnumFlagBancoNaoSuportado.SemRestricao) :
                                     this(configuracaoAcessoDados,
                                          credencialUsuario,
                                          identificadorSessaoUsuario,
@@ -765,13 +765,12 @@ namespace Snebur.AcessoDados
         #endregion
     }
 
-    public enum EnumFlagBancoNaoSuporte
+    public enum EnumFlagBancoNaoSuportado
     {
-        Nada = 0,
+        SemRestricao = 0,
         OffsetFetch = 1,
         ColunaNomeTipoEntidade = 2,
         Usuario = 4,
         Migracao = 8,
-
     }
 }

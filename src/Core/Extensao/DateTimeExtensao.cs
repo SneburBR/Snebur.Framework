@@ -1,6 +1,8 @@
-﻿using Snebur.Utilidade;
+﻿using Snebur.Dominio.Atributos;
+using Snebur.Utilidade;
+using System;
 
-namespace System
+namespace Snebur.Utilidade
 {
     public static class DateTimeExtensao
     {
@@ -60,5 +62,37 @@ namespace System
             var tipo = isUtc ? DateTimeKind.Utc : DateTimeKind.Local;
             return new DateTime(data.Year, data.Month, data.Day, 0, 0, 0, tipo);
         }
+
+        public static string ToDirectoryName(this DateTime dateTime, 
+                                             OptionsDateTimeDiretoryName options = OptionsDateTimeDiretoryName.YYYY_MM_DD)
+        {
+            switch (options)
+            {
+                case OptionsDateTimeDiretoryName.YYYY_MM_DD:
+                    return dateTime.ToString("yyyy-MM-dd");
+                case OptionsDateTimeDiretoryName.YYYY_MM_DD_HH_mm:
+                    return dateTime.ToString("yyyy-MM-dd HH-mm");
+                case OptionsDateTimeDiretoryName.YYYY_MM_DD_HH_MM_SS:
+                    return dateTime.ToString("yyyy-MM-dd HH-mm-ss");
+                case OptionsDateTimeDiretoryName.YYYY_MM_DD_HH_MM_SS_FFF:
+                    return dateTime.ToString("yyyy-MM-dd HH-mm-ss-fff");
+                case OptionsDateTimeDiretoryName.YYYY_MM_DD_HH_MM_SS_FFFFFF:
+                    return dateTime.ToString("yyyy-MM-dd HH-mm-ss-ffffff");
+                default:
+                    throw new Exception($"Options {options} não suportado");
+                    
+            }
+        }
+    }
+
+    [IgnorarEnumTS]
+    [IgnorarTSReflexao]
+    public enum OptionsDateTimeDiretoryName
+    {
+        YYYY_MM_DD,
+        YYYY_MM_DD_HH_mm,
+        YYYY_MM_DD_HH_MM_SS,
+        YYYY_MM_DD_HH_MM_SS_FFF,
+        YYYY_MM_DD_HH_MM_SS_FFFFFF,
     }
 }

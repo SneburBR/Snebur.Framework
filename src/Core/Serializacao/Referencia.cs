@@ -25,6 +25,11 @@ namespace Snebur.Serializacao
     {
         public IDictionary Dicionario { get; internal set; }
         public object Chave { get; internal set; }
+
+        public ReferenciaDicionario()
+        {
+
+        }
     }
     internal class ReferenciaPropriedade : Referencia
     {

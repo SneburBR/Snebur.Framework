@@ -1,10 +1,9 @@
 ﻿using Snebur.Utilidade;
-using System.Net.Security;
 using System.Net;
+using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Web;
-using Ionic.BZip2;
 
 namespace System
 {
@@ -80,7 +79,6 @@ namespace System
             var query = HttpUtility.ParseQueryString(baseUri.Query);
             var queryRelativa = HttpUtility.ParseQueryString(relativeUri.GetQuery());
             query.AddRange(queryRelativa);
-
 
             var basePath = baseUri.GetPath(true);
             var relativePath = relativeUri.GetPath();
@@ -183,15 +181,10 @@ namespace System
             });
             return promise.Task;
         }
-
-
+         
         public static bool IsWWW(this Uri uri)
         {
             return uri.Host.ToLower().StartsWith("www");
         }
-
-
     }
-
-
 }

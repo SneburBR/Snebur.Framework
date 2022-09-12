@@ -6,15 +6,15 @@ using System.Reflection;
 namespace Snebur.Dominio.Atributos
 {
     [AttributeUsage(AttributeTargets.Property)]
-    public class ValidacaoUrlAttribute : BaseAtributoValidacao, IAtributoValidacao
+    public class ValidacaoTextoSomentoNumerosAttribute : BaseAtributoValidacao, IAtributoValidacao
     {
         [MensagemValidacao]
-        public static string MensagemValidacao { get; set; } = "A url {0} é invalido.";
+        public static string MensagemValidacao { get; set; } = "A campo {0} é invalido (somente números).";
 
 
         #region "Construtor"
 
-        public ValidacaoUrlAttribute() : base()
+        public ValidacaoTextoSomentoNumerosAttribute() : base()
         {
         }
         #endregion
@@ -27,8 +27,8 @@ namespace Snebur.Dominio.Atributos
             {
                 return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
             }
-            var url = Convert.ToString(valorPropriedade);
-            return ValidacaoUtil.IsUrl(url);
+            var textp = Convert.ToString(valorPropriedade);
+            return ValidacaoUtil.IsSomenteNumeros(textp);
         }
 
         [Display]

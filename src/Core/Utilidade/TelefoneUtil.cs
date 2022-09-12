@@ -79,6 +79,7 @@ namespace Snebur.Utilidade
              };
 
         public static Dictionary<int, DDD> DicionariosDDD { get; } = Ddds.ToDictionary(x => x.Ddd);
+        public static Dictionary<int, DDD> DicionariosDDI { get; } = Ddds.ToDictionary(x => x.Ddd);
     }
 
     public class DDD

@@ -104,6 +104,7 @@ namespace Snebur.Dominio
                 }
             }
         }
+
         #region IList
 
         public bool Contains(T item)

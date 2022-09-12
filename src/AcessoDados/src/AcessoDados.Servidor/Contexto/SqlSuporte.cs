@@ -12,15 +12,15 @@ namespace Snebur.AcessoDados
         public bool IsUsuario { get; }
         public bool IsMigracao { get; }
 
-        internal SqlSuporte(EnumFlagBancoNaoSuporte flags)
+        internal SqlSuporte(EnumFlagBancoNaoSuportado flags)
         {
-            this.IsOffsetFetch = this.IsSuporta(flags, EnumFlagBancoNaoSuporte.OffsetFetch);
-            this.IsColunaNomeTipoEntidade = this.IsSuporta(flags, EnumFlagBancoNaoSuporte.ColunaNomeTipoEntidade);
-            this.IsUsuario = this.IsSuporta(flags, EnumFlagBancoNaoSuporte.Usuario);
-            this.IsMigracao = this.IsSuporta(flags, EnumFlagBancoNaoSuporte.Migracao);
+            this.IsOffsetFetch = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.OffsetFetch);
+            this.IsColunaNomeTipoEntidade = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.ColunaNomeTipoEntidade);
+            this.IsUsuario = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.Usuario);
+            this.IsMigracao = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.Migracao);
         }
 
-        private bool IsSuporta(EnumFlagBancoNaoSuporte sqlNaoSuporta, EnumFlagBancoNaoSuporte flag)
+        private bool IsSuporta(EnumFlagBancoNaoSuportado sqlNaoSuporta, EnumFlagBancoNaoSuportado flag)
         {
             if ((sqlNaoSuporta & flag) == flag)
             {

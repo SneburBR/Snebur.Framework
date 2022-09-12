@@ -129,7 +129,7 @@ namespace Snebur.AcessoDados
             {
                 if (Guid.Empty == identificadorSessaoUsuario)
                 {
-                    throw new ErroSessaoUsuarioInvalida("O identificador da sessão do usuario não foi definido");
+                    throw new ErroSessaoUsuarioInvalida("O identificador da sessão do usuário não foi definido");
                     //throw new ErroNaoDefinido(String.Format("O identificador da sessão do usuario não foi definido"));
                 }
 

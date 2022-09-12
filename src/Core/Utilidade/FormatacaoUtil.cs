@@ -138,5 +138,18 @@ namespace Snebur.Utilidade
             throw new Exception(String.Format("O valor {0} não está em um formato de CPF ou CNPJ válido.", cpfCnpj));
         }
 
+        public static string FormatarTelefone(string telefone)
+        {
+            var somenteNumeros = TextoUtil.RetornarSomenteNumeros(telefone);
+            if(somenteNumeros.Length == 10)
+            {
+                return String.Format("{0:(##) ####-####}", somenteNumeros);
+            }
+            if (somenteNumeros.Length == 11)
+            {
+                return String.Format("{0:(##) #####-####}", somenteNumeros);
+            }
+            return telefone;
+        }
     }
 }

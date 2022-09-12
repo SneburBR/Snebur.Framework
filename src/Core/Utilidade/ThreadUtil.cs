@@ -206,42 +206,19 @@ namespace Snebur.Utilidade
         }
 #endif
 
-        private static object _bloqueioValor = new object();
 
-        public static T RetornarValorComBloqueio<T>(ref T? valor, Func<T> retornarValor) where T : struct
-        {
-            if (!valor.HasValue)
-            {
-                lock (_bloqueioValor)
-                {
-                    if (!valor.HasValue)
-                    {
-                        valor = retornarValor.Invoke();
-                    }
-                }
-            }
-            return valor.Value;
-        }
+        [Obsolete("Use " + nameof(LazyUtil) + "." + nameof(LazyUtil.RetornarValorLazyComBloqueio))]
+        public static T RetornarValorComBloqueio<T>(ref T? valor, Func<T> retornarValor) where T : struct => LazyUtil.RetornarValorLazyComBloqueio<T>(ref valor, retornarValor);
 
-        public static T RetornarValorComBloqueio<T>(ref T valor, Func<T> retornarValor) where T : class
-        {
-            if (valor == null)
-            {
-                lock (_bloqueioValor)
-                {
-                    if (valor == null)
-                    {
-                        valor = retornarValor.Invoke();
-                    }
-                }
-            }
-            return valor;
-        }
+        [Obsolete("Use " + nameof(LazyUtil) + "." + nameof(LazyUtil.RetornarValorLazyComBloqueio))]
+        public static T RetornarValorComBloqueio<T>(ref T valor, Func<T> retornarValor) where T : class => LazyUtil.RetornarValorLazyComBloqueio<T>(ref valor, retornarValor);
+
+
         /// <summary>
         /// Tenta executar uma exação, um tempo máximo pode ser dinido
         /// </summary>
         /// <param name="p"></param>
-        /// <param name="tempoMaximo"> tempo maximo em milisegundos, -1 para inifinito</param>
+        /// <param name="tempoMaximo"> tempo máximo em milissegundos, -1 para infinito</param>
         internal static void TenteExecute(Action acao, int tempoMaximo = Timeout.Infinite)
         {
             try
@@ -305,6 +282,71 @@ namespace Snebur.Utilidade
             {
                 thread.Abort();
             }
+        }
+    }
+
+    public static class LazyUtil
+    {
+        private static object _bloqueioValor = new object();
+
+        public static T RetornarValorLazyComBloqueio<T>(ref T? valor, Func<T> retornarValor) where T : struct
+        {
+            if (!valor.HasValue)
+            {
+                lock (_bloqueioValor)
+                {
+                    if (!valor.HasValue)
+                    {
+                        valor = retornarValor.Invoke();
+                    }
+                }
+            }
+            return valor.Value;
+        }
+
+        public static T RetornarValorLazyComBloqueio<T>(ref T valor, Func<T> retornarValor) where T : class
+        {
+            if (valor == null)
+            {
+                lock (_bloqueioValor)
+                {
+                    if (valor == null)
+                    {
+                        valor = retornarValor.Invoke();
+                    }
+                }
+            }
+            return valor;
+        }
+
+        public static T RetornarValorLazy<T>(ref T? valor, Func<T> retornarValor) where T : struct
+        {
+            if (!valor.HasValue)
+            {
+                lock (_bloqueioValor)
+                {
+                    if (!valor.HasValue)
+                    {
+                        valor = retornarValor.Invoke();
+                    }
+                }
+            }
+            return valor.Value;
+        }
+
+        public static T RetornarValorLazy<T>(ref T valor, Func<T> retornarValor) where T : class
+        {
+            if (valor == null)
+            {
+                lock (_bloqueioValor)
+                {
+                    if (valor == null)
+                    {
+                        valor = retornarValor.Invoke();
+                    }
+                }
+            }
+            return valor;
         }
     }
 }

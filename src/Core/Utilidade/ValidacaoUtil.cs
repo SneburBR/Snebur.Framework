@@ -123,12 +123,15 @@ namespace Snebur.Utilidade
 
                 numeros = TextoUtil.RemoverCaracteresInicial(numeros, "0");
 
-                var isValido = (letras.Length == 0 && (numeros.Length == 10 || numeros.Length == 11));
-                if (isValido)
+                var isNacional = (letras.Length == 0 && (numeros.Length == 10 || 
+                                                       numeros.Length == 11 ));
+                if (isNacional)
                 {
                     var ddd = Convert.ToInt32(numeros.Substring(0, 2));
                     return TelefoneUtil.DicionariosDDD.ContainsKey(ddd);
                 }
+                //var isInternacional = (letras.Length == 0 && (numeros.Length == 10 ||
+                //                                              numeros.Length == 11));
                 return false;
             }
             return false;
@@ -327,6 +330,11 @@ namespace Snebur.Utilidade
             {
                 throw new ErroArquivoNaoEncontrado(caminhoArquivo);
             }
+        }
+
+        public static bool IsSomenteNumeros(string texto)
+        {
+            return TextoUtil.IsSomenteNumeros(texto);
         }
 
         public static bool IsSomenteNumerosPontosSinais(string texto)

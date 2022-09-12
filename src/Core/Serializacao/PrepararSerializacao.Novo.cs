@@ -244,8 +244,14 @@ namespace Snebur.Serializacao
                     referenciaPropriedade.Propriedade.SetValue(objetoPai, baseDominio);
                     break;
 
+                case ReferenciaDicionario referenciaDicionario:
+
+                    referenciaDicionario.Dicionario[referenciaDicionario.Chave] = baseDominio;
+                    break;
+
                 case ReferenciaRaiz referenciaRaiz:
 
+                    
                     throw new Erro("Referencia do tipo Raiz não pode ser referenciada");
 
                 default:

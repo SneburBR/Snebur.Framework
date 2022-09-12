@@ -238,7 +238,11 @@ namespace Snebur.Utilidade
                 {
                     try
                     {
-                        return SessaoUtil.RetornarConteudoAppData<CredencialUsuario>(caminhoArquivo);
+                        var credencia = SessaoUtil.RetornarConteudoAppData<CredencialUsuario>(caminhoArquivo);
+                        if(credencia!= null)
+                        {
+                            return credencia;
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -303,10 +307,10 @@ namespace Snebur.Utilidade
                     {
                         LogUtil.ErroAsync(ex);
                         ArquivoUtil.DeletarArquivo(caminhoArquivo);
-                        throw;
+                        
                     }
                 }
-                throw new ErroArquivoNaoEncontrado(caminhoArquivo);
+                return default;
             }
         }
 
