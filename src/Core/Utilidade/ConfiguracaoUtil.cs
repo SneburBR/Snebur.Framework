@@ -33,7 +33,7 @@ namespace Snebur.Utilidade
         public static string UrlServicoDados => AplicacaoSnebur.Atual.UrlServicoDados;
         public static string UrlServicoImagem => AplicacaoSnebur.Atual.UrlServicoImagem;
 
-        public static Guid ChaveSeguranca => ThreadUtil.RetornarValorComBloqueio(ref _chaveSeguranca, RetornarChaveSeguranca);
+        public static Guid ChaveSeguranca => LazyUtil.RetornarValorLazyComBloqueio(ref _chaveSeguranca, RetornarChaveSeguranca);
 
         private static Guid RetornarChaveSeguranca()
         {

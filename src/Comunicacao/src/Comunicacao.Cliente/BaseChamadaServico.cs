@@ -117,8 +117,9 @@ namespace Snebur.Comunicacao
             var requisicaoHttp = HttpWebRequest.Create(urlServico);
 
             var identificadorUsuario = CriptografiaUtil.Criptografar(token, this.ContratoChamada.Cabecalho.CredencialUsuario.IdentificadorUsuario);
-            var identifcadorProprietario = AplicacaoSnebur.Atual.IdentificadorProprietario;
-
+            var identifcadorProprietario = this.ContratoChamada.Cabecalho.IdentificadorProprietario;
+            var xx = AplicacaoSnebur.Atual.IdentificadorProprietario;
+            
             requisicaoHttp.Headers[ConstantesCabecalho.IDENTIFICADOR_USUARIO] = identificadorUsuario;
             requisicaoHttp.Headers[ConstantesCabecalho.SENHA] = CriptografiaUtil.Criptografar(token, this.ContratoChamada.Cabecalho.CredencialServico.Senha);
             requisicaoHttp.Headers[ConstantesCabecalho.NOME_ASSEMBLY_APLICACAO] = nomeAssembly;

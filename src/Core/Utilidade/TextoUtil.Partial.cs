@@ -29,30 +29,30 @@ namespace Snebur.Utilidade
             private static HashSet<char> _numerosPontosSinais;
             private static Dictionary<char, char> _acentosMapeado;
 
-            internal static HashSet<char> Numeros => ThreadUtil.RetornarValorComBloqueio(
+            internal static HashSet<char> Numeros => LazyUtil.RetornarValorLazy(
                     ref _numeros,
                     () => TextoUtilConstantes.NUMEROS.ToArray().ToHashSet());
-            internal static HashSet<char> PontosSinais => ThreadUtil.RetornarValorComBloqueio(
+            internal static HashSet<char> PontosSinais => LazyUtil.RetornarValorLazy(
                     ref _pontosSinais,
                     () => TextoUtilConstantes.PONTOS_SINAIS.ToArray().ToHashSet());
 
-            internal static HashSet<char> NumerosPontsSinais => ThreadUtil.RetornarValorComBloqueio(
+            internal static HashSet<char> NumerosPontsSinais => LazyUtil.RetornarValorLazy(
                     ref _numerosPontosSinais,
                     () => (TextoUtilConstantes.NUMEROS + TextoUtilConstantes.PONTOS_SINAIS).ToArray().ToHashSet());
 
-            internal static HashSet<char> Letras => ThreadUtil.RetornarValorComBloqueio(
+            internal static HashSet<char> Letras => LazyUtil.RetornarValorLazy(
                      ref _letras,
                      () => TextoUtilConstantes.LETRAS.ToArray().ToHashSet());
 
-            internal static HashSet<char> LetrasNumeros => ThreadUtil.RetornarValorComBloqueio(
+            internal static HashSet<char> LetrasNumeros => LazyUtil.RetornarValorLazy(
                     ref _letrasNumeros,
                     () => String.Concat(LETRAS, NUMEROS).ToArray().ToHashSet());
 
-            internal static HashSet<char> CaracteresPadrao => ThreadUtil.RetornarValorComBloqueio(
+            internal static HashSet<char> CaracteresPadrao => LazyUtil.RetornarValorLazy(
                     ref _caracteresPadrao,
                     () => CARACTERES_PADRAO.ToArray().ToHashSet());
 
-            internal static HashSet<char> LinhasTabulacoes => ThreadUtil.RetornarValorComBloqueio(
+            internal static HashSet<char> LinhasTabulacoes => LazyUtil.RetornarValorLazy(
                     ref _linhasTabulacoes,
                     () =>
                     {
@@ -66,7 +66,7 @@ namespace Snebur.Utilidade
                         return retorno;
                     });
 
-            internal static Dictionary<char, char> AcentosMapeado => ThreadUtil.RetornarValorComBloqueio(
+            internal static Dictionary<char, char> AcentosMapeado => LazyUtil.RetornarValorLazy(
                     ref _acentosMapeado,
                     () =>
                     {

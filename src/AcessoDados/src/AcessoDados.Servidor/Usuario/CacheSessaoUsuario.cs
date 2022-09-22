@@ -77,6 +77,10 @@ namespace Snebur.AcessoDados
 
         internal IUsuario RetornarUsuarioAvalista(Credencial credencialAvalista)
         {
+            if(credencialAvalista == null)
+            {
+                return null;
+            }
             return this.AjudanteSessaoUsuario.RetornarUsuario(credencialAvalista);
         }
 

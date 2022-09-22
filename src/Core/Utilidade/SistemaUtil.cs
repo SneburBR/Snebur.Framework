@@ -25,7 +25,7 @@ namespace Snebur.Utilidade
         {
             get
             {
-                return ThreadUtil.RetornarValorComBloqueio(ref _tipoAplicacao,
+                return LazyUtil.RetornarValorLazyComBloqueio(ref _tipoAplicacao,
                                                         SistemaUtil.RetornarTipoAplicacaoInterno);
 
             }
@@ -44,9 +44,9 @@ namespace Snebur.Utilidade
             }
         }
 
-        public static String VersaoAplicacaoString => ThreadUtil.RetornarValorComBloqueio(ref _versaoAplicacaoString,
+        public static String VersaoAplicacaoString => LazyUtil.RetornarValorLazyComBloqueio(ref _versaoAplicacaoString,
                                                                                       () => VersaoAplicacao.ToString());
-        public static Version VersaoAplicacao => ThreadUtil.RetornarValorComBloqueio(ref _versaoAplicacao,
+        public static Version VersaoAplicacao => LazyUtil.RetornarValorLazyComBloqueio(ref _versaoAplicacao,
                                                                                  ReflexaoUtil.RetornarVersaoEntrada);
         public static bool IsAplicacao64Bits => System.Environment.Is64BitProcess;
 

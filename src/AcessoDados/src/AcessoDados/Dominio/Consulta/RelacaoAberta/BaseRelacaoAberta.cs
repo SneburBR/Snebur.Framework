@@ -24,17 +24,20 @@ namespace Snebur.AcessoDados
 
         public string NomeTipoEntidade { get => this.RetornarValorPropriedade(this._nomeTipoEntidade); set => this.NotificarValorPropriedadeAlterada(this._nomeTipoEntidade, this._nomeTipoEntidade = value); }
 
-        public string TipoEntidadeAssemblyQualifiedName { get => this.RetornarValorPropriedade(this._tipoEntidadeAssemblyQualifiedName); set => this.NotificarValorPropriedadeAlterada(this._tipoEntidadeAssemblyQualifiedName, this._tipoEntidadeAssemblyQualifiedName = value); }
-
         public string NomeTipoDeclarado { get => this.RetornarValorPropriedade(this._nomeTipoDeclarado); set => this.NotificarValorPropriedadeAlterada(this._nomeTipoDeclarado, this._nomeTipoDeclarado = value); }
-
+        public string TipoEntidadeAssemblyQualifiedName { get => this.RetornarValorPropriedade(this._tipoEntidadeAssemblyQualifiedName); set => this.NotificarValorPropriedadeAlterada(this._tipoEntidadeAssemblyQualifiedName, this._tipoEntidadeAssemblyQualifiedName = value); }
         public string TipoDeclaradoAssemblyQualifiedName { get => this.RetornarValorPropriedade(this._tipoDeclaradoAssemblyQualifiedName); set => this.NotificarValorPropriedadeAlterada(this._tipoDeclaradoAssemblyQualifiedName, this._tipoDeclaradoAssemblyQualifiedName = value); }
 
         public HashSet<string> PropriedadesAbertas { get; set; } = new HashSet<string>();
 
+        [IgnorarPropriedadeTS]
+        [IgnorarPropriedadeTSReflexao]
+        public PropertyInfo Propriedade { get; set; }
+
         public BaseRelacaoAberta()
         {
         }
+
         [IgnorarConstrutorTS]
         public BaseRelacaoAberta(PropertyInfo propriedade)
         {
@@ -45,10 +48,12 @@ namespace Snebur.AcessoDados
             }
             this.CaminhoPropriedade = propriedade.Name;
             this.NomeTipoEntidade = tipoEntidade.Name;
-            this.TipoEntidadeAssemblyQualifiedName = tipoEntidade.AssemblyQualifiedName;
+            //this.TipoEntidadeAssemblyQualifiedName = tipoEntidade.AssemblyQualifiedName;
+            this.TipoEntidadeAssemblyQualifiedName = tipoEntidade.RetornarAssemblyQualifiedName();
 
             this.NomeTipoDeclarado = propriedade.DeclaringType.Name;
-            this.TipoDeclaradoAssemblyQualifiedName = propriedade.DeclaringType.AssemblyQualifiedName;
+            this.TipoDeclaradoAssemblyQualifiedName = propriedade.DeclaringType.RetornarAssemblyQualifiedName();
+            //this.TipoDeclaradoAssemblyQualifiedName = propriedade.DeclaringType.AssemblyQualifiedName;
         }
 
         private Type RetornarTipoEntidade(PropertyInfo propriedade)

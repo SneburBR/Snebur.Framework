@@ -17,6 +17,7 @@ namespace Snebur.ServicoArquivo
             }
         }
 
+        
         protected string RetornarString(string chave)
         {
             if (!String.IsNullOrWhiteSpace(this.HttpContext.Request.Headers[chave]))

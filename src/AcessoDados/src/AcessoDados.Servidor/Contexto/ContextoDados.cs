@@ -24,15 +24,17 @@ namespace Snebur.AcessoDados
 {
     public abstract partial class BaseContextoDados : __BaseContextoDados, IServicoDados, IContextoDadosSemNotificar, IDisposable
     {
-        public SqlSuporte SqlSuporte { get; }
+        
+        private CredencialUsuario _credencialAvalista;
 
         #region Propriedades
+        public SqlSuporte SqlSuporte { get; }
 
         private readonly string ConectionString;
 
         private bool IsAtivarSeguranca { get; }
 
-        private bool IsValidarUsuarioSessaoUsuario { get; }
+        private bool IsValidarUsuarioSessaoUsuario { get; set; }
 
         private TiposSeguranca TiposSeguranca { get; }
 
@@ -48,7 +50,7 @@ namespace Snebur.AcessoDados
 
         public ISessaoUsuario SessaoUsuarioLogado => this.CacheSessaoUsuario?.SessaoUsuario;
 
-        public IUsuario UsuarioAvalista { get; }
+        public IUsuario UsuarioAvalista { get; private set; }
 
         internal SeguracaContextoDados SeguracaContextoDados { get; }
 
@@ -78,7 +80,20 @@ namespace Snebur.AcessoDados
 
         public bool IsSessaoUsuarioAtiva => this.SessaoUsuarioLogado.Estado == EnumEstadoSessaoUsuario.Ativo;
 
+        public CredencialUsuario CredencialAvalista
+        {
+            get => this._credencialAvalista;
+            set
+            {
+                this._credencialAvalista = value;
+                this.IsValidarUsuarioSessaoUsuario = false;
+                this.UsuarioAvalista = this.CacheSessaoUsuario.RetornarUsuarioAvalista(this._credencialAvalista);
+                this.IsValidarUsuarioSessaoUsuario = true;
+            }
+        }
+
         #endregion
+
 
         #region Construtor
 
@@ -121,6 +136,7 @@ namespace Snebur.AcessoDados
                 this.SeguracaContextoDados = SeguracaContextoDados.RetornarSegurancaoContextoDados(this);
             }
             this.PopularBancoInterno();
+            (AplicacaoSnebur.Atual as IAplicacaoContextoDados)?.NovoConexaoDados(this);
 
         }
 
@@ -202,8 +218,9 @@ namespace Snebur.AcessoDados
 
             if (credencialAvalista != null)
             {
-                this.IsValidarUsuarioSessaoUsuario = false;
-                this.UsuarioAvalista = this.CacheSessaoUsuario.RetornarUsuarioAvalista(credencialAvalista);
+                //this.IsValidarUsuarioSessaoUsuario = false;
+                this.CredencialAvalista = credencialAvalista;
+                //this.UsuarioAvalista = this.CacheSessaoUsuario.RetornarUsuarioAvalista(credencialAvalista);
             }
 
             this.VerificarAutorizacaoUsuarioIdentificadorGlobal();
@@ -218,9 +235,11 @@ namespace Snebur.AcessoDados
         //    this.IsAnonimo = true;
 
         //}
+
+      
         #endregion
 
-        #region BaseServico 
+            #region BaseServico 
 
         public override bool Ping()
         {
@@ -629,6 +648,8 @@ namespace Snebur.AcessoDados
 
         #endregion
 
+
+
         #region Popular Banco
 
         private static bool? __isPopularBanco = null;
@@ -761,6 +782,7 @@ namespace Snebur.AcessoDados
             //this.SessaoUsuario = null;
             //ContextoDados.DispensarScopo();
             base.DisposeInterno();
+            (AplicacaoSnebur.Atual as IAplicacaoContextoDados)?.ConexaoDadosDispensado(this);
         }
         #endregion
     }
@@ -773,4 +795,6 @@ namespace Snebur.AcessoDados
         Usuario = 4,
         Migracao = 8,
     }
+
+
 }

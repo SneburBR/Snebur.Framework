@@ -228,10 +228,11 @@ namespace Snebur.AcessoDados.Mapeamento
 
         private string RetornarSqlLimite()
         {
+            var skip = this.RetornarSkip();
             if (this.Contexto.SqlSuporte.IsOffsetFetch)
             {
                 string sqlLimite = "";
-                sqlLimite += " OFFSET  " + this.RetornarSkip();
+                sqlLimite += " OFFSET  " + skip;
 
                 if (ConfiguracaoAcessoDados.TipoBancoDadosEnum == EnumTipoBancoDados.SQL_SERVER)
                 {
@@ -242,6 +243,11 @@ namespace Snebur.AcessoDados.Mapeamento
                     sqlLimite += String.Format("  FETCH NEXT {0} ROWS ONLY  ", this.EstruturaConsulta.Take);
                 }
                 return sqlLimite;
+            }
+
+            if(skip> 0)
+            {
+                throw new Exception("O banco da deados não tem suporte ao OFFSET FETCH");
             }
             return String.Empty;
 

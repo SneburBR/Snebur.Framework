@@ -300,9 +300,9 @@ namespace Snebur.Utilidade
         }
 
         public static void ValidarReferenciaNula(object referencia, string nomeReferencia,
-                                           [CallerMemberName] string nomeMetodo = "",
-                                           [CallerFilePath] string caminhoArquivo = "",
-                                           [CallerLineNumber] int linhaDoErro = 0)
+                                                 [CallerMemberName] string nomeMetodo = "",
+                                                 [CallerFilePath] string caminhoArquivo = "",
+                                                 [CallerLineNumber] int linhaDoErro = 0)
         {
             if (referencia == null)
             {

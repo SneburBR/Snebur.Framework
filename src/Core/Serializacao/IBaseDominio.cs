@@ -4,4 +4,9 @@
     {
 
     }
+    public interface IBaseDominioControladorPropriedade : IBaseDominio
+    {
+        void DestivarControladorPropriedadeAlterada();
+        void AtivarControladorPropriedadeAlterada();
+    }
 }

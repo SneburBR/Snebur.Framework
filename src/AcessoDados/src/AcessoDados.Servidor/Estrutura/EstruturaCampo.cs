@@ -41,7 +41,7 @@ namespace Snebur.AcessoDados.Estrutura
 
         internal bool IsTipoComplexo { get; } = false;
 
-        internal bool IsSomenteLeitura { get; }
+        internal OpcoesSomenteLeitura OpcoesSomenteLeitura { get; }
 
         internal bool IsValorFuncaoServidor { get; private set; }
 
@@ -92,7 +92,7 @@ namespace Snebur.AcessoDados.Estrutura
 
             this.TipoPrimarioEnum = ReflexaoUtil.RetornarTipoPrimarioEnum(this.Propriedade.PropertyType);
             this.TipoSql = this.RetornarTipoBanco();
-            this.IsSomenteLeitura = this.RetornarIsSomenteLeitura();
+            this.OpcoesSomenteLeitura = this.RetornarOpcoesSomenteLeitura();
 
 
 
@@ -123,18 +123,14 @@ namespace Snebur.AcessoDados.Estrutura
             }
         }
 
-        private bool RetornarIsSomenteLeitura()
+        private OpcoesSomenteLeitura RetornarOpcoesSomenteLeitura()
         {
             var atributo = this.Propriedade.GetCustomAttribute<SomenteLeituraAttribute>(true);
             if (atributo != null)
             {
-                if (atributo is ValorPadraoDataHoraServidorAttribute atributoDataHoraServidor)
-                {
-                    return !atributoDataHoraServidor.PermitirAtualizacao;
-                }
-                return true;
+                return atributo.OpcoesSomenteLeitura;
             }
-            return false;
+            return new OpcoesSomenteLeitura(false );
         }
 
         private string RetornarValorParametroServidor()

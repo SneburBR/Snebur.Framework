@@ -3,8 +3,10 @@ using Snebur.Servicos;
 using Snebur.Utilidade;
 using System;
 using System.Data;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
+using System.Web;
 
 namespace Snebur.AcessoDados.Comunicacao
 {
@@ -156,9 +158,10 @@ namespace Snebur.AcessoDados.Comunicacao
         public override void Dispose()
         {
             base.Dispose();
-
             this.ContextoDados?.Dispose();
             this.ContextoDados = null;
         }
     }
+
+     
 }

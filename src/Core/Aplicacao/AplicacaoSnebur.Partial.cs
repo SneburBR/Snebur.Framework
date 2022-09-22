@@ -10,7 +10,7 @@ namespace Snebur
         internal static AplicacaoSnebur _aplicacao;
         public static AplicacaoSnebur Atual
         {
-            get => ThreadUtil.RetornarValorComBloqueio(ref _aplicacao, AplicacaoSnebur.RetornarAplicacaoAtual);
+            get => LazyUtil.RetornarValorLazyComBloqueio(ref _aplicacao, AplicacaoSnebur.RetornarAplicacaoAtual);
             set => _aplicacao = value;
         }
 
@@ -32,5 +32,9 @@ namespace Snebur
             }
             return new AplicacaoSneburInterna();
         }
+
+
     }
+
+   
 }

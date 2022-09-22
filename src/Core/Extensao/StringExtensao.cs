@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace System
 {
@@ -83,13 +84,24 @@ namespace System
             return CultureInfo.InvariantCulture.CompareInfo.IndexOf(source, value, options) >= 0;
         }
 
-        public static string NullIfEmpty(this string s)
+        public static string NullIfEmpty(this string str)
         {
-            return string.IsNullOrEmpty(s) ? null : s;
+            return string.IsNullOrEmpty(str) ? null : str;
         }
-        public static string NullIfWhiteSpace(this string s)
+        public static string NullIfWhiteSpace(this string str)
         {
-            return string.IsNullOrWhiteSpace(s) ? null : s;
+            return string.IsNullOrWhiteSpace(str) ? null : str;
+        }
+
+        public static string ReplaceWhiteSpace(this string s, string newValue)
+        {
+            var reg = new Regex(@"\s");
+            return reg.Replace(s, newValue);
+        }
+
+        public static string FormatToKey(this string str)
+        {
+            return str.ToLower().ReplaceWhiteSpace("_");
         }
 
     }

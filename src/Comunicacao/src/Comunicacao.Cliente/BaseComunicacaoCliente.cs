@@ -25,7 +25,7 @@ namespace Snebur.Comunicacao
 
         protected abstract CredencialServico CredencialServico { get; }
 
-        private CredencialUsuario CredencialUsuario => AplicacaoSnebur.Atual.CredencialUsuario;
+        protected virtual CredencialUsuario CredencialUsuario => AplicacaoSnebur.Atual.CredencialUsuarioRequisicaoAtual;
 
         protected virtual CredencialUsuario CredencialAvalista { get; }
 
@@ -73,6 +73,7 @@ namespace Snebur.Comunicacao
 
             var chamdaServico = new ChamadaServico(this.RetornarNomeManipulador(), contrato, this.UrlServico, tipoRetorno, this.ParametrosCabecalhoAdicionais);
             var resultado = chamdaServico.ExecutarChamada();
+
             if (resultado is ResultadoSessaoUsuarioInvalida resultadoSessaoUsuarioInvalida)
             {
                 AplicacaoSnebur.Atual.IniciarNovaSessaoAnonima();
@@ -133,11 +134,16 @@ namespace Snebur.Comunicacao
 
         #endregion
 
-        #region Metodos protegidos - virtual
+        #region Métodos protegidos - virtual
 
-        protected virtual InformacaoSessaoUsuario RetornarInformacaoSessaoUsuario()
+        protected virtual InformacaoSessaoUsuario RetornarInformacaoSessoUsuarioRequisicaoAtual()
         {
-            return SessaoUtil.RetornarInformacaoSessaoUsuarioAtual();
+            return AplicacaoSnebur.Atual.InformacaoSessaoUsuarioRequisicaoAtual;
+        }
+
+        protected virtual string IdentificadorProprietarioRequisicaoAtual()
+        {
+            return AplicacaoSnebur.Atual.IdentificadorProprietarioRequisicaoAtual;
         }
 
         //protected virtual InformacaoSessaoUsuario RetornarInformacaoSessaoUsuario()
@@ -149,12 +155,22 @@ namespace Snebur.Comunicacao
 
         #region Métodos privados
 
-        protected ContratoChamada RetornarContratoChamada(MethodBase metodoChamada, MethodBase metodoParametros, bool isAsync, params object[] valoresParametro)
+        protected ContratoChamada RetornarContratoChamada(MethodBase metodoChamada,
+                                                          MethodBase metodoParametros, bool isAsync, params object[] valoresParametro)
         {
+            var informacaoSessaoUsuario = this.RetornarInformacaoSessoUsuarioRequisicaoAtual();
+            var identificadorPropriedade = this.IdentificadorProprietarioRequisicaoAtual();
+
             var nomeMetodo = this.RetornarNomeMetodo(metodoChamada, isAsync);
-            var informacaoSessaoUsuario = this.RetornarInformacaoSessaoUsuario();
             var operacao = nomeMetodo;
-            var cabecalho = this.RetornarCabecalho();
+            
+            var cabecalho = new Cabecalho
+            {
+                IdentificadorProprietario = identificadorPropriedade,
+                CredencialServico = this.CredencialServico,
+                CredencialUsuario = this.CredencialUsuario,
+                CredencialAvalista = this.CredencialAvalista
+            };
 
             var contrato = new ContratoChamada
             {
@@ -165,8 +181,12 @@ namespace Snebur.Comunicacao
                 DataHora = DateTime.UtcNow,
             };
 
-            contrato.Cabecalho.CredencialServico = this.CredencialServico;
-            contrato.Cabecalho.CredencialUsuario = this.CredencialUsuario;
+            //if (informacaoSessaoUsuario.IdentificadorAplicacao == null)
+            //{
+            //    //throw new ArgumentNullException(nameof(informacaoSessaoUsuario.IdentificadorAplicacao));
+            //}
+
+
 
             var parametrosChamada = this.RetornarParametrosChamada(metodoChamada, metodoParametros, isAsync, valoresParametro);
             contrato.Parametros.AddRange(parametrosChamada);
@@ -187,7 +207,8 @@ namespace Snebur.Comunicacao
             return nomeMetodo;
         }
 
-        protected virtual List<ParametroChamada> RetornarParametrosChamada(MethodBase metodoChamada, MethodBase metodoParametros, bool isAsync, object[] valoresParametro)
+        protected virtual List<ParametroChamada> RetornarParametrosChamada(MethodBase metodoChamada,
+                                                                          MethodBase metodoParametros, bool isAsync, object[] valoresParametro)
         {
 
             var parametros = metodoParametros.GetParameters().ToList();
@@ -217,15 +238,15 @@ namespace Snebur.Comunicacao
             return parametrosChamada;
         }
 
-        private Cabecalho RetornarCabecalho()
-        {
+        //private Cabecalho RetornarCabecalho()
+        //{
 
-            var cabecalho = new Cabecalho();
-            cabecalho.CredencialServico = this.CredencialServico;
-            cabecalho.CredencialUsuario = CredencialAnonimo.Anonimo;
+        //    var cabecalho = new Cabecalho();
+        //    cabecalho.CredencialServico = this.CredencialServico;
+        //    cabecalho.CredencialUsuario = CredencialAnonimo.Anonimo;
 
-            return cabecalho;
-        }
+        //    return cabecalho;
+        //}
 
 
 

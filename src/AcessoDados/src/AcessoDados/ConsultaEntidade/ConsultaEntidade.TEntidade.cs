@@ -36,7 +36,8 @@ namespace Snebur.AcessoDados
         {
             var tipoEntidadeConsulta = typeof(TEspecializacao);
             this.EstruturaConsulta.NomeTipoEntidade = tipoEntidadeConsulta.Name;
-            this.EstruturaConsulta.TipoEntidadeAssemblyQualifiedName = tipoEntidadeConsulta.AssemblyQualifiedName;
+            this.EstruturaConsulta.TipoEntidadeAssemblyQualifiedName = tipoEntidadeConsulta.RetornarAssemblyQualifiedName();
+            //this.EstruturaConsulta.TipoEntidadeAssemblyQualifiedName = tipoEntidadeConsulta.AssemblyQualifiedName;
             return new ConsultaEntidade<TEspecializacao>(this.ContextoDados, tipoEntidadeConsulta, this.EstruturaConsulta);
         }
 
@@ -66,6 +67,7 @@ namespace Snebur.AcessoDados
         public TEntidade Single()
         {
             this.EstruturaConsulta.Take = 2;
+            
             return (TEntidade)this.RetornarResultadoConsulta().Entidades.Single();
         }
 

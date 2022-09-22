@@ -1,6 +1,7 @@
 ﻿using Snebur.Dominio;
 using Snebur.Seguranca;
 using System;
+using System.Net;
 using System.Reflection;
 
 namespace Snebur.ServicoArquivo
@@ -12,10 +13,12 @@ namespace Snebur.ServicoArquivo
         public ComunicacaoServicoImagemCliente(string urlServico, 
                                                CredencialUsuario credencialRequisicao, 
                                                Guid identificadorSessaoUsuario,
+                                               string identificadorProprietario,
                                                FuncaoNormalizadorOrigem funcaoNormalizadorOrigem) :
                                                base(urlServico, 
                                                     credencialRequisicao, 
-                                                    identificadorSessaoUsuario, 
+                                                    identificadorSessaoUsuario,
+                                                    identificadorProprietario,
                                                     funcaoNormalizadorOrigem)
         {
         }

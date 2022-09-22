@@ -13,7 +13,7 @@ namespace Snebur
         public static Size RetornarDimensaoVisualizacaoWindows(this Dimensao dimensao)
         {
             return new Size(dimensao.LarguraVisualizacao, 
-                dimensao.AlturaVisualizacao);
+                            dimensao.AlturaVisualizacao);
         }
 
         public static Thickness RetornarMargemVisualizacaoWindows(this Margem margem)

@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Web;
 
 #if NetCore
 using Microsoft.Net.Http.Headers;
@@ -17,9 +18,9 @@ namespace Snebur.Utilidade
 {
     public static class SessaoUtil
     {
-        public const string IDENTIFICADOR_SESSAO_USUARIO = "IdentificadorSessaoUsuario";
+        //public const string IDENTIFICADOR_SESSAO_USUARIO = "IdentificadorSessaoUsuario";
         public const string IDENTIFICADOR_APLICACAO = "IdentificadorAplicacao";
-        public const string IDENTIFICADOR_PROPRIETARIO = "IdentificadorProprietario";
+        //public const string IDENTIFICADOR_PROPRIETARIO = "IdentificadorProprietario";
         private const string CHAVE_CRIPTOGRAFIA = "248c6619-8119-45bd-ae2a-662512aff841";
 
         private static DadosIPInformacao _dadosIpInformacao;
@@ -29,10 +30,16 @@ namespace Snebur.Utilidade
         private static object _bloqueioIdentificadorSessaoUsuario = new object();
         private static object _bloqueioAcessoArquivoAppData = new object();
 
-        #region Informacao da Sessão usuario
+        #region Informação da Sessão usuário
 
-        public static InformacaoSessaoUsuario RetornarInformacaoSessaoUsuarioAtual()
+        //public static InformacaoSessaoUsuario RetornarInformacaoSessaoUsuarioAtual()
+        //{
+        //    return AplicacaoSnebur.Atual.InformacaoSessaoUsuarioAtual;
+        //}
+
+        public static InformacaoSessaoUsuario RetornarInformacaoSessaoUsuarioAplicacao()
         {
+
             var tipoAplicacao = AplicacaoSnebur.Atual.TipoAplicacao;
             //var ipInformacao = SessaoUtil.RetornarIpInformacao();
             var userAgent = SessaoUtil.RetornarUserAgent();
@@ -44,6 +51,11 @@ namespace Snebur.Utilidade
             var resolucao = SessaoUtil.RetornarResolucao();
             var versaoAplicacao = AplicacaoSnebur.Atual.VersaoAplicao.ToString();
             var nomeComptuador = Environment.MachineName;
+
+            if (identificadorAplicacao == null)
+            {
+                throw new ArgumentNullException(nameof(identificadorAplicacao));
+            }
 
             return new InformacaoSessaoUsuario
             {
@@ -239,7 +251,7 @@ namespace Snebur.Utilidade
                     try
                     {
                         var credencia = SessaoUtil.RetornarConteudoAppData<CredencialUsuario>(caminhoArquivo);
-                        if(credencia!= null)
+                        if (credencia != null)
                         {
                             return credencia;
                         }
@@ -307,7 +319,7 @@ namespace Snebur.Utilidade
                     {
                         LogUtil.ErroAsync(ex);
                         ArquivoUtil.DeletarArquivo(caminhoArquivo);
-                        
+
                     }
                 }
                 return default;

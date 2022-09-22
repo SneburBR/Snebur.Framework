@@ -15,6 +15,7 @@ using Snebur.Servicos;
 using Snebur.UI;
 using Snebur.Utilidade;
 using System.Net;
+using System.Runtime.Remoting.Contexts;
 
 #if NetCore
 using Microsoft.AspNetCore.Http;
@@ -340,7 +341,7 @@ namespace Snebur
         {
             get
             {
-                return ThreadUtil.RetornarValorComBloqueio(ref this._appSettings, this.RetornarAppSettings);
+                return LazyUtil.RetornarValorLazyComBloqueio(ref this._appSettings, this.RetornarAppSettings);
             }
         }
 
@@ -348,12 +349,97 @@ namespace Snebur
         {
             get
             {
-                return ThreadUtil.RetornarValorComBloqueio(ref this._connectionStrings, this.RetornarConnectionStrings);
+                return LazyUtil.RetornarValorLazyComBloqueio(ref this._connectionStrings, this.RetornarConnectionStrings);
             }
         }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public virtual InformacaoSessaoUsuario InformacaoSessaoUsuarioRequisicaoAtual
+        {
+            get
+            {
+                var httpContext = this.HttpContext;
+                if(httpContext!= null)
+                {
+                    lock (httpContext.Items.SyncRoot)
+                    {
+                        if (httpContext.Items.Contains(ConstantesItensRequsicao. CHAVE_INFORMACAO_SESSAO_ATUAL))
+                        {
+                            return (InformacaoSessaoUsuario)httpContext.Items[ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL];
+                        }
+                    }
+                }
+                return SessaoUtil.RetornarInformacaoSessaoUsuarioAplicacao();
+
+            }
+        }
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public virtual Guid IdentificadorSessaoUsuarioRequisicaoAtual
+        {
+            get
+            {
+                var httpContext = this.HttpContext;
+                if (httpContext != null)
+                {
+                    lock (httpContext.Items.SyncRoot)
+                    {
+                        if (httpContext.Items.Contains(ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL))
+                        {
+                            return (httpContext.Items[ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL] as InformacaoSessaoUsuario).IdentificadorSessaoUsuario;
+                        }
+                    }
+                }
+                return this.IdentificadorSessaoUsuario;
+
+            }
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public virtual CredencialUsuario CredencialUsuarioRequisicaoAtual
+        {
+            get
+            {
+                var httpContext = this.HttpContext;
+                if (httpContext != null)
+                {
+                    lock (httpContext.Items.SyncRoot)
+                    {
+                        if (httpContext.Items.Contains(ConstantesItensRequsicao.CHAVE_CREDENCIAL_USUARIO))
+                        {
+                            return (CredencialUsuario)httpContext.Items[ConstantesItensRequsicao.CHAVE_CREDENCIAL_USUARIO];
+                        }
+                    }
+                }
+                return this.CredencialUsuario;
+
+            }
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public virtual string IdentificadorProprietarioRequisicaoAtual
+        {
+            get
+            {
+                var httpContext = this.HttpContext;
+                if (httpContext != null)
+                {
+                    lock (httpContext.Items.SyncRoot)
+                    {
+                        if (httpContext.Items.Contains(ConstantesItensRequsicao.CHAVE_IDENTIFICADOR_PROPRIETARIO))
+                        {
+                            return (string)httpContext.Items[ConstantesItensRequsicao.CHAVE_IDENTIFICADOR_PROPRIETARIO];
+                        }
+                    }
+                }
+                return this.IdentificadorProprietario;
+
+            }
+        }
+
+       
         #endregion
 
-        #region Propreidade funcoes
+        #region Propriedade funções
         protected Func<CultureInfo> FuncaoRetornarCulturaPadrao { get; set; } = AplicacaoSnebur.RetornarCultauraPadrao;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -368,11 +454,8 @@ namespace Snebur
         protected Func<CredencialUsuario> FuncaoRetornarCredencialUsuarioUsuario { get; set; } = SessaoUtil.RetornarCredencialUsuario;
 
         protected Func<DateTime> FuncaoRetornarDataHoraUtcServidor { get; set; } = AplicacaoSnebur.RetornarDataHoraUtcServidor;
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        protected Func<InformacaoSessaoUsuario> FuncaoInformacaoSessaoUsuarioAtual { get; set; } = AplicacaoSnebur.InformacaoSessaoUsuarioAtual;
-
-        protected Func<IInformacaoSessao> FuncaoRetornarInformacaoSessaoUsuario { get; set; } = SessaoUtil.RetornarInformacaoSessaoUsuarioAtual;
+         
+        //protected Func<IInformacaoSessao> FuncaoRetornarInformacaoSessaoUsuario { get; set; } = SessaoUtil.RetornarInformacaoSessaoUsuarioAtual;
 
         protected Action AcaoIniciarNovaSessaoUsuario { get; set; } = SessaoUtil.InicializarNovaSessaoUsuario;
 
@@ -400,7 +483,7 @@ namespace Snebur
 
         public event EventHandler NovaSessaoUsuarioInicializada;
         public event EventHandler CredencialAlterada;
-        
+
 
 #if NetCore
         protected Func<HttpContext> FuncaoRetornaHttpContextAtual { get; set; }
@@ -462,10 +545,10 @@ namespace Snebur
 
         private void InicializarComunicacao()
         {
-            System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
             //Ignorar eerros da certificados Https, isso pode ocorres caso da DataHora do computador cliente do usuario esteja mais 12 horas de diferença com servidor
-            System.Net.ServicePointManager.ServerCertificateValidationCallback = delegate (object obj,
+            ServicePointManager.ServerCertificateValidationCallback = delegate (object obj,
                                                                                           System.Security.Cryptography.X509Certificates.X509Certificate X509certificate,
                                                                                           System.Security.Cryptography.X509Certificates.X509Chain chain,
                                                                                           System.Net.Security.SslPolicyErrors errors)
@@ -547,7 +630,7 @@ namespace Snebur
         {
             this.CredencialAlterada?.Invoke(this, EventArgs.Empty);
         }
-      
+
 
         #endregion
 
@@ -644,14 +727,14 @@ namespace Snebur
 #endif
                 return identificadorAplicacao;
             }
-            throw new Erro("Não foi possivel retornaor o identificador da aplicação");
+            throw new Erro("Não foi possível retornar o identificador da aplicação");
         }
 
         private static string RetornarIdentificadorProprietario()
         {
-            if (AplicacaoSnebur.Atual.AppSettings[SessaoUtil.IDENTIFICADOR_PROPRIETARIO] != null)
+            if (AplicacaoSnebur.Atual.AppSettings[ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO] != null)
             {
-                return AplicacaoSnebur.Atual.AppSettings[SessaoUtil.IDENTIFICADOR_PROPRIETARIO];
+                return AplicacaoSnebur.Atual.AppSettings[ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO];
             }
             return ConfiguracaoUtil.IDENTIFICADOR_PROPRIETARIO_GLOBAL;
         }
@@ -666,10 +749,7 @@ namespace Snebur
             return DateTime.UtcNow;
         }
 
-        private static InformacaoSessaoUsuario InformacaoSessaoUsuarioAtual()
-        {
-            return SessaoUtil.RetornarInformacaoSessaoUsuarioAtual();
-        }
+       
 
         private static IServicoLogErro RetornarServicoErro()
         {

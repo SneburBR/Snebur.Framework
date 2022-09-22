@@ -65,6 +65,7 @@
     <Compile Include="Consulta\FiltroMapeamento\FiltroMapeamentoIdsReverso.cs" />
     <Compile Include="Contexto\ContextoDados.cs" />
     <Compile Include="Contexto\ContextoDados.Static.cs" />
+    <Compile Include="Contexto\IAplicacaoContextoDados.cs" />
     <Compile Include="Contexto\IContextoDadosSeguranca.cs" />
     <Compile Include="Contexto\IContextoDadosSemNotificar.cs" />
     <Compile Include="Contexto\SqlSuporte.cs" />

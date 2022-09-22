@@ -33,7 +33,7 @@ namespace Snebur.AcessoDados.Estrutura
             if (atributoTable == null)
             {
 
-                throw new Erro($"O atrbituo {nameof(TableAttribute)} não foi definido no tipo {tipo.Name}");
+                throw new Erro($"O atribuo {nameof(TableAttribute)} não foi definido no tipo {tipo.Name}");
             }
             return atributoTable.Schema;
         }
@@ -49,7 +49,7 @@ namespace Snebur.AcessoDados.Estrutura
             var atributoTable = (TabelaAttribute)tipo.GetCustomAttribute(typeof(TabelaAttribute), false);
             if (atributoTable == null)
             {
-                throw new Exception($"O atriburo {nameof(TabelaAttribute)} não foi encontrado no tipo {tipo.RetornarCaminhoTipo()}");
+                throw new Exception($"O atribuo {nameof(TabelaAttribute)} não foi encontrado no tipo {tipo.RetornarCaminhoTipo()}");
             }
             if (String.IsNullOrEmpty(atributoTable.Schema))
             {

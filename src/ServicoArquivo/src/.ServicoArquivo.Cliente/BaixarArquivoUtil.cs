@@ -51,16 +51,17 @@ namespace Snebur.ServicoArquivo.Cliente
 
         public static MemoryStream RetornarStream(string urlServico, long idArquivo, string nomeTipoArquivo, string nomeTipoQualificado)
         {
-            var identificadorSessao = AplicacaoSnebur.Atual.IdentificadorSessaoUsuario;
-            var identificadorProprietario = AplicacaoSnebur.Atual.IdentificadorProprietario;
-            var credencialUsuario = AplicacaoSnebur.Atual.CredencialUsuario;
+            //var identificadorSessao = AplicacaoSnebur.Atual.IdentificadorSessaoUsuario;
 
+            var informacao = AplicacaoSnebur.Atual.InformacaoSessaoUsuarioRequisicaoAtual;
+            var identificadorProprietario = AplicacaoSnebur.Atual.IdentificadorProprietarioRequisicaoAtual;
+            var credencialUsuario = AplicacaoSnebur.Atual.CredencialUsuarioRequisicaoAtual;
 
             return RetornarStream(urlServico,
                                   idArquivo,
                                   nomeTipoArquivo,
                                   nomeTipoQualificado,
-                                  identificadorSessao,
+                                  informacao.IdentificadorSessaoUsuario,
                                   identificadorProprietario,
                                   credencialUsuario,
                                   TIMEOUT_PADRAO);
@@ -95,16 +96,16 @@ namespace Snebur.ServicoArquivo.Cliente
             var nomeAssembly = AplicacaoSnebur.Atual.NomeAplicacao;
             var parametros = new Dictionary<string, string>();
 
-            var informacao = SessaoUtil.RetornarInformacaoSessaoUsuarioAtual();
+            
 
             parametros.Add(ConstantesServicoArquivo.ID_ARQUIVO, idArquivo.ToString());
-            parametros.Add(ConstantesServicoArquivo.IDENTIFICADOR_SESSAO_USUARIO, identificadorSessao.ToString());
             parametros.Add(ConstantesServicoArquivo.ASEMMBLY_QUALIFIED_NAME, nomeTipoQualificado);
-            parametros.Add(ConstantesServicoArquivo.IDENTIFICADOR_USUARIO, credencialUsuario.IdentificadorUsuario);
-            parametros.Add(ConstantesServicoArquivo.SENHA, credencialUsuario.Senha);
             parametros.Add(ConstantesServicoArquivo.NOME_TIPO_ARQUIVO, nomeTipoArquivo);
-            parametros.Add(ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO, identificadorProprietario);
             parametros.Add(ConstantesCabecalho.NOME_ASSEMBLY_APLICACAO, nomeAssembly);
+            parametros.Add(ConstantesCabecalho.IDENTIFICADOR_USUARIO, credencialUsuario.IdentificadorUsuario);
+            parametros.Add(ConstantesCabecalho.SENHA, credencialUsuario.Senha);
+            parametros.Add(ConstantesCabecalho.IDENTIFICADOR_SESSAO_USUARIO, identificadorSessao.ToString());
+            parametros.Add(ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO, identificadorProprietario);
 
             var urlEnviarImagem = ServicoArquivoClienteUtil.RetornarEnderecoBaixarArquivo(urlServico);
             var requisicao = (HttpWebRequest)WebRequest.Create(urlEnviarImagem);

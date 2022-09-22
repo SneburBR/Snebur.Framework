@@ -56,8 +56,11 @@ namespace Snebur.Comunicacao
                 response.Cache.SetNoStore();
                 response.Cache.SetCacheability(HttpCacheability.NoCache);
                 response.Cache.SetExpires(DateTime.Now.AddYears(-1));
-
-                using (var requisicao = new Requisicao(httpContext, this.CredencialServico, this.GetType().Name))
+                 
+                using (var requisicao = new Requisicao(httpContext, 
+                                                       this.CredencialServico, 
+                                                       this.IdentificadorProprietario,
+                                                       this.GetType().Name))
                 {
                     if (requisicao.CredencialServicoValida())
                     {
@@ -512,6 +515,7 @@ namespace Snebur.Comunicacao
 
         public virtual void Dispose()
         {
+          
         }
 
         #endregion

@@ -334,7 +334,7 @@ namespace Snebur.AcessoDados
                     throw new ErroSessaoUsuarioExpirada(EnumEstadoSessaoUsuario.Cancelada,
                         sessaoUsuario.IdentificadorSessaoUsuario,
                         $"A sessão foi finalizada para ela ainda não existe o identificador da sessão {sessaoUsuario.IdentificadorSessaoUsuario}, " +
-                        $"e não possui informações suficiente para inicializar uma nova sessão");
+                        $"e não possui informações suficiente para inicializar uma nova sessão ");
                 }
 
 

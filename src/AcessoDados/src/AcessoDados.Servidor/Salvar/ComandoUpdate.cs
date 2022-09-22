@@ -47,32 +47,25 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             if (this.Entidade.Id == 0)
             {
                 return this.EstruturaEntidade.EstruturasCampos.Values.ToList();
-                //throw new ArgumentNullException(nameof(this.PropriedadesAlterada));
             }
 
             var estruturasCamposAlterados = this.EstruturaEntidade.EstruturasCampos.
                                                             Where(x => this.PropriedadesAlterada.Keys.Contains(x.Key)).
                                                             Select(x => x.Value).ToList();
 
-            var estruturasCamposSomenteLeitura = estruturasCamposAlterados.Where(x => x.IsSomenteLeitura).ToList();
+            var estruturasCamposSomenteLeitura = estruturasCamposAlterados.Where(x=> x.OpcoesSomenteLeitura.IsSomenteLeitura).ToList();
 
             if (estruturasCamposSomenteLeitura.Count > 0)
             {
-                var nomesPropriedade = String.Join(",", estruturasCamposSomenteLeitura.Select(x => x.Propriedade.Name));
-                var mensagem = $"Não é autorizado alterar valores das propriedades somente leitura '{nomesPropriedade}' na entidade '{this.EstruturaEntidade.TipoEntidade.Name}'";
-
                 estruturasCamposAlterados.RemoveRange(estruturasCamposSomenteLeitura);
 
-                LogUtil.ErroAsync(new ErroSeguranca(mensagem, EnumTipoLogSeguranca.AlterarandoPropriedadeSomenteLeitura));
+                var nomesPropriedade = String.Join(",", estruturasCamposSomenteLeitura.Where(x=> x.OpcoesSomenteLeitura.IsNotificarSeguranca).Select(x => x.Propriedade.Name)).ToList();
+                if(nomesPropriedade.Count> 0)
+                {
+                    var mensagem = $"Não é autorizado alterar valores das propriedades somente leitura '{nomesPropriedade}' na entidade '{this.EstruturaEntidade.TipoEntidade.Name}'";
+                    LogUtil.ErroAsync(new ErroSeguranca(mensagem, EnumTipoLogSeguranca.AlterarandoPropriedadeSomenteLeitura));
+                }
             }
-
-
-            //foreach(var estruturaTipoCompleto in this.EstruturaEntidade.EstruturasTipoComplexao.Values)
-            //{
-            //    estruturasCamposAlterados.AddRange(estruturaTipoCompleto.EstruturasCampo.Values);
-            //}
-            //
-
             return estruturasCamposAlterados;
         }
 

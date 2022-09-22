@@ -27,7 +27,9 @@ namespace Snebur.AcessoDados.Mapeamento
                     }
                     else
                     {
-                        var mapeamentoRelacaoAberta = this.RetornarNovoMapeamentoConsultaRelacaoAberta(mapeamentoAtual, nomePropriedade, relacaoAberta);
+                        var mapeamentoRelacaoAberta = this.RetornarNovoMapeamentoConsultaRelacaoAberta(mapeamentoAtual, 
+                                                                                                       nomePropriedade, 
+                                                                                                       relacaoAberta);
 
                         if (DebugUtil.IsAttached)
                         {

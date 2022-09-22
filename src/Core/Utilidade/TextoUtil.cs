@@ -605,7 +605,7 @@ namespace Snebur.Utilidade
         private static object _bloqueio = new object();
 
         private static Dictionary<string, HashSet<char>> _cacheFiltros;
-        public static Dictionary<string, HashSet<char>> CacheFiltros => ThreadUtil.RetornarValorComBloqueio(ref _cacheFiltros, () => new Dictionary<string, HashSet<char>>());
+        public static Dictionary<string, HashSet<char>> CacheFiltros => LazyUtil.RetornarValorLazyComBloqueio(ref _cacheFiltros, () => new Dictionary<string, HashSet<char>>());
         private static HashSet<char> RetoranrFiltroCache(HashSet<char> filtroBase,
                                                           IEnumerable<char> caractesExtras)
         {

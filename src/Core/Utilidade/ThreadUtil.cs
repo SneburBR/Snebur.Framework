@@ -338,12 +338,10 @@ namespace Snebur.Utilidade
         {
             if (valor == null)
             {
-                lock (_bloqueioValor)
+                var novoValor= retornarValor.Invoke();
+                if (valor == null)
                 {
-                    if (valor == null)
-                    {
-                        valor = retornarValor.Invoke();
-                    }
+                    valor = novoValor;
                 }
             }
             return valor;

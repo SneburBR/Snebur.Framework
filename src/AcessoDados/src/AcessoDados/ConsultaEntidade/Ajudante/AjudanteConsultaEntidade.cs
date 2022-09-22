@@ -46,7 +46,7 @@ namespace Snebur.AcessoDados.Ajudantes
 
         #region Lista Entidades
 
-        public static bool PropriedadeRetornarListaEntidade(PropertyInfo propriedade)
+        public static bool IsPropriedadeRetornarListaEntidade(PropertyInfo propriedade)
         {
             var tipoEntidade = AjudanteConsultaEntidade.RetornarTipoListaEntidade(propriedade.PropertyType);
             if (!(tipoEntidade == null))

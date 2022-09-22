@@ -35,10 +35,13 @@ namespace Snebur.ServicoArquivo.Cliente
                                                            Stream stream)
         {
             var aplicacao = AplicacaoSnebur.Atual;
+            var informacaoSessaoUsuario = aplicacao.InformacaoSessaoUsuarioRequisicaoAtual;
+            var credencialUsuario = aplicacao.CredencialUsuarioRequisicaoAtual;
+            
             return EnviarImagem(aplicacao.UrlServicoImagem, imagem, stream, tamanhoImagem,
-                                aplicacao.CredencialUsuario,
-                                aplicacao.IdentificadorSessaoUsuario,
-                                aplicacao.IdentificadorProprietario);
+                                credencialUsuario,
+                                informacaoSessaoUsuario.IdentificadorSessaoUsuario,
+                                aplicacao.IdentificadorProprietarioRequisicaoAtual);
         }
 
         public static ResultadoServicoArquivo EnviarImagem(string urlServico, IImagem imagem,
@@ -151,30 +154,31 @@ namespace Snebur.ServicoArquivo.Cliente
         //    }
         //}
 
-        private static Dictionary<string, string> RetornarParametrosCabacalho(IImagem imagem, EnumTamanhoImagem tamanhoImagem, string checksum, long totalBytes, Guid identificadorSessaoUsuario, CredencialUsuario credencialUsuario, string identificadorProprietario)
-        {
-            var tamanhoPacote = totalBytes;
-            var parametros = new Dictionary<string, string>();
-            parametros.Add(ConstantesServicoArquivo.ID_ARQUIVO, imagem.Id.ToString());
-            parametros.Add(ConstantesServicoArquivo.IDENTIFICADOR_SESSAO_USUARIO, identificadorSessaoUsuario.ToString());
-            parametros.Add(ConstantesServicoArquivo.TAMANHO_PACOTE, tamanhoPacote.ToString());
-            parametros.Add(ConstantesServicoArquivo.CHECKSUM_ARQUIVO, checksum);
-            parametros.Add(ConstantesServicoArquivo.CHECKSUM_PACOTE, checksum);
-            parametros.Add(ConstantesServicoArquivo.TOTAL_PARTES, "1");
-            parametros.Add(ConstantesServicoArquivo.PARTE_ATUAL, "1");
-            parametros.Add(ConstantesServicoArquivo.TOTAL_BYTES, totalBytes.ToString());
-            parametros.Add(ConstantesServicoArquivo.ASEMMBLY_QUALIFIED_NAME, imagem.GetType().AssemblyQualifiedName);
+        //private static Dictionary<string, string> RetornarParametrosCabacalho(IImagem imagem, EnumTamanhoImagem tamanhoImagem, string checksum, long totalBytes, Guid identificadorSessaoUsuario, CredencialUsuario credencialUsuario, string identificadorProprietario)
+        //{
+        //    var tamanhoPacote = totalBytes;
+        //    var parametros = new Dictionary<string, string>();
+        //    parametros.Add(ConstantesServicoArquivo.ID_ARQUIVO, imagem.Id.ToString());
+        //    parametros.Add(ConstantesServicoArquivo.TAMANHO_PACOTE, tamanhoPacote.ToString());
+        //    parametros.Add(ConstantesServicoArquivo.CHECKSUM_ARQUIVO, checksum);
+        //    parametros.Add(ConstantesServicoArquivo.CHECKSUM_PACOTE, checksum);
+        //    parametros.Add(ConstantesServicoArquivo.TOTAL_PARTES, "1");
+        //    parametros.Add(ConstantesServicoArquivo.PARTE_ATUAL, "1");
+        //    parametros.Add(ConstantesServicoArquivo.TOTAL_BYTES, totalBytes.ToString());
+        //    parametros.Add(ConstantesServicoArquivo.ASEMMBLY_QUALIFIED_NAME, imagem.GetType().AssemblyQualifiedName);
 
-            parametros.Add(ConstantesServicoArquivo.IDENTIFICADOR_USUARIO, credencialUsuario.IdentificadorUsuario);
-            parametros.Add(ConstantesServicoArquivo.SENHA, credencialUsuario.Senha);
-            parametros.Add(ConstantesServicoArquivo.NOME_TIPO_ARQUIVO, imagem.GetType().Name);
+        //    parametros.Add(ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO, identificadorProprietario);
+        //    parametros.Add(ConstantesCabecalho.IDENTIFICADOR_SESSAO_USUARIO, identificadorSessaoUsuario.ToString());
+        //    parametros.Add(ConstantesCabecalho.IDENTIFICADOR_USUARIO, credencialUsuario.IdentificadorUsuario);
+        //    parametros.Add(ConstantesCabecalho.SENHA, credencialUsuario.Senha);
+        //    parametros.Add(ConstantesServicoArquivo.NOME_TIPO_ARQUIVO, imagem.GetType().Name);
 
-            parametros.Add(ConstantesServicoImagem.TAMANHO_IMAGEM, ((int)tamanhoImagem).ToString());
-            parametros.Add(ConstantesServicoImagem.FORMATO_IMAGEM, ((int)imagem.FormatoImagem).ToString());
+        //    parametros.Add(ConstantesServicoImagem.TAMANHO_IMAGEM, ((int)tamanhoImagem).ToString());
+        //    parametros.Add(ConstantesServicoImagem.FORMATO_IMAGEM, ((int)imagem.FormatoImagem).ToString());
 
 
-            return parametros;
-        }
+        //    return parametros;
+        //}
 
 
     }

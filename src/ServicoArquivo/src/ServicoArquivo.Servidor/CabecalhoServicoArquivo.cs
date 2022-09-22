@@ -8,37 +8,34 @@ namespace Snebur.ServicoArquivo
 
     public partial class CabecalhoServicoArquivo : Cabecalho, IInformacaoRepositorioArquivo
     {
-        public long IdArquivo { get; set; }
-        public Guid IdentificadorSessaoUsuario { get; set; }
-        public string IdentificadorUsuario { get; set; }
-        public string Senha { get; set; }
+        public long IdArquivo { get;  }
+        public string IdentificadorProprietario { get;   }
+        public Guid IdentificadorSessaoUsuario { get;   }
+        public string IdentificadorUsuario { get;   }
+        public string Senha { get; }
         //public long IdSessaoUsuario { get; set; }
-        public string CheckSumArquivo { get; set; }
+        public string CheckSumArquivo { get;  }
 
-        public string CheckSumPacote { get; set; }
-        public string Ip { get; set; }
-        public string AssemblyQualifiedName { get; set; }
+        public string CheckSumPacote { get;  }
+        public string Ip { get;  }
+        public string AssemblyQualifiedName { get;  }
 
-        public double ParteAtual { get; set; }
-        public double TotalPartes { get; set; }
-        public int TamanhoPacote { get; set; }
-        public long TotalBytes { get; set; }
+        public double ParteAtual { get; }
+        public double TotalPartes { get; }
+        public int TamanhoPacote { get;  }
+        public long TotalBytes { get;   }
 
         public bool EnviarArquivo { get; }
 
         public string NomeTipoArquivo { get; }
 
-        public CredencialUsuario CredencialRequisicao
-        {
-            get
-            {
-                return new CredencialUsuario(this.IdentificadorUsuario, this.Senha);
-            }
-        }
+        public CredencialUsuario CredencialRequisicao => new CredencialUsuario(this.IdentificadorUsuario, this.Senha);
 
         public CabecalhoServicoArquivo(SnHttpContext context, bool enviarArquivo = false) : base(context)
         {
             this.EnviarArquivo = enviarArquivo;
+            this.IdentificadorProprietario = context.Request.Headers[ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO];
+
             this.IdArquivo = this.RetornarLong(ConstantesServicoArquivo.ID_ARQUIVO);
             this.ParteAtual = this.RetornarDouble(ConstantesServicoArquivo.PARTE_ATUAL);
             this.TotalPartes = this.RetornarDouble(ConstantesServicoArquivo.TOTAL_PARTES);
@@ -48,9 +45,10 @@ namespace Snebur.ServicoArquivo
             this.Ip = IpUtilLocal.RetornarIp(context);
             this.CheckSumArquivo = this.RetornarString(ConstantesServicoArquivo.CHECKSUM_ARQUIVO);
             this.CheckSumPacote = this.RetornarString(ConstantesServicoArquivo.CHECKSUM_PACOTE);
-            this.IdentificadorSessaoUsuario = this.RetornarGuid(ConstantesServicoArquivo.IDENTIFICADOR_SESSAO_USUARIO);
-            this.IdentificadorUsuario = this.RetornarString(ConstantesServicoArquivo.IDENTIFICADOR_USUARIO);
-            this.Senha = this.RetornarString(ConstantesServicoArquivo.SENHA);
+
+            this.IdentificadorSessaoUsuario = this.RetornarGuid(ConstantesCabecalho.IDENTIFICADOR_SESSAO_USUARIO);
+            this.IdentificadorUsuario = this.RetornarString(ConstantesCabecalho.IDENTIFICADOR_USUARIO);
+            this.Senha = this.RetornarString(ConstantesCabecalho.SENHA);
             //this.IdSessaoUsuario = this.RetornarLong(ConstantesServicoArquivo.ID_SESSAO_USUARIO, context);
             this.AssemblyQualifiedName = this.RetornarString(ConstantesServicoArquivo.ASEMMBLY_QUALIFIED_NAME);
             this.NomeTipoArquivo = this.RetornarString(ConstantesServicoArquivo.NOME_TIPO_ARQUIVO);

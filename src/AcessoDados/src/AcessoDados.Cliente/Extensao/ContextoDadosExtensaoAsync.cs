@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Snebur.AcessoDados
 {
-    public static class ContextoDadosExtensaoAwait
+    public static class ContextoDadosExtensaoAsync
     {
         public static Task SalvarPropriedadesAsync<TEntidade>(this BaseContextoDados contexto,
                                                         TEntidade entidade,
@@ -46,7 +46,7 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task AbrirRelacaoAsync<TEntidade>(this BaseContextoDados contexto, TEntidade entidade, Expression<Func<TEntidade, object>> expressaoRelacao) where TEntidade : Entidade
+        public static Task AbrirRelacaoAsync<TEntidade, TRelacao>(this BaseContextoDados contexto, TEntidade entidade, Expression<Func<TEntidade, TRelacao>> expressaoRelacao) where TEntidade : Entidade  where TRelacao : Entidade 
         {
             return Task.Factory.StartNew(() =>
             {
@@ -54,7 +54,10 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task AbrirRelacoesAsync<TEntidade>(this BaseContextoDados contexto, TEntidade entidade, params Expression<Func<TEntidade, object>>[] expressoesRelacao) where TEntidade : Entidade
+        public static Task AbrirRelacoesAsync<TEntidade, TRelacao>(this BaseContextoDados contexto, 
+                                                         TEntidade entidade, 
+                                                         params Expression<Func<TEntidade, TRelacao>>[] expressoesRelacao) where TEntidade : Entidade 
+                                                                                                                           where TRelacao : Entidade
         {
             return Task.Factory.StartNew(() =>
             {

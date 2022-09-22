@@ -14,9 +14,9 @@ namespace Snebur.ServicoArquivo.Cliente
                                Stream streamImagem) : this(urlServicoArquivo, 
                                                            arquivo, 
                                                            streamImagem,
-                                                           AplicacaoSnebur.Atual.CredencialUsuario,
-                                                           AplicacaoSnebur.Atual.IdentificadorSessaoUsuario,
-                                                           AplicacaoSnebur.Atual.IdentificadorProprietario)
+                                                           AplicacaoSnebur.Atual.CredencialUsuarioRequisicaoAtual,
+                                                           AplicacaoSnebur.Atual.IdentificadorSessaoUsuarioRequisicaoAtual,
+                                                           AplicacaoSnebur.Atual.IdentificadorProprietarioRequisicaoAtual)
         {
 
         }

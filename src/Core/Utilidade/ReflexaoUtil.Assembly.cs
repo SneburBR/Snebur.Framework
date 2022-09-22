@@ -10,7 +10,7 @@ namespace Snebur.Utilidade
         private const string NOME_SNEBUR = "Snebur";
         private static Assembly _assemblyEntrada;
 
-        public static Assembly AssemblyEntrada => ThreadUtil.RetornarValorComBloqueio(ref _assemblyEntrada,
+        public static Assembly AssemblyEntrada => LazyUtil.RetornarValorLazyComBloqueio(ref _assemblyEntrada,
                                                                                       ReflexaoUtil.RetornarAssemblyEntradaInterno);
 
         private static Assembly RetornarAssemblyEntradaInterno()

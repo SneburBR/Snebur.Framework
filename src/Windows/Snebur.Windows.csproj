@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{d4b351a0-67ee-4751-a2c3-8619b69e9adf}</ProjectGuid>
+    <ProjectGuid>{D4B351A0-67EE-4751-A2C3-8619B69E9ADF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Snebur.Windows</RootNamespace>
@@ -103,35 +103,35 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Snebur.AcessoDados.Cliente\Snebur.AcessoDados.Cliente.csproj">
+    <ProjectReference Include="..\AcessoDados\src\AcessoDados.Cliente\Snebur.AcessoDados.Cliente.csproj">
       <Project>{20d90b61-e126-4048-ba7e-0fe69cf20180}</Project>
       <Name>Snebur.AcessoDados.Cliente</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Snebur.AcessoDados\Snebur.AcessoDados.csproj">
+    <ProjectReference Include="..\AcessoDados\src\AcessoDados\Snebur.AcessoDados.csproj">
       <Project>{ae39cd55-5282-48a5-8131-6704c825f26a}</Project>
       <Name>Snebur.AcessoDados</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Snebur.Comunicacao.Cliente\Snebur.Comunicacao.Cliente.csproj">
+    <ProjectReference Include="..\Comunicacao\src\Comunicacao.Cliente\Snebur.Comunicacao.Cliente.csproj">
       <Project>{ecf8a9a3-2544-4c75-9473-85e919c5bebc}</Project>
       <Name>Snebur.Comunicacao.Cliente</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Snebur.Comunicacao\Snebur.Comunicacao.csproj">
+    <ProjectReference Include="..\Comunicacao\src\Comunicacao\Snebur.Comunicacao.csproj">
       <Project>{b44697c1-5c0c-40cf-814d-2bfba2498bf6}</Project>
       <Name>Snebur.Comunicacao</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Snebur.Imagem\Snebur.Imagem.csproj">
+    <ProjectReference Include="..\Imagem\Snebur.Imagem.csproj">
       <Project>{291b80e1-af0e-42fe-bed9-66ea6b8118e4}</Project>
       <Name>Snebur.Imagem</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Snebur.ServicoArquivo.Cliente\Snebur.ServicoArquivo.Cliente.csproj">
+    <ProjectReference Include="..\ServicoArquivo\src\.ServicoArquivo.Cliente\Snebur.ServicoArquivo.Cliente.csproj">
       <Project>{83894101-d265-4738-96fa-9fdd91674960}</Project>
       <Name>Snebur.ServicoArquivo.Cliente</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Snebur.ServicoArquivo\Snebur.ServicoArquivo.csproj">
+    <ProjectReference Include="..\ServicoArquivo\src\ServicoArquivo\Snebur.ServicoArquivo.csproj">
       <Project>{3f344a32-39ce-469c-a4ff-bd7ef353912b}</Project>
       <Name>Snebur.ServicoArquivo</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Snebur\Snebur.csproj">
+    <ProjectReference Include="..\Core\Snebur.csproj">
       <Project>{ec174c4f-8122-41a3-8360-f04c4c8fc3ba}</Project>
       <Name>Snebur</Name>
     </ProjectReference>

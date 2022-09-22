@@ -41,9 +41,9 @@ namespace Snebur.ServicoArquivo.Cliente
         public event EventHandler<ErrorEventArgs> EnvioFinalizado;
 
         public BaseEnviadorArquivo(string urlServicoArquivo, TArquivo arquivo) :
-                                   this(urlServicoArquivo, arquivo, AplicacaoSnebur.Atual.CredencialUsuario,
-                                                                    AplicacaoSnebur.Atual.IdentificadorSessaoUsuario,
-                                                                    AplicacaoSnebur.Atual.IdentificadorProprietario)
+                                   this(urlServicoArquivo, arquivo, AplicacaoSnebur.Atual.CredencialUsuarioRequisicaoAtual,
+                                                                    AplicacaoSnebur.Atual.IdentificadorSessaoUsuarioRequisicaoAtual,
+                                                                    AplicacaoSnebur.Atual.IdentificadorProprietarioRequisicaoAtual)
         {
 
         }
@@ -137,7 +137,7 @@ namespace Snebur.ServicoArquivo.Cliente
             {
                 if (this.TentativaEnviarPacoteAtual > MAXIMO_TENTATIVA_ENVIAR_ARQUIVO)
                 {
-                    throw new Erro($"Não foi possivel enviar pacote {this.UrlServicoArquivo} Arquivo: {this.Arquivo.Id}", ex);
+                    throw new Erro($"Não foi possível enviar pacote {this.UrlServicoArquivo} Arquivo: {this.Arquivo.Id}", ex);
                 }
                 this.TentativaEnviarPacoteAtual += 1;
                 return this.EnviarPacoteInterno();
@@ -156,11 +156,12 @@ namespace Snebur.ServicoArquivo.Cliente
                 
             var requisicao = (HttpWebRequest)WebRequest.Create(urlEnviarImagem);
 
-            requisicao.Headers.Add(ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO, this.IdentificadorProprietario.ToString()); ; ;
+            
             foreach (var item in parametros)
             {
                 requisicao.Headers.Add(item.Key, Base64Util.Encode(item.Value));
             }
+            requisicao.Headers.Add(ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO, this.IdentificadorProprietario.ToString());
             requisicao.Headers.Add(ParametrosComunicacao.TOKEN, HttpUtility.UrlEncode(token));
 
             requisicao.Timeout = Int32.MaxValue;
@@ -216,7 +217,6 @@ namespace Snebur.ServicoArquivo.Cliente
             return new Dictionary<string, string>
             {
                 { ConstantesServicoArquivo.ID_ARQUIVO, this.Arquivo.Id.ToString() },
-                { ConstantesServicoArquivo.IDENTIFICADOR_SESSAO_USUARIO, this.IdentificadorSessaoUsuario.ToString() },
                 { ConstantesServicoArquivo.TAMANHO_PACOTE, this.TamanhoPacote.ToString() },
                 //{ ConstantesServicoArquivo.TAMANHO_PACOTE_ATUAL, tamanhoPacoteAtual.ToString() },
                 { ConstantesServicoArquivo.CHECKSUM_ARQUIVO, this.ChecksumArquivo },
@@ -225,10 +225,10 @@ namespace Snebur.ServicoArquivo.Cliente
                 { ConstantesServicoArquivo.PARTE_ATUAL, this.ParteAtual.ToString() },
                 { ConstantesServicoArquivo.TOTAL_BYTES, this.TotalBytes.ToString() },
                 { ConstantesServicoArquivo.ASEMMBLY_QUALIFIED_NAME, this.Arquivo.GetType().AssemblyQualifiedName },
-                { ConstantesServicoArquivo.IDENTIFICADOR_USUARIO, this.CredencialUsuario.IdentificadorUsuario },
-                { ConstantesServicoArquivo.SENHA, this.CredencialUsuario.Senha },
-                { ConstantesServicoArquivo.NOME_TIPO_ARQUIVO, this.Arquivo.GetType().Name }
-
+                { ConstantesServicoArquivo.NOME_TIPO_ARQUIVO, this.Arquivo.GetType().Name },
+                { ConstantesCabecalho.IDENTIFICADOR_USUARIO, this.CredencialUsuario.IdentificadorUsuario },
+                { ConstantesCabecalho.SENHA, this.CredencialUsuario.Senha },
+                { ConstantesCabecalho.IDENTIFICADOR_SESSAO_USUARIO, this.IdentificadorSessaoUsuario.ToString() },
             };
 
         }
@@ -244,7 +244,7 @@ namespace Snebur.ServicoArquivo.Cliente
 
         #endregion
 
-        #region Recuperacao
+        #region Recuperação
 
         private void RecuperarEnvio(ResultadoServicoArquivo resultado)
         {

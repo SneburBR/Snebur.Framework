@@ -4,6 +4,7 @@ using Snebur.Dominio.Atributos;
 using Snebur.Utilidade;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -47,6 +48,8 @@ namespace Snebur.AcessoDados
             return this;
         }
 
+       
+
         public ConsultaEntidade<TEntidade> AbrirRelacoes(params string[] caminhosPropriedade)
         {
             foreach (var caminhoPropriedade in caminhosPropriedade)
@@ -85,27 +88,39 @@ namespace Snebur.AcessoDados
 
 
 
-        private ConsultaEntidade<TEntidade> AbrirRelacao(EstruturaConsulta estruturaConsulta, List<PropertyInfo> propriedades, bool filtro)
+        private ConsultaEntidade<TEntidade> AbrirRelacao(EstruturaConsulta estruturaConsulta, 
+                                                         List<PropertyInfo> propriedades, 
+                                                         bool isFiltro)
         {
-            var propriedadesCaminho = new List<PropertyInfo>();
+            var propriedadesCaminhoParcial = new List<PropertyInfo>();
+            var propriedadesCaminhoComplemento = new List<PropertyInfo>();
             var estruturaConsultaAtual = estruturaConsulta;
 
             foreach (var p in propriedades)
             {
                 var propriedade = this.NormalizarPropriedadeRelacaoEspecializda(p);
-                propriedadesCaminho.Add(propriedade);
-
-                var caminhoPropriedadeParcial = AjudanteConsultaEntidade.RetornarCaminhoPropriedade(propriedadesCaminho);
+                propriedadesCaminhoParcial.Add(propriedade);
+                propriedadesCaminhoComplemento.Add(propriedade);  
+                
+                var caminhoPropriedadeParcial = AjudanteConsultaEntidade.RetornarCaminhoPropriedade(propriedadesCaminhoParcial);
+                var caminhoPropriedadeCompleto = AjudanteConsultaEntidade.RetornarCaminhoPropriedade(propriedadesCaminhoComplemento);
+                var caminhoPropriedade = AjudanteConsultaEntidade.RetornarCaminhoPropriedade(propriedadesCaminhoParcial);
 
                 ErroUtil.ValidarStringVazia(caminhoPropriedadeParcial, nameof(caminhoPropriedadeParcial));
 
                 //if (!consultaAcessoDadosAtual.RelacoesAberta.ContainsKey(caminhoPropriedadeParcial))
-                if (this.ExisteRelacaoAberta(estruturaConsultaAtual, caminhoPropriedadeParcial, filtro))
+                if (this.IsExisteRelacaoAberta(estruturaConsultaAtual, caminhoPropriedadeParcial, isFiltro))
                 {
-                    if (AjudanteConsultaEntidade.PropriedadeRetornarListaEntidade(propriedade))
+                    this.ValidarPropriedadeMapeamento(propriedade,
+                                                      estruturaConsultaAtual,
+                                                      caminhoPropriedadeParcial,
+                                                      caminhoPropriedadeCompleto,
+                                                      isFiltro);
+
+                    if (AjudanteConsultaEntidade.IsPropriedadeRetornarListaEntidade(propriedade))
                     {
                         estruturaConsultaAtual = estruturaConsultaAtual.ColecoesAberta[caminhoPropriedadeParcial].EstruturaConsulta;
-                        propriedadesCaminho.Clear();
+                        propriedadesCaminhoParcial.Clear();
                     }
                 }
                 else
@@ -126,14 +141,17 @@ namespace Snebur.AcessoDados
                         }
                         var relacaoAbertaEntidade = new RelacaoAbertaEntidade
                         {
+                            Propriedade = propriedade,
                             CaminhoPropriedade = caminhoPropriedadeParcial,
                             NomeTipoEntidade = tipoEntidade.Name,
-                            TipoEntidadeAssemblyQualifiedName = tipoEntidade.AssemblyQualifiedName,
+                            //TipoEntidadeAssemblyQualifiedName = tipoEntidade.AssemblyQualifiedName,
+                            TipoEntidadeAssemblyQualifiedName = tipoEntidade.RetornarAssemblyQualifiedName(),
                             NomeTipoDeclarado = propriedade.DeclaringType?.Name,
-                            TipoDeclaradoAssemblyQualifiedName = propriedade.DeclaringType?.AssemblyQualifiedName
+                            TipoDeclaradoAssemblyQualifiedName = propriedade.DeclaringType?.RetornarAssemblyQualifiedName()
+                            //TipoDeclaradoAssemblyQualifiedName = propriedade.DeclaringType?.AssemblyQualifiedName
                         };
 
-                        if (filtro)
+                        if (isFiltro)
                         {
                             estruturaConsultaAtual.RelacoesAbertaFiltro.Add(caminhoPropriedadeParcial, relacaoAbertaEntidade);
                         }
@@ -142,34 +160,39 @@ namespace Snebur.AcessoDados
                             estruturaConsultaAtual.RelacoesAberta.Add(caminhoPropriedadeParcial, relacaoAbertaEntidade);
                         }
                     }
-                    else if (AjudanteConsultaEntidade.PropriedadeRetornarListaEntidade(propriedade))
+                    else if (AjudanteConsultaEntidade.IsPropriedadeRetornarListaEntidade(propriedade))
                     {
-                        if (filtro)
+                        if (isFiltro)
                         {
-                            throw new ErroNaoSuportado("Não é posivel suporta abrir realação filtro nas coleções");
+                            throw new ErroNaoSuportado("Não é possível suporta abrir relação filtro nas coleções");
                         }
                         var tipoPropridadeItemBaseEntidade = AjudanteConsultaEntidade.RetornarTipoListaEntidade(estruturaConsultaAtual.TipoEntidadeConsulta, propriedade);
 
                         var relacaoAbertaListaEntidade = new RelacaoAbertaColecao
                         {
+                            Propriedade = propriedade,
                             CaminhoPropriedade = caminhoPropriedadeParcial,
                             NomeTipoEntidade = tipoPropridadeItemBaseEntidade.Name,
-                            TipoEntidadeAssemblyQualifiedName = tipoPropridadeItemBaseEntidade.AssemblyQualifiedName,
+                            TipoEntidadeAssemblyQualifiedName = tipoPropridadeItemBaseEntidade.RetornarAssemblyQualifiedName(),
+                            //TipoEntidadeAssemblyQualifiedName = tipoPropridadeItemBaseEntidade.AssemblyQualifiedName,
                             NomeTipoDeclarado = propriedade.DeclaringType.Name,
-                            TipoDeclaradoAssemblyQualifiedName = propriedade.DeclaringType.AssemblyQualifiedName
+                            TipoDeclaradoAssemblyQualifiedName = propriedade.DeclaringType.RetornarAssemblyQualifiedName()
+                            //TipoDeclaradoAssemblyQualifiedName = propriedade.DeclaringType.AssemblyQualifiedName
                         };
 
                         relacaoAbertaListaEntidade.EstruturaConsulta.TipoEntidadeConsulta = tipoPropridadeItemBaseEntidade;
                         relacaoAbertaListaEntidade.EstruturaConsulta.NomeTipoEntidade = tipoPropridadeItemBaseEntidade.Name;
-                        relacaoAbertaListaEntidade.EstruturaConsulta.TipoEntidadeAssemblyQualifiedName = tipoPropridadeItemBaseEntidade.AssemblyQualifiedName;
+                        //relacaoAbertaListaEntidade.EstruturaConsulta.TipoEntidadeAssemblyQualifiedName = tipoPropridadeItemBaseEntidade.AssemblyQualifiedName;
+                        relacaoAbertaListaEntidade.EstruturaConsulta.TipoEntidadeAssemblyQualifiedName = tipoPropridadeItemBaseEntidade.RetornarAssemblyQualifiedName();
 
                         estruturaConsultaAtual.ColecoesAberta.Add(caminhoPropriedadeParcial, relacaoAbertaListaEntidade);
 
-                        estruturaConsultaAtual = relacaoAbertaListaEntidade.EstruturaConsulta; propriedadesCaminho.Clear();
+                        estruturaConsultaAtual = relacaoAbertaListaEntidade.EstruturaConsulta;
+                        propriedadesCaminhoParcial.Clear();
                     }
                     else
                     {
-                        if (!filtro)
+                        if (!isFiltro)
                         {
                             var mensagemErro = $"O tipo {propriedade.PropertyType.Name} da Propriedade {propriedade.Name} não  é uma relação ";
                             throw new Erro(mensagemErro);
@@ -179,6 +202,8 @@ namespace Snebur.AcessoDados
             }
             return this;
         }
+
+      
 
         private PropertyInfo NormalizarPropriedadeRelacaoEspecializda(PropertyInfo propriedade)
         {
@@ -195,16 +220,65 @@ namespace Snebur.AcessoDados
             return propriedade;
         }
 
-        private bool ExisteRelacaoAberta(EstruturaConsulta estruturaConsultaAtual, string caminhoPropreidade, bool filtro)
+        private bool IsExisteRelacaoAberta(EstruturaConsulta estruturaConsultaAtual,
+                                           string caminhoPropreidade, bool isFiltro)
         {
-            if (filtro)
+            if (isFiltro)
             {
                 return estruturaConsultaAtual.RelacoesAbertaFiltro.ContainsKey(caminhoPropreidade);
             }
             else
             {
-                return estruturaConsultaAtual.RelacoesAberta.ContainsKey(caminhoPropreidade) || estruturaConsultaAtual.ColecoesAberta.ContainsKey(caminhoPropreidade);
+                return estruturaConsultaAtual.RelacoesAberta.ContainsKey(caminhoPropreidade) ||
+                       estruturaConsultaAtual.ColecoesAberta.ContainsKey(caminhoPropreidade);
             }
+        }
+
+        private void ValidarPropriedadeMapeamento(PropertyInfo propriedade,
+                                                  EstruturaConsulta estruturaConsultaAtual,
+                                                  string caminhoPropreidade,
+                                                  string caminhoPropriedadeCompleto,
+                                                  bool isFiltro)
+        {
+            var mapemaneto = this.RetornarMapeamento(estruturaConsultaAtual, 
+                                                     caminhoPropreidade, 
+                                                     isFiltro);
+
+            if(mapemaneto.Propriedade.DeclaringType != propriedade.DeclaringType)
+            {
+                var tipos = new Type[] { propriedade .DeclaringType,
+                                         mapemaneto.Propriedade.DeclaringType };
+
+
+                var mensagem = $"Ambiguidade no caminho '{caminhoPropriedadeCompleto}' para abrir relação.\r\n" +
+                               $"Tipos  {String.Join(", ", tipos.Select(x => x.Name))} com mesmo caminho.\r\n" +
+                               $"Suporte para ambiguidade de caminhos não implementado.\r\n" +
+                               $"Sugestão: Separar as consultas.";
+
+                throw new Exception(mensagem);
+            }
+
+        }
+
+        private BaseRelacaoAberta RetornarMapeamento(EstruturaConsulta estruturaConsultaAtual,
+                                                     string caminhoPropreidade,
+                                                     bool isFiltro)
+        {
+            if (isFiltro)
+            {
+                return estruturaConsultaAtual.RelacoesAbertaFiltro.GetValueOrDefault(caminhoPropreidade);
+            }
+
+            if (estruturaConsultaAtual.RelacoesAberta.ContainsKey(caminhoPropreidade))
+            {
+                return estruturaConsultaAtual.RelacoesAberta[caminhoPropreidade];
+            }
+            if (estruturaConsultaAtual.ColecoesAberta.ContainsKey(caminhoPropreidade))
+            {
+                return estruturaConsultaAtual.ColecoesAberta[caminhoPropreidade];
+            }
+
+            throw new Exception($"mapeamento não encontrado {estruturaConsultaAtual}.{caminhoPropreidade}");
         }
     }
 }

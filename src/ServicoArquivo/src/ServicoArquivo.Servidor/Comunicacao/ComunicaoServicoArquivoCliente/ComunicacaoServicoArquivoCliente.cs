@@ -18,10 +18,13 @@ namespace Snebur.ServicoArquivo
     {
 
         private Guid IdentificadorSessaoUsuario { get; set; }
+        private string IdentficadorProprietario { get; set; }
         public FuncaoNormalizadorOrigem FuncaoNormalizadorOrigem { get; }
 
-        private CredencialUsuario CredencialUsuarioRequisicao { get; }
+        protected CredencialUsuario CredencialUsuarioRequisicao { get; }
 
+        protected override CredencialUsuario CredencialUsuario => this.CredencialUsuarioRequisicao ?? base.CredencialUsuario;
+         
         protected override Dictionary<string, string> ParametrosCabecalhoAdicionais
         {
             get
@@ -49,10 +52,12 @@ namespace Snebur.ServicoArquivo
         public ComunicacaoServicoArquivoCliente(string urlServico,
                                                CredencialUsuario credencialUsuarioRequisicao,
                                                Guid identificadorSessaoUsuario,
+                                               string identficadorProprietario,
                                                FuncaoNormalizadorOrigem funcaoNormalizadorOrigem) : base(urlServico)
         {
             this.CredencialUsuarioRequisicao = credencialUsuarioRequisicao;
             this.IdentificadorSessaoUsuario = identificadorSessaoUsuario;
+            this.IdentficadorProprietario = identficadorProprietario;
             this.FuncaoNormalizadorOrigem = funcaoNormalizadorOrigem;
         }
 
@@ -100,15 +105,22 @@ namespace Snebur.ServicoArquivo
         }
         #endregion
 
-        #region Métodos protedidos
+        #region Métodos protegidos
 
-        protected override InformacaoSessaoUsuario RetornarInformacaoSessaoUsuario()
+        protected override InformacaoSessaoUsuario RetornarInformacaoSessoUsuarioRequisicaoAtual()
         {
-            var informacao = new InformacaoSessaoUsuario();
-            informacao.IdentificadorSessaoUsuario = this.IdentificadorSessaoUsuario;
+            var informacao = new InformacaoSessaoUsuario
+            {
+                IdentificadorSessaoUsuario = this.IdentificadorSessaoUsuario,
+            };
             //informacao.IPInformacao = SessaoUtil.RetornarIpInformacao();
             return informacao;
         }
+        protected override string IdentificadorProprietarioRequisicaoAtual()
+        {
+            return this.IdentficadorProprietario;
+        }
+
 
         protected override CredencialUsuario CredencialAvalista
         {

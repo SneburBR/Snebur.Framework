@@ -224,6 +224,7 @@ namespace Snebur.ServicoArquivo
             return new ComunicacaoServicoArquivoCliente(urlServicoArquivoCliente,
                                                         cabecalho.CredencialRequisicao,
                                                         cabecalho.IdentificadorSessaoUsuario,
+                                                        cabecalho.IdentificadorProprietario,
                                                         this.NormalizarOrigem);
         }
         #endregion

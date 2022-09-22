@@ -215,6 +215,7 @@
     <Compile Include="Erro\ErroCritico.cs" />
     <Compile Include="Erro\ErroSeguranca.cs" />
     <Compile Include="Erro\ErroSessaoUsuarioExpirada.cs" />
+    <Compile Include="Extensao\AssemblyQualifiedNameExtensao.cs" />
     <Compile Include="Extensao\DateTimeExtensao.cs" />
     <Compile Include="Extensao\IListExtensao.cs" />
     <Compile Include="Extensao\IUsuarioExtensao.cs" />

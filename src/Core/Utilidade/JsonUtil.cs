@@ -85,6 +85,7 @@ namespace Snebur.Utilidade
                 {
                     return null;
                 }
+
                 var configuracaoSerializacao = isJavascript ? JsonUtil.ConfiguracoesSerializarJavascript :
                                                               JsonUtil.ConfiguracoesSerializarDotNet;
 
@@ -106,11 +107,7 @@ namespace Snebur.Utilidade
                 }
                 throw new ErroSerializacao(json, ex);
             }
-        }
-        //public static string Serializar(object objeto)
-        //{
-        //    return JsonUtil.Serializar(objeto, false);
-        //}
+        } 
 
         public static void Serializar(object objeto,
                                       bool isJavascript,

@@ -27,5 +27,10 @@ namespace Snebur.Comunicacao
         public bool Async { get => this.RetornarValorPropriedade(this._async); set => this.NotificarValorPropriedadeAlterada(this._async, this._async = value); }
 
         public List<ParametroChamada> Parametros { get; set; } = new List<ParametroChamada>();
+
+        public ContratoChamada()
+        {
+
+        }
     }
 }

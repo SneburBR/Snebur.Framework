@@ -59,7 +59,7 @@
       <Link>Extensao\ContextoDadosExtensao.cs</Link>
     </Compile>
     <Compile Include="Contexto\ContextoDados.cs" />
-    <Compile Include="Extensao\ContextoDadosExtensaoAwait.cs" />
+    <Compile Include="Extensao\ContextoDadosExtensaoAsync.cs" />
     <Compile Include="Extensao\IConsultaEntidadeExtensao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServicoDados\ServicoDadosCliente.cs" />

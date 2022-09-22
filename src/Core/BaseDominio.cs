@@ -12,7 +12,7 @@ using System.Xml.Serialization;
 namespace Snebur.Dominio
 {
     [Plural("BasesDominio")]
-    public abstract class BaseDominio : IBaseDominio, IBaseDominioReferencia, INotifyPropertyChanged
+    public abstract class BaseDominio : IBaseDominio, IBaseDominioReferencia, INotifyPropertyChanged, IBaseDominioControladorPropriedade
     {
         //private Guid? __identificadorReferenciaInterno;
         private bool _isSerializando;
@@ -349,6 +349,19 @@ namespace Snebur.Dominio
             this.NotificarValorPropriedadeAlterada(newValue, newValue, nomePropriedade);
         }
 
+        #region IBaseDominioControlorPropriedade
+        void IBaseDominioControladorPropriedade.DestivarControladorPropriedadeAlterada()
+        {
+            this.DestivarControladorPropriedadeAlterada();
+        }
 
+        void IBaseDominioControladorPropriedade.AtivarControladorPropriedadeAlterada()
+        {
+            this.AtivarControladorPropriedadeAlterada();
+        }
+
+        #endregion
     }
+
+  
 }

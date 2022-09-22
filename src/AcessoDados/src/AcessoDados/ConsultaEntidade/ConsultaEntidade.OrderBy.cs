@@ -33,7 +33,7 @@ namespace Snebur.AcessoDados
             {
                 propriedadesCaminhoRelacaoEntidade.Add(propriedade);
 
-                if (AjudanteConsultaEntidade.PropriedadeRetornarListaEntidade(propriedade))
+                if (AjudanteConsultaEntidade.IsPropriedadeRetornarListaEntidade(propriedade))
                 {
                     throw new ErroNaoImplementado(String.Format("Não é suportado propriedade  de coleção '{0}' na ordenação, implementar OrderBy(caminhoColecao, caminhoPropriedade) ", propriedade.Name));
                 }

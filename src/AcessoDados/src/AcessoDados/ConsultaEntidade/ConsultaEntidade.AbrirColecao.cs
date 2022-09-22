@@ -115,7 +115,7 @@ namespace Snebur.AcessoDados
                 {
                     continue;
                 }
-                if (AjudanteConsultaEntidade.PropriedadeRetornarListaEntidade(propriedade))
+                if (AjudanteConsultaEntidade.IsPropriedadeRetornarListaEntidade(propriedade))
                 {
                     if (!estruturaConsultaAtual.ColecoesAberta.ContainsKey(caminhoPropriedade))
                     {

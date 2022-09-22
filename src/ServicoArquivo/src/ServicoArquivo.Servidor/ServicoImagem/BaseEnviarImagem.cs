@@ -19,6 +19,7 @@ namespace Snebur.ServicoArquivo
             return new ComunicacaoServicoImagemCliente(urlServicoArquivo,
                                                       cabecalho.CredencialRequisicao,
                                                       cabecalho.IdentificadorSessaoUsuario,
+                                                      cabecalho.IdentificadorProprietario,
                                                       this.NormalizarOrigem);
         }
 

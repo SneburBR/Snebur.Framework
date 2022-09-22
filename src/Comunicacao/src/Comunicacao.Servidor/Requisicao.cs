@@ -14,37 +14,42 @@ namespace Snebur.Comunicacao
     {
         #region Propriedades
 
-        public Cabecalho Cabecalho { get; set; }
+        public Cabecalho Cabecalho { get; private set; }
 
-        public ContratoChamada ContratoChamada { get; set; }
+        public ContratoChamada ContratoChamada { get; private set; }
 
-        public CredencialServico CredencialServico { get; set; }
+        public CredencialServico CredencialServico { get; private set; }
 
-        public CredencialUsuario CredencialUsuario { get; set; }
+        public CredencialUsuario CredencialUsuario { get; private set; }
 
-        public CredencialUsuario CredencialAvalisata { get; set; }
+        public CredencialUsuario CredencialAvalisata { get; private set; }
 
-        public InformacaoSessaoUsuario InformacaoSessaoUsuario { get; set; }
+        public InformacaoSessaoUsuario InformacaoSessaoUsuario { get; private set; }
 
-        public string Operacao { get; set; }
+        public string IdentificadorProprietario { get; private set; }
 
-        public DateTime DataHoraChamada { get; set; }
+        public string Operacao { get; private set; }
 
-        public Dictionary<string, object> Parametros { get; set; }
+        public DateTime DataHoraChamada { get; private set; }
+
+        public Dictionary<string, object> Parametros { get; private set; }
 
         public string NomeManipulador { get; }
         public bool SerializarJavascript { get; set; }
-
+        public HttpContext HttpContext { get; private set; }
         #endregion
 
         #region Construtor
 
         public Requisicao(HttpContext httpContext,
                           CredencialServico credencialServico,
-                          string nomeManipulador)
+                          string identificadorProprietario,
+                          string nomeManipulador )
         {
+            this.HttpContext = httpContext;
             this.CredencialServico = credencialServico;
             this.Parametros = new Dictionary<string, object>();
+            this.IdentificadorProprietario = identificadorProprietario;
             this.NomeManipulador = nomeManipulador;
             this.DeserializarPacote(httpContext);
         }
@@ -83,6 +88,7 @@ namespace Snebur.Comunicacao
                     this.CredencialAvalisata = this.ContratoChamada.Cabecalho.CredencialAvalista;
                     this.Operacao = this.ContratoChamada.Operacao;
                     this.DataHoraChamada = this.ContratoChamada.DataHora;
+                    this.AdicionarItensrequisicaoAtual();
 
                     this.SerializarJavascript = (this.InformacaoSessaoUsuario.TipoAplicacao == EnumTipoAplicacao.Web || this.InformacaoSessaoUsuario.TipoAplicacao == EnumTipoAplicacao.ApacheCordova);
 
@@ -97,6 +103,8 @@ namespace Snebur.Comunicacao
                 }
             }
         }
+
+
 
         private Stream RetornarInputStreamBufferizado(HttpContext context)
         {
@@ -186,13 +194,63 @@ namespace Snebur.Comunicacao
 
         #endregion
 
+        private void AdicionarItensrequisicaoAtual( )
+        {
+            var context = this.HttpContext;
+            lock (context.Items.SyncRoot)
+            {
+                context.AdicionrItem(ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL, this.InformacaoSessaoUsuario);
+                context.AdicionrItem(ConstantesItensRequsicao.CHAVE_CREDENCIAL_USUARIO, this.CredencialUsuario);
+                context.AdicionrItem(ConstantesItensRequsicao.CHAVE_IDENTIFICADOR_PROPRIETARIO, this.IdentificadorProprietario);
+
+                if (this.CredencialAvalisata != null)
+                {
+                    context.AdicionrItem(ConstantesItensRequsicao.CHAVE_CREDENCIAL_USUARIO_AVALISTA, this.CredencialUsuario);
+                }
+                //if (!context.Items.Contains(InformacaoSessaoUsuario.CHAVE_INFORMACAO_SESSAO_ATUAL))
+                //{
+                //    context.Items.Remove(informacaoSessaoUsuario);
+                //}
+            }
+        }
+        private void RemoverItensRequisicaoAtual()
+        {
+            var context = this.HttpContext;
+            lock (context.Items.SyncRoot)
+            {
+                context.RemoverItem(ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL);
+                context.RemoverItem(ConstantesItensRequsicao.CHAVE_CREDENCIAL_USUARIO);
+                context.RemoverItem(ConstantesItensRequsicao.CHAVE_CREDENCIAL_USUARIO_AVALISTA);
+                context.RemoverItem(ConstantesItensRequsicao.CHAVE_IDENTIFICADOR_PROPRIETARIO);
+            }
+        }
+
         #region IDisposable
 
         public void Dispose()
         {
-
+            this.RemoverItensRequisicaoAtual();
+            this.HttpContext = null;
         }
 
         #endregion
+    }
+
+    public static class HttpContextExtensao
+    {
+        public static void AdicionrItem(this HttpContext context, string chave, object item)
+        {
+            if (!context.Items.Contains(chave))
+            {
+                context.Items.Add(chave, item);
+            }
+        }
+        public static void RemoverItem(this HttpContext context, string chave)
+        {
+            if (context.Items.Contains(chave))
+            {
+                context.Items.Remove(chave);
+            }
+        }
     }
 }

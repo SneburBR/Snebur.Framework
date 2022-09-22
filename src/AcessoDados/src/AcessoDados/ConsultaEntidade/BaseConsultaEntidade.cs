@@ -32,7 +32,8 @@ namespace Snebur.AcessoDados
                 {
                     TipoEntidadeConsulta = tipoEntidadeConsulta,
                     NomeTipoEntidade = tipoEntidadeConsulta.Name,
-                    TipoEntidadeAssemblyQualifiedName = tipoEntidadeConsulta.AssemblyQualifiedName
+                    TipoEntidadeAssemblyQualifiedName = tipoEntidadeConsulta.RetornarAssemblyQualifiedName()
+                    //TipoEntidadeAssemblyQualifiedName = tipoEntidadeConsulta.AssemblyQualifiedName
                 };
             }
             else
