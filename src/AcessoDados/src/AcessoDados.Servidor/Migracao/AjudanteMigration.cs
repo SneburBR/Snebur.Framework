@@ -102,7 +102,8 @@ namespace Snebur.AcessoDados
 
         private bool ExisteMigracao(DbConnection conexao, SqlMigracao sqlMigration)
         {
-            if ((sqlMigration is SqlValorPadraoDataHoraServidor) && ((ConfiguracaoAcessoDados.TipoBancoDadosEnum == EnumTipoBancoDados.PostgreSQL)))
+            if ((sqlMigration is SqlValorPadraoDataHoraServidor) && 
+                ((ConfiguracaoAcessoDados.TipoBancoDadosEnum == EnumTipoBancoDados.PostgreSQL)))
             {
                 var sqlExiste = (sqlMigration as SqlValorPadraoDataHoraServidor).RetornrSqlExisteGatilho();
                 using (var cmd = this.Conexao.RetornarNovoComando(sqlExiste, null, conexao))

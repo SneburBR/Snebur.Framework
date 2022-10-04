@@ -11,7 +11,7 @@ namespace Snebur.Seguranca
         private const string TOKEN_PADRAO = "fd35dd69-f0fc-43fd-b035-7e659b986b70";
 
         private static Guid? _chave;
-        internal static Guid CHAVE => ThreadUtil.RetornarValorComBloqueio(ref _chave, Token.RetornarChaveToken);
+        internal static Guid CHAVE => LazyUtil.RetornarValorLazyComBloqueio(ref _chave, Token.RetornarChaveToken);
 
         private static Guid RetornarChaveToken()
         {

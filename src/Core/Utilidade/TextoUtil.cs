@@ -626,7 +626,10 @@ namespace Snebur.Utilidade
             return CacheFiltros[chave];
         }
 
-        public static string RetornarTextoCaracteresPermitido(string texto, HashSet<char> caracterPermitidos, bool isPermitirEspacoBranco, char? substituirPor = null)
+        public static string RetornarTextoCaracteresPermitido(string texto, 
+                                                              HashSet<char> caracterPermitidos, 
+                                                              bool isPermitirEspacoBranco, 
+                                                              char? substituirPor = null)
         {
             if (String.IsNullOrEmpty(texto))
             {

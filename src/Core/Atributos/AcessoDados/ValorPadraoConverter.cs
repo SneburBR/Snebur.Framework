@@ -40,11 +40,15 @@ namespace Snebur.Dominio.Atributos
         }
         #region IValorPadrao 
 
-        public bool TipoNullableRequerido { get; } = false;
+        public bool IsTipoNullableRequerido { get; } = false;
 
-        public object RetornarValorPadrao(object contexto, Entidade entidadeCorrente)
+        public object RetornarValorPadrao(object contexto, 
+                                          Entidade entidadeCorrente, 
+                                          object valorPropriedade)
         {
-            return this.InstanciaConverter.RetornarValorPadrao(contexto, entidadeCorrente);
+            return this.InstanciaConverter.RetornarValorPadrao(contexto,
+                                                               entidadeCorrente, 
+                                                               valorPropriedade);
         }
         #endregion
 

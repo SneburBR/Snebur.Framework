@@ -123,8 +123,8 @@ namespace Snebur.Utilidade
 
                 numeros = TextoUtil.RemoverCaracteresInicial(numeros, "0");
 
-                var isNacional = (letras.Length == 0 && (numeros.Length == 10 || 
-                                                       numeros.Length == 11 ));
+                var isNacional = (letras.Length == 0 && (numeros.Length == 10 ||
+                                                       numeros.Length == 11));
                 if (isNacional)
                 {
                     var ddd = Convert.ToInt32(numeros.Substring(0, 2));
@@ -387,6 +387,15 @@ namespace Snebur.Utilidade
             if (value != null)
             {
                 return RegexCorRgba.IsMatch(value.Trim());
+            }
+            return false;
+        }
+
+        public static bool IsRota(string rota)
+        {
+            if (rota?.StartsWith("/") == true && rota.Length < 512)
+            {
+                return new Regex("^/[A-Za-z0-9-_/]+/$").IsMatch(rota);
             }
             return false;
         }

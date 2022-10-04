@@ -141,7 +141,7 @@ namespace Snebur.Utilidade
         public static string FormatarTelefone(string telefone)
         {
             var somenteNumeros = TextoUtil.RetornarSomenteNumeros(telefone);
-            if(somenteNumeros.Length == 10)
+            if (somenteNumeros.Length == 10)
             {
                 return String.Format("{0:(##) ####-####}", somenteNumeros);
             }
@@ -150,6 +150,16 @@ namespace Snebur.Utilidade
                 return String.Format("{0:(##) #####-####}", somenteNumeros);
             }
             return telefone;
+        }
+
+        public static string FormatarRota(string nome)
+        {
+            var rota = TextoUtil.RetornarSomentesLetrasNumeros(nome.Trim(), true, "-_/".ToCharArray()).Replace(" ", "-").ToLower();
+            while (rota.Contains("--"))
+            {
+                rota = rota.Replace("--", "-");
+            }
+            return UriUtil.AjustarBarraInicialFinal(rota);
         }
     }
 }

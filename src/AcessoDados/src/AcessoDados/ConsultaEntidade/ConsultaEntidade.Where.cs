@@ -30,10 +30,9 @@ namespace Snebur.AcessoDados
             return this;
         }
 
-
         public ConsultaEntidade<TEntidade> WhereIds(List<long> ids)
         {
-            this.EstruturaConsulta.FiltroGrupoE.Filtros.Add(new FiltroIds(ids));
+            this.EstruturaConsulta.FiltroGrupoE.Filtros.Add(new FiltroIds(ids.ToList()));
             return this;
         }
 

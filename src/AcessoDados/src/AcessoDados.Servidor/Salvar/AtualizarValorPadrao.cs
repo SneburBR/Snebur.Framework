@@ -59,7 +59,10 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                 foreach (var propriedade in propriedades)
                 {
                     var valorPropriedade = propriedade.GetValue(entidade);
-                    var valorPadrao = AtualizarValorPadrao.RetornarValorPropriedade(entidade, propriedade, contexto);
+                    var valorPadrao = AtualizarValorPadrao.RetornarValorPropriedade(contexto, 
+                                                                                    entidade, 
+                                                                                    propriedade,
+                                                                                    valorPropriedade);
                     if (valorPadrao != null && valorPadrao != valorPropriedade)
                     {
                         propriedade.SetValue(entidade, valorPadrao);
@@ -69,9 +72,10 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             }
         }
 
-        private static object RetornarValorPropriedade(Entidade entidade,
+        private static object RetornarValorPropriedade(BaseContextoDados contexto,
+                                                       Entidade entidade,
                                                        PropertyInfo propriedade,
-                                                       BaseContextoDados contexto)
+                                                       object valorPropriedade)
         {
             var atributos = propriedade.GetCustomAttributes();
             if (atributos.Count() > 0)
@@ -101,7 +105,9 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                 var atributoValorPadrao = AtualizarValorPadrao.RetornarAtributoValorPradao(propriedade);
                 if (atributoValorPadrao != null)
                 {
-                    return atributoValorPadrao.RetornarValorPadrao(contexto, entidade);
+                    return atributoValorPadrao.RetornarValorPadrao(contexto, 
+                                                                   entidade, 
+                                                                   valorPropriedade);
                 }
 
                 if (atributos.OfType<PropriedadeIdentificadorProprietarioAttribute>().SingleOrDefault() != null)

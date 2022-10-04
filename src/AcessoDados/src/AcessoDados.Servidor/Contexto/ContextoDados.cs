@@ -24,7 +24,7 @@ namespace Snebur.AcessoDados
 {
     public abstract partial class BaseContextoDados : __BaseContextoDados, IServicoDados, IContextoDadosSemNotificar, IDisposable
     {
-        
+
         private CredencialUsuario _credencialAvalista;
 
         #region Propriedades
@@ -93,8 +93,7 @@ namespace Snebur.AcessoDados
         }
 
         #endregion
-
-
+         
         #region Construtor
 
         private BaseContextoDados(string configuracaoAcessoDados,
@@ -157,8 +156,7 @@ namespace Snebur.AcessoDados
 
             this.IsFiltrarIdentificadorProprietario = identificadorProprietario != null;
             this.CacheSessaoUsuario = CacheSessaoUsuario.RetornarCacheSessaoUsuario(this, credencial, identificadorSessaoUsario, informacaoSessaoUsuario);
-
-
+             
             if (this.CacheSessaoUsuario.Usuario == null)
             {
                 throw new ErroSessaoUsuarioInvalida("O usuário não foi definido no cache da sessão o usuário");
@@ -168,8 +166,7 @@ namespace Snebur.AcessoDados
             {
                 throw new ErroSessaoUsuarioInvalida("A sessão do usuário não foi definido no cache da sessão o usuário");
             }
-
-
+             
             //this.ResultadoSessaoUsuario = this.CacheSessaoUsuario.RetornarResltadoSessaoUsuario(credencial, identificadorSessaoUsario, informacaoSessaoUsuario);
             //this.UsuarioLogado = this.ResultadoSessaoUsuario.Usuario;
             //this.SessaoUsuarioLogado = this.ResultadoSessaoUsuario.SessaoUsuario;
@@ -236,10 +233,10 @@ namespace Snebur.AcessoDados
 
         //}
 
-      
+
         #endregion
 
-            #region BaseServico 
+        #region BaseServico 
 
         public override bool Ping()
         {

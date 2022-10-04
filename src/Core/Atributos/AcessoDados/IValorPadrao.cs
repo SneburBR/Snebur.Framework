@@ -4,13 +4,14 @@
     public interface IConverterValorPadrao
     {
         object RetornarValorPadrao(object contexto,
-                                   Entidade entidadeCorrente);
+                                   Entidade entidadeCorrente,
+                                   object valorPropriedade);
     }
 
 
     [IgnorarInterfaceTS]
     public interface IValorPadrao : IConverterValorPadrao
     {
-        bool TipoNullableRequerido { get; }
+        bool IsTipoNullableRequerido { get; }
     }
 }

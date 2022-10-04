@@ -119,7 +119,7 @@ namespace Snebur.Utilidade
             {
                 if (valorPropriedade is string str)
                 {
-                    return !String.IsNullOrEmpty(str);
+                    return !String.IsNullOrWhiteSpace (str);
                 }
                 return true;
             }

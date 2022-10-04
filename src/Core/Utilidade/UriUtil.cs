@@ -29,6 +29,10 @@ namespace Snebur.Utilidade
             return UriUtil.AjustarBarraFinal(endereco1) + UriUtil.RemoverBarraInicial(endereco2);
         }
 
+        public static string AjustarBarraInicialFinal(string endereco)
+        {
+            return AjustarBarraInicial(AjustarBarraFinal(endereco));
+        }
         public static string AjustarBarraInicial(string endereco)
         {
             endereco = UriUtil.InverterBarras(endereco);

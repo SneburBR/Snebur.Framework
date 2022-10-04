@@ -104,7 +104,7 @@ namespace Snebur.AcessoDados.Estrutura
 
             this.AtributoValorPadrao = this.RetornarAtributoValorPadrao();
 
-            if (this.AtributoValorPadrao?.TipoNullableRequerido ?? false)
+            if (this.AtributoValorPadrao?.IsTipoNullableRequerido == true)
             {
                 if (this.Tipo.IsValueType && !this.IsTipoNullable)
                 {

@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using Snebur.Dominio.Atributos;
+using Snebur.Utilidade;
+using System.Linq;
 
 namespace System.Reflection
 {
@@ -31,7 +33,7 @@ namespace System.Reflection
         public static bool IsAssemblySnebur(this Assembly assembly)
         {
             return assembly.FullName.StartsWith("Snebur") ||
-                   assembly.FullName.StartsWith("Zyoncore");
+                   assembly.FullName.StartsWith("Snebur");
             //var atributo = assembly.GetCustomAttribute<AssemblyCompanyAttribute>();
             //if (atributoVersao != null)
             //{
@@ -39,6 +41,30 @@ namespace System.Reflection
             //}
             //return "0.0.0.0";
             //IsAssemblySnebur
+        }
+
+        public static bool IsAssemblyEntidades(this Assembly assembly)
+        {
+            if (assembly.FullName.StartsWith("System"))
+            {
+                return false;
+            }
+
+            if(assembly.GetCustomAttribute<AssemblyEntidadesAttribute>() != null)
+            {
+                return true;
+            }
+
+            if (DebugUtil.IsAttached)
+            {
+                if (assembly.FullName.Contains("Entidades"))
+                {
+                    throw new Exception($"Adicione o atributos {nameof(AssemblyEntidadesAttribute)} no assembly {assembly.FullName}");
+                }
+            }
+
+            var atributos = assembly.GetCustomAttributes();
+            return atributos.Any(x => x.GetType().Name == nameof(AssemblyEntidadesAttribute));
         }
     }
 }

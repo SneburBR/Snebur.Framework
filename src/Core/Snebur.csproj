@@ -102,6 +102,7 @@
     <Compile Include="Atributos\AcessoDados\BaseValidacaoEntidade.cs" />
     <Compile Include="Atributos\AcessoDados\ChaveEstrangeiraRelacaoUmUmAttribute.cs" />
     <Compile Include="Atributos\AcessoDados\FormatarDadosAttribute.cs" />
+    <Compile Include="Atributos\AcessoDados\FormatarRota.cs" />
     <Compile Include="Atributos\AcessoDados\FormatarSomenteNumeros.cs" />
     <Compile Include="Atributos\AcessoDados\IgnorarValidacaoRelacao.cs" />
     <Compile Include="Atributos\AcessoDados\IgnorarValidacaoTipoComplexo.cs" />
@@ -152,6 +153,7 @@
     <Compile Include="Atributos\Validacao\ValidacaoImagem.cs" />
     <Compile Include="Atributos\Validacao\ValidacaoIPAttribute.cs" />
     <Compile Include="Atributos\Validacao\ValidacaoPalavraTamanhoAttribute.cs" />
+    <Compile Include="Atributos\Validacao\ValidacaoRota.cs" />
     <Compile Include="Atributos\Validacao\ValidacaoPrimeiroNome.cs" />
     <Compile Include="Atributos\Validacao\ValidacaoNomeCompleto.cs" />
     <Compile Include="Atributos\Validacao\ValidacaoRequericoCondicional.cs" />
@@ -195,6 +197,7 @@
     <Compile Include="Dominio\Media\Fonte\EnumFormatoArquivoFonte.cs" />
     <Compile Include="Dominio\Media\Imagem\EnumRotacaoImagem.cs" />
     <Compile Include="Dominio\TipoComplexo\FiltroImagem.Partial.cs" />
+    <Compile Include="Dominio\TipoComplexo\Interfaces\IPrecoTempo.cs" />
     <Compile Include="Dominio\TipoComplexo\Medida\Area.cs" />
     <Compile Include="Dominio\TipoComplexo\Medida\Area.Partial.cs" />
     <Compile Include="Dominio\TipoComplexo\Lista\BaseListaTipoComplexo.cs" />

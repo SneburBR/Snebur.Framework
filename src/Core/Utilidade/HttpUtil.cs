@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
@@ -15,7 +16,7 @@ namespace Snebur.Utilidade
 {
     public static class HttpUtil
     {
-        private const int TIMEOUT_PADRAO = 15;
+        public const int TIMEOUT_PADRAO = 15;
         private const int TAMANHO_BUFFER_PADRAO = 8 * 1024;
 
 #if NetCore == false
@@ -97,7 +98,10 @@ namespace Snebur.Utilidade
         }
 
 
-        public static Tuple<string, WebHeaderCollection> RetornarStringCabecalhoResposta(string url, Dictionary<string, string> cabecalho, TimeSpan timeout, bool ignorarErro)
+        public static Tuple<string, WebHeaderCollection> RetornarStringCabecalhoResposta(string url, 
+                                                                                         Dictionary<string, string> cabecalho, 
+                                                                                         TimeSpan timeout, 
+                                                                                         bool ignorarErro)
         {
             return RetornarStringCabecalhoResposta(new Uri(url), cabecalho, timeout, ignorarErro);
         }
@@ -191,7 +195,8 @@ namespace Snebur.Utilidade
             return RetornarMemoryStream(url, null, TimeSpan.FromSeconds(30), false);
         }
 
-        public static MemoryStream RetornarMemoryStream(string url, Dictionary<string, string> cabecalho, TimeSpan timeout, bool ignorarErro)
+        public static MemoryStream RetornarMemoryStream(string url, 
+                                                       Dictionary<string, string> cabecalho, TimeSpan timeout, bool ignorarErro)
         {
             return RetornarMemoryStream(new Uri(url), cabecalho, timeout, ignorarErro);
         }

@@ -35,7 +35,7 @@ namespace Snebur.AcessoDados
                             _tiposEntidade = new Dictionary<string, Type>();
                             foreach (var assembly in assemblies)
                             {
-                                if (assembly.IsAssemblySnebur())
+                                if (assembly.IsAssemblySnebur() || assembly.IsAssemblyEntidades())
                                 {
                                     var tipos = TipoEntidadeUtil.RetornarTiposEntidade(assembly);
                                     if (tipos != null)

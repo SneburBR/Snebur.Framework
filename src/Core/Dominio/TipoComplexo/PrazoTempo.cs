@@ -4,7 +4,7 @@ using System;
 
 namespace Snebur.Dominio
 {
-    public class PrazoTempo : BaseTipoComplexo
+    public class PrazoTempo : BaseTipoComplexo, IPrecoTempo
     {
         public static PrazoTempo Empty => new PrazoTempo(EnumTipoPrazo.DiasUteis, 0);
 
@@ -13,7 +13,6 @@ namespace Snebur.Dominio
         private EnumTipoPrazo _tipoPrazo;
 
         //public double? PrazoMinimo { get => this._prazoMinimo; set => this.NotificarValorPropriedadeAlterada(this._prazoMinimo, this._prazoMinimo = value); }
-
         public double Prazo { get => this._prazo; set => this.NotificarValorPropriedadeAlterada(this._prazo, this._prazo = value); }
 
         public EnumTipoPrazo TipoPrazo { get => this._tipoPrazo; set => this.NotificarValorPropriedadeAlterada(this._tipoPrazo, this._tipoPrazo = value); }
