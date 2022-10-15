@@ -68,6 +68,10 @@
     <Compile Include="BaseComunicacaoCliente.ParametroChamada.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Snebur.csproj">
+      <Project>{ec174c4f-8122-41a3-8360-f04c4c8fc3ba}</Project>
+      <Name>Snebur</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Comunicacao\Snebur.Comunicacao.csproj">
       <Project>{b44697c1-5c0c-40cf-814d-2bfba2498bf6}</Project>
       <Name>Snebur.Comunicacao</Name>
@@ -75,10 +79,6 @@
     <ProjectReference Include="..\..\..\Seguranca\Snebur.Seguranca.csproj">
       <Project>{65b693fa-a999-48c3-9dae-6da21a1158b7}</Project>
       <Name>Snebur.Seguranca</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Core\Snebur.csproj">
-      <Project>{ec174c4f-8122-41a3-8360-f04c4c8fc3ba}</Project>
-      <Name>Snebur</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -159,6 +159,8 @@ namespace Snebur.Comunicacao
                                                           MethodBase metodoParametros, bool isAsync, params object[] valoresParametro)
         {
             var informacaoSessaoUsuario = this.RetornarInformacaoSessoUsuarioRequisicaoAtual();
+            informacaoSessaoUsuario.TipoAplicacao = AplicacaoSnebur.Atual.TipoAplicacao;
+
             var identificadorPropriedade = this.IdentificadorProprietarioRequisicaoAtual();
 
             var nomeMetodo = this.RetornarNomeMetodo(metodoChamada, isAsync);

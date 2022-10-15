@@ -64,6 +64,7 @@ namespace Snebur.Dominio.Atributos
 
         private object RetornarNovaInstanciaInterno()
         {
+            
             var tipo = Type.GetType(this.CaminhoTipo);
             if (tipo == null)
             {

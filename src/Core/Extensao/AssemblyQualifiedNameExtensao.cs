@@ -66,13 +66,13 @@ namespace Snebur
 
         private static void ValidarAssemblyQualifiedName(string assemblyQualifiedName)
         {
-            if (DebugUtil.IsAttached)
-            {
-                if (Type.GetType(assemblyQualifiedName) == null)
-                {
-                    //throw new Exception($"Não possível obter o tipo pelo caminho {assemblyQualifiedName}");
-                }
-            }
+            //if (DebugUtil.IsAttached)
+            //{
+            //    if (Type.GetType(assemblyQualifiedName) == null)
+            //    {
+            //        throw new Exception($"Não possível obter o tipo pelo caminho {assemblyQualifiedName}");
+            //    }
+            //}
         }
 
     }

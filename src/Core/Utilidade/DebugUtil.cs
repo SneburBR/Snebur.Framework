@@ -8,8 +8,8 @@ namespace Snebur.Utilidade
         {
             get
             {
-                return true;
-                //return Debugger.IsAttached;
+                //return true;
+                return Debugger.IsAttached;
             }
         }
         

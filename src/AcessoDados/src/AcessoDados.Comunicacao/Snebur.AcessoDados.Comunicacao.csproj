@@ -58,6 +58,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Snebur.csproj">
+      <Project>{ec174c4f-8122-41a3-8360-f04c4c8fc3ba}</Project>
+      <Name>Snebur</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AcessoDados.Servidor\Snebur.AcessoDados.Servidor.csproj">
       <Project>{31462775-badc-4d17-9242-41e4ea2507c7}</Project>
       <Name>Snebur.AcessoDados.Servidor</Name>
@@ -73,10 +77,6 @@
     <ProjectReference Include="..\..\..\Comunicacao\src\Comunicacao\Snebur.Comunicacao.csproj">
       <Project>{b44697c1-5c0c-40cf-814d-2bfba2498bf6}</Project>
       <Name>Snebur.Comunicacao</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Core\Snebur.csproj">
-      <Project>{ec174c4f-8122-41a3-8360-f04c4c8fc3ba}</Project>
-      <Name>Snebur</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -5,11 +5,11 @@ namespace Snebur.Utilidade
 {
     public partial class BaralhoUtil
     {
-        private const int CHAVE_PADRADO = 17003812;
+        private const int CHAVE_PADRAO = 17003812;
 
         public static string Embaralhar(string texto)
         {
-            return Embaralhar(texto, CHAVE_PADRADO);
+            return Embaralhar(texto, CHAVE_PADRAO);
 
         }
         public static string Embaralhar(string texto, int chave)
@@ -23,7 +23,7 @@ namespace Snebur.Utilidade
 
         public static T[] Embaralhar<T>(T[] conteudo)
         {
-            return Embaralhar(conteudo, CHAVE_PADRADO);
+            return Embaralhar(conteudo, CHAVE_PADRAO);
         }
 
         public static T[] Embaralhar<T>(T[] conteudo, int chave)
@@ -46,12 +46,12 @@ namespace Snebur.Utilidade
             {
                 return texto;
             }
-            return new string(Desembaralhar(texto.ToArray(), CHAVE_PADRADO));
+            return new string(Desembaralhar(texto.ToArray(), CHAVE_PADRAO));
         }
 
         public static T[] Desembaralhar<T>(T[] conteudo)
         {
-            return Desembaralhar(conteudo, CHAVE_PADRADO);
+            return Desembaralhar(conteudo, CHAVE_PADRAO);
         }
         public static T[] Desembaralhar<T>(T[] conteudo, int chave)
         {
