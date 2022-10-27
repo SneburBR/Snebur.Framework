@@ -73,7 +73,7 @@ namespace Snebur.Comunicacao
                         {
                             var resultadoSerializado = this.RetornarResultadoChamadaSerializado(requisicao, httpContext);
 
-                            if (!requisicao.ContratoChamada.Async && requisicao.SerializarJavascript)
+                            if (!requisicao.ContratoChamada.Async && requisicao.IsSerializarJavascript)
                             {
                                 httpContext.Response.ContentType = "text/json";
                                 httpContext.Response.Charset = "utf8";
@@ -170,7 +170,7 @@ namespace Snebur.Comunicacao
             resultadoChamada.DataHora = DateTime.UtcNow;
             resultadoChamada.NomeServico = this.GetType().Name;
 
-            return JsonUtil.Serializar(resultadoChamada, requisicao.SerializarJavascript);
+            return JsonUtil.Serializar(resultadoChamada, requisicao.IsSerializarJavascript);
         }
 
         protected virtual object RetornarResultadoOperacao(Requisicao requisicao,

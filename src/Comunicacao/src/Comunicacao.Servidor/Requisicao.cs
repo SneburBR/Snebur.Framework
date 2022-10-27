@@ -35,7 +35,7 @@ namespace Snebur.Comunicacao
         public Dictionary<string, object> Parametros { get; private set; }
 
         public string NomeManipulador { get; }
-        public bool SerializarJavascript { get; set; }
+        public bool IsSerializarJavascript { get; set; }
         public HttpContext HttpContext { get; private set; }
         #endregion
 
@@ -90,7 +90,9 @@ namespace Snebur.Comunicacao
                     this.DataHoraChamada = this.ContratoChamada.DataHora;
                     this.AdicionarItensrequisicaoAtual();
 
-                    this.SerializarJavascript = (this.InformacaoSessaoUsuario.TipoAplicacao == EnumTipoAplicacao.Web || this.InformacaoSessaoUsuario.TipoAplicacao == EnumTipoAplicacao.ApacheCordova);
+                    this.IsSerializarJavascript = (this.InformacaoSessaoUsuario.TipoAplicacao == EnumTipoAplicacao.Web ||
+                                                   this.InformacaoSessaoUsuario.TipoAplicacao == EnumTipoAplicacao.ApacheCordova);
+
 
                     foreach (var parametro in this.ContratoChamada.Parametros)
                     {

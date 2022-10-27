@@ -89,8 +89,7 @@ namespace Snebur.ServicoArquivo
             var nomeTipoImagem = this.RetornarNomeTipoImagem(zyonHttpContext);
             var caminhoDiretorioImagem = this.RetornarDiretorioImagem(idImagem, nomeTipoImagem, tamanhoImagem);
             var nomeArquivo = ServicoArquivoUtil.RetornarNomeArquivo(idImagem, ServicoImagemUtil.RetornarExtensaoImagem(tamanhoImagem));
-            var caminhoImagem = Path.Combine(caminhoDiretorioImagem, nomeArquivo);
-            return caminhoImagem;
+            return Path.Combine(caminhoDiretorioImagem, nomeArquivo);
             //if (!File.Exists(caminhoImagem) || isAceitarOutrosTamanho)
             //{
             //    var tamanhosImagem = EnumUtil.RetornarValoresEnum<EnumTamanhoImagem>();
@@ -151,7 +150,13 @@ namespace Snebur.ServicoArquivo
         protected string RetornarValorParametro(string parametro, SnHttpContext zyonHttpContext)
         {
             var parametroBase64 = Base64Util.Encode(parametro);
-            return Base64Util.Decode(zyonHttpContext.Request.QueryString[parametroBase64]);
+            var valorParametro = zyonHttpContext.Request.QueryString[parametroBase64];
+            if (!String.IsNullOrEmpty(valorParametro))
+            {
+                return Base64Util.Decode(valorParametro);
+            }
+            throw new Exception($"Parâmetro '{parametro}' não foi definido.");
+            
         }
         #endregion
 

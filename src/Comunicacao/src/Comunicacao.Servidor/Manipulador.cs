@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Web;
 
@@ -17,11 +18,17 @@ namespace Snebur.Comunicacao
     /// </summary>
     public abstract class BaseManipuladorRequisicao : IHttpModule
     {
-
         private const int TEMPO_EXPIRAR_TOKEN = Token.TEMPO_EXPIRAR_TOKEN_PADRAO;
+
+        private Dictionary<string, Type> _tiposManipuladore;
+
         private Dictionary<string, Type> Manipuladores { get; } = new Dictionary<string, Type>();
         private Dictionary<string, (Type tipo, bool isValidarToken)> ManipuladoresGenericos { get; } = new Dictionary<string, (Type, bool)>();
         private Dictionary<string, bool> ArquivosAutorizados { get; } = new Dictionary<string, bool>();
+
+        private Dictionary<string, Type> TiposManipuladores => LazyUtil.RetornarValorLazyComBloqueio(ref _tiposManipuladore, this.RetornarTiposManipuladores);
+        protected bool IsAutoRegistrarManipulador { get; set; } = true;
+        private readonly object _bloqueio = new object();
 
         public BaseManipuladorRequisicao()
         {
@@ -260,18 +267,38 @@ namespace Snebur.Comunicacao
                     return false;
                 }
             }
-
             return true;
-
         }
 
         private Type RetornarTipoServico(string nomeServico)
         {
             if (!this.Manipuladores.ContainsKey(nomeServico))
             {
-                throw new ErroManipualdorNaoEncontrado(String.Format("O manipulador {0} não foi encontrado, deve ser inicializado no construtor do manipulador do WebService", nomeServico));
+                this.TentarRegistrarManipulador(nomeServico);
+                if (!this.Manipuladores.ContainsKey(nomeServico))
+                {
+                    throw new ErroManipualdorNaoEncontrado(String.Format("O manipulador {0} não foi encontrado, deve ser inicializado no construtor do manipulador do WebService", nomeServico));
+                }
             }
             return this.Manipuladores[nomeServico];
+        }
+
+        private void TentarRegistrarManipulador(string nomeServico)
+        {
+            if (this.IsAutoRegistrarManipulador)
+            {
+                lock (this._bloqueio)
+                {
+                    if (!this.Manipuladores.ContainsKey(nomeServico))
+                    {
+                        var tipo = this.TiposManipuladores.GetValueOrDefault(nomeServico);
+                        if (tipo != null)
+                        {
+                            this.Manipuladores.Add(nomeServico, tipo);
+                        }
+                    }
+                }
+            }
         }
 
         private void ResponderAgora(HttpResponse response)
@@ -360,6 +387,27 @@ namespace Snebur.Comunicacao
 
         #endregion
 
+        #region Métodos privados
+        private Dictionary<string, Type> RetornarTiposManipuladores()
+        {
+            var retorno = new Dictionary<string, Type>();
+            var tiposServicos = new List<Type>();
+            var tipoServico = typeof(BaseComunicacaoServidor);
+
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                foreach (var tipo in assembly.GetLoadableTypes())
+                {
+                    if (tipo.IsSubclassOf(tipoServico))
+                    {
+                        tiposServicos.Add(tipo);
+                    }
+                }
+            }
+            var tipos = tiposServicos.GroupBy(x => x.Name).Where(x => x.Count() == 1).Select(x => x.Single());
+            return tipos.ToDictionary(x => x.Name);
+        }
+        #endregion
 
         public void Dispose()
         {

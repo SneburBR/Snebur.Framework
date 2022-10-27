@@ -10,7 +10,8 @@ namespace Snebur.AcessoDados
     //: IConexaoBancoDados
     {
         internal protected string ConnectionString { get; set; }
-        private static bool IsTesteConexaoPendente = true;
+        private static readonly object _bloqueio = new object();
+        private static bool _isTesteConexaoPendente = true;
 
         public BaseConexao(BaseContextoDados contexto,
                            string connectionString)
@@ -18,10 +19,16 @@ namespace Snebur.AcessoDados
             this.ConnectionString = connectionString;
             this.ContextoDados = contexto;
 
-            if (IsTesteConexaoPendente)
+            if (_isTesteConexaoPendente)
             {
-                this.TestarConexao();
-                IsTesteConexaoPendente = false;
+                lock (_bloqueio)
+                {
+                    if (_isTesteConexaoPendente)
+                    {
+                        this.TestarConexao();
+                        _isTesteConexaoPendente = false;
+                    }
+                }
             }
         }
 

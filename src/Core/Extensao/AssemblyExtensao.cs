@@ -1,6 +1,9 @@
 ﻿using Snebur.Dominio.Atributos;
 using Snebur.Utilidade;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace System.Reflection
 {
@@ -65,6 +68,46 @@ namespace System.Reflection
 
             var atributos = assembly.GetCustomAttributes();
             return atributos.Any(x => x.GetType().Name == nameof(AssemblyEntidadesAttribute));
+        }
+
+        public static IEnumerable<Type> GetLoadableTypes(this Assembly assembly)
+        {
+            if (assembly == null)
+            {
+                throw new ArgumentNullException(nameof(assembly));
+            }
+
+            try
+            {
+                return assembly.GetTypes();
+            }
+            catch (ReflectionTypeLoadException ex)
+            {
+                return ex.Types.Where(t => t != null);
+            }
+        }
+         
+        public static string GetResourceAsString(this Assembly assembly, string resource, Encoding encoding = null)
+        {
+            encoding = encoding ?? Encoding.UTF8;
+            using (var ms = new MemoryStream())
+            {
+                using (var manifestResourceStream = assembly.GetManifestResourceStream(resource))
+                {
+                    manifestResourceStream?.CopyTo(ms);
+                }
+                return encoding.GetString(ms.GetBuffer()).Replace('\0', ' ').Trim();
+            }
+        }
+ 
+        public static FileInfo GetAssemblyFile(this Assembly assembly)
+        {
+            return new FileInfo(new Uri(assembly.CodeBase).LocalPath);
+        }
+ 
+        public static FileInfo GetAssemblyFile(this AssemblyName assemblyName)
+        {
+            return new FileInfo(new Uri(assemblyName.CodeBase).LocalPath);
         }
     }
 }

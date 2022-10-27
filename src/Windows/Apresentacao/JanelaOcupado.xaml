@@ -1,9 +1,9 @@
-﻿<zs:BaseJanela x:Class="Zyoncore.Windows.JanelaOcupado"
+﻿<sn:BaseJanela x:Class="Snebur.Windows.JanelaOcupado"
                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-               xmlns:zs="clr-namespace:Zyoncore.Windows"
+               xmlns:sn="clr-namespace:Snebur.Windows"
                mc:Ignorable="d"
                Title="JanelaOcupado" 
                WindowStyle="None"  
@@ -39,8 +39,8 @@
                        VerticalAlignment="Center"
                        Text="{Binding Mensagem, FallbackValue=Processando}"/>
 
-            <zs:ControleLoading Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <sn:ControleLoading Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center"/>
               
         </Grid>
     </Grid>
-</zs:BaseJanela>
+</sn:BaseJanela>
