@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -63,6 +64,15 @@ namespace System
 
         public static Uri Combine(this Uri baseUri, string relativeUrl)
         {
+            if (baseUri == null)
+            {
+                return null;
+            }
+
+            if (String.IsNullOrWhiteSpace(relativeUrl))
+            {
+                return baseUri;
+            }
             return baseUri.Combine(new Uri(relativeUrl, UriKind.RelativeOrAbsolute));
         }
 
@@ -77,6 +87,10 @@ namespace System
             }
 
             var query = HttpUtility.ParseQueryString(baseUri.Query);
+            if (query == null)
+            {
+
+            }
             var queryRelativa = HttpUtility.ParseQueryString(relativeUri.GetQuery());
             query.AddRange(queryRelativa);
 
@@ -147,7 +161,7 @@ namespace System
 
         public static Task<bool> IsSslValidoAsync(this Uri uri)
         {
-            var uriHttps = uri.UriSchemeHttp();
+            var uriHttps = uri.UriSchemeHttps();
             var promise = new TaskCompletionSource<bool>();
 
             Task.Factory.StartNew(() =>
@@ -155,6 +169,7 @@ namespace System
                 try
                 {
                     var request = WebRequest.CreateHttp(uriHttps);
+                    request.Timeout = (int)TimeSpan.FromSeconds(15).TotalMilliseconds;
                     request.ServerCertificateValidationCallback += (object sender,
                                                                     X509Certificate certificate,
                                                                     X509Chain chain,
@@ -162,26 +177,27 @@ namespace System
                     {
                         if (sslPolicyErrors == SslPolicyErrors.None)
                         {
-                            promise.SetResult(true);
+                            promise.TrySetResult(true);
                             return true;
                         }
                         else
                         {
-                            promise.SetResult(false);
+                            promise.TrySetResult(false);
                             return false;
                         }
                     };
                     request.GetResponse();
+                    promise.TrySetResult(true);
                 }
                 catch
                 {
-                    promise.SetResult(false);
+                    promise.TrySetResult(false);
                 }
 
             });
             return promise.Task;
         }
-         
+
         public static bool IsWWW(this Uri uri)
         {
             return uri.Host.ToLower().StartsWith("www");

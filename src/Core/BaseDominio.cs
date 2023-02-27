@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
 namespace Snebur.Dominio
@@ -179,6 +180,10 @@ namespace Snebur.Dominio
         //para server valor null na chave estrangeira de chaveEstrangeira_Id = null
         internal protected virtual void NotificarValorPropriedadeAlteradaRelacao(object antigoValor, object novoValor, [CallerMemberName] string nomePropriedade = "")
         {
+            if (this.IsSerializando)
+            {
+                return;
+            }
             this.NotificarValorPropriedadeAlterada(antigoValor, novoValor, nomePropriedade);
             if (this.__IsControladorPropriedadesAlteradaAtivo && this is Entidade)
             {
@@ -207,6 +212,11 @@ namespace Snebur.Dominio
 
         private void NotificarValorPropriedadeAlteradaChaveEstrangeira(long antigoValorChaveEstrangeira, long novoValorChaveEstrangeira, string nomePropriedade)
         {
+            if (this.IsSerializando)
+            {
+                return;
+            }
+
             if (this.__IsControladorPropriedadesAlteradaAtivo)
             {
                 if (!this.__PropriedadesAlteradas.ContainsKey(nomePropriedade))
@@ -224,9 +234,14 @@ namespace Snebur.Dominio
             this.NotificarPropriedadeAlterada(nomePropriedade);
         }
 
-        
+
         internal protected virtual void NotificarValorPropriedadeAlterada(object antigoValor, object novoValor, [CallerMemberName] string nomePropriedade = "")
         {
+            if (this.IsSerializando)
+            {
+                return;
+            }
+
             if (this.__IsControladorPropriedadesAlteradaAtivo)
             {
                 if (this.__PropriedadesAlteradas.TryGetValue(nomePropriedade, out PropriedadeAlterada propriedadeAlterada))
@@ -259,6 +274,10 @@ namespace Snebur.Dominio
 
         internal protected virtual void NotificarValorPropriedadeAlteradaTipoCompleto(BaseTipoComplexo antigoValor, BaseTipoComplexo novoValor, [CallerMemberName] string nomePropriedade = "")
         {
+            if (this.IsSerializando)
+            {
+                return;
+            }
             this.NotificarValorPropriedadeAlterada(antigoValor, novoValor, nomePropriedade);
         }
 
@@ -361,7 +380,33 @@ namespace Snebur.Dominio
         }
 
         #endregion
-    }
 
-  
+        #region Serialização
+
+        [OnSerializing]
+        internal void OnSerializingMethod(StreamingContext context)
+        {
+            this.IsSerializando = true;
+        }
+
+        [OnSerialized]
+        internal void OnSerializedMethod(StreamingContext context)
+        {
+            this.IsSerializando = false;
+        }
+
+        [OnDeserializing]
+        internal void OnDeserializingMethod(StreamingContext context)
+        {
+            this.IsSerializando = true;
+        }
+
+        [OnDeserialized]
+        internal void OnDeserializedMethod(StreamingContext context)
+        {
+            this.IsSerializando = false;
+        }
+
+        #endregion
+    }
 }

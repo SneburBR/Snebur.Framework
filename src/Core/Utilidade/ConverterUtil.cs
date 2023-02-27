@@ -160,6 +160,21 @@ namespace Snebur.Utilidade
             }
         }
 
+        public static object Para(object valor, Type tipo)
+        {
+            if (valor == null || DBNull.Value == valor)
+            {
+                return default;
+            }
+
+            var tipoPrimario = ReflexaoUtil.RetornarTipoPrimarioEnum(tipo);
+            if (tipoPrimario == EnumTipoPrimario.Desconhecido)
+            {
+                return Convert.ChangeType(valor, tipo);
+            }
+            return ConverterTipoPrimario(valor, tipoPrimario);
+        }
+
         public static T Para<T>(object valor)
         {
             if (valor == null || DBNull.Value == valor)

@@ -119,7 +119,7 @@ namespace Snebur.Utilidade
             {
                 if (valorPropriedade is string str)
                 {
-                    return !String.IsNullOrWhiteSpace (str);
+                    return !String.IsNullOrWhiteSpace(str);
                 }
                 return true;
             }
@@ -243,5 +243,7 @@ namespace Snebur.Utilidade
                     progresso >= 0 &&
                     progresso <= 100;
         }
+
+    
     }
 }

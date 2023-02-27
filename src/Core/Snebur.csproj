@@ -587,6 +587,7 @@
     <Compile Include="Utilidade\MedidaUtil.cs" />
     <Compile Include="Utilidade\FormatacaoNomeUtil.cs" />
     <Compile Include="Utilidade\NormalizacaoUtil.cs" />
+    <Compile Include="Utilidade\NumeroUtil.cs" />
     <Compile Include="Utilidade\RedeUtil.cs" />
     <Compile Include="Utilidade\ReflexaoUtil.cs" />
     <Compile Include="Utilidade\ReflexaoUtil.Propriedade.cs" />
@@ -631,7 +632,6 @@
   <ItemGroup>
     <Content Include="Bibliotecas\Crc32.NET.dll" />
     <Content Include="Bibliotecas\DotNetZip.dll" />
-    <Content Include="Bibliotecas\Newtonsoft.Json.Alterado.dll" />
     <Content Include="Bibliotecas\SevenZipSharp.dll" />
   </ItemGroup>
   <ItemGroup>

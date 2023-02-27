@@ -350,13 +350,23 @@ namespace Snebur.Utilidade
         public static bool IsTipoNumerico(Type tipo)
         {
             tipo = ReflexaoUtil.RetornarTipoSemNullable(tipo);
-            return tipo == typeof(Int32) ||
-                   tipo == typeof(Int64) ||
-                   tipo == typeof(Decimal) ||
-                   tipo == typeof(Double) ||
-                   tipo == typeof(Single) ||
-                   tipo == typeof(Int16) ||
-                   tipo == typeof(Byte);
+            switch (Type.GetTypeCode(tipo))
+            {
+                case TypeCode.Byte:
+                case TypeCode.SByte:
+                case TypeCode.UInt16:
+                case TypeCode.UInt32:
+                case TypeCode.UInt64:
+                case TypeCode.Int16:
+                case TypeCode.Int32:
+                case TypeCode.Int64:
+                case TypeCode.Decimal:
+                case TypeCode.Double:
+                case TypeCode.Single:
+                    return true;
+                default:
+                    return false;
+            }
         }
     }
 }

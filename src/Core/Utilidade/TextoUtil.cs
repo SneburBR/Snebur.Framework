@@ -15,7 +15,6 @@ namespace Snebur.Utilidade
         public static HashSet<char> LetrasNumeros => TextoUtilConstantes.LetrasNumeros;
         public static HashSet<char> CaracteresPadrao => TextoUtilConstantes.CaracteresPadrao;
         public static HashSet<char> LinhasTabulacoes => TextoUtilConstantes.LinhasTabulacoes;
-
         public static HashSet<char> PontosSinais => TextoUtilConstantes.PontosSinais;
 
         public static string RemoverAcentos(string texto)
@@ -591,7 +590,6 @@ namespace Snebur.Utilidade
                 memoryStream.Write(gZipBuffer, 4, gZipBuffer.Length - 4);
 
                 var buffer = new byte[dataLength];
-
                 memoryStream.Position = 0;
                 using (var gZipStream = new GZipStream(memoryStream, CompressionMode.Decompress))
                 {
@@ -599,6 +597,11 @@ namespace Snebur.Utilidade
                 }
                 return Encoding.UTF8.GetString(buffer);
             }
+        }
+
+        public static string Concatar(string separador, params string[] partes)
+        {
+            return String.Join(separador, partes.Where(x=> !String.IsNullOrWhiteSpace(x)));
         }
         #region  CACHE FILTROS 
 
@@ -626,9 +629,9 @@ namespace Snebur.Utilidade
             return CacheFiltros[chave];
         }
 
-        public static string RetornarTextoCaracteresPermitido(string texto, 
-                                                              HashSet<char> caracterPermitidos, 
-                                                              bool isPermitirEspacoBranco, 
+        public static string RetornarTextoCaracteresPermitido(string texto,
+                                                              HashSet<char> caracterPermitidos,
+                                                              bool isPermitirEspacoBranco,
                                                               char? substituirPor = null)
         {
             if (String.IsNullOrEmpty(texto))

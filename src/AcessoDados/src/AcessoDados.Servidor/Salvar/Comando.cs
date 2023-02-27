@@ -51,6 +51,14 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                 }
                 return idRelacaoChaveEstrangeira;
             }
+            var valorProprieade = this.RetornarValorCampoPrimario(estruturaCampo);
+            if (valorProprieade is Double valorTipado)
+            {
+                if (Double.IsNaN(valorTipado))
+                {
+                    return 0d;
+                }
+            }
             return this.RetornarValorCampoPrimario(estruturaCampo);
         }
 

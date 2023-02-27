@@ -8,7 +8,7 @@ namespace Snebur.Seguranca
 {
     public partial class Token
     {
-        public const int TEMPO_EXPIRAR_TOKEN_PADRAO = 3 * 60;
+        public const int TEMPO_EXPIRAR_TOKEN_PADRAO = 10 * 60;
 
         public static ResultadoToken ValidarToken(string token, TimeSpan expirar)
         {

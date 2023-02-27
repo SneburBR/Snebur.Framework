@@ -36,14 +36,7 @@ namespace Snebur.Utilidade
         public static string AjustarBarraInicial(string endereco)
         {
             endereco = UriUtil.InverterBarras(endereco);
-            if (!endereco.StartsWith("/"))
-            {
-                return "/" + endereco;
-            }
-            else
-            {
-                return endereco;
-            }
+            return "/" + RemoverBarraInicial(endereco);
         }
 
         public static string RetornarURL(string urlVisualizar, Dictionary<string, string> parametros)
@@ -64,20 +57,14 @@ namespace Snebur.Utilidade
         public static string AjustarBarraFinal(string endereco)
         {
             endereco = UriUtil.InverterBarras(endereco);
-            if (!endereco.EndsWith("/"))
-            {
-                return endereco + "/";
-            }
-            else
-            {
-                return endereco;
-            }
+            return RemoverBarraFinal(endereco) + "/";
         }
 
         public static string RemoverBarrasFinalInicial(string endereco)
         {
             return UriUtil.RemoverBarraInicial(RemoverBarraFinal(endereco));
         }
+
         public static string RemoverBarraInicial(string endereco)
         {
             endereco = UriUtil.InverterBarras(endereco);
@@ -143,11 +130,27 @@ namespace Snebur.Utilidade
 
         public static string ConstruirQuery(NameValueCollection parametros)
         {
-            return ConstruirQuery(parametros.ToDictionary());
+            if (parametros == null || parametros.Count == 0)
+            {
+                return String.Empty;
+            }
+
+            foreach (var chaveNull in parametros.AllKeys.Where(x => x == null))
+            {
+                parametros.Remove(chaveNull);
+            }
+
+            var d = parametros.ToDictionary();
+            return ConstruirQuery(d);
         }
+
         public static string ConstruirQuery(IDictionary<string, string> di)
         {
-            return String.Join("&", di.Select(x => String.Format("{0}={1}", x.Key, Uri.EscapeUriString(x.Value))));
+            string retornarValor(string valor)
+            {
+                return (valor != null) ? Uri.EscapeUriString(valor) : String.Empty;
+            }
+            return String.Join("&", di.Select(x => $"{x.Key}={retornarValor(x.Value)}"));
         }
 
         public static string RetornarValorQuery(string query, string chave)

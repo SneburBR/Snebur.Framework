@@ -12,18 +12,13 @@ namespace Snebur.AcessoDados
     internal partial class GerenciadorMigracao : IDisposable
     {
         private BaseContextoDados Contexto { get; set; }
-
         private BaseConexao Conexao { get; set; }
-
         private List<SqlMigracao> SqlsMigration { get; set; }
 
         private const string NOME_CAMPO_MIGRACAO_SNEBUR = "MigracaoSnebur";
-
-
         private const string SQL_CRIAR_CAMPO_MIGRACAO_SNEBUR = "IF NOT EXISTS (select * from sys.columns where object_id = OBJECT_ID(N'[dbo].[__MigrationHistory]')  and [name] ='" + NOME_CAMPO_MIGRACAO_SNEBUR + "') ALTER TABLE [dbo].[__MigrationHistory] ADD [" + NOME_CAMPO_MIGRACAO_SNEBUR + "] [bit] NOT NULL DEFAULT 0 ";
         private const string SQL_EXISTE_MIGRACAO_SNEBUR_PENDENTE = "select top 1 " + NOME_CAMPO_MIGRACAO_SNEBUR + " from [dbo].[__MigrationHistory] order by MigrationId desc";
         private const string SQL_MIGRACAO_SNEBUR_FINALIZADA = " UPDATE [dbo].[__MigrationHistory] SET " + NOME_CAMPO_MIGRACAO_SNEBUR + " = 1 WHERE MigracaoSnebur = 0 ";
-
 
         private GerenciadorMigracao(BaseContextoDados contexto)
         {
@@ -97,19 +92,15 @@ namespace Snebur.AcessoDados
             }
         }
 
-
-
-
         private bool ExisteMigracao(DbConnection conexao, SqlMigracao sqlMigration)
         {
-            if ((sqlMigration is SqlValorPadraoDataHoraServidor) && 
+            if ((sqlMigration is SqlValorPadraoDataHoraServidor) &&
                 ((ConfiguracaoAcessoDados.TipoBancoDadosEnum == EnumTipoBancoDados.PostgreSQL)))
             {
                 var sqlExiste = (sqlMigration as SqlValorPadraoDataHoraServidor).RetornrSqlExisteGatilho();
                 using (var cmd = this.Conexao.RetornarNovoComando(sqlExiste, null, conexao))
                 {
-                    var existe = (bool)ConverterUtil.Converter(cmd.ExecuteScalar(), typeof(bool));
-                    return existe;
+                    return ConverterUtil.Converter<bool>(cmd.ExecuteScalar());
                 }
             }
             return false;
@@ -216,11 +207,13 @@ namespace Snebur.AcessoDados
             var propriedades = ReflexaoUtil.RetornarPropriedades(tipoEntidade, true);
             return propriedades.Where(x => ReflexaoUtil.PropriedadePossuiAtributo(x, typeof(TAtributo))).ToList();
         }
+
         #region IDisposable
 
         public void Dispose()
         {
         }
+
         #endregion
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using Snebur.Imagem;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -262,6 +263,16 @@ namespace Snebur.Utilidade
             var retorno = new Dictionary<string, string>();
             foreach (var chave in origem.AllKeys.Distinct())
             {
+                if(chave == null)
+                {
+                    throw new Exception("A chave não pode ser null");
+                }
+
+                if (retorno.ContainsKey(chave))
+                {
+                    throw new Exception("A chave já existe no dicionário");
+                }
+
                 var valores = origem.GetValues(chave);
                 var valor = String.Join(", ", valores);
                 retorno.Add(chave, valor);
