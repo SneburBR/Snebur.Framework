@@ -202,6 +202,11 @@ namespace Snebur.Utilidade
             return StreamUtil.RetornarMemoryStream(typeof(ImagemUtil).Assembly.GetManifestResourceStream("Snebur.Imagem.Recursos.Imagens.sem_imagem.jpg"));
         }
 
+        public static MemoryStream RetornarStreamSemImagemPng()
+        {
+            return StreamUtil.RetornarMemoryStream(typeof(ImagemUtil).Assembly.GetManifestResourceStream("Snebur.Imagem.Recursos.Imagens.sem_imagem.png"));
+        }
+
         #endregion
 
         #region Retornar BitmapImage 
@@ -303,7 +308,10 @@ namespace Snebur.Utilidade
             return null;
         }
 
-        public static MemoryStream RetornarStreamResizeImageVisualizacao(Stream stream, double alturaMaxima, bool usarImagemBitmap = true, bool permitirJpeg = false)
+        public static MemoryStream RetornarStreamResizeImageVisualizacao(Stream stream, 
+                                                                         double alturaMaxima, 
+                                                                         bool usarImagemBitmap = true, 
+                                                                         bool permitirJpeg = false)
         {
             try
             {

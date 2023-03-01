@@ -63,11 +63,14 @@ namespace Snebur.ServicoArquivo
         {
             return !String.IsNullOrWhiteSpace(this.IdentificadorUsuario) &&
                    !String.IsNullOrWhiteSpace(this.Senha) &&
-                   !String.IsNullOrWhiteSpace(this.CheckSumArquivo) &&
                    !String.IsNullOrWhiteSpace(this.AssemblyQualifiedName) &&
-                   GuidUtil.GuidValido(this.IdentificadorSessaoUsuario) &&
+                    GuidUtil.GuidValido(this.IdentificadorSessaoUsuario) &&
                    (!this.EnviarArquivo ||
-                   (this.EnviarArquivo && this.IdArquivo > 0 && this.ParteAtual > 0 && this.TamanhoPacote > 0 && this.TotalPartes > 0));
+                   (this.EnviarArquivo && this.IdArquivo > 0 && 
+                                          this.ParteAtual > 0 && 
+                                          this.TamanhoPacote > 0 && 
+                                          this.TotalPartes > 0 &&
+                                          !String.IsNullOrWhiteSpace(this.CheckSumArquivo)));
         }
     }
 }

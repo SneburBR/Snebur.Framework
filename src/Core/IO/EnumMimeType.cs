@@ -43,6 +43,8 @@ namespace Snebur.Dominio
         Doc = 1700,
         [Rotulo("MS Embedded OpenType fonts")]
         Eot = 1800,
+        [Rotulo("Eps")]
+        Eps = 1850,
         [Rotulo("Publicação eletrônica (EPUB)")]
         Epub = 1900,
         [Rotulo("Graphics Interchange Format (GIF)")]
@@ -99,6 +101,8 @@ namespace Snebur.Dominio
         Ppt = 4400,
         [Rotulo("Adobe Photoshop")]
         Ps = 4500,
+        [Rotulo("Adobe Photoshop")]
+        Psb = 4550,
         [Rotulo("Adobe Photoshop")]
         Psd = 4600,
         [Rotulo("RAR archive")]

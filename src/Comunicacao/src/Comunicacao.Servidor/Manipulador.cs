@@ -125,6 +125,21 @@ namespace Snebur.Comunicacao
                 return false;
             }
 
+            if (this.ArquivosAutorizados.ContainsKey(caminho))
+            {
+                var isIgnorarValidacaoTokenAplicacao = this.ArquivosAutorizados[caminho];
+                if (!isIgnorarValidacaoTokenAplicacao)
+                {
+                    if (!this.IsRequicaoValida(request, false))
+                    {
+                        response.StatusCode = 404;
+                        aplicacao.CompleteRequest();
+                        return false;
+                    }
+                }
+                return false;
+            }
+
             var caminhoManipulador = Path.GetFileNameWithoutExtension(caminho);
             if (this.ManipuladoresGenericos.ContainsKey(caminhoManipulador))
             {
@@ -143,20 +158,7 @@ namespace Snebur.Comunicacao
                 return false;
             }
 
-            if (this.ArquivosAutorizados.ContainsKey(caminho))
-            {
-                var isIgnorarValidacaoTokenAplicacao = this.ArquivosAutorizados[caminho];
-                if (!isIgnorarValidacaoTokenAplicacao)
-                {
-                    if (!this.IsRequicaoValida(request, false))
-                    {
-                        response.StatusCode = 404;
-                        aplicacao.CompleteRequest();
-                        return false;
-                    }
-                }
-                return false;
-            }
+            
             return true;
 
         }

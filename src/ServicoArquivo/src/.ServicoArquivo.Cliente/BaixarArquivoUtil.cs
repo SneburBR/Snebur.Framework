@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Web;
 
 namespace Snebur.ServicoArquivo.Cliente
 {
@@ -95,8 +96,8 @@ namespace Snebur.ServicoArquivo.Cliente
         {
             var nomeAssembly = AplicacaoSnebur.Atual.NomeAplicacao;
             var parametros = new Dictionary<string, string>();
+            var token = Token.RetornarToken();
 
-            
 
             parametros.Add(ConstantesServicoArquivo.ID_ARQUIVO, idArquivo.ToString());
             parametros.Add(ConstantesServicoArquivo.ASEMMBLY_QUALIFIED_NAME, nomeTipoQualificado);
@@ -107,13 +108,16 @@ namespace Snebur.ServicoArquivo.Cliente
             parametros.Add(ConstantesCabecalho.IDENTIFICADOR_SESSAO_USUARIO, identificadorSessao.ToString());
             parametros.Add(ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO, identificadorProprietario);
 
-            var urlEnviarImagem = ServicoArquivoClienteUtil.RetornarEnderecoBaixarArquivo(urlServico);
-            var requisicao = (HttpWebRequest)WebRequest.Create(urlEnviarImagem);
+            var urlBaixaArquivo = ServicoArquivoClienteUtil.RetornarEnderecoBaixarArquivo(urlServico);
+            var requisicao = (HttpWebRequest)WebRequest.Create(urlBaixaArquivo);
 
             foreach (var item in parametros)
             {
                 requisicao.Headers.Add(item.Key, Base64Util.Encode(item.Value));
             }
+
+            requisicao.Headers.Add(ConstantesCabecalho.TOKEN, HttpUtility.UrlEncode(token));
+
             requisicao.Timeout = (int)timeout.TotalMilliseconds;
             requisicao.Proxy = null;
             requisicao.ContentType = "application/octet-stream";

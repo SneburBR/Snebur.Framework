@@ -238,6 +238,7 @@
     <EmbeddedResource Include="Recursos\Icones\xml\xml.png" />
     <Content Include="Recursos\Icones\zip\zip.ico" />
     <EmbeddedResource Include="Recursos\Icones\zip\zip.png" />
+    <EmbeddedResource Include="Recursos\Imagens\sem_imagem.png" />
     <Content Include="Recursos\Perfil\Adobe\Link.txt" />
     <Content Include="sem_imagem.jpg" />
     <EmbeddedResource Include="Recursos\Imagens\sem_imagem.jpg" />
