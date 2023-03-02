@@ -27,7 +27,8 @@ namespace Snebur.ServicoArquivo.Comunicacao
         {
             using (var contexto = this.RetornarContextoDados())
             {
-                var arquivo = contexto.RetornarConsulta<IArquivo>(contexto.TipoEntidadeArquivo).Where(x => x.Id == idArquivo).SingleOrDefault();
+                var arquivo = contexto.RetornarConsulta<IArquivo>(contexto.TipoEntidadeArquivo).
+                                       Where(x => x.Id == idArquivo).SingleOrDefault();
                 return arquivo != null;
             }
         }

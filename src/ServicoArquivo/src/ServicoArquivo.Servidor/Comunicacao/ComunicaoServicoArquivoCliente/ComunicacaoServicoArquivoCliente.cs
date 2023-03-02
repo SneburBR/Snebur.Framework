@@ -1,6 +1,7 @@
 ﻿using Snebur.Comunicacao;
 using Snebur.Dominio;
 using Snebur.Seguranca;
+using Snebur.Utilidade;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -16,8 +17,7 @@ namespace Snebur.ServicoArquivo
 
     public class ComunicacaoServicoArquivoCliente : BaseComunicacaoCliente, IComunicacaoServicoArquivo
     {
-
-        private Guid IdentificadorSessaoUsuario { get; set; }
+       private Guid IdentificadorSessaoUsuario { get; set; }
         private string IdentficadorProprietario { get; set; }
         public FuncaoNormalizadorOrigem FuncaoNormalizadorOrigem { get; }
 
@@ -109,12 +109,16 @@ namespace Snebur.ServicoArquivo
 
         protected override InformacaoSessaoUsuario RetornarInformacaoSessoUsuarioRequisicaoAtual()
         {
-            var informacao = new InformacaoSessaoUsuario
-            {
-                IdentificadorSessaoUsuario = this.IdentificadorSessaoUsuario,
-            };
-            //informacao.IPInformacao = SessaoUtil.RetornarIpInformacao();
-            return informacao;
+            return SessaoUtil.RetornarInformacaoSessaoUsuarioAplicacao();
+            return SessaoUtil.RetornarInformacaoSessaoUsuarioAplicacao();
+            
+            
+            //var informacao = new InformacaoSessaoUsuario
+            //{
+            //    IdentificadorSessaoUsuario = this.IdentificadorSessaoUsuario,
+            //};
+            ////informacao.IPInformacao = SessaoUtil.RetornarIpInformacao();
+            //return informacao;
         }
         protected override string IdentificadorProprietarioRequisicaoAtual()
         {

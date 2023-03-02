@@ -101,7 +101,7 @@ namespace Snebur.Comunicacao
                             throw new Exception(mensagemSeguranca);
                         }
 
-                        response.StatusCode = (int)HttpStatusCode.NotFound;
+                        response.StatusCode = (int)HttpStatusCode.BadRequest;
                         response.SubStatusCode = Convert.ToInt32(EnumTipoLogSeguranca.CredencialServicoNaoAutorizada);
 
                         LogUtil.SegurancaAsync(mensagemSeguranca, EnumTipoLogSeguranca.CredencialServicoNaoAutorizada);
@@ -110,7 +110,7 @@ namespace Snebur.Comunicacao
             }
             catch (ErroDeserializarContrato)
             {
-                response.StatusCode = (int)HttpStatusCode.NotFound;
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
                 response.SubStatusCode = Convert.ToInt32(EnumTipoLogSeguranca.ContratoInvalido);
 
                 var mensagemSeguranca = String.Format("O contrato da chamada é invalido '{0}' '{1}' - '{2}' ", this.GetType().Name, this.CredencialServico.IdentificadorUsuario, this.CredencialServico.Senha);
@@ -118,7 +118,7 @@ namespace Snebur.Comunicacao
             }
             catch (ErroMetodoOperacaoNaoFoiEncontrado erro)
             {
-                response.StatusCode = (int)HttpStatusCode.NotFound;
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
                 response.SubStatusCode = Convert.ToInt32(EnumTipoLogSeguranca.MetodoOperacaoNaoEncontrado);
 
                 var mensagemSeguranca = String.Format("O método '{0}' não foi encontrado no serviço '{1}'", erro.NomeMetodo, this.GetType().Name);

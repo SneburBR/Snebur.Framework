@@ -32,7 +32,10 @@ namespace Snebur.AcessoDados
             }
         }
 
-        public static CacheSessaoUsuario RetornarCacheSessaoUsuario(BaseContextoDados contexto, Credencial credencial, Guid identificadorSessaoUsuario, InformacaoSessaoUsuario informacaoSessaoUsuario)
+        public static CacheSessaoUsuario RetornarCacheSessaoUsuario(BaseContextoDados contexto,
+                                                                    Credencial credencial, 
+                                                                    Guid identificadorSessaoUsuario, 
+                                                                    InformacaoSessaoUsuario informacaoSessaoUsuario)
         {
             return CacheSessaoUsuario.RetornarCacheSessaoUsuarioInterno(contexto, credencial, identificadorSessaoUsuario, informacaoSessaoUsuario);
         }
@@ -55,7 +58,10 @@ namespace Snebur.AcessoDados
 
 
 
-        private static CacheSessaoUsuario RetornarCacheSessaoUsuarioInterno(BaseContextoDados contexto, Credencial credencial, Guid identificadorSessaoUsuario, InformacaoSessaoUsuario informacaoSessaoUsuario)
+        private static CacheSessaoUsuario RetornarCacheSessaoUsuarioInterno(BaseContextoDados contexto, 
+                                                                            Credencial credencial, 
+                                                                            Guid identificadorSessaoUsuario, 
+                                                                            InformacaoSessaoUsuario informacaoSessaoUsuario)
         {
             //if (tentativa > 0)
             //{
@@ -87,7 +93,10 @@ namespace Snebur.AcessoDados
             {
                 if (!CacheSessaoUsuario.CachesSessaoUsuario.ContainsKey(identificadorSessaoUsuario))
                 {
-                    var novoCacheSessaoUsuario = new CacheSessaoUsuario(contexto, credencial, identificadorSessaoUsuario, informacaoSessaoUsuario);
+                    var novoCacheSessaoUsuario = new CacheSessaoUsuario(contexto,
+                                                                        credencial, 
+                                                                        identificadorSessaoUsuario, 
+                                                                        informacaoSessaoUsuario);
                     novoCacheSessaoUsuario.Inicializar();
 
 

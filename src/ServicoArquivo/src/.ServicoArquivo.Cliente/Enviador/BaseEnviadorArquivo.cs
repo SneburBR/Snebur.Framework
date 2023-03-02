@@ -64,6 +64,11 @@ namespace Snebur.ServicoArquivo.Cliente
             this.IdentificadorSessaoUsuario = IdentificadorSessaoUsuario;
             this.IdentificadorProprietario = IdentificadorProprietario;
 
+            if(IdentificadorSessaoUsuario == Guid.Empty)
+            {
+                throw new Exception("O identificador da sessão do usuario não foi definido");
+            }
+
             ValidacaoUtil.ValidarReferenciaNulaOuVazia(nameof(this.UrlServicoArquivo), this.UrlServicoArquivo);
         }
 
@@ -156,7 +161,15 @@ namespace Snebur.ServicoArquivo.Cliente
                 
             var requisicao = (HttpWebRequest)WebRequest.Create(urlEnviarImagem);
 
-            
+            ServicePointManager.Expect100Continue = true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 |
+                                                   SecurityProtocolType.Tls12 |
+                                                   SecurityProtocolType.Tls11 |
+                                                   SecurityProtocolType.Tls;
+
+            ServicePointManager.DefaultConnectionLimit = 256;
+
+
             foreach (var item in parametros)
             {
                 requisicao.Headers.Add(item.Key, Base64Util.Encode(item.Value));
@@ -265,8 +278,10 @@ namespace Snebur.ServicoArquivo.Cliente
                     break;
 
                 case EnumTipoErroServicoArquivo.Desconhecido:
-
-                    throw new Erro("Erro desconhecido ao enviar imagem");
+                    
+                    throw new Erro($"Erro desconhecido ao enviar imagem:" +
+                                   $"\r\n{resultado.MensagemErro}" +
+                                   $"\r\n{this.UrlServicoArquivo}");
 
 
                 default:
@@ -297,7 +312,7 @@ namespace Snebur.ServicoArquivo.Cliente
 
                 case EnumTipoErroServicoArquivo.Desconhecido:
 
-                    return new Erro("Erro desconhecido");
+                    return new Erro("Erro desconhecido" + resultado.MensagemErro);
 
                 case EnumTipoErroServicoArquivo.ArquivoNaoEncontrado:
 
@@ -305,7 +320,7 @@ namespace Snebur.ServicoArquivo.Cliente
 
                 default:
 
-                    throw new Erro($"Tipo do erro '{resultado.TipoErroServicoArquivo.ToString()}' servico arquivo não é suportado ");
+                    throw new Erro($"Tipo do erro '{resultado.TipoErroServicoArquivo}' servico arquivo não é suportado ");
 
             }
         }

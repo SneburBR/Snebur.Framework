@@ -49,6 +49,7 @@ namespace Snebur.Comunicacao
         {
             var aplicacao = (HttpApplication)sender;
             this.AntesProcessarRequisicao(aplicacao.Context);
+
             var request = aplicacao.Request;
             var response = aplicacao.Context.Response;
 
@@ -78,7 +79,7 @@ namespace Snebur.Comunicacao
                     }
                     else
                     {
-                        response.StatusCode = (int)HttpStatusCode.NotFound;
+                        response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     }
 
                     if (DebugUtil.IsAttached)
@@ -91,7 +92,7 @@ namespace Snebur.Comunicacao
                 {
                     if (response.StatusCode == 0)
                     {
-                        response.StatusCode = (int)HttpStatusCode.NotFound;
+                        response.StatusCode = (int)HttpStatusCode.Conflict;
                         response.SubStatusCode = -1;
                     }
                     aplicacao.CompleteRequest();
@@ -132,7 +133,7 @@ namespace Snebur.Comunicacao
                 {
                     if (!this.IsRequicaoValida(request, false))
                     {
-                        response.StatusCode = 404;
+                        response.StatusCode = (int)HttpStatusCode.Unauthorized ;
                         aplicacao.CompleteRequest();
                         return false;
                     }
@@ -147,7 +148,7 @@ namespace Snebur.Comunicacao
                 if (isValidarToken && !this.IsRequicaoValida(request, false))
                 {
 
-                    response.StatusCode = 404;
+                    response.StatusCode =  (int)HttpStatusCode.Unauthorized; 
 
                     aplicacao.CompleteRequest();
                     return false;
