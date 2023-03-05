@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Text;
 
@@ -385,38 +386,44 @@ namespace Snebur.Utilidade
         {
             try
             {
-                var isPermiteGravacao = false;
-                var isGravacaoNegada = false;
-
-                var accessControlList = new DirectoryInfo(caminhoDiretorio).GetAccessControl();
-                //Directory.GetAccessControl(caminhoDiretorio);
-
-                if (accessControlList == null)
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
-                    return false;
-                }
-                var accessRules = accessControlList.GetAccessRules(true, true,
+                    var isPermiteGravacao = false;
+                    var isGravacaoNegada = false;
+                    var accessControlList = new DirectoryInfo(caminhoDiretorio).GetAccessControl();
+                    //Directory.GetAccessControl(caminhoDiretorio);
+
+                    if (accessControlList == null)
+                    {
+                        return false;
+                    }
+
+                    var accessRules = accessControlList.GetAccessRules(true, true,
                                                   typeof(System.Security.Principal.SecurityIdentifier));
-                if (accessRules == null)
-                {
-                    return false;
+                    if (accessRules == null)
+                    {
+                        return false;
+                    }
+
+                    foreach (FileSystemAccessRule rule in accessRules)
+                    {
+                        if ((FileSystemRights.Write & rule.FileSystemRights) != FileSystemRights.Write)
+                        {
+                            continue;
+                        }
+                        if (rule.AccessControlType == AccessControlType.Allow)
+                        {
+                            isPermiteGravacao = true;
+                        }
+                        else if (rule.AccessControlType == AccessControlType.Deny)
+                        {
+                            isGravacaoNegada = true;
+                        }
+                    }
+                    return isPermiteGravacao && !isGravacaoNegada;
                 }
-                foreach (FileSystemAccessRule rule in accessRules)
-                {
-                    if ((FileSystemRights.Write & rule.FileSystemRights) != FileSystemRights.Write)
-                    {
-                        continue;
-                    }
-                    if (rule.AccessControlType == AccessControlType.Allow)
-                    {
-                        isPermiteGravacao = true;
-                    }
-                    else if (rule.AccessControlType == AccessControlType.Deny)
-                    {
-                        isGravacaoNegada = true;
-                    }
-                }
-                return isPermiteGravacao && !isGravacaoNegada;
+
+                return DiretorioUtil.TestarPermissaoGravao(caminhoDiretorio);
             }
             catch
             {

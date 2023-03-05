@@ -3,13 +3,14 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Snebur.Net;
 
-namespace Snebur.Net
+namespace Snebur.AspNetCore.Net.HttpContext
 {
-    public class ZyonResponseCore : ZyonResponse
+    public class SnResponseCore : SnResponse
     {
         public HttpResponse Response { get; }
-        public ZyonResponseCore(HttpResponse response)
+        public SnResponseCore(HttpResponse response)
         {
             this.Response = response;
         }

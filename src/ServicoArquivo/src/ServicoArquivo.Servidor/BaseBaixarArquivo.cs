@@ -1,7 +1,7 @@
-﻿using Snebur.Net;
-using Snebur.Utilidade;
+﻿using Snebur.Utilidade;
 using System.IO;
 using System.Text;
+using System.Web;
 
 namespace Snebur.ServicoArquivo
 {
@@ -10,12 +10,12 @@ namespace Snebur.ServicoArquivo
     {
         public override bool IsReponserJson => false;
 
-        protected override void Iniciar(SnHttpContext context, TCabecalhoServicoArquivo cabecalho, MemoryStream inputStream)
+        protected override void Iniciar(HttpContext context, TCabecalhoServicoArquivo cabecalho, MemoryStream inputStream)
         {
             this.BaixarArquivo(context, cabecalho);
         }
 
-        protected virtual void BaixarArquivo(SnHttpContext context, TCabecalhoServicoArquivo cabecalho)
+        protected virtual void BaixarArquivo(HttpContext context, TCabecalhoServicoArquivo cabecalho)
         {
             if (cabecalho.IsCabecalhoValido())
             {

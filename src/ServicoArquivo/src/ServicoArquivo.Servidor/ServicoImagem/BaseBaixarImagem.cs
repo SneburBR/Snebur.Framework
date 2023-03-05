@@ -1,7 +1,7 @@
-﻿using Snebur.Net;
-using System;
+﻿using System;
 using System.IO;
 using System.Text;
+using System.Web;
 
 namespace Snebur.ServicoArquivo
 {
@@ -24,7 +24,7 @@ namespace Snebur.ServicoArquivo
                                                        this.NormalizarOrigem);
         }
 
-        protected override void BaixarArquivo(SnHttpContext httpContext, CabecalhoServicoImagem cabecalho)
+        protected override void BaixarArquivo(HttpContext httpContext, CabecalhoServicoImagem cabecalho)
         {
             if (cabecalho == null)
             {
@@ -79,7 +79,7 @@ namespace Snebur.ServicoArquivo
 
         #region  Métodos sobre-escritos
 
-        protected override CabecalhoServicoImagem RetornarCabecalhoServicoArquivo(SnHttpContext httpContext)
+        protected override CabecalhoServicoImagem RetornarCabecalhoServicoArquivo(HttpContext httpContext)
         {
             return new CabecalhoServicoImagem(httpContext, true);
         }

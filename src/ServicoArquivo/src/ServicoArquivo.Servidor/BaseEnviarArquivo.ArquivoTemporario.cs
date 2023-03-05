@@ -1,7 +1,7 @@
-﻿using Snebur.Net;
-using Snebur.Utilidade;
+﻿using Snebur.Utilidade;
 using System;
 using System.IO;
+using System.Web;
 
 namespace Snebur.ServicoArquivo
 {
@@ -9,8 +9,7 @@ namespace Snebur.ServicoArquivo
     public abstract partial class BaseEnviarArquivo<TCabecalhoServicoArquivo, TInformacaoReposotiroArquivo> : BaseServicoArquivo<TCabecalhoServicoArquivo, TInformacaoReposotiroArquivo> where TCabecalhoServicoArquivo : CabecalhoServicoArquivo, TInformacaoReposotiroArquivo
                                                                                                                                                                                          where TInformacaoReposotiroArquivo : IInformacaoRepositorioArquivo
     {
-
-        private void SalvarArquivoTempoariario(SnHttpContext httpContext, long idArquivo, TCabecalhoServicoArquivo cabecalho, MemoryStream inputStream)
+        private void SalvarArquivoTempoariario(HttpContext httpContext, long idArquivo, TCabecalhoServicoArquivo cabecalho, MemoryStream inputStream)
         {
             if (!(cabecalho.ParteAtual > 0))
             {

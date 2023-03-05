@@ -1,5 +1,4 @@
 ﻿using Snebur.Dominio;
-using Snebur.Net;
 using Snebur.ServicoArquivo.Servidor;
 using Snebur.Utilidade;
 using System;
@@ -54,15 +53,6 @@ namespace Snebur.ServicoArquivo
 #else
         public void ProcessRequest(HttpContext context)
         {
-            using (var zyonHttpContext = new SnHttpContext(context))
-            {
-                this.ProcessRequest(zyonHttpContext);
-            }
-        }
-#endif
-
-        public void ProcessRequest(SnHttpContext context)
-        {
             (AplicacaoSnebur.Atual as BaseAplicacaoServicoArquivo).AcessarRede();
 
             var caminhoImagem = this.RetornarCaminhoImagem(context);
@@ -81,8 +71,9 @@ namespace Snebur.ServicoArquivo
                 response.StatusCode = 405;
             }
         }
-
-        public virtual string RetornarCaminhoImagem(SnHttpContext zyonHttpContext)
+#endif
+         
+        public virtual string RetornarCaminhoImagem(HttpContext zyonHttpContext)
         {
             var tamanhoImagem = this.RetornarTamanhoImagem(zyonHttpContext);
             var idImagem = this.RetornarIdImagem(zyonHttpContext);
@@ -116,7 +107,7 @@ namespace Snebur.ServicoArquivo
 
         #region Métodos privados
 
-        protected long RetornarIdImagem(SnHttpContext zyonHttpContext)
+        protected long RetornarIdImagem(HttpContext zyonHttpContext)
         {
             var idImagem = Convert.ToInt64(this.RetornarValorParametro(ConstantesServicoImagem.ID_IMAGEM, zyonHttpContext));
             if (!(idImagem > 0))
@@ -126,7 +117,7 @@ namespace Snebur.ServicoArquivo
             return idImagem;
         }
 
-        protected string RetornarNomeTipoImagem(SnHttpContext zyonHttpContext)
+        protected string RetornarNomeTipoImagem(HttpContext zyonHttpContext)
         {
             var nomeTipoArquivo = this.RetornarValorParametro(ConstantesServicoArquivo.NOME_TIPO_ARQUIVO, zyonHttpContext);
             if (String.IsNullOrWhiteSpace(nomeTipoArquivo))
@@ -137,7 +128,7 @@ namespace Snebur.ServicoArquivo
         }
 
 
-        protected virtual EnumTamanhoImagem RetornarTamanhoImagem(SnHttpContext zyonHttpContext)
+        protected virtual EnumTamanhoImagem RetornarTamanhoImagem(HttpContext zyonHttpContext)
         {
             var tamanhoImagem = (EnumTamanhoImagem)Convert.ToInt32(this.RetornarValorParametro(ConstantesServicoImagem.TAMANHO_IMAGEM, zyonHttpContext));
             if (!Enum.IsDefined(typeof(EnumTamanhoImagem), tamanhoImagem))
@@ -147,7 +138,7 @@ namespace Snebur.ServicoArquivo
             return tamanhoImagem;
         }
 
-        protected string RetornarValorParametro(string parametro, SnHttpContext zyonHttpContext)
+        protected string RetornarValorParametro(string parametro, HttpContext zyonHttpContext)
         {
             var parametroBase64 = Base64Util.Encode(parametro);
             var valorParametro = zyonHttpContext.Request.QueryString[parametroBase64];

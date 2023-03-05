@@ -102,12 +102,12 @@ namespace System.Reflection
  
         public static FileInfo GetAssemblyFile(this Assembly assembly)
         {
-            return new FileInfo(new Uri(assembly.CodeBase).LocalPath);
+            return new FileInfo(new Uri(assembly.Location).LocalPath);
         }
  
-        public static FileInfo GetAssemblyFile(this AssemblyName assemblyName)
-        {
-            return new FileInfo(new Uri(assemblyName.CodeBase).LocalPath);
-        }
+        //public static FileInfo GetAssemblyFile(this AssemblyName assemblyName)
+        //{
+        //    return assemblyName.
+        //}
     }
 }

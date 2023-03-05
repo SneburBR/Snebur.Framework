@@ -238,13 +238,7 @@ namespace Snebur.AcessoDados
 
             private IIPInformacao RetornarIpInformacao(int tentativa = 0)
             {
-                var ip = IpUtil.RetornarIpDaRequisicao();
-
-                //if (!ValidacaoUtil.IsIp(ip))
-                //{
-                //    throw new Erro($"O {ip} não é valido");
-                //}
-
+                var ip = AplicacaoSnebur.Atual.RetornarIpDaRequisicao();
                 var ipInformacao = this.RetornarIpInformacao(ip);
                 if (ipInformacao != null)
                 {

@@ -2,14 +2,6 @@
 using System.Security.Cryptography;
 using System.Text;
 
-#if NetCore
-using Crc32;
-#else
-using Force.Crc32;
-#endif
-
-
-
 namespace Snebur.Utilidade
 {
     public static class ChecksumUtil
@@ -35,7 +27,7 @@ namespace Snebur.Utilidade
                 stream.Seek(0, SeekOrigin.Begin);
             }
             var bufferStream = new BufferedStream(stream, TAMANHO_BUFFEER);
-            using (var md5 = new MD5CryptoServiceProvider())
+            using (var md5 = MD5.Create())
             {
                 var checksumHash = md5.ComputeHash(bufferStream);
                 return ChecksumUtil.FormatarChecksum(checksumHash);
@@ -48,7 +40,7 @@ namespace Snebur.Utilidade
         /// <returns></returns>
         public static string RetornarChecksum(byte[] bytes)
         {
-            using (var md5 = new MD5CryptoServiceProvider())
+            using (var md5 = MD5.Create())
             {
                 var checksumHash = md5.ComputeHash(bytes);
                 return ChecksumUtil.FormatarChecksum(checksumHash);
@@ -63,7 +55,7 @@ namespace Snebur.Utilidade
         {
             using (var stream = new BufferedStream(File.OpenRead(caminhoArquivo), TAMANHO_BUFFEER))
             {
-                using (var sh256 = new SHA256CryptoServiceProvider())
+                using (var sh256 = SHA256.Create())
                 {
                     var checksumHash = sh256.ComputeHash(stream);
                     return ChecksumUtil.FormatarChecksum(checksumHash);
@@ -73,25 +65,25 @@ namespace Snebur.Utilidade
 
         public static string RetornarChecksumSh256(byte[] bytes)
         {
-            using (var sh256 = new SHA256CryptoServiceProvider())
+            using (var sh256 = SHA256.Create())
             {
                 var checksumHash = sh256.ComputeHash(bytes);
                 return ChecksumUtil.FormatarChecksum(checksumHash);
             }
         }
 
-        public static string RetornarChecksumCrc2(string texto)
-        {
-            return ChecksumUtil.RetornarChecksumCrc2(Encoding.UTF8.GetBytes(texto));
-        }
+        //public static string RetornarChecksumCrc2(string texto)
+        //{
+        //    return ChecksumUtil.RetornarChecksumCrc2(Encoding.UTF8.GetBytes(texto));
+        //}
 
-        public static string RetornarChecksumCrc2(byte[] bytes)
-        {
-            using (var crc32 = new Crc32Algorithm())
-            {
-                return ChecksumUtil.FormatarChecksum(crc32.ComputeHash(bytes));
-            }
-        }
+        //public static string RetornarChecksumCrc2(byte[] bytes)
+        //{
+        //    using (var crc32 = new Crc32Algorithm())
+        //    {
+        //        return ChecksumUtil.FormatarChecksum(crc32.ComputeHash(bytes));
+        //    }
+        //}
 
         private static string FormatarChecksum(byte[] checksumHash)
         {

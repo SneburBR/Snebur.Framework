@@ -1,4 +1,5 @@
-﻿using Snebur.Net;
+﻿
+using System.Web;
 
 namespace Snebur.ServicoArquivo
 {
@@ -7,6 +8,6 @@ namespace Snebur.ServicoArquivo
                                                                                                  where TCabecalhoServicoArquivo : CabecalhoServicoArquivo, TInformacaoRepositorio
                                                                                                  where TInformacaoRepositorio : IInformacaoRepositorioArquivo
     {
-        protected abstract void ExcluirArquivo(SnHttpContext context);
+        protected abstract void ExcluirArquivo(HttpContext context);
     }
 }

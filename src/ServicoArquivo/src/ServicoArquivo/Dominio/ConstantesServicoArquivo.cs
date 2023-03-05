@@ -27,11 +27,11 @@ namespace Snebur.ServicoArquivo
 
         public const string CHECKSUM_PACOTE = "ChecksumPacote";
 
-        //public const string IDENTIFICADOR_SESSAO_USUARIO = ConstantesCabecalho.IDENTIFICADOR_SESSAO_USUARIO;
+        public const string IDENTIFICADOR_SESSAO_USUARIO = ConstantesCabecalho.IDENTIFICADOR_SESSAO_USUARIO;
 
-        //public const string IDENTIFICADOR_USUARIO = ConstantesCabecalho.IDENTIFICADOR_USUARIO;
+        public const string IDENTIFICADOR_USUARIO = ConstantesCabecalho.IDENTIFICADOR_USUARIO;
 
-        //public const string SENHA = ConstantesCabecalho.SENHA;
+        public const string SENHA = ConstantesCabecalho.SENHA;
 
         public const string ID_SESSAO_USUARIO = "IdSessaoUsuario";
 

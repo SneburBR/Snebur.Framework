@@ -65,7 +65,6 @@ namespace Snebur.Comunicacao
 
                 case ResultadoChamadaErro resultadoChamadaErro:
 
-
                     throw new ErroNaoSuportado($"O  erro no resultado da chamada  {resultadoChamada?.GetType().Name ?? "null"} \r\n " +
                                                $" {resultadoChamadaErro.MensagemErro} ");
 
@@ -130,7 +129,7 @@ namespace Snebur.Comunicacao
             }
             else
             {
-                var identificadorProprietario = AplicacaoSnebur.Atual.HttpContext?.Request.Headers[ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO];
+                var identificadorProprietario = AplicacaoSneburAspNet.AtualAspNet?.HttpContext?.Request.Headers[ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO];
                 if (!String.IsNullOrEmpty(identificadorProprietario))
                 {
                     requisicaoHttp.Headers[ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO] = identificadorProprietario;

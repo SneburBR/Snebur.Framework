@@ -1,5 +1,4 @@
 ﻿using Snebur.Dominio;
-using Snebur.Net;
 using Snebur.Utilidade;
 using System;
 using System.IO;
@@ -29,19 +28,6 @@ namespace Snebur.ServicoArquivo
 
 #else
         public virtual void ProcessRequest(HttpContext context)
-        {
-            using (var zyonHttpContext = new SnHttpContext(context))
-            {
-                this.ProcessRequest(zyonHttpContext);
-            }
-        }
-
-#endif
-
-
-
-
-        public virtual void ProcessRequest(SnHttpContext context)
 
         {
             var response = context.Response;
@@ -58,9 +44,9 @@ namespace Snebur.ServicoArquivo
                 response.StatusCode = 500;
             }
         }
+#endif
 
-
-        public string RetornarCaminhoArquivoFonte(SnHttpContext httpContext)
+        public string RetornarCaminhoArquivoFonte(HttpContext httpContext)
         {
             var idArquivoFonte = this.RetornarIdArquivoFonte(httpContext);
             if (idArquivoFonte > 0)
@@ -80,7 +66,7 @@ namespace Snebur.ServicoArquivo
 
         #region Métodos privados
 
-        protected long RetornarIdArquivoFonte(SnHttpContext httpContext)
+        protected long RetornarIdArquivoFonte(HttpContext httpContext)
         {
             var idArquivoFonte = Convert.ToInt64(this.RetornarValorParametro(ConstantesServicoArquivo.ID_ARQUIVO, httpContext));
             if (!(idArquivoFonte > 0))
@@ -90,7 +76,7 @@ namespace Snebur.ServicoArquivo
             return idArquivoFonte;
         }
 
-        private string RetornarMineTypeFonte(SnHttpContext httpContext)
+        private string RetornarMineTypeFonte(HttpContext httpContext)
         {
             var formatoFonte = (EnumFormatoArquivoFonte)Convert.ToInt32(this.RetornarValorParametro(ConstantesServicoFonte.NOME_FORMATO_FONTE, httpContext));
             if (!Enum.IsDefined(typeof(EnumFormatoArquivoFonte), formatoFonte))
@@ -127,7 +113,7 @@ namespace Snebur.ServicoArquivo
 
         }
 
-        private string RetornarValorParametro(string parametro, SnHttpContext zyonHttpContext)
+        private string RetornarValorParametro(string parametro, HttpContext zyonHttpContext)
         {
             var parametroBase64 = Base64Util.Encode(parametro);
             return Base64Util.Decode(zyonHttpContext.Request.QueryString[parametroBase64]);

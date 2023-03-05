@@ -1,20 +1,17 @@
-﻿using Newtonsoft.Json.Linq;
-using Snebur.Imagem;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+
 using System.Text;
 
-#if NET50 == false
-using System.Web;
-#endif 
+ 
 
 namespace Snebur.Utilidade
 {
+
     public static class HttpUtil
     {
         public const int TIMEOUT_PADRAO = 15;
@@ -22,45 +19,7 @@ namespace Snebur.Utilidade
 
 #if NetCore == false
 
-        private const string ACCESS_CONTROL_REQUEST_METHOD = "Access-Control-Request-Method";
-        private const string ACCESS_CONTROL_REQUEST_HEADERS = "Access-Control-Request-Headers";
-        private const string ORIGIN = "Origin";
-
-        private const string ACCESS_CONTROL_ALLOW_ORIGIN = "Access-Control-Allow-Origin";
-        private const string ACCESS_CONTROL_ALLOW_METHODS = "Access-Control-Allow-Methods";
-        private const string ACCESS_CONTROL_ALLOW_HEADERS = "Access-Control-Allow-Headers";
-
-        public static bool VerificarContratoCrossDomain(HttpContext context)
-        {
-            var requisicao = context.Request;
-            var resposta = context.Response;
-
-            var origens = requisicao.Headers.GetValues(ORIGIN);
-            if (origens != null && origens.Length > 0)
-            {
-                resposta.Headers.Add(ACCESS_CONTROL_ALLOW_ORIGIN, String.Join(", ", origens));
-            }
-            else
-            {
-                resposta.Headers.Add(ACCESS_CONTROL_ALLOW_ORIGIN, "*");
-            }
-            var metodosRequisicao = requisicao.Headers.GetValues(ACCESS_CONTROL_REQUEST_METHOD);
-            var cabecalhosRequisicao = requisicao.Headers.GetValues(ACCESS_CONTROL_REQUEST_HEADERS);
-
-            if (metodosRequisicao == null && cabecalhosRequisicao == null)
-            {
-                return false;
-            }
-            if (metodosRequisicao != null)
-            {
-                resposta.Headers.Add(ACCESS_CONTROL_ALLOW_METHODS, String.Join(", ", metodosRequisicao));
-            }
-            if (cabecalhosRequisicao != null)
-            {
-                resposta.Headers.Add(ACCESS_CONTROL_ALLOW_HEADERS, String.Join(", ", cabecalhosRequisicao));
-            }
-            return true;
-        }
+     
 #endif
 
         public static string RetornarString(string url)
@@ -99,9 +58,9 @@ namespace Snebur.Utilidade
         }
 
 
-        public static Tuple<string, WebHeaderCollection> RetornarStringCabecalhoResposta(string url, 
-                                                                                         Dictionary<string, string> cabecalho, 
-                                                                                         TimeSpan timeout, 
+        public static Tuple<string, WebHeaderCollection> RetornarStringCabecalhoResposta(string url,
+                                                                                         Dictionary<string, string> cabecalho,
+                                                                                         TimeSpan timeout,
                                                                                          bool ignorarErro)
         {
             return RetornarStringCabecalhoResposta(new Uri(url), cabecalho, timeout, ignorarErro);
@@ -196,7 +155,7 @@ namespace Snebur.Utilidade
             return RetornarMemoryStream(url, null, TimeSpan.FromSeconds(30), false);
         }
 
-        public static MemoryStream RetornarMemoryStream(string url, 
+        public static MemoryStream RetornarMemoryStream(string url,
                                                        Dictionary<string, string> cabecalho, TimeSpan timeout, bool ignorarErro)
         {
             return RetornarMemoryStream(new Uri(url), cabecalho, timeout, ignorarErro);
@@ -263,7 +222,7 @@ namespace Snebur.Utilidade
             var retorno = new Dictionary<string, string>();
             foreach (var chave in origem.AllKeys.Distinct())
             {
-                if(chave == null)
+                if (chave == null)
                 {
                     throw new Exception("A chave não pode ser null");
                 }

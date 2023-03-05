@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup Label="Globals">
+		<SccProjectName>SAK</SccProjectName>
+		<SccProvider>SAK</SccProvider>
+		<SccAuxPath>SAK</SccAuxPath>
+		<SccLocalPath>SAK</SccLocalPath>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<RootNamespace>Snebur.Seguranca</RootNamespace>
+		<Version>2.0.0</Version>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<Nullable>disable</Nullable>
+		<AssemblyName>Snebur.Seguranca</AssemblyName>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DefineConstants>NetCore; DEBUG;TRACE</DefineConstants>
+		<WarningLevel>4</WarningLevel>
+		<NoWarn>1701;1702</NoWarn>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DefineConstants>NetCore; DEBUG;TRACE</DefineConstants>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Remove="Properties\**" />
+		<EmbeddedResource Remove="Properties\**" />
+		<None Remove="Properties\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Remove="Snebur.Seguranca.csproj.vspscc" />
+		<None Remove="Snebur.Seguranca.Net40.csproj.vspscc" />
+		<None Remove="Snebur.Seguranca.Net50.csproj.vspscc" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Include="Properties\AssemblyInfo.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Core\Snebur.Net.csproj" />
+	</ItemGroup>
+
+
+
+
+</Project>

@@ -1,32 +1,42 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 
-  <PropertyGroup Label="Globals">
-    <SccProjectName>SAK</SccProjectName>
-    <SccProvider>SAK</SccProvider>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccLocalPath>SAK</SccLocalPath>
-  </PropertyGroup>
+	<PropertyGroup Label="Globals">
+		<SccProjectName>SAK</SccProjectName>
+		<SccProvider>SAK</SccProvider>
+		<SccAuxPath>SAK</SccAuxPath>
+		<SccLocalPath>SAK</SccLocalPath>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <Product>Snebur.AspNetCore</Product>
-    <Company>Snebur Sistemas</Company>
-    <Authors>Snebur Sistemas</Authors>
-    <Description>Snebur.AspNetCore Net 5.0</Description>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<Product>Snebur.AspNetCore</Product>
+		<Company>Snebur</Company>
+		<Authors>Runens Cordeiro</Authors>
+		<Description>Snebur.AspNetCore </Description>
+	</PropertyGroup>
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<Compile Remove="Net\**" />
+		<Content Remove="Net\**" />
+		<EmbeddedResource Remove="Net\**" />
+		<None Remove="Net\**" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Remove="Snebur.AspCore.csproj.vspscc" />
-    <None Remove="Snebur.AspNetCore.csproj.vspscc" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="Snebur.AspCore.csproj.vspscc" />
+		<None Remove="Snebur.AspNetCore.csproj.vspscc" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
-  </ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Snebur\Snebur.Net50.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Core\Snebur.Net.csproj" />
+	</ItemGroup>
 
 </Project>

@@ -15,7 +15,8 @@ namespace Snebur.Dominio.Atributos
                                           Entidade entidade, 
                                           object valorPropriedade)
         {
-            return IpUtil.RetornarIpInternet();
+            return AplicacaoSnebur.Atual.RetornarIpDaRequisicao();
+            //return IpUtil.RetornarIpInternet();
         }
         #region IValorPadrao 
 

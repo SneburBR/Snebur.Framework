@@ -1,14 +1,14 @@
-﻿using Snebur.Net;
-using Snebur.Utilidade;
+﻿using Snebur.Utilidade;
 using System;
+using System.Web;
 
 namespace Snebur.ServicoArquivo
 {
     public class Cabecalho
     {
-        private SnHttpContext HttpContext { get; set; }
+        private HttpContext HttpContext { get; set; }
 
-        public Cabecalho(SnHttpContext context)
+        public Cabecalho(HttpContext context)
         {
             this.HttpContext = context;
             if (context == null)

@@ -17,7 +17,8 @@ namespace Snebur.Utilidade
             var senhaBytes = Encoding.UTF8.GetBytes(chave);
             var iv = Encoding.UTF8.GetBytes(chave);
 
-            using (var aes = new AesCryptoServiceProvider())
+            
+            using (var aes = Aes.Create())
             {
                 aes.Key = senhaBytes;
                 aes.IV = iv;
@@ -50,7 +51,7 @@ namespace Snebur.Utilidade
             var iv = Encoding.UTF8.GetBytes(chave);
 
             byte[] bytesCriptografado = Convert.FromBase64String(conteudo);
-            using (var aes = new AesCryptoServiceProvider())
+            using (var aes = Aes.Create())
             {
                 aes.Key = senhaBytes;
                 aes.IV = iv;

@@ -15,7 +15,7 @@ namespace Snebur.Seguranca
 
         private static Guid RetornarChaveToken()
         {
-            var tokenString = ConfigurationManager.AppSettings["CHAVE_TOKEN"];
+            var tokenString = ConfiguracaoUtil.AppSettings["CHAVE_TOKEN"];
             if (tokenString != null && Guid.TryParse(tokenString, out var token) && token != Guid.Empty)
             {
                 return token;

@@ -20,7 +20,7 @@ namespace Snebur.Comunicacao
     /// Controla todas as requisicoes das url dinamicas do servidos do WebService
     /// Valida o token,e chama o manipulador do Servido informado na cabeçalho do requisicao do lado cliente
     /// </summary>
-    public abstract class BaseManipuladorRequisicao  
+    public abstract partial class BaseManipuladorRequisicao  
     {
 
         private const int TEMPO_EXPIRAR_TOKEN = Token.TEMPO_EXPIRAR_TOKEN_PADRAO;
@@ -37,10 +37,7 @@ namespace Snebur.Comunicacao
             this.InicializarManipuladores();
         }
 
-        public MyMiddleware(RequestDelegate next)
-        {
-            _next = next;
-        }
+   
 
         public async Task Invoke(HttpContext context)
         {

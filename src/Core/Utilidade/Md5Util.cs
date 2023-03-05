@@ -8,7 +8,7 @@ namespace Snebur.Utilidade
     {
         public static string RetornarHash(string texto)
         {
-            using (var md5 = new MD5CryptoServiceProvider())
+            using (var md5 =MD5.Create())
             {
                 var bytes = Encoding.UTF8.GetBytes(texto);
                 bytes = md5.ComputeHash(bytes);
@@ -24,7 +24,7 @@ namespace Snebur.Utilidade
 
         public static Guid RetornarHashGuid(string texto)
         {
-            using (var md5 = new MD5CryptoServiceProvider())
+            using (var md5 = MD5.Create())
             {
                 var bytes = System.Text.Encoding.UTF8.GetBytes(texto);
                 bytes = md5.ComputeHash(bytes);

@@ -1,5 +1,5 @@
 ﻿{
-  "CaminhoDominioTypeScript": "../../../Snebur.Typescript/src/Snebur.Typescript/src/Comunicacao/Dominio",
+  "CaminhoDominioTypeScript": "../../../../../Snebur.TS/src/Snebur.TS/src/Comunicacao/Dominio",
   "Globalizar": false,
   "Namespace": "Snebur.Comunicacao",
   "PrioridadeDominio": 1,

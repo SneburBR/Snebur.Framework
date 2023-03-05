@@ -41,7 +41,7 @@ namespace Snebur.Utilidade
 
         public static string RetornarURL(string urlVisualizar, Dictionary<string, string> parametros)
         {
-            var query = String.Join("&", parametros.Select(x => $"{HttpUtility.UrlEncode(Base64Util.Encode(x.Key))}={HttpUtility.UrlEncode(Base64Util.Encode(x.Value))}"));
+            var query = String.Join("&", parametros.Select(x => $"{Uri.EscapeDataString((Base64Util.Encode(x.Key)))}={Uri.EscapeDataString(Base64Util.Encode(x.Value))}"));
             return AjustarInterrogacaoFunal(urlVisualizar) + query;
         }
 
@@ -116,11 +116,11 @@ namespace Snebur.Utilidade
 
                         if (retorno.ContainsKey(chave))
                         {
-                            retorno[chave] += "," + HttpUtility.UrlDecode(valor);
+                            retorno[chave] += "," + Uri.UnescapeDataString(valor);
                         }
                         else
                         {
-                            retorno.Add(chave, HttpUtility.UrlDecode(valor));
+                            retorno.Add(chave, Uri.UnescapeDataString(valor));
                         }
                     }
                 }
@@ -148,7 +148,7 @@ namespace Snebur.Utilidade
         {
             string retornarValor(string valor)
             {
-                return (valor != null) ? Uri.EscapeUriString(valor) : String.Empty;
+                return (valor != null) ? Uri.EscapeDataString(valor) : String.Empty;
             }
             return String.Join("&", di.Select(x => $"{x.Key}={retornarValor(x.Value)}"));
         }

@@ -6,17 +6,21 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 
-namespace Snebur.Utilidade
+namespace Snebur
 {
+    public static class ConstantesIP
+    {
+        public const string IP_VAZIO = "0.0.0.0";
+        public const string MASCARA_IP4 = "255.255.255";
+        public const string IP_LOCAL = "127.0.0.1";
+        public const string IP6_LOCAL = "::1";
+    }
+     
+
     public static class IpUtil
     {
-        private const string IP_VAZIO = "0.0.0.0";
-        private const string MASCARA_IP4 = "255.255.255";
-        private const string IP_LOCAL = "127.0.0.1";
-        private const string IP6_LOCAL = "::1";
-
-        public const string PARAMETRO_IP_REQUISICAO = "IpRequisicao";
         /// <summary>
         /// retornar 0.0.0.0
         /// </summary>
@@ -24,49 +28,27 @@ namespace Snebur.Utilidade
         {
             get
             {
-                return IP_VAZIO;
+                return ConstantesIP.IP_VAZIO;
             }
         }
 
         private static DadosIPInformacao _ipDadosInformacao;
 
-        public static DadosIPInformacao RetornarIPInformacao()
+        public static DadosIPInformacao IPInformacao =>
+            LazyUtil.RetornarValorLazyComBloqueio(ref _ipDadosInformacao, RetornarIPInformacaoInterno);
+
+
+        private static DadosIPInformacao RetornarIPInformacaoInterno()
         {
-            var tipoAplicacao = AplicacaoSnebur.Atual.TipoAplicacao;
-            if (tipoAplicacao == EnumTipoAplicacao.DotNet_WebService ||
-               tipoAplicacao == EnumTipoAplicacao.Web)
-            {
-                var ipRequisicao = RetornarIpDaRequisicao();
-                return RetornarIPInformacao(ipRequisicao);
-            }
-            if (_ipDadosInformacao == null)
-            {
-                _ipDadosInformacao = RetornarIPInformacao(String.Empty);
-            }
-            return _ipDadosInformacao;
+            return RetornarIPInformacao(String.Empty);
         }
-        /// <summary>
-        /// Acesso as informações do ip, utilizando no momento um servico gratuito da ipinfo.io
-        /// </summary>
-        /// <param name="ip"></param>
-        /// <returns></returns>
+
         public static DadosIPInformacao RetornarIPInformacao(string ip)
         {
-            if (DebugUtil.IsAttached ||
-                ip == "177.128.0.19" ||
-                ip == "186.215.185.154")
-            {
-                return DadosIPInformacao.SneburChapeco;
-            }
-            if (!String.IsNullOrEmpty(ip) &&
-                (ValidacaoUtil.IsIp(ip)))
-            {
-                if (ip == IP_LOCAL)
-                {
-                    ip = String.Empty;
-                }
-            }
-            var url = (IpUtil.IsIpVazioOuLocal(ip)) ? "http://ipinfo.io/json" : String.Format("http://ipinfo.io/{0}/json", ip);
+
+            var url = (IpUtil.IsIpVazioOuLocal(ip)) ? "http://ipinfo.io/json" :
+                                                       String.Format("http://ipinfo.io/{0}/json", ip);
+
             //var cabecalho = RetornarCabecalhoUrlIpInfo();
             var json = HttpUtil.RetornarString(url, null, TimeSpan.FromSeconds(5), true);
             if (!String.IsNullOrWhiteSpace(json))
@@ -91,44 +73,26 @@ namespace Snebur.Utilidade
             return DadosIPInformacao.Vazio;
         }
 
-        private static string RetornarUrlIpInfo()
-        {
-            if (AplicacaoSnebur.Atual.TipoAplicacao == EnumTipoAplicacao.DotNet_WebService)
-            {
-                return "https://ipinfo.snebur.com.br/";
-            }
-            return "http://ipinfo.io/json";
-        }
+        //private static string RetornarUrlIpInfo()
+        //{
+        //    if (AplicacaoSnebur.Atual.TipoAplicacao == EnumTipoAplicacao.DotNet_WebService)
+        //    {
+        //        return "https://ipinfo.snebur.com.br/";
+        //    }
+        //    return "http://ipinfo.io/json";
+        //}
 
-        private static Dictionary<string, string> RetornarCabecalhoUrlIpInfo()
-        {
-            if (AplicacaoSnebur.Atual.TipoAplicacao == EnumTipoAplicacao.DotNet_WebService)
-            {
-                var d = new Dictionary<string, string>();
-                throw new NotImplementedException();
-            }
-            return null;
-        }
+        //private static Dictionary<string, string> RetornarCabecalhoUrlIpInfo()
+        //{
+        //    if (AplicacaoSnebur.Atual.TipoAplicacao == EnumTipoAplicacao.DotNet_WebService)
+        //    {
+        //        var d = new Dictionary<string, string>();
+        //        throw new NotImplementedException();
+        //    }
+        //    return null;
+        //}
 
-        public static string RetornarIpInternet()
-        {
-            var tipoAplicacao = AplicacaoSnebur.Atual.TipoAplicacao;
-            switch (tipoAplicacao)
-            {
-                case (EnumTipoAplicacao.DotNet_WebService):
-                    {
-                        return RetornarIpDaRequisicao();
-                    }
-                case (EnumTipoAplicacao.DotNet_Wpf):
-                case (EnumTipoAplicacao.DotNet_WindowService):
-                case (EnumTipoAplicacao.DotNet_UnitTest):
 
-                    return IpUtil.RetornarIPInformacao().IP;
-
-                default:
-                    throw new ErroNaoSuportado("O tipo de aplicação não é suportado");
-            }
-        }
 
         public static string RetornarMascaraIp4(string ip)
         {
@@ -161,7 +125,7 @@ namespace Snebur.Utilidade
             {
                 return true;
             }
-            if (ip == IP_LOCAL || ip == IP6_LOCAL || ip == IP_VAZIO)
+            if (ip == ConstantesIP.IP_LOCAL || ip == ConstantesIP.IP6_LOCAL || ip == ConstantesIP.IP_VAZIO)
             {
                 return true;
             }
@@ -186,45 +150,6 @@ namespace Snebur.Utilidade
             return new Localizacao(0, 0);
         }
 
-        public static string RetornarIpDaRequisicao(bool isRetornarNullNaoEncotnrado = true)
-        {
-            var httpContext = AplicacaoSnebur.Atual.HttpContext;
-
-            string ip = null;
-            if (httpContext != null)
-            {
-#if NetCore
-                ip = httpContext.Connection.RemoteIpAddress.ToString();
-#else
-                if (httpContext.Request.Headers[PARAMETRO_IP_REQUISICAO] != null)
-                {
-                    var ipRequisicao = httpContext.Request.Headers[PARAMETRO_IP_REQUISICAO];
-                    if (IpUtil.IsIP(ipRequisicao))
-                    {
-                        return ipRequisicao;
-                    }
-                }
-                ip = httpContext.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
-                if (!ValidacaoUtil.IsIp(ip))
-                {
-                    ip = httpContext.Request.ServerVariables["REMOTE_ADDR"];
-                }
-#endif
-                if (ip == IP6_LOCAL)
-                {
-                    return IP_LOCAL;
-                }
-                if (ValidacaoUtil.IsIp(ip))
-                {
-                    return ip;
-                }
-            }
-            if (isRetornarNullNaoEncotnrado)
-            {
-                return null;
-            }
-            throw new Exception("O ip não foi encontrado");
-        }
 
         public static string RetornarIpLocal(bool isIgnorarErro = false)
         {
@@ -243,19 +168,10 @@ namespace Snebur.Utilidade
             throw new Exception("O rede local não existe ou está desativada  ");
         }
 
-        private class ipinfo
-        {
-            public string ip { get; set; }
-            public string hostname { get; set; }
-            public string city { get; set; }
-            public string region { get; set; }
-            public string country { get; set; }
-            public string loc { get; set; }
-            public string org { get; set; }
-            public string postal { get; set; }
-        }
+
     }
 }
+
 namespace Snebur.Dominio
 {
     public class DadosIPInformacao : BaseDominio, IIPInformacao
@@ -307,5 +223,17 @@ namespace Snebur.Dominio
                 };
             }
         }
+    }
+
+    public class ipinfo
+    {
+        public string ip { get; set; }
+        public string hostname { get; set; }
+        public string city { get; set; }
+        public string region { get; set; }
+        public string country { get; set; }
+        public string loc { get; set; }
+        public string org { get; set; }
+        public string postal { get; set; }
     }
 }

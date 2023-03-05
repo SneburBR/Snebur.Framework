@@ -48,13 +48,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseComunicacaoServidor.cs" />
+    <Compile Include="BaseComunicacaoServidor.Net47.cs" />
+    <Compile Include="BaseManipuladorRequisicao.Net47.cs" />
     <Compile Include="ErroMetodoNaoEncontrado.cs" />
     <Compile Include="Erro\ErroContratoChamada.cs" />
     <Compile Include="Erro\ErroManipualdorNaoEncontrado.cs" />
     <Compile Include="Erro\ErroReceberStreamCliente.cs" />
     <Compile Include="Erro\ErroRequisicao.cs" />
     <Compile Include="Erro\ErroWebService.cs" />
-    <Compile Include="Manipulador.cs" />
+    <Compile Include="Extensao\HttpContextExtensao.cs" />
+    <Compile Include="BaseManipuladorRequisicao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Requisicao.cs" />
   </ItemGroup>
@@ -62,6 +65,10 @@
     <ProjectReference Include="..\..\..\Core\Snebur.csproj">
       <Project>{ec174c4f-8122-41a3-8360-f04c4c8fc3ba}</Project>
       <Name>Snebur</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Snebur.AspNet\Snebur.AspNet.csproj">
+      <Project>{a3f02a0d-44b9-41ee-8d25-813997506f51}</Project>
+      <Name>Snebur.AspNet</Name>
     </ProjectReference>
     <ProjectReference Include="..\Comunicacao\Snebur.Comunicacao.csproj">
       <Project>{b44697c1-5c0c-40cf-814d-2bfba2498bf6}</Project>

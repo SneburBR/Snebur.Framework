@@ -1,10 +1,7 @@
 ﻿using Snebur.Seguranca;
 using System;
 using System.Collections.Generic;
-
-#if NET50 == false
-using System.Web;
-#endif 
+ 
 
 namespace Snebur.Utilidade
 {
@@ -23,13 +20,13 @@ namespace Snebur.Utilidade
             if (!parametros.ContainsKey(ConstantesCabecalho.TOKEN))
             {
                 var token = Token.RetornarToken();
-                parametros.Add(ConstantesCabecalho.TOKEN, HttpUtility.UrlEncode(token));
+                parametros.Add(ConstantesCabecalho.TOKEN, Uri.EscapeDataString(token));
             }
 
             if (!parametros.ContainsKey(ConstantesCabecalho.NOME_ASSEMBLY_APLICACAO))
             {
                 parametros.Add(ConstantesCabecalho.NOME_ASSEMBLY_APLICACAO,
-                               HttpUtility.UrlEncode(AplicacaoSnebur.Atual.NomeAplicacao));
+                               Uri.EscapeDataString(AplicacaoSnebur.Atual.NomeAplicacao));
             }
 
             var timeoutTipado = timeout ?? TimeSpan.FromSeconds(HttpUtil.TIMEOUT_PADRAO);
@@ -51,7 +48,7 @@ namespace Snebur.Utilidade
                 {
                     return default;
                 }
-                throw ex;
+                throw;
             }
         }
     }

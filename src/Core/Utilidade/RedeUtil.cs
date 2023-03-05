@@ -22,9 +22,7 @@ namespace Snebur.Utilidade
             //if (DebugUtil.IsAttached)
             //{
             //    return true;
-            //}
-
-
+            //} 
 
             if (!RedeUtil.RedeConectada())
             {

@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -116,6 +117,11 @@ namespace Snebur.Utilidade
         public static void ExecutarStaAsync(Action acao, [CallerMemberName] string nomeMetodo = "",
                                                            [CallerFilePath] string caminhoArquivo = "")
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                throw new Exception("Thread Sta é apenas suportada pelo windows");
+            }
+
             var nomeClasse = System.IO.Path.GetFileNameWithoutExtension(caminhoArquivo);
             var nomeThread = ThreadUtil.RetornarNomeThread(nomeMetodo, nomeClasse);
 
@@ -280,7 +286,16 @@ namespace Snebur.Utilidade
         {
             if (Threads.TryRemove(identificador, out var thread))
             {
-                thread.Abort();
+#if NetCore == false
+                try
+                {
+                    thread.Abort();
+                }
+                catch
+                {
+
+                }
+#endif
             }
         }
     }
@@ -338,7 +353,7 @@ namespace Snebur.Utilidade
         {
             if (valor == null)
             {
-                var novoValor= retornarValor.Invoke();
+                var novoValor = retornarValor.Invoke();
                 if (valor == null)
                 {
                     valor = novoValor;

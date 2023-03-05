@@ -30,7 +30,7 @@ namespace Snebur.ServicoArquivo
             get
             {
                 var parametros = new Dictionary<string, string>();
-                var request = AplicacaoSnebur.Atual.HttpContext?.Request;
+                var request = AplicacaoSneburAspNet.AtualAspNet?.HttpContext?.Request;
                 if (request != null)
                 {
                     var host = request.RetornarUrlRequisicao().Host.ToLower();
@@ -110,7 +110,7 @@ namespace Snebur.ServicoArquivo
         protected override InformacaoSessaoUsuario RetornarInformacaoSessoUsuarioRequisicaoAtual()
         {
             return SessaoUtil.RetornarInformacaoSessaoUsuarioAplicacao();
-            return SessaoUtil.RetornarInformacaoSessaoUsuarioAplicacao();
+            //return SessaoUtil.RetornarInformacaoSessaoUsuarioAplicacao();
             
             
             //var informacao = new InformacaoSessaoUsuario

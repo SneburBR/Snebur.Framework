@@ -1,5 +1,7 @@
 ﻿namespace System.Web
 {
+ 
+
     public static class HttpRequestExtensao
     {
         //Para compatibilidade do .Net  5.0

@@ -1,5 +1,4 @@
-﻿using Snebur.Net;
-using Snebur.ServicoArquivo.Servidor;
+﻿using Snebur.ServicoArquivo.Servidor;
 using Snebur.Utilidade;
 using System;
 using System.IO;
@@ -93,16 +92,6 @@ namespace Snebur.ServicoArquivo
 
         public void ProcessRequest(HttpContext context)
         {
-            using (var zyonHttpContext = new SnHttpContext(context))
-            {
-                this.ProcessRequest(zyonHttpContext);
-            }
-        }
-#endif
-
-
-        public virtual void ProcessRequest(SnHttpContext context)
-        {
             Exception erro = null;
             var tipoErro = EnumTipoErroServicoArquivo.Desconhecido;
             try
@@ -153,6 +142,8 @@ namespace Snebur.ServicoArquivo
                 }
             }
         }
+
+#endif
 
         private EnumTipoErroServicoArquivo RetornarTipoErro(Exception erro)
         {
@@ -213,7 +204,7 @@ namespace Snebur.ServicoArquivo
             return ServicoArquivoUtil.RetornarCaminhoDiretorioArquivo(this.RetornarRepositoArquivo(cabecalho), cabecalho.IdArquivo);
         }
 
-        protected virtual TCabecalhoServicoArquivo RetornarCabecalhoServicoArquivo(SnHttpContext httpContext)
+        protected virtual TCabecalhoServicoArquivo RetornarCabecalhoServicoArquivo(HttpContext httpContext)
         {
             return new CabecalhoServicoArquivo(httpContext) as TCabecalhoServicoArquivo;
         }
@@ -231,7 +222,7 @@ namespace Snebur.ServicoArquivo
 
         #region Métodos abstratos
 
-        protected abstract void Iniciar(SnHttpContext context, TCabecalhoServicoArquivo cabecalho, MemoryStream inputStream);
+        protected abstract void Iniciar(HttpContext context, TCabecalhoServicoArquivo cabecalho, MemoryStream inputStream);
 
         protected abstract string RetornarRepositoArquivo(TInformacaoRepositorio informacaoRepositorio);
 
@@ -245,7 +236,7 @@ namespace Snebur.ServicoArquivo
 
         #region Métodos privados
 
-        private MemoryStream RetornarInputStream(SnHttpContext httpContext)
+        private MemoryStream RetornarInputStream(HttpContext httpContext)
         {
             var buffer = new byte[16 * 1024];
             var msPacote = new MemoryStream();

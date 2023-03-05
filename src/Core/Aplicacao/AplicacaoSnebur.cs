@@ -1,27 +1,20 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Specialized;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration;
-using System.Globalization;
-using System.Reflection;
-using System.Runtime.ExceptionServices;
-using System.Timers;
-using Snebur.Comunicacao;
+﻿using Snebur.Comunicacao;
 using Snebur.Dominio;
 using Snebur.Seguranca;
 using Snebur.Servicos;
 using Snebur.UI;
 using Snebur.Utilidade;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Configuration;
+using System.Globalization;
 using System.Net;
-using System.Runtime.Remoting.Contexts;
-
-#if NetCore
-using Microsoft.AspNetCore.Http;
-#else
-using System.Web;
-#endif
+using System.Reflection;
+using System.Runtime.ExceptionServices;
+using System.Timers;
 
 namespace Snebur
 {
@@ -324,19 +317,6 @@ namespace Snebur
             }
         }
 
-        public virtual HttpContext HttpContext
-        {
-            get
-            {
-#if NetCore
-                return this.FuncaoRetornaHttpContextAtual?.Invoke();
-#else
-
-                return HttpContext.Current;
-#endif
-            }
-        }
-
         public virtual NameValueCollection AppSettings
         {
             get
@@ -354,89 +334,32 @@ namespace Snebur
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual InformacaoSessaoUsuario InformacaoSessaoUsuarioRequisicaoAtual
-        {
-            get
-            {
-                var httpContext = this.HttpContext;
-                if(httpContext!= null)
-                {
-                    lock (httpContext.Items.SyncRoot)
-                    {
-                        if (httpContext.Items.Contains(ConstantesItensRequsicao. CHAVE_INFORMACAO_SESSAO_ATUAL))
-                        {
-                            return (InformacaoSessaoUsuario)httpContext.Items[ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL];
-                        }
-                    }
-                }
-                return SessaoUtil.RetornarInformacaoSessaoUsuarioAplicacao();
+        public virtual InformacaoSessaoUsuario InformacaoSessaoUsuarioRequisicaoAtual => SessaoUtil.RetornarInformacaoSessaoUsuarioAplicacao();
 
-            }
-        }
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual Guid IdentificadorSessaoUsuarioRequisicaoAtual
-        {
-            get
-            {
-                var httpContext = this.HttpContext;
-                if (httpContext != null)
-                {
-                    lock (httpContext.Items.SyncRoot)
-                    {
-                        if (httpContext.Items.Contains(ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL))
-                        {
-                            return (httpContext.Items[ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL] as InformacaoSessaoUsuario).IdentificadorSessaoUsuario;
-                        }
-                    }
-                }
-                return this.IdentificadorSessaoUsuario;
-
-            }
-        }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual CredencialUsuario CredencialUsuarioRequisicaoAtual
-        {
-            get
-            {
-                var httpContext = this.HttpContext;
-                if (httpContext != null)
-                {
-                    lock (httpContext.Items.SyncRoot)
-                    {
-                        if (httpContext.Items.Contains(ConstantesItensRequsicao.CHAVE_CREDENCIAL_USUARIO))
-                        {
-                            return (CredencialUsuario)httpContext.Items[ConstantesItensRequsicao.CHAVE_CREDENCIAL_USUARIO];
-                        }
-                    }
-                }
-                return this.CredencialUsuario;
-
-            }
-        }
+        public virtual Guid IdentificadorSessaoUsuarioRequisicaoAtual => this.IdentificadorSessaoUsuario;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual string IdentificadorProprietarioRequisicaoAtual
-        {
-            get
-            {
-                var httpContext = this.HttpContext;
-                if (httpContext != null)
-                {
-                    lock (httpContext.Items.SyncRoot)
-                    {
-                        if (httpContext.Items.Contains(ConstantesItensRequsicao.CHAVE_IDENTIFICADOR_PROPRIETARIO))
-                        {
-                            return (string)httpContext.Items[ConstantesItensRequsicao.CHAVE_IDENTIFICADOR_PROPRIETARIO];
-                        }
-                    }
-                }
-                return this.IdentificadorProprietario;
+        public virtual CredencialUsuario CredencialUsuarioRequisicaoAtual => this.CredencialUsuario;
 
-            }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public virtual string IdentificadorProprietarioRequisicaoAtual => this.IdentificadorProprietario;
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public virtual string UserAgent => null;
+
+        public abstract string RetornarIpDaRequisicao();
+
+        public virtual string RetornarIp()
+        {
+            return IpUtil.RetornarIPInformacao(String.Empty).IP;
+            //throw new NotImplementedException();
+            //return IpUtil.RetornarIPInformacaoRequisicao(isRetornarNullNaoEncotnrado).IP;
         }
 
-       
+
         #endregion
 
         #region Propriedade funções
@@ -454,7 +377,7 @@ namespace Snebur
         protected Func<CredencialUsuario> FuncaoRetornarCredencialUsuarioUsuario { get; set; } = SessaoUtil.RetornarCredencialUsuario;
 
         protected Func<DateTime> FuncaoRetornarDataHoraUtcServidor { get; set; } = AplicacaoSnebur.RetornarDataHoraUtcServidor;
-         
+
         //protected Func<IInformacaoSessao> FuncaoRetornarInformacaoSessaoUsuario { get; set; } = SessaoUtil.RetornarInformacaoSessaoUsuarioAtual;
 
         protected Action AcaoIniciarNovaSessaoUsuario { get; set; } = SessaoUtil.InicializarNovaSessaoUsuario;
@@ -483,11 +406,6 @@ namespace Snebur
 
         public event EventHandler NovaSessaoUsuarioInicializada;
         public event EventHandler CredencialAlterada;
-
-
-#if NetCore
-        protected Func<HttpContext> FuncaoRetornaHttpContextAtual { get; set; }
-#endif
 
         #endregion
 
@@ -564,8 +482,7 @@ namespace Snebur
             try
             {
                 ServicePointManager.Expect100Continue = true;
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 |
-                                                       SecurityProtocolType.Tls12 |
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 |
                                                        SecurityProtocolType.Tls11 |
                                                        SecurityProtocolType.Tls;
 
@@ -718,13 +635,13 @@ namespace Snebur
             {
                 var assemblyName = new AssemblyName(assemblyEntrada.FullName);
                 var identificadorAplicacao = assemblyName.Name;
-#if NET50
+ 
                 const string NET50 = ".Net50";
                 if (identificadorAplicacao.EndsWith(NET50))
                 {
-                    identificadorAplicacao = identificadorAplicacao.Substring(0, identificadorAplicacao.Length - NET50.Length);
+                    throw new Exception("Renomear o nome do assembly" + identificadorAplicacao);
                 }
-#endif
+ 
                 return identificadorAplicacao;
             }
             throw new Erro("Não foi possível retornar o identificador da aplicação");
@@ -749,7 +666,7 @@ namespace Snebur
             return DateTime.UtcNow;
         }
 
-       
+
 
         private static IServicoLogErro RetornarServicoErro()
         {
@@ -797,33 +714,28 @@ namespace Snebur
             return this.UrlsServico[chaveConfiguracao];
         }
 
+#if NetCore == false
+
         protected virtual NameValueCollection RetornarAppSettings()
         {
-#if NetCore
-            throw new Exception("Esse método deve ser implementado na aplicação de entrada");
-#else
             var appSettins = new NameValueCollection();
             foreach (var chave in ConfigurationManager.AppSettings.AllKeys)
             {
                 appSettins.Add(chave, ConfigurationManager.AppSettings[chave]);
             }
             return appSettins;
-#endif
         }
 
         protected virtual NameValueCollection RetornarConnectionStrings()
         {
-#if NetCore
-            throw new Exception("Esse método deve ser implementado na aplicação de entrada");
-#else
-
             var connectionStrings = new NameValueCollection();
             foreach (ConnectionStringSettings connectionString in ConfigurationManager.ConnectionStrings)
             {
                 connectionStrings.Add(connectionString.Name, connectionString.ConnectionString);
             }
             return connectionStrings;
-#endif
         }
+#endif
+
     }
 }

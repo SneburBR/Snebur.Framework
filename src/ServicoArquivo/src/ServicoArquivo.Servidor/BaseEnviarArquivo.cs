@@ -1,7 +1,7 @@
-﻿using Snebur.Net;
-using Snebur.Utilidade;
+﻿using Snebur.Utilidade;
 using System;
 using System.IO;
+using System.Web;
 
 namespace Snebur.ServicoArquivo
 {
@@ -20,12 +20,12 @@ namespace Snebur.ServicoArquivo
 
         #region reescritos
 
-        protected override void Iniciar(SnHttpContext context, TCabecalhoServicoArquivo cabecalho, MemoryStream inputStream)
+        protected override void Iniciar(HttpContext context, TCabecalhoServicoArquivo cabecalho, MemoryStream inputStream)
         {
             this.SalvarArquivo(context, cabecalho, inputStream);
         }
 
-        protected override TCabecalhoServicoArquivo RetornarCabecalhoServicoArquivo(SnHttpContext httpContext)
+        protected override TCabecalhoServicoArquivo RetornarCabecalhoServicoArquivo(HttpContext httpContext)
         {
             return new CabecalhoServicoArquivo(httpContext, true) as TCabecalhoServicoArquivo;
         }
@@ -34,7 +34,7 @@ namespace Snebur.ServicoArquivo
 
         #region Métodos protegidos
 
-        protected virtual void SalvarArquivo(SnHttpContext httpContext, TCabecalhoServicoArquivo cabecalho, MemoryStream inputStreasm)
+        protected virtual void SalvarArquivo(HttpContext httpContext, TCabecalhoServicoArquivo cabecalho, MemoryStream inputStreasm)
         {
             if (!(cabecalho.IdArquivo > 0))
             {

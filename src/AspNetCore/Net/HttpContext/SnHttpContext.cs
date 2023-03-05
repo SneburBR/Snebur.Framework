@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Net;
-
+using System.Net.Http;
 
 namespace Snebur.Net
 {
@@ -10,26 +10,15 @@ namespace Snebur.Net
 
         public SnResponse Response { get; }
 
-        public object ContextoNativo { get; }
-
-
-#if NetCore == false
-
-        public SnHttpContext(System.Web.HttpContext httpContext)
-        {
-            this.ContextoNativo = httpContext;
-            this.Request = new SnRequestHttp(httpContext.Request);
-            this.Response = new SnResponseHttp(httpContext.Response);
-            AdicioanrContexto(this);
-        }
-#endif
-
-        public SnHttpContext(object contextoNativo, SnRequest request, SnResponse response)
+        public HttpContent ContextoNativo { get; }
+         
+        public SnHttpContext(HttpContent contextoNativo, 
+                            SnRequest request, SnResponse response)
         {
             this.ContextoNativo = contextoNativo;
             this.Request = request;
             this.Response = response;
-            AdicioanrContexto(this);
+            //AdicioanrContexto(this);
         }
 
         public SnHttpContext(HttpListenerContext httpContext)
@@ -37,12 +26,12 @@ namespace Snebur.Net
             this.ContextoNativo = httpContext;
             this.Request = new SnRequestHttpListener(httpContext.Request);
             this.Response = new SnResponseHttpListener(httpContext.Response);
-            AdicioanrContexto(this);
+            //AdicioanrContexto(this);
         }
 
         public void Dispose()
         {
-            RemoverContexto(this);
+            //RemoverContexto(this);
         }
     }
 }

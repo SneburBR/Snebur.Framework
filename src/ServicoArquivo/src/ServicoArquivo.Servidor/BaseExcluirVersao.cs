@@ -1,5 +1,4 @@
 ﻿using Snebur.Dominio;
-using Snebur.Net;
 using Snebur.Utilidade;
 using System;
 using System.IO;
@@ -28,19 +27,7 @@ namespace Snebur.ServicoArquivo
         }
 
 #else
-        public void ProcessRequest(HttpContext context)
-        {
-            using (var zyonHttpContext = new SnHttpContext(context))
-            {
-                this.ProcessRequest(zyonHttpContext);
-            }
-        }
-
-#endif
-
-
-
-        public virtual void ProcessRequest(SnHttpContext context)
+        public virtual void ProcessRequest(HttpContext context)
         {
             var caminhoArquivoVersao = this.RetornarCaminhoImagem(context);
             var response = context.Response;
@@ -59,7 +46,13 @@ namespace Snebur.ServicoArquivo
             }
         }
 
-        public virtual string RetornarCaminhoImagem(SnHttpContext zyonHttpContext)
+#endif
+
+
+
+
+
+        public virtual string RetornarCaminhoImagem(HttpContext zyonHttpContext)
         {
             var idArquivo = this.RetornarIdArquivoVersao(zyonHttpContext);
             var nomeTipoArquivo = typeof(TArquivoVersao).Name;
@@ -77,7 +70,7 @@ namespace Snebur.ServicoArquivo
 
         #region Métodos privados
 
-        protected long RetornarIdArquivoVersao(SnHttpContext zyonHttpContext)
+        protected long RetornarIdArquivoVersao(HttpContext zyonHttpContext)
         {
             var idImagem = Convert.ToInt64(this.RetornarValorParametro(ConstantesServicoArquivo.ID_ARQUIVO, zyonHttpContext));
             if (!(idImagem > 0))
@@ -88,7 +81,7 @@ namespace Snebur.ServicoArquivo
         }
 
 
-        protected string RetornarValorParametro(string parametro, SnHttpContext zyonHttpContext)
+        protected string RetornarValorParametro(string parametro, HttpContext zyonHttpContext)
         {
             var parametroBase64 = Base64Util.Encode(parametro);
             return Base64Util.Decode(zyonHttpContext.Request.QueryString[parametroBase64]);

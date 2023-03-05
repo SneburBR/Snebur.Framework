@@ -1,6 +1,6 @@
 ﻿using Snebur.Dominio;
-using Snebur.Net;
 using System;
+using System.Web;
 
 namespace Snebur.ServicoArquivo
 {
@@ -10,7 +10,7 @@ namespace Snebur.ServicoArquivo
 
         public EnumFormatoImagem Formato { get; }
 
-        public CabecalhoServicoImagem(SnHttpContext context, bool enviarArquivo = false) : base(context, enviarArquivo)
+        public CabecalhoServicoImagem(HttpContext context, bool enviarArquivo = false) : base(context, enviarArquivo)
         {
             this.TamanhoImagem = (EnumTamanhoImagem)this.RetornarInteger(ConstantesServicoImagem.TAMANHO_IMAGEM);
             this.Formato = (EnumFormatoImagem)this.RetornarInteger(ConstantesServicoImagem.FORMATO_IMAGEM);

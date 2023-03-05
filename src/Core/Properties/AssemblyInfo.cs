@@ -12,8 +12,4 @@ using System.Runtime.InteropServices;
 [assembly: Guid("1e3261cf-9d28-4bbd-9f90-95d93826081a")]
 [assembly: AssemblyVersion("1.0.0.154")]
 [assembly: AssemblyFileVersion("1.0.0.154")]
-
-#if NET50
-[assembly: SupportedOSPlatform("windows")]
-[assembly: AssemblyDescription("Snebur Net 5.0")]
-#endif
+ 

@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Snebur.AspNetCore.Extensao;
 using System;
 using System.Collections.Specialized;
 using System.IO;
 
-namespace Snebur.Net
+namespace Snebur.AspNetCore.Net.HttpContext
 {
-    public class ZyonRequestCore : ZyonRequest
+    public class SnRequestCore : ZyonRequest
     {
         private NameValueCollection _queryString;
         private NameValueCollection _headers;
@@ -19,13 +20,13 @@ namespace Snebur.Net
 
         public override Uri Url => throw new NotImplementedException();
 
-         
+
         public ZyonRequestCore(HttpRequest request)
         {
             this.Request = request;
 
-            this._queryString =  new NameValueCollection();
-            foreach(var chave in request.Query.Keys)
+            this._queryString = new NameValueCollection();
+            foreach (var chave in request.Query.Keys)
             {
                 this._queryString.Add(chave, request.Query[chave].ToString());
             }
@@ -37,8 +38,8 @@ namespace Snebur.Net
             }
         }
 
-      
 
-       
+
+
     }
 }

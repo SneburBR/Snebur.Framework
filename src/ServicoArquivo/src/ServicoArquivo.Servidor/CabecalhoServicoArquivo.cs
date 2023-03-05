@@ -1,7 +1,7 @@
-﻿using Snebur.Net;
-using Snebur.Seguranca;
+﻿using Snebur.Seguranca;
 using Snebur.Utilidade;
 using System;
+using System.Web;
 
 namespace Snebur.ServicoArquivo
 {
@@ -31,7 +31,7 @@ namespace Snebur.ServicoArquivo
 
         public CredencialUsuario CredencialRequisicao => new CredencialUsuario(this.IdentificadorUsuario, this.Senha);
 
-        public CabecalhoServicoArquivo(SnHttpContext context, bool enviarArquivo = false) : base(context)
+        public CabecalhoServicoArquivo(HttpContext context, bool enviarArquivo = false) : base(context)
         {
             this.EnviarArquivo = enviarArquivo;
             this.IdentificadorProprietario = context.Request.Headers[ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO];
@@ -42,7 +42,7 @@ namespace Snebur.ServicoArquivo
             this.TotalBytes = this.RetornarLong(ConstantesServicoArquivo.TOTAL_BYTES);
 
             this.TamanhoPacote = this.RetornarInteger(ConstantesServicoArquivo.TAMANHO_PACOTE);
-            this.Ip = IpUtilLocal.RetornarIp(context);
+            this.Ip = AplicacaoSnebur.Atual?.RetornarIpDaRequisicao();
             this.CheckSumArquivo = this.RetornarString(ConstantesServicoArquivo.CHECKSUM_ARQUIVO);
             this.CheckSumPacote = this.RetornarString(ConstantesServicoArquivo.CHECKSUM_PACOTE);
 

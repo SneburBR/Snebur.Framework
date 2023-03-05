@@ -3,6 +3,7 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace Snebur.Utilidade
@@ -74,12 +75,16 @@ namespace Snebur.Utilidade
                                    [CallerFilePath] string caminhoArquivo = "",
                                    [CallerLineNumber] int linhaDoErro = 0)
         {
-            var nomeTipoErro = ex.GetType().Name;
 
+            var nomeTipoErro = ex.GetType().Name;
             var descricaoCompleta = ErroUtil.RetornarDescricaoCompletaErro(ex, nomeMetodo, caminhoArquivo, linhaDoErro, true);
             var mensagem = ex.Message;
 
-            LogUtil.LogWindows(descricaoCompleta, stackTrace, EventLogEntryType.Error);
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                LogUtil.LogWindows(descricaoCompleta, stackTrace, EventLogEntryType.Error);
+            }
+
 
             if (String.IsNullOrEmpty(mensagem))
             {
@@ -164,7 +169,10 @@ namespace Snebur.Utilidade
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static Guid Log(string mensagem, BaseInformacaoAdicionalServicoCompartilhado informacaoAdicional, bool salvarLogLocal)
         {
-            LogUtil.LogWindows(mensagem, String.Empty, EventLogEntryType.Information);
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                LogUtil.LogWindows(mensagem, String.Empty, EventLogEntryType.Information);
+            }
             try
             {
                 if (!salvarLogLocal)
@@ -204,8 +212,10 @@ namespace Snebur.Utilidade
         {
             var stackTrace = Environment.StackTrace;
 
-            LogUtil.LogWindows(mensagem, stackTrace, EventLogEntryType.Warning);
-
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                LogUtil.LogWindows(mensagem, stackTrace, EventLogEntryType.Warning);
+            }
             try
             {
                 return AplicacaoSnebur.Atual.ServicoDesempenho.NotificarLogDesempenho(mensagem, stackTrace, tipo, informacaoAdicional);
@@ -283,16 +293,20 @@ namespace Snebur.Utilidade
 
         private static void LogWindowsSeguranca(string mensagem, EnumTipoLogSeguranca tipoSeguranca)
         {
-            var conteudo = EnumUtil.RetornarDescricao(tipoSeguranca) + "\n" + mensagem;
-            LogWindowsInterno(ESPACO_LOG_ZSEGURO, conteudo, EventLogEntryType.FailureAudit);
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                var conteudo = EnumUtil.RetornarDescricao(tipoSeguranca) + "\n" + mensagem;
+                LogWindowsInterno(ESPACO_LOG_ZSEGURO, conteudo, EventLogEntryType.FailureAudit);
+            }
         }
 
         private static void LogWindowsInterno(string fonte, string conteudo, EventLogEntryType tipo)
         {
-            var nomeEspaco = RetornarNomeEspaco(fonte);
 
+#if NetCore == false
             try
             {
+                var nomeEspaco = RetornarNomeEspaco(fonte);
                 using (EventLog eventLog = new EventLog(nomeEspaco))
                 {
                     eventLog.Source = nomeEspaco;
@@ -302,6 +316,7 @@ namespace Snebur.Utilidade
             catch
             {
             }
+#endif
         }
 
         private static string RetornarNomeEspaco(string nomeEspaco)
@@ -319,11 +334,29 @@ namespace Snebur.Utilidade
 
         private static void CriarEspaco(string nomeEspaco)
         {
+#if NetCore == false
             if (!EventLog.SourceExists(nomeEspaco))
             {
-                EventSourceCreationData eventSourceData = new EventSourceCreationData(nomeEspaco, nomeEspaco);
-                EventLog.CreateEventSource(eventSourceData);
+                    EventSourceCreationData eventSourceData = new EventSourceCreationData(nomeEspaco, nomeEspaco);
+                    EventLog.CreateEventSource(eventSourceData);
             }
+#endif
         }
     }
+}
+
+namespace System.Diagnostics
+{
+#if NetCore
+    //public enum EventLogEntryType
+    //{
+    //    Information,
+    //    Warning,
+    //    FailureAudit,
+    //    Error
+    //}
+
+#endif
+
+
 }

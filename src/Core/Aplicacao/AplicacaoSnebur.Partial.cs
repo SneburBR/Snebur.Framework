@@ -21,16 +21,23 @@ namespace Snebur
 
         private static AplicacaoSnebur RetornarAplicacaoAtual()
         {
-            var assemblyEntrada = ReflexaoUtil.AssemblyEntrada;
-            if (assemblyEntrada != null)
-            {
-                var tipoAplicacao = assemblyEntrada.GetAccessibleTypes().Where(x => x.IsSubclassOf(typeof(AplicacaoSnebur))).SingleOrDefault();
-                if (tipoAplicacao != null)
-                {
-                    return (AplicacaoSnebur)Activator.CreateInstance(tipoAplicacao);
-                }
-            }
-            return new AplicacaoSneburInterna();
+            //var assemblyEntrada = ReflexaoUtil.AssemblyEntrada;
+            //if (assemblyEntrada != null)
+            //{
+            //    var tipoAplicacao = assemblyEntrada.GetAccessibleTypes().Where(x => x.IsSubclassOf(typeof(AplicacaoSnebur))).SingleOrDefault();
+            //    if (tipoAplicacao != null)
+            //    {
+            //        return (AplicacaoSnebur)Activator.CreateInstance(tipoAplicacao);
+            //    }
+            //}
+
+            throw new Exception("A aplicação atual não foi inicializada, a deve ser inicializar no StartUp da aplicação");
+#if NetCore
+
+#else
+
+#endif
+            //return new AplicacaoSneburInterna();
         }
 
 

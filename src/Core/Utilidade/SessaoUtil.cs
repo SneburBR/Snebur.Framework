@@ -9,10 +9,6 @@ using System.Text;
 using System.Threading;
 using System.Web;
 
-#if NetCore
-using Microsoft.Net.Http.Headers;
-#else
-#endif
 
 namespace Snebur.Utilidade
 {
@@ -23,7 +19,6 @@ namespace Snebur.Utilidade
         //public const string IDENTIFICADOR_PROPRIETARIO = "IdentificadorProprietario";
         private const string CHAVE_CRIPTOGRAFIA = "248c6619-8119-45bd-ae2a-662512aff841";
 
-        private static DadosIPInformacao _dadosIpInformacao;
         private static Dimensao _resolucao;
         private static CredencialUsuario _credencialUsuario;
 
@@ -79,27 +74,18 @@ namespace Snebur.Utilidade
 
         private static string RetornarUserAgent()
         {
-            var request = AplicacaoSnebur.Atual.HttpContext?.Request;
-            if (request == null)
-            {
-                return null;
-            }
-#if NetCore
-            return request.Headers[HeaderNames.UserAgent].ToString();
-
-#else
-            return request.UserAgent;
-#endif
+            return AplicacaoSnebur.Atual.UserAgent;
         }
 
-        public static DadosIPInformacao RetornarIpInformacao()
-        {
-            if (_dadosIpInformacao == null)
-            {
-                _dadosIpInformacao = IpUtil.RetornarIPInformacao();
-            }
-            return _dadosIpInformacao;
-        }
+        //public static DadosIPInformacao RetornarIpInformacao()
+        //{
+        //    if (_dadosIpInformacao == null)
+        //    {
+        //        throw new NotImplementedException();
+        //        //_dadosIpInformacao = IpUtil.RetornarIPInformacao();
+        //    }
+        //    return _dadosIpInformacao;
+        //}
 
         private static SistemaOperacional RetornarSistemaOperacional()
         {

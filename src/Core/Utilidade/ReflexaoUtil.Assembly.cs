@@ -25,10 +25,12 @@ namespace Snebur.Utilidade
             {
                 return AplicacaoSnebur._aplicacao.GetType().Assembly;
             }
-            if (AplicacaoSnebur._aplicacao != null && AplicacaoSnebur._aplicacao.GetType() != typeof(AplicacaoSneburInterna))
+
+            if (AplicacaoSnebur._aplicacao != null )
             {
                 return AplicacaoSnebur._aplicacao.GetType().Assembly;
             }
+
             var assemblites = AppDomain.CurrentDomain.GetAssemblies();
             if (SistemaUtil.TipoAplicacao == Dominio.EnumTipoAplicacao.DotNet_UnitTest)
             {

@@ -54,7 +54,11 @@ namespace Snebur.Utilidade
         {
             get
             {
-                return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+                }
+                return false;
             }
         }
 
@@ -63,14 +67,15 @@ namespace Snebur.Utilidade
 
             if (System.Reflection.Assembly.GetEntryAssembly() == null)
             {
-                if (SistemaUtil.IsAplicacaoUnidadeTeste())
-                {
-                    return EnumTipoAplicacao.DotNet_UnitTest;
-                }
-                if (AplicacaoSnebur._aplicacao?.HttpContext != null)
-                {
-                    return EnumTipoAplicacao.DotNet_WebService;
-                }
+                throw new Exception("O tip da aplicação deve ser implementado na AplicacaoSnebur");
+                //if (SistemaUtil.IsAplicacaoUnidadeTeste())
+                //{
+                //    return EnumTipoAplicacao.DotNet_UnitTest;
+                //}
+                //if (AplicacaoSnebur._aplicacao?.HttpContext != null)
+                //{
+                //    return EnumTipoAplicacao.DotNet_WebService;
+                //}
             }
 
             if (IsAplicacaoWindowsService())
@@ -184,6 +189,11 @@ namespace Snebur.Utilidade
 
         public static bool IsPossuiPermisaoAdministrador()
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return false;
+            }
+
             using (var identity = WindowsIdentity.GetCurrent())
             {
                 WindowsPrincipal principal = new WindowsPrincipal(identity);

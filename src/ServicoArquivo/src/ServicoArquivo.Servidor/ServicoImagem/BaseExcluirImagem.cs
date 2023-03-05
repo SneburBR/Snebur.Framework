@@ -1,5 +1,5 @@
 ﻿using Snebur.Dominio;
-using Snebur.Net;
+using System.Web;
 using Snebur.Utilidade;
 using System;
 using System.IO;
@@ -25,7 +25,7 @@ namespace Snebur.ServicoArquivo
                                                        this.NormalizarOrigem);
         }
 
-        protected override void ExcluirArquivo(SnHttpContext httpContext)
+        protected override void ExcluirArquivo(HttpContext httpContext)
         {
             var cabecalho = this.RetornarCabecalhoServicoArquivo(httpContext) as CabecalhoServicoImagem;
             if (cabecalho == null)
@@ -58,7 +58,7 @@ namespace Snebur.ServicoArquivo
 
         #region  Métodos sobre-escritos
 
-        protected override CabecalhoServicoImagem RetornarCabecalhoServicoArquivo(SnHttpContext httpContext)
+        protected override CabecalhoServicoImagem RetornarCabecalhoServicoArquivo(HttpContext httpContext)
         {
             return new CabecalhoServicoImagem(httpContext);
         }

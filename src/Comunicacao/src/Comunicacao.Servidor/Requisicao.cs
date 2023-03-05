@@ -1,4 +1,5 @@
-﻿using Snebur.Dominio;
+﻿
+using Snebur.Dominio;
 using Snebur.Reflexao;
 using Snebur.Seguranca;
 using Snebur.Utilidade;
@@ -7,6 +8,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Web;
+
+#if NetCore
+using Microsoft.AspNetCore.Http;
+#endif
 
 namespace Snebur.Comunicacao
 {
@@ -106,14 +111,17 @@ namespace Snebur.Comunicacao
             }
         }
 
-
-
         private Stream RetornarInputStreamBufferizado(HttpContext context)
         {
             try
             {
+#if NetCore
+                return context.Request.Body;
+#else
                 return StreamUtil.RetornarMemoryStreamBuferizada(context.Request.GetBufferedInputStream());
                 //return context.Request.InputStream;
+#endif
+
             }
             catch
             {
@@ -194,12 +202,12 @@ namespace Snebur.Comunicacao
             }
         }
 
-        #endregion
+#endregion
 
         private void AdicionarItensrequisicaoAtual( )
         {
             var context = this.HttpContext;
-            lock (context.Items.SyncRoot)
+            lock ((context.Items as ICollection).SyncRoot)
             {
                 context.AdicionrItem(ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL, this.InformacaoSessaoUsuario);
                 context.AdicionrItem(ConstantesItensRequsicao.CHAVE_CREDENCIAL_USUARIO, this.CredencialUsuario);
@@ -218,7 +226,7 @@ namespace Snebur.Comunicacao
         private void RemoverItensRequisicaoAtual()
         {
             var context = this.HttpContext;
-            lock (context.Items.SyncRoot)
+            lock ((context.Items as ICollection).SyncRoot)
             {
                 context.RemoverItem(ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL);
                 context.RemoverItem(ConstantesItensRequsicao.CHAVE_CREDENCIAL_USUARIO);
@@ -238,21 +246,5 @@ namespace Snebur.Comunicacao
         #endregion
     }
 
-    public static class HttpContextExtensao
-    {
-        public static void AdicionrItem(this HttpContext context, string chave, object item)
-        {
-            if (!context.Items.Contains(chave))
-            {
-                context.Items.Add(chave, item);
-            }
-        }
-        public static void RemoverItem(this HttpContext context, string chave)
-        {
-            if (context.Items.Contains(chave))
-            {
-                context.Items.Remove(chave);
-            }
-        }
-    }
+    
 }

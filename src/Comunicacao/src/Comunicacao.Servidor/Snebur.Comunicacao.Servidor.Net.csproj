@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup Label="Globals">
+		<SccProjectName>SAK</SccProjectName>
+		<SccProvider>SAK</SccProvider>
+		<SccAuxPath>SAK</SccAuxPath>
+		<SccLocalPath>SAK</SccLocalPath>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<RootNamespace>Snebur.Comunicacao</RootNamespace>
+		<Version>2.0.0</Version>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<Nullable>disable</Nullable>
+		<AssemblyName>Snebur.Comunicacao.Servidor</AssemblyName>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	</PropertyGroup>
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DefineConstants>NetCore; DEBUG;TRACE</DefineConstants>
+		<WarningLevel>4</WarningLevel>
+		<NoWarn>1701;1702</NoWarn>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DefineConstants>NetCore; DEBUG;TRACE</DefineConstants>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Remove="Mensageiro\**" />
+		<Compile Remove="ServicoDados\**" />
+		<EmbeddedResource Remove="Mensageiro\**" />
+		<EmbeddedResource Remove="ServicoDados\**" />
+		<None Remove="Mensageiro\**" />
+		<None Remove="ServicoDados\**" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Compile Remove="Manipulador.cs" />
+	  <Compile Remove="Manipulador.NetCore.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Remove="packages.config" />
+		<None Remove="Snebur.Comunicacao.Servidor.csproj.vspscc" />
+		<None Remove="Snebur.Comunicacao.Servidor.Net50.csproj.vspscc" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\AspNetCore\Snebur.AspNetCore.csproj" />
+		<ProjectReference Include="..\..\..\Core\Snebur.Net.csproj" />
+		<ProjectReference Include="..\..\..\Seguranca\Snebur.Seguranca.Net.csproj" />
+		<ProjectReference Include="..\Comunicacao\Snebur.Comunicacao.Net.csproj" />
+	</ItemGroup>
+
+
+
+</Project>
