@@ -117,7 +117,6 @@ namespace Snebur.Comunicacao
 
             var identificadorUsuario = CriptografiaUtil.Criptografar(token, this.ContratoChamada.Cabecalho.CredencialUsuario.IdentificadorUsuario);
             var identifcadorProprietario = this.ContratoChamada.Cabecalho.IdentificadorProprietario;
-            var xx = AplicacaoSnebur.Atual.IdentificadorProprietario;
             
             requisicaoHttp.Headers[ConstantesCabecalho.IDENTIFICADOR_USUARIO] = identificadorUsuario;
             requisicaoHttp.Headers[ConstantesCabecalho.SENHA] = CriptografiaUtil.Criptografar(token, this.ContratoChamada.Cabecalho.CredencialServico.Senha);
@@ -129,10 +128,15 @@ namespace Snebur.Comunicacao
             }
             else
             {
-                var identificadorProprietario = AplicacaoSneburAspNet.AtualAspNet?.HttpContext?.Request.Headers[ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO];
-                if (!String.IsNullOrEmpty(identificadorProprietario))
+                var aplicacao = AplicacaoSnebur.Atual;
+                if (aplicacao.IsAplicacaoAspNet && aplicacao.AspNet.IsPossuiRequisicaoAspNetAtiva)
                 {
-                    requisicaoHttp.Headers[ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO] = identificadorProprietario;
+                    //var identificadorProprietario = AplicacaoSneburAspNet.AtualAspNet?.HttpContext?.Request.Headers[ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO];
+                    var identificadorProprietario = aplicacao.AspNet.RetornarValueCabecalho(ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO);
+                    if (!String.IsNullOrEmpty(identificadorProprietario))
+                    {
+                        requisicaoHttp.Headers[ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO] = identificadorProprietario;
+                    }
                 }
             }
 

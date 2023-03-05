@@ -1,7 +1,6 @@
 ﻿
 #if NetCore == false
-
-
+ 
 namespace Snebur.Comunicacao
 {
     using Snebur.Utilidade;

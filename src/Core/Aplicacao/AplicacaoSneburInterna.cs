@@ -6,7 +6,7 @@ namespace Snebur
 
     internal class AplicacaoSneburInterna : AplicacaoSnebur
     {
-        public override string RetornarIpDaRequisicao()
+        public string RetornarIpDaRequisicao()
         {
             return IpUtil.RetornarIPInformacao(String.Empty).IP;
         }

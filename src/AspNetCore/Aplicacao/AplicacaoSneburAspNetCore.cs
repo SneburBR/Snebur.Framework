@@ -8,7 +8,7 @@ using System.Net.Http;
 
 namespace Snebur
 {
-    public class AplicacaoSneburAspNet : AplicacaoSnebur
+    public class AplicacaoSneburAspNet : AplicacaoSnebur, IAplicacaoSneburAspNet
     {
         private static IServiceProvider ServiceProvider;
 
@@ -22,6 +22,9 @@ namespace Snebur
                 return AplicacaoSneburAspNet.HttpContextAccessor.HttpContext;
             }
         }
+
+        public override bool IsPossuiRequisicaoAspNetAtiva => this.HttpContext?.Request != null;
+
         public AplicacaoSneburAspNet()
         {
 
@@ -34,11 +37,15 @@ namespace Snebur
             AplicacaoSneburAspNet.ServiceProvider = ServiceProvider;
         }
 
-     
+
 
         public override string RetornarIpDaRequisicao()
         {
             return this.HttpContext?.Connection.RemoteIpAddress.ToString();
         }
+
+        #region IAplicacaoSneburAspNet
+
+        #endregion
     }
 }

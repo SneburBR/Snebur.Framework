@@ -6,12 +6,7 @@ using System.Configuration;
 
 namespace Snebur.ServicoArquivo.Servidor
 {
-    public abstract class BaseAplicacaoServicoArquivo :
-#if NET50
-        AplicacaoSneburAspNetCore
-#else   
-        AplicacaoSnebur
-#endif
+    public abstract class BaseAplicacaoServicoArquivo : AplicacaoSneburAspNet
     {
         private const string CHAVE_AUTENTICAR_ACESSO_COMPARTILHADO = "IsAutenticarAcessoCompartilhado";
         private const string CHAVE_NOME_COMPUTADOR = "NomeComputadorAcesso";

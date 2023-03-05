@@ -41,9 +41,9 @@ namespace Snebur.ServicoArquivo.Cliente
         public event EventHandler<ErrorEventArgs> EnvioFinalizado;
 
         public BaseEnviadorArquivo(string urlServicoArquivo, TArquivo arquivo) :
-                                   this(urlServicoArquivo, arquivo, AplicacaoSnebur.Atual.CredencialUsuarioRequisicaoAtual,
-                                                                    AplicacaoSnebur.Atual.IdentificadorSessaoUsuarioRequisicaoAtual,
-                                                                    AplicacaoSnebur.Atual.IdentificadorProprietarioRequisicaoAtual)
+                                   this(urlServicoArquivo, arquivo, AplicacaoSnebur.Atual.CredencialUsuario,
+                                                                    AplicacaoSnebur.Atual.IdentificadorSessaoUsuario,
+                                                                    AplicacaoSnebur.Atual.IdentificadorProprietario)
         {
 
         }

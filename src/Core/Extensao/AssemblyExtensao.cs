@@ -99,12 +99,12 @@ namespace System.Reflection
                 return encoding.GetString(ms.GetBuffer()).Replace('\0', ' ').Trim();
             }
         }
- 
+
         public static FileInfo GetAssemblyFile(this Assembly assembly)
         {
             return new FileInfo(new Uri(assembly.Location).LocalPath);
         }
- 
+
         //public static FileInfo GetAssemblyFile(this AssemblyName assemblyName)
         //{
         //    return assemblyName.

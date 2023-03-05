@@ -11,7 +11,8 @@ namespace Snebur.Utilidade
 
         private static Version _versaoAplicacao;
         private static string _versaoAplicacaoString;
-        private static EnumTipoAplicacao? _tipoAplicacao;
+        private static Dimensao _resolucao;
+        private static SistemaOperacional _sistemaOperacional;
 
         public static string CaminhoAplicacao
         {
@@ -21,12 +22,32 @@ namespace Snebur.Utilidade
             }
         }
 
-        internal static EnumTipoAplicacao TipoAplicacao
+        //public static EnumTipoAplicacao TipoAplicacao
+        //{
+        //    get
+        //    {
+        //        return LazyUtil.RetornarValorLazyComBloqueio(ref _tipoAplicacao,
+        //                                                SistemaUtil.RetornarTipoAplicacaoInterno);
+
+        //    }
+        //}
+
+        public static SistemaOperacional SistemaOperacional
         {
             get
             {
-                return LazyUtil.RetornarValorLazyComBloqueio(ref _tipoAplicacao,
-                                                        SistemaUtil.RetornarTipoAplicacaoInterno);
+                return LazyUtil.RetornarValorLazyComBloqueio(ref _sistemaOperacional,
+                                                            SistemaUtil.RetornarSistemaOperacional);
+
+            }
+        }
+
+        public static Dimensao Resolucao
+        {
+            get
+            {
+                return LazyUtil.RetornarValorLazyComBloqueio(ref _resolucao,
+                                                            SistemaUtil.RetornarResolucao);
 
             }
         }
@@ -48,7 +69,7 @@ namespace Snebur.Utilidade
                                                                                       () => VersaoAplicacao.ToString());
         public static Version VersaoAplicacao => LazyUtil.RetornarValorLazyComBloqueio(ref _versaoAplicacao,
                                                                                  ReflexaoUtil.RetornarVersaoEntrada);
-        public static bool IsAplicacao64Bits => System.Environment.Is64BitProcess;
+        public static bool IsAplicacao64Bits => Environment.Is64BitProcess;
 
         public static bool IsAdministrator
         {
@@ -62,48 +83,48 @@ namespace Snebur.Utilidade
             }
         }
 
-        private static EnumTipoAplicacao RetornarTipoAplicacaoInterno()
-        {
+        //private static EnumTipoAplicacao RetornarTipoAplicacaoInterno()
+        //{
 
-            if (System.Reflection.Assembly.GetEntryAssembly() == null)
-            {
-                throw new Exception("O tip da aplicação deve ser implementado na AplicacaoSnebur");
-                //if (SistemaUtil.IsAplicacaoUnidadeTeste())
-                //{
-                //    return EnumTipoAplicacao.DotNet_UnitTest;
-                //}
-                //if (AplicacaoSnebur._aplicacao?.HttpContext != null)
-                //{
-                //    return EnumTipoAplicacao.DotNet_WebService;
-                //}
-            }
+        //    if (System.Reflection.Assembly.GetEntryAssembly() == null)
+        //    {
+        //        throw new Exception("O tip da aplicação deve ser implementado na AplicacaoSnebur");
+        //        //if (SistemaUtil.IsAplicacaoUnidadeTeste())
+        //        //{
+        //        //    return EnumTipoAplicacao.DotNet_UnitTest;
+        //        //}
+        //        //if (AplicacaoSnebur._aplicacao?.HttpContext != null)
+        //        //{
+        //        //    return EnumTipoAplicacao.DotNet_WebService;
+        //        //}
+        //    }
 
-            if (IsAplicacaoWindowsService())
-            {
-                //return EnumTipoAplicacao.DotNet_WindowService;
-                return EnumTipoAplicacao.DotNet_WebService;
-            }
-            return EnumTipoAplicacao.DotNet_Wpf;
-            //return EnumTipoAplicacao.DotNet_WebService;
-        }
+        //    if (IsAplicacaoWindowsService())
+        //    {
+        //        //return EnumTipoAplicacao.DotNet_WindowService;
+        //        return EnumTipoAplicacao.DotNet_WebService;
+        //    }
+        //    return EnumTipoAplicacao.DotNet_Wpf;
+        //    //return EnumTipoAplicacao.DotNet_WebService;
+        //}
 
-        private static bool IsAplicacaoUnidadeTeste()
-        {
-            try
-            {
-                var tipoTestClass = Type.GetType(SistemaUtil.NOME_QUALIFICADO_TIPO_TESTCLASSATTRIBUTE);
-                return tipoTestClass != null;
-            }
-            catch
-            {
-                return false;
-            }
-        }
+        //private static bool IsAplicacaoUnidadeTeste()
+        //{
+        //    try
+        //    {
+        //        var tipoTestClass = Type.GetType(SistemaUtil.NOME_QUALIFICADO_TIPO_TESTCLASSATTRIBUTE);
+        //        return tipoTestClass != null;
+        //    }
+        //    catch
+        //    {
+        //        return false;
+        //    }
+        //}
 
-        private static bool IsAplicacaoWindowsService()
-        {
-            return new WindowsServiceDetectar().IsAplicacaoWindowsService();
-        }
+        //private static bool IsAplicacaoWindowsService()
+        //{
+        //    return new WindowsServiceDetectar().IsAplicacaoWindowsService();
+        //}
 
         public static string RetornarCodinomeSistemaOperacional()
         {
@@ -174,18 +195,7 @@ namespace Snebur.Utilidade
             throw new ErroNaoSuportado("Platforma não suportado  " + sistemaOperacional.Platform.ToString());
         }
 
-        private class WindowsServiceDetectar
-        {
-            [DllImport("kernel32.dll", SetLastError = true)]
-            private static extern IntPtr GetStdHandle(int nStdHandle);
-            private const int STD_OUTPUT_HANDLE = -11;
-            private readonly IntPtr iStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 
-            public bool IsAplicacaoWindowsService()
-            {
-                return (this.iStdOut == IntPtr.Zero);
-            }
-        }
 
         public static bool IsPossuiPermisaoAdministrador()
         {
@@ -198,6 +208,47 @@ namespace Snebur.Utilidade
             {
                 WindowsPrincipal principal = new WindowsPrincipal(identity);
                 return principal.IsInRole(WindowsBuiltInRole.Administrator);
+            }
+        }
+
+        private static SistemaOperacional RetornarSistemaOperacional()
+        {
+            return new SistemaOperacional(EnumSistemaOperacional.Windows, "Windows",
+                                          Environment.OSVersion.Version.ToString(),
+                                          SistemaUtil.RetornarCodinomeSistemaOperacional());
+        }
+
+        private static Dimensao RetornarResolucao()
+        {
+
+            if (System.Reflection.Assembly.GetEntryAssembly() != null)
+            {
+                var nomeTipoSystemParameters = "System.Windows.SystemParameters, PresentationFramework";
+                var tipoSystemaParameters = Type.GetType(nomeTipoSystemParameters);
+                if (tipoSystemaParameters != null)
+                {
+                    var propreidadeLargura = tipoSystemaParameters.GetProperty("PrimaryScreenWidth");
+                    var propreidadeAltura = tipoSystemaParameters.GetProperty("PrimaryScreenHeight");
+
+                    var largura = ConverterUtil.Converter<int>(propreidadeLargura.GetValue(null));
+                    var altura = ConverterUtil.Converter<int>(propreidadeAltura.GetValue(null));
+
+                    _resolucao = new Dimensao((int)largura, (int)altura);
+                }
+            }
+            return new Dimensao(0, 0);
+        }
+
+        private class WindowsServiceDetectar
+        {
+            [DllImport("kernel32.dll", SetLastError = true)]
+            private static extern IntPtr GetStdHandle(int nStdHandle);
+            private const int STD_OUTPUT_HANDLE = -11;
+            private readonly IntPtr iStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+
+            public bool IsAplicacaoWindowsService()
+            {
+                return (this.iStdOut == IntPtr.Zero);
             }
         }
     }

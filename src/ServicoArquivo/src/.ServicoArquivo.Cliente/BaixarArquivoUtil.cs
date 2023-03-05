@@ -54,9 +54,9 @@ namespace Snebur.ServicoArquivo.Cliente
         {
             //var identificadorSessao = AplicacaoSnebur.Atual.IdentificadorSessaoUsuario;
 
-            var informacao = AplicacaoSnebur.Atual.InformacaoSessaoUsuarioRequisicaoAtual;
-            var identificadorProprietario = AplicacaoSnebur.Atual.IdentificadorProprietarioRequisicaoAtual;
-            var credencialUsuario = AplicacaoSnebur.Atual.CredencialUsuarioRequisicaoAtual;
+            var informacao = AplicacaoSnebur.Atual.InformacaoSessaoUsuario;
+            var identificadorProprietario = AplicacaoSnebur.Atual.IdentificadorProprietario;
+            var credencialUsuario = AplicacaoSnebur.Atual.CredencialUsuario;
 
             return RetornarStream(urlServico,
                                   idArquivo,

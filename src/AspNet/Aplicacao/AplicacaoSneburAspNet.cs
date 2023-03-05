@@ -2,37 +2,19 @@
 using Snebur.Seguranca;
 using Snebur.Utilidade;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace Snebur
 {
-    public class AplicacaoSneburAspNet : AplicacaoSnebur
+    public class AplicacaoSneburAspNet : AplicacaoSnebur, IAplicacaoSneburAspNet
     {
         public const string PARAMETRO_IP_REQUISICAO = "IpRequisicao";
-
         public override EnumTipoAplicacao TipoAplicacao => EnumTipoAplicacao.DotNet_WebService;
-
-        public virtual HttpContext HttpContext
-        {
-            get
-            {
-#if NetCore
-                return this.FuncaoRetornaHttpContextAtual?.Invoke();
-#else
-
-                return HttpContext.Current;
-#endif
-            }
-        }
-
+        public virtual HttpContext HttpContext => HttpContext.Current;
+       
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public override InformacaoSessaoUsuario InformacaoSessaoUsuarioRequisicaoAtual
+        public override InformacaoSessaoUsuario InformacaoSessaoUsuario
         {
             get
             {
@@ -47,12 +29,12 @@ namespace Snebur
                         }
                     }
                 }
-                return base.InformacaoSessaoUsuarioRequisicaoAtual;
+                return base.InformacaoSessaoUsuario;
             }
         }
-         
+
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public override string IdentificadorProprietarioRequisicaoAtual
+        public override string IdentificadorProprietario
         {
             get
             {
@@ -67,13 +49,12 @@ namespace Snebur
                         }
                     }
                 }
-                return base.IdentificadorProprietarioRequisicaoAtual;
-
+                return base.IdentificadorProprietario;
             }
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public override Guid IdentificadorSessaoUsuarioRequisicaoAtual
+        public override Guid IdentificadorSessaoUsuario
         {
             get
             {
@@ -88,13 +69,13 @@ namespace Snebur
                         }
                     }
                 }
-                return base.IdentificadorSessaoUsuarioRequisicaoAtual;
+                return base.IdentificadorSessaoUsuario;
 
             }
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public override CredencialUsuario CredencialUsuarioRequisicaoAtual
+        public override CredencialUsuario CredencialUsuario
         {
             get
             {
@@ -109,51 +90,75 @@ namespace Snebur
                         }
                     }
                 }
-                return base.CredencialUsuarioRequisicaoAtual;
+                return base.CredencialUsuario;
             }
         }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public override string UserAgent => this.HttpContext?.Request?.UserAgent;
-
-        public override string RetornarIpDaRequisicao()
+         
+        public override string IP
         {
-           
-            var httpContext = this.HttpContext;
-            string ip = null;
-            if (httpContext != null)
+            get
             {
-#if NetCore
-                ip = httpContext.Connection.RemoteIpAddress.ToString();
-#else
-                if (httpContext.Request.Headers[PARAMETRO_IP_REQUISICAO] != null)
+                var httpContext = this.HttpContext;
+                string ip = null;
+                if (httpContext != null)
                 {
-                    var ipRequisicao = httpContext.Request.Headers[PARAMETRO_IP_REQUISICAO];
-                    if (IpUtil.IsIP(ipRequisicao))
+                    if (httpContext.Request.Headers[PARAMETRO_IP_REQUISICAO] != null)
                     {
-                        return ipRequisicao;
+                        var ipRequisicao = httpContext.Request.Headers[PARAMETRO_IP_REQUISICAO];
+                        if (IpUtil.IsIP(ipRequisicao))
+                        {
+                            return ipRequisicao;
+                        }
+                    }
+                    ip = httpContext.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+                    if (!ValidacaoUtil.IsIp(ip))
+                    {
+                        ip = httpContext.Request.ServerVariables["REMOTE_ADDR"];
+                    }
+                    if (ip == ConstantesIP.IP6_LOCAL)
+                    {
+                        return ConstantesIP.IP_LOCAL;
+                    }
+                    if (ValidacaoUtil.IsIp(ip))
+                    {
+                        return ip;
                     }
                 }
-                ip = httpContext.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
-                if (!ValidacaoUtil.IsIp(ip))
-                {
-                    ip = httpContext.Request.ServerVariables["REMOTE_ADDR"];
-                }
-#endif
-                if (ip == ConstantesIP.IP6_LOCAL)
-                {
-                    return ConstantesIP.IP_LOCAL;
-                }
-                if (ValidacaoUtil.IsIp(ip))
-                {
-                    return ip;
-                }
+                return base.IP;
             }
 
-            return base.RetornarIp();
+
             //throw new Exception("Não foi possível retornar o IP da requisição");
         }
 
-        public static AplicacaoSneburAspNet AtualAspNet => AplicacaoSnebur.Atual as AplicacaoSneburAspNet;
+        //public static AplicacaoSneburAspNet AtualAspNet => AplicacaoSnebur.Atual as AplicacaoSneburAspNet;
+
+        #region IAplicacaoSneburAspNet
+        public bool IsPossuiRequisicaoAspNetAtiva => this.HttpContext?.Request != null;
+
+        public string RetornarValueCabecalho(string chave)
+        {
+            throw new NotImplementedException();
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public string UserAgent => this.HttpContext?.Request?.UserAgent;
+
+        public T GetHttpContext<T>()
+        {
+            if(this.HttpContext== null)
+            {
+                return default;
+            }
+
+            if( this.HttpContext is T httpContext) 
+            {
+                return httpContext;
+            }
+            throw new Exception($"Não foi possível converter HttpContext para o tipo {typeof(T).Name}");
+        }
+
+        #endregion
+
     }
 }

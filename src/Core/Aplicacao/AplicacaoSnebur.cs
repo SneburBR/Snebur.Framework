@@ -14,6 +14,7 @@ using System.Globalization;
 using System.Net;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
+using System.Threading;
 using System.Timers;
 
 namespace Snebur
@@ -35,7 +36,6 @@ namespace Snebur
         private string _nomeAplicacao;
         private string _nomeEmpresa;
         private Version _versaoAplicacao;
-        private EnumTipoAplicacao? _tipoAplicacao;
         private bool? _capturarPrimeiroErroAtivo;
         private CultureInfo _cultura;
 
@@ -46,18 +46,19 @@ namespace Snebur
         private IServicoUsuario _servicoUsuario;
         private object _bloqueioInicializar = new object();
 
-        private readonly Timer TimerAplicacaoAtiva;
+        private readonly System.Timers.Timer TimerAplicacaoAtiva;
 
         private TimeSpan? _diferencaDataHoraServidor;
         private NameValueCollection _appSettings;
         private NameValueCollection _connectionStrings;
+
+        private bool IsAplicaoAspNet { get; }
 
         public virtual string UrlPingInternetConectada { get; set; }
 
         public IAlerta Alerta { get; set; }
 
         internal protected virtual dynamic DispatcherObject { get; } = null;
-
         public virtual bool IsMainThread { get; } = false;
 
         protected virtual bool IsNotificarLogAplicacaoInicializada { get; } = true;
@@ -268,22 +269,22 @@ namespace Snebur
             }
         }
 
-        public virtual EnumTipoAplicacao TipoAplicacao
-        {
-            get
-            {
-                //if(this.HttpContext!= null)
-                //{
-                //    return EnumTipoAplicacao.DotNet_WebService;
-                //}
+        public abstract EnumTipoAplicacao TipoAplicacao { get; }
+        //{
+        //    get
+        //    {
+        //        //if(this.HttpContext!= null)
+        //        //{
+        //        //    return EnumTipoAplicacao.DotNet_WebService;
+        //        //}
 
-                if (!this._tipoAplicacao.HasValue)
-                {
-                    this._tipoAplicacao = SistemaUtil.TipoAplicacao;
-                }
-                return this._tipoAplicacao.Value;
-            }
-        }
+        //        if (!this._tipoAplicacao.HasValue)
+        //        {
+        //            this._tipoAplicacao = SistemaUtil.TipoAplicacao;
+        //        }
+        //        return this._tipoAplicacao.Value;
+        //    }
+        //}
 
         public string NomeComputador
         {
@@ -334,32 +335,28 @@ namespace Snebur
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual InformacaoSessaoUsuario InformacaoSessaoUsuarioRequisicaoAtual => SessaoUtil.RetornarInformacaoSessaoUsuarioAplicacao();
+        public virtual InformacaoSessaoUsuario InformacaoSessaoUsuario => this.RetornarInformacaoSessaoUsuario();
+        public virtual string IP => this.RetornarIp();
+
+        //[EditorBrowsable(EditorBrowsableState.Never)]
+        //public virtual InformacaoSessaoUsuario InformacaoSessaoUsuarioRequisicaoAtual => SessaoUtil.RetornarInformacaoSessaoUsuarioAplicacao();
 
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual Guid IdentificadorSessaoUsuarioRequisicaoAtual => this.IdentificadorSessaoUsuario;
+        //[EditorBrowsable(EditorBrowsableState.Never)]
+        //public virtual Guid IdentificadorSessaoUsuarioRequisicaoAtual => this.IdentificadorSessaoUsuario;
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual CredencialUsuario CredencialUsuarioRequisicaoAtual => this.CredencialUsuario;
-
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual string IdentificadorProprietarioRequisicaoAtual => this.IdentificadorProprietario;
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual string UserAgent => null;
-
-        public abstract string RetornarIpDaRequisicao();
-
-        public virtual string RetornarIp()
-        {
-            return IpUtil.RetornarIPInformacao(String.Empty).IP;
-            //throw new NotImplementedException();
-            //return IpUtil.RetornarIPInformacaoRequisicao(isRetornarNullNaoEncotnrado).IP;
-        }
+        //[EditorBrowsable(EditorBrowsableState.Never)]
+        //public virtual CredencialUsuario CredencialUsuarioRequisicaoAtual => this.CredencialUsuario;
 
 
+        //[EditorBrowsable(EditorBrowsableState.Never)]
+        //public virtual string IdentificadorProprietarioRequisicaoAtual => this.IdentificadorProprietario;
+
+        //[EditorBrowsable(EditorBrowsableState.Never)]
+        //public virtual string UserAgent => null;
+
+        //public abstract string RetornarIpDaRequisicao();
+         
         #endregion
 
         #region Propriedade funções
@@ -407,6 +404,8 @@ namespace Snebur
         public event EventHandler NovaSessaoUsuarioInicializada;
         public event EventHandler CredencialAlterada;
 
+        public bool IsAplicacaoAspNet { get; }
+        public IAplicacaoSneburAspNet AspNet { get; }
         #endregion
 
         #region Construtor
@@ -417,7 +416,7 @@ namespace Snebur
             //AppDomain.CurrentDomain.FirstChanceException += this.Aplicacao_FirstChanceException;
             AppDomain.CurrentDomain.ProcessExit += this.Aplicacao_ProcessExit;
 
-            this.TimerAplicacaoAtiva = new Timer((int)TimeSpan.FromMinutes(INTERVALO_NOTIFICAR_APLICACAO_ATIVA).TotalMilliseconds);
+            this.TimerAplicacaoAtiva = new System.Timers.Timer((int)TimeSpan.FromMinutes(INTERVALO_NOTIFICAR_APLICACAO_ATIVA).TotalMilliseconds);
             this.TimerAplicacaoAtiva.Elapsed += this.Aplicacao_NotificarAplicacaoAtiva;
 
             System.Threading.Thread.CurrentThread.CurrentCulture = this.CulturaPadrao;
@@ -428,6 +427,12 @@ namespace Snebur
             //FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
             this.InicializarComunicacao();
+
+            if (this is IAplicacaoSneburAspNet aspNet)
+            {
+                this.IsAplicacaoAspNet = true;
+                this.AspNet = aspNet;
+            }
 
             // ThreadUtil.ExecutarDepoisAsync(this.VerificarAplicacaoInicializada, this.TempoVerificarInicializacao);
         }
@@ -635,13 +640,13 @@ namespace Snebur
             {
                 var assemblyName = new AssemblyName(assemblyEntrada.FullName);
                 var identificadorAplicacao = assemblyName.Name;
- 
+
                 const string NET50 = ".Net50";
                 if (identificadorAplicacao.EndsWith(NET50))
                 {
                     throw new Exception("Renomear o nome do assembly" + identificadorAplicacao);
                 }
- 
+
                 return identificadorAplicacao;
             }
             throw new Erro("Não foi possível retornar o identificador da aplicação");
@@ -665,8 +670,6 @@ namespace Snebur
         {
             return DateTime.UtcNow;
         }
-
-
 
         private static IServicoLogErro RetornarServicoErro()
         {
@@ -692,6 +695,46 @@ namespace Snebur
         {
             return ConfiguracaoUtil.AmbienteServidor;
         }
+
+        protected virtual InformacaoSessaoUsuario RetornarInformacaoSessaoUsuario()
+        {
+            var tipoAplicacao = this.TipoAplicacao;
+            var userAgent = this.AspNet?.UserAgent;
+            var identificadorSessaoUsuario = this.IdentificadorSessaoUsuario;
+            var identificadorAplicacao = this.IdentificadorAplicacao;
+            //var ipInformacao = IpUtil.RetornarIpInformacao();
+            //var identificadorProprietario = AplicacaoSnebur.Atual.IdentificadorProprietario;
+
+            var sistemaOperacional = SistemaUtil.SistemaOperacional;
+            var resolucao = SistemaUtil.Resolucao;
+            var versaoAplicacao = this.VersaoAplicao.ToString();
+            var nomeComptuador = Environment.MachineName;
+
+            if (identificadorAplicacao == null)
+            {
+                throw new ArgumentNullException(nameof(identificadorAplicacao));
+            }
+
+            return new InformacaoSessaoUsuario
+            {
+                IdentificadorSessaoUsuario = identificadorSessaoUsuario,
+                //IdentificadorProprietario = identificadorProprietario,
+                IdentificadorAplicacao = identificadorAplicacao,
+                TipoAplicacao = tipoAplicacao,
+                //IPInformacao = ipInformacao,
+                //IP = ipInformacao.IP,
+                UserAgent = userAgent,
+                Cultura = Thread.CurrentThread.CurrentCulture.Name,
+                Idioma = CultureInfo.InstalledUICulture.Name,
+                Navegador = new Navegador(),
+                Plataforma = EnumPlataforma.PC,
+                SistemaOperacional = sistemaOperacional,
+                Resolucao = resolucao,
+                VersaoAplicacao = versaoAplicacao,
+                NomeComputador = nomeComptuador,
+            };
+        }
+
         #endregion
 
         protected virtual string RetornarUrlServico(string chaveConfiguracao)
@@ -713,6 +756,14 @@ namespace Snebur
             }
             return this.UrlsServico[chaveConfiguracao];
         }
+
+        private string RetornarIp()
+        {
+            return IpUtil.RetornarIPInformacao(String.Empty).IP;
+            //throw new NotImplementedException();
+            //return IpUtil.RetornarIPInformacaoRequisicao(isRetornarNullNaoEncotnrado).IP;
+        }
+
 
 #if NetCore == false
 

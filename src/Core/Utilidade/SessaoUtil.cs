@@ -5,6 +5,7 @@ using System.Collections.Concurrent;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Web;
@@ -19,7 +20,7 @@ namespace Snebur.Utilidade
         //public const string IDENTIFICADOR_PROPRIETARIO = "IdentificadorProprietario";
         private const string CHAVE_CRIPTOGRAFIA = "248c6619-8119-45bd-ae2a-662512aff841";
 
-        private static Dimensao _resolucao;
+        
         private static CredencialUsuario _credencialUsuario;
 
         private static object _bloqueioIdentificadorSessaoUsuario = new object();
@@ -32,50 +33,52 @@ namespace Snebur.Utilidade
         //    return AplicacaoSnebur.Atual.InformacaoSessaoUsuarioAtual;
         //}
 
-        public static InformacaoSessaoUsuario RetornarInformacaoSessaoUsuarioAplicacao()
-        {
+        //public static InformacaoSessaoUsuario RetornarInformacaoSessaoUsuarioAplicacao()
+        //{
+        //    var tipoAplicacao = AplicacaoSnebur.Atual.TipoAplicacao;
+        //    //var ipInformacao = IpUtil.RetornarIpInformacao();
+        //    var userAgent = SessaoUtil.RetornarUserAgent();
+        //    var identificadorSessaoUsuario = AplicacaoSnebur.Atual.IdentificadorSessaoUsuario;
+        //    //var identificadorProprietario = AplicacaoSnebur.Atual.IdentificadorProprietario;
+        //    var identificadorAplicacao = AplicacaoSnebur.Atual.IdentificadorAplicacao;
+        //    var sistemaOperacional = SessaoUtil.RetornarSistemaOperacional();
+        //    var resolucao = SessaoUtil.RetornarResolucao();
+        //    var versaoAplicacao = AplicacaoSnebur.Atual.VersaoAplicao.ToString();
+        //    var nomeComptuador = Environment.MachineName;
 
-            var tipoAplicacao = AplicacaoSnebur.Atual.TipoAplicacao;
-            //var ipInformacao = SessaoUtil.RetornarIpInformacao();
-            var userAgent = SessaoUtil.RetornarUserAgent();
+        //    if (identificadorAplicacao == null)
+        //    {
+        //        throw new ArgumentNullException(nameof(identificadorAplicacao));
+        //    }
 
-            var identificadorSessaoUsuario = AplicacaoSnebur.Atual.IdentificadorSessaoUsuario;
-            //var identificadorProprietario = AplicacaoSnebur.Atual.IdentificadorProprietario;
-            var identificadorAplicacao = AplicacaoSnebur.Atual.IdentificadorAplicacao;
-            var sistemaOperacional = SessaoUtil.RetornarSistemaOperacional();
-            var resolucao = SessaoUtil.RetornarResolucao();
-            var versaoAplicacao = AplicacaoSnebur.Atual.VersaoAplicao.ToString();
-            var nomeComptuador = Environment.MachineName;
+        //    return new InformacaoSessaoUsuario
+        //    {
+        //        IdentificadorSessaoUsuario = identificadorSessaoUsuario,
+        //        //IdentificadorProprietario = identificadorProprietario,
+        //        IdentificadorAplicacao = identificadorAplicacao,
+        //        TipoAplicacao = tipoAplicacao,
+        //        //IPInformacao = ipInformacao,
+        //        //IP = ipInformacao.IP,
+        //        UserAgent = userAgent,
+        //        Cultura = Thread.CurrentThread.CurrentCulture.Name,
+        //        Idioma = CultureInfo.InstalledUICulture.Name,
+        //        Navegador = new Navegador(),
+        //        Plataforma = EnumPlataforma.PC,
+        //        SistemaOperacional = sistemaOperacional,
+        //        Resolucao = resolucao,
+        //        VersaoAplicacao = versaoAplicacao,
+        //        NomeComputador = nomeComptuador,
+        //    };
+        //}
 
-            if (identificadorAplicacao == null)
-            {
-                throw new ArgumentNullException(nameof(identificadorAplicacao));
-            }
-
-            return new InformacaoSessaoUsuario
-            {
-                IdentificadorSessaoUsuario = identificadorSessaoUsuario,
-                //IdentificadorProprietario = identificadorProprietario,
-                IdentificadorAplicacao = identificadorAplicacao,
-                TipoAplicacao = tipoAplicacao,
-                //IPInformacao = ipInformacao,
-                //IP = ipInformacao.IP,
-                UserAgent = userAgent,
-                Cultura = Thread.CurrentThread.CurrentCulture.Name,
-                Idioma = CultureInfo.InstalledUICulture.Name,
-                Navegador = new Navegador(),
-                Plataforma = EnumPlataforma.PC,
-                SistemaOperacional = sistemaOperacional,
-                Resolucao = resolucao,
-                VersaoAplicacao = versaoAplicacao,
-                NomeComputador = nomeComptuador,
-            };
-        }
-
-        private static string RetornarUserAgent()
-        {
-            return AplicacaoSnebur.Atual.UserAgent;
-        }
+        //private static string RetornarUserAgent()
+        //{
+        //    if (AplicacaoSnebur.Atual.IsAplicacaoAspNet)
+        //    {
+        //        return AplicacaoSnebur.Atual.AspNet.UserAgent;
+        //    }
+        //    return null;
+        //}
 
         //public static DadosIPInformacao RetornarIpInformacao()
         //{
@@ -87,36 +90,7 @@ namespace Snebur.Utilidade
         //    return _dadosIpInformacao;
         //}
 
-        private static SistemaOperacional RetornarSistemaOperacional()
-        {
-            return new SistemaOperacional(EnumSistemaOperacional.Windows, "Windows",
-                                          Environment.OSVersion.Version.ToString(),
-                                          SistemaUtil.RetornarCodinomeSistemaOperacional());
-        }
-
-        private static Dimensao RetornarResolucao()
-        {
-            if (_resolucao == null)
-            {
-                if (System.Reflection.Assembly.GetEntryAssembly() != null)
-                {
-                    var nomeTipoSystemParameters = "System.Windows.SystemParameters, PresentationFramework";
-                    var tipoSystemaParameters = Type.GetType(nomeTipoSystemParameters);
-                    if (tipoSystemaParameters != null)
-                    {
-                        var propreidadeLargura = tipoSystemaParameters.GetProperty("PrimaryScreenWidth");
-                        var propreidadeAltura = tipoSystemaParameters.GetProperty("PrimaryScreenHeight");
-
-                        var largura = ConverterUtil.Converter<int>(propreidadeLargura.GetValue(null));
-                        var altura = ConverterUtil.Converter<int>(propreidadeAltura.GetValue(null));
-
-                        _resolucao = new Dimensao((int)largura, (int)altura);
-                    }
-                }
-                _resolucao = new Dimensao(0, 0);
-            }
-            return _resolucao;
-        }
+      
         #endregion
 
         #region Identificador Sessão usuario

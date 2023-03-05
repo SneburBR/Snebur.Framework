@@ -1,5 +1,4 @@
-﻿using Snebur.Utilidade;
-using System;
+﻿using System;
 
 namespace Snebur.Dominio.Atributos
 {
@@ -9,13 +8,14 @@ namespace Snebur.Dominio.Atributos
 
         public ValorPadraoIPAttribute()
         {
+
         }
 
         public object RetornarValorPadrao(object contexto, 
                                           Entidade entidade, 
                                           object valorPropriedade)
         {
-            return AplicacaoSnebur.Atual.RetornarIpDaRequisicao();
+            return AplicacaoSnebur.Atual.IP;
             //return IpUtil.RetornarIpInternet();
         }
         #region IValorPadrao 

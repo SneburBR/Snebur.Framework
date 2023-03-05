@@ -15,7 +15,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Snebur.ServicoArquivo.Servidor</RootNamespace>
     <AssemblyName>Snebur.ServicoArquivo.Servidor</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -94,6 +94,10 @@
     <Folder Include="HttpContext\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\AspNet\Snebur.AspNet.csproj">
+      <Project>{a3f02a0d-44b9-41ee-8d25-813997506f51}</Project>
+      <Name>Snebur.AspNet</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Computador\Snebur.Computador.csproj">
       <Project>{e75e2ec1-b6da-4271-a069-933911b4a606}</Project>
       <Name>Snebur.Computador</Name>
@@ -113,10 +117,6 @@
     <ProjectReference Include="..\..\..\Seguranca\Snebur.Seguranca.csproj">
       <Project>{65b693fa-a999-48c3-9dae-6da21a1158b7}</Project>
       <Name>Snebur.Seguranca</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Snebur.AspNet\Snebur.AspNet.csproj">
-      <Project>{a3f02a0d-44b9-41ee-8d25-813997506f51}</Project>
-      <Name>Snebur.AspNet</Name>
     </ProjectReference>
     <ProjectReference Include="..\ServicoArquivo\Snebur.ServicoArquivo.csproj">
       <Project>{3f344a32-39ce-469c-a4ff-bd7ef353912b}</Project>

@@ -25,7 +25,7 @@ namespace Snebur.Comunicacao
 
         protected abstract CredencialServico CredencialServico { get; }
 
-        protected virtual CredencialUsuario CredencialUsuario => AplicacaoSnebur.Atual.CredencialUsuarioRequisicaoAtual;
+        protected virtual CredencialUsuario CredencialUsuario => AplicacaoSnebur.Atual.CredencialUsuario;
 
         protected virtual CredencialUsuario CredencialAvalista { get; }
 
@@ -138,12 +138,12 @@ namespace Snebur.Comunicacao
 
         protected virtual InformacaoSessaoUsuario RetornarInformacaoSessoUsuarioRequisicaoAtual()
         {
-            return AplicacaoSnebur.Atual.InformacaoSessaoUsuarioRequisicaoAtual;
+            return AplicacaoSnebur.Atual.InformacaoSessaoUsuario;
         }
 
         protected virtual string IdentificadorProprietarioRequisicaoAtual()
         {
-            return AplicacaoSnebur.Atual.IdentificadorProprietarioRequisicaoAtual;
+            return AplicacaoSnebur.Atual.IdentificadorProprietario;
         }
 
         //protected virtual InformacaoSessaoUsuario RetornarInformacaoSessaoUsuario()

@@ -31,19 +31,19 @@ namespace Snebur.Utilidade
                 return AplicacaoSnebur._aplicacao.GetType().Assembly;
             }
 
-            var assemblites = AppDomain.CurrentDomain.GetAssemblies();
-            if (SistemaUtil.TipoAplicacao == Dominio.EnumTipoAplicacao.DotNet_UnitTest)
-            {
-                foreach (var assembly in assemblites)
-                {
-                    var assemblyName = new AssemblyName(assembly.FullName);
-                    if (assemblyName.Name.StartsWith(NOME_SNEBUR) && assemblyName.Name.ToLower().Contains("test"))
-                    {
-                        return assembly;
-                    }
-                }
-            }
-            throw new Erro("Não foi possivel retornar o assembly de entrada, defina a class da aplicação snebur");
+            //var assemblites = AppDomain.CurrentDomain.GetAssemblies();
+            //if (AplicacaoSnebur.Atual.TipoAplicacao == Dominio.EnumTipoAplicacao.DotNet_UnitTest)
+            //{
+            //    foreach (var assembly in assemblites)
+            //    {
+            //        var assemblyName = new AssemblyName(assembly.FullName);
+            //        if (assemblyName.Name.StartsWith(NOME_SNEBUR) && assemblyName.Name.ToLower().Contains("test"))
+            //        {
+            //            return assembly;
+            //        }
+            //    }
+            //}
+            throw new Erro("Não foi possível retornar o assembly de entrada, defina a class da aplicação snebur");
         }
 
         public static Version RetornarVersaoEntrada()
@@ -105,7 +105,7 @@ namespace Snebur.Utilidade
 
             if (String.IsNullOrWhiteSpace(atributoNomeEmpresa?.Company))
             {
-                if (DebugUtil.IsAttached && SistemaUtil.TipoAplicacao != Dominio.EnumTipoAplicacao.DotNet_UnitTest)
+                if (DebugUtil.IsAttached )
                 {
                     throw new Exception(String.Format("O atributo {0} não foi definido no AssemblyInfo", nameof(AssemblyCompanyAttribute)));
                 }

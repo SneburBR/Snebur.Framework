@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Snebur.Comunicacao</RootNamespace>
     <AssemblyName>Snebur.Comunicacao.Servidor</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -62,13 +62,13 @@
     <Compile Include="Requisicao.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\AspNet\Snebur.AspNet.csproj">
+      <Project>{a3f02a0d-44b9-41ee-8d25-813997506f51}</Project>
+      <Name>Snebur.AspNet</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Core\Snebur.csproj">
       <Project>{ec174c4f-8122-41a3-8360-f04c4c8fc3ba}</Project>
       <Name>Snebur</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Snebur.AspNet\Snebur.AspNet.csproj">
-      <Project>{a3f02a0d-44b9-41ee-8d25-813997506f51}</Project>
-      <Name>Snebur.AspNet</Name>
     </ProjectReference>
     <ProjectReference Include="..\Comunicacao\Snebur.Comunicacao.csproj">
       <Project>{b44697c1-5c0c-40cf-814d-2bfba2498bf6}</Project>

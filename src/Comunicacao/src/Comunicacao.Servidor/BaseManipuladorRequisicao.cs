@@ -4,6 +4,7 @@ using Snebur.Servicos;
 using Snebur.Utilidade;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -72,7 +73,6 @@ namespace Snebur.Comunicacao
         {
             var host = request.RetornarUrlRequisicao()?.Host?.ToLower() ?? " host não definida";
             var url = request?.RetornarUrlRequisicao()?.AbsoluteUri ?? " url não definida";
-
             var identificadorPropriedadetarioNoCabecalho = request.Headers.GetValue(ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO) ??
                                                                                  $"{ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO} não definido no cabeçalho ";
 
@@ -253,5 +253,14 @@ namespace Snebur.Comunicacao
         {
         }
 
+    }
+
+    public static class NameValueCollectionEx
+    {
+        public static string GetValue(this NameValueCollection value, 
+                                      string chave)
+        {
+            return value["chave"];
+        }
     }
 }

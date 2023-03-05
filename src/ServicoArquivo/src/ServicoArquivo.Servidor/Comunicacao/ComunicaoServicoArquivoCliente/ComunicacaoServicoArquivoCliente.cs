@@ -30,7 +30,7 @@ namespace Snebur.ServicoArquivo
             get
             {
                 var parametros = new Dictionary<string, string>();
-                var request = AplicacaoSneburAspNet.AtualAspNet?.HttpContext?.Request;
+                var request = AplicacaoSnebur.Atual.AspNet.GetHttpContext<HttpContext>()?.Request;
                 if (request != null)
                 {
                     var host = request.RetornarUrlRequisicao().Host.ToLower();
@@ -53,7 +53,8 @@ namespace Snebur.ServicoArquivo
                                                CredencialUsuario credencialUsuarioRequisicao,
                                                Guid identificadorSessaoUsuario,
                                                string identficadorProprietario,
-                                               FuncaoNormalizadorOrigem funcaoNormalizadorOrigem) : base(urlServico)
+                                               FuncaoNormalizadorOrigem funcaoNormalizadorOrigem) : 
+                                               base(urlServico)
         {
             this.CredencialUsuarioRequisicao = credencialUsuarioRequisicao;
             this.IdentificadorSessaoUsuario = identificadorSessaoUsuario;
@@ -103,13 +104,16 @@ namespace Snebur.ServicoArquivo
             object[] parametros = { idArquivo, progresso };
             return this.ChamarServico<bool>(MethodBase.GetCurrentMethod(), parametros);
         }
+
         #endregion
 
         #region Métodos protegidos
 
         protected override InformacaoSessaoUsuario RetornarInformacaoSessoUsuarioRequisicaoAtual()
         {
-            return SessaoUtil.RetornarInformacaoSessaoUsuarioAplicacao();
+            return AplicacaoSnebur.Atual.InformacaoSessaoUsuario;
+
+            //return SessaoUtil.RetornarInformacaoSessaoUsuarioAplicacao();
             //return SessaoUtil.RetornarInformacaoSessaoUsuarioAplicacao();
             
             
@@ -124,8 +128,7 @@ namespace Snebur.ServicoArquivo
         {
             return this.IdentficadorProprietario;
         }
-
-
+         
         protected override CredencialUsuario CredencialAvalista
         {
             get

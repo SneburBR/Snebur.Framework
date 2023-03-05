@@ -7,8 +7,9 @@
         //Para compatibilidade do .Net  5.0
         public static Uri RetornarUrlRequisicao(this HttpRequest httpRequest)
         {
-            return httpRequest.UrlReferrer ??
-                   httpRequest.Url;
+            return httpRequest.Url ??
+                   httpRequest.UrlReferrer;
+                   
         }
     }
 }

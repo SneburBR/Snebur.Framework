@@ -15,7 +15,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Snebur</RootNamespace>
     <AssemblyName>Snebur</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -96,7 +96,7 @@
   <ItemGroup>
     <Compile Include="Aplicacao\AplicacaoSnebur.cs" />
     <Compile Include="Aplicacao\AplicacaoSnebur.Partial.cs" />
-    <Compile Include="Aplicacao\AplicacaoSneburInterna.cs" />
+    <Compile Include="Aplicacao\IAplicacaoSneburAspNet.cs" />
     <Compile Include="Arquivo\EnumTipoArquivo.cs" />
     <Compile Include="Atributos\AcessoDados\AutorizarAlteracaoPropriedade.cs" />
     <Compile Include="Atributos\AcessoDados\AutorizarInstanciaNaoEspecializadaAttribute.cs" />

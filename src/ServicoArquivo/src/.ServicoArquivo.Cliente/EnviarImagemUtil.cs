@@ -35,13 +35,13 @@ namespace Snebur.ServicoArquivo.Cliente
                                                            Stream stream)
         {
             var aplicacao = AplicacaoSnebur.Atual;
-            var informacaoSessaoUsuario = aplicacao.InformacaoSessaoUsuarioRequisicaoAtual;
-            var credencialUsuario = aplicacao.CredencialUsuarioRequisicaoAtual;
+            var informacaoSessaoUsuario = aplicacao.InformacaoSessaoUsuario;
+            var credencialUsuario = aplicacao.CredencialUsuario;
             
             return EnviarImagem(aplicacao.UrlServicoImagem, imagem, stream, tamanhoImagem,
                                 credencialUsuario,
                                 informacaoSessaoUsuario.IdentificadorSessaoUsuario,
-                                aplicacao.IdentificadorProprietarioRequisicaoAtual);
+                                aplicacao.IdentificadorProprietario);
         }
 
         public static ResultadoServicoArquivo EnviarImagem(string urlServico, IImagem imagem,

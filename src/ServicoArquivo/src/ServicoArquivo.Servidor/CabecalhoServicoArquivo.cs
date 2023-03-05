@@ -42,7 +42,7 @@ namespace Snebur.ServicoArquivo
             this.TotalBytes = this.RetornarLong(ConstantesServicoArquivo.TOTAL_BYTES);
 
             this.TamanhoPacote = this.RetornarInteger(ConstantesServicoArquivo.TAMANHO_PACOTE);
-            this.Ip = AplicacaoSnebur.Atual?.RetornarIpDaRequisicao();
+            this.Ip = AplicacaoSnebur.Atual.IP;
             this.CheckSumArquivo = this.RetornarString(ConstantesServicoArquivo.CHECKSUM_ARQUIVO);
             this.CheckSumPacote = this.RetornarString(ConstantesServicoArquivo.CHECKSUM_PACOTE);
 

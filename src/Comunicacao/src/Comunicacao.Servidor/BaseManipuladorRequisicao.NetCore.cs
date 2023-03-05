@@ -20,7 +20,10 @@ namespace Snebur.Comunicacao
             throw new NotImplementedException();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory, IServiceProvider svp)
+        public void Configure(IApplicationBuilder app, 
+                              IWebHostEnvironment env, 
+                              ILoggerFactory loggerFactory, 
+                              IServiceProvider svp)
         {
             throw new NotImplementedException();
         }
