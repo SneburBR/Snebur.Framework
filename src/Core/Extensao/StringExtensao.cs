@@ -35,6 +35,7 @@ namespace System
             return TextoUtil.RetornarPrimeirosCaracteres(str, numeroCaracteres);
         }
 
+
         public static string RetornarPrimeirosCaracteres(this string str, int numeroCaracteres, bool removerLinhasTabulacoes)
         {
             return TextoUtil.RetornarPrimeirosCaracteres(str, numeroCaracteres, removerLinhasTabulacoes);
@@ -102,6 +103,19 @@ namespace System
         public static string FormatToKey(this string str)
         {
             return str.ToLower().ReplaceWhiteSpace("_");
+        }
+
+        public static string RemoverAcentosECaracteresEspecial(this string str)
+        {
+            return TextoUtil.RemoverAcentosECaracteresEspecial(str);
+        }
+        public static string RemoverAcentos(this string str)
+        {
+            return TextoUtil.RemoverAcentos(str);
+        }
+        public static string RemoverCaracteresEspecial(this string str)
+        {
+            return TextoUtil.RemoverCaracteresEspecial(str);
         }
 
     }

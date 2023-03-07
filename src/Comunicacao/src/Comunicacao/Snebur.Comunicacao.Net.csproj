@@ -18,12 +18,12 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<DefineConstants>NET50; DEBUG;TRACE</DefineConstants>
+		<DefineConstants>NetCore; DEBUG;TRACE</DefineConstants>
 		<WarningLevel>4</WarningLevel>
 		<NoWarn>1701;1702</NoWarn>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<DefineConstants>NET50; DEBUG;TRACE</DefineConstants>
+		<DefineConstants>NetCore; DEBUG;TRACE</DefineConstants>
 	</PropertyGroup>
 	<ItemGroup>
 		<Compile Remove="NormalizarDeserializacao.cs" />

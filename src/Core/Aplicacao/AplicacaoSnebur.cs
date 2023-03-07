@@ -412,6 +412,8 @@ namespace Snebur
 
         protected AplicacaoSnebur()
         {
+            AplicacaoSnebur._aplicacao = this;
+
             AppDomain.CurrentDomain.UnhandledException += this.Aplicacao_UnhandledException;
             //AppDomain.CurrentDomain.FirstChanceException += this.Aplicacao_FirstChanceException;
             AppDomain.CurrentDomain.ProcessExit += this.Aplicacao_ProcessExit;
@@ -757,7 +759,7 @@ namespace Snebur
             return this.UrlsServico[chaveConfiguracao];
         }
 
-        private string RetornarIp()
+        protected virtual string RetornarIp()
         {
             return IpUtil.RetornarIPInformacao(String.Empty).IP;
             //throw new NotImplementedException();

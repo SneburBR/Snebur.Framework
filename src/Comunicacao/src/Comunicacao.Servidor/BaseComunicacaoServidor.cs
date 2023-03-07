@@ -282,7 +282,7 @@ namespace Snebur.Comunicacao
                         StatusCode = (int)HttpStatusCode.InternalServerError
                     };
                 }
-                throw ex;
+                throw;
             }
         }
 

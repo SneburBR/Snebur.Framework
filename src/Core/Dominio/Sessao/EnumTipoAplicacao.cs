@@ -29,5 +29,11 @@ namespace Snebur.Dominio
 
         [Description("Desconhecido")]
         Desconhecido = 99,
+
+        [Description("AspNet Core web service")]
+        AspNetCore_WebService = 8,
+
+        [Description("Maui .NET")]
+        MaiuNet = 9
     }
 }

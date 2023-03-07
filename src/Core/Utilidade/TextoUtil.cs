@@ -54,6 +54,11 @@ namespace Snebur.Utilidade
             return texto;
         }
 
+        public static string RemoverAcentosECaracteresEspecial(string texto)
+        {
+            return TextoUtil.RemoverAcentos(TextoUtil.RemoverCaracteresEspecial(texto));
+        }
+
         public static List<string> RetornarIntervaloLinhas(List<string> linhas, string contemInicio, string contemFim)
         {
             var retorno = new List<string>();
@@ -601,7 +606,7 @@ namespace Snebur.Utilidade
 
         public static string Concatar(string separador, params string[] partes)
         {
-            return String.Join(separador, partes.Where(x=> !String.IsNullOrWhiteSpace(x)));
+            return String.Join(separador, partes.Where(x => !String.IsNullOrWhiteSpace(x)));
         }
         #region  CACHE FILTROS 
 

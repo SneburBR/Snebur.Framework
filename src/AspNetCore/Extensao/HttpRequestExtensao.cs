@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Azure;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Net.Http.Headers;
 using System;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
 
 //https://docs.microsoft.com/pt-br/aspnet/core/migration/http-modules?view=aspnetcore-5.0
 
@@ -25,17 +27,19 @@ namespace Snebur.AspNetCore
 
         public static string UserAgent(this HttpRequest request)
         {
-            var userAgent = request.Headers[HeaderNames.UserAgent].ToString();
-            return userAgent;
+            return request.Headers[HeaderNames.UserAgent].ToString();
         }
-          
+
         public static void Write(this Stream stream, string texto)
         {
             stream.Write(Encoding.UTF8.GetBytes(texto));
         }
 
-        public static void CompleteRequest(this HttpContext httpContext)
+        public static async Task CompleteRequestAsync(this HttpContext httpContext)
         {
+            var response = httpContext.Response;
+            await response.CompleteAsync();
+
             //httpContext.Response.Body.Close();
         }
     }

@@ -1,6 +1,6 @@
 ﻿
 #if NetCore == false
- 
+
 namespace Snebur.Comunicacao
 {
     using Snebur.Utilidade;
@@ -22,8 +22,7 @@ namespace Snebur.Comunicacao
         {
             var aplicacao = (HttpApplication)sender;
             this.AntesProcessarRequisicao(aplicacao.Context);
-
-            var request = aplicacao.Request;
+             
             var response = aplicacao.Context.Response;
 
             if (this.IsExecutarServico(aplicacao))
@@ -31,30 +30,11 @@ namespace Snebur.Comunicacao
                 response.StatusCode = 0;
                 try
                 {
-                    var allKeys = request.Headers.AllKeys;
-                    if (allKeys.Contains(ParametrosComunicacao.TOKEN, new IgnorarCasoSensivel()) &&
-                        allKeys.Contains(ParametrosComunicacao.MANIPULADOR, new IgnorarCasoSensivel()))
-                    {
-                        this.ExecutarServico(aplicacao);
-                    }
-                    else
-                    {
-                        LogUtil.SegurancaAsync(String.Format("A url '{0}' foi chamada incorretamente.", request.Url.AbsoluteUri), Servicos.EnumTipoLogSeguranca.CabecalhoInvalido);
-                    }
-                    //Chamadas do cross domain do ajax serão implementas aqui
+                    this.ExecutarServico(aplicacao);
                 }
                 catch (Exception ex)
                 {
-                    var host = aplicacao.Request.Url.Host;
-                    if (host.EndsWith(".local") || host.EndsWith("interno"))
-                    {
-                        response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    }
-                    else
-                    {
-                        response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    }
-
+                    response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     if (DebugUtil.IsAttached)
                     {
                         throw ex;
@@ -66,7 +46,6 @@ namespace Snebur.Comunicacao
                     if (response.StatusCode == 0)
                     {
                         response.StatusCode = (int)HttpStatusCode.Conflict;
-                        response.SubStatusCode = -1;
                     }
                     aplicacao.CompleteRequest();
                 }
@@ -74,8 +53,6 @@ namespace Snebur.Comunicacao
         }
 
         private bool IsExecutarServico(HttpApplication context)
-
-
         {
             var request = context.Request;
             var response = context.Response;
@@ -88,10 +65,16 @@ namespace Snebur.Comunicacao
                 return false;
             }
 
+            if (caminho == "/" || caminho == "")
+            {
+                this.ResponderAgora(response);
+                context.CompleteRequest();
+                return false;
+            }
+
             if (caminho.Equals("agora", StringComparison.InvariantCultureIgnoreCase))
             {
                 this.ResponderAgora(response);
-
                 context.CompleteRequest();
                 return false;
             }
@@ -135,7 +118,17 @@ namespace Snebur.Comunicacao
                 return false;
             }
 
+            var allKeys = request.Headers.AllKeys;
+            if (!allKeys.Contains(ParametrosComunicacao.TOKEN, new IgnorarCasoSensivel()) ||
+                !allKeys.Contains(ParametrosComunicacao.MANIPULADOR, new IgnorarCasoSensivel()))
+            {
+                LogUtil.SegurancaAsync(String.Format("A url '{0}' foi chamada incorretamente.", request.Url.AbsoluteUri), Servicos.EnumTipoLogSeguranca.CabecalhoInvalido);
 
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
+                context.CompleteRequest();
+                return false;
+            }
+             
             return true;
 
         }

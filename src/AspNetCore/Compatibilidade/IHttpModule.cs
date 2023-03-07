@@ -12,7 +12,10 @@ namespace System.Web
 
         void ConfigureServices(IServiceCollection services);
 
-        void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory, IServiceProvider svp);
+        void Configure(IApplicationBuilder app, 
+                       IWebHostEnvironment env, 
+                       ILoggerFactory loggerFactory, 
+                       IServiceProvider svp);
 
     }
 }

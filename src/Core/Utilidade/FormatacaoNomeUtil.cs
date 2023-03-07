@@ -41,6 +41,28 @@ namespace Snebur.Utilidade
             return (primeiroNome, sobrenome);
         }
 
+        public static string FormatarNomeUltimoSobrenome(string nomeCompleto)
+        {
+            var partesNomeCompleto = FormatacaoNomeUtil.RetornarPartes(nomeCompleto);
+            var nome = partesNomeCompleto.First();
+
+            var partesNome = new List<string>();
+            var partesSobrenome = partesNomeCompleto.ToList();
+            foreach (var parte in partesNomeCompleto)
+            {
+                partesSobrenome.Remove(parte);
+                if (!ValidacaoUtil.IsSomenteNumerosPontosSinais(parte))
+                {
+                    partesNome.Add(parte);
+                    break;
+                }
+            }
+
+            var primeiroNome = String.Join(" ", partesNome.Take(1));
+            var sobrenome = partesSobrenome.Last();
+            return primeiroNome.Trim() + " " + sobrenome.Trim();
+        }
+
         public static string FormatarNomeCompleto(string nome, string sobrenome)
         {
             var nomeCompleto = $"{nome} {sobrenome}";

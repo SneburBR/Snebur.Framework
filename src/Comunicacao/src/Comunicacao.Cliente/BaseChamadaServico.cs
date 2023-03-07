@@ -10,15 +10,10 @@ namespace Snebur.Comunicacao
     public abstract class BaseChamadaServico
     {
         private const int MAXIMO_TENTATIVA = 3;
-
         private string NomeManipulador { get; }
-
         public ContratoChamada ContratoChamada { get; }
-
         public string UrlServico { get; }
-
         public Type TipoRetorno { get; }
-
         public Dictionary<string, string> ParametrosCabecalhoAdicionais { get; }
 
         public BaseChamadaServico(string nomeManipualador,
@@ -89,17 +84,19 @@ namespace Snebur.Comunicacao
 
         private ICollection RetornarListaResultadoChamadaLista(ResultadoChamadaLista resultadoLista)
         {
-            if (resultadoLista is ResultadoChamadaListaBaseDominio)
+            if (resultadoLista is ResultadoChamadaListaBaseDominio listaBasedominio)
             {
-                return ((ResultadoChamadaListaBaseDominio)resultadoLista).BasesDominio;
+                return listaBasedominio.BasesDominio;
             }
-            if (resultadoLista is ResultadoChamadaListaTipoPrimario)
+
+            if (resultadoLista is ResultadoChamadaListaTipoPrimario listaTipoPimario)
             {
-                return ((ResultadoChamadaListaTipoPrimario)resultadoLista).Valores;
+                return listaTipoPimario.Valores;
             }
-            if (resultadoLista is ResultadoChamadaListaEnum)
+
+            if (resultadoLista is ResultadoChamadaListaEnum resultadoListaEnum)
             {
-                return ((ResultadoChamadaListaEnum)resultadoLista).Valores;
+                return resultadoListaEnum.Valores;
             }
             throw new ErroNaoSuportado(String.Format("O resultado da chamada não é suportado"));
         }

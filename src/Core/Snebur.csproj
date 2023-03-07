@@ -575,6 +575,7 @@
     <Compile Include="Utilidade\IpUtil.cs" />
     <Compile Include="Utilidade\JsonUtil.cs" />
     <Compile Include="Utilidade\JurosUtil.cs" />
+    <Compile Include="Utilidade\LazyUtil.cs" />
     <Compile Include="Utilidade\LogUtil.cs" />
     <Compile Include="Utilidade\Md5Util.cs" />
     <Compile Include="Utilidade\MedidaUtil.cs" />

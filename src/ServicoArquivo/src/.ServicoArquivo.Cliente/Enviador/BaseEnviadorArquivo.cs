@@ -48,10 +48,10 @@ namespace Snebur.ServicoArquivo.Cliente
 
         }
 
-        public BaseEnviadorArquivo(string urlServicoArquivo, 
+        public BaseEnviadorArquivo(string urlServicoArquivo,
                                   TArquivo arquivo,
-                                  CredencialUsuario credencialUsuario, 
-                                  Guid IdentificadorSessaoUsuario, 
+                                  CredencialUsuario credencialUsuario,
+                                  Guid IdentificadorSessaoUsuario,
                                   string IdentificadorProprietario)
         {
             if (String.IsNullOrWhiteSpace(urlServicoArquivo))
@@ -64,7 +64,7 @@ namespace Snebur.ServicoArquivo.Cliente
             this.IdentificadorSessaoUsuario = IdentificadorSessaoUsuario;
             this.IdentificadorProprietario = IdentificadorProprietario;
 
-            if(IdentificadorSessaoUsuario == Guid.Empty)
+            if (IdentificadorSessaoUsuario == Guid.Empty)
             {
                 throw new Exception("O identificador da sessão do usuario não foi definido");
             }
@@ -158,12 +158,11 @@ namespace Snebur.ServicoArquivo.Cliente
 
             var parametros = this.RetornarParametros(pacote.Length);
             var urlEnviarImagem = this.RetornarUrlEnviarArquivo();
-                
+
             var requisicao = (HttpWebRequest)WebRequest.Create(urlEnviarImagem);
 
             ServicePointManager.Expect100Continue = true;
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 |
-                                                   SecurityProtocolType.Tls12 |
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 |
                                                    SecurityProtocolType.Tls11 |
                                                    SecurityProtocolType.Tls;
 
@@ -278,7 +277,7 @@ namespace Snebur.ServicoArquivo.Cliente
                     break;
 
                 case EnumTipoErroServicoArquivo.Desconhecido:
-                    
+
                     throw new Erro($"Erro desconhecido ao enviar imagem:" +
                                    $"\r\n{resultado.MensagemErro}" +
                                    $"\r\n{this.UrlServicoArquivo}");

@@ -7,11 +7,24 @@ namespace Snebur
 {
     public abstract partial class AplicacaoSnebur
     {
+        private readonly static object _bloqueio = new object();
+
         internal static AplicacaoSnebur _aplicacao;
         public static AplicacaoSnebur Atual
         {
-            get => LazyUtil.RetornarValorLazyComBloqueio(ref _aplicacao, AplicacaoSnebur.RetornarAplicacaoAtual);
-            set => _aplicacao = value;
+            get => AplicacaoSnebur._aplicacao;
+            //get => LazyUtil.RetornarValorLazyComBloqueio(ref _aplicacao, AplicacaoSnebur.RetornarAplicacaoAtual);
+            private set
+            {
+                lock (_bloqueio)
+                {
+                    if(_aplicacao != null)
+                    {
+                        throw new Exception("Já existe uma instancia da aplicação.");
+                    }
+                    _aplicacao = value;
+                }
+            }
         }
 
         public static T AtualTipada<T>() where T : AplicacaoSnebur
@@ -43,5 +56,5 @@ namespace Snebur
 
     }
 
-   
+
 }

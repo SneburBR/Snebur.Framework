@@ -13,9 +13,9 @@ namespace Snebur.Comunicacao
     public class PacoteUtil
     {
         private const string NOME_ARQUIVO_PACOTE = "pacote.json";
-        //private const string SENHA_PACOTE = "f1e0f12c-3b34-429c-b1e0-c5f5925d5c87";
 
-#if NET45 || NET50
+#if NET40 == false
+
         public static byte[] CompactarPacote(string json)
         {
             using (var msZip = new MemoryStream())
