@@ -20,7 +20,7 @@ namespace Snebur
 
         #region IAplicacaoSneburAspNetCore
 
-        private static IServiceProvider ServiceProvider;
+        //private static IServiceProvider ServiceProvider;
         private static IHttpContextAccessor HttpContextAccessor;
 
         public virtual HttpContext HttpContext
@@ -35,11 +35,10 @@ namespace Snebur
             }
         }
          
-        public void ConfigureHttpContextAccessor(IHttpContextAccessor httpContextAccessor,
-                                                 IServiceProvider ServiceProvider)
+        public void ConfigureHttpContextAccessor(IHttpContextAccessor httpContextAccessor )
         {
             AplicacaoSneburAspNet.HttpContextAccessor = httpContextAccessor;
-            AplicacaoSneburAspNet.ServiceProvider = ServiceProvider;
+            //AplicacaoSneburAspNet.ServiceProvider = ServiceProvider;
         }
 
         #endregion

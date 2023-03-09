@@ -303,20 +303,22 @@ namespace Snebur.Utilidade
         private static void LogWindowsInterno(string fonte, string conteudo, EventLogEntryType tipo)
         {
 
-#if NetCore == false
-            try
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                var nomeEspaco = RetornarNomeEspaco(fonte);
-                using (EventLog eventLog = new EventLog(nomeEspaco))
+                try
                 {
-                    eventLog.Source = nomeEspaco;
-                    eventLog.WriteEntry(conteudo, tipo);
+                    var nomeEspaco = RetornarNomeEspaco(fonte);
+                    using (EventLog eventLog = new EventLog(nomeEspaco))
+                    {
+                        eventLog.Source = nomeEspaco;
+                        eventLog.WriteEntry(conteudo, tipo);
+                    }
+                }
+                catch
+                {
                 }
             }
-            catch
-            {
-            }
-#endif
+
         }
 
         private static string RetornarNomeEspaco(string nomeEspaco)
@@ -334,29 +336,15 @@ namespace Snebur.Utilidade
 
         private static void CriarEspaco(string nomeEspaco)
         {
-#if NetCore == false
-            if (!EventLog.SourceExists(nomeEspaco))
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                    EventSourceCreationData eventSourceData = new EventSourceCreationData(nomeEspaco, nomeEspaco);
-                    EventLog.CreateEventSource(eventSourceData);
+                EventSourceCreationData eventSourceData = new EventSourceCreationData(nomeEspaco, nomeEspaco);
+                EventLog.CreateEventSource(eventSourceData);
             }
-#endif
         }
+
     }
 }
+ 
 
-namespace System.Diagnostics
-{
-#if NetCore
-    //public enum EventLogEntryType
-    //{
-    //    Information,
-    //    Warning,
-    //    FailureAudit,
-    //    Error
-    //}
-
-#endif
-
-
-}

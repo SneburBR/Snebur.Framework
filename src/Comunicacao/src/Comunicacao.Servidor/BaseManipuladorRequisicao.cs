@@ -1,5 +1,4 @@
-﻿
-using Snebur.Seguranca;
+﻿using Snebur.Seguranca;
 using Snebur.Servicos;
 using Snebur.Utilidade;
 using System;
@@ -7,11 +6,8 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Reflection;
-using System.Text;
 using System.Web;
-
 
 #if NetCore
 using Snebur.AspNetCore;
@@ -20,7 +16,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Snebur.Comunicacao
 {
- 
+
     public abstract partial class BaseManipuladorRequisicao
     {
         private const int TEMPO_EXPIRAR_TOKEN = Token.TEMPO_EXPIRAR_TOKEN_PADRAO;

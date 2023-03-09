@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Navigation;
 
 namespace Snebur.Windows
@@ -25,12 +20,10 @@ namespace Snebur.Windows
             //    var uriEstilo = new Uri($"/Snebur.Windows;component/{caminhoEstilo}", UriKind.Relative);
             //    Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = uriEstilo });
             //}
-             
-
         }
         protected override void OnStartup(StartupEventArgs e)
         {
-            AplicacaoSnebur.Atual = this.RetornarAplicacaoSnebur();
+
 
         }
 
@@ -39,11 +32,12 @@ namespace Snebur.Windows
             base.OnLoadCompleted(e);
 
             var mw = Application.Current.MainWindow;
-            AplicacaoSnebur.Atual.Inicializar();
+            var appSn = this.RetornarAplicacaoSnebur();
+            appSn.InicializarAsync();
         }
 
         protected abstract AplicacaoSnebur RetornarAplicacaoSnebur();
-        
-        
+
+
     }
 }

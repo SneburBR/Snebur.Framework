@@ -1,16 +1,14 @@
-﻿using System;
+﻿//using System;
 
-namespace Snebur
-{
-#if NetCore == false
-
-    internal class AplicacaoSneburInterna : AplicacaoSnebur
-    {
-        public string RetornarIpDaRequisicao()
-        {
-            return IpUtil.RetornarIPInformacao(String.Empty).IP;
-        }
-    }
-
-#endif
-}
+//namespace Snebur
+//{
+//#if NET7_0 == false
+//    internal class AplicacaoSneburInterna : AplicacaoSnebur
+//    {
+//        public string RetornarIpDaRequisicao()
+//        {
+//            return IpUtil.RetornarIPInformacao(String.Empty).IP;
+//        }
+//    }
+//#endif
+//}

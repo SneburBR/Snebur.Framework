@@ -6,15 +6,12 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 
-#if NetCore 
+#if NET7_0 
 using Microsoft.Data.SqlClient;
 #else
 using System.Data.SqlClient;
 #endif
-
-
-
-
+ 
 namespace Snebur.Utilidade
 {
     public class Conexao

@@ -2,7 +2,7 @@
 
 namespace Snebur
 {
-#if NetCore
+#if NET7_0
 
     using Microsoft.Extensions.Configuration;
     using System.Collections.Specialized;

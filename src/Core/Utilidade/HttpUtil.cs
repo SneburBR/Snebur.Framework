@@ -6,9 +6,7 @@ using System.Linq;
 using System.Net;
 
 using System.Text;
-
  
-
 namespace Snebur.Utilidade
 {
 
@@ -17,7 +15,7 @@ namespace Snebur.Utilidade
         public const int TIMEOUT_PADRAO = 15;
         private const int TAMANHO_BUFFER_PADRAO = 8 * 1024;
 
-#if NetCore == false
+#if NET7_0
 
      
 #endif

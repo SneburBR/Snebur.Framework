@@ -6,8 +6,7 @@ namespace Snebur
     public interface IAplicacaoSneburAspNetCore
     {
         HttpContext HttpContext { get; }
-        void ConfigureHttpContextAccessor(IHttpContextAccessor httpContextAccessor,
-                                                IServiceProvider ServiceProvider);
+        void ConfigureHttpContextAccessor(IHttpContextAccessor httpContextAccessor );
 
     }
 }

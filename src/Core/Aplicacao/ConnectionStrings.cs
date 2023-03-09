@@ -1,4 +1,5 @@
-﻿namespace System.Configuration
+﻿#if NET7_0
+namespace System.Configuration
 {
     public class ConnectionStringSettings
     {
@@ -9,3 +10,4 @@
         public string ProviderName { get; set; }
     }
 }
+#endif

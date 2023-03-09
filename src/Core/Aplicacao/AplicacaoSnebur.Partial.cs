@@ -45,11 +45,7 @@ namespace Snebur
             //}
 
             throw new Exception("A aplicação atual não foi inicializada, a deve ser inicializar no StartUp da aplicação");
-#if NetCore
-
-#else
-
-#endif
+ 
             //return new AplicacaoSneburInterna();
         }
 

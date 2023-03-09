@@ -356,7 +356,7 @@ namespace Snebur
         //public virtual string UserAgent => null;
 
         //public abstract string RetornarIpDaRequisicao();
-         
+
         #endregion
 
         #region Propriedade funções
@@ -455,7 +455,8 @@ namespace Snebur
                         this.TimerAplicacaoAtiva.Start();
                         this.InicializarServicoUsuario();
 
-                        if (this.IsNotificarLogAplicacaoInicializada)
+                        if (this.IsNotificarLogAplicacaoInicializada &&
+                            !DebugUtil.IsAttached)
                         {
                             LogUtil.LogAsync("Aplicação inicializada");
                             LogUtil.LogAplicacaoAtiva();
@@ -495,7 +496,7 @@ namespace Snebur
 
                 ServicePointManager.DefaultConnectionLimit = 256;
 
-#if NetCore == false
+#if NET7_0 == false
 
                 var assemblyNet = Assembly.GetAssembly(typeof(System.Net.Configuration.SettingsSection));
                 if (assemblyNet != null)
@@ -765,9 +766,8 @@ namespace Snebur
             //throw new NotImplementedException();
             //return IpUtil.RetornarIPInformacaoRequisicao(isRetornarNullNaoEncotnrado).IP;
         }
-
-
-#if NetCore == false
+         
+#if NET7_0 == false
 
         protected virtual NameValueCollection RetornarAppSettings()
         {

@@ -8,6 +8,7 @@ namespace Snebur.Comunicacao
     using System.IO;
     using System.Linq;
     using System.Net;
+    using System.Runtime.Remoting.Contexts;
     using System.Text;
     using System.Web;
 
@@ -21,6 +22,13 @@ namespace Snebur.Comunicacao
         private void Aplicacao_BeginRequest(object sender, EventArgs e)
         {
             var aplicacao = (HttpApplication)sender;
+
+            if (CrossDomainUtil.VerificarContratoCrossDomain(aplicacao.Context))
+            {
+                aplicacao.CompleteRequest();
+                return;
+            }
+
             this.AntesProcessarRequisicao(aplicacao.Context);
              
             var response = aplicacao.Context.Response;
@@ -59,11 +67,7 @@ namespace Snebur.Comunicacao
 
             var caminho = Path.GetFileName(request.RetornarUrlRequisicao().LocalPath).ToLower();
 
-            if (CrossDomainUtil.VerificarContratoCrossDomain(context.Context))
-            {
-                context.CompleteRequest();
-                return false;
-            }
+            
 
             if (caminho == "/" || caminho == "")
             {

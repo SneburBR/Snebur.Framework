@@ -286,7 +286,7 @@ namespace Snebur.Utilidade
         {
             if (Threads.TryRemove(identificador, out var thread))
             {
-#if NetCore == false
+#if NET7_0 == false
                 try
                 {
                     thread.Abort();
