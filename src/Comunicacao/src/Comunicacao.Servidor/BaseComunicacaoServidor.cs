@@ -47,14 +47,14 @@ namespace Snebur.Comunicacao
 
         #region  IHttpHandler - Construtor 
          
-        private string RetornarResultadoChamadaSerializado(Requisicao requisicao, HttpContext httpContext)
+        private string RetornarResultadoChamadaSerializado(Requisicao requisicao,
+                                                           HttpContext httpContext)
         {
             if (this.IsManterCache && !this.OperacoesIgnorarCaches.Contains(requisicao.Operacao))
             {
                 return this.RetornarResultadoChamadaSerializadoCache(requisicao, httpContext);
             }
             return this.RetornarResultadoChamadaSerializadoInterno(requisicao, httpContext);
-
         }
 
         private string RetornarResultadoChamadaSerializadoCache(Requisicao requisicao, HttpContext httpContext)

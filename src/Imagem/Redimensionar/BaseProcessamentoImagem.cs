@@ -406,13 +406,13 @@ namespace Snebur.Imagem
                 }
                 ArquivoUtil.MoverArquivo(caminhoTemp, caminhoArquivoDestino);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 if (File.Exists(caminhoTemp))
                 {
                     ArquivoUtil.DeletarArquivo(caminhoTemp);
                 }
-                throw ex;
+                throw ;
             }
         }
 
@@ -440,11 +440,11 @@ namespace Snebur.Imagem
                 frame = null;
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 if (clonarMetadadata)
                 {
-                    throw ex;
+                    throw;
                 }
                 StreamUtil.SetarPonteiroInicio(streamDestino);
                 SalvarInterno(imagem, streamDestino, true);

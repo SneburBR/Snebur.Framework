@@ -130,9 +130,9 @@ namespace Snebur.Aplicacao.Configuracao
                         this.Dicionario.Add(element.Attribute(NAME).Value, novoConfiguracao);
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    throw ex;
+                    throw;
                 }
             }
         }

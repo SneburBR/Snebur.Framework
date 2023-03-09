@@ -12,8 +12,10 @@ namespace Snebur.Comunicacao
 
     public abstract partial class BaseComunicacaoServidor
     {
+        public HttpContext HttpContext { get; private set; }
         public void ProcessRequest(HttpContext httpContext)
         {
+            this.HttpContext = httpContext; 
             var response = httpContext.Response;
             try
             {
@@ -95,13 +97,13 @@ namespace Snebur.Comunicacao
                 var mensagemSeguranca = String.Format("O método '{0}' não foi encontrado no serviço '{1}'", erro.NomeMetodo, this.GetType().Name);
                 LogUtil.SegurancaAsync(mensagemSeguranca, EnumTipoLogSeguranca.MetodoOperacaoNaoEncontrado);
             }
-            catch (ErroRequisicao ex)
+            catch (ErroRequisicao)
             {
-                throw ex;
+                throw;
             }
-            catch (Exception ex)
+            catch (Exception )
             {
-                throw ex;
+                throw;
             }
         }
 

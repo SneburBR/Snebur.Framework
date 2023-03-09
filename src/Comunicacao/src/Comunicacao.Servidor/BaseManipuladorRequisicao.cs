@@ -26,6 +26,7 @@ namespace Snebur.Comunicacao
         private Dictionary<string, Type> Manipuladores { get; } = new Dictionary<string, Type>();
         private Dictionary<string, (Type tipo, bool isValidarToken)> ManipuladoresGenericos { get; } = new Dictionary<string, (Type, bool)>();
         private Dictionary<string, bool> ArquivosAutorizados { get; } = new Dictionary<string, bool>();
+        private List<string> DiretoriosImagemAutorizado { get; } = new List<string>();
 
         private Dictionary<string, Type> TiposManipuladores => LazyUtil.RetornarValorLazyComBloqueio(ref _tiposManipuladore, this.RetornarTiposManipuladores);
         protected bool IsAutoRegistrarManipulador { get; set; } = true;
@@ -155,6 +156,12 @@ namespace Snebur.Comunicacao
                                         bool isIgnorarValidacaoTokenAplicacao = false)
         {
             this.ArquivosAutorizados.Add(nomeArquivo.ToLower(), isIgnorarValidacaoTokenAplicacao);
+        }
+
+        protected void AutorizarDiretorio(string nomeDiretorio)
+        {
+            nomeDiretorio = UriUtil.AjustarBarraInicialFinal(nomeDiretorio.ToLower());
+            this.DiretoriosImagemAutorizado.Add(nomeDiretorio);
         }
 
         protected void AdicionarServico<T>(string nomeServico) where T : BaseComunicacaoServidor

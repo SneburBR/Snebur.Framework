@@ -30,7 +30,7 @@ namespace Snebur.Comunicacao
             }
 
             this.AntesProcessarRequisicao(aplicacao.Context);
-             
+
             var response = aplicacao.Context.Response;
 
             if (this.IsExecutarServico(aplicacao))
@@ -45,7 +45,7 @@ namespace Snebur.Comunicacao
                     response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     if (DebugUtil.IsAttached)
                     {
-                        throw ex;
+                        throw ;
                     }
                     LogUtil.ErroAsync(ex);
                 }
@@ -60,33 +60,42 @@ namespace Snebur.Comunicacao
             }
         }
 
-        private bool IsExecutarServico(HttpApplication context)
+        private bool IsExecutarServico(HttpApplication aplicacao)
         {
-            var request = context.Request;
-            var response = context.Response;
+            var request = aplicacao.Request;
+            var response = aplicacao.Response;
 
-            var caminho = Path.GetFileName(request.RetornarUrlRequisicao().LocalPath).ToLower();
+            var caminhoCompleto = request.RetornarUrlRequisicao().LocalPath.ToLower();
+            if (this.DiretoriosImagemAutorizado.Any(x => caminhoCompleto.StartsWith(x)))
+            {
+                var caminhoImagem = aplicacao.Server.MapPath(caminhoCompleto);
+                response.ContentType = "image/jpeg";
+                response.StatusCode = 200;
+                response.WriteFile(caminhoImagem);
+                aplicacao.CompleteRequest();
 
-            
+                return false;
+            }
 
+            var caminho = Path.GetFileName(caminhoCompleto).ToLower();
             if (caminho == "/" || caminho == "")
             {
                 this.ResponderAgora(response);
-                context.CompleteRequest();
+                aplicacao.CompleteRequest();
                 return false;
             }
 
             if (caminho.Equals("agora", StringComparison.InvariantCultureIgnoreCase))
             {
                 this.ResponderAgora(response);
-                context.CompleteRequest();
+                aplicacao.CompleteRequest();
                 return false;
             }
 
             if (caminho.Equals("ping", StringComparison.InvariantCultureIgnoreCase))
             {
                 response.Write("True");
-                context.CompleteRequest();
+                aplicacao.CompleteRequest();
                 return false;
             }
 
@@ -98,12 +107,14 @@ namespace Snebur.Comunicacao
                     if (!this.IsRequicaoValida(request, false))
                     {
                         response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                        context.CompleteRequest();
+                        aplicacao.CompleteRequest();
                         return false;
                     }
                 }
                 return false;
             }
+
+
 
             var caminhoManipulador = Path.GetFileNameWithoutExtension(caminho);
             if (this.ManipuladoresGenericos.ContainsKey(caminhoManipulador))
@@ -113,14 +124,15 @@ namespace Snebur.Comunicacao
                 {
 
                     response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                    context.CompleteRequest();
+                    aplicacao.CompleteRequest();
                     return false;
                 }
 
-                this.ExecutarManipuladorGenerico(context.Context, caminhoManipulador);
-                context.CompleteRequest();
+                this.ExecutarManipuladorGenerico(aplicacao.Context, caminhoManipulador);
+                aplicacao.CompleteRequest();
                 return false;
             }
+
 
             var allKeys = request.Headers.AllKeys;
             if (!allKeys.Contains(ParametrosComunicacao.TOKEN, new IgnorarCasoSensivel()) ||
@@ -129,10 +141,10 @@ namespace Snebur.Comunicacao
                 LogUtil.SegurancaAsync(String.Format("A url '{0}' foi chamada incorretamente.", request.Url.AbsoluteUri), Servicos.EnumTipoLogSeguranca.CabecalhoInvalido);
 
                 response.StatusCode = (int)HttpStatusCode.BadRequest;
-                context.CompleteRequest();
+                aplicacao.CompleteRequest();
                 return false;
             }
-             
+
             return true;
 
         }
@@ -164,9 +176,9 @@ namespace Snebur.Comunicacao
                         servico.IdentificadorProprietario = identificadorProprietario;
                         servico.ProcessRequest(aplicacao.Context);
                     }
-                    catch (ErroRequisicao ex)
+                    catch (ErroRequisicao)
                     {
-                        throw ex;
+                        throw ;
                     }
                     catch (Exception ex)
                     {

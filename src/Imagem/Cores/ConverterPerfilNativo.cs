@@ -124,11 +124,11 @@ namespace Snebur.Imagem
             {
                 this.SalvarInterno(streamDestino);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 if (!this.ManterMetadata)
                 {
-                    throw ex;
+                    throw;
 
                 }
                 this.ManterMetadata = false;
@@ -145,11 +145,11 @@ namespace Snebur.Imagem
                     StreamUtil.SalvarStreamBufferizada(ms, streamDestino);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 if (clonarMetadata)
                 {
-                    throw ex;
+                    throw;
                 }
 
                 StreamUtil.SetarPonteiroInicio(streamDestino);
@@ -196,9 +196,9 @@ namespace Snebur.Imagem
                 {
                     encoder.Save(msDestino);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    throw ex;
+                    throw;
                 }
 
                 decoder = null;
@@ -223,7 +223,7 @@ namespace Snebur.Imagem
             {
 
                 LogUtil.ErroAsync(new Exception($"Não foi possivel converter o arquivo {this.CaminhoArquivoOrigem}", ex));
-                throw ex;
+                throw;
 
             }
             finally

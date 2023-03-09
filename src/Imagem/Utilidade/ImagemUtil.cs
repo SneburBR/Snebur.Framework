@@ -57,7 +57,7 @@ namespace Snebur.Utilidade
             }
             catch (UnauthorizedAccessException ex)
             {
-                throw ex;
+                throw ;
             }
             catch (Exception)
             {
@@ -839,7 +839,7 @@ namespace Snebur.Utilidade
 
                     if (!ignorarErro)
                     {
-                        throw ex;
+                        throw;
                     }
                 }
                 else

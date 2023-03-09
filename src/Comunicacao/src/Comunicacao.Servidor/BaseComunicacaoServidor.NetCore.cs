@@ -13,8 +13,11 @@ namespace Snebur.Comunicacao
 
     public abstract partial class BaseComunicacaoServidor
     {
+        public HttpContext HttpContext { get; private set; }
+
         public Task ProcessRequestAsync(HttpContext context)
         {
+            this.HttpContext = httpContext; 
             throw new NotImplementedException();
         }
     }

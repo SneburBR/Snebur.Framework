@@ -74,7 +74,7 @@ namespace Snebur.Imagem
             }
             catch
             {
-                throw ex;
+                throw ;
             }
         }
 
