@@ -18,7 +18,7 @@ namespace Snebur
         public const string PARAMETRO_IP_REQUISICAO = "IpRequisicao";
         public override EnumTipoAplicacao TipoAplicacao => EnumTipoAplicacao.DotNet_WebService;
 
-#if NET48
+#if NET7_0  == false
         public virtual HttpContext HttpContext => System.Web.HttpContext.Current;
 #endif
 
@@ -106,7 +106,7 @@ namespace Snebur
             }
         }
 
-#if NET48
+#if NET7_0  == false
 
         public override string IP
         {
@@ -156,7 +156,7 @@ namespace Snebur
             throw new NotImplementedException();
         }
 
-#if NET48
+#if NET7_0  == false
         [EditorBrowsable(EditorBrowsableState.Never)]
         public string UserAgent => this.HttpContext?.Request?.UserAgent;
 #else

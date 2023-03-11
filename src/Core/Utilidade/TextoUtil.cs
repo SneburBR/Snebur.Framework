@@ -424,13 +424,19 @@ namespace Snebur.Utilidade
             return resultado.Trim();
         }
 
-        public static string RetornarPrimeirosCaracteres(string texto, int numeroCaracteres)
+        public static string RetornarPrimeirosCaracteres(string texto,
+                                                         int numeroCaracteres,
+                                                         string textoFinal = null)
         {
             if (texto.Length <= numeroCaracteres)
             {
                 return texto;
             }
-            return texto.Substring(0, numeroCaracteres);
+            if (textoFinal?.Length > 0)
+            {
+                return texto.Substring(0, numeroCaracteres - textoFinal.Length) + textoFinal;
+            }
+            return texto.Substring(0, numeroCaracteres - 3);
         }
 
         public static string RetornarPrimeirosCaracteres(string texto, int numeroCaracteres, bool removerLinhasTabulacoes)

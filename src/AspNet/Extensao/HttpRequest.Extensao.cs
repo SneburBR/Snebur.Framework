@@ -1,4 +1,4 @@
-﻿#if NET48
+﻿#if NET7_0  == false
 
  namespace System.Web
 {

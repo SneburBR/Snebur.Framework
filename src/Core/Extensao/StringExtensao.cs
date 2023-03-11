@@ -35,6 +35,16 @@ namespace System
             return TextoUtil.RetornarPrimeirosCaracteres(str, numeroCaracteres);
         }
 
+        public static string RetornarPrimeirosCaracteres(this string str, int numeroCaracteres, string textoFinal)
+        {
+            return TextoUtil.RetornarPrimeirosCaracteres(str, numeroCaracteres, textoFinal);
+        }
+
+        //public static string RetornarPrimeirosCaracteres(this string str, int numeroCaracteres, string )
+        //{
+        //    return TextoUtil.RetornarPrimeirosCaracteres(str, numeroCaracteres);
+        //}
+
 
         public static string RetornarPrimeirosCaracteres(this string str, int numeroCaracteres, bool removerLinhasTabulacoes)
         {

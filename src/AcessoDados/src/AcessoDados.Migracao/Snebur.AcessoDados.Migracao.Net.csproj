@@ -1,13 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-
 	<PropertyGroup>
-		<TargetFrameworks>net48;net7.0</TargetFrameworks>
-		<RootNamespace>Snebur.Computador</RootNamespace>
+		<TargetFrameworks>net48</TargetFrameworks>
+		<RootNamespace>Snebur.AcessoDados.Migracao</RootNamespace>
 		<Version>2.0.0</Version>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<Nullable>disable</Nullable>
-		<AssemblyName>Snebur.Computador</AssemblyName>
+		<AssemblyName>SSnebur.AcessoDados.Migracao</AssemblyName>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	</PropertyGroup>
 
@@ -21,29 +20,20 @@
 	</PropertyGroup>
 	  
 	<ItemGroup Condition="'$(TargetFramework)' == 'net48' ">
-		<Reference Include="System.ServiceModel" />
-		<PackageReference Include="FirewallManager" version="1.0.2" />
+		<Reference Include="System.Data.Entity" />
 	</ItemGroup>
 	   
 	<ItemGroup>
 	  <None Remove="packages.config" />
-	  <None Remove="Snebur.Computador.csproj.vspscc" />
-	  <None Remove="Snebur.Computador.Net50.csproj.vspscc" />
-	  <None Remove="snebur.computador.snk" />
+	  <None Remove="Snebur.AcessoDados.Migracao.csproj.vspscc" />
 	</ItemGroup>
 	  
 	<ItemGroup>
-	  <PackageReference Include="System.DirectoryServices" Version="7.0.1" />
-	  <PackageReference Include="System.DirectoryServices.AccountManagement" Version="7.0.0" />
-	  <PackageReference Include="System.Management" Version="7.0.0" />
+	  <PackageReference Include="EntityFramework" Version="6.4.4" />
 	</ItemGroup>
 	  
 	<ItemGroup>
-	  <ProjectReference Include="..\Core\Snebur.Net.csproj" />
+	  <ProjectReference Include="..\..\..\Core\Snebur.Net.csproj" />
 	</ItemGroup>
-	
-	 
-
-
-
+	  
 </Project>

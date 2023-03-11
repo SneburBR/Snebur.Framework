@@ -44,6 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Aplicacao\AplicacaoSneburAspNet.cs" />
+    <Compile Include="Extensao\HttpContextExtensao.cs" />
+    <Compile Include="Extensao\IDictionaryExtensao.cs" />
     <Compile Include="Extensao\UriEx.cs" />
     <Compile Include="Extensao\HttpRequest.Extensao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,4 +1,4 @@
-﻿#if NET48
+﻿#if NET70 == false
 
 using System;
 using System.Linq;
