@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using System.Web;
 
-#if NET50
+#if NET7_0
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 #endif
@@ -29,17 +29,9 @@ namespace Snebur.ServicoArquivo
 
         #region IHttpHandler
 
-#if NET50
-
+#if NET7_0
+     
         public async Task ProcessRequestAsync(HttpContext context)
-        {
-            using (var zyonHttpContext = new ZyonHttpContextCore(context))
-            {
-                await this.ProcessRequestAsyc(zyonHttpContext);
-            }
-        }
-
-        private async Task ProcessRequestAsyc(ZyonHttpContextCore context)
         {
             Exception erro = null;
             var tipoErro = EnumTipoErroServicoArquivo.Desconhecido;
@@ -81,8 +73,6 @@ namespace Snebur.ServicoArquivo
                     //context.Response.AddHeader("Access-Control-Allow-Origin", "*")
                     //context.Response.AddHeader("Access-Control-Allow-Methods", "POST")
                     context.Response.ContentType = "text/json; charset=UTF-8";
-                    context.Response.ContentEncoding = Encoding.UTF8;
-
                     var respostaString = JsonUtil.Serializar(resposta, true);
                     await context.Response.WriteAsync(respostaString);
                 }
@@ -236,6 +226,7 @@ namespace Snebur.ServicoArquivo
 
         #region Métodos privados
 
+#if NET7_0 == false
         private MemoryStream RetornarInputStream(HttpContext httpContext)
         {
             var buffer = new byte[16 * 1024];
@@ -253,32 +244,29 @@ namespace Snebur.ServicoArquivo
             return msPacote;
 
         }
+#endif
 
-#if NET50
-        private async Task<MemoryStream> RetornarInputStreamAsync(ZyonHttpContext httpContext)
+#if NET7_0
+        private async Task<MemoryStream> RetornarInputStreamAsync(HttpContext httpContext)
         {
             try
             {
-                if (httpContext.ContextoNativo is HttpContext context)
+                var cancellationToken = httpContext.RequestAborted;
+                var reader = httpContext.Request.Body;
+                var ms = new MemoryStream();
+                var buffer = new byte[32 * 1024];
+                while (!cancellationToken.IsCancellationRequested)
                 {
-                    var cancellationToken = context.RequestAborted;
-                    var reader = context.Request.Body;
-                    var ms = new MemoryStream();
-                    var buffer = new byte[32 * 1024];
-                    while (!cancellationToken.IsCancellationRequested)
+                    var lidos = await reader.ReadAsync(buffer, 0, buffer.Length);
+                    if (lidos == 0)
                     {
-                        var lidos = await reader.ReadAsync(buffer, 0, buffer.Length);
-                        if (lidos == 0)
-                        {
-                            break;
-                        }
-
-                        ms.Write(buffer, 0, lidos);
+                        break;
                     }
-                    return ms;
-                }
 
-                throw new Erro("Contexto não suportado");
+                    ms.Write(buffer, 0, lidos);
+                }
+                return ms;
+
 
             }
             catch

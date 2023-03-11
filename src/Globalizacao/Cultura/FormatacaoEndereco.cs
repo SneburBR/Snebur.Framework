@@ -1,9 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
-
-namespace Snebur.Globalizacao
+﻿namespace Snebur.Globalizacao
 {
     public class FormatacaoEndereco : BaseGlobalizacao
     {

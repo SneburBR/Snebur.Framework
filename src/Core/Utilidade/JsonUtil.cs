@@ -180,7 +180,7 @@ namespace Snebur.Utilidade
                                                                     x.GetMethod.IsPublic &&
                                                                     !Attribute.IsDefined(x, typeof(IgnorarPropriedadeTSAttribute)) &&
                                                                     !Attribute.IsDefined(x, typeof(JsonIgnoreAttribute)) &&
-#if NET50
+#if NET7_0
                                                                     !Attribute.IsDefined(x, typeof(System.Text.Json.Serialization.JsonIgnoreAttribute)) &&
 #endif
                                                                     !Attribute.IsDefined(x, typeof(XmlIgnoreAttribute)))

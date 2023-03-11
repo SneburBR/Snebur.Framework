@@ -1,5 +1,5 @@
 ﻿
-#if NetCore == false
+#if NET7_0 == false
 
 namespace Snebur.Comunicacao
 {

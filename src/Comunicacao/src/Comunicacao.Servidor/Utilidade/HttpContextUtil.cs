@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if NET7_0
+
+using System;
 
 namespace Snebur.AcessoDados.Utilidade
 {
@@ -27,3 +29,5 @@ namespace Snebur.AcessoDados.Utilidade
 
     }
 }
+
+#endif

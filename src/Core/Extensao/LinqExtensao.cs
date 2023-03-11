@@ -401,28 +401,16 @@ namespace Snebur.Linq
         }
         #endregion
 
-#if NET50 == false && NET48 == false
-
-        public static HashSet<T> ToHashSet<T>(this IEnumerable<T> colecao, bool aceitarNull = false)
+        public static HashSet<T> ToHashSet<T>(this IEnumerable<T> colecao, bool aceitarNull) where T : class
         {
-            var hashSet = new HashSet<T>();
+            var hashSet = colecao.ToHashSet();
             if (aceitarNull)
             {
-                foreach (var item in colecao)
-                {
-                    hashSet.Add(item);
-                }
                 return hashSet;
             }
-            foreach (var item in colecao)
-            {
-                if (item != null)
-                {
-                    hashSet.Add(item);
-                }
-            }
+            hashSet.Remove(null);
             return hashSet;
         }
-#endif
+ 
     }
 }

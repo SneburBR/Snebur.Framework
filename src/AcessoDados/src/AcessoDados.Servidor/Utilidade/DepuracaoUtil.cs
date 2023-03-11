@@ -7,7 +7,7 @@ using System.Linq;
 using Snebur.Utilidade;
 using System.Threading.Tasks;
 
-#if NET50
+#if NET7_0
 using Microsoft.Data.SqlClient;
 #else
 using System.Data.SqlClient;

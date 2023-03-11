@@ -1,4 +1,6 @@
-﻿using NetFwTypeLib;
+﻿#if NET7_0 == false
+
+using NetFwTypeLib;
 using System;
 
 namespace Snebur.Computador
@@ -39,3 +41,4 @@ namespace Snebur.Computador
 }
 
 
+#endif

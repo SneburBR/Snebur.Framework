@@ -1,7 +1,7 @@
 ﻿using Bogus;
 using Bogus.Extensions.Brazil;
+using Snebur.Linq;
 using System;
-using System.Linq;
 using static Bogus.DataSets.Name;
 
 namespace Snebur.Utilidade
@@ -13,7 +13,7 @@ namespace Snebur.Utilidade
         //private static Faker Faker = ThreadUtil.RetornarRetornarValor(ref _faker, () => new Faker("pt_BR"));
 
         private static Random _random;
-        private static Random Random => ThreadUtil.RetornarRetornarValor(ref _random, () => new Random());
+        private static Random Random => LazyUtil.RetornarValorLazyComBloqueio(ref _random, () => new Random());
 
         public static PesssoaFisicaFalsa PesssoaFisicaFalsa()
         {

@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using System.Web;
 
-#if NET50
+#if NET7_0
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 #endif
@@ -16,14 +16,10 @@ namespace Snebur.ServicoArquivo
         public bool IsReusable => true;
 
 
-#if NET50
+#if NET7_0
         public Task ProcessRequestAsync(HttpContext context)
         {
-            using (var zyonHttpContext = new ZyonHttpContextCore(context))
-            {
-                this.ProcessRequest(zyonHttpContext);
-            }
-            return null;
+            throw new NotImplementedException();
         }
 
 #else
@@ -35,7 +31,6 @@ namespace Snebur.ServicoArquivo
             if (File.Exists(caminhoArquivoVersao))
             {
                 ArquivoUtil.DeletarArquivo(caminhoArquivoVersao);
-
                 context.Response.StatusCode = 200;
             }
             else
@@ -81,11 +76,17 @@ namespace Snebur.ServicoArquivo
         }
 
 
-        protected string RetornarValorParametro(string parametro, HttpContext zyonHttpContext)
+        protected string RetornarValorParametro(string parametro, HttpContext httpContext)
         {
+#if NET7_0
+            throw new NotImplementedException();
+#else
             var parametroBase64 = Base64Util.Encode(parametro);
-            return Base64Util.Decode(zyonHttpContext.Request.QueryString[parametroBase64]);
+            return Base64Util.Decode(httpContext.Request.QueryString[parametroBase64]);
+#endif
+
         }
+
         #endregion
 
         protected abstract string RetornarRepositorioArquivo(IInformacaoRepositorioArquivo informacaoRepositorio);

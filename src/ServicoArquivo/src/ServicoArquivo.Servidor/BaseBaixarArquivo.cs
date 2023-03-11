@@ -1,7 +1,13 @@
 ﻿using Snebur.Utilidade;
 using System.IO;
 using System.Text;
+using System;
+
+#if NET7_0
+using Microsoft.AspNetCore.Http;
+#else
 using System.Web;
+#endif  
 
 namespace Snebur.ServicoArquivo
 {
@@ -23,8 +29,16 @@ namespace Snebur.ServicoArquivo
                 if (File.Exists(caminhoCompletoArquivo))
                 {
                     context.Response.ContentType = "application/octet-stream";
-                    context.Response.ContentEncoding = Encoding.UTF8;
+#if NET7_0
+                    throw new NotImplementedException();
+                    //using (var fs = StreamUtil.OpenRead(caminhoCompletoArquivo))
+                    //{
+                    //    await StreamUtil.SalvarStreamBufferizadaAsync(fs, context.Response.Body);
+                    //}
+#else
                     context.Response.WriteFile(caminhoCompletoArquivo);
+#endif
+
                     return;
                 }
                 else
@@ -33,7 +47,6 @@ namespace Snebur.ServicoArquivo
                 }
             }
 
-            context.Response.SubStatusCode = 5;
             context.Response.StatusCode = 405;
 
         }

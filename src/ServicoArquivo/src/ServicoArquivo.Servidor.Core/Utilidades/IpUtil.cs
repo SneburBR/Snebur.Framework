@@ -12,7 +12,7 @@ namespace Snebur.ServicoArquivo
             var httpContext = AplicacaoSnebur.Atual.HttpContext;
             if (httpContext != null)
             {
-#if NET50
+#if NET7_0
                 ip = httpContext.Connection.RemoteIpAddress.ToString();
 #else
                     ip = httpContext.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];

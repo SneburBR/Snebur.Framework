@@ -2,38 +2,50 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>net48;net7.0</TargetFrameworks>
-		<RootNamespace>Snebur.Seguranca</RootNamespace>
-		<Version>2.0.0</Version>
+		<RootNamespace>Snebur.Comunicacao</RootNamespace>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<Nullable>disable</Nullable>
-		<AssemblyName>Snebur.Seguranca</AssemblyName>
+		<UserSecretsId>21621891-7d64-43a9-89e6-b94e6a6fbc80</UserSecretsId>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<DefineConstants>DEBUG;TRACE</DefineConstants>
+		<DefineConstants>NET50; DEBUG;TRACE</DefineConstants>
 		<WarningLevel>4</WarningLevel>
 		<NoWarn>1701;1702</NoWarn>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<DefineConstants>DEBUG;TRACE</DefineConstants>
+		<DefineConstants> TRACE</DefineConstants>
 	</PropertyGroup>
+
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net48' ">
+		<Reference Include="System.ServiceModel" />
+		<Reference Include="System.Web" />
+	</ItemGroup>
+	
 	<ItemGroup>
 		<Compile Remove="Properties\**" />
 		<EmbeddedResource Remove="Properties\**" />
 		<None Remove="Properties\**" />
 	</ItemGroup>
 	<ItemGroup>
-		<None Remove="Snebur.Seguranca.csproj.vspscc" />
-		<None Remove="Snebur.Seguranca.Net40.csproj.vspscc" />
-		<None Remove="Snebur.Seguranca.Net50.csproj.vspscc" />
+		<None Remove="Snebur.Depuracao.csproj.vspscc" />
+		<None Remove="Snebur.Depuracao.Net50.csproj.vspscc" />
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Include="Properties\AssemblyInfo.cs" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\Core\Snebur.Net.csproj" />
+		<PackageReference Include="Bogus" Version="31.0.3" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.1.0" />
 	</ItemGroup>
- 
+	<ItemGroup>
+	  <ProjectReference Include="..\Core\Snebur.Net.csproj" />
+	</ItemGroup>
+	 
+
+
+
 
 </Project>

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Web;
 
-#if NET50
+#if NET7_0
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 #endif
@@ -22,16 +22,9 @@ namespace Snebur.ServicoArquivo
                                                                                                                                EnumTamanhoImagem.Media,
                                                                                                                                EnumTamanhoImagem.Grande,
                                                                                                                                EnumTamanhoImagem.Impressao });
-#if NET50
-        public async Task ProcessRequestAsync(HttpContext context)
-        {
-            using (var zyonHttpContext = new ZyonHttpContextCore(context))
-            {
-                await this.ProcessRequestAsyc(zyonHttpContext);
-            }
-        }
+#if NET7_0
 
-        public async Task ProcessRequestAsyc(ZyonHttpContext context)
+        public async Task ProcessRequestAsync(HttpContext context)
         {
             var caminhoImagem = this.RetornarCaminhoImagem(context);
             var response = context.Response;
@@ -41,12 +34,13 @@ namespace Snebur.ServicoArquivo
                 response.ContentType = "image/jpeg";
                 response.StatusCode = 200;
 
-                await response.WriteFileAsync(caminhoImagem);
+                throw new NotImplementedException();
+                //await response.WriteFileAsync(caminhoImagem);
             }
             else
             {
                 LogUtil.ErroAsync(new ErroArquivoNaoEncontrado(caminhoImagem));
-                response.SubStatusCode = 5;
+                //response.SubStatusCode = 5;
                 response.StatusCode = 405;
             }
         }
@@ -141,7 +135,14 @@ namespace Snebur.ServicoArquivo
         protected string RetornarValorParametro(string parametro, HttpContext zyonHttpContext)
         {
             var parametroBase64 = Base64Util.Encode(parametro);
+#if NET7_0
+            var valorParametro = String.Empty;
+            throw new NotImplementedException();
+            //var valorParametro = zyonHttpContext.Request.QueryString[parametroBase64];
+#else
             var valorParametro = zyonHttpContext.Request.QueryString[parametroBase64];
+#endif
+
             if (!String.IsNullOrEmpty(valorParametro))
             {
                 return Base64Util.Decode(valorParametro);

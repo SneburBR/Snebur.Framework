@@ -2,7 +2,7 @@
 
 namespace Snebur.Comunicacao
 {
-#if NetCore
+#if NET7_0
 
     using Microsoft.AspNetCore.Http;
     using System;
@@ -15,11 +15,12 @@ namespace Snebur.Comunicacao
     {
         public HttpContext HttpContext { get; private set; }
 
-        public Task ProcessRequestAsync(HttpContext context)
+        public Task ProcessRequestAsync(HttpContext httpContext)
         {
             this.HttpContext = httpContext; 
             throw new NotImplementedException();
         }
     }
+
 #endif
 }

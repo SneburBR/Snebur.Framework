@@ -5,7 +5,7 @@ using Snebur.Dominio;
 using Snebur.Net;
 using Snebur.Utilidade;
 
-#if NET50
+#if NET7_0
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 #endif
@@ -17,7 +17,7 @@ namespace Snebur.ServicoArquivo
         public bool IsReusable => true;
 
 
-#if NET50
+#if NET7_0
         public Task ProcessRequestAsync(HttpContext context)
         {
             using (var zyonHttpContext = new ZyonHttpContextCore(context))

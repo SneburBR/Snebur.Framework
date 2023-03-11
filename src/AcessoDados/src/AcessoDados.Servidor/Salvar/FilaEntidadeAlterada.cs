@@ -53,7 +53,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                     return $"{x.Entidade.__NomeTipoEntidade} - {x.Entidade.Id} - {x.Entidade.GetHashCode()}";
                 }));
 
-                throw new Erro(String.Format("Não foi encontrada a proxima entidade alterada da relacao depedente  Restante: {0}", detalhesRestante));
+                throw new Erro(String.Format("Não foi encontrada a próxima entidade alterada da relação dependente  Restante: {0}", detalhesRestante));
             }
             this.Restantes.Remove(proximaEntidade);
 

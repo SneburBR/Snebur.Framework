@@ -8,7 +8,7 @@ using System.Text;
 using Snebur.Dominio;
 using Snebur.Dominio.Atributos;
 
-#if NET50
+#if NET7_0
 using Microsoft.Data.SqlClient;
 #else
 using System.Data.SqlClient;

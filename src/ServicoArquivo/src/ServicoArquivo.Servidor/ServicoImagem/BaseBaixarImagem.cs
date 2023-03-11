@@ -1,7 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+#if NET7_0
+using Microsoft.AspNetCore.Http;
+#else
 using System.Web;
+#endif  
+
 
 namespace Snebur.ServicoArquivo
 {
@@ -48,9 +53,18 @@ namespace Snebur.ServicoArquivo
             }
             try
             {
+#if NET7_0
+                throw new NotImplementedException();
+                //using (var fs = StreamUtil.OpenRead(caminhoCompletoArquivo))
+                //{
+                //    await StreamUtil.SalvarStreamBufferizadaAsync(fs, context.Response.Body);
+                //}
+#else
                 httpContext.Response.ContentType = "image/png";
                 httpContext.Response.ContentEncoding = Encoding.UTF8;
                 httpContext.Response.WriteFile(caminhoCompletoArquivo);
+#endif
+
 
                 //var bytesArquivo = File.ReadAllBytes(caminhoCompletoArquivo);
                 //httpContext.Response.OutputStream.Write(bytesArquivo.ToArray(), 0, bytesArquivo.Length);

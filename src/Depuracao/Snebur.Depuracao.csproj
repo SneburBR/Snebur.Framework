@@ -87,9 +87,7 @@
     <Compile Include="MensagemEstiloCssAlterado.cs" />
     <Compile Include="MensagemLog.cs" />
     <Compile Include="MensagemPing.cs" />
-    <Compile Include="PaginaDepuracao.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="PaginaDepuracao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

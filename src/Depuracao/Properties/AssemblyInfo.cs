@@ -16,6 +16,5 @@ using System.Runtime.Versioning;
 [assembly: AssemblyFileVersion("1.0.0.2")]
 
 #if NET50
-[assembly: SupportedOSPlatform("windows")]
 [assembly: AssemblyDescription("Snebur.Depuracao Net 5.0")]
 #endif

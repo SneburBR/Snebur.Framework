@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snebur.AspNetCore", "src\AspNetCore\Snebur.AspNetCore.csproj", "{7E18E6A5-5C0E-416E-8C5C-2368B799A7AC}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snebur.Net", "src\Core\Snebur.Net.csproj", "{B0E34886-04ED-45EC-8BB4-81C27768E68A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{087A05A5-46BB-4F61-92A5-CF04B8E10D4B}"
@@ -27,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snebur.AcessoDados.Cliente.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snebur.AcessoDados.Servidor.Net", "src\AcessoDados\src\AcessoDados.Servidor\Snebur.AcessoDados.Servidor.Net.csproj", "{A0F06413-AECB-4A7A-8402-10DCC6198860}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snebur.AcessoDados.Comunicacao.Net50", "src\AcessoDados\src\AcessoDados.Comunicacao\Snebur.AcessoDados.Comunicacao.Net50.csproj", "{0B39502F-9FCC-46AB-84F7-E91EBCB1E1EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snebur.AcessoDados.Comunicacao.Net", "src\AcessoDados\src\AcessoDados.Comunicacao\Snebur.AcessoDados.Comunicacao.Net.csproj", "{0B39502F-9FCC-46AB-84F7-E91EBCB1E1EA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ServicoArquivo", "ServicoArquivo", "{6B2017E7-6490-40C6-87C2-115833CFBD7C}"
 EndProject
@@ -35,16 +33,29 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snebur.ServicoArquivo.Net",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snebur.ServicoArquivo.Cliente.Net", "src\ServicoArquivo\src\.ServicoArquivo.Cliente\Snebur.ServicoArquivo.Cliente.Net.csproj", "{1DAC93E1-7F66-4A73-BBBF-72967A52B1A7}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snebur.AspNet.Net", "src\AspNet\Snebur.AspNet.Net.csproj", "{AD34D1EA-B081-40BC-BC22-042CF60C1BB5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snebur.ServicoArquivo.Servidor.Net", "src\ServicoArquivo\src\ServicoArquivo.Servidor\Snebur.ServicoArquivo.Servidor.Net.csproj", "{EBDA17D9-9914-4D83-8166-8AB6ED329380}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snebur.ServicoArquivo.Comunicacao.Net", "src\ServicoArquivo\src\ServicoArquivo.Comunicacao\Snebur.ServicoArquivo.Comunicacao.Net.csproj", "{936F9205-748B-4453-A1D5-4BFF97334AF7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7A3E04E3-B82A-459A-B03D-71881E0E9D36}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snebur.Computador.Net", "src\Computador\Snebur.Computador.Net.csproj", "{2D7FB4D6-6D67-4621-AC06-282D7A37DAAF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snebur.Depuracao.Net", "src\Depuracao\Snebur.Depuracao.Net.csproj", "{12834472-3559-44C0-8886-46CAF641D558}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7E18E6A5-5C0E-416E-8C5C-2368B799A7AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7E18E6A5-5C0E-416E-8C5C-2368B799A7AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7E18E6A5-5C0E-416E-8C5C-2368B799A7AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7E18E6A5-5C0E-416E-8C5C-2368B799A7AC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B0E34886-04ED-45EC-8BB4-81C27768E68A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B0E34886-04ED-45EC-8BB4-81C27768E68A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0E34886-04ED-45EC-8BB4-81C27768E68A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -89,12 +100,31 @@ Global
 		{1DAC93E1-7F66-4A73-BBBF-72967A52B1A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1DAC93E1-7F66-4A73-BBBF-72967A52B1A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DAC93E1-7F66-4A73-BBBF-72967A52B1A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD34D1EA-B081-40BC-BC22-042CF60C1BB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD34D1EA-B081-40BC-BC22-042CF60C1BB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD34D1EA-B081-40BC-BC22-042CF60C1BB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD34D1EA-B081-40BC-BC22-042CF60C1BB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBDA17D9-9914-4D83-8166-8AB6ED329380}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBDA17D9-9914-4D83-8166-8AB6ED329380}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBDA17D9-9914-4D83-8166-8AB6ED329380}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBDA17D9-9914-4D83-8166-8AB6ED329380}.Release|Any CPU.Build.0 = Release|Any CPU
+		{936F9205-748B-4453-A1D5-4BFF97334AF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{936F9205-748B-4453-A1D5-4BFF97334AF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{936F9205-748B-4453-A1D5-4BFF97334AF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{936F9205-748B-4453-A1D5-4BFF97334AF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D7FB4D6-6D67-4621-AC06-282D7A37DAAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D7FB4D6-6D67-4621-AC06-282D7A37DAAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D7FB4D6-6D67-4621-AC06-282D7A37DAAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D7FB4D6-6D67-4621-AC06-282D7A37DAAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12834472-3559-44C0-8886-46CAF641D558}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12834472-3559-44C0-8886-46CAF641D558}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12834472-3559-44C0-8886-46CAF641D558}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12834472-3559-44C0-8886-46CAF641D558}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{7E18E6A5-5C0E-416E-8C5C-2368B799A7AC} = {087A05A5-46BB-4F61-92A5-CF04B8E10D4B}
 		{B0E34886-04ED-45EC-8BB4-81C27768E68A} = {087A05A5-46BB-4F61-92A5-CF04B8E10D4B}
 		{EA3BECC3-8019-49B5-A793-EF318C12C6D2} = {087A05A5-46BB-4F61-92A5-CF04B8E10D4B}
 		{2CE86966-338B-480A-A774-D3A575BF7AB0} = {29671628-7921-4E01-AD20-70B9DBF1481F}
@@ -106,6 +136,11 @@ Global
 		{0B39502F-9FCC-46AB-84F7-E91EBCB1E1EA} = {0E5860C4-E2FD-42D2-AEB0-01B369F45D8E}
 		{D8565058-5926-4F89-9EE2-3E1E97EF5BF2} = {6B2017E7-6490-40C6-87C2-115833CFBD7C}
 		{1DAC93E1-7F66-4A73-BBBF-72967A52B1A7} = {6B2017E7-6490-40C6-87C2-115833CFBD7C}
+		{AD34D1EA-B081-40BC-BC22-042CF60C1BB5} = {087A05A5-46BB-4F61-92A5-CF04B8E10D4B}
+		{EBDA17D9-9914-4D83-8166-8AB6ED329380} = {6B2017E7-6490-40C6-87C2-115833CFBD7C}
+		{936F9205-748B-4453-A1D5-4BFF97334AF7} = {6B2017E7-6490-40C6-87C2-115833CFBD7C}
+		{2D7FB4D6-6D67-4621-AC06-282D7A37DAAF} = {087A05A5-46BB-4F61-92A5-CF04B8E10D4B}
+		{12834472-3559-44C0-8886-46CAF641D558} = {087A05A5-46BB-4F61-92A5-CF04B8E10D4B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6FCEBA4F-D2F2-4F38-82C2-49139DA221C6}

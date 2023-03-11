@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Web;
 
-#if NetCore
+#if NET7_0
 using Microsoft.AspNetCore.Http;
 #endif
 
@@ -42,6 +42,7 @@ namespace Snebur.Comunicacao
         public string NomeManipulador { get; }
         public bool IsSerializarJavascript { get; set; }
         public HttpContext HttpContext { get; private set; }
+
         #endregion
 
         #region Construtor
@@ -115,7 +116,7 @@ namespace Snebur.Comunicacao
         {
             try
             {
-#if NetCore
+#if NET7_0
                 return context.Request.Body;
 #else
                 return StreamUtil.RetornarMemoryStreamBuferizada(context.Request.GetBufferedInputStream());

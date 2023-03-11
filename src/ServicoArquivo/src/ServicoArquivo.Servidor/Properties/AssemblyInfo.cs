@@ -15,7 +15,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
-#if NET50
-[assembly: SupportedOSPlatform("windows")]
-[assembly: AssemblyDescription("Snebur.ServicoStream.Servidor NEt 5.0")]
-#endif
+ 

@@ -1,8 +1,10 @@
-﻿using Snebur.Computador;
-using Snebur.Utilidade;
+﻿using Snebur.Utilidade;
 using System;
 using System.Configuration;
-//using Snebur.Computador;
+
+#if NET7_0 == false
+using Snebur.Computador;
+#endif
 
 namespace Snebur.ServicoArquivo.Servidor
 {
@@ -12,19 +14,19 @@ namespace Snebur.ServicoArquivo.Servidor
         private const string CHAVE_NOME_COMPUTADOR = "NomeComputadorAcesso";
         private const string CHAVE_USUARIO = "Usuario";
         private const string CHAVE_SENHA = "Senha";
-
         public bool IsAutenticarAcessoCompartilhado => Convert.ToBoolean(ConfigurationManager.AppSettings[CHAVE_AUTENTICAR_ACESSO_COMPARTILHADO]);
         private string NomeComputadorAcesso => ConfiguracaoUtil.AppSettings[CHAVE_NOME_COMPUTADOR];
         private string Usuario => ConfiguracaoUtil.AppSettings[CHAVE_USUARIO];
         private string Senha => ConfiguracaoUtil.AppSettings[CHAVE_SENHA];
 
+#if NET7_0 == false
         public AcessoCompartilhamentoRede AcessoCompartilhamentoRede { get; private set; }
-
+#endif
         public BaseAplicacaoServicoArquivo() : base()
         {
 
         }
-
+#if NET7_0 == false
         public void AcessarRede()
         {
             if (this.IsAutenticarAcessoCompartilhado && this.AcessoCompartilhamentoRede == null)
@@ -35,7 +37,6 @@ namespace Snebur.ServicoArquivo.Servidor
 
 
             }
-
             AppDomain.CurrentDomain.ProcessExit += this.AppDomain_ProcessExit;
         }
 
@@ -43,5 +44,11 @@ namespace Snebur.ServicoArquivo.Servidor
         {
             this.AcessoCompartilhamentoRede?.Dispose();
         }
+#else
+        public void AcessarRede()
+        {
+            throw new Exception("Não implementado para .net 7.0");
+        }
+#endif
+        }
     }
-}

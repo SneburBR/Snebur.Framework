@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Snebur.Utilidade
 {
@@ -55,6 +56,32 @@ namespace Snebur.Utilidade
                     break;
                 }
                 streamDestino.Flush();
+            }
+            if (streamDestino.CanSeek)
+            {
+                streamDestino.Seek(0, SeekOrigin.Begin);
+            }
+        }
+
+        public static async Task SalvarStreamBufferizadaAsync(Stream streamOrigem,
+                                                            Stream streamDestino,
+                                                             int tamanhoBuffer = TAMANHO_BUFFER_PADRAO)
+        {
+            if (streamOrigem.CanSeek)
+            {
+                streamOrigem.Seek(0, SeekOrigin.Begin);
+            }
+            while (true)
+            {
+                var buffer = new byte[tamanhoBuffer];
+                var bytesRecebido = streamOrigem.Read(buffer, 0, tamanhoBuffer);
+                await streamDestino.WriteAsync(buffer, 0, bytesRecebido);
+
+                if (bytesRecebido == 0)
+                {
+                    break;
+                }
+                await streamDestino.FlushAsync();
             }
             if (streamDestino.CanSeek)
             {

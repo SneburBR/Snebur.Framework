@@ -1,20 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-	<PropertyGroup Label="Globals">
-		<SccProjectName>SAK</SccProjectName>
-		<SccProvider>SAK</SccProvider>
-		<SccAuxPath>SAK</SccAuxPath>
-		<SccLocalPath>SAK</SccLocalPath>
-	</PropertyGroup>
-
+ 
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFrameworks>net48;net7.0</TargetFrameworks>
 		<RootNamespace>Snebur.ServicoArquivo</RootNamespace>
 		<Version>2.0.0</Version>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<Nullable>disable</Nullable>
 		<AssemblyName>Snebur.ServicoArquivo.Cliente</AssemblyName>
-		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -27,11 +20,8 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<Compile Remove="Bibliotecas\**" />
-		<Compile Remove="Properties\**" />
 		<EmbeddedResource Remove="Bibliotecas\**" />
-		<EmbeddedResource Remove="Properties\**" />
 		<None Remove="Bibliotecas\**" />
-		<None Remove="Properties\**" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Remove="Snebur.ServicoArquivo.Cliente.csproj.vspscc" />

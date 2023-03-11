@@ -1,5 +1,6 @@
-﻿using System;
-using System.IO;
+﻿#if NET48
+
+using System;
 using System.Linq;
 using static Snebur.Depuracao.ConstantesDeburacao;
 
@@ -54,3 +55,4 @@ namespace Snebur.Depuracao
             
     }
 }
+#endif

@@ -9,8 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 
-#if NetCore
-using Snebur.AspNetCore;
+#if NET7_0
 using Microsoft.AspNetCore.Http;
 #endif
 

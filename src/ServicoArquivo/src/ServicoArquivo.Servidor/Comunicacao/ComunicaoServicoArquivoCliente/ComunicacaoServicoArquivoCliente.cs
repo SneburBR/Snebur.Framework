@@ -5,10 +5,12 @@ using Snebur.Utilidade;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Web;
 
-#if NET50
+
+#if NET7_0
 using Microsoft.AspNetCore.Http;
+#else
+using System.Web;
 #endif
 
 namespace Snebur.ServicoArquivo

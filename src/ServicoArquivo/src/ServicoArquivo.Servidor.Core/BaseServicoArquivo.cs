@@ -5,7 +5,7 @@ using Snebur.Net;
 using Snebur.Utilidade;
 using System.IO;
 
-#if NET50
+#if NET7_0
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 #endif
@@ -28,7 +28,7 @@ namespace Snebur.ServicoArquivo
 
         #region IHttpHandler
 
-#if NET50
+#if NET7_0
         public async Task ProcessRequestAsync(HttpContext context)
         {
             using (var zyonHttpContext = new ZyonHttpContextCore(context))

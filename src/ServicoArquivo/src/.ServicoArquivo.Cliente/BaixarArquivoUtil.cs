@@ -116,7 +116,7 @@ namespace Snebur.ServicoArquivo.Cliente
                 requisicao.Headers.Add(item.Key, Base64Util.Encode(item.Value));
             }
 
-            requisicao.Headers.Add(ConstantesCabecalho.TOKEN, HttpUtility.UrlEncode(token));
+            requisicao.Headers.Add(ConstantesCabecalho.TOKEN, Uri.EscapeDataString(token));
 
             requisicao.Timeout = (int)timeout.TotalMilliseconds;
             requisicao.Proxy = null;
@@ -125,6 +125,7 @@ namespace Snebur.ServicoArquivo.Cliente
 
             var bytes = Guid.NewGuid().ToByteArray();
             requisicao.ContentLength = bytes.Length;
+
             using (var streamRequisicao = requisicao.GetRequestStream())
             {
                 streamRequisicao.Write(bytes, 0, bytes.Length);

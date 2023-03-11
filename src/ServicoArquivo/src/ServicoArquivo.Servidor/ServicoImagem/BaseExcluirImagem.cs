@@ -1,8 +1,13 @@
 ﻿using Snebur.Dominio;
-using System.Web;
 using Snebur.Utilidade;
 using System;
 using System.IO;
+#if NET7_0
+using Microsoft.AspNetCore.Http;
+#else
+using System.Web;
+#endif  
+
 
 namespace Snebur.ServicoArquivo
 {
@@ -48,7 +53,13 @@ namespace Snebur.ServicoArquivo
                 }
             }
             this.NotificarExcluirImagem(idArquivo);
+
+#if NET7_0
+            throw new NotImplementedException();
+#else
             httpContext.Response.Write("true");
+#endif
+
         }
 
         private void NotificarExcluirImagem(long IdBaseStream)

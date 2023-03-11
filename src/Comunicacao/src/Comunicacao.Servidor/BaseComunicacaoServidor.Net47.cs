@@ -1,7 +1,7 @@
 ﻿
 namespace Snebur.Comunicacao
 {
-#if NetCore == false
+#if NET7_0 == false
 
     using Snebur.Servicos;
     using Snebur.Utilidade;

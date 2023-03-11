@@ -174,7 +174,7 @@ namespace Snebur.ServicoArquivo.Cliente
                 requisicao.Headers.Add(item.Key, Base64Util.Encode(item.Value));
             }
             requisicao.Headers.Add(ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO, this.IdentificadorProprietario.ToString());
-            requisicao.Headers.Add(ParametrosComunicacao.TOKEN, HttpUtility.UrlEncode(token));
+            requisicao.Headers.Add(ParametrosComunicacao.TOKEN, Uri.EscapeDataString(token));
 
             requisicao.Timeout = Int32.MaxValue;
             requisicao.Proxy = null;

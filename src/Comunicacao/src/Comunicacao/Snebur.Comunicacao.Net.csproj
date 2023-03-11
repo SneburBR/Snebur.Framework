@@ -1,13 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-	<!--
-	<PropertyGroup Label="Globals">
-		<SccProjectName>SAK</SccProjectName>
-		<SccProvider>SAK</SccProvider>
-		<SccAuxPath>SAK</SccAuxPath>
-		<SccLocalPath>SAK</SccLocalPath>
-	</PropertyGroup>-->
-
+ 
 	<PropertyGroup>
 		<!--<TargetFramework>net7.0</TargetFramework>-->
 		<TargetFrameworks>net48;net7.0</TargetFrameworks>
@@ -24,9 +16,11 @@
 		<WarningLevel>4</WarningLevel>
 		<NoWarn>1701;1702</NoWarn>
 	</PropertyGroup>
+	
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<DefineConstants>DEBUG;TRACE</DefineConstants>
+		<DefineConstants>TRACE</DefineConstants>
 	</PropertyGroup>
+	
 	<ItemGroup>
 		<Compile Remove="NormalizarDeserializacao.cs" />
 		<Compile Remove="PrepararSerializacao.cs" />
@@ -40,7 +34,5 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\Core\Snebur.Net.csproj" />
 	</ItemGroup>
-
-
-
+ 
 </Project>

@@ -50,13 +50,13 @@
     <Compile Include="Utilidade\CrossDomainUtil.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Net\" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Core\Snebur.csproj">
       <Project>{ec174c4f-8122-41a3-8360-f04c4c8fc3ba}</Project>
       <Name>Snebur</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Net\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,5 +1,6 @@
 ﻿
-#if NetCore
+#if NET7_0
+
 using Microsoft.AspNetCore.Http;
 
 namespace Snebur.Comunicacao
@@ -12,7 +13,6 @@ namespace Snebur.Comunicacao
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
-    using Snebur.AspNetCore;
     using Snebur.Utilidade;
     using System;
     using System.IO;
@@ -155,10 +155,10 @@ namespace Snebur.Comunicacao
 
         public async Task ProcessarRequisicaoAsync(HttpContext context)
         {
-           if (CrossDomainUtil.VerificarContratoCrossDomain(httpContext))
+            if (CrossDomainUtil.VerificarContratoCrossDomain(context))
             {
-                await httpContext.CompleteRequestAsync();
-                return false;
+                await context.CompleteRequestAsync();
+                return;
             }
             this.AntesProcessarRequisicao(context);
 

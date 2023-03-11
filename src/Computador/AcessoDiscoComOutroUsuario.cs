@@ -18,7 +18,10 @@ namespace Snebur.Computador
 
         private WindowsIdentity WindowsIdentity { get; set; }
         private SafeTokenHandle SafeTokenHandle { get; set; }
+
+#if NET7_0 == false
         private WindowsImpersonationContext WindowsImpersonationContext { get; set; }
+#endif
 
         public AcessoDiscoComOutroUsuario(string usuario, string senha) : this(null, usuario, senha)
         {
@@ -59,8 +62,15 @@ namespace Snebur.Computador
                     if (returnValue && safeTokenHandle != null)
                     {
                         this.SafeTokenHandle = safeTokenHandle;
-                        this.WindowsIdentity = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
+                        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                        {
+                            this.WindowsIdentity = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
+
+#if NET7_0 == false
                         this.WindowsImpersonationContext = this.WindowsIdentity.Impersonate();
+#endif
+                        }
+
                         this.IsAutorizado = true;
                     }
                 }
@@ -75,7 +85,9 @@ namespace Snebur.Computador
 
         public void Dispose()
         {
+#if NET7_0 == false
             this.WindowsImpersonationContext?.Dispose();
+#endif
             this.WindowsIdentity?.Dispose();
             this.SafeTokenHandle?.Dispose();
         }

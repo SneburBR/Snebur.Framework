@@ -1,0 +1,63 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+
+	<PropertyGroup>
+		<TargetFrameworks>net48;net7.0</TargetFrameworks>
+		<RootNamespace>Snebur.ServicoArquivo</RootNamespace>
+		<Version>2.0.0</Version>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<Nullable>disable</Nullable>
+		<AssemblyName>Snebur.ServicoArquivo.Comunicacao</AssemblyName>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DefineConstants>NET50; DEBUG;TRACE</DefineConstants>
+		<WarningLevel>4</WarningLevel>
+		<NoWarn>1701;1702</NoWarn>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DefineConstants>TRACE</DefineConstants>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Remove="Bibliotecas\**" />
+		<Compile Remove="Properties\**" />
+		<EmbeddedResource Remove="Bibliotecas\**" />
+		<EmbeddedResource Remove="Properties\**" />
+		<None Remove="Bibliotecas\**" />
+		<None Remove="Properties\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Remove="Snebur.ServicoArquivo.Cliente.Net50.csproj.vspscc" />
+		<None Remove="Snebur.ServicoArquivo.Comunicacao.csproj.vspscc" />
+		<None Remove="Snebur.ServicoArquivo.Comunicacao.Net50.csproj.vspscc" />
+		<None Remove="Snebur.ServicoArquivo.csproj.vspscc" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\AcessoDados\src\AcessoDados.Servidor\Snebur.AcessoDados.Servidor.Net.csproj" />
+		<ProjectReference Include="..\..\..\AcessoDados\src\AcessoDados\Snebur.AcessoDados.Net.csproj" />
+	
+		<ProjectReference Include="..\..\..\Comunicacao\src\Comunicacao.Servidor\Snebur.Comunicacao.Servidor.Net.csproj" />
+		<ProjectReference Include="..\..\..\Comunicacao\src\Comunicacao\Snebur.Comunicacao.Net.csproj" />
+		<ProjectReference Include="..\..\..\Core\Snebur.Net.csproj" />
+		<ProjectReference Include="..\..\..\Seguranca\Snebur.Seguranca.Net.csproj" />
+		<ProjectReference Include="..\ServicoArquivo\Snebur.ServicoArquivo.Net.csproj" />
+		<ProjectReference Include="..\..\..\AspNet\Snebur.AspNet.Net.csproj" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net48' ">
+
+		<Reference Include="System.Web" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0' ">
+
+		<!--<ProjectReference Include="..\..\..\AspNetCore\Snebur.AspNetCore.csproj" />-->
+
+	</ItemGroup>
+
+
+
+</Project>

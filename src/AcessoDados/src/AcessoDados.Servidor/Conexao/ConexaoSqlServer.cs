@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using Snebur.AcessoDados.Estrutura;
 
-#if NET50
+#if NET7_0
 using Microsoft.Data.SqlClient;
 #else
 using System.Data.SqlClient;

@@ -1,4 +1,4 @@
-﻿#if NET50
+﻿#if NET7_0
 using Microsoft.Data.SqlClient;
 #else
 #endif

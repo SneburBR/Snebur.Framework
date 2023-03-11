@@ -1,6 +1,9 @@
-﻿using System;
+﻿
+using System;
 
-#if NET50 == false
+#if NET7_0 
+using Microsoft.AspNetCore.Http;
+#else
 using System.Web;
 #endif 
 

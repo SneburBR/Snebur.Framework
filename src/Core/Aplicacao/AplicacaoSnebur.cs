@@ -471,7 +471,9 @@ namespace Snebur
 
         private void InicializarComunicacao()
         {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11 |
+                                                   SecurityProtocolType.Tls12 |
+                                                   SecurityProtocolType.Tls13;
 
             //Ignorar eerros da certificados Https, isso pode ocorres caso da DataHora do computador cliente do usuario esteja mais 12 horas de diferença com servidor
             ServicePointManager.ServerCertificateValidationCallback = delegate (object obj,

@@ -6,7 +6,7 @@ using Snebur.Utilidade;
 namespace Snebur.ServicoArquivo.Servidor
 {
     public abstract class BaseAplicacaoServicoArquivo :
-#if NET50
+#if NET7_0
         AplicacaoSneburAspNetCore
 #else   
         AplicacaoSnebur

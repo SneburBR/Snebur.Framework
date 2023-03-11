@@ -14,10 +14,8 @@ using System.Reflection;
 using System.Text;
 using System.Web;
 
-#if NetCore
+#if NET7_0
 using Microsoft.AspNetCore.Http;
-using Snebur.AspNetCore;
-#else
 #endif
 
 namespace Snebur.Comunicacao

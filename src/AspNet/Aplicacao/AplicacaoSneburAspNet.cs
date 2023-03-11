@@ -2,8 +2,14 @@
 using Snebur.Seguranca;
 using Snebur.Utilidade;
 using System;
+using System.Collections;
 using System.ComponentModel;
+
+#if NET7_0 
+using Microsoft.AspNetCore.Http;
+#else
 using System.Web;
+#endif 
 
 namespace Snebur
 {
@@ -11,8 +17,13 @@ namespace Snebur
     {
         public const string PARAMETRO_IP_REQUISICAO = "IpRequisicao";
         public override EnumTipoAplicacao TipoAplicacao => EnumTipoAplicacao.DotNet_WebService;
-        public virtual HttpContext HttpContext => HttpContext.Current;
-       
+
+#if NET48
+        public virtual HttpContext HttpContext => System.Web.HttpContext.Current;
+#endif
+
+
+
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override InformacaoSessaoUsuario InformacaoSessaoUsuario
         {
@@ -21,9 +32,10 @@ namespace Snebur
                 var httpContext = this.HttpContext;
                 if (httpContext != null)
                 {
-                    lock (httpContext.Items.SyncRoot)
+                    lock ((httpContext.Items as ICollection).SyncRoot)
                     {
-                        if (httpContext.Items.Contains(ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL))
+                        
+                        if (httpContext.Items.ContainsKey(ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL))
                         {
                             return (InformacaoSessaoUsuario)httpContext.Items[ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL];
                         }
@@ -41,9 +53,9 @@ namespace Snebur
                 var httpContext = this.HttpContext;
                 if (httpContext != null)
                 {
-                    lock (httpContext.Items.SyncRoot)
+                    lock ((httpContext.Items as ICollection).SyncRoot)
                     {
-                        if (httpContext.Items.Contains(ConstantesItensRequsicao.CHAVE_IDENTIFICADOR_PROPRIETARIO))
+                        if (httpContext.Items.ContainsKey(ConstantesItensRequsicao.CHAVE_IDENTIFICADOR_PROPRIETARIO))
                         {
                             return (string)httpContext.Items[ConstantesItensRequsicao.CHAVE_IDENTIFICADOR_PROPRIETARIO];
                         }
@@ -61,9 +73,9 @@ namespace Snebur
                 var httpContext = this.HttpContext;
                 if (httpContext != null)
                 {
-                    lock (httpContext.Items.SyncRoot)
+                    lock ((httpContext.Items as ICollection).SyncRoot)
                     {
-                        if (httpContext.Items.Contains(ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL))
+                        if (httpContext.Items.ContainsKey(ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL))
                         {
                             return (httpContext.Items[ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL] as InformacaoSessaoUsuario).IdentificadorSessaoUsuario;
                         }
@@ -82,9 +94,9 @@ namespace Snebur
                 var httpContext = this.HttpContext;
                 if (httpContext != null)
                 {
-                    lock (httpContext.Items.SyncRoot)
+                    lock ((httpContext.Items as ICollection).SyncRoot)
                     {
-                        if (httpContext.Items.Contains(ConstantesItensRequsicao.CHAVE_CREDENCIAL_USUARIO))
+                        if (httpContext.Items.ContainsKey(ConstantesItensRequsicao.CHAVE_CREDENCIAL_USUARIO))
                         {
                             return (CredencialUsuario)httpContext.Items[ConstantesItensRequsicao.CHAVE_CREDENCIAL_USUARIO];
                         }
@@ -93,7 +105,9 @@ namespace Snebur
                 return base.CredencialUsuario;
             }
         }
-         
+
+#if NET48
+
         public override string IP
         {
             get
@@ -130,6 +144,7 @@ namespace Snebur
 
             //throw new Exception("Não foi possível retornar o IP da requisição");
         }
+#endif
 
         //public static AplicacaoSneburAspNet AtualAspNet => AplicacaoSnebur.Atual as AplicacaoSneburAspNet;
 
@@ -141,17 +156,21 @@ namespace Snebur
             throw new NotImplementedException();
         }
 
+#if NET48
         [EditorBrowsable(EditorBrowsableState.Never)]
         public string UserAgent => this.HttpContext?.Request?.UserAgent;
-
+#else
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public string UserAgent => this.HttpContext.Request.UserAgent();
+#endif
         public T GetHttpContext<T>()
         {
-            if(this.HttpContext== null)
+            if (this.HttpContext == null)
             {
                 return default;
             }
 
-            if( this.HttpContext is T httpContext) 
+            if (this.HttpContext is T httpContext)
             {
                 return httpContext;
             }
@@ -160,5 +179,32 @@ namespace Snebur
 
         #endregion
 
+#if NET7_0
+
+        #region IAplicacaoSneburAspNetCore
+
+        //private static IServiceProvider ServiceProvider;
+        private static IHttpContextAccessor HttpContextAccessor;
+
+        public virtual HttpContext HttpContext
+        {
+            get
+            {
+                if (AplicacaoSneburAspNet.HttpContextAccessor == null)
+                {
+                    throw new Exception("O HttpContextAccessor não foi definido");
+                }
+                return AplicacaoSneburAspNet.HttpContextAccessor.HttpContext;
+            }
+        }
+
+        public void ConfigureHttpContextAccessor(IHttpContextAccessor httpContextAccessor)
+        {
+            AplicacaoSneburAspNet.HttpContextAccessor = httpContextAccessor;
+            //AplicacaoSneburAspNet.ServiceProvider = ServiceProvider;
+        }
+
+        #endregion
+#endif
     }
 }

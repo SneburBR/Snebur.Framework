@@ -1,7 +1,12 @@
 ﻿using Snebur.Seguranca;
 using Snebur.Utilidade;
 using System;
+#if NET7_0
+using Microsoft.AspNetCore.Http;
+#else
 using System.Web;
+#endif  
+
 
 namespace Snebur.ServicoArquivo
 {

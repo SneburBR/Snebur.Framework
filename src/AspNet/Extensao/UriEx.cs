@@ -4,6 +4,7 @@ using System.Web;
 
 namespace Snebur
 {
+#if NET7_0 == false
     public static class UriEx
     {
         public static Uri Combine(this Uri baseUri, string relativeUrl)
@@ -20,7 +21,8 @@ namespace Snebur
             return baseUri.Combine(new Uri(relativeUrl, UriKind.RelativeOrAbsolute));
         }
 
-        public static Uri Combine(this Uri baseUri, Uri relativeUri)
+        public static Uri Combine(this Uri baseUri, 
+                                  Uri relativeUri)
         {
             if (baseUri == null) throw new ArgumentNullException("baseUri");
             if (relativeUri == null) throw new ArgumentNullException("relativeUri");
@@ -48,4 +50,5 @@ namespace Snebur
             return uriBuilder.Uri;
         }
     }
+#endif
 }
