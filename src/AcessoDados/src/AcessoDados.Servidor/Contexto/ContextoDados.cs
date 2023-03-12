@@ -145,8 +145,8 @@ namespace Snebur.AcessoDados
                              InformacaoSessaoUsuario informacaoSessaoUsuario,
                              string identificadorProprietario,
                              EnumFlagBancoNaoSuportado sqlNaoSuporta) : this(configuracaoAcessoDados,
-                                                                    identificadorProprietario,
-                                                                    sqlNaoSuporta)
+                                                                             identificadorProprietario,
+                                                                             sqlNaoSuporta)
         {
             ErroUtil.ValidarReferenciaNula(credencial, nameof(credencial));
 
@@ -155,17 +155,26 @@ namespace Snebur.AcessoDados
             //this.CredencialUsuario = credencial;
 
             this.IsFiltrarIdentificadorProprietario = identificadorProprietario != null;
-            this.CacheSessaoUsuario = CacheSessaoUsuario.RetornarCacheSessaoUsuario(this, credencial, identificadorSessaoUsario, informacaoSessaoUsuario);
-             
-            if (this.CacheSessaoUsuario.Usuario == null)
-            {
-                throw new ErroSessaoUsuarioInvalida("O usuário não foi definido no cache da sessão o usuário");
-            }
 
-            if (this.CacheSessaoUsuario.SessaoUsuario == null)
+            if (this.SqlSuporte.IsUsuario)
             {
-                throw new ErroSessaoUsuarioInvalida("A sessão do usuário não foi definido no cache da sessão o usuário");
+                this.CacheSessaoUsuario = CacheSessaoUsuario.RetornarCacheSessaoUsuario(this, credencial, identificadorSessaoUsario, informacaoSessaoUsuario);
+
+                if (this.CacheSessaoUsuario.Usuario == null)
+                {
+                    throw new ErroSessaoUsuarioInvalida("O usuário não foi definido no cache da sessão o usuário");
+                }
+
+                if (this.CacheSessaoUsuario.SessaoUsuario == null)
+                {
+                    throw new ErroSessaoUsuarioInvalida("A sessão do usuário não foi definido no cache da sessão o usuário");
+                }
+                this.IsValidarUsuarioSessaoUsuario = true;
+                this.IsAnonimo = CredencialUtil.ValidarCredencial(this.UsuarioLogado, CredencialAnonimo.Anonimo);
+
+                this.VerificarAutorizacaoUsuarioIdentificadorGlobal();
             }
+            
              
             //this.ResultadoSessaoUsuario = this.CacheSessaoUsuario.RetornarResltadoSessaoUsuario(credencial, identificadorSessaoUsario, informacaoSessaoUsuario);
             //this.UsuarioLogado = this.ResultadoSessaoUsuario.Usuario;
@@ -176,10 +185,7 @@ namespace Snebur.AcessoDados
             //this.SessaoUsuarioLogado = this.AjudanteSessaoUsuario.RetornarSessaoUsuario(this.UsuarioLogado, informacaoSessaoUsuario);
 
             //this.SalvarInternoSemNotificacao((Entidade)this.SessaoUsuarioLogado, true);
-            this.IsValidarUsuarioSessaoUsuario = true;
-            this.IsAnonimo = CredencialUtil.ValidarCredencial(this.UsuarioLogado, CredencialAnonimo.Anonimo);
-
-            this.VerificarAutorizacaoUsuarioIdentificadorGlobal();
+           
             this.InicializandoContexto = false;
         }
 

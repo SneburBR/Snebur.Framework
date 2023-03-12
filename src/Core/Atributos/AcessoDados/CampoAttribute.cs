@@ -19,4 +19,16 @@ namespace Snebur.Dominio.Atributos
             this.NomeCampo = nomeCampo;
         }
     }
+
+    [IgnorarAtributoTS]
+    [AttributeUsage(AttributeTargets.Property)]
+    public class TipoBancoAttribute : ColumnAttribute 
+    {
+        public Type Tipo { get; }
+
+        public TipoBancoAttribute(Type tipo)
+        {
+            this.Tipo = tipo;
+        }
+    }
 }
