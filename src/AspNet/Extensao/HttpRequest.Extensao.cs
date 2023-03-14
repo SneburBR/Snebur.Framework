@@ -1,38 +1,49 @@
-﻿#if NET7_0  == false
-
- namespace System.Web
-{
-    public static class HttpRequestExtensao
-    {
-        //Para compatibilidade do .Net  5.0
-        public static Uri RetornarUrlRequisicao(this HttpRequest httpRequest)
-        {
-            return httpRequest.Url ??
-                   httpRequest.UrlReferrer;
-                   
-        }
-    }
-}
-
-#endif
-
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 #if NET7_0
-
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Net.Http.Headers;
-using System;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
+#endif
 
-public static class HttpRequestExtensao
+namespace System.Web
+{
+    public static class HttpRequestExtensao
     {
         public static Uri RetornarUrlRequisicao(this HttpRequest request)
         {
+#if NET7_0
             return request.GetTypedHeaders()?.Referer ??
                    new Uri($"{request.Scheme}://{request.Host.Host}{request.GetEncodedPathAndQuery()}");
+#else
+            return request.Url ??
+                   request.UrlReferrer;
+#endif
+
         }
+
+        public static string GetQueryStringValue(this HttpRequest request, string key)
+        {
+#if NET7_0
+            if( request.Query.TryGetValue(key, out var value))
+            {
+                if(value.Count == 1)
+                {
+                    return value.Single();
+                }
+                return value.ToString();
+            }
+            return null;
+
+#else
+            return request[key];
+#endif
+        }
+
+#if NET7_0
         public static Uri Url(this HttpRequest request)
         {
             var header = request.GetTypedHeaders();
@@ -56,32 +67,7 @@ public static class HttpRequestExtensao
 
             //httpContext.Response.Body.Close();
         }
+#endif
     }
 
-    public static class IHeaderDictionaryExtensao
-    {
-        public static string GetValue(this IHeaderDictionary cabecalho, string chave)
-        {
-            if (cabecalho.TryGetValue(chave, out var item))
-            {
-                if (item.Count == 1)
-                {
-                    return item.ToString();
-                }
-                throw new Erro($"Existe mais de um item no cabeçalho da requisição para chave {chave}");
-            }
-            return null;
-        }
-
-        public static string[] GetValues(this IHeaderDictionary cabecalho, string chave)
-        {
-            if (cabecalho.TryGetValue(chave, out var item))
-            {
-                return item.ToArray();
-            }
-            return null;
-        }
 }
-
-
-#endif

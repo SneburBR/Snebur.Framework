@@ -1,9 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace Snebur.Dominio
 {
+    //[JsonObject]
+    //https://stackoverflow.com/questions/14383736/how-to-serialize-deserialize-a-custom-collection-with-additional-properties-usin
     public class ListaEntidades<TEntidade> : List<TEntidade>,
                                              IListaEntidades,
                                              IListaEntidades<TEntidade> where TEntidade : IEntidade

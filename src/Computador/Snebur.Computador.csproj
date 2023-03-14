@@ -3,12 +3,11 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>net48;net7.0</TargetFrameworks>
+		<AssemblyName>Snebur.Computador</AssemblyName>
 		<RootNamespace>Snebur.Computador</RootNamespace>
-		<Version>2.0.0</Version>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<Nullable>disable</Nullable>
-		<AssemblyName>Snebur.Computador</AssemblyName>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

@@ -1,13 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<!--<TargetFramework>net7.0</TargetFramework>-->
 		<TargetFrameworks>net48;net7.0</TargetFrameworks>
+		<AssemblyName>Snebur</AssemblyName>
 		<RootNamespace>Snebur</RootNamespace>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<Nullable>disable</Nullable>
-		<AssemblyName>Snebur</AssemblyName>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -85,6 +84,10 @@
 		<Compile Remove="Serializacao\NormalizarDeserializacao.cs" />
 		<Compile Remove="Serializacao\PrepararSerializacao.cs" />
 		<Compile Remove="Utilidade\ZipUtil.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Include="Properties\AssemblyInfo.cs" />
 	</ItemGroup>
 
 </Project>

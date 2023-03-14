@@ -285,9 +285,9 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Snebur.Net48.csproj">
+    <ProjectReference Include="..\Core\Snebur.csproj">
       <Project>{ec174c4f-8122-41a3-8360-f04c4c8fc3ba}</Project>
-      <Name>Snebur.Net48</Name>
+      <Name>Snebur</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

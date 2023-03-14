@@ -124,10 +124,6 @@
       <Project>{ec174c4f-8122-41a3-8360-f04c4c8fc3ba}</Project>
       <Name>Snebur</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Imagem\Snebur.Imagem.csproj">
-      <Project>{291b80e1-af0e-42fe-bed9-66ea6b8118e4}</Project>
-      <Name>Snebur.Imagem</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ServicoArquivo\src\.ServicoArquivo.Cliente\Snebur.ServicoArquivo.Cliente.csproj">
       <Project>{83894101-d265-4738-96fa-9fdd91674960}</Project>
       <Name>Snebur.ServicoArquivo.Cliente</Name>

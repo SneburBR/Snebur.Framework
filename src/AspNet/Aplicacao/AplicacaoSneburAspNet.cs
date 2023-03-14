@@ -4,8 +4,9 @@ using Snebur.Utilidade;
 using System;
 using System.Collections;
 using System.ComponentModel;
+using System.Web;
 
-#if NET7_0 
+#if NET7_0
 using Microsoft.AspNetCore.Http;
 #else
 using System.Web;

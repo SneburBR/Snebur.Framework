@@ -55,7 +55,7 @@ namespace Snebur.Utilidade
                 //}
 
             }
-            catch (UnauthorizedAccessException ex)
+            catch (UnauthorizedAccessException)
             {
                 throw ;
             }
@@ -828,7 +828,7 @@ namespace Snebur.Utilidade
                     GC.WaitForPendingFinalizers();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 if (clonarMetadata)
                 {

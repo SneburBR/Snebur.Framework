@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Snebur.Comunicacao.WebSocket.Experimental.Handlers.WebSocket;
+using System;
+using System.Linq;
 using System.Net;
-using Snebur.Comunicacao.WebSocket.Experimental.Handlers.WebSocket;
-using Snebur.Utilidade;
 
 namespace Snebur.Comunicacao.WebSocket.Experimental.Classes
 {
@@ -120,11 +120,16 @@ namespace Snebur.Comunicacao.WebSocket.Experimental.Classes
             this.Contexto.Handler.Send(dataFrame, this.Contexto, raw, close);
         }
 
+        private string _identificador = null;
         public string Identificador
         {
             get
             {
-                return TextoUtil.RetornarSomentesLetrasNumeros(this.ClientAddress.ToString() + this.RequestPath );
+                if(this._identificador == null)
+                {
+                    this._identificador = new string(this.ClientAddress.ToString().Where(x => Char.IsLetterOrDigit(x)).ToArray()); 
+                }
+                return this._identificador;
             }
         }
     }
