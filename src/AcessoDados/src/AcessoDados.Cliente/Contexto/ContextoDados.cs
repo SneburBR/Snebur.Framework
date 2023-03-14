@@ -123,7 +123,9 @@ namespace Snebur.AcessoDados
                         foreach (var propriedadeComputada in entidadeSalva.PropriedadesComputada)
                         {
                             var propriedade = entidade.GetType().GetProperty(propriedadeComputada.NomePropriedade);
-                            propriedade.SetValue(entidade, propriedadeComputada.Valor);
+                            var valorConvertido = ConverterUtil.Para(propriedadeComputada.Valor, propriedade.PropertyType);
+
+                            propriedade.SetValue(entidade, valorConvertido);
                         }
                         entidade.AtivarControladorPropriedadeAlterada();
                     }

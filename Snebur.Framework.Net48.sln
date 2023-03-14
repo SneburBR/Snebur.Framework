@@ -5,45 +5,45 @@ VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{5A516B2C-FA07-473D-A29B-E83BDB92F054}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur", "src\Core\Snebur.csproj", "{EC174C4F-8122-41A3-8360-F04C4C8FC3BA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.Net48", "src\Core\Snebur.Net48.csproj", "{EC174C4F-8122-41A3-8360-F04C4C8FC3BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.Seguranca", "src\Seguranca\Snebur.Seguranca.csproj", "{65B693FA-A999-48C3-9DAE-6DA21A1158B7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.Seguranca.Net48", "src\Seguranca\Snebur.Seguranca.Net48.csproj", "{65B693FA-A999-48C3-9DAE-6DA21A1158B7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Comunicacao", "Comunicacao", "{AC8BC5B7-F35E-4351-A587-EA5FC9285F08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.Comunicacao", "src\Comunicacao\src\Comunicacao\Snebur.Comunicacao.csproj", "{B44697C1-5C0C-40CF-814D-2BFBA2498BF6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.Comunicacao.Net48", "src\Comunicacao\src\Comunicacao\Snebur.Comunicacao.Net48.csproj", "{B44697C1-5C0C-40CF-814D-2BFBA2498BF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.Comunicacao.Cliente", "src\Comunicacao\src\Comunicacao.Cliente\Snebur.Comunicacao.Cliente.csproj", "{ECF8A9A3-2544-4C75-9473-85E919C5BEBC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.Comunicacao.Cliente.Net48", "src\Comunicacao\src\Comunicacao.Cliente\Snebur.Comunicacao.Cliente.Net48.csproj", "{ECF8A9A3-2544-4C75-9473-85E919C5BEBC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.Comunicacao.Servidor", "src\Comunicacao\src\Comunicacao.Servidor\Snebur.Comunicacao.Servidor.csproj", "{FE9E12C0-AE76-4C3D-8B2D-407A7A751EFF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.Comunicacao.Servidor.Net48", "src\Comunicacao\src\Comunicacao.Servidor\Snebur.Comunicacao.Servidor.Net48.csproj", "{FE9E12C0-AE76-4C3D-8B2D-407A7A751EFF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AcessoDados", "AcessoDados", "{0948CA5C-D85A-4168-A228-ABFB790F75C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.AcessoDados", "src\AcessoDados\src\AcessoDados\Snebur.AcessoDados.csproj", "{AE39CD55-5282-48A5-8131-6704C825F26A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.AcessoDados.Net48", "src\AcessoDados\src\AcessoDados\Snebur.AcessoDados.Net48.csproj", "{AE39CD55-5282-48A5-8131-6704C825F26A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.AcessoDados.Cliente", "src\AcessoDados\src\AcessoDados.Cliente\Snebur.AcessoDados.Cliente.csproj", "{20D90B61-E126-4048-BA7E-0FE69CF20180}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.AcessoDados.Cliente.Net48", "src\AcessoDados\src\AcessoDados.Cliente\Snebur.AcessoDados.Cliente.Net48.csproj", "{20D90B61-E126-4048-BA7E-0FE69CF20180}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.AcessoDados.Servidor", "src\AcessoDados\src\AcessoDados.Servidor\Snebur.AcessoDados.Servidor.csproj", "{31462775-BADC-4D17-9242-41E4EA2507C7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.AcessoDados.Servidor.Net48", "src\AcessoDados\src\AcessoDados.Servidor\Snebur.AcessoDados.Servidor.Net48.csproj", "{31462775-BADC-4D17-9242-41E4EA2507C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.AcessoDados.Comunicacao", "src\AcessoDados\src\AcessoDados.Comunicacao\Snebur.AcessoDados.Comunicacao.csproj", "{F2169388-EBB5-4EE9-9FB7-30D886C47AD8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.AcessoDados.Comunicacao.Net48", "src\AcessoDados\src\AcessoDados.Comunicacao\Snebur.AcessoDados.Comunicacao.Net48.csproj", "{F2169388-EBB5-4EE9-9FB7-30D886C47AD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.AcessoDados.Migracao", "src\AcessoDados\src\AcessoDados.Migracao\Snebur.AcessoDados.Migracao.csproj", "{64993A1A-58DC-4001-BAB3-2CB115DA835D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.AcessoDados.Migracao.Net48", "src\AcessoDados\src\AcessoDados.Migracao\Snebur.AcessoDados.Migracao.Net48.csproj", "{64993A1A-58DC-4001-BAB3-2CB115DA835D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ServicoArquivo", "ServicoArquivo", "{3F176DC7-BD14-4B54-9D78-FEBA6C7D1C57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.ServicoArquivo", "src\ServicoArquivo\src\ServicoArquivo\Snebur.ServicoArquivo.csproj", "{3F344A32-39CE-469C-A4FF-BD7EF353912B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.ServicoArquivo.Net48", "src\ServicoArquivo\src\ServicoArquivo\Snebur.ServicoArquivo.Net48.csproj", "{3F344A32-39CE-469C-A4FF-BD7EF353912B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.ServicoArquivo.Comunicacao", "src\ServicoArquivo\src\ServicoArquivo.Comunicacao\Snebur.ServicoArquivo.Comunicacao.csproj", "{01C61788-CE3A-46B6-B15D-B1DE3BDD64EC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.ServicoArquivo.Comunicacao.Net48", "src\ServicoArquivo\src\ServicoArquivo.Comunicacao\Snebur.ServicoArquivo.Comunicacao.Net48.csproj", "{01C61788-CE3A-46B6-B15D-B1DE3BDD64EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.ServicoArquivo.Servidor", "src\ServicoArquivo\src\ServicoArquivo.Servidor\Snebur.ServicoArquivo.Servidor.csproj", "{57E9BB6D-C8A6-4BEF-8A41-6AD3B563E60B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.ServicoArquivo.Servidor.Net48", "src\ServicoArquivo\src\ServicoArquivo.Servidor\Snebur.ServicoArquivo.Servidor.Net48.csproj", "{57E9BB6D-C8A6-4BEF-8A41-6AD3B563E60B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.Computador", "src\Computador\Snebur.Computador.csproj", "{E75E2EC1-B6DA-4271-A069-933911B4A606}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.Computador.Net48", "src\Computador\Snebur.Computador.Net48.csproj", "{E75E2EC1-B6DA-4271-A069-933911B4A606}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.ServicoArquivo.Cliente", "src\ServicoArquivo\src\.ServicoArquivo.Cliente\Snebur.ServicoArquivo.Cliente.csproj", "{83894101-D265-4738-96FA-9FDD91674960}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.ServicoArquivo.Cliente.Net48", "src\ServicoArquivo\src\.ServicoArquivo.Cliente\Snebur.ServicoArquivo.Cliente.Net48.csproj", "{83894101-D265-4738-96FA-9FDD91674960}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.Globalizacao", "src\Globalizacao\Snebur.Globalizacao.csproj", "{382D7B02-8704-4AF5-A80B-2B202E8D1DCB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.Globalizacao.Net48", "src\Globalizacao\Snebur.Globalizacao.Net48.csproj", "{382D7B02-8704-4AF5-A80B-2B202E8D1DCB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.Imagem", "src\Imagem\Snebur.Imagem.csproj", "{291B80E1-AF0E-42FE-BED9-66EA6B8118E4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.Imagem.Net48", "src\Imagem\Snebur.Imagem.Net48.csproj", "{291B80E1-AF0E-42FE-BED9-66EA6B8118E4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A46DFF41-B1D6-493D-B708-BBD00AF168A7}"
 	ProjectSection(SolutionItems) = preProject
@@ -52,9 +52,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.Depuracao", "src\Depuracao\Snebur.Depuracao.csproj", "{538E7ECC-F8FC-49FE-9A6A-B5E704AF096C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.Depuracao.Net48", "src\Depuracao\Snebur.Depuracao.Net48.csproj", "{538E7ECC-F8FC-49FE-9A6A-B5E704AF096C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.AspNet", "src\AspNet\Snebur.AspNet.csproj", "{A3F02A0D-44B9-41EE-8D25-813997506F51}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.AspNet.Net48", "src\AspNet\Snebur.AspNet.Net48.csproj", "{A3F02A0D-44B9-41EE-8D25-813997506F51}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

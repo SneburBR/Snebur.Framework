@@ -93,13 +93,9 @@ namespace Snebur.AcessoDados.Estrutura
             this.TipoPrimarioEnum = ReflexaoUtil.RetornarTipoPrimarioEnum(this.Propriedade.PropertyType);
             this.TipoSql = this.RetornarTipoBanco();
             this.OpcoesSomenteLeitura = this.RetornarOpcoesSomenteLeitura();
-
-
-
+             
             this.NomeParametro = String.Format("@{0}", this.NomeCampo);
-
-
-
+             
             this.NomeCampoSensivel = this.RetornarNomeCampoSensivel();
 
             this.AtributoValorPadrao = this.RetornarAtributoValorPadrao();
@@ -225,12 +221,11 @@ namespace Snebur.AcessoDados.Estrutura
 
                 case (EnumTipoPrimario.Byte):
 
-                    return SqlDbType.Bit;
-
+                    return SqlDbType.TinyInt;
 
                 default:
 
-                    throw new Erro("O tipo primario não é suportado");
+                    throw new Erro("O tipo primário não é suportado");
             }
         }
 

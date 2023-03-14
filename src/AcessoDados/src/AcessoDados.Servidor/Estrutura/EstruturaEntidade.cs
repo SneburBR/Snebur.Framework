@@ -19,23 +19,15 @@ namespace Snebur.AcessoDados.Estrutura
 
         #region Propriedades
         internal string NomeTipoEntidade { get; }
-
         internal Type TipoEntidade { get; }
-
         public SqlSuporte SqlSuporte { get; }
-
         internal string Schema { get; }
-
         internal string NomeTabela { get; set; }
-
         internal string GrupoArquivoIndices { get; }
 
         internal EstruturaCampo EstruturaCampoChavePrimaria { get; }
-
         internal EstruturaCampo EstruturaCampoTipoEntidade { get; set; }
-
         internal EstruturaCampo EstruturaCampoNomeTipoEntidade { get; }
-
         internal EstruturaCampo EstruturaCampoIdentificadorProprietario
         {
             get
@@ -160,7 +152,6 @@ namespace Snebur.AcessoDados.Estrutura
         internal List<EstruturaCampo> EstruturasCamposComputadoServico { get; }
 
         internal List<EstruturaAlteracaoPropriedade> EstruturasAlteracaoPropriedade { get; private set; }
-
         internal List<EstruturaAlteracaoPropriedadeGenerica> EstruturasAlteracaoPropriedadeGenerica { get; private set; }
 
         internal List<string> Alertas = new List<string>();
@@ -170,8 +161,8 @@ namespace Snebur.AcessoDados.Estrutura
 
         #region Construtor
 
-        internal EstruturaEntidade(Type tipo, 
-                                   EstruturaEntidade estruturaEntidadeBase, 
+        internal EstruturaEntidade(Type tipo,
+                                   EstruturaEntidade estruturaEntidadeBase,
                                    SqlSuporte sqlSuporte)
         {
             this.TipoEntidade = tipo;
@@ -255,7 +246,7 @@ namespace Snebur.AcessoDados.Estrutura
         }
         #endregion
 
-        #region Metodos Internos
+        #region Métodos Internos
 
         /// <summary>
         /// Associa a EstruturaRelacaoPai na estruturaRelacaoFilhos
@@ -374,7 +365,7 @@ namespace Snebur.AcessoDados.Estrutura
                 {
                     var parChave = this.EstruturasCampos.Where(x => x.Key.Equals(chave, StringComparison.InvariantCultureIgnoreCase)).Single();
                     estruturaCampo = parChave.Value;
-                    var alerta = String.Format(" A chave do estrtura campo {0} deveria ser {1} - em {2}", chave, parChave.Key, this.TipoEntidade.Name);
+                    var alerta = String.Format(" A chave do estrutura campo {0} deveria ser {1} - em {2}", chave, parChave.Key, this.TipoEntidade.Name);
                     this.Alertas.Add(alerta);
                     return estruturaCampo;
                 }
@@ -825,7 +816,10 @@ namespace Snebur.AcessoDados.Estrutura
             if (ReflexaoUtil.TipoImplementaInterface(this.TipoEntidade, typeof(IOrdenacao), true))
             {
                 var nomePropriedadeOrdenacao = ReflexaoUtil.RetornarNomePropriedade<IOrdenacao>(x => x.Ordenacao);
-                return this.EstruturasCampos[nomePropriedadeOrdenacao];
+                if (this.EstruturasCampos.ContainsKey(nomePropriedadeOrdenacao))
+                {
+                    return this.EstruturasCampos[nomePropriedadeOrdenacao];
+                }
             }
             return null;
         }

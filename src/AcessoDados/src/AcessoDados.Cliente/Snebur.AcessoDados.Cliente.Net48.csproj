@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Target Name="SpicNSpan" AfterTargets="Clean">
+    <!-- Remove obj folder -->
+    <RemoveDir Directories="$(BaseIntermediateOutputPath)" />
+    <!-- Remove bin folder -->
+    <RemoveDir Directories="$(BaseOutputPath)" />
+  </Target>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{20D90B61-E126-4048-BA7E-0FE69CF20180}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Snebur.AcessoDados.Cliente</RootNamespace>
+    <AssemblyName>Snebur.AcessoDados.Cliente</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\AcessoDados.Servidor\Extensao\ContextoDadosExtensao.cs">
+      <Link>Extensao\ContextoDadosExtensao.cs</Link>
+    </Compile>
+    <Compile Include="Contexto\ContextoDados.cs" />
+    <Compile Include="Extensao\ContextoDadosExtensaoAsync.cs" />
+    <Compile Include="Extensao\IConsultaEntidadeExtensao.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServicoDados\ServicoDadosCliente.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Snebur.Net48.csproj">
+      <Project>{ec174c4f-8122-41a3-8360-f04c4c8fc3ba}</Project>
+      <Name>Snebur.Net48</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AcessoDados\Snebur.AcessoDados.Net48.csproj">
+      <Project>{ae39cd55-5282-48a5-8131-6704c825f26a}</Project>
+      <Name>Snebur.AcessoDados.Net48</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Comunicacao\src\Comunicacao.Cliente\Snebur.Comunicacao.Cliente.Net48.csproj">
+      <Project>{ecf8a9a3-2544-4c75-9473-85e919c5bebc}</Project>
+      <Name>Snebur.Comunicacao.Cliente.Net48</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Comunicacao\src\Comunicacao\Snebur.Comunicacao.Net48.csproj">
+      <Project>{b44697c1-5c0c-40cf-814d-2bfba2498bf6}</Project>
+      <Name>Snebur.Comunicacao.Net48</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Seguranca\Snebur.Seguranca.Net48.csproj">
+      <Project>{65b693fa-a999-48c3-9dae-6da21a1158b7}</Project>
+      <Name>Snebur.Seguranca.Net48</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

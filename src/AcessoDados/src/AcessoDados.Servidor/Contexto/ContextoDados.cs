@@ -78,7 +78,18 @@ namespace Snebur.AcessoDados
 
         internal bool IsManutencaoAtiva => this.TipoEntidadeHistoricoMenutencao != null;
 
-        public bool IsSessaoUsuarioAtiva => this.SessaoUsuarioLogado.Estado == EnumEstadoSessaoUsuario.Ativo;
+        public bool IsSessaoUsuarioAtiva
+        {
+            get
+            {
+                if (this.SqlSuporte.IsUsuario)
+                {
+                    return this.SessaoUsuarioLogado.Estado == EnumEstadoSessaoUsuario.Ativo;
+                }
+                return true;
+            }
+        }
+
 
         public CredencialUsuario CredencialAvalista
         {
@@ -93,7 +104,7 @@ namespace Snebur.AcessoDados
         }
 
         #endregion
-         
+
         #region Construtor
 
         private BaseContextoDados(string configuracaoAcessoDados,
@@ -174,8 +185,8 @@ namespace Snebur.AcessoDados
 
                 this.VerificarAutorizacaoUsuarioIdentificadorGlobal();
             }
-            
-             
+
+
             //this.ResultadoSessaoUsuario = this.CacheSessaoUsuario.RetornarResltadoSessaoUsuario(credencial, identificadorSessaoUsario, informacaoSessaoUsuario);
             //this.UsuarioLogado = this.ResultadoSessaoUsuario.Usuario;
             //this.SessaoUsuarioLogado = this.ResultadoSessaoUsuario.SessaoUsuario;
@@ -185,7 +196,7 @@ namespace Snebur.AcessoDados
             //this.SessaoUsuarioLogado = this.AjudanteSessaoUsuario.RetornarSessaoUsuario(this.UsuarioLogado, informacaoSessaoUsuario);
 
             //this.SalvarInternoSemNotificacao((Entidade)this.SessaoUsuarioLogado, true);
-           
+
             this.InicializandoContexto = false;
         }
 

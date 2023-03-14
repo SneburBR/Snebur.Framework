@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{382D7B02-8704-4AF5-A80B-2B202E8D1DCB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Snebur.Globalizacao</RootNamespace>
+    <AssemblyName>Snebur.Globalizacao</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseGlobalizacao.cs" />
+    <Compile Include="Cultura\Cultura.cs" />
+    <Compile Include="Cultura\FormatacaoDataHora.cs" />
+    <Compile Include="Cultura\FormatacaoEndereco.cs" />
+    <Compile Include="Cultura\FormatacaoFiscal.cs" />
+    <Compile Include="Cultura\FormatacaoMoeda.cs" />
+    <Compile Include="Cultura\FormatacaoTelefone.cs" />
+    <Compile Include="Idioma\Cor.cs" />
+    <Compile Include="Idioma\Cores.cs" />
+    <Compile Include="Idioma\DiaSemana.cs" />
+    <Compile Include="Idioma\DiasSemana.cs" />
+    <Compile Include="Idioma\Idioma.cs" />
+    <Compile Include="Idioma\Mes.cs" />
+    <Compile Include="Idioma\Meses.cs" />
+    <Compile Include="Idioma\Pais.cs" />
+    <Compile Include="Idioma\Paises.cs" />
+    <Compile Include="Idioma\TempoSemantico.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="dominio.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Snebur.Net48.csproj">
+      <Project>{ec174c4f-8122-41a3-8360-f04c4c8fc3ba}</Project>
+      <Name>Snebur.Net48</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

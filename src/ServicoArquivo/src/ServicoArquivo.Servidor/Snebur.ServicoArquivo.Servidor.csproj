@@ -1,134 +1,71 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <Target Name="SpicNSpan" AfterTargets="Clean">
-    <!-- Remove obj folder -->
-    <RemoveDir Directories="$(BaseIntermediateOutputPath)" />
-    <!-- Remove bin folder -->
-    <RemoveDir Directories="$(BaseOutputPath)" />
-  </Target>
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{57E9BB6D-C8A6-4BEF-8A41-6AD3B563E60B}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Snebur.ServicoArquivo.Servidor</RootNamespace>
-    <AssemblyName>Snebur.ServicoArquivo.Servidor</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <LangVersion>7.3</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\ServicoArquivo.Comunicacao\Seguranca\CredencialComunicacaoServicoArquivo.cs">
-      <Link>Comunicacao\Seguranca\CredencialComunicacaoServicoArquivo.cs</Link>
-    </Compile>
-    <Compile Include="..\ServicoArquivo.Comunicacao\Seguranca\CredencialUsuarioComunicacaoServicoArquivo.cs">
-      <Link>Comunicacao\Seguranca\CredencialUsuarioComunicacaoServicoArquivo.cs</Link>
-    </Compile>
-    <Compile Include="Aplicacao\AplicacaoServicoArquivo.cs" />
-    <Compile Include="BaseExcluirVersao.cs" />
-    <Compile Include="BaseBaixarVersao.cs" />
-    <Compile Include="BaseBaixarArquivo.cs" />
-    <Compile Include="BaseEnviarArquivo.ArquivoTemporario.cs" />
-    <Compile Include="Cabecalho\Cabecalho.cs" />
-    <Compile Include="Extensao\BitmapExtensao.cs" />
-    <Compile Include="BaseFonteStream.cs" />
-    <Compile Include="ServicoImagem\IInformacaoRepositorioImagem.cs" />
-    <Compile Include="Servicos\ProcessarImagemWindows.cs" />
-    <Compile Include="Temp\BaseEnviarStream.Backup.cs" />
-    <Compile Include="BaseEnviarArquivo.cs" />
-    <Compile Include="Temp\BaseEnviarArquivo.Memoria.cs" />
-    <Compile Include="BaseExcluirArquivo.cs" />
-    <Compile Include="BaseServicoArquivo.cs" />
-    <Compile Include="CabecalhoServicoArquivo.cs" />
-    <Compile Include="ServicoImagem\BaseBaixarImagem.cs" />
-    <Compile Include="ServicoImagem\BaseEnviarImagem.cs" />
-    <Compile Include="ServicoImagem\BaseExcluirImagem.cs" />
-    <Compile Include="ServicoImagem\BaseVisualizarImagem.cs" />
-    <Compile Include="ServicoImagem\CabecalhoServicoImagem.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Comunicacao\ComunicaoServicoArquivoCliente\ComunicacaoServicoArquivoCliente.cs" />
-    <Compile Include="Comunicacao\ComunicaoServicoImagemCliente\ComunicacaoServicoImagemCliente.cs" />
-    <Compile Include="Temp\ManutencaoPastaTemp.cs" />
-    <Compile Include="Utilidades\ConfiguracaoLocalUtil.cs" />
-    <Compile Include="Utilidades\ImagemUtil.cs" />
-    <Compile Include="Utilidades\ServicoImagemUtil.cs" />
-    <Compile Include="Utilidades\ServicoArquivoUtil.cs" />
-    <Compile Include="Utilidades\ServicoArquivoUtil.Partial.cs" />
-    <Compile Include="Utilidades\IpUtil.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="HttpContext\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\AspNet\Snebur.AspNet.csproj">
-      <Project>{a3f02a0d-44b9-41ee-8d25-813997506f51}</Project>
-      <Name>Snebur.AspNet</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Computador\Snebur.Computador.csproj">
-      <Project>{e75e2ec1-b6da-4271-a069-933911b4a606}</Project>
-      <Name>Snebur.Computador</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Comunicacao\src\Comunicacao.Cliente\Snebur.Comunicacao.Cliente.csproj">
-      <Project>{ecf8a9a3-2544-4c75-9473-85e919c5bebc}</Project>
-      <Name>Snebur.Comunicacao.Cliente</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Comunicacao\src\Comunicacao\Snebur.Comunicacao.csproj">
-      <Project>{b44697c1-5c0c-40cf-814d-2bfba2498bf6}</Project>
-      <Name>Snebur.Comunicacao</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Core\Snebur.csproj">
-      <Project>{ec174c4f-8122-41a3-8360-f04c4c8fc3ba}</Project>
-      <Name>Snebur</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Seguranca\Snebur.Seguranca.csproj">
-      <Project>{65b693fa-a999-48c3-9dae-6da21a1158b7}</Project>
-      <Name>Snebur.Seguranca</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ServicoArquivo\Snebur.ServicoArquivo.csproj">
-      <Project>{3f344a32-39ce-469c-a4ff-bd7ef353912b}</Project>
-      <Name>Snebur.ServicoArquivo</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net48;net7.0</TargetFrameworks>
+		<RootNamespace>Snebur.ServicoArquivo.Servidor</RootNamespace>
+		<Version>2.0.0</Version>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<Nullable>disable</Nullable>
+		<AssemblyName>Snebur.ServicoArquivo.Servidor</AssemblyName>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DefineConstants>DEBUG;TRACE</DefineConstants>
+		<WarningLevel>4</WarningLevel>
+		<NoWarn>1701;1702</NoWarn>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DefineConstants>TRACE</DefineConstants>
+	</PropertyGroup>
+
+	<ItemGroup>
+		
+		<ProjectReference Include="..\..\..\Comunicacao\src\Comunicacao.Cliente\Snebur.Comunicacao.Cliente.csproj" />
+		<ProjectReference Include="..\..\..\Comunicacao\src\Comunicacao\Snebur.Comunicacao.csproj" />
+		<ProjectReference Include="..\..\..\Core\Snebur.csproj" />
+		<ProjectReference Include="..\..\..\Seguranca\Snebur.Seguranca.csproj" />
+		<ProjectReference Include="..\ServicoArquivo\Snebur.ServicoArquivo.csproj" />
+		<ProjectReference Include="..\..\..\AspNet\Snebur.AspNet.csproj" />
+		<ProjectReference Include="..\..\..\Computador\Snebur.Computador.csproj" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net48' ">
+		<!--
+		<Reference Include="System.Configuration" />
+		<PackageReference Include="SevenZipSharp.Net45" Version="1.0.19" />
+		<PackageReference Include="Microsoft.Bcl.HashCode" version="1.1.1" />-->
+		<Reference Include="System.ServiceModel" />
+		<Reference Include="System.Web" />
+		
+		
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0' ">
+
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+		<!--<ProjectReference Include="..\..\..\AspNetCore\Snebur.AspNetCore.csproj" />-->
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<Compile Remove="Bibliotecas\**" />
+		<EmbeddedResource Remove="Bibliotecas\**" />
+		<None Remove="Bibliotecas\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Remove="Snebur.ServicoArquivo.Cliente.Net50.csproj.vspscc" />
+		<None Remove="Snebur.ServicoArquivo.csproj.vspscc" />
+		<None Remove="Snebur.ServicoArquivo.Servidor.csproj.vspscc" />
+		<None Remove="Snebur.ServicoArquivo.Servidor.Net50.csproj.vspscc" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Compile Include="..\ServicoArquivo.Comunicacao\Seguranca\CredencialComunicacaoServicoArquivo.cs" Link="Comunicacao\Seguranca\CredencialComunicacaoServicoArquivo.cs" />
+	  <Compile Include="..\ServicoArquivo.Comunicacao\Seguranca\CredencialUsuarioComunicacaoServicoArquivo.cs" Link="Comunicacao\Seguranca\CredencialUsuarioComunicacaoServicoArquivo.cs" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Comunicacao\Seguranca\" />
+	</ItemGroup>
+
+
+
 </Project>

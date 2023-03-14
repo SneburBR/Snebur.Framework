@@ -50,7 +50,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             {
                 if (!(entidade.Id > 0))
                 {
-                    throw new ErroOperacaoInvalida("Não é possivel excluir uma entidade com id 0");
+                    throw new ErroOperacaoInvalida("Não é possível excluir uma entidade com id 0");
                 }
                 if (estruturaEntidade.IsImplementaInterfaceIDeletado &&
                     !estruturaEntidade.IsExcluirRegistro)

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿//using Snebur.Dominio.Atributos;
+//using System;
 
-namespace Snebur
-{
-    public interface IDispatcher
-    {
-        object Invoke(Delegate method, params object[] args);
-    }
-}
+//namespace Snebur
+//{
+//    [IgnorarInterfaceTS]
+//    public interface IDispatcher
+//    {
+//        object Invoke(Delegate method, params object[] args);
+//    }
+//}

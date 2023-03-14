@@ -96,8 +96,7 @@ namespace Snebur.Comunicacao
                     this.DataHoraChamada = this.ContratoChamada.DataHora;
                     this.AdicionarItensrequisicaoAtual();
 
-                    this.IsSerializarJavascript = (this.InformacaoSessaoUsuario.TipoAplicacao == EnumTipoAplicacao.Web ||
-                                                   this.InformacaoSessaoUsuario.TipoAplicacao == EnumTipoAplicacao.ApacheCordova);
+                    this.IsSerializarJavascript = (this.InformacaoSessaoUsuario.TipoAplicacao == EnumTipoAplicacao.Typescript  );
 
 
                     foreach (var parametro in this.ContratoChamada.Parametros)

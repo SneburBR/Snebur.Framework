@@ -129,6 +129,7 @@ namespace Snebur.Utilidade
         public static void CopiarTodosArquivo(string diretorioOrigem, string diretorioDestino, bool ignorarErro = false, bool forcar = false)
         {
             var arquivos = Directory.GetFiles(diretorioOrigem);
+            DiretorioUtil.CriarDiretorio(diretorioDestino);
             foreach (var arquivo in arquivos)
             {
                 var caminhoRelativo = arquivo.Substring(diretorioOrigem.Length + 1);

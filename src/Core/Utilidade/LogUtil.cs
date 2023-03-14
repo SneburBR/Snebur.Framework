@@ -340,7 +340,10 @@ namespace Snebur.Utilidade
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 EventSourceCreationData eventSourceData = new EventSourceCreationData(nomeEspaco, nomeEspaco);
-                EventLog.CreateEventSource(eventSourceData);
+                if (!EventLog.Exists(nomeEspaco))
+                {
+                    EventLog.CreateEventSource(eventSourceData);
+                }
             }
         }
 

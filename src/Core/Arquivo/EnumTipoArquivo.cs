@@ -20,4 +20,11 @@
         doc = 32768,
         txt = 65536,
     }
+
+    public enum EnumTipoXFG
+    {
+        Jpg = 1,
+        Bmp = 2,
+        XXX =3
+    }
 }

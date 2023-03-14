@@ -167,6 +167,11 @@ namespace Snebur.Utilidade
                 return default;
             }
 
+            if (valor.GetType() == ReflexaoUtil.RetornarTipoSemNullable( tipo))
+            {
+                return valor;
+            }
+
             var tipoPrimario = ReflexaoUtil.RetornarTipoPrimarioEnum(tipo);
             if (tipoPrimario == EnumTipoPrimario.Desconhecido)
             {
