@@ -6,6 +6,9 @@ namespace Snebur.Comunicacao
 {
     public interface IServicoUsuario : IBaseServico
     {
+        bool IsExisteInformacaoIp();
+        void AtualizarInformacaoIp(DadosIPInformacao ipInformacao);
+
         ResultadoExisteIdentificadoUsuario ExisteIdentificadorUsuario(string identificadorUsuario);
 
         EnumResultadoValidacaoCredencial ValidarCredencial(CredencialUsuario credencial);

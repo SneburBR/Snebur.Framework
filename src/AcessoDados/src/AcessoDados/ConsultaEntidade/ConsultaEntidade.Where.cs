@@ -16,6 +16,11 @@ namespace Snebur.AcessoDados
             return this.Where(x => x.Id == id).SingleOrDefault();
         }
 
+        public bool Exists(long id)
+        {
+            return this.Where(x => x.Id == id).SingleOrDefault() != null;
+        }
+
         public ConsultaEntidade<TEntidade> Where(Expression<Func<TEntidade, bool>> filtro)
         {
             Expression expressao = (Expression)filtro;

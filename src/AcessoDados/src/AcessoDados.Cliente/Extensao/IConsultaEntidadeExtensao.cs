@@ -7,6 +7,16 @@ namespace Snebur.AcessoDados
 {
     public static class IConsultaEntidadeExtensao
     {
+        public static Task<TEntidade> FindAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, long id) where TEntidade : IEntidade
+        {
+            return Task.Factory.StartNew(() => consulta.Find(id));
+        }
+
+        public static Task<bool> ExistsAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, long id) where TEntidade : IEntidade
+        {
+            return Task.Factory.StartNew(() => consulta.Exists(id));
+        }
+
         public static Task<ListaEntidades<TEntidade>> ToListAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta) where TEntidade : IEntidade
         {
             return Task.Factory.StartNew(() => consulta.ToList());

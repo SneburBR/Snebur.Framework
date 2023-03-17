@@ -24,6 +24,7 @@ namespace Snebur
 
         //[EditorBrowsable(EditorBrowsableState.Never)]
         string UserAgent { get; }
+        string IpRequisicao { get; }
 
         //string RetornarIpDaRequisicao();
     }

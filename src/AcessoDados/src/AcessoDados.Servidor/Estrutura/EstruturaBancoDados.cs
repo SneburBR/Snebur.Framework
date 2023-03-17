@@ -43,7 +43,7 @@ namespace Snebur.AcessoDados.Estrutura
 
         #region  Construtor 
 
-        internal EstruturaBancoDados(Type tipoContexto, SqlSuporte sqlSuporte)
+        internal EstruturaBancoDados(Type tipoContexto, BancoDadosSuporta sqlSuporte)
         {
             this.TipoContexto = tipoContexto;
             this.EstruturasEntidade = new DicionarioEstrutura<EstruturaEntidade>();
@@ -53,7 +53,7 @@ namespace Snebur.AcessoDados.Estrutura
             this.TipoEntidadeArquivo = this.RetornarTipoEntidadeArquivo();
             this.TipoEntidadeImagem = this.RetornarTipoEntidadeImagem();
 
-            if (sqlSuporte.IsUsuario)
+            if (sqlSuporte.IsSessaoUsuario)
             {
                 this.TipoUsuario = this.RetornarTipoUsuario();
                 this.TipoSessaoUsuario = this.RetornarTipoSessaoUsuario();
@@ -82,7 +82,7 @@ namespace Snebur.AcessoDados.Estrutura
         #region  Metodos privados
 
         private void MontarEstruturaBancoDados(Type tipoContexto,
-                                              SqlSuporte sqlSuporte)
+                                              BancoDadosSuporta sqlSuporte)
         {
             Debug.WriteLine("Montando estrutura do BancoDados ");
 
@@ -153,7 +153,7 @@ namespace Snebur.AcessoDados.Estrutura
             }
         }
 
-        private void MontarEstruturaEntidades(Type tipoEntidade, SqlSuporte sqlSuporte)
+        private void MontarEstruturaEntidades(Type tipoEntidade, BancoDadosSuporta sqlSuporte)
         {
             if (this.TiposEntidade.ContainsKey(tipoEntidade.Name))
             {

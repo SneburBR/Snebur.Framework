@@ -1,22 +1,26 @@
 ﻿#if NET7_0
 using Microsoft.Data.SqlClient;
+using System;
 #else
 #endif
 
+using System;
+
 namespace Snebur.AcessoDados
 {
-    public class SqlSuporte
+    public class BancoDadosSuporta
     {
         public bool IsOffsetFetch { get; }
         public bool IsColunaNomeTipoEntidade { get; }
-        public bool IsUsuario { get; }
+        public bool IsSessaoUsuario { get; }
         public bool IsMigracao { get; }
 
-        internal SqlSuporte(EnumFlagBancoNaoSuportado flags)
+        internal BancoDadosSuporta(BaseContextoDados contextoDados,
+                                    EnumFlagBancoNaoSuportado flags)
         {
             this.IsOffsetFetch = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.OffsetFetch);
             this.IsColunaNomeTipoEntidade = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.ColunaNomeTipoEntidade);
-            this.IsUsuario = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.Usuario);
+            this.IsSessaoUsuario = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.SessaoUsuario);
             this.IsMigracao = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.Migracao);
         }
 
@@ -28,5 +32,19 @@ namespace Snebur.AcessoDados
             }
             return true;
         }
+
+        internal void ValidarSuporteSessaoUsuario()
+        {
+            if (this.IsSessaoUsuario)
+            {
+                return;
+            }
+            throw new ErroBancoDadosSuporte("O banco de dados não suporta gerenciamento das sessão do usuário");
+        }
+    }
+     
+    public class ErroBancoDadosSuporte : Erro
+    {
+        public ErroBancoDadosSuporte(string mensagem) : base(mensagem) { }
     }
 }

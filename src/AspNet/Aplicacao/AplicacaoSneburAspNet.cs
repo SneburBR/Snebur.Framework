@@ -20,10 +20,21 @@ namespace Snebur
         public override EnumTipoAplicacao TipoAplicacao => EnumTipoAplicacao.DotNet_WebService;
 
 #if NET7_0  == false
-        public virtual HttpContext HttpContext => System.Web.HttpContext.Current;
+        public virtual HttpContext HttpContext => HttpContext.Current;
 #endif
 
-
+        public string IpRequisicao
+        {
+            get
+            {
+                if (this.IsPossuiRequisicaoAspNetAtiva)
+                {
+                    return this.IP;
+                }
+                return null;
+            }
+        }
+           
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override InformacaoSessaoUsuario InformacaoSessaoUsuario

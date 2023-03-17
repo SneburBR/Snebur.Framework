@@ -14,7 +14,7 @@ namespace Snebur.AcessoDados
 
         public bool IsValidarNomeTabelaEntidade { get; set; } = true;
 
-        public IUsuario UsuarioLogado => this.RetornarUsuarioLogado();
+        public abstract IUsuario UsuarioLogado { get;}
 
         public bool IsDispensado { get; private set; }
 
@@ -104,7 +104,6 @@ namespace Snebur.AcessoDados
 
         public abstract ResultadoConsulta RetornarResultadoConsulta(EstruturaConsulta estruturaConsulta);
 
-        public abstract IUsuario RetornarUsuarioLogado();
 
         #endregion
 

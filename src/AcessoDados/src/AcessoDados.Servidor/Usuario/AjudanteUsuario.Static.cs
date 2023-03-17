@@ -30,7 +30,7 @@ namespace Snebur.AcessoDados
 
         public static void FinalizarSessaoUsuario(Guid identificadorSessaoUsuario)
         {
-            var cacheSesssao = RetornarCacheSessaoUsuario(identificadorSessaoUsuario, true);
+            var cacheSesssao = GerenciadorCacheSessaoUsuario.Instancia.RetornarCacheSessaoUsuario(identificadorSessaoUsuario, true);
             cacheSesssao?.FinalizarSessaoUsuario();
         }
     }

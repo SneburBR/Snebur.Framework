@@ -39,6 +39,8 @@ namespace Snebur.AcessoDados
 
         TEntidade FirstOrDefault();
 
+        bool Exists(long id);
+
         ConsultaEntidade<TEntidade> Where(Expression<Func<TEntidade, bool>> filtro);
 
         ConsultaEntidade<TEntidade> WhereOr(Expression<Func<TEntidade, bool>> filtro);

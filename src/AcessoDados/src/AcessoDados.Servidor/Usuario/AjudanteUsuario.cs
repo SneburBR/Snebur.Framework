@@ -238,7 +238,7 @@ namespace Snebur.AcessoDados
 
             private IIPInformacao RetornarIpInformacao(int tentativa = 0)
             {
-                var ip = AplicacaoSnebur.Atual.IP;
+                var ip = AplicacaoSnebur.Atual.AspNet.IpRequisicao;
                 var ipInformacao = this.RetornarIpInformacao(ip);
                 if (ipInformacao != null)
                 {

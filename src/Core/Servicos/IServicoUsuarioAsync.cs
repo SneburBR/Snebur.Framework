@@ -9,6 +9,8 @@ namespace Snebur.Comunicacao
     [IgnorarInterfaceTS]
     public interface IServicoUsuarioAsync : IBaseServico
     {
+        Task<bool> IsExisteInformacaoIpAsync();
+        Task  AtualizarInformacaoIpAsync(DadosIPInformacao ipInformacao);
         Task<ResultadoExisteIdentificadoUsuario> ExisteIdentificadorUsuarioAsync(string identificadorUsuario);
 
         Task<EnumResultadoValidacaoCredencial> ValidarCredencialAsync(CredencialUsuario credencial);

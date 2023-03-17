@@ -20,7 +20,7 @@ namespace Snebur.AcessoDados.Estrutura
         #region Propriedades
         internal string NomeTipoEntidade { get; }
         internal Type TipoEntidade { get; }
-        public SqlSuporte SqlSuporte { get; }
+        public BancoDadosSuporta SqlSuporte { get; }
         internal string Schema { get; }
         internal string NomeTabela { get; set; }
         internal string GrupoArquivoIndices { get; }
@@ -163,7 +163,7 @@ namespace Snebur.AcessoDados.Estrutura
 
         internal EstruturaEntidade(Type tipo,
                                    EstruturaEntidade estruturaEntidadeBase,
-                                   SqlSuporte sqlSuporte)
+                                   BancoDadosSuporta sqlSuporte)
         {
             this.TipoEntidade = tipo;
             this.NomeTipoEntidade = tipo.Name;

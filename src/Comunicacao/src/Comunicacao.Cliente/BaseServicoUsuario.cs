@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Snebur.Comunicacao.Cliente
 {
-    public abstract class BaseServicoUsuarioCliente  : BaseComunicacaoCliente, IServicoUsuario, IServicoUsuarioAsync  
+    public abstract class BaseServicoUsuarioCliente : BaseComunicacaoCliente, IServicoUsuario, IServicoUsuarioAsync
     {
         public BaseServicoUsuarioCliente(string urlServico) : base(urlServico)
         {
@@ -15,6 +15,19 @@ namespace Snebur.Comunicacao.Cliente
         }
 
         #region IServicoUsuario
+
+        public bool IsExisteInformacaoIp()
+        {
+            var parametros = new object[] { };
+            return this.ChamarServico<bool>(MethodBase.GetCurrentMethod(), parametros);
+        }
+
+        public void AtualizarInformacaoIp(DadosIPInformacao ipInformacao)
+        {
+            var parametros = new object[] { ipInformacao };
+            this.ChamarServico<bool>(MethodBase.GetCurrentMethod(), parametros);
+        }
+
         public ResultadoAlterarSenha AlterarSenha(CredencialUsuario credencial, string novaSenha)
         {
             var parametros = new object[] { novaSenha };
@@ -155,6 +168,18 @@ namespace Snebur.Comunicacao.Cliente
         {
             return Task.Factory.StartNew(() => this.FinalizarSessaoUsuario(identificadorSessaoUsuario));
         }
+
+        public Task<bool> IsExisteInformacaoIpAsync()
+        {
+            return Task.Factory.StartNew(() => this.IsExisteInformacaoIp());
+        }
+
+        public Task AtualizarInformacaoIpAsync(DadosIPInformacao ipInformacao)
+        {
+            return Task.Factory.StartNew(() => this.AtualizarInformacaoIp(ipInformacao));
+        }
+
+
 
         #endregion
     }

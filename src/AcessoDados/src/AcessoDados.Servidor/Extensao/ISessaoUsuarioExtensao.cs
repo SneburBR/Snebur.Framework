@@ -1,6 +1,7 @@
 ﻿using Snebur.Dominio;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace Snebur
 {
@@ -13,7 +14,6 @@ namespace Snebur
         {
             var identificador = sessaoUsuario.IdentificadorSessaoUsuario;
             return RetornarBloqueio(identificador);
-
         }
 
         internal static object RetornarBloqueio(Guid identificador)
@@ -30,6 +30,7 @@ namespace Snebur
             }
             return _bloqueios[identificador];
         }
+
     }
 
 

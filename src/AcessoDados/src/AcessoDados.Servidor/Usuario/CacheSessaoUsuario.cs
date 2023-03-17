@@ -18,8 +18,11 @@ namespace Snebur.AcessoDados
 
         //private const string SQL_ATUALIZAR_ESTADO_SESSAO_USUARIO = "  UPDATE usuario.SessaoUsuario SET DataHoraUltimoAcesso = GETUTCDATE() WHERE IdentificadorSessaoUsuario = @IdentificadorSessaoUsuario";
 
-        private static readonly double TIMEOUT_REMOVER_CACHE = TimeSpan.FromHours(2).TotalMilliseconds;
-        private static readonly double TIMEOUT_ATUALIZAR_ESTADO_SESSAO = TimeSpan.FromMinutes(1).TotalMilliseconds;
+        private static readonly double TIMEOUT_REMOVER_CACHE = DebugUtil.IsAttached ? TimeSpan.FromMinutes(5).TotalMilliseconds :
+                                                                                      TimeSpan.FromHours(2).TotalMilliseconds;
+        
+        private static readonly double TIMEOUT_ATUALIZAR_ESTADO_SESSAO = DebugUtil.IsAttached?  TimeSpan.FromMinutes(1).TotalMilliseconds:
+                                                                                                TimeSpan.FromMinutes(3).TotalMilliseconds;
 
         public ISessaoUsuario SessaoUsuario { get; private set; }
         public IUsuario Usuario { get; private set; }
@@ -40,10 +43,10 @@ namespace Snebur.AcessoDados
         public object BloqueioInicializar = new object();
         public bool IsInicializado = false;
 
-        private CacheSessaoUsuario(BaseContextoDados contexto,
-                                   Credencial credencial,
-                                   Guid identificadorSessaoUsuario,
-                                   InformacaoSessaoUsuario informacaoSessaoUsuario)
+        public CacheSessaoUsuario(BaseContextoDados contexto,
+                                  Credencial credencial,
+                                  Guid identificadorSessaoUsuario,
+                                  InformacaoSessaoUsuario informacaoSessaoUsuario)
         {
             this.IdentificadorSessaoUsuario = identificadorSessaoUsuario;
             this.Contexto = contexto;
@@ -77,7 +80,7 @@ namespace Snebur.AcessoDados
 
         internal IUsuario RetornarUsuarioAvalista(Credencial credencialAvalista)
         {
-            if(credencialAvalista == null)
+            if (credencialAvalista == null)
             {
                 return null;
             }
@@ -106,20 +109,30 @@ namespace Snebur.AcessoDados
             this.SessaoUsuario = this.AjudanteSessaoUsuario.RetornarSessaoUsuario(this.Usuario, this.IdentificadorSessaoUsuario, this.InformacaoSessaoUsuario);
 
             this.NotificarSessaoUsuarioAtivaInterno();
-            this.TimerAtualizarEstado = new Timer(CacheSessaoUsuario.TIMEOUT_ATUALIZAR_ESTADO_SESSAO);
-            this.TimerAtualizarEstado.AutoReset = true;
+            //this.TimerAtualizarEstado = new Timer(CacheSessaoUsuario.TIMEOUT_ATUALIZAR_ESTADO_SESSAO);
             this.DataHoraUltimoAcesso = DateTime.Now;
-            this.TimerAtualizarEstado.Elapsed += this.TimerAtualizarEstado_Elapsed;
-            this.TimerAtualizarEstado.Start();
+            var timer = this.TimerAtualizarEstado;
+            if (timer != null && !timer.Enabled)
+            {
+                timer.AutoReset = true;
+                timer.Elapsed += this.TimerAtualizarEstado_Elapsed;
+                timer.Start();
+
+            }
         }
 
         private void TimerAtualizarEstado_Elapsed(object sender, ElapsedEventArgs e)
         {
+            if (this.IsDispensado)
+            {
+                return;
+            }
+
             var diferenca = DateTime.Now - this.DataHoraUltimoAcesso;
             if (diferenca.TotalMilliseconds > TIMEOUT_REMOVER_CACHE)
             {
-                CacheSessaoUsuario.RemoverCacheSessaoUsuario(this.IdentificadorSessaoUsuario);
                 this.Dispose();
+                GerenciadorCacheSessaoUsuario.Instancia.RemoverCacheSessaoUsuario(this.IdentificadorSessaoUsuario);
             }
             else
             {
@@ -145,7 +158,7 @@ namespace Snebur.AcessoDados
                 estadoSessaoUsuario = EnumEstadoSessaoUsuario.Ativo;
             }
             this.EstadoSessaoUsuario = estadoSessaoUsuario;
-            this.TimerAtualizarEstado.Reiniciar();
+            this.TimerAtualizarEstado?.Reiniciar();
         }
 
         private EnumEstadoSessaoUsuario RetornarEstadoSessaoUsuario()
@@ -177,7 +190,8 @@ namespace Snebur.AcessoDados
             {
                 if (disposing)
                 {
-                    this.TimerAtualizarEstado.Dispose();
+                    this.TimerAtualizarEstado?.Dispose();
+                    this.TimerAtualizarEstado = null;
                 }
                 this.IsDispensado = true;
             }

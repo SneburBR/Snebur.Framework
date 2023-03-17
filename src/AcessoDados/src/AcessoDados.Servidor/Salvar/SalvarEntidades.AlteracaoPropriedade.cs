@@ -181,7 +181,6 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                     var (isExisteAltracao, valorAtual) = this.IsExisteAlteracaoPropriedadeGerencia(entidade, estruturaAlteracaoPropriedade);
                     if (isExisteAltracao)
                     {
-
                         var valorPropriedade = estruturaAlteracaoPropriedade.Propriedade.GetValue(entidade);
                         //var atributo = estruturaAlteracaoPropriedade.Atributo;
 

@@ -28,7 +28,7 @@ namespace Snebur.AcessoDados
         private CredencialUsuario _credencialAvalista;
 
         #region Propriedades
-        public SqlSuporte SqlSuporte { get; }
+        public BancoDadosSuporta SqlSuporte { get; }
 
         private readonly string ConectionString;
 
@@ -45,9 +45,8 @@ namespace Snebur.AcessoDados
         //public Credencial CredencialUsuario { get; }
 
         private CacheSessaoUsuario CacheSessaoUsuario { get; }
-
         public bool IsCacheSessaoUsuarioInicializado => this.CacheSessaoUsuario != null;
-
+        public override IUsuario UsuarioLogado => this.CacheSessaoUsuario?.Usuario;
         public ISessaoUsuario SessaoUsuarioLogado => this.CacheSessaoUsuario?.SessaoUsuario;
 
         public IUsuario UsuarioAvalista { get; private set; }
@@ -82,7 +81,7 @@ namespace Snebur.AcessoDados
         {
             get
             {
-                if (this.SqlSuporte.IsUsuario)
+                if (this.SqlSuporte.IsSessaoUsuario)
                 {
                     return this.SessaoUsuarioLogado.Estado == EnumEstadoSessaoUsuario.Ativo;
                 }
@@ -113,7 +112,7 @@ namespace Snebur.AcessoDados
         {
             ErroUtil.ValidarReferenciaNula(configuracaoAcessoDados, nameof(configuracaoAcessoDados));
 
-            this.SqlSuporte = new SqlSuporte(flagsNaoSuporta);
+            this.SqlSuporte = new BancoDadosSuporta(this, flagsNaoSuporta);
             this.ConectionString = AplicacaoSnebur.Atual.ConnectionStrings[configuracaoAcessoDados] ?? throw new ErroNaoDefinido($"Não foi encontrada o String de conexao '{configuracaoAcessoDados}' no arquivo de configuração da aplicação ConnectionStrings App.Config ou Web.Config ");
 
             if (String.IsNullOrWhiteSpace(identificadorProprietario))
@@ -167,9 +166,9 @@ namespace Snebur.AcessoDados
 
             this.IsFiltrarIdentificadorProprietario = identificadorProprietario != null;
 
-            if (this.SqlSuporte.IsUsuario)
+            if (this.SqlSuporte.IsSessaoUsuario)
             {
-                this.CacheSessaoUsuario = CacheSessaoUsuario.RetornarCacheSessaoUsuario(this, credencial, identificadorSessaoUsario, informacaoSessaoUsuario);
+                this.CacheSessaoUsuario = this.RetornarCacheSessaoUsuario(this, credencial, identificadorSessaoUsario, informacaoSessaoUsuario);
 
                 if (this.CacheSessaoUsuario.Usuario == null)
                 {
@@ -182,7 +181,6 @@ namespace Snebur.AcessoDados
                 }
                 this.IsValidarUsuarioSessaoUsuario = true;
                 this.IsAnonimo = CredencialUtil.ValidarCredencial(this.UsuarioLogado, CredencialAnonimo.Anonimo);
-
                 this.VerificarAutorizacaoUsuarioIdentificadorGlobal();
             }
 
@@ -240,6 +238,17 @@ namespace Snebur.AcessoDados
             this.VerificarAutorizacaoUsuarioIdentificadorGlobal();
             this.InicializandoContexto = false;
             this.IsValidarUsuarioSessaoUsuario = true;
+        }
+
+        protected virtual CacheSessaoUsuario RetornarCacheSessaoUsuario(BaseContextoDados baseContextoDados,
+                                                                    CredencialUsuario credencial,
+                                                                    Guid identificadorSessaoUsario,
+                                                                    InformacaoSessaoUsuario informacaoSessaoUsuario)
+        {
+            return GerenciadorCacheSessaoUsuario.Instancia.RetornarCacheSessaoUsuario(baseContextoDados,
+                                                                                      credencial,
+                                                                                      identificadorSessaoUsario,
+                                                                                      informacaoSessaoUsuario);
         }
 
         //protected ContextoDados(string configuracaoAcessoDados, bool isSemGerenciamentoUsurioEMigracao) :
@@ -770,10 +779,8 @@ namespace Snebur.AcessoDados
 
         protected abstract bool UsuarioLogadoAutorizadoIdentificadorProprietarioGlobal();
 
-        public override IUsuario RetornarUsuarioLogado()
-        {
-            return this.CacheSessaoUsuario?.Usuario;
-        }
+
+
 
         public void DefinirIdentificadorProprietario(string identificadorProprietario)
         {
@@ -806,7 +813,7 @@ namespace Snebur.AcessoDados
         SemRestricao = 0,
         OffsetFetch = 1,
         ColunaNomeTipoEntidade = 2,
-        Usuario = 4,
+        SessaoUsuario = 4,
         Migracao = 8,
     }
 

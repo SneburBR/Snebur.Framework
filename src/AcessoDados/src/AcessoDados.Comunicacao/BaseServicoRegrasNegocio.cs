@@ -13,11 +13,12 @@ namespace Snebur.AcessoDados.Comunicacao
         public object ChamarRegra(ChamadaRegraNegocio chamadaRegraNegocio, object[] parametros)
         {
             var tupleTipoMetodo = this.RetornarTipoMetodoDaRegraNegocio(chamadaRegraNegocio);
-            var tipo = tupleTipoMetodo.Item1;
             var metodo = tupleTipoMetodo.Item2;
+            if(metodo.Name == "AtualizarProjeto")
+            {
+                var tipo = tupleTipoMetodo.Item1;
+            }
             var instancia = this.RetornarInstancia(metodo);
-
-
             return metodo.Invoke(instancia, parametros);
         }
 
@@ -42,7 +43,7 @@ namespace Snebur.AcessoDados.Comunicacao
                     return Activator.CreateInstance(tipo, (object)this.ContextoDados);
                 }
             }
-            throw new Erro($"Não foi possivel instanciar class {tipo.Name}, pois nenhum construtor é suportado");
+            throw new Erro($"Não foi possível instanciar class {tipo.Name}, pois nenhum construtor é suportado");
         }
 
         protected override object[] RetornarParametrosMetodoOperacao(MethodInfo operacao,
@@ -50,7 +51,7 @@ namespace Snebur.AcessoDados.Comunicacao
         {
             if (parametros.Count == 0)
             {
-                throw new ErroSeguranca("Os parametros para chamada regra de negocio não pode ser vazioo", EnumTipoLogSeguranca.ParametrosComunicacaoInvalidos);
+                throw new ErroSeguranca("Os parâmetros para chamada regra de negocio não pode ser vazio", EnumTipoLogSeguranca.ParametrosComunicacaoInvalidos);
             }
 
             var primeiraChave = parametros.ElementAt(0).Key;

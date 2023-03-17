@@ -83,21 +83,24 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                 var atributoSessaoUsuario = atributos.OfType<ValorPadraoIDSessaoUsuarioAttribute>().SingleOrDefault();
                 if (atributoSessaoUsuario != null)
                 {
+                    contexto.SqlSuporte.ValidarSuporteSessaoUsuario();
+
                     if (atributoSessaoUsuario.IsSomenteCadastro && entidade.Id > 0)
                     {
                         return null;
                     }
-
                     return contexto.SessaoUsuarioLogado.Id;
                 }
+
                 var atributoUsuarioLogado = atributos.OfType<ValorPadraoIDUsuarioLogadoAttribute>().SingleOrDefault();
                 if (atributoUsuarioLogado != null)
                 {
+                    contexto.SqlSuporte.ValidarSuporteSessaoUsuario();
                     if (!atributoUsuarioLogado.IsPermitirUsuarioAnonimo)
                     {
                         if (contexto.IsAnonimo)
                         {
-                            throw new Erro("O usuário anonimo não tem permissão para salvar setar o valor padrao do id usuario logado");
+                            throw new Erro("O usuário anonimo não tem permissão para salvar setar o valor padrão do id usuario logado");
                         }
                     }
                     return contexto.UsuarioLogado.Id;

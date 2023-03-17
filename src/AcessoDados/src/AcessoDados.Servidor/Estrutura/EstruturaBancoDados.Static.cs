@@ -16,7 +16,7 @@ namespace Snebur.AcessoDados.Estrutura
             }
         }
 
-        internal static EstruturaBancoDados RetornarEstruturaBancoDados(Type tipoContexto, SqlSuporte sqlSuporte)
+        internal static EstruturaBancoDados RetornarEstruturaBancoDados(Type tipoContexto, BancoDadosSuporta sqlSuporte)
         {
             if (EstruturaBancoDados._estruturaBancoDados == null)
             {
