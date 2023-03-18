@@ -48,7 +48,8 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             //}
         }
 
-        internal static void Atualizar(EntidadeAlterada entidadeAlterada, BaseContextoDados contexto)
+        internal static void Atualizar(EntidadeAlterada entidadeAlterada, 
+                                       BaseContextoDados contexto)
         {
             var entidade = entidadeAlterada.Entidade;
             if (entidade.Id == 0)

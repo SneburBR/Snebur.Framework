@@ -181,7 +181,8 @@ namespace Snebur.Utilidade
                     return true;
 
                 case Enum _:
-                    return Enum.IsDefined(propriedade.PropertyType,
+
+                    return Enum.IsDefined(ReflexaoUtil.RetornarTipoSemNullable(propriedade.PropertyType),
                                          (int)valorPropriedade);
                 default:
                     break;

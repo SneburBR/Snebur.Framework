@@ -21,7 +21,8 @@ namespace Snebur.AcessoDados.Estrutura
 
         internal List<string> Alertas = new List<string>();
 
-        internal EstruturaPropriedade(PropertyInfo propriedade, EstruturaEntidade estruturaEntidade)
+        internal EstruturaPropriedade(PropertyInfo propriedade, 
+                                     EstruturaEntidade estruturaEntidade)
         {
             this.EstruturaEntidade = estruturaEntidade;
             this.Propriedade = propriedade;

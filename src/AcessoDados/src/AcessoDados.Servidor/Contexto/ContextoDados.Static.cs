@@ -6,5 +6,6 @@
         //{
         //    EstruturaBancoDados.Inicializar(typeof(TContexto));
         //}
+        
     }
 }

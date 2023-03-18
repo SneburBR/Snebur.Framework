@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Snebur.AcessoDados
 {
@@ -24,17 +25,15 @@ namespace Snebur.AcessoDados
                                                           params Expression<Func<TEntidade, object>>[] expressoesPropriedade) where TEntidade : Entidade
         {
 
-            var clone = entidade.CloneSomenteId<Entidade>();
+            var clone = entidade.CloneSomenteId(expressoesPropriedade);
             var propriedadesAbertas = new HashSet<string>();
             foreach (var expressao in expressoesPropriedade)
             {
                 var propriedade = ExpressaoUtil.RetornarPropriedade(expressao);
-                if (propriedade.CanRead && propriedade.CanWrite)
+                if(propriedade.TrySetValue(clone, propriedade.GetValue(entidade)))
                 {
-                    propriedade.SetValue(clone, propriedade.GetValue(entidade));
+                    propriedadesAbertas.Add(propriedade.Name);
                 }
-
-                propriedadesAbertas.Add(propriedade.Name);
             }
             var entidadeInterna = (IEntidadeInterna)clone;
             entidadeInterna.AtribuirPropriedadesAbertas(propriedadesAbertas);

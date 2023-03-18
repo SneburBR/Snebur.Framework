@@ -4,10 +4,12 @@ namespace Snebur.Dominio.Atributos
 {
     //[IgnorarAtributoTS]
     [AttributeUsage(AttributeTargets.Property)]
-    public class NotificarAlteracaoPropriedadeGenericaAttribute : BaseAtributoDominio
+    public class NotificarAlteracaoPropriedadeGenericaAttribute : BaseAtributoDominio, INotificarAlteracaoPropriedade
     {
-        public NotificarAlteracaoPropriedadeGenericaAttribute()
+        public EnunFlagAlteracaoPropriedade Flags { get; }
+        public NotificarAlteracaoPropriedadeGenericaAttribute(EnunFlagAlteracaoPropriedade flags = EnunFlagAlteracaoPropriedade.None)
         {
+            this.Flags = flags;
         }
     }
     [AttributeUsage(AttributeTargets.Class)]
@@ -16,5 +18,11 @@ namespace Snebur.Dominio.Atributos
         public NotificarAlteracaoEntidadeAttribute()
         {
         }
+    }
+
+    [IgnorarInterfaceTS]
+    public interface INotificarAlteracaoPropriedade
+    {
+        EnunFlagAlteracaoPropriedade Flags { get; }
     }
 }

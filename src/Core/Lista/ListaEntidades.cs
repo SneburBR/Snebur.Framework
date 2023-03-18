@@ -75,6 +75,7 @@ namespace Snebur.Dominio
         {
             base.Add((TEntidade)value);
         }
+
         #region  IListaEntidades 
 
         int IListaEntidades.Count

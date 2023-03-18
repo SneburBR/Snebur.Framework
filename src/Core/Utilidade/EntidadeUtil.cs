@@ -104,6 +104,7 @@ namespace Snebur.Utilidade
         {
             return EntidadeUtil.RetornarPropriedadesCampos(tipoEntidade, EnumFiltroPropriedadeCampo.Todas);
         }
+        
 
         public static IValorPadrao RetornarAtributoImplementaIValorPradao(PropertyInfo propriedade)
         {
@@ -141,7 +142,7 @@ namespace Snebur.Utilidade
                                                                     bool ignorarChavePrimaria = false,
                                                                     bool ignorarPropriedadeProtegida = false,
                                                                     bool ignorarChaveEstrangeira = false,
-                                                                    bool ignorarSobreescritas = false)
+                                                                    bool ignorarSobreescritas = false )
         {
             var propriedades = ReflexaoUtil.RetornarPropriedades(tipoEntidade, ignorarTipoBase);
             if (tipoEntidade.BaseType == typeof(Entidade))

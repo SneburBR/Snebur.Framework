@@ -1,5 +1,6 @@
 ﻿using Snebur.Reflexao;
 using System;
+using System.Globalization;
 using System.Linq;
 
 namespace Snebur.Utilidade
@@ -54,7 +55,9 @@ namespace Snebur.Utilidade
             }
         }
 
-        public static object ConverterTipoPrimario(object valor, EnumTipoPrimario tipoPrimarioEnum)
+      
+        public static object ConverterTipoPrimario(object valor,
+                                                  EnumTipoPrimario tipoPrimarioEnum)
         {
             if (ConverterUtil.IsValorVazioOuNull(valor))
             {
@@ -78,15 +81,15 @@ namespace Snebur.Utilidade
 
                     case EnumTipoPrimario.Long:
 
-                        return Convert.ToInt64(valor);
+                        return ConverterUtil.ParaInt64(valor);
 
                     case EnumTipoPrimario.Decimal:
 
-                        return Convert.ToDecimal(valor);
+                        return ConverterUtil.ParaDecimal(valor);
 
                     case EnumTipoPrimario.Double:
 
-                        return Convert.ToDouble(valor);
+                        return ConverterUtil.ParaDouble(valor);
 
                     case EnumTipoPrimario.Guid:
 
@@ -98,11 +101,11 @@ namespace Snebur.Utilidade
 
                     case EnumTipoPrimario.DateTime:
 
-                        return Convert.ToDateTime(valor);
+                        return ConverterUtil.ParaDateTime(valor);
 
                     case EnumTipoPrimario.Single:
 
-                        return Convert.ToSingle(valor);
+                        return ConverterUtil.ParaSingle(valor);
 
                     //case EnumTipoPrimario.Uri:
 
@@ -138,6 +141,7 @@ namespace Snebur.Utilidade
                         case "true":
                         case "yes":
                         case "sim":
+                        case "1":
 
                             return true;
 
@@ -145,6 +149,7 @@ namespace Snebur.Utilidade
                         case "no":
                         case "nao":
                         case "não":
+                        case "0":
 
                             return false;
 
@@ -167,7 +172,7 @@ namespace Snebur.Utilidade
                 return default;
             }
 
-            if (valor.GetType() == ReflexaoUtil.RetornarTipoSemNullable( tipo))
+            if (valor.GetType() == ReflexaoUtil.RetornarTipoSemNullable(tipo))
             {
                 return valor;
             }
@@ -197,7 +202,7 @@ namespace Snebur.Utilidade
             return (T)ConverterTipoPrimario(valor, tipoPrimario);
         }
 
-        public static int ParaInt32(object valor)
+        public static int ParaInt32(object valor, IFormatProvider provider = null)
         {
             if (valor is int)
             {
@@ -207,10 +212,10 @@ namespace Snebur.Utilidade
             {
                 return 0;
             }
-            return Convert.ToInt32(valor);
+            return Convert.ToInt32(valor, provider ?? CultureInfo.InvariantCulture);
         }
 
-        public static long ParaInt64(object valor)
+        public static long ParaInt64(object valor, IFormatProvider provider = null)
         {
             if (valor is long lvalor)
             {
@@ -220,10 +225,10 @@ namespace Snebur.Utilidade
             {
                 return 0L;
             }
-            return Convert.ToInt64(valor);
+            return Convert.ToInt64(valor, provider ?? CultureInfo.InvariantCulture);
         }
 
-        public static decimal ParaDecimal(object valor)
+        public static decimal ParaDecimal(object valor, IFormatProvider provider = null)
         {
             if (valor is decimal d)
             {
@@ -233,10 +238,23 @@ namespace Snebur.Utilidade
             {
                 return 0M;
             }
-            return Convert.ToDecimal(valor, System.Globalization.CultureInfo.InvariantCulture);
+            return Convert.ToDecimal(valor,  provider ?? CultureInfo.InvariantCulture);
         }
 
-        public static double ParaDouble(object valor)
+        public static double ParaSingle(object valor, IFormatProvider provider = null)
+        {
+            if (valor is float d)
+            {
+                return d;
+            }
+            if (ConverterUtil.IsValorVazioOuNull(valor))
+            {
+                return 0D;
+            }
+            return Convert.ToSingle(valor, provider ?? CultureInfo.InvariantCulture);
+        }
+
+        public static double ParaDouble(object valor, IFormatProvider provider = null)
         {
             if (valor is double d)
             {
@@ -246,29 +264,43 @@ namespace Snebur.Utilidade
             {
                 return 0D;
             }
-            return Convert.ToDouble(valor, System.Globalization.CultureInfo.InvariantCulture);
+            return Convert.ToDouble(valor, provider ?? CultureInfo.InvariantCulture);
         }
 
+       
         public static DateTime ParaDateTime(object valor)
         {
             if (valor is DateTime d)
             {
                 return d;
             }
+            
             if (ConverterUtil.IsValorVazioOuNull(valor))
             {
                 return DateTime.Now;
             }
             var dataString = valor.ToString();
 
-            if (DateTime.TryParse(dataString, out DateTime data))
+            if (DateTime.TryParse(dataString, 
+                                  CultureInfo.CurrentCulture,
+                                  DateTimeStyles.AssumeUniversal,
+                                  out DateTime data))
             {
                 return data;
             }
+            if (DateTime.TryParse(dataString,
+                              CultureInfo.InvariantCulture,
+                              DateTimeStyles.AssumeUniversal,
+                              out DateTime data2))
+            {
+                return data2;
+            }
+
             if (Int64.TryParse(dataString, out long ticks) && ticks > DateTime.Now.AddYears(-100).Ticks)
             {
                 return new DateTime(ticks);
             }
+
             if (!(dataString.Contains("/") ^ dataString.Contains('-')))
             {
                 throw new Erro(String.Format("O valor não pode ser convertido para data {0}", dataString));

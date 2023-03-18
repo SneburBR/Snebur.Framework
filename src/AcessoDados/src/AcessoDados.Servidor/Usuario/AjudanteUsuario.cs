@@ -168,7 +168,7 @@ namespace Snebur.AcessoDados
                     {
                         sessaoUsuario.Estado = EnumEstadoSessaoUsuario.UsuarioDiferente;
 
-                        var cloneSessao = (sessaoUsuario as Entidade).CloneSomenteId<Entidade>() as ISessaoUsuario;
+                        var cloneSessao = (sessaoUsuario as Entidade).CloneSomenteId<Entidade>(true) as ISessaoUsuario;
                         cloneSessao.Estado = EnumEstadoSessaoUsuario.UsuarioDiferente;
 
                         ((IContextoDadosSemNotificar)this.Contexto).SalvarInternoSemNotificacao(cloneSessao);

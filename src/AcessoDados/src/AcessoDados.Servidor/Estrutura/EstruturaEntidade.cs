@@ -12,11 +12,6 @@ namespace Snebur.AcessoDados.Estrutura
     {
         internal const int MAXIMO_REGISTRO_POR_CONSULTA = 1000000;
 
-        protected EstruturaCampo EstruturaCampoOrdenacaoProtegido;
-        protected EstruturaCampo EstruturaCampoIdentificadorProprietarioProtegido;
-        protected EstruturaCampo EstruturaCampoDeletadoProtegido;
-        protected EstruturaCampo EstruturaCampoUsuarioProtegido;
-
         #region Propriedades
         internal string NomeTipoEntidade { get; }
         internal Type TipoEntidade { get; }
@@ -28,78 +23,11 @@ namespace Snebur.AcessoDados.Estrutura
         internal EstruturaCampo EstruturaCampoChavePrimaria { get; }
         internal EstruturaCampo EstruturaCampoTipoEntidade { get; set; }
         internal EstruturaCampo EstruturaCampoNomeTipoEntidade { get; }
-        internal EstruturaCampo EstruturaCampoIdentificadorProprietario
-        {
-            get
-            {
-                var estruturaEntidadeatual = this;
 
-                while (estruturaEntidadeatual != null)
-                {
-                    var estruturaCampo = estruturaEntidadeatual.EstruturaCampoIdentificadorProprietarioProtegido;
-                    if (estruturaCampo != null)
-                    {
-                        return estruturaCampo;
-                    }
-                    estruturaEntidadeatual = estruturaEntidadeatual.EstruturaEntidadeBase;
-                }
-                return null;
-            }
-        }
-
-        internal EstruturaCampo EstruturaCampoOrdenacao
-        {
-            get
-            {
-                var estruturaEntidadeatual = this;
-                while (estruturaEntidadeatual != null)
-                {
-                    var estruturaCampo = estruturaEntidadeatual.EstruturaCampoOrdenacaoProtegido;
-                    if (estruturaCampo != null)
-                    {
-                        return estruturaCampo;
-                    }
-                    estruturaEntidadeatual = estruturaEntidadeatual.EstruturaEntidadeBase;
-                }
-                return null;
-            }
-        }
-
-        internal EstruturaCampo EstruturaCampoDelatado
-        {
-            get
-            {
-                var estruturaEntidadeatual = this;
-                while (estruturaEntidadeatual != null)
-                {
-                    var estruturaCampo = estruturaEntidadeatual.EstruturaCampoDeletadoProtegido;
-                    if (estruturaCampo != null)
-                    {
-                        return estruturaCampo;
-                    }
-                    estruturaEntidadeatual = estruturaEntidadeatual.EstruturaEntidadeBase;
-                }
-                return null;
-            }
-        }
-
-        internal EstruturaCampo EstruturaCampoUsuario
-        {
-            get
-            {
-                var estruturaEntidadeatual = this;
-                while (estruturaEntidadeatual != null)
-                {
-                    var estruturaCampo = estruturaEntidadeatual.EstruturaCampoUsuarioProtegido;
-                    if (estruturaCampo != null)
-                    {
-                        return estruturaCampo;
-                    }
-                    estruturaEntidadeatual = estruturaEntidadeatual.EstruturaEntidadeBase;
-                }
-                return null;
-            }
-        }
+        protected EstruturaCampo EstruturaCampoIdentificadorProprietarioProtegido;
+        protected EstruturaCampo EstruturaCampoOrdenacaoProtegido;
+        protected EstruturaCampo EstruturaCampoDeletadoProtegido;
+        protected EstruturaCampo EstruturaCampoUsuarioProtegido;
 
         internal bool IsChavePrimariaAutoIncrimento { get; }
         internal bool IsAbstrata { get; }
@@ -150,8 +78,8 @@ namespace Snebur.AcessoDados.Estrutura
 
         internal List<EstruturaCampo> EstruturasCamposComputadoBanco { get; }
         internal List<EstruturaCampo> EstruturasCamposComputadoServico { get; }
-
         internal List<EstruturaAlteracaoPropriedade> EstruturasAlteracaoPropriedade { get; private set; }
+        
         internal List<EstruturaAlteracaoPropriedadeGenerica> EstruturasAlteracaoPropriedadeGenerica { get; private set; }
 
         internal List<string> Alertas = new List<string>();
@@ -244,6 +172,109 @@ namespace Snebur.AcessoDados.Estrutura
             }
             return interfaces;
         }
+        #endregion
+
+        #region propriedades implementadas
+        internal EstruturaCampo EstruturaCampoIdentificadorProprietario
+        {
+            get
+            {
+                var estruturaEntidadeatual = this;
+
+                while (estruturaEntidadeatual != null)
+                {
+                    var estruturaCampo = estruturaEntidadeatual.EstruturaCampoIdentificadorProprietarioProtegido;
+                    if (estruturaCampo != null)
+                    {
+                        return estruturaCampo;
+                    }
+                    estruturaEntidadeatual = estruturaEntidadeatual.EstruturaEntidadeBase;
+                }
+                return null;
+            }
+        }
+        internal EstruturaCampo EstruturaCampoOrdenacao
+        {
+            get
+            {
+                var estruturaEntidadeatual = this;
+                while (estruturaEntidadeatual != null)
+                {
+                    var estruturaCampo = estruturaEntidadeatual.EstruturaCampoOrdenacaoProtegido;
+                    if (estruturaCampo != null)
+                    {
+                        return estruturaCampo;
+                    }
+                    estruturaEntidadeatual = estruturaEntidadeatual.EstruturaEntidadeBase;
+                }
+                return null;
+            }
+        }
+        internal EstruturaCampo EstruturaCampoDelatado
+        {
+            get
+            {
+                var estruturaEntidadeatual = this;
+                while (estruturaEntidadeatual != null)
+                {
+                    var estruturaCampo = estruturaEntidadeatual.EstruturaCampoDeletadoProtegido;
+                    if (estruturaCampo != null)
+                    {
+                        return estruturaCampo;
+                    }
+                    estruturaEntidadeatual = estruturaEntidadeatual.EstruturaEntidadeBase;
+                }
+                return null;
+            }
+        }
+        internal EstruturaCampo EstruturaCampoUsuario
+        {
+            get
+            {
+                var estruturaEntidadeatual = this;
+                while (estruturaEntidadeatual != null)
+                {
+                    var estruturaCampo = estruturaEntidadeatual.EstruturaCampoUsuarioProtegido;
+                    if (estruturaCampo != null)
+                    {
+                        return estruturaCampo;
+                    }
+                    estruturaEntidadeatual = estruturaEntidadeatual.EstruturaEntidadeBase;
+                }
+                return null;
+            }
+        }
+
+        internal List<EstruturaAlteracaoPropriedade> TodasEstruturasAlteracaoPropriedade
+        {
+            get
+            {
+                var estruturas = new List<EstruturaAlteracaoPropriedade>();
+                var estruturaAtual = this;
+                while (estruturaAtual != null)
+                {
+                    estruturas.AddRange(estruturaAtual.EstruturasAlteracaoPropriedade);
+                    estruturaAtual = estruturaAtual.EstruturaEntidadeBase;
+                }
+                return estruturas;
+            }
+        }
+
+        internal List<EstruturaAlteracaoPropriedadeGenerica> TodasEstruturasAlteracaoPropriedadeGenerica
+        {
+            get
+            {
+                var estruturas = new List<EstruturaAlteracaoPropriedadeGenerica>();
+                var estruturaAtual = this;
+                while (estruturaAtual != null)
+                {
+                    estruturas.AddRange(estruturaAtual.EstruturasAlteracaoPropriedadeGenerica);
+                    estruturaAtual = estruturaAtual.EstruturaEntidadeBase;
+                }
+                return estruturas;
+            }
+        }
+
         #endregion
 
         #region Métodos Internos
@@ -407,32 +438,6 @@ namespace Snebur.AcessoDados.Estrutura
             return this.RetornarTodasEstruturas<EstruturaRelacaoNn>();
         }
 
-        internal List<EstruturaAlteracaoPropriedade> RetornarTodasEstruturasAlteracaoPropriedade()
-        {
-            var estruturas = new List<EstruturaAlteracaoPropriedade>();
-            var estruturaAtual = this;
-            while (estruturaAtual != null)
-            {
-                estruturas.AddRange(estruturaAtual.EstruturasAlteracaoPropriedade);
-                estruturaAtual = estruturaAtual.EstruturaEntidadeBase;
-            }
-            return estruturas;
-        }
-
-        internal List<EstruturaAlteracaoPropriedadeGenerica> RetornarTodasEstruturasAlteracaoPropriedadeGenerica()
-        {
-
-            var estruturas = new List<EstruturaAlteracaoPropriedadeGenerica>();
-            var estruturaAtual = this;
-            while (estruturaAtual != null)
-            {
-                estruturas.AddRange(estruturaAtual.EstruturasAlteracaoPropriedadeGenerica);
-                estruturaAtual = estruturaAtual.EstruturaEntidadeBase;
-            }
-            return estruturas;
-
-
-        }
 
 
         #endregion
@@ -776,6 +781,16 @@ namespace Snebur.AcessoDados.Estrutura
                     {
                         var estruturaCampo = this.EstruturasCampos[propriedade.Name];
                         estruturasAlteracaoPropriedade.Add(new EstruturaAlteracaoPropriedadeGenerica(propriedade, this, estruturaCampo, atributo));
+                        continue;
+                    }
+
+                    if (this.EstruturasTipoComplexao.ContainsKey(propriedade.Name))
+                    {
+                        var estrturaTipoComplexo = this.EstruturasTipoComplexao[propriedade.Name];
+                        estruturasAlteracaoPropriedade.Add(new EstruturaAlteracaoPropriedadeGenerica(propriedade,
+                                                                this,
+                                                                estrturaTipoComplexo,
+                                                                atributo));
                         continue;
                     }
 

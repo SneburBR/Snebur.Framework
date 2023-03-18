@@ -96,6 +96,7 @@ namespace Snebur.Dominio
         [IgnorarPropriedadeTS]
         [IgnorarPropriedadeTSReflexao]
         [PropriedadeProtegida]
+        [XmlIgnore]
         public virtual bool __IsExisteAlteracao
         {
             get
@@ -139,6 +140,7 @@ namespace Snebur.Dominio
                 this._isSerializando = value;
             }
         }
+
         [EditorBrowsable(EditorBrowsableState.Never)]
         [XmlIgnore]
         [IgnorarPropriedadeTS]

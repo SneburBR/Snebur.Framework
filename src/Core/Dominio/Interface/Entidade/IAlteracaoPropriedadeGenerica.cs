@@ -20,15 +20,18 @@ namespace Snebur.Dominio
         string NomePropriedade { get; set; }
 
         [ValidacaoRequerido]
-        EnumTipoPrimario TipoPrimario { get; set; }
+        EnumTipoPrimario? TipoPrimario { get; set; }
+        bool IsTipoComplexo { get; set; }
 
-        [ValidacaoTextoTamanho(255)]
+        [ValidacaoTextoTamanho(5000)]
         string ValorPropriedadeAntigo { get; set; }
 
-        [ValidacaoTextoTamanho(255)]
+        [ValidacaoTextoTamanho(5000)]
         string ValorPropriedadeAlterada { get; set; }
 
         DateTime? DataHoraFimAlteracao { get; set; }
+
+       
 
 
     }

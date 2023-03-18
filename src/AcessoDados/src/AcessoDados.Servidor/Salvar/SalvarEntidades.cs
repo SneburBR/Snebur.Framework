@@ -385,6 +385,20 @@ namespace Snebur.AcessoDados.Servidor.Salvar
         }
         #endregion
 
+        #region Alterações das propriedades
+        private HashSet<Entidade> RetornarEntidadesAlteracaoPropriedade(HashSet<Entidade> entidades)
+        {
+            return new EntidadesAlteracaoPropriedade(this.Contexto).
+                                                    RetornarEntidadesAlteracaoPropriedade(entidades);
+        }
+
+        private HashSet<Entidade> RetornarEntidadesAlteracaoPropriedadeGenericas(HashSet<Entidade> entidades)
+        {
+            return new EntidadesAlteracaoPropriedadeGenerica(this.Contexto).
+                                                             RetornarEntidadesAlteracaoPropriedadeGenericas(entidades);
+        }
+        #endregion
+
         #region Métodos privados
 
         private List<EntidadeAlterada> RetornarEntidadesAlteradas(HashSet<Entidade> entidades)

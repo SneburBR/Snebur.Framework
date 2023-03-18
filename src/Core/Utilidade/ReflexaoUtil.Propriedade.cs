@@ -1,4 +1,5 @@
-﻿using Snebur.Linq;
+﻿using Snebur.Dominio;
+using Snebur.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,7 +60,9 @@ namespace Snebur.Utilidade
         /// <param name="ignorarPropriedadesTipoBase"></param>
         /// <param name="publica">Se métodos get e set são publicos</param>
         /// <returns></returns>
-        public static List<PropertyInfo> RetornarPropriedades(Type tipo, bool ignorarPropriedadesTipoBase = false, bool publica = true)
+        public static List<PropertyInfo> RetornarPropriedades(Type tipo,
+                                                             bool ignorarPropriedadesTipoBase = false, 
+                                                             bool publica = true)
         {
             var propriedades = tipo.GetProperties(ReflexaoUtil.BindingFlags).AsEnumerable();
             if (ignorarPropriedadesTipoBase && tipo.BaseType != null)
@@ -263,6 +266,11 @@ namespace Snebur.Utilidade
         public static bool PropriedadeRetornaTipoPrimario(PropertyInfo propriedade, bool removerNullable = false)
         {
             return ReflexaoUtil.TipoRetornaTipoPrimario(propriedade.PropertyType, removerNullable);
+        }
+
+        public static bool PropriedadeRetornaTipoComplexo(PropertyInfo propriedade, bool removerNullable = false)
+        {
+            return propriedade.PropertyType.IsSubclassOf(typeof(BaseTipoComplexo));
         }
         /// <summary>
         /// Retornar a propriedade,

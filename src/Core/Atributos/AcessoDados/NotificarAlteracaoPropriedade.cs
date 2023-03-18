@@ -6,7 +6,7 @@ using System.Reflection;
 namespace Snebur.Dominio.Atributos
 {
     [AttributeUsage(AttributeTargets.Property)]
-    public class NotificarAlteracaoPropriedadeAttribute : BaseAtributoDominio
+    public class NotificarAlteracaoPropriedadeAttribute : BaseAtributoDominio, INotificarAlteracaoPropriedade
     {
         internal static HashSet<Type> TiposProprieadesAlteracaoSuportados { get; } = new HashSet<Type> { typeof(string) };
 
@@ -18,28 +18,16 @@ namespace Snebur.Dominio.Atributos
 
         public PropertyInfo PropriedadeValorAlterado { get; }
         public PropertyInfo PropriedadeValorAntigo { get; }
-
-        public bool IsNotificarNovoCadastro { get; set; }
-
-        [IgnorarConstrutorTS]
+ 
+        public EnunFlagAlteracaoPropriedade Flags { get; }
+         
         public NotificarAlteracaoPropriedadeAttribute(Type tipoEntidadeAlteracaoPropriedade,
                                                       string nomePropriedadeRelacao,
-                                                      string nomePropriedadeAlterada) : this(tipoEntidadeAlteracaoPropriedade,
-                                                                                            true,
-                                                                                            nomePropriedadeRelacao,
-                                                                                            nomePropriedadeAlterada)
+                                                      string nomePropriedadeAlterada,
+                                                      EnunFlagAlteracaoPropriedade flags = EnunFlagAlteracaoPropriedade.None)
         {
-        }
-
-        public NotificarAlteracaoPropriedadeAttribute(Type tipoEntidadeAlteracaoPropriedade,
-                                                      bool isNotificarNovoCadastro,
-                                                      string nomePropriedadeRelacao,
-                                                      string nomePropriedadeAlterada)
-        {
-            //this.IsNotificarNovoCadastro = isNotificarNovoCadastro;
-            //Estou pendando remover esse recurso, sendo assim, seria possivel remove desafazer um ação do usuario
-            this.IsNotificarNovoCadastro = isNotificarNovoCadastro;
             this.TipoEntidadeAlteracaoPropriedade = tipoEntidadeAlteracaoPropriedade;
+            this.Flags = flags;
 
             var nomePropriedadeValorAntigo = this.RetornarNomePropriedadeValorAntigo(nomePropriedadeAlterada);
             this.NomePropriedadeRelacao = nomePropriedadeRelacao;

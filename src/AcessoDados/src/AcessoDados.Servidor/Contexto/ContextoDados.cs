@@ -13,6 +13,7 @@ using Snebur.Seguranca;
 using Snebur.Servicos;
 using Snebur.Utilidade;
 using Snebur.Linq;
+using System.Diagnostics;
 
 #if NET7_0
 using Microsoft.Data.SqlClient;
@@ -624,12 +625,12 @@ namespace Snebur.AcessoDados
             //    }
             //    if (this.SessaoUsuarioLogado.Estado != EnumEstadoSessaoUsuario.Ativo)
             //    {
-            //        throw new ErroSessaoUsuarioExpirada("A sessão do usuario expirou");
+            //        throw new ErroSessaoUsuarioExpirada("A sessão do usuário expirou");
             //    }
             //    var credencialValida = CredencialUtil.ValidarCredencial(this.SessaoUsuarioLogado.Usuario, this.CredencialUsuario);
             //    if (!credencialValida)
             //    {
-            //        throw new ErroSessaoUsuarioExpirada("A credencial do usuario é diferente da sessão do usuario");
+            //        throw new ErroSessaoUsuarioExpirada("A credencial do usuário é diferente da sessão do usuário");
             //    }
             //}
         }
@@ -719,7 +720,7 @@ namespace Snebur.AcessoDados
         }
         #endregion
 
-        #region Trasacao
+        #region Transação
 
         internal SqlTransaction TransacaoAtual { get; private set; }
         internal SqlConnection ConexaoAtual { get; private set; }
@@ -780,6 +781,54 @@ namespace Snebur.AcessoDados
         protected abstract bool UsuarioLogadoAutorizadoIdentificadorProprietarioGlobal();
 
 
+        #region Somente Leitura
+
+        private Lazy<HashSet<EstruturaCampo>> __estruturasCamposSomenteLeituraSobreEscrever
+            = new Lazy<HashSet<EstruturaCampo>>(() => new HashSet<EstruturaCampo>());
+
+        public void PermitirSobreSomenteLeitura<TEntidade>(
+                    params Expression<Func<TEntidade, object>>[] expressoes)
+        {
+            var tipoEntidade = typeof(TEntidade);
+            if (!this.EstruturaBancoDados.EstruturasEntidade.
+                                        TryGetValue(tipoEntidade.Name,
+                                        out var estruturaEntidade))
+            {
+                throw new Exception($"Estrutura entidade não encontrada para o tipo {tipoEntidade.Name}");
+
+            }
+            foreach (var expresssao in expressoes)
+            {
+                var propriedade = ExpressaoUtil.RetornarPropriedade(expresssao);
+                if (!estruturaEntidade.EstruturasCampos.TryGetValue(propriedade.Name,
+                                                       out var estruturCampo))
+                {
+                    throw new Exception($"Estrutura do campo não encontrada para a propriedade {propriedade.Name}" +
+                                        $" declarada  {propriedade.DeclaringType.Name} não possui o atributo somente leitura");
+                }
+
+                if (!estruturCampo.OpcoesSomenteLeitura.IsSomenteLeitura)
+                {
+                    if (Debugger.IsAttached)
+                    {
+                        throw new Exception($"A propriedade {propriedade.Name} declarada  {propriedade.DeclaringType.Name} não possui o atributo somente leitura");
+                    }
+                }
+                this.__estruturasCamposSomenteLeituraSobreEscrever.Value.Add(estruturCampo);
+            }
+        }
+
+        internal bool IsPodeSobreEscrever(EstruturaCampo estruturaCampo)
+        {
+            if (this.__estruturasCamposSomenteLeituraSobreEscrever.IsValueCreated)
+            {
+                return this.__estruturasCamposSomenteLeituraSobreEscrever.Value.Contains(estruturaCampo);
+            }
+            return false;
+
+        }
+
+        #endregion
 
 
         public void DefinirIdentificadorProprietario(string identificadorProprietario)
@@ -802,6 +851,12 @@ namespace Snebur.AcessoDados
             //this.Usuario = null;
             //this.SessaoUsuario = null;
             //ContextoDados.DispensarScopo();
+            if (this.__estruturasCamposSomenteLeituraSobreEscrever.IsValueCreated)
+            {
+                this.__estruturasCamposSomenteLeituraSobreEscrever.Value.Clear();
+                this.__estruturasCamposSomenteLeituraSobreEscrever = null;
+            }
+            
             base.DisposeInterno();
             (AplicacaoSnebur.Atual as IAplicacaoContextoDados)?.ConexaoDadosDispensado(this);
         }

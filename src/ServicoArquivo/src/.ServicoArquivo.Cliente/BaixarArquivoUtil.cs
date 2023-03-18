@@ -14,7 +14,7 @@ namespace Snebur.ServicoArquivo.Cliente
     {
         public static TimeSpan TIMEOUT_PADRAO { get; } = TimeSpan.FromMinutes(5);
 
-       
+
         public static MemoryStream RetornarStream(string urlServico,
                                                   IArquivo arquivo,
                                                   Guid identificadorSessao,
@@ -50,7 +50,17 @@ namespace Snebur.ServicoArquivo.Cliente
 
         }
 
-        public static MemoryStream RetornarStream(string urlServico, long idArquivo, string nomeTipoArquivo, string nomeTipoQualificado)
+        public static MemoryStream RetornarStream(IArquivo arquivo)
+        {
+            return BaixarArquivoUtil.RetornarStream(AplicacaoSnebur.Atual.UrlServicoArquivo,
+                                                    arquivo.Id,
+                                                    arquivo.GetType().Name,
+                                                    arquivo.GetType().AssemblyQualifiedName);
+        }
+        public static MemoryStream RetornarStream(string urlServico,
+                                              long idArquivo,
+                                              string nomeTipoArquivo,
+                                              string nomeTipoQualificado)
         {
             //var identificadorSessao = AplicacaoSnebur.Atual.IdentificadorSessaoUsuario;
 

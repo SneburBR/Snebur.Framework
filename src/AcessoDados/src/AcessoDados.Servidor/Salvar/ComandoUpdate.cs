@@ -5,6 +5,7 @@ using Snebur.Servicos;
 using Snebur.Utilidade;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Snebur.AcessoDados.Servidor.Salvar
@@ -15,9 +16,10 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 
         internal bool ExisteAtualizacao { get => this.EstruturasCampoParametro.Count > 0; }
 
-        internal ComandoUpdate(EntidadeAlterada entidadeAlterada, EstruturaEntidade estruturaEntidade) : base(entidadeAlterada, estruturaEntidade)
+        internal ComandoUpdate(EntidadeAlterada entidadeAlterada,
+                               EstruturaEntidade estruturaEntidade ) : base(entidadeAlterada, estruturaEntidade)
         {
-
+            
             this.PropriedadesAlterada = this.RetornarPropriedadesAlterada();
 
             this.EstruturasCampoParametro.AddRange(this.RetornarEstrutasCamposAlterados());
@@ -53,18 +55,31 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                                                             Where(x => this.PropriedadesAlterada.Keys.Contains(x.Key)).
                                                             Select(x => x.Value).ToList();
 
-            var estruturasCamposSomenteLeitura = estruturasCamposAlterados.Where(x=> x.OpcoesSomenteLeitura.IsSomenteLeitura).ToList();
+            
+
+            var estruturasCamposSomenteLeitura = estruturasCamposAlterados.Where(x => x.OpcoesSomenteLeitura.IsSomenteLeitura).ToList();
 
             if (estruturasCamposSomenteLeitura.Count > 0)
             {
-                estruturasCamposAlterados.RemoveRange(estruturasCamposSomenteLeitura);
-
-                var nomesPropriedade = String.Join(",", estruturasCamposSomenteLeitura.Where(x=> x.OpcoesSomenteLeitura.IsNotificarSeguranca).Select(x => x.Propriedade.Name)).ToList();
-                if(nomesPropriedade.Count> 0)
+                foreach(var estruturaCampoSomenteLeitura in estruturasCamposSomenteLeitura)
                 {
-                    var mensagem = $"Não é autorizado alterar valores das propriedades somente leitura '{nomesPropriedade}' na entidade '{this.EstruturaEntidade.TipoEntidade.Name}'";
-                    LogUtil.ErroAsync(new ErroSeguranca(mensagem, EnumTipoLogSeguranca.AlterarandoPropriedadeSomenteLeitura));
-                }
+                    if (!this.EntidadeAlterada.Contexto.IsPodeSobreEscrever(estruturaCampoSomenteLeitura))
+                    {
+                        estruturasCamposAlterados.Remove(estruturaCampoSomenteLeitura);
+                        var mensagem = $"Não é autorizado alterar valores das propriedades somente leitura" +
+                                        $" '{estruturaCampoSomenteLeitura.Propriedade.Name}' na entidade '{estruturaCampoSomenteLeitura.EstruturaEntidade.TipoEntidade.Name}'";
+                        
+                        if (DebugUtil.IsAttached)
+                        {
+                            Trace.TraceWarning(mensagem);
+                        }
+
+                        if (estruturaCampoSomenteLeitura.OpcoesSomenteLeitura.IsNotificarSeguranca)
+                        {
+                            LogUtil.ErroAsync(new ErroSeguranca(mensagem, EnumTipoLogSeguranca.AlterarandoPropriedadeSomenteLeitura));
+                        }
+                    }
+                } 
             }
             return estruturasCamposAlterados;
         }

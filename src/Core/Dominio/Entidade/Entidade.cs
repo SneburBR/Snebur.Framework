@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -173,11 +174,11 @@ namespace Snebur.Dominio
                     {
                         if (this.IsSerializando)
                         {
-                            return default(T);
+                            return default;
                         }
                         if (this.__TipoEntidade.GetProperty(nomePropriedade).PropertyType.IsSubclassOf(typeof(Entidade)))
                         {
-                            return default(T);
+                            return default;
                         }
                         throw new Exception($"A propriedade {nomePropriedade} não foi aberta na entidade {entidade.GetType().Name}");
                     }
@@ -264,11 +265,54 @@ namespace Snebur.Dominio
             return ValidarEntidades.Validar(contextoDados, this);
         }
 
-        public TEntidade CloneSomenteId<TEntidade>() where TEntidade : Entidade, IEntidade
+        public TEntidade CloneSomenteId<TEntidade>( Expression<Func<TEntidade, object>>[] expressoesPropriedade) where TEntidade : Entidade, IEntidade
         {
             var entidadeClonada = (TEntidade)Activator.CreateInstance(this.__TipoEntidade);
             entidadeClonada.__IsClonado = true;
+
+            if(expressoesPropriedade!= null)
+            {
+                foreach (var expressaPropriedade in expressoesPropriedade)
+                {
+                    var propriedade = ExpressaoUtil.RetornarPropriedade(expressaPropriedade);
+                    if (propriedade.DeclaringType != typeof(Entidade))
+                    {
+                        propriedade.TrySetValue(entidadeClonada, propriedade.GetValue(this), true);
+                    }
+                }
+            }
             entidadeClonada.Id = this.Id;
+            entidadeClonada.AtivarControladorPropriedadeAlterada();
+
+            return entidadeClonada;
+        }
+        
+        
+        public TEntidade CloneSomenteId<TEntidade>(bool incluirTiposPrimariosETipoCompleto = true) where TEntidade : Entidade, IEntidade
+        {
+            var entidadeClonada = (TEntidade)Activator.CreateInstance(this.__TipoEntidade);
+            entidadeClonada.__IsClonado = true;
+
+            if (incluirTiposPrimariosETipoCompleto)
+            {
+                var propriedades = this.__TipoEntidade.GetProperties(ReflexaoUtil.BindingFlags).
+                                                                Where(x => x.GetGetMethod() != null && x.GetGetMethod().IsPublic &&
+                                                                          x.GetSetMethod() != null && x.GetSetMethod().IsPublic &&
+                                                                          (ReflexaoUtil.PropriedadeRetornaTipoPrimario(x, true) ||
+                                                                           ReflexaoUtil.PropriedadeRetornaTipoComplexo(x, true)));
+
+                foreach (var propriedade in propriedades)
+                {
+                    if(propriedade.DeclaringType != typeof(Entidade))
+                    {
+                        propriedade.TrySetValue(entidadeClonada, propriedade.GetValue(this), true);
+                    }
+                }
+            }
+             
+
+            entidadeClonada.Id = this.Id;
+            entidadeClonada.__NomeTipoEntidade = this.__NomeTipoEntidade;
             entidadeClonada.AtivarControladorPropriedadeAlterada();
 
             return entidadeClonada;

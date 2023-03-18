@@ -1,4 +1,5 @@
 ﻿using Snebur.Dominio.Atributos;
+using Snebur.Utilidade;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -28,6 +29,36 @@ namespace System.Reflection
             catch
             {
                 return default;
+            }
+        }
+
+        public static bool TrySetValue(this PropertyInfo propriedade, 
+                                      object obj, object value, 
+                                      bool isLogErro=false)
+        {
+            try
+            {
+                if (propriedade.CanRead && propriedade.CanWrite)
+                {
+                    propriedade.SetValue(obj, value);
+                    return true;
+                }
+
+                
+                return false;
+            }
+            catch(Exception ex)
+            {
+                if (isLogErro)
+                {
+                    var mensagem = $"TrySetValue falha  Propriedade {propriedade.Name} ({propriedade.PropertyType.Name}) " +
+                                   $"obj:  {obj?.GetType().Name} {obj?.ToString() ?? "null"}, " +
+                                   $"value {value.GetType().Name} {value?.ToString() ?? "null"} ";
+
+                    LogUtil.ErroAsync(new Exception(mensagem, ex));
+
+                }
+                return false;
             }
         }
 
