@@ -56,16 +56,20 @@ namespace Snebur.Dominio
         }
 
         internal protected override void NotificarValorPropriedadeAlterada(object antigoValor, object novoValor,
-                                                                           [CallerMemberName] string nomePropriedade = "")
+                                                                           [CallerMemberName] string nomePropriedade = "",
+                                                                           string nomePropriedadeTipoComplexo = null)
         {
             if (this.IsCongelado && antigoValor != novoValor)
             {
-                throw new Erro("Não é possivel alterar valores das propriedades quando um objeto está congelado");
+                throw new Erro("Não é possível alterar valores das propriedades quando um objeto está congelado");
             }
             if (this.__Entidade != null && this.__Entidade.__IsControladorPropriedadesAlteradaAtivo)
             {
                 var caminhoPropriedade = $"{this.__NomePropriedadeEntidade}_{nomePropriedade}";
-                this.__Entidade.NotificarValorPropriedadeAlterada(antigoValor, novoValor, caminhoPropriedade);
+                this.__Entidade.NotificarValorPropriedadeAlterada(antigoValor,
+                    novoValor,
+                    caminhoPropriedade,
+                    this.__NomePropriedadeEntidade);
             }
             base.NotificarPropriedadeAlterada(nomePropriedade);
         }

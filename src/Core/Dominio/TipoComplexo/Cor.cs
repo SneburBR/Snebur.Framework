@@ -53,6 +53,19 @@ namespace Snebur.Dominio
                 return this.Alpha == 0;
             }
         }
+        [IgnorarPropriedadeTS]
+        [IgnorarPropriedadeTSReflexao]
+        public bool IsBranca
+        {
+            get
+            {
+                return this.Alpha == 255 && 
+                       this.Red == 255 && 
+                       this.Green == 255 && 
+                       this.Blue == 255;
+            }
+        }
+        
         [IgnorarConstrutorTS]
         public Cor() : this(0, 0, 0, 0)
         {

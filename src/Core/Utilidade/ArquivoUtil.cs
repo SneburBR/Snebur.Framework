@@ -387,11 +387,13 @@ namespace Snebur.Utilidade
 
         public static string NormalizarCaminhoArquivo(string caminhoArquivo)
         {
-            return Path.GetFullPath(new Uri(caminhoArquivo).LocalPath)
-               .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar).Trim();
+            return Path.GetFullPath(caminhoArquivo)
+                  .Replace( Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar).
+                  Trim();
             //caminhoArquivo = caminhoArquivo.ToLower().Replace("/", "\\");
             //return caminhoArquivo.Trim();
         }
+
         #endregion
 
         #region Texto

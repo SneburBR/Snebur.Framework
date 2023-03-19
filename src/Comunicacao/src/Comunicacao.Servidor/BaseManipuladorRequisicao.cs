@@ -262,7 +262,7 @@ namespace Snebur.Comunicacao
         public static string GetValue(this NameValueCollection value, 
                                       string chave)
         {
-            return value["chave"];
+            return value[chave];
         }
     }
 }

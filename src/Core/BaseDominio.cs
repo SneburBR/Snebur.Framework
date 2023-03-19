@@ -227,7 +227,7 @@ namespace Snebur.Dominio
                     {
                         if (!this.__PropriedadesAlteradas.ContainsKey(nomePropriedade))
                         {
-                            this.__PropriedadesAlteradas.Add(nomePropriedade, new PropriedadeAlterada(nomePropriedade, antigoValorChaveEstrangeira, novoValorChaveEstrangeira));
+                            this.__PropriedadesAlteradas.Add(nomePropriedade, new PropriedadeAlterada(nomePropriedade, antigoValorChaveEstrangeira, novoValorChaveEstrangeira, null));
                         }
                     }
                 }
@@ -237,7 +237,7 @@ namespace Snebur.Dominio
         }
 
 
-        internal protected virtual void NotificarValorPropriedadeAlterada(object antigoValor, object novoValor, [CallerMemberName] string nomePropriedade = "")
+        internal protected virtual void NotificarValorPropriedadeAlterada(object antigoValor, object novoValor, [CallerMemberName] string nomePropriedade = "", string nomePropriedadeTipoComplexo = null)
         {
             if (this.IsSerializando)
             {
@@ -265,7 +265,7 @@ namespace Snebur.Dominio
                         {
                             if (!this.__PropriedadesAlteradas.ContainsKey(nomePropriedade))
                             {
-                                this.__PropriedadesAlteradas.Add(nomePropriedade, new PropriedadeAlterada(nomePropriedade, antigoValor, novoValor));
+                                this.__PropriedadesAlteradas.Add(nomePropriedade, new PropriedadeAlterada(nomePropriedade, antigoValor, novoValor, nomePropriedadeTipoComplexo));
                             }
                         }
                     }
