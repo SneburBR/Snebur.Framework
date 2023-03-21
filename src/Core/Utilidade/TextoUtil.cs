@@ -357,6 +357,10 @@ namespace Snebur.Utilidade
 
         public static string RetornarPrimeiraLetraMaiuscula(string texto)
         {
+            if (String.IsNullOrWhiteSpace(texto))
+            {
+                return String.Empty;
+            }
             var primeiraLetra = texto.Substring(0, 1).ToUpper();
             var restante = texto.Substring(1, texto.Length - 1);
             return String.Concat(primeiraLetra, restante);

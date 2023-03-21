@@ -5,24 +5,23 @@ using System.Data;
 
 using System.Linq;
 using System.Reflection;
+using Snebur.Utilidade;
 
-#if NET7_0 
+#if NET7_0
 using Microsoft.Data.SqlClient;
+using Snebur;
+using Snebur.BancoDados;
+using Snebur.Utilidade;
 #else
 using System.Data.SqlClient;
 #endif
- 
-namespace Snebur.Utilidade
+
+namespace Snebur.BancoDados
 {
     public class Conexao
     {
         public string ConnectionString { get; set; }
-        //{
-        //    get
-        //    {
-        //        return $"Data Source=CHA-SQLSERVER; Initial Catalog=Snebur;User Id =zyonadminuser; Password=tepeguei$%3812#;Connection Timeout=180";
-        //    }
-        //}
+
 
         public Conexao(string connectionString)
         {
@@ -35,7 +34,9 @@ namespace Snebur.Utilidade
                 this.ConnectionString = connectionString;
             }
         }
-        public DataTable RetornarDataTable(string sql, List<PropertyInfo> propriedadesChavePrimaria)
+        public DataTable RetornarDataTable(string sql,
+                                          List<PropertyInfo> propriedadesChavePrimaria,
+                                          SqlParameter[] parametros)
         {
             var dt = new DataTable();
             using (var conexao = new SqlConnection(this.ConnectionString))
@@ -45,6 +46,10 @@ namespace Snebur.Utilidade
                 {
                     using (var cmd = new SqlCommand(sql, conexao))
                     {
+                        foreach (var parametro in parametros)
+                        {
+                            cmd.Parameters.Add(parametro);
+                        }
                         using (var ad = new SqlDataAdapter(cmd))
                         {
                             ad.Fill(dt);
@@ -68,12 +73,17 @@ namespace Snebur.Utilidade
             return dt;
         }
 
-        public List<T> Mapear<T>(string sql)
+        //public List<T> Mapear<T>(string sql, params SqlParameter[] parametros)
+        //{
+        //    return this.Mapear<T>(sql, parametros);
+        //}
+
+        public List<T> Mapear<T>(string sql, params SqlParameter[] parametros)
         {
             var tipo = typeof(T);
             var propriedades = tipo.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(x => x.GetMethod.IsPublic && (x.SetMethod?.IsPublic ?? false));
             var propriedadesChavePrimaria = tipo.GetProperties().Where(x => x.GetCustomAttribute<KeyAttribute>() != null).ToList();
-            var dataTable = this.RetornarDataTable(sql, propriedadesChavePrimaria);
+            var dataTable = this.RetornarDataTable(sql, propriedadesChavePrimaria, parametros);
             var retorno = new List<T>();
 
             foreach (DataRow row in dataTable.Rows)
@@ -142,16 +152,18 @@ namespace Snebur.Utilidade
             }
         }
 
-        public void ExecutarComandos(IEnumerable<string> sqls)
+        public bool ExecutarComandos(IEnumerable<string> sqls, bool isIgnorarErro = false)
         {
-            this.ExecutarComandos(sqls, null);
+            return this.ExecutarComandos(sqls, null, isIgnorarErro);
         }
         /// <summary>
         /// Executa o varios scripts 'sql' transacionado
         /// </summary>
         /// <param name="sqls"></param>
         /// <param name="acao"> A acao será invokada em cadas script </param>
-        public void ExecutarComandos(IEnumerable<string> sqls, Action<SqlCommand> acao)
+        public bool ExecutarComandos(IEnumerable<string> sqls,
+                                     Action<SqlCommand> acao,
+                                     bool isIgnorarErro = false)
         {
             using (var conexao = new SqlConnection(this.ConnectionString))
             {
@@ -170,9 +182,21 @@ namespace Snebur.Utilidade
                             }
                         }
                         trans.Commit();
+                        return true;
                     }
                     catch (Exception)
                     {
+
+                        if (isIgnorarErro)
+                        {
+                            try
+                            {
+                                trans.Rollback();
+                            }
+                            catch { }
+                            return false;
+                        }
+
                         trans.Rollback();
                         throw;
                     }
@@ -181,9 +205,9 @@ namespace Snebur.Utilidade
         }
         private SqlDbType RetornarSqlDbType(Type tipo)
         {
-            if (Snebur.Utilidade.ReflexaoUtil.IsTipoNullable(tipo))
+            if (ReflexaoUtil.IsTipoNullable(tipo))
             {
-                tipo = Snebur.Utilidade.ReflexaoUtil.RetornarTipoSemNullable(tipo);
+                tipo = ReflexaoUtil.RetornarTipoSemNullable(tipo);
             }
             switch (tipo.Name)
             {

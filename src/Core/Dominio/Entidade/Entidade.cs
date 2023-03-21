@@ -211,8 +211,8 @@ namespace Snebur.Dominio
         }
 
         internal protected override void NotificarValorPropriedadeAlteradaTipoCompleto(BaseTipoComplexo antigoValor,
-                                                 BaseTipoComplexo novoValor,
-                                                 [CallerMemberName] string nomePropriedade = "")
+                                                                                       BaseTipoComplexo novoValor,
+                                                                                       [CallerMemberName] string nomePropriedade = "")
         {
             if (antigoValor != null)
             {
@@ -232,6 +232,32 @@ namespace Snebur.Dominio
             }
             this.NotificarPropriedadeAlterada(nomePropriedade);
         }
+
+        internal protected virtual void NotificarValorPropriedadeAlteradaChaveEstrangeiraAlterada<T>(T antivoValor, T novoValor, [CallerMemberName] string nomePropriedade = "") 
+        {
+            this.NotificarValorPropriedadeAlterada(antivoValor, novoValor, nomePropriedade);
+
+            if (this.__IsControladorPropriedadesAlteradaAtivo)
+            {
+                if (!Util.SaoIgual(antivoValor, novoValor))
+                {
+                    var propriedadeRelacao = this.__TipoEntidade.
+                        GetProperties().
+                        Where(x => x.GetCustomAttribute<ChaveEstrangeiraAttribute>()?.NomePropriedade == nomePropriedade).
+                        FirstOrDefault();
+
+                    var entidade = propriedadeRelacao.GetValue(this);
+                    if (entidade is Entidade entidadeTipada)
+                    {
+                        if (!entidadeTipada.Id.Equals(novoValor))
+                        {
+                            propriedadeRelacao.SetValue(this, null);
+                        }
+                    }
+                }
+            }
+        }
+
         //private void TipoComplexo_PropertyChanged(object sender, PropertyChangedEventArgs e)
         //{
         //    if (this.RastrearPropriedadesAlterada)
@@ -265,12 +291,12 @@ namespace Snebur.Dominio
             return ValidarEntidades.Validar(contextoDados, this);
         }
 
-        public TEntidade CloneSomenteId<TEntidade>( Expression<Func<TEntidade, object>>[] expressoesPropriedade) where TEntidade : Entidade, IEntidade
+        public TEntidade CloneSomenteId<TEntidade>(Expression<Func<TEntidade, object>>[] expressoesPropriedade) where TEntidade : Entidade, IEntidade
         {
             var entidadeClonada = (TEntidade)Activator.CreateInstance(this.__TipoEntidade);
             entidadeClonada.__IsClonado = true;
 
-            if(expressoesPropriedade!= null)
+            if (expressoesPropriedade != null)
             {
                 foreach (var expressaPropriedade in expressoesPropriedade)
                 {
@@ -286,8 +312,8 @@ namespace Snebur.Dominio
 
             return entidadeClonada;
         }
-        
-        
+
+
         public TEntidade CloneSomenteId<TEntidade>(bool incluirTiposPrimariosETipoCompleto = true) where TEntidade : Entidade, IEntidade
         {
             var entidadeClonada = (TEntidade)Activator.CreateInstance(this.__TipoEntidade);
@@ -303,13 +329,13 @@ namespace Snebur.Dominio
 
                 foreach (var propriedade in propriedades)
                 {
-                    if(propriedade.DeclaringType != typeof(Entidade))
+                    if (propriedade.DeclaringType != typeof(Entidade))
                     {
                         propriedade.TrySetValue(entidadeClonada, propriedade.GetValue(this), true);
                     }
                 }
             }
-             
+
 
             entidadeClonada.Id = this.Id;
             entidadeClonada.__NomeTipoEntidade = this.__NomeTipoEntidade;

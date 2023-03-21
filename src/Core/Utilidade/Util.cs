@@ -1,4 +1,5 @@
-﻿using Snebur.Dominio;
+﻿using Newtonsoft.Json.Linq;
+using Snebur.Dominio;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -52,6 +53,11 @@ namespace Snebur.Utilidade
             return String.Join(", ", expressoes.Select(x => ReflexaoUtil.RetornarCaminhoPropriedade<T>(x)));
         }
 
+        public static bool SaoIgual<T>(T valor1, T valor2)
+        {
+            return EqualityComparer<T>.Default.Equals(valor1, valor2);
+        }
+
         public static bool SaoIgual(object objeto1, object objeto2)
         {
             if (objeto1 != null && objeto2 != null)
@@ -71,7 +77,7 @@ namespace Snebur.Utilidade
             {
                 return valor;
             }
-            return default(T);
+            return default;
         }
 
         public static T[] RetornarTodosObjetoTipo<T>(object objeto)

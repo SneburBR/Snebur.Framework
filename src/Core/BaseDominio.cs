@@ -237,7 +237,7 @@ namespace Snebur.Dominio
         }
 
 
-        internal protected virtual void NotificarValorPropriedadeAlterada(object antigoValor, object novoValor, [CallerMemberName] string nomePropriedade = "", string nomePropriedadeTipoComplexo = null)
+        internal protected virtual void NotificarValorPropriedadeAlterada<T>(T antigoValor, T novoValor, [CallerMemberName] string nomePropriedade = "", string nomePropriedadeTipoComplexo = null)
         {
             if (this.IsSerializando)
             {
@@ -246,9 +246,10 @@ namespace Snebur.Dominio
 
             if (this.__IsControladorPropriedadesAlteradaAtivo)
             {
-                if (this.__PropriedadesAlteradas.TryGetValue(nomePropriedade, out PropriedadeAlterada propriedadeAlterada))
+                if (this.__PropriedadesAlteradas.TryGetValue(nomePropriedade, 
+                                                            out PropriedadeAlterada propriedadeAlterada))
                 {
-                    if (Util.SaoIgual(propriedadeAlterada.AntigoValor, novoValor) && !this.__IsClonado)
+                    if (Util.SaoIgual((T)propriedadeAlterada.AntigoValor, novoValor) && !this.__IsClonado)
                     {
                         this.__PropriedadesAlteradas.Remove(nomePropriedade);
                     }

@@ -215,6 +215,32 @@ namespace Snebur.Utilidade
             }
             return caminhoArquivoSuportado;
         }
+
+        public static FileInfo RetornarCaminhoArquivoRecursivo(FileInfo arquivo)
+        {
+            try
+            {
+                while (!arquivo.Exists)
+                {
+                    arquivo = new FileInfo(Path.Combine(arquivo.Directory.Parent.FullName, arquivo.Name));
+                    if (arquivo.Directory.Parent == null)
+                    {
+                        return null;
+                    }
+                }
+                if(arquivo.Exists)
+                {
+                    return arquivo;
+                }
+                
+            }
+            catch
+            {
+
+            }
+            return null;
+
+        }
     }
 
     public enum EnumTipoCaminho

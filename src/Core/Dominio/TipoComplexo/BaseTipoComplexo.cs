@@ -1,4 +1,5 @@
 ﻿using Snebur.Dominio.Atributos;
+using Snebur.Utilidade;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -55,15 +56,16 @@ namespace Snebur.Dominio
                                         x.GetCustomAttribute<NaoMapearAttribute>() == null).ToList();
         }
 
-        internal protected override void NotificarValorPropriedadeAlterada(object antigoValor, object novoValor,
+        internal protected override void NotificarValorPropriedadeAlterada<T>(T antigoValor, T novoValor,
                                                                            [CallerMemberName] string nomePropriedade = "",
                                                                            string nomePropriedadeTipoComplexo = null)
         {
-            if (this.IsCongelado && antigoValor != novoValor)
+            if (this.IsCongelado && !Util.SaoIgual(antigoValor, novoValor))
             {
                 throw new Erro("Não é possível alterar valores das propriedades quando um objeto está congelado");
             }
-            if (this.__Entidade != null && this.__Entidade.__IsControladorPropriedadesAlteradaAtivo)
+            if (this.__Entidade != null &&
+                this.__Entidade.__IsControladorPropriedadesAlteradaAtivo)
             {
                 var caminhoPropriedade = $"{this.__NomePropriedadeEntidade}_{nomePropriedade}";
                 this.__Entidade.NotificarValorPropriedadeAlterada(antigoValor,
@@ -101,9 +103,9 @@ namespace Snebur.Dominio
         {
             return (this as ICloneable).Clone() as BaseTipoComplexo;
         }
-        public void Congelar()
-        {
-            this.IsCongelado = true;
-        }
+        //public void Congelar()
+        //{
+        //    this.IsCongelado = true;
+        //}
     }
 }

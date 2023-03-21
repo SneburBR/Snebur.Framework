@@ -80,9 +80,8 @@ namespace Snebur.Utilidade
             if (larguraUniforme != largura ||
                alturaUniforme != altura)
             {
-                throw new Erro($"A dimensao {larguraOrigem} x {alturaOrigem} não é porporcional a {largura} x {altura} ");
+                throw new Erro($"A dimensão {larguraOrigem} x {alturaOrigem} não é proporcional a {largura} x {altura} ");
             }
-
         }
 
         public static Dimensao RetornarDimencaoUniformeDentro(Dimensao dimensao, Dimensao dimensaoRecipiente)

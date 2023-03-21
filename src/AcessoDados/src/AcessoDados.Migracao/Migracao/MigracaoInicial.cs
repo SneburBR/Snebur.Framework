@@ -1,4 +1,5 @@
 ﻿using global::Snebur.Dominio;
+using Snebur.BancoDados;
 using Snebur.Dominio.Atributos;
 using Snebur.Utilidade;
 using System.Collections.Generic;
