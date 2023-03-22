@@ -26,9 +26,9 @@ namespace Snebur.Windows
             this.JanelaPrincipal.Desocupar();
         }
 
-        public virtual Task DesocuparAwait()
+        public virtual Task DesocuparAsync()
         {
-            return this.JanelaPrincipal.DesocuparAwait();
+            return this.JanelaPrincipal.DesocuparAsync();
         }
 
         public void NotificarPropriedadeAlterada<T>(T valor, [CallerMemberName] string nomePropriedade = "")

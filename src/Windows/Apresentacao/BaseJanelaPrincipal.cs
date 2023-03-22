@@ -74,12 +74,11 @@ namespace Snebur.Windows
             this.Desocupar();
         }
 
-        public override Task DesocuparAwait()
+        public override async Task DesocuparAsync()
         {
-            return Task.Factory.StartNew(() =>
-             {
-                 this.Dispatcher.Invoke(this.Desocupar);
-             });
+            await this.Dispatcher.SwitchToMainThreadAsync();
+            this.Desocupar();
+            
         }
 
         public override void Desocupar()

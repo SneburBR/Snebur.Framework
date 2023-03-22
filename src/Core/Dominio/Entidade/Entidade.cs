@@ -233,7 +233,16 @@ namespace Snebur.Dominio
             this.NotificarPropriedadeAlterada(nomePropriedade);
         }
 
-        internal protected virtual void NotificarValorPropriedadeAlteradaChaveEstrangeiraAlterada<T>(T antivoValor, T novoValor, [CallerMemberName] string nomePropriedade = "") 
+        internal protected virtual void NotificarValorPropriedadeAlteradaChaveEstrangeiraAlterada<T>
+                 (T antivoValor, T novoValor)
+        {
+            
+        }
+        internal protected virtual void NotificarValorPropriedadeAlteradaChaveEstrangeiraAlterada<T>
+                 (T antivoValor, T novoValor, 
+                  string  nomePropriedadeRelacao,
+                  Entidade entidadeRelacao,
+                  [CallerMemberName] string nomePropriedade = "") 
         {
             this.NotificarValorPropriedadeAlterada(antivoValor, novoValor, nomePropriedade);
 
@@ -241,19 +250,28 @@ namespace Snebur.Dominio
             {
                 if (!Util.SaoIgual(antivoValor, novoValor))
                 {
-                    var propriedadeRelacao = this.__TipoEntidade.
-                        GetProperties().
-                        Where(x => x.GetCustomAttribute<ChaveEstrangeiraAttribute>()?.NomePropriedade == nomePropriedade).
-                        FirstOrDefault();
-
-                    var entidade = propriedadeRelacao.GetValue(this);
-                    if (entidade is Entidade entidadeTipada)
+                    if(entidadeRelacao!= null)
                     {
-                        if (!entidadeTipada.Id.Equals(novoValor))
+                        if (!entidadeRelacao.Id.Equals(novoValor))
                         {
+                            var propriedadeRelacao = this.__TipoEntidade.GetProperty(nomePropriedadeRelacao);
                             propriedadeRelacao.SetValue(this, null);
                         }
                     }
+                   
+                    //var propriedadeRelacao = this.__TipoEntidade.
+                    //    GetProperties().
+                    //    Where(x => x.GetCustomAttribute<ChaveEstrangeiraAttribute>()?.NomePropriedade == nomePropriedade).
+                    //    FirstOrDefault();
+
+                    //var entidade = propriedadeRelacao.GetValue(this);
+                    //if (entidade is Entidade entidadeTipada)
+                    //{
+                    //    if (!entidadeTipada.Id.Equals(novoValor))
+                    //    {
+                    //        propriedadeRelacao.SetValue(this, null);
+                    //    }
+                    //}
                 }
             }
         }

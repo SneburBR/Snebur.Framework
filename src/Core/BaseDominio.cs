@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿ using Newtonsoft.Json;
 using Snebur.Dominio.Atributos;
 using Snebur.Serializacao;
 using Snebur.Utilidade;
@@ -17,6 +17,8 @@ namespace Snebur.Dominio
     {
         //private Guid? __identificadorReferenciaInterno;
         private bool _isSerializando;
+
+        //flag exclusiva do serializador
         private bool __isControleProprieadesDestativado;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -121,10 +123,10 @@ namespace Snebur.Dominio
         [XmlIgnore]
         [IgnorarPropriedadeTS]
         [IgnorarPropriedadeTSReflexao]
-        internal bool IsSerializando
+        internal protected bool IsSerializando
         {
             get => this._isSerializando;
-            set
+            internal set
             {
                 if (value)
                 {

@@ -451,7 +451,7 @@ namespace Snebur.Utilidade
                                                    string texto,
                                                    Encoding encoding = null)
         {
-            return Task.Factory.StartNew(() => SalvarArquivoTexto(caminhoArquivo, texto, encoding));
+            return Task.Run(() => SalvarArquivoTexto(caminhoArquivo, texto, encoding));
         }
 
         public static void SalvarArquivoTexto(string caminhoArquivo, string texto)

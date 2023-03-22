@@ -30,7 +30,7 @@ namespace Snebur.Windows
         public static Task<MemoryStream> RetornarStreamImagemAwait(this IImagem imagem,
                                                              EnumTamanhoImagem tamanhoImagem)
         {
-            return Task.Factory.StartNew(() =>
+            return Task.Run(() =>
             {
                 return RetornarStreamImagem(imagem, tamanhoImagem);
             });

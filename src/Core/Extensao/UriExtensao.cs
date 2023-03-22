@@ -115,7 +115,7 @@ namespace System
             var uriHttps = uri.UriSchemeHttps();
             var promise = new TaskCompletionSource<bool>();
 
-            Task.Factory.StartNew(() =>
+            Task.Run(() =>
             {
                 try
                 {

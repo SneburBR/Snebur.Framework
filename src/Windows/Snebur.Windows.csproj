@@ -102,6 +102,7 @@
     <Compile Include="Controles\Botao.xaml.cs">
       <DependentUpon>Botao.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Thread\SwitchThread.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AcessoDados\src\AcessoDados.Cliente\Snebur.AcessoDados.Cliente.csproj">
