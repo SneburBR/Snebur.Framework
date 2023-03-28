@@ -103,9 +103,9 @@ namespace Snebur.Dominio
         {
             return (this as ICloneable).Clone() as BaseTipoComplexo;
         }
-        //public void Congelar()
-        //{
-        //    this.IsCongelado = true;
-        //}
+        public void Congelar()
+        {
+            this.IsCongelado = true;
+        }
     }
 }

@@ -144,6 +144,7 @@ namespace Snebur.Dominio
 
         #region Atribuir valor na propriedade
 
+        #region Retornar Get
         internal protected virtual long RetornarValorPropriedadeChaveEstrangeira(long valor, Entidade relacao, [CallerMemberName] string nomePropriedade = "")
         {
             if (relacao != null)
@@ -152,7 +153,7 @@ namespace Snebur.Dominio
             }
             return this.RetornarValorPropriedade(valor, nomePropriedade);
         }
-
+         
         internal protected virtual long? RetornarValorPropriedadeChaveEstrangeira(long? valor, Entidade relacao, [CallerMemberName] string nomePropriedade = "")
         {
             if (relacao != null)
@@ -195,20 +196,23 @@ namespace Snebur.Dominio
             return valor;
         }
 
-        internal protected virtual void Set(object antigoValor, object novoValor, [CallerMemberName] string nomePropriedade = "")
+        internal protected virtual long Get(long valor, Entidade relacao, [CallerMemberName] string nomePropriedade = "")
         {
-            base.NotificarValorPropriedadeAlterada(antigoValor, novoValor, nomePropriedade);
+            return this.RetornarValorPropriedadeChaveEstrangeira(valor, relacao, nomePropriedade);
         }
-
-        internal protected virtual long Get(long valor, Entidade entidade, [CallerMemberName] string nomePropriedade = "")
+        internal protected virtual long? Get(long? valor, Entidade relacao, [CallerMemberName] string nomePropriedade = "")
         {
-            return this.RetornarValorPropriedadeChaveEstrangeira(valor, entidade, nomePropriedade);
+            return this.RetornarValorPropriedadeChaveEstrangeira(valor, relacao, nomePropriedade);
         }
-
         internal protected virtual T Get<T>(T valor, [CallerMemberName] string nomePropriedade = "")
         {
             return this.RetornarValorPropriedade<T>(valor, nomePropriedade);
         }
+
+        #endregion
+
+        #region Notificar Set
+
 
         internal protected override void NotificarValorPropriedadeAlteradaTipoCompleto(BaseTipoComplexo antigoValor,
                                                                                        BaseTipoComplexo novoValor,
@@ -236,13 +240,14 @@ namespace Snebur.Dominio
         internal protected virtual void NotificarValorPropriedadeAlteradaChaveEstrangeiraAlterada<T>
                  (T antivoValor, T novoValor)
         {
-            
+
         }
+        
         internal protected virtual void NotificarValorPropriedadeAlteradaChaveEstrangeiraAlterada<T>
-                 (T antivoValor, T novoValor, 
-                  string  nomePropriedadeRelacao,
+                 (T antivoValor, T novoValor,
+                  string nomePropriedadeRelacao,
                   Entidade entidadeRelacao,
-                  [CallerMemberName] string nomePropriedade = "") 
+                  [CallerMemberName] string nomePropriedade = "")
         {
             this.NotificarValorPropriedadeAlterada(antivoValor, novoValor, nomePropriedade);
 
@@ -250,7 +255,7 @@ namespace Snebur.Dominio
             {
                 if (!Util.SaoIgual(antivoValor, novoValor))
                 {
-                    if(entidadeRelacao!= null)
+                    if (entidadeRelacao != null)
                     {
                         if (!entidadeRelacao.Id.Equals(novoValor))
                         {
@@ -258,7 +263,7 @@ namespace Snebur.Dominio
                             propriedadeRelacao.SetValue(this, null);
                         }
                     }
-                   
+
                     //var propriedadeRelacao = this.__TipoEntidade.
                     //    GetProperties().
                     //    Where(x => x.GetCustomAttribute<ChaveEstrangeiraAttribute>()?.NomePropriedade == nomePropriedade).
@@ -276,23 +281,71 @@ namespace Snebur.Dominio
             }
         }
 
-        //private void TipoComplexo_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        //{
-        //    if (this.RastrearPropriedadesAlterada)
-        //    {
-        //        if (!(e is PropriedadeTipoComplexaoAlteradaEventArgs))
-        //        {
-        //            throw new InvalidOperationException($"O argumento e não  é do tipo {nameof(PropriedadeTipoComplexaoAlteradaEventArgs)}");
-        //        }
-        //        var eTipado = (e as PropriedadeTipoComplexaoAlteradaEventArgs);
+        //para server valor null na chave estrangeira de chaveEstrangeira_Id = null
+        internal protected virtual void NotificarValorPropriedadeAlteradaRelacao(object antigoValor, object novoValor, [CallerMemberName] string nomePropriedade = "")
+        {
+            if (this.IsSerializando)
+            {
+                return;
+            }
+            this.NotificarValorPropriedadeAlterada(antigoValor, novoValor, nomePropriedade);
+            if (this.__IsControladorPropriedadesAlteradaAtivo && this is Entidade)
+            {
+                if (!Util.SaoIgual(antigoValor, novoValor))
+                {
+                    var tipoEntidade = this.GetType();
+                    var propriedade = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nomePropriedade);
+                    var propriedadeChaveEstrageira = EntidadeUtil.RetornarPropriedadeChaveEstrangeira(tipoEntidade, propriedade);
 
-        //        var tipoComplexo = (sender as BaseTipoComplexo);
-        //        var caminhoProprieade = $"{eTipado.NomePropriedadeEntidade}.{e.PropertyName}";
+                    if (novoValor is Entidade entidade)
+                    {
+                        var antigoValorChaveEstrangeira = Convert.ToInt64(propriedadeChaveEstrageira.GetValue(this));
+                        var novoValorChaveEstrangeira = entidade.Id;
+                        if (antigoValorChaveEstrangeira != novoValorChaveEstrangeira || novoValorChaveEstrangeira == 0)
+                        {
+                            if (novoValorChaveEstrangeira > 0)
+                            {
+                                propriedadeChaveEstrageira.SetValue(this, novoValorChaveEstrangeira);
+                            }
+                            this.NotificarValorPropriedadeAlteradaChaveEstrangeira(antigoValorChaveEstrangeira, novoValorChaveEstrangeira, propriedadeChaveEstrageira.Name);
+                        }
+                    }
+                }
+            }
+        }
 
-        //        throw new NotImplementedException();
-        //    }
+        private void NotificarValorPropriedadeAlteradaChaveEstrangeira(long antigoValorChaveEstrangeira, long novoValorChaveEstrangeira, string nomePropriedade)
+        {
+            if (this.IsSerializando)
+            {
+                return;
+            }
 
-        //}
+            if (this.__IsControladorPropriedadesAlteradaAtivo)
+            {
+                if (!this.__PropriedadesAlteradas.ContainsKey(nomePropriedade))
+                {
+                    lock ((this.__PropriedadesAlteradas as ICollection).SyncRoot)
+                    {
+                        if (!this.__PropriedadesAlteradas.ContainsKey(nomePropriedade))
+                        {
+                            this.__PropriedadesAlteradas.Add(nomePropriedade, new PropriedadeAlterada(nomePropriedade, antigoValorChaveEstrangeira, novoValorChaveEstrangeira, null));
+                        }
+                    }
+                }
+                this.__PropriedadesAlteradas[nomePropriedade].NovoValor = novoValorChaveEstrangeira;
+            }
+            this.NotificarPropriedadeAlterada(nomePropriedade);
+        }
+
+
+        internal protected virtual void Set(object antigoValor, object novoValor, [CallerMemberName] string nomePropriedade = "")
+        {
+            base.NotificarValorPropriedadeAlterada(antigoValor, novoValor, nomePropriedade);
+        }
+
+        #endregion
+
 
         #endregion
 

@@ -11,7 +11,6 @@ using Snebur.Utilidade;
 using Microsoft.Data.SqlClient;
 using Snebur;
 using Snebur.BancoDados;
-using Snebur.Utilidade;
 #else
 using System.Data.SqlClient;
 #endif

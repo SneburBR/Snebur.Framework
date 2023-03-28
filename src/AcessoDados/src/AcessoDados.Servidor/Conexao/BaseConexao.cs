@@ -87,7 +87,7 @@ namespace Snebur.AcessoDados
                         }
                     }
                 }
-                catch (Exception erroInterno)
+                catch(Exception erroInterno)
                 {
                     throw new ErroConsultaSql(String.Format("Erro ao preencher o dataTable DataAdpater: Sql {0} ", sql), erroInterno);
                 }

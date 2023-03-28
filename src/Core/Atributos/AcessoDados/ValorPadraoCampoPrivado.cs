@@ -62,6 +62,12 @@ namespace Snebur.Dominio.Atributos
             this.ValorPadrao = valorPadrao;
             this.TipoEnum = tipoEnum;
         }
+
+        public ValorPadraoCampoPrivadoAttribute(Type tipoEnum, Enum valorPadrao)
+        {
+            this.ValorPadrao = valorPadrao;
+            this.TipoEnum = tipoEnum;
+        }
         //public ValorPadraoCampoPrivadoAttribute<TEnum>(TEnum valorPadrao) where T:struc
         //{
         //    this.ValorPadrao = valorPadrao;

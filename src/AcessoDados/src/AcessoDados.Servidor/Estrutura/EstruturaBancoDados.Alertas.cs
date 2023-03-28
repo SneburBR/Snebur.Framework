@@ -164,7 +164,7 @@ namespace Snebur.AcessoDados.Estrutura
                         var colecao = (ICollection)propriedade.GetValue(instanciaEntidade);
                         if (colecao == null)
                         {
-                            this.Alertas.Add(String.Format(" A propriedade {0}  ('Colecao')  colecao não foi instancia na declaração em {1} ", propriedade.Name, propriedade.DeclaringType.Name));
+                            this.Alertas.Add(String.Format(" A propriedade {0}  ('Coleção')  colecao não foi instancia na declaração em {1} ", propriedade.Name, propriedade.DeclaringType.Name));
                         }
                     }
                     foreach (var estrutuaTipoComplexo in estruturaEntidade.EstruturasTipoComplexao.Values)

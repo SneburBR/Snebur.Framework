@@ -1,5 +1,6 @@
 ﻿using Snebur.Dominio.Atributos;
 using Snebur.Utilidade;
+using System;
 
 namespace Snebur.Dominio
 {
@@ -66,7 +67,10 @@ namespace Snebur.Dominio
 
         protected internal override BaseTipoComplexo BaseClone()
         {
-            return new Dimensao(this.Largura, this.Altura);
+            return new Dimensao(this.Largura, this.Altura)
+            {
+                DpiVisualizacao = this.DpiVisualizacao
+            };
         }
 
         public Dimensao Escalar(double scalar)
@@ -86,6 +90,14 @@ namespace Snebur.Dominio
         {
             return this.Largura < dimensao.Largura ||
               this.Altura < dimensao.Altura;
+        }
+
+        public Dimensao Inverter()
+        {
+            return new Dimensao(this.Altura, this.Largura)
+            {
+                DpiVisualizacao = this.DpiVisualizacao
+            };
         }
     }
 }

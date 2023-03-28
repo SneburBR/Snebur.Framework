@@ -181,63 +181,7 @@ namespace Snebur.Dominio
                 this.__IsControladorPropriedadesAlteradaAtivo = false;
             }
         }
-        //para server valor null na chave estrangeira de chaveEstrangeira_Id = null
-        internal protected virtual void NotificarValorPropriedadeAlteradaRelacao(object antigoValor, object novoValor, [CallerMemberName] string nomePropriedade = "")
-        {
-            if (this.IsSerializando)
-            {
-                return;
-            }
-            this.NotificarValorPropriedadeAlterada(antigoValor, novoValor, nomePropriedade);
-            if (this.__IsControladorPropriedadesAlteradaAtivo && this is Entidade)
-            {
-                if (!Util.SaoIgual(antigoValor, novoValor))
-                {
-                    var tipoEntidade = this.GetType();
-                    var propriedade = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nomePropriedade);
-                    var propriedadeChaveEstrageira = EntidadeUtil.RetornarPropriedadeChaveEstrangeira(tipoEntidade, propriedade);
-
-                    if (novoValor is Entidade entidade)
-                    {
-                        var antigoValorChaveEstrangeira = Convert.ToInt64(propriedadeChaveEstrageira.GetValue(this));
-                        var novoValorChaveEstrangeira = entidade.Id;
-                        if (antigoValorChaveEstrangeira != novoValorChaveEstrangeira || novoValorChaveEstrangeira == 0)
-                        {
-                            if (novoValorChaveEstrangeira > 0)
-                            {
-                                propriedadeChaveEstrageira.SetValue(this, novoValorChaveEstrangeira);
-                            }
-                            this.NotificarValorPropriedadeAlteradaChaveEstrangeira(antigoValorChaveEstrangeira, novoValorChaveEstrangeira, propriedadeChaveEstrageira.Name);
-                        }
-                    }
-                }
-            }
-        }
-
-        private void NotificarValorPropriedadeAlteradaChaveEstrangeira(long antigoValorChaveEstrangeira, long novoValorChaveEstrangeira, string nomePropriedade)
-        {
-            if (this.IsSerializando)
-            {
-                return;
-            }
-
-            if (this.__IsControladorPropriedadesAlteradaAtivo)
-            {
-                if (!this.__PropriedadesAlteradas.ContainsKey(nomePropriedade))
-                {
-                    lock ((this.__PropriedadesAlteradas as ICollection).SyncRoot)
-                    {
-                        if (!this.__PropriedadesAlteradas.ContainsKey(nomePropriedade))
-                        {
-                            this.__PropriedadesAlteradas.Add(nomePropriedade, new PropriedadeAlterada(nomePropriedade, antigoValorChaveEstrangeira, novoValorChaveEstrangeira, null));
-                        }
-                    }
-                }
-                this.__PropriedadesAlteradas[nomePropriedade].NovoValor = novoValorChaveEstrangeira;
-            }
-            this.NotificarPropriedadeAlterada(nomePropriedade);
-        }
-
+  
 
         internal protected virtual void NotificarValorPropriedadeAlterada<T>(T antigoValor, T novoValor, [CallerMemberName] string nomePropriedade = "", string nomePropriedadeTipoComplexo = null)
         {

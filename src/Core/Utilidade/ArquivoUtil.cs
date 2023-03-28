@@ -378,8 +378,13 @@ namespace Snebur.Utilidade
             return CaminhoIgual(caminhoDiretorio1, caminhoDiretorio2);
         }
 
-        public static bool CaminhoIgual(string caminho1, string caminho2)
+        public static bool CaminhoIgual(string caminho1, 
+                                        string caminho2)
         {
+            if(caminho1 == caminho2)
+            {
+                return true;
+            }
             caminho1 = NormalizarCaminhoArquivo(caminho1);
             caminho2 = NormalizarCaminhoArquivo(caminho2);
             return caminho1.Equals(caminho2, StringComparison.InvariantCultureIgnoreCase);
