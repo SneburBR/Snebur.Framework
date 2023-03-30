@@ -1,5 +1,6 @@
 ﻿using Snebur.Dominio;
 using Snebur.Dominio.Atributos;
+using Snebur.Linq;
 using Snebur.Utilidade;
 using System;
 using System.Collections.Generic;
@@ -10,25 +11,43 @@ namespace Snebur.AcessoDados.Estrutura
 {
     internal partial class EstruturaEntidade
     {
-        internal const int MAXIMO_REGISTRO_POR_CONSULTA = 1000000;
+        internal const int MAXIMO_REGISTRO_POR_CONSULTA = 1000;
+
+        private EstruturaCampo _estruturaCampoIdentificadorProprietario;
+        private EstruturaCampo _estruturaCampoOrdenacao;
+        private EstruturaCampo _estruturaCampoDelatado;
+        private EstruturaCampo _estruturaCampoUsuario;
+
+        private EstruturaRelacaoFilhos[] _todasRelacoesFilhos;
+        private EstruturaRelacaoChaveEstrangeira[] _todasRelacoesChaveEstrangeira;
+        private EstruturaRelacaoPai[] _todasRelacoesPai;
+        private EstruturaRelacaoUmUm[] _todasRelacoesUmUm;
+        private EstruturaRelacaoUmUmReversa[] _todasRelacoesUmUmReversa;
+        private EstruturaRelacaoNn[] _todasRelacoesNn;
+        private EstruturaCampo[] _todasEstruturaCamposValorPadraoInsert;
+        private EstruturaCampo[] _todasEstruturaCamposValorPadraoUpdate;
+
+        private readonly EstruturaCampo EstruturaCampoIdentificadorProprietarioInterno;
+        private readonly EstruturaCampo EstruturaCampoOrdenacaoInterno;
+        private readonly EstruturaCampo EstruturaCampoDeletadoInterno;
+        private readonly EstruturaCampo EstruturaCampoUsuarioInterno;
+        private readonly EstruturaCampo[] EstruturasCamposValorPadraoInsertInterno;
+        private readonly EstruturaCampo[] EstruturasCamposValorPadraoUpdateInterno;
+
+        private EstruturaAlteracaoPropriedade[] EstruturasAlteracaoPropriedadeInterno;
+        private EstruturaAlteracaoPropriedadeGenerica[] EstruturasAlteracaoPropriedadeGenericaInterno;
 
         #region Propriedades
+        internal EstruturaCampo EstruturaCampoChavePrimaria { get; }
+        internal EstruturaCampo EstruturaCampoTipoEntidade { get; set; }
+        internal EstruturaCampo EstruturaCampoNomeTipoEntidade { get; }
         internal string NomeTipoEntidade { get; }
+        public EstruturaBancoDados EstruturaBancoDados { get; }
         internal Type TipoEntidade { get; }
         public BancoDadosSuporta SqlSuporte { get; }
         internal string Schema { get; }
         internal string NomeTabela { get; set; }
         internal string GrupoArquivoIndices { get; }
-
-        internal EstruturaCampo EstruturaCampoChavePrimaria { get; }
-        internal EstruturaCampo EstruturaCampoTipoEntidade { get; set; }
-        internal EstruturaCampo EstruturaCampoNomeTipoEntidade { get; }
-
-        protected EstruturaCampo EstruturaCampoIdentificadorProprietarioProtegido;
-        protected EstruturaCampo EstruturaCampoOrdenacaoProtegido;
-        protected EstruturaCampo EstruturaCampoDeletadoProtegido;
-        protected EstruturaCampo EstruturaCampoUsuarioProtegido;
-
         internal bool IsChavePrimariaAutoIncrimento { get; }
         internal bool IsAbstrata { get; }
         internal bool IsEntidadeRelacaoNn { get; }
@@ -42,57 +61,86 @@ namespace Snebur.AcessoDados.Estrutura
         internal bool IsSomenteLeitura { get; }
         internal bool IsExcluirRegistro { get; }
         public bool IsAutorizarInstanciaNaoEspecializada { get; }
-
         internal EnumInterfaceEntidade[] InterfacesImplementasFlags => EnumUtil.RetornarFlags<EnumInterfaceEntidade>(this.InterfacesImplementasEnum);
-
         internal int MaximoRegistroPorConsulta { get; }
-
-        //internal bool IsUsuario { get; }
-        /// <summary>
-        /// Somente as compos da Classe,
-        /// </summary>
         internal DicionarioEstrutura<EstruturaCampo> EstruturasCampos { get; }
-
         internal DicionarioEstrutura<EstruturaTipoComplexo> EstruturasTipoComplexao { get; }
-
         internal EstruturaEntidade EstruturaEntidadeBase { get; }
-
-        //internal DicionarioEstrutura<EstruturaCampo> TodosCampos { get; set; }
-
-        /// <summary>
-        /// O estruiras estão na ordem da Hirarquia
-        /// </summary>
         internal DicionarioEstrutura<EstruturaEntidade> EstruturasEntidadeBase { get; }
-
-        /// <summary>
-        /// Sem ordem da hirarquiva, utilizar os niveis
-        /// </summary>
         internal DicionarioEstrutura<EstruturaEntidade> EstruturasEntidadeEspecializada { get; }
-
-        /// <summary>
-        /// Key é Nivel = 0, 1, 3
-        /// </summary>
         internal DicionarioEstrutura<NivelEstruturaEntidadeEspecializada> NiveisEstruturasEntidadesEspecializada { get; }
-
         internal DicionarioEstrutura<EstruturaRelacao> EstruturasRelacoes { get; }
-
         internal List<EstruturaCampo> EstruturasCamposComputadoBanco { get; }
         internal List<EstruturaCampo> EstruturasCamposComputadoServico { get; }
-        internal List<EstruturaAlteracaoPropriedade> EstruturasAlteracaoPropriedade { get; private set; }
-        
-        internal List<EstruturaAlteracaoPropriedadeGenerica> EstruturasAlteracaoPropriedadeGenerica { get; private set; }
 
         internal List<string> Alertas = new List<string>();
 
         internal bool IsPossuiEntidadesEspecializacao => this.IsAbstrata || this.EstruturasEntidadeEspecializada.Count > 0;
+
+        #endregion
+
+        #region Propriedades Lazy
+
+        internal EstruturaCampo EstruturaCampoIdentificadorProprietario
+                 => this.RetornarValorRecursivo(ref this._estruturaCampoIdentificadorProprietario,
+                                                        x => x.EstruturaCampoIdentificadorProprietarioInterno);
+
+        internal EstruturaCampo EstruturaCampoOrdenacao
+                 => this.RetornarValorRecursivo(ref this._estruturaCampoOrdenacao,
+                                                        x => x.EstruturaCampoOrdenacaoInterno);
+        internal EstruturaCampo EstruturaCampoDelatado
+                 => this.RetornarValorRecursivo(ref this._estruturaCampoDelatado,
+                                                        x => x.EstruturaCampoDeletadoInterno);
+
+        internal EstruturaCampo EstruturaCampoUsuario
+                 => this.RetornarValorRecursivo(ref this._estruturaCampoUsuario,
+                                                        x => x.EstruturaCampoUsuarioInterno);
+
+        internal EstruturaCampo[] TodasEstruturasCamposValorPadraoInsert
+                 => this.RetornarValoresRecursivo(ref this._todasEstruturaCamposValorPadraoInsert,
+                                          x => x.EstruturasCamposValorPadraoInsertInterno);
+        internal EstruturaCampo[] TodasEstruturasCamposValorPadraoUpdate
+                 => this.RetornarValoresRecursivo(ref this._todasEstruturaCamposValorPadraoUpdate,
+                                                  x => x.EstruturasCamposValorPadraoUpdateInterno);
+
+        private EstruturaAlteracaoPropriedadeGenerica[] _todasEstruturasAlteracaoPropriedadeGenerica;
+        private EstruturaAlteracaoPropriedade[] _todasEstruturasAlteracaoPropriedade;
+        internal EstruturaAlteracaoPropriedadeGenerica[] TodasEstruturasAlteracaoPropriedadeGenerica
+                 => this.RetornarValoresRecursivo(ref this._todasEstruturasAlteracaoPropriedadeGenerica,
+                                                  x => x.EstruturasAlteracaoPropriedadeGenericaInterno);
+
+        internal EstruturaAlteracaoPropriedade[] TodasEstruturasAlteracaoPropriedade
+                 => this.RetornarValoresRecursivo(ref this._todasEstruturasAlteracaoPropriedade,
+                                                  x => x.EstruturasAlteracaoPropriedadeInterno);
+
+        internal EstruturaRelacaoFilhos[] TodasRelacoesFilhos
+                 => this.RetornarTodasEstruturasRelacaoRecursiva(ref this._todasRelacoesFilhos);
+
+        internal EstruturaRelacaoChaveEstrangeira[] TodasRelacoesChaveEstrangeira()
+                 => this.RetornarTodasEstruturasRelacaoRecursiva(ref this._todasRelacoesChaveEstrangeira);
+
+        internal EstruturaRelacaoPai[] TodasRelacoesPai()
+                 => this.RetornarTodasEstruturasRelacaoRecursiva(ref this._todasRelacoesPai);
+
+        internal EstruturaRelacaoUmUm[] TodasRelacoesUmUm()
+                 => this.RetornarTodasEstruturasRelacaoRecursiva(ref this._todasRelacoesUmUm);
+
+        internal EstruturaRelacaoUmUmReversa[] TodasRelacoesUmUmReversa()
+                 => this.RetornarTodasEstruturasRelacaoRecursiva(ref this._todasRelacoesUmUmReversa);
+
+        internal EstruturaRelacaoNn[] TodasRelacoesNn()
+                 => this.RetornarTodasEstruturasRelacaoRecursiva(ref this._todasRelacoesNn);
+
         #endregion
 
         #region Construtor
 
-        internal EstruturaEntidade(Type tipo,
+        internal EstruturaEntidade(EstruturaBancoDados estruturaBancoDados,
+                                    Type tipo,
                                    EstruturaEntidade estruturaEntidadeBase,
                                    BancoDadosSuporta sqlSuporte)
         {
+            this.EstruturaBancoDados = estruturaBancoDados;
             this.TipoEntidade = tipo;
             this.NomeTipoEntidade = tipo.Name;
             this.SqlSuporte = sqlSuporte;
@@ -118,6 +166,10 @@ namespace Snebur.AcessoDados.Estrutura
             this.EstruturaCampoChavePrimaria = this.RetornarEstruturaChavePrimaria();
             this.EstruturaCampoNomeTipoEntidade = this.RetornarEstruturaoNomeTipoEntidade();
             this.EstruturasCampos = this.RetornarEstruturasCampo();
+
+            this.EstruturasCamposValorPadraoInsertInterno = this.RetornarEstruturasCampoValorPadraoInsert();
+            this.EstruturasCamposValorPadraoUpdateInterno = this.RetornarEstruturasCampoValorPadraoUpdate();
+
             this.EstruturasTipoComplexao = this.RetornarEstruturasTipoComplexo();
 
             this.IsEntidadeRelacaoNn = this.RetornarIsEntidadeRelacaoNn();
@@ -148,10 +200,10 @@ namespace Snebur.AcessoDados.Estrutura
 
             this.Alertas.AddRange(this.EstruturasCampos.Values.SelectMany(x => x.Alertas));
 
-            this.EstruturaCampoIdentificadorProprietarioProtegido = this.RetornarEstruturaCampoIdentificadorProprietario();
-            this.EstruturaCampoOrdenacaoProtegido = this.RetornarEstruturaCampoOrdenacao();
-            this.EstruturaCampoDeletadoProtegido = this.RetornarEstruturaCampoDeletado();
-            this.EstruturaCampoUsuarioProtegido = this.RetornarEstruturaEstruturaCampoUsuario();
+            this.EstruturaCampoIdentificadorProprietarioInterno = this.RetornarEstruturaCampoIdentificadorProprietario();
+            this.EstruturaCampoOrdenacaoInterno = this.RetornarEstruturaCampoOrdenacao();
+            this.EstruturaCampoDeletadoInterno = this.RetornarEstruturaCampoDeletado();
+            this.EstruturaCampoUsuarioInterno = this.RetornarEstruturaEstruturaCampoUsuario();
 
             //if (!this.EstruturasCampos.ContainsKey(NOME_PROPRIEDADE_ID))
             //{
@@ -159,135 +211,18 @@ namespace Snebur.AcessoDados.Estrutura
             //}
         }
 
-        private EnumInterfaceEntidade RetornarInterfacesEntidade()
-        {
-            EnumInterfaceEntidade interfaces = 0;
-            foreach (var tipoInterface in EntidadeUtil.TiposInterfaceEntidade)
-            {
-                if (this.TipoEntidade.GetInterface(tipoInterface.Name) != null)
-                {
-                    var enumInterface = EnumUtil.RetornarValorEnum<EnumInterfaceEntidade>(tipoInterface.Name);
-                    interfaces = interfaces | enumInterface;
-                }
-            }
-            return interfaces;
-        }
-        #endregion
 
-        #region propriedades implementadas
-        internal EstruturaCampo EstruturaCampoIdentificadorProprietario
-        {
-            get
-            {
-                var estruturaEntidadeatual = this;
-
-                while (estruturaEntidadeatual != null)
-                {
-                    var estruturaCampo = estruturaEntidadeatual.EstruturaCampoIdentificadorProprietarioProtegido;
-                    if (estruturaCampo != null)
-                    {
-                        return estruturaCampo;
-                    }
-                    estruturaEntidadeatual = estruturaEntidadeatual.EstruturaEntidadeBase;
-                }
-                return null;
-            }
-        }
-        internal EstruturaCampo EstruturaCampoOrdenacao
-        {
-            get
-            {
-                var estruturaEntidadeatual = this;
-                while (estruturaEntidadeatual != null)
-                {
-                    var estruturaCampo = estruturaEntidadeatual.EstruturaCampoOrdenacaoProtegido;
-                    if (estruturaCampo != null)
-                    {
-                        return estruturaCampo;
-                    }
-                    estruturaEntidadeatual = estruturaEntidadeatual.EstruturaEntidadeBase;
-                }
-                return null;
-            }
-        }
-        internal EstruturaCampo EstruturaCampoDelatado
-        {
-            get
-            {
-                var estruturaEntidadeatual = this;
-                while (estruturaEntidadeatual != null)
-                {
-                    var estruturaCampo = estruturaEntidadeatual.EstruturaCampoDeletadoProtegido;
-                    if (estruturaCampo != null)
-                    {
-                        return estruturaCampo;
-                    }
-                    estruturaEntidadeatual = estruturaEntidadeatual.EstruturaEntidadeBase;
-                }
-                return null;
-            }
-        }
-        internal EstruturaCampo EstruturaCampoUsuario
-        {
-            get
-            {
-                var estruturaEntidadeatual = this;
-                while (estruturaEntidadeatual != null)
-                {
-                    var estruturaCampo = estruturaEntidadeatual.EstruturaCampoUsuarioProtegido;
-                    if (estruturaCampo != null)
-                    {
-                        return estruturaCampo;
-                    }
-                    estruturaEntidadeatual = estruturaEntidadeatual.EstruturaEntidadeBase;
-                }
-                return null;
-            }
-        }
-
-        internal List<EstruturaAlteracaoPropriedade> TodasEstruturasAlteracaoPropriedade
-        {
-            get
-            {
-                var estruturas = new List<EstruturaAlteracaoPropriedade>();
-                var estruturaAtual = this;
-                while (estruturaAtual != null)
-                {
-                    estruturas.AddRange(estruturaAtual.EstruturasAlteracaoPropriedade);
-                    estruturaAtual = estruturaAtual.EstruturaEntidadeBase;
-                }
-                return estruturas;
-            }
-        }
-
-        internal List<EstruturaAlteracaoPropriedadeGenerica> TodasEstruturasAlteracaoPropriedadeGenerica
-        {
-            get
-            {
-                var estruturas = new List<EstruturaAlteracaoPropriedadeGenerica>();
-                var estruturaAtual = this;
-                while (estruturaAtual != null)
-                {
-                    estruturas.AddRange(estruturaAtual.EstruturasAlteracaoPropriedadeGenerica);
-                    estruturaAtual = estruturaAtual.EstruturaEntidadeBase;
-                }
-                return estruturas;
-            }
-        }
 
         #endregion
 
         #region Métodos Internos
 
-        /// <summary>
-        /// Associa a EstruturaRelacaoPai na estruturaRelacaoFilhos
-        /// </summary>
         internal void AssociarEstruturaRalacaos()
         {
             var estruturasRelacaoUmUmReversa = this.EstruturasRelacoes.Values.OfType<EstruturaRelacaoUmUmReversa>().ToList();
             foreach (var estruturaRelacaoUmUmReversa in estruturasRelacaoUmUmReversa)
             {
-                var estruturaRelacaoUmUm = estruturaRelacaoUmUmReversa.EstruturaEntidadeUmUmReversa.RetornarTodasRelacoesUmUm().
+                var estruturaRelacaoUmUm = estruturaRelacaoUmUmReversa.EstruturaEntidadeUmUmReversa.TodasRelacoesUmUm().
                                                                        Where(x => x.EstruturaEntidadeChaveEstrangeiraDeclarada == estruturaRelacaoUmUmReversa.EstruturaEntidade).SingleOrDefault();
 
                 estruturaRelacaoUmUmReversa.EstruturaRelacaoUmUm = estruturaRelacaoUmUm;
@@ -308,33 +243,6 @@ namespace Snebur.AcessoDados.Estrutura
                 estruturaRelacaoNn.EstruturaRelacaoPaiEntidadeFilho = relacoesPai.Where(x => x.EstruturaEntidadeChaveEstrangeiraDeclarada == estruturaRelacaoNn.EstruturaEntidadeFilho).Single();
             }
         }
-
-        private EstruturaRelacaoPai RetornarEstruturaRelacaoPai(EstruturaRelacaoFilhos estruturaRelacaoFilhos)
-        {
-            var todasRelacoesPai = estruturaRelacaoFilhos.EstruturaEntidadeFilho.RetornarTodasRelacoesPai();
-            var estruturaCampoChaveEstragentira = estruturaRelacaoFilhos.EstruturaCampoChaveEstrangeira;
-            if (estruturaCampoChaveEstragentira == null)
-            {
-                throw new Erro($"A estrutura do campo chave estrangeira não foi definida na relação filhos {estruturaRelacaoFilhos.Propriedade.Name} na entidade {estruturaRelacaoFilhos.EstruturaEntidade.TipoEntidade.Name}");
-            }
-
-            var estruturasRelacaoPai = todasRelacoesPai.Where(x => x.EstruturaEntidadeChaveEstrangeiraDeclarada == estruturaRelacaoFilhos.EstruturaEntidade &&
-                                                                   x.EstruturaCampoChaveEstrangeira == estruturaRelacaoFilhos.EstruturaCampoChaveEstrangeira).ToList();
-            if (estruturasRelacaoPai.Count == 0)
-            {
-                throw new Exception($"Não foi encontrado a propriedade de relação pai do tipo {estruturaRelacaoFilhos.EstruturaEntidade.TipoEntidade.Name} na entidade {estruturaRelacaoFilhos.EstruturaEntidadeFilho.TipoEntidade.Name}");
-            }
-
-            if (estruturasRelacaoPai.Count > 1)
-            {
-                throw new Exception($"Existe mais uma propriedade de relação pai do tipo {estruturaRelacaoFilhos.EstruturaEntidade.TipoEntidade.Name} na entidade {estruturaRelacaoFilhos.EstruturaEntidadeFilho.TipoEntidade.Name}." +
-                                    $"Defina a propriedade na relaçao no atributop RelacaoFilhos. ");
-            }
-            return estruturasRelacaoPai.Single();
-
-
-        }
-
         internal void PreencherRelacoes(DicionarioEstrutura<EstruturaEntidade> estruturasEntidade)
         {
             var propriedades = AjudanteEstruturaBancoDados.RetornarPropriedadesRelacao(this.TipoEntidade);
@@ -367,93 +275,173 @@ namespace Snebur.AcessoDados.Estrutura
                 }
                 else
                 {
-                    throw new Erro(String.Format("O atributo relacao do tipo {0} não é suportado", proriedade.PropertyType.Name));
+                    throw new Erro(String.Format("O atributo relação do tipo {0} não é suportado", proriedade.PropertyType.Name));
                 }
             }
         }
 
         internal void PreencherEstruturasAlteracaoPropriedade()
         {
-            this.EstruturasAlteracaoPropriedade = this.RetornarEstruturasAlteracaoPropriedade();
-            this.EstruturasAlteracaoPropriedadeGenerica = this.RetornarEstruturasAlteracaoPropriedadeGenerica();
+            this.EstruturasAlteracaoPropriedadeInterno = this.RetornarEstruturasAlteracaoPropriedade();
+            this.EstruturasAlteracaoPropriedadeGenericaInterno = this.RetornarEstruturasAlteracaoPropriedadeGenerica();
         }
 
         internal EstruturaCampo RetornarEstruturaCampo(string chave)
         {
-            EstruturaCampo estruturaCampo;
+            return this.RetornarEstruturaCampoInterno(chave) ??
+                      throw new Erro($"A estrutura campo {chave} não foi encontrada na {this.NomeTipoEntidade}");
+        }
 
-            if (this.EstruturasCampos.TryGetValue(chave, out estruturaCampo))
+        internal EstruturaAlteracaoPropriedade[] RetornarEstruturasAlteracaoPropriedadeInterno()
+        {
+            return this.EstruturasAlteracaoPropriedadeInterno;
+        }
+
+        #endregion
+
+        #region Métodos recursivos
+
+        private T RetornarValorRecursivo<T>(ref T _valor,
+                                         Func<EstruturaEntidade, T> funcRetornarEstruturaCampo) where T : class
+        {
+
+
+            return LazyUtil.RetornarValorLazy(ref _valor,
+                () =>
+                {
+                    if (!this.EstruturaBancoDados.IsEstruturasEntidadeMontada)
+                    {
+                        throw new Exception("A  estrutura do banco de dados não foi montada");
+                    }
+
+                    var estruturaEntidadeatual = this;
+
+                    while (estruturaEntidadeatual != null)
+                    {
+                        var estruturaCampo = funcRetornarEstruturaCampo(estruturaEntidadeatual);
+                        if (estruturaCampo != null)
+                        {
+                            return estruturaCampo;
+                        }
+                        estruturaEntidadeatual = estruturaEntidadeatual.EstruturaEntidadeBase;
+                    }
+                    return default;
+                });
+
+        }
+
+        private T[] RetornarValoresRecursivo<T>(ref T[] _valores,
+                                          Func<EstruturaEntidade, T[]> funcRetornarEstruturaCampo) where T : class
+        {
+            return LazyUtil.RetornarValorLazy(ref _valores,
+                () =>
+                {
+                    if (!this.EstruturaBancoDados.IsEstruturasEntidadeMontada)
+                    {
+                        throw new Exception("A  estrutura do banco de dados não foi montada");
+                    }
+
+                    var valores = new List<T>();
+                    var estruturaEntidadeatual = this;
+                    while (estruturaEntidadeatual != null)
+                    {
+                        var valoresAtual = funcRetornarEstruturaCampo(estruturaEntidadeatual);
+                        valores.AddRangeNotNull(valoresAtual);
+                        estruturaEntidadeatual = estruturaEntidadeatual.EstruturaEntidadeBase;
+                    }
+                    return valores.ToArray();
+                });
+        }
+
+
+        private TEstruturaRelacao[] RetornarTodasEstruturasRelacaoRecursiva<TEstruturaRelacao>(ref TEstruturaRelacao[] valor)
+        {
+            return LazyUtil.RetornarValorLazyComBloqueio(ref valor, () =>
+              {
+                  if (!this.EstruturaBancoDados.IsEstruturasEntidadeMontada)
+                  {
+                      throw new Exception("A  estrutura do banco de dados não foi montada");
+                  }
+
+                  var estruturasRelacao = new List<TEstruturaRelacao>();
+                  var estruturaAtual = this;
+                  while (estruturaAtual != null)
+                  {
+                      estruturasRelacao.AddRange(estruturaAtual.EstruturasRelacoes.Values.OfType<TEstruturaRelacao>());
+                      estruturaAtual = estruturaAtual.EstruturaEntidadeBase;
+                  }
+                  return estruturasRelacao.ToArray();
+              });
+
+        }
+
+        #endregion
+
+        #region Métodos privados
+
+        private EnumInterfaceEntidade RetornarInterfacesEntidade()
+        {
+            EnumInterfaceEntidade interfaces = 0;
+            foreach (var tipoInterface in EntidadeUtil.TiposInterfaceEntidade)
+            {
+                if (this.TipoEntidade.GetInterface(tipoInterface.Name) != null)
+                {
+                    var enumInterface = EnumUtil.RetornarValorEnum<EnumInterfaceEntidade>(tipoInterface.Name);
+                    interfaces = interfaces | enumInterface;
+                }
+            }
+            return interfaces;
+        }
+
+        private EstruturaRelacaoPai RetornarEstruturaRelacaoPai(EstruturaRelacaoFilhos estruturaRelacaoFilhos)
+        {
+            var todasRelacoesPai = estruturaRelacaoFilhos.EstruturaEntidadeFilho.TodasRelacoesPai();
+            var estruturaCampoChaveEstragentira = estruturaRelacaoFilhos.EstruturaCampoChaveEstrangeira;
+            if (estruturaCampoChaveEstragentira == null)
+            {
+                throw new Erro($"A estrutura do campo chave estrangeira não foi definida na relação filhos {estruturaRelacaoFilhos.Propriedade.Name} na entidade {estruturaRelacaoFilhos.EstruturaEntidade.TipoEntidade.Name}");
+            }
+
+            var estruturasRelacaoPai = todasRelacoesPai.Where(x => x.EstruturaEntidadeChaveEstrangeiraDeclarada == estruturaRelacaoFilhos.EstruturaEntidade &&
+                                                                   x.EstruturaCampoChaveEstrangeira == estruturaRelacaoFilhos.EstruturaCampoChaveEstrangeira).ToList();
+            if (estruturasRelacaoPai.Count == 0)
+            {
+                throw new Exception($"Não foi encontrado a propriedade de relação pai do tipo {estruturaRelacaoFilhos.EstruturaEntidade.TipoEntidade.Name} na entidade {estruturaRelacaoFilhos.EstruturaEntidadeFilho.TipoEntidade.Name}");
+            }
+
+            if (estruturasRelacaoPai.Count > 1)
+            {
+                throw new Exception($"Existe mais uma propriedade de relação pai do tipo {estruturaRelacaoFilhos.EstruturaEntidade.TipoEntidade.Name} na entidade {estruturaRelacaoFilhos.EstruturaEntidadeFilho.TipoEntidade.Name}." +
+                                    $"Defina a propriedade na relação no atributo RelacaoFilhos. ");
+            }
+            return estruturasRelacaoPai.Single();
+        }
+
+        private EstruturaCampo RetornarEstruturaCampoInterno(string chave)
+        {
+            if (this.EstruturasCampos.TryGetValue(chave, out var estruturaCampo))
             {
                 return estruturaCampo;
             }
+
             if (this.EstruturaCampoNomeTipoEntidade.Propriedade.Name == chave)
             {
                 return this.EstruturaCampoNomeTipoEntidade;
             }
+
             if (DebugUtil.IsAttached)
             {
                 if (this.EstruturasCampos.Any(x => x.Key.Equals(chave, StringComparison.InvariantCultureIgnoreCase)))
                 {
                     var parChave = this.EstruturasCampos.Where(x => x.Key.Equals(chave, StringComparison.InvariantCultureIgnoreCase)).Single();
                     estruturaCampo = parChave.Value;
-                    var alerta = String.Format(" A chave do estrutura campo {0} deveria ser {1} - em {2}", chave, parChave.Key, this.TipoEntidade.Name);
+                    var alerta = $" A chave do estrutura campo '{chave}' está incorreta, CORRETO  '{parChave.Key}'";
                     this.Alertas.Add(alerta);
                     return estruturaCampo;
                 }
             }
-            if (this.EstruturaEntidadeBase == null)
-            {
-                throw new Erro(String.Format("A relação {0} não foi encontrado em {1} - {2}", chave, this.TipoEntidade.Name, this.NomeTabela));
-            }
-            return this.EstruturaEntidadeBase.RetornarEstruturaCampo(chave);
-        }
 
-        internal List<EstruturaRelacaoFilhos> RetornarTodasRelacoesFilhos()
-        {
-            return this.RetornarTodasEstruturas<EstruturaRelacaoFilhos>();
-        }
-
-        internal List<EstruturaRelacaoChaveEstrangeira> RetornarTodasRelacoesChaveEstrangeira()
-        {
-            return this.RetornarTodasEstruturas<EstruturaRelacaoChaveEstrangeira>();
-        }
-
-        internal List<EstruturaRelacaoPai> RetornarTodasRelacoesPai()
-        {
-            return this.RetornarTodasEstruturas<EstruturaRelacaoPai>();
-        }
-
-        internal List<EstruturaRelacaoUmUm> RetornarTodasRelacoesUmUm()
-        {
-            return this.RetornarTodasEstruturas<EstruturaRelacaoUmUm>();
-        }
-
-        internal List<EstruturaRelacaoUmUmReversa> RetornarTodasRelacoesUmUmReversa()
-        {
-            return this.RetornarTodasEstruturas<EstruturaRelacaoUmUmReversa>();
-        }
-
-        internal List<EstruturaRelacaoNn> RetornarTodasRelacoesNn()
-        {
-            return this.RetornarTodasEstruturas<EstruturaRelacaoNn>();
-        }
-
-
-
-        #endregion
-
-        #region Metodos privados
-
-        private List<TEstruturaRelacao> RetornarTodasEstruturas<TEstruturaRelacao>()
-        {
-            var estruturasRelacao = new List<TEstruturaRelacao>();
-            var estruturaAtual = this;
-            while (estruturaAtual != null)
-            {
-                estruturasRelacao.AddRange(estruturaAtual.EstruturasRelacoes.Values.OfType<TEstruturaRelacao>());
-                estruturaAtual = estruturaAtual.EstruturaEntidadeBase;
-            }
-            return estruturasRelacao;
+            return this.EstruturaEntidadeBase?.RetornarEstruturaCampoInterno(chave);
         }
 
         private DicionarioEstrutura<EstruturaCampo> RetornarEstruturasCampo()
@@ -472,6 +460,21 @@ namespace Snebur.AcessoDados.Estrutura
             }
 
             return estruturasCampos;
+        }
+
+        private EstruturaCampo[] RetornarEstruturasCampoValorPadraoInsert()
+        {
+            return this.EstruturasCampos.Where(x => x.Value.AtributoValorPadrao != null).
+                                         Select(x => x.Value).
+                                         ToArray();
+
+        }
+
+        private EstruturaCampo[] RetornarEstruturasCampoValorPadraoUpdate()
+        {
+            return this.EstruturasCamposValorPadraoInsertInterno.Where(x => x.AtributoValorPadrao.IsValorPadraoOnUpdate).
+                                                                 ToArray();
+
         }
 
         private DicionarioEstrutura<EstruturaTipoComplexo> RetornarEstruturasTipoComplexo()
@@ -508,7 +511,7 @@ namespace Snebur.AcessoDados.Estrutura
             return new EstruturaCampo(proriedadeChavePrimaria, this);
         }
 
-        public EstruturaCampo RetornarEstruturaoNomeTipoEntidade()
+        private EstruturaCampo RetornarEstruturaoNomeTipoEntidade()
         {
             var propriedadeTipoEntidade = ReflexaoUtil.RetornarPropriedade<Entidade>(x => x.__NomeTipoEntidade);
             return new EstruturaCampo(propriedadeTipoEntidade, this);
@@ -530,7 +533,7 @@ namespace Snebur.AcessoDados.Estrutura
         {
             if (!estruturasEntidade.ContainsKey(propriedade.PropertyType.Name))
             {
-                throw new Exception($"A entidade {propriedade.PropertyType.Name} não foi encontrada, declare-a no DbSet do contexto de migração e atualizar a extenção");
+                throw new Exception($"A entidade {propriedade.PropertyType.Name} não foi encontrada, declare-a no DbSet do contexto de migração e atualizar a extensão");
             }
 
             var estruturaEntidadePai = estruturasEntidade[propriedade.PropertyType.Name];
@@ -567,7 +570,7 @@ namespace Snebur.AcessoDados.Estrutura
 
                 if (atributoChaveEstrangeira == null)
                 {
-                    throw new Erro(String.Format("O atributo chave estangeira da Ligacao RelacaoFilho nao foi definido, Entidade {0} - Propriedade {1} - EntidadePai {2}", this.TipoEntidade.Name, propriedade.Name, estruturaEntidadePai.TipoEntidade.Name));
+                    throw new Erro(String.Format("O atributo chave estrangeira da Ligação RelacaoFilho não foi definido, Entidade {0} - Propriedade {1} - EntidadePai {2}", this.TipoEntidade.Name, propriedade.Name, estruturaEntidadePai.TipoEntidade.Name));
                 }
                 nomeCampoLigacaoRelacaoPai = atributoChaveEstrangeira.Name;
             }
@@ -620,7 +623,7 @@ namespace Snebur.AcessoDados.Estrutura
 
             if (!estruturasEntidade.ContainsKey(atributoRelacaoNn.TipoEntidadeRelacao.Name))
             {
-                throw new Exception($"Entidade {atributoRelacaoNn.TipoEntidadeRelacao.Name} não foi declarada o DbSet no Contexto de migracao ou extesão e extensão não foi acionada");
+                throw new Exception($"Entidade {atributoRelacaoNn.TipoEntidadeRelacao.Name} não foi declarada o DbSet no Contexto de migração ou extensão e extensão não foi acionada");
             }
 
             var estruturaEntidadeRelacaoNn = estruturasEntidade[atributoRelacaoNn.TipoEntidadeRelacao.Name];
@@ -673,7 +676,7 @@ namespace Snebur.AcessoDados.Estrutura
 
 
         /// <summary>
-        /// Campos computado, são campos se teraão alteracoes quando uma nova enitdade for salvar, essa computação será realizada pelo banco de dados
+        /// Campos computado, são campos se terão alterações quando uma nova entidade for salvar, essa computação será realizada pelo banco de dados
         /// Ex, ValorPadraoDataHoraServidor, IOrdenacao
         /// </summary>
         /// <returns></returns>
@@ -726,7 +729,7 @@ namespace Snebur.AcessoDados.Estrutura
             return estruturasCampoComputado;
         }
 
-        private List<EstruturaAlteracaoPropriedade> RetornarEstruturasAlteracaoPropriedade()
+        private EstruturaAlteracaoPropriedade[] RetornarEstruturasAlteracaoPropriedade()
         {
             var estruturasAlteracaoPropriedade = new List<EstruturaAlteracaoPropriedade>();
             var propriedades = ReflexaoUtil.RetornarPropriedades(this.TipoEntidade, true, true);
@@ -765,10 +768,10 @@ namespace Snebur.AcessoDados.Estrutura
                 }
             }
 
-            return estruturasAlteracaoPropriedade;
+            return estruturasAlteracaoPropriedade.ToArray();
         }
 
-        private List<EstruturaAlteracaoPropriedadeGenerica> RetornarEstruturasAlteracaoPropriedadeGenerica()
+        private EstruturaAlteracaoPropriedadeGenerica[] RetornarEstruturasAlteracaoPropriedadeGenerica()
         {
             var estruturasAlteracaoPropriedade = new List<EstruturaAlteracaoPropriedadeGenerica>();
             var propriedades = ReflexaoUtil.RetornarPropriedades(this.TipoEntidade, true, true);
@@ -813,7 +816,7 @@ namespace Snebur.AcessoDados.Estrutura
                 }
             }
 
-            return estruturasAlteracaoPropriedade;
+            return estruturasAlteracaoPropriedade.ToArray();
         }
 
         private int RetornarMaximoRegistroPorConsulta()

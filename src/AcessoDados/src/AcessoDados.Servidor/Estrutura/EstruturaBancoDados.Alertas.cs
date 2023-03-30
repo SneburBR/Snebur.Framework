@@ -74,7 +74,7 @@ namespace Snebur.AcessoDados.Estrutura
         {
             foreach (var estruturaEntidade in this.EstruturasEntidade.Values)
             {
-                var relacoes = estruturaEntidade.RetornarTodasRelacoesChaveEstrangeira();
+                var relacoes = estruturaEntidade.TodasRelacoesChaveEstrangeira();
                 foreach (var relacao in relacoes)
                 {
                     var nomeCampo = relacao.EstruturaCampoChaveEstrangeira.NomeCampo.ToLower();
@@ -111,7 +111,7 @@ namespace Snebur.AcessoDados.Estrutura
                             var atributoRelacao = (IIgnorarAlerta)relacao.Propriedade.GetCustomAttribute<BaseRelacaoAttribute>();
                             if (!atributoRelacao.IgnorarAlerta)
                             {
-                                this.Alertas.Add($"Verique a nome do campo do chave estrangeira '{relacao.EstruturaCampoChaveEstrangeira.NomeCampo}' da propreidade {relacao.Propriedade.Name} ({nomeRelacao}) na entidade {estruturaEntidade.TipoEntidade.Name}" +
+                                this.Alertas.Add($"Verifique a nome do campo do chave estrangeira '{relacao.EstruturaCampoChaveEstrangeira.NomeCampo}' da propriedade {relacao.Propriedade.Name} ({nomeRelacao}) na entidade {estruturaEntidade.TipoEntidade.Name}" +
                                             $"\nPara não mostrar mais esse alerta, defina propriedade IgnorarAlerta para True ");
                             }
                         }
@@ -129,7 +129,7 @@ namespace Snebur.AcessoDados.Estrutura
                 {
                     this.Alertas.AddRange(estruturaEntidade.Alertas);
                 }
-                if (!estruturaEntidade.IsAbstrata && this.AssemblyEntidade.GetTypes().Any(x => x.IsSubclassOf(estruturaEntidade.TipoEntidade)))
+                if (!estruturaEntidade.IsAbstrata && this.AssemblyEntidades.GetTypes().Any(x => x.IsSubclassOf(estruturaEntidade.TipoEntidade)))
                 {
                     if (!estruturaEntidade.IsAutorizarInstanciaNaoEspecializada)
                     {
@@ -137,13 +137,13 @@ namespace Snebur.AcessoDados.Estrutura
                     }
 
                 }
-                if (estruturaEntidade.IsAbstrata && !this.AssemblyEntidade.GetTypes().Any(x => x.IsSubclassOf(estruturaEntidade.TipoEntidade)))
+                if (estruturaEntidade.IsAbstrata && !this.AssemblyEntidades.GetTypes().Any(x => x.IsSubclassOf(estruturaEntidade.TipoEntidade)))
                 {
                     this.Alertas.Add(String.Format("O tipo entidade '{0}' é abstrato e não possui classes especializadas, Configura como Abstrato", estruturaEntidade.TipoEntidade.Name));
                 }
                 var estruturasColecoes = new List<EstruturaRelacao>();
-                estruturasColecoes.AddRange(estruturaEntidade.RetornarTodasRelacoesFilhos());
-                estruturasColecoes.AddRange(estruturaEntidade.RetornarTodasRelacoesNn());
+                estruturasColecoes.AddRange(estruturaEntidade.TodasRelacoesFilhos);
+                estruturasColecoes.AddRange(estruturaEntidade.TodasRelacoesNn());
 
                 foreach (var relacao in estruturasColecoes)
                 {
@@ -152,7 +152,7 @@ namespace Snebur.AcessoDados.Estrutura
 
                     if (tipoDefinicao != typeof(ListaEntidades<>))
                     {
-                        this.Alertas.Add(String.Format(" A propriedade {0}  ('Colecao')  colecao não possui e definição ListaEntidades<TEntidade>, Declaração em {1} ", propriedade.Name, propriedade.DeclaringType.Name));
+                        this.Alertas.Add(String.Format(" A propriedade {0}  ('Coleção')  coleção não possui e definição ListaEntidades<TEntidade>, Declaração em {1} ", propriedade.Name, propriedade.DeclaringType.Name));
                     }
                 }
                 if (!estruturaEntidade.IsAbstrata)
@@ -164,7 +164,7 @@ namespace Snebur.AcessoDados.Estrutura
                         var colecao = (ICollection)propriedade.GetValue(instanciaEntidade);
                         if (colecao == null)
                         {
-                            this.Alertas.Add(String.Format(" A propriedade {0}  ('Coleção')  colecao não foi instancia na declaração em {1} ", propriedade.Name, propriedade.DeclaringType.Name));
+                            this.Alertas.Add(String.Format(" A propriedade {0}  ('Coleção')  coleção não foi instancia na declaração em {1} ", propriedade.Name, propriedade.DeclaringType.Name));
                         }
                     }
                     foreach (var estrutuaTipoComplexo in estruturaEntidade.EstruturasTipoComplexao.Values)
@@ -182,16 +182,16 @@ namespace Snebur.AcessoDados.Estrutura
                         }
                     }
                 }
-                //Validando as relacoes
+                //Validando as relações
                 //RelacaoPai, RelacaoUmUm RelacaoUmUmReversao
 
                 var propriedadesTipoEntidade = ReflexaoUtil.RetornarPropriedades(estruturaEntidade.TipoEntidade, true).Where(x =>
                                                                         x.PropertyType.IsSubclassOf(typeof(Entidade)) &&
                                                                         !ReflexaoUtil.PropriedadePossuiAtributo(x, typeof(NaoMapearAttribute))).ToList();
 
-                var propriedadesRelacaoPai = estruturaEntidade.RetornarTodasRelacoesPai().Select(x => x.Propriedade).ToHashSet();
-                var propriedadesRelacaoUmUm = estruturaEntidade.RetornarTodasRelacoesUmUm().Select(x => x.Propriedade).ToHashSet();
-                var propriedadesRelacaoUmUmReverso = estruturaEntidade.RetornarTodasRelacoesUmUmReversa().Select(x => x.Propriedade).ToHashSet();
+                var propriedadesRelacaoPai = estruturaEntidade.TodasRelacoesPai().Select(x => x.Propriedade).ToHashSet();
+                var propriedadesRelacaoUmUm = estruturaEntidade.TodasRelacoesUmUm().Select(x => x.Propriedade).ToHashSet();
+                var propriedadesRelacaoUmUmReverso = estruturaEntidade.TodasRelacoesUmUmReversa().Select(x => x.Propriedade).ToHashSet();
 
                 foreach (var propriedade in propriedadesTipoEntidade)
                 {
@@ -212,13 +212,13 @@ namespace Snebur.AcessoDados.Estrutura
                     {
                         continue;
                     }
-                    this.Alertas.Add(String.Format(" A propriedade {0} em {1}, o não foi encontrado o atribudo do tipo de relacao . Conferir o atributo RelacaoPai, RelacaoUmUm, RelacaoUmUmReverso ", propriedade.Name, propriedade.DeclaringType.Name));
+                    this.Alertas.Add(String.Format(" A propriedade {0} em {1}, o não foi encontrado o atributo do tipo de relação . Conferir o atributo RelacaoPai, RelacaoUmUm, RelacaoUmUmReverso ", propriedade.Name, propriedade.DeclaringType.Name));
                 }
-                //Colecoes
+                //Coleções
                 var propriedadesTipoColecaEntidade = ReflexaoUtil.RetornarPropriedades(estruturaEntidade.TipoEntidade, true).Where(x => ReflexaoUtil.TipoRetornaColecao(x.PropertyType) && ReflexaoUtil.RetornarTipoGenericoColecao(x.PropertyType).IsSubclassOf(typeof(Entidade))).ToList();
 
-                var propriedadesRelacaoColecacao = estruturaEntidade.RetornarTodasRelacoesFilhos().Select(x => x.Propriedade).ToList();
-                propriedadesRelacaoColecacao.AddRange(estruturaEntidade.RetornarTodasRelacoesNn().Select(x => x.Propriedade).ToList());
+                var propriedadesRelacaoColecacao = estruturaEntidade.TodasRelacoesFilhos.Select(x => x.Propriedade).ToList();
+                propriedadesRelacaoColecacao.AddRange(estruturaEntidade.TodasRelacoesNn().Select(x => x.Propriedade).ToList());
 
                 foreach (var propriedade in propriedadesTipoColecaEntidade)
                 {
@@ -237,13 +237,13 @@ namespace Snebur.AcessoDados.Estrutura
             foreach (var estruturaEntidade in this.EstruturasEntidade.Values)
             {
                 var tipoEntidade = estruturaEntidade.TipoEntidade;
-                foreach (var estruturaAlteracaoPropriedade in estruturaEntidade.EstruturasAlteracaoPropriedade)
+                foreach (var estruturaAlteracaoPropriedade in estruturaEntidade.RetornarEstruturasAlteracaoPropriedadeInterno())
                 {
                     var atributo = estruturaAlteracaoPropriedade.Atributo;
                     var tipoPropriedadeRelacao = atributo.PropriedadeRelacao.PropertyType;
                     if (!ReflexaoUtil.TipoIgualOuHerda(tipoPropriedadeRelacao, tipoEntidade))
                     {
-                        this.Alertas.Add($"O tipo {tipoPropriedadeRelacao.Name} da {nameof(NotificarAlteracaoPropriedadeAttribute.PropriedadeRelacao)} do atributo {nameof(NotificarAlteracaoPropriedadeAttribute)} não é compativel com a entidade {tipoEntidade.Name}");
+                        this.Alertas.Add($"O tipo {tipoPropriedadeRelacao.Name} da {nameof(NotificarAlteracaoPropriedadeAttribute.PropriedadeRelacao)} do atributo {nameof(NotificarAlteracaoPropriedadeAttribute)} não é compatível com a entidade {tipoEntidade.Name}");
                     }
 
                     var tipoPropriedade = ReflexaoUtil.RetornarTipoSemNullable(estruturaAlteracaoPropriedade.Propriedade.PropertyType);
@@ -251,7 +251,7 @@ namespace Snebur.AcessoDados.Estrutura
 
                     if (tipoPropriedade != tipoPropriedadeValorAlterado)
                     {
-                        this.Alertas.Add($"O tipo '{tipoPropriedade.Name}' da propriedade {estruturaAlteracaoPropriedade.Propriedade.Name} em {tipoEntidade.Name} é diferente do tipo '{tipoPropriedadeValorAlterado.Name}' propriedade de alteracao '{atributo.PropriedadeValorAlterado.Name}' em '{atributo.TipoEntidadeAlteracaoPropriedade.Name}'");
+                        this.Alertas.Add($"O tipo '{tipoPropriedade.Name}' da propriedade {estruturaAlteracaoPropriedade.Propriedade.Name} em {tipoEntidade.Name} é diferente do tipo '{tipoPropriedadeValorAlterado.Name}' propriedade de alteração '{atributo.PropriedadeValorAlterado.Name}' em '{atributo.TipoEntidadeAlteracaoPropriedade.Name}'");
                     }
                 }
             }

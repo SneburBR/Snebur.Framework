@@ -1,34 +1,28 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Snebur.AcessoDados.Estrutura
 {
     internal partial class EstruturaBancoDados
     {
-        private static EstruturaBancoDados _estruturaBancoDados;
+        private static readonly object _bloqueioInstancias = new object();
+        private static readonly Dictionary<Type, EstruturaBancoDados> Instancias = new Dictionary<Type, EstruturaBancoDados>();
 
-        private static object Bloqueio = new object();
-
-        public static EstruturaBancoDados Atual
+        internal static EstruturaBancoDados RetornarEstruturaBancoDados(Type tipoContexto,
+                                                                        BancoDadosSuporta sqlSuporte)
         {
-            get
+            if (!Instancias.ContainsKey(tipoContexto))
             {
-                return _estruturaBancoDados;
-            }
-        }
-
-        internal static EstruturaBancoDados RetornarEstruturaBancoDados(Type tipoContexto, BancoDadosSuporta sqlSuporte)
-        {
-            if (EstruturaBancoDados._estruturaBancoDados == null)
-            {
-                lock (EstruturaBancoDados.Bloqueio)
+                lock (_bloqueioInstancias)
                 {
-                    if (EstruturaBancoDados._estruturaBancoDados == null)
+                    if (!Instancias.ContainsKey(tipoContexto))
                     {
-                        EstruturaBancoDados._estruturaBancoDados = new EstruturaBancoDados(tipoContexto, sqlSuporte);
+                       var estruturaBanco = new  EstruturaBancoDados(tipoContexto, sqlSuporte);
+                        Instancias.Add(tipoContexto, estruturaBanco);
                     }
                 }
             }
-            return _estruturaBancoDados;
+            return Instancias[tipoContexto];
         }
     }
 }

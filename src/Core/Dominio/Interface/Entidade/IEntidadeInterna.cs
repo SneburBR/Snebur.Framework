@@ -6,14 +6,20 @@ namespace Snebur.Dominio
     [IgnorarInterfaceTS]
     public interface IEntidadeInterna : IEntidade
     {
-        HashSet<string> __PropriedadesAbertas { get; }
+        List<string> __PropriedadesAbertas { get; }
 
-        HashSet<string> __PropriedadesAutorizadas { get; }
+        List<string> __PropriedadesAutorizadas { get; }
 
         void AtivarControladorPropriedadeAlterada();
 
-        void AtribuirPropriedadesAbertas(HashSet<string> PropriedadesAberta);
+        void AtribuirPropriedadesAbertas(List<string> PropriedadesAberta);
 
-        void AtribuirPropriedadesAutorizadas(HashSet<string> PropriedadesAutorizadas);
+        void AtribuirPropriedadesAutorizadas(List<string> PropriedadesAutorizadas);
+
+        void AdicionarProprieadeAberta(string nomePropriedade);
+       
+        void DesativarValidacaoProprieadesAbertas();
+
+        void AtivarValidacaoProprieadesAbertas();
     }
 }

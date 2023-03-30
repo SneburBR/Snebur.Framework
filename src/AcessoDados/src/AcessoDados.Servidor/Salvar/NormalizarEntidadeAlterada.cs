@@ -57,7 +57,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 
         private void NormalizarRelacoesFilho(Entidade entidade, EstruturaEntidade estruturaEntidade)
         {
-            var estruturasRelacoesFilhos = estruturaEntidade.RetornarTodasRelacoesFilhos();
+            var estruturasRelacoesFilhos = estruturaEntidade.TodasRelacoesFilhos;
             foreach (var estruturaRelacaoFilhos in estruturasRelacoesFilhos)
             {
                 var entidadesFilho = (IListaEntidades)estruturaRelacaoFilhos.Propriedade.GetValue(entidade);
@@ -71,7 +71,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 
         private void NormalizarRelacoesNn(Entidade entidade, EstruturaEntidade estruturaEntidade)
         {
-            var estruturasRelacoesNn = estruturaEntidade.RetornarTodasRelacoesNn();
+            var estruturasRelacoesNn = estruturaEntidade.TodasRelacoesNn();
             foreach (var estruturaRelacaoNn in estruturasRelacoesNn)
             {
                 var entidadesFilhosNn = (IListaEntidades)estruturaRelacaoNn.Propriedade.GetValue(entidade);

@@ -20,7 +20,9 @@ namespace Snebur.Dominio.Atributos
 
         #region IValorPadrao 
 
-        public bool IsTipoNullableRequerido { get { return false; } }
+        public bool IsTipoNullableRequerido { get; } = false;
+
+        public bool IsValorPadraoOnUpdate { get; } = false;
 
         #endregion
     }

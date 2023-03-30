@@ -2,24 +2,34 @@
 
 namespace Snebur.Dominio.Atributos
 {
+    /// <summary>
+    /// Pendente IsPermitirAtualizacao deve atualizar quando qualquer
+    /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    public class ValorPadraoDataHoraServidorAttribute : SomenteLeituraAttribute
+    public class ValorPadraoDataHoraServidorAttribute : SomenteLeituraAttribute, IValorPadrao
     {
-        public bool DataHoraUTC { get; set; }
+        public bool IsDataHoraUTC { get; set; } = true;
+        public bool IsAceitarAtualizacao { get; set; } = false;
+        public bool IsValorPadraoOnUpdate { get; set; }
+        public override OpcoesSomenteLeitura OpcoesSomenteLeitura => new OpcoesSomenteLeitura(!this.IsAceitarAtualizacao, this.IsNotificarSeguranca);
 
-        public bool PermitirAtualizacao { get; set; }
-
-        public override OpcoesSomenteLeitura OpcoesSomenteLeitura => new OpcoesSomenteLeitura(!this.PermitirAtualizacao, this.IsNotificarSeguranca);
-
-        public ValorPadraoDataHoraServidorAttribute(bool dataHoraUTC = true, bool permitirAtualizacao = false)
+        public ValorPadraoDataHoraServidorAttribute( )
         {
-            this.DataHoraUTC = dataHoraUTC;
-            this.PermitirAtualizacao = permitirAtualizacao;
+            //this.IsDataHoraUTC = isDataHoraUTC;
+            //this.IsAceitarAtualizacao = isAceitarAtualizacao;
             this.IsNotificarSeguranca = false;
         }
 
-        public object RetornarValorPadrao()
+        public bool IsTipoNullableRequerido { get; } = false;
+
+        public object RetornarValorPadrao(object contexto, 
+                                          Entidade entidadeCorrente, 
+                                         object valorPropriedade)
         {
+            if(entidadeCorrente.Id > 0)
+            {
+                return this.IsDataHoraUTC ? DateTime.UtcNow : DateTime.Now;
+            }
             return null;
         }
     }

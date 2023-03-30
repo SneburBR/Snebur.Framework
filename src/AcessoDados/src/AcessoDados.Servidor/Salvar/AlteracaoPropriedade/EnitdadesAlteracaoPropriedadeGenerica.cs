@@ -38,7 +38,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                         }
 
 
-                        var novaAlteracao = (IAlteracaoPropriedadeGenerica)Activator.CreateInstance(EstruturaBancoDados.Atual.TipoEntidadeNotificaoPropriedadeAlteradaGenerica);
+                        var novaAlteracao = (IAlteracaoPropriedadeGenerica)Activator.CreateInstance(this.Contexto.EstruturaBancoDados.TipoEntidadeNotificaoPropriedadeAlteradaGenerica);
                         novaAlteracao.IdEntidade = entidade.Id;
 
                         novaAlteracao.ValorPropriedadeAlterada = SerializacaoUtil.SerializarTipoSimples(valorPropriedade).
@@ -65,7 +65,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                                                                               EstruturaEntidade estruturaEntidade,
                                                                               EstruturaAlteracaoPropriedadeGenerica estruturaAlteracaoPropriedade)
         {
-            var tipoAlteracao = EstruturaBancoDados.Atual.TipoEntidadeNotificaoPropriedadeAlteradaGenerica;
+            var tipoAlteracao = this.Contexto.EstruturaBancoDados.TipoEntidadeNotificaoPropriedadeAlteradaGenerica;
             var consulta = this.Contexto.RetornarConsulta<IAlteracaoPropriedadeGenerica>(tipoAlteracao);
             consulta = consulta.Where(x => x.IdEntidade == entidade.Id &&
                                            x.NomeTipoEntidade == estruturaEntidade.NomeTipoEntidade &&

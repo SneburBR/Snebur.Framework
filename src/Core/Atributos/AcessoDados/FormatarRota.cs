@@ -6,7 +6,7 @@ namespace Snebur.Dominio.Atributos
     public class FormatarRotaAttribute : Attribute, IValorPadrao
     {
         public bool IsTipoNullableRequerido => false;
-
+        public bool IsValorPadraoOnUpdate => true;
         public object RetornarValorPadrao(object contexto, 
                                           Entidade entidadeCorrente,
                                           object valorPropriedade)
@@ -17,5 +17,6 @@ namespace Snebur.Dominio.Atributos
             }
             return null;
         }
+         
     }
 }

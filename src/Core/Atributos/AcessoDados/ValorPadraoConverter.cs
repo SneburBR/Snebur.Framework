@@ -10,6 +10,8 @@ namespace Snebur.Dominio.Atributos
 
         private IConverterValorPadrao _instancia;
 
+        public bool IsValorPadraoOnUpdate { get; set; } 
+
         public string CaminhoTipo { get; }
 
         public IConverterValorPadrao InstanciaConverter

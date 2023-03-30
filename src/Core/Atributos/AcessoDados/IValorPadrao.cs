@@ -13,5 +13,6 @@
     public interface IValorPadrao : IConverterValorPadrao
     {
         bool IsTipoNullableRequerido { get; }
+        bool IsValorPadraoOnUpdate { get; }
     }
 }

@@ -66,7 +66,6 @@ namespace Snebur.AcessoDados.Comunicacao
                                                             MethodInfo metodoOperacao,
                                                             object[] parametros)
         {
-
             try
             {
                 if (this.IsSessaoUsuarioValida)

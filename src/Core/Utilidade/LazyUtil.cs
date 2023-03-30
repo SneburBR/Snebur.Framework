@@ -4,7 +4,7 @@ namespace Snebur.Utilidade
 {
     public static class LazyUtil
     {
-        private static object _bloqueioValor = new object();
+        private static readonly object _bloqueioValor = new object();
 
         public static T RetornarValorLazyComBloqueio<T>(ref T? valor, Func<T> retornarValor) where T : struct
         {

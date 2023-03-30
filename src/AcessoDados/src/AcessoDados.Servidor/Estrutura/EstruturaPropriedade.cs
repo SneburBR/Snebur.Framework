@@ -8,13 +8,9 @@ namespace Snebur.AcessoDados.Estrutura
     internal abstract class EstruturaPropriedade
     {
         internal Type Tipo { get; }
-
         internal protected PropertyInfo Propriedade { get; protected set; }
-
-        internal bool Requerido { get; set; }
-
-        internal bool IsAceitaNulo { get; set; }
-
+        internal bool IsRequerido { get; set; }
+        internal bool IsAceitaNulo { get;  set; }
         internal bool IsTipoNullable { get; }
 
         internal EstruturaEntidade EstruturaEntidade { get; }
@@ -27,7 +23,7 @@ namespace Snebur.AcessoDados.Estrutura
             this.EstruturaEntidade = estruturaEntidade;
             this.Propriedade = propriedade;
             this.Tipo = propriedade.PropertyType;
-            this.Requerido = AjudanteEstruturaBancoDados.PropriedadeRequerida(this.Propriedade);
+            this.IsRequerido = AjudanteEstruturaBancoDados.PropriedadeRequerida(this.Propriedade);
             this.IsTipoNullable = ReflexaoUtil.IsTipoNullable(this.Propriedade.PropertyType);
             this.IsAceitaNulo = this.RetornarAceitarNulo();
         }

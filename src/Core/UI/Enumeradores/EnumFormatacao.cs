@@ -31,6 +31,12 @@ namespace Snebur.UI
 
         Hora, // "hora",
 
+        Dimensao,
+
+        DimensaoCm,
+
+        DimensaoPixels,
+
         DataHora, // "datahora",
 
         HoraDescricao, // "datahoradescricao",

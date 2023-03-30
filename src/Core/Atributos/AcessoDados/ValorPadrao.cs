@@ -7,6 +7,7 @@ namespace Snebur.Dominio.Atributos
     public class ValorPadraoAttribute : Attribute, IValorPadrao
     {
         public object ValorPadrao { get; set; }
+        public bool IsValorPadraoOnUpdate { get; set; }
 
         public ValorPadraoAttribute(Enum valorPadrao)
         {

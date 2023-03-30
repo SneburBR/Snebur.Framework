@@ -7,7 +7,7 @@ namespace Snebur.Dominio.Atributos
     {
         [IgnorarPropriedadeTS]
         [IgnorarPropriedadeTSReflexao]
-        public bool IsNotificarSeguranca { get; set; }
+        public bool IsNotificarSeguranca { get; protected set; }
 
         [IgnorarPropriedadeTS]
         [IgnorarPropriedadeTSReflexao]        

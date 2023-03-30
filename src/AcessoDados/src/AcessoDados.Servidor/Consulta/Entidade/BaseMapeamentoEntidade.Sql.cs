@@ -160,7 +160,7 @@ namespace Snebur.AcessoDados.Mapeamento
         {
             var sb = new StringBuilderSql();
 
-            var ligacaoJoin = (estruturaEntidadeMapeadaRelacao.EstruturaRelacao.Requerido) ? " INNER JOIN " : " LEFT OUTER JOIN ";
+            var ligacaoJoin = (estruturaEntidadeMapeadaRelacao.EstruturaRelacao.IsRequerido) ? " INNER JOIN " : " LEFT OUTER JOIN ";
 
             sb.AppendFormat(" {0} \t  {1}  ", System.Environment.NewLine, ligacaoJoin);
 

@@ -10,35 +10,22 @@ namespace Snebur.AcessoDados.Estrutura
 {
     internal partial class EstruturaBancoDados
     {
+        public object _bloqueio = new object();
+
+        internal bool IsEstruturasEntidadeMontada { get; private set; }
         internal DicionarioEstrutura<EstruturaEntidade> EstruturasEntidade { get; }
-
         internal DicionarioEstrutura<Type> TiposEntidade { get; }
-
         internal DicionarioEstrutura<PropertyInfo> TodasPropriedades { get; }
-
-        //internal List<Assembly> Assemblies { get; set; } = new List<Assembly>();
-        internal Assembly AssemblyEntidade { get; private set; }
-
+        internal Assembly AssemblyEntidades { get; private set; }
         internal List<string> Alertas { get; } = new List<string>();
-
         internal Type TipoEntidadeArquivo { get; }
-
         internal Type TipoEntidadeImagem { get; }
-
         internal Type TipoUsuario { get; }
-
         internal Type TipoSessaoUsuario { get; }
-
         internal Type TipoIpInformacao { get; }
-
         internal Type TipoHistoricoManutencao { get; }
-
         internal Type TipoEntidadeNotificaoPropriedadeAlteradaGenerica { get; }
-
         internal TiposSeguranca TiposSeguranca { get; }
-
-        //internal BaseContextoDados Contexto { get; }
-
         internal Type TipoContexto { get; }
 
         #region  Construtor 
@@ -66,7 +53,42 @@ namespace Snebur.AcessoDados.Estrutura
         }
         #endregion
 
-        #region Metodos internos
+        internal Type RetornarTipoConsultaImplementaInterface<TIInterface>(bool ignorarNaoEncontrado = false)
+        {
+            var tipoInterface = typeof(TIInterface);
+            var tiposInterface = new List<Type>();
+            var tiposEntidades = this.TiposEntidade.Values.ToList();
+            var len = tiposEntidades.Count;
+
+            for (var i = 0; i < len; i++)
+            {
+                var tipoEntidade = tiposEntidades[i];
+                if (ReflexaoUtil.TipoImplementaInterface(tipoEntidade, tipoInterface, false))
+                {
+                    while (ReflexaoUtil.TipoImplementaInterface(tipoEntidade.BaseType, tipoInterface, false))
+                    {
+                        tipoEntidade = tipoEntidade.BaseType;
+                    }
+                    tiposInterface.Add(tipoEntidade);
+                }
+            }
+            tiposInterface = tiposInterface.Distinct().ToList();
+            if (tiposInterface.Count == 0)
+            {
+                if (!ignorarNaoEncontrado)
+                {
+                    throw new ErroOperacaoInvalida(String.Format("Não existe nenhum tipo que implementa a interface {0}", typeof(TIInterface).Name));
+                }
+                return null;
+            }
+            if (tiposInterface.Count > 1)
+            {
+                throw new ErroOperacaoInvalida(String.Format("Existe mais de um tipo e implementa a interface {0}", typeof(IUsuario).Name));
+            }
+            return tiposInterface.Single();
+        }
+
+        #region Métodos internos
 
         internal EstruturaEntidade RetornarEstruturaEntidade(string chave)
         {
@@ -79,19 +101,40 @@ namespace Snebur.AcessoDados.Estrutura
         }
         #endregion
 
-        #region  Metodos privados
+        #region  Métodos privados
 
         private void MontarEstruturaBancoDados(Type tipoContexto,
                                               BancoDadosSuporta sqlSuporte)
         {
-            Debug.WriteLine("Montando estrutura do BancoDados ");
+            lock (this._bloqueio)
+            {
+                if (this.IsEstruturasEntidadeMontada)
+                {
+                    throw new Exception("A estrutura do banco dados já está montada");
+                }
 
-            //var propriedadesConsulta = ReflectionUtils.RetornarPropriedades(contexto.GetType()).
-            //                                            Where(x => x.PropertyType.IsSubclassOf(typeof(ConsultaEntidade))).
-            //                                            Select(x => x.PropertyType).ToList();
+                Debug.WriteLine("Montando estrutura do BancoDados ");
 
+                //var propriedadesConsulta = ReflectionUtils.RetornarPropriedades(contexto.GetType()).
+                //                                            Where(x => x.PropertyType.IsSubclassOf(typeof(ConsultaEntidade))).
+                //                                            Select(x => x.PropertyType).ToList();
+                 
+                this.MontarEstuturasEntidades(tipoContexto, sqlSuporte);
+                this.AssociarEstruturasEntidades();
+                
+               
+                if (DebugUtil.IsAttached)
+                {
+                    this.AnalisarAlertasEstruturaEntidade();
+                }
+              
+            }
+        }
+         
+        private void MontarEstuturasEntidades(Type tipoContexto, BancoDadosSuporta sqlSuporte)
+        {
             var tiposPopriedadeConsulta = ContextoDadosUtil.RetornarPropriedadesIConsultaEntidade(tipoContexto).
-                                                            Select(x => x.PropertyType).ToList();
+                                                                Select(x => x.PropertyType).ToList();
 
             var tiposEntidadeConsulta = tiposPopriedadeConsulta.Select(x => x.GetGenericArguments().Single()).ToList();
 
@@ -100,7 +143,7 @@ namespace Snebur.AcessoDados.Estrutura
             {
                 throw new Erro("O numero de assemblies entidades não é suportado");
             }
-            this.AssemblyEntidade = assemblies.Single();
+            this.AssemblyEntidades = assemblies.Single();
 
             foreach (var tipoEntidade in tiposEntidadeConsulta)
             {
@@ -113,8 +156,41 @@ namespace Snebur.AcessoDados.Estrutura
                     throw new Erro($"O tipo base {tipoEntidade.BaseType.Name} da entidade {tipoEntidade.Name} não foi mapeado. " +
                                    $"Mapiei sempre o tipo mais abstrato da entidade. Você pode configurar um atalho ");
                 }
-                this.MontarEstruturaEntidades(tipoEntidade, sqlSuporte);
+                this.MontarEstruturaEntidade(tipoEntidade, sqlSuporte);
             }
+
+            this.IsEstruturasEntidadeMontada = true;
+        }
+
+        private void MontarEstruturaEntidade(Type tipoEntidade, BancoDadosSuporta sqlSuporte)
+        {
+            if (this.TiposEntidade.ContainsKey(tipoEntidade.Name))
+            {
+                throw new Erro(String.Format("Já existe o tipo {0} no dicionario, Tipo duplicado", tipoEntidade.Name));
+            }
+            this.TiposEntidade.Add(tipoEntidade.Name, tipoEntidade);
+
+            EstruturaEntidade estruturaEntidadeBase = null;
+
+            if (!AjudanteEstruturaBancoDados.TipoEntidadeBaseNaoMepeada(tipoEntidade.BaseType))
+            {
+                estruturaEntidadeBase = this.EstruturasEntidade[tipoEntidade.BaseType.Name];
+            }
+            this.EstruturasEntidade.Add(tipoEntidade.Name, new EstruturaEntidade(this,
+                                                                                 tipoEntidade,
+                                                                                 estruturaEntidadeBase,
+                                                                                 sqlSuporte));
+
+            var tiposEspecializado = tipoEntidade.Assembly.GetTypes().Where(x => x.BaseType == tipoEntidade).ToList();
+
+            foreach (var tipoEspecializado in tiposEspecializado)
+            {
+                this.MontarEstruturaEntidade(tipoEspecializado, sqlSuporte);
+            }
+        }
+
+        private void AssociarEstruturasEntidades()
+        {
             foreach (var estruturaEntidade in this.EstruturasEntidade.Values)
             {
                 //if (this.Contexto.IsValidarNomeTabelaEntidade)
@@ -147,34 +223,6 @@ namespace Snebur.AcessoDados.Estrutura
                 }
                 estruturaEntidade.AssociarEstruturaRalacaos();
             }
-            if (DebugUtil.IsAttached)
-            {
-                this.AnalisarAlertasEstruturaEntidade();
-            }
-        }
-
-        private void MontarEstruturaEntidades(Type tipoEntidade, BancoDadosSuporta sqlSuporte)
-        {
-            if (this.TiposEntidade.ContainsKey(tipoEntidade.Name))
-            {
-                throw new Erro(String.Format("Já existe o tipo {0} no dicionario, Tipo duplicado", tipoEntidade.Name));
-            }
-            this.TiposEntidade.Add(tipoEntidade.Name, tipoEntidade);
-
-            EstruturaEntidade estruturaEntidadeBase = null;
-
-            if (!AjudanteEstruturaBancoDados.TipoEntidadeBaseNaoMepeada(tipoEntidade.BaseType))
-            {
-                estruturaEntidadeBase = this.EstruturasEntidade[tipoEntidade.BaseType.Name];
-            }
-            this.EstruturasEntidade.Add(tipoEntidade.Name, new EstruturaEntidade(tipoEntidade, estruturaEntidadeBase, sqlSuporte));
-
-            var tiposEspecializado = tipoEntidade.Assembly.GetTypes().Where(x => x.BaseType == tipoEntidade).ToList();
-
-            foreach (var tipoEspecializado in tiposEspecializado)
-            {
-                this.MontarEstruturaEntidades(tipoEspecializado, sqlSuporte);
-            }
         }
 
         private void AssociarEstruturasBase(EstruturaEntidade estruturaEntidade)
@@ -188,7 +236,7 @@ namespace Snebur.AcessoDados.Estrutura
                 estruturasEntidadeBase.Add(estruturaEntidadeBase);
                 tipoEntidadeBase = tipoEntidadeBase.BaseType;
             }
-            //Deixando as estrutura na ordem da Hirarquia
+            //Deixando as estrutura na ordem da Hierarquia
             estruturasEntidadeBase.Reverse();
 
             foreach (var estruturaEntidadeBase in estruturasEntidadeBase)
@@ -202,7 +250,7 @@ namespace Snebur.AcessoDados.Estrutura
             //var tipoEntidadeEspecializadas = this.Assemblies.SelectMany(x => x.GetTypes()).
             //                                                 Where(x => x.IsSubclassOf(estruturaEntidade.TipoEntidade)).ToList();
 
-            var tipoEntidadeEspecializadas = this.AssemblyEntidade.GetTypes().
+            var tipoEntidadeEspecializadas = this.AssemblyEntidades.GetTypes().
                                                   Where(x => x.IsSubclassOf(estruturaEntidade.TipoEntidade)).ToList();
 
             foreach (var tipoEntidade in tipoEntidadeEspecializadas)
@@ -217,12 +265,12 @@ namespace Snebur.AcessoDados.Estrutura
             //var tipoEntidadeEspecializadas = this.Assemblies.SelectMany(x => x.GetTypes()).
             //                                                 Where(x => x.BaseType == tipoEntidadeBaseNivel).ToList();
 
-            var tipoEntidadeEspecializadas = this.AssemblyEntidade.GetTypes().
+            var tipoEntidadeEspecializadas = this.AssemblyEntidades.GetTypes().
                                                Where(x => x.BaseType == tipoEntidadeBaseNivel).ToList();
 
             if (tipoEntidadeEspecializadas.Count > 0)
             {
-                //Separando o nivels - agrupando - 
+                //Separando o níveis - agrupando - 
                 var estruturasEntidadeEspecializadasDoNivel = new Dictionary<string, EstruturaEntidade>();
                 foreach (var tipoEntidadeEspecializada in tipoEntidadeEspecializadas)
                 {
@@ -243,6 +291,7 @@ namespace Snebur.AcessoDados.Estrutura
                 }
             }
         }
+   
         #endregion
 
         #region Tipos 
@@ -281,41 +330,7 @@ namespace Snebur.AcessoDados.Estrutura
         {
             return this.RetornarTipoConsultaImplementaInterface<IImagem>(true);
         }
-
-        internal Type RetornarTipoConsultaImplementaInterface<TIInterface>(bool ignorarNaoEncontrado = false)
-        {
-            var tipoInterface = typeof(TIInterface);
-            var tiposInterface = new List<Type>();
-            var tiposEntidades = this.TiposEntidade.Values.ToList();
-            var len = tiposEntidades.Count;
-
-            for (var i = 0; i < len; i++)
-            {
-                var tipoEntidade = tiposEntidades[i];
-                if (ReflexaoUtil.TipoImplementaInterface(tipoEntidade, tipoInterface, false))
-                {
-                    while (ReflexaoUtil.TipoImplementaInterface(tipoEntidade.BaseType, tipoInterface, false))
-                    {
-                        tipoEntidade = tipoEntidade.BaseType;
-                    }
-                    tiposInterface.Add(tipoEntidade);
-                }
-            }
-            tiposInterface = tiposInterface.Distinct().ToList();
-            if (tiposInterface.Count == 0)
-            {
-                if (!ignorarNaoEncontrado)
-                {
-                    throw new ErroOperacaoInvalida(String.Format("Não existe nenhum tipo que implementa a interface {0}", typeof(TIInterface).Name));
-                }
-                return null;
-            }
-            if (tiposInterface.Count > 1)
-            {
-                throw new ErroOperacaoInvalida(String.Format("Existe mais de um tipo e implementa a interface {0}", typeof(IUsuario).Name));
-            }
-            return tiposInterface.Single();
-        }
+         
         #endregion
     }
 }

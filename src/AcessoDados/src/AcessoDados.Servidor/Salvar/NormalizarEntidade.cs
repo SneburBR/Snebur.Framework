@@ -50,11 +50,11 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                 //    throw new NotImplementedException();
                 //}
 
-                var estruturasRelacoesPai = estruturaEntidade.RetornarTodasRelacoesPai();
-                var estruturasRelacoesUmUm = estruturaEntidade.RetornarTodasRelacoesUmUm();
-                var estruturasRelacoesUmUmReversa = estruturaEntidade.RetornarTodasRelacoesUmUmReversa();
-                var estruturasRelacoesFilhos = estruturaEntidade.RetornarTodasRelacoesFilhos();
-                var estruturasRelacoesNn = estruturaEntidade.RetornarTodasRelacoesNn();
+                var estruturasRelacoesPai = estruturaEntidade.TodasRelacoesPai();
+                var estruturasRelacoesUmUm = estruturaEntidade.TodasRelacoesUmUm();
+                var estruturasRelacoesUmUmReversa = estruturaEntidade.TodasRelacoesUmUmReversa();
+                var estruturasRelacoesFilhos = estruturaEntidade.TodasRelacoesFilhos;
+                var estruturasRelacoesNn = estruturaEntidade.TodasRelacoesNn();
 
                 foreach (var estruturaRelacaoPai in estruturasRelacoesPai)
                 {

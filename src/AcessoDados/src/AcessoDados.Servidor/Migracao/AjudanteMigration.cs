@@ -136,7 +136,7 @@ namespace Snebur.AcessoDados
                 foreach (var propriedade in propriedadesValorPadraoDataHoraServidor)
                 {
                     var atributo = propriedade.GetCustomAttribute<ValorPadraoDataHoraServidorAttribute>();
-                    sqlsMigration.Add(new SqlValorPadraoDataHoraServidor(estruturaEntidade, propriedade, atributo.DataHoraUTC));
+                    sqlsMigration.Add(new SqlValorPadraoDataHoraServidor(estruturaEntidade, propriedade, atributo.IsDataHoraUTC));
                 }
 
                 var propriedadesIndexar = this.RetornarPropriedadesIndexar(tipoEntidade);

@@ -16,6 +16,8 @@ namespace Snebur.Dominio
     [Plural("Entidades")]
     public abstract class Entidade : BaseDominio, IEntidade, IEntidadeInterna, IEquatable<Entidade>, INotifyPropertyChanged, INomeTipoEntidade, IDataErrorInfo
     {
+        private bool _isValidacaoPropriedadeAbertasDesativada = false;
+
         [OcultarColuna]
         public abstract long Id { get; set; }
 
@@ -153,7 +155,7 @@ namespace Snebur.Dominio
             }
             return this.RetornarValorPropriedade(valor, nomePropriedade);
         }
-         
+
         internal protected virtual long? RetornarValorPropriedadeChaveEstrangeira(long? valor, Entidade relacao, [CallerMemberName] string nomePropriedade = "")
         {
             if (relacao != null)
@@ -169,18 +171,21 @@ namespace Snebur.Dominio
             {
                 var entidade = (this as IEntidadeInterna);
                 var propriedadesAberta = entidade.__PropriedadesAbertas;
-                if (propriedadesAberta != null)
+                if (propriedadesAberta?.Count > 0)
                 {
                     if (!propriedadesAberta.Contains(nomePropriedade))
                     {
-                        if (this.IsSerializando)
+                        if (this.IsSerializando || this._isValidacaoPropriedadeAbertasDesativada)
                         {
                             return default;
                         }
-                        if (this.__TipoEntidade.GetProperty(nomePropriedade).PropertyType.IsSubclassOf(typeof(Entidade)))
+
+                        var propriedade = this.__TipoEntidade.GetProperty(nomePropriedade);
+                        if (propriedade.PropertyType.IsSubclassOf(typeof(Entidade)))
                         {
                             return default;
                         }
+
                         throw new Exception($"A propriedade {nomePropriedade} não foi aberta na entidade {entidade.GetType().Name}");
                     }
                 }
@@ -242,7 +247,7 @@ namespace Snebur.Dominio
         {
 
         }
-        
+
         internal protected virtual void NotificarValorPropriedadeAlteradaChaveEstrangeiraAlterada<T>
                  (T antivoValor, T novoValor,
                   string nomePropriedadeRelacao,
@@ -367,6 +372,8 @@ namespace Snebur.Dominio
             var entidadeClonada = (TEntidade)Activator.CreateInstance(this.__TipoEntidade);
             entidadeClonada.__IsClonado = true;
 
+            entidadeClonada.AtivarControladorPropriedadeAlterada();
+
             if (expressoesPropriedade != null)
             {
                 foreach (var expressaPropriedade in expressoesPropriedade)
@@ -379,8 +386,6 @@ namespace Snebur.Dominio
                 }
             }
             entidadeClonada.Id = this.Id;
-            entidadeClonada.AtivarControladorPropriedadeAlterada();
-
             return entidadeClonada;
         }
 
@@ -544,7 +549,8 @@ namespace Snebur.Dominio
             var propriedadesTipoCompleso = this.GetType().GetProperties().Where(x => x.PropertyType.IsSubclassOf(typeof(BaseTipoComplexo))).ToList();
             foreach (var propriedade in propriedadesTipoCompleso)
             {
-                if (this.__propriedadesAbertas == null || this.__propriedadesAbertas.Contains(propriedade.Name))
+                if (this.__propriedadesAbertas == null ||
+                    this.__propriedadesAbertas.Contains(propriedade.Name))
                 {
                     var tipoCompleto = propriedade.GetValue(this) as BaseTipoComplexo;
                     if (tipoCompleto != null)
@@ -562,16 +568,16 @@ namespace Snebur.Dominio
 
         #region IEntidadeInterna 
 
-        private HashSet<string> __propriedadesAbertas;
-        private HashSet<string> __propriedadesAutorizadas;
+        private List<string> __propriedadesAbertas;
+        private List<string> __propriedadesAutorizadas;
 
         [PropriedadeProtegida]
-        HashSet<string> IEntidadeInterna.__PropriedadesAbertas { get => this.__propriedadesAbertas; }
+        List<string> IEntidadeInterna.__PropriedadesAbertas { get => this.__propriedadesAbertas; }
 
         [PropriedadeProtegida]
-        HashSet<string> IEntidadeInterna.__PropriedadesAutorizadas { get => this.__propriedadesAutorizadas; }
+        List<string> IEntidadeInterna.__PropriedadesAutorizadas { get => this.__propriedadesAutorizadas; }
 
-        void IEntidadeInterna.AtribuirPropriedadesAbertas(HashSet<string> propriedadesAberta)
+        void IEntidadeInterna.AtribuirPropriedadesAbertas(List<string> propriedadesAberta)
         {
             //if (this.__ControlarPropriedadesAlterada || this.__propriedadesAbertas != null)
             //{
@@ -582,7 +588,7 @@ namespace Snebur.Dominio
                 this.__propriedadesAbertas = propriedadesAberta;
             }
         }
-        void IEntidadeInterna.AtribuirPropriedadesAutorizadas(HashSet<string> propriedadesAutorizadas)
+        void IEntidadeInterna.AtribuirPropriedadesAutorizadas(List<string> propriedadesAutorizadas)
         {
             if (this.__IsControladorPropriedadesAlteradaAtivo || this.__propriedadesAutorizadas != null)
             {
@@ -593,6 +599,22 @@ namespace Snebur.Dominio
                 this.__propriedadesAutorizadas = propriedadesAutorizadas;
             }
         }
+
+        void IEntidadeInterna.AdicionarProprieadeAberta(string nomePropriedade)
+        {
+            this.__propriedadesAbertas?.Add(nomePropriedade);
+        }
+
+        void IEntidadeInterna.DesativarValidacaoProprieadesAbertas()
+        {
+            this._isValidacaoPropriedadeAbertasDesativada = true;
+        }
+        void IEntidadeInterna.AtivarValidacaoProprieadesAbertas()
+        {
+            this._isValidacaoPropriedadeAbertasDesativada = false;
+
+        }
+
         #endregion
 
         #region  Validação - IDataErrorInfo

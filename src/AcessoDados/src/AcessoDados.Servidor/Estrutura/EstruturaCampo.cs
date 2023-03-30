@@ -10,11 +10,8 @@ namespace Snebur.AcessoDados.Estrutura
     internal class EstruturaCampo : EstruturaPropriedade
     {
         internal string NomeCampo { get; }
-
         internal string NomeCampoSensivel { get; }
-
         internal string NomeParametro { get; }
-
         internal string NomeParametroOuValorFuncaoServidor
         {
             get
@@ -26,42 +23,20 @@ namespace Snebur.AcessoDados.Estrutura
                 return this.NomeParametro;
             }
         }
-
-        internal object ValorPadrao { get; set; }
-
         internal IValorPadrao AtributoValorPadrao { get; }
-
         internal EnumTipoPrimario TipoPrimarioEnum { get; }
-
         internal SqlDbType TipoSql { get; }
-
         internal EstruturaRelacaoChaveEstrangeira EstruturaRelacaoChaveEstrangeira { get; set; } = null;
-
         internal PropertyInfo PropriedadeTipoComplexo { get; } = null;
-
         internal bool IsTipoComplexo { get; } = false;
-
         internal OpcoesSomenteLeitura OpcoesSomenteLeitura { get; }
-
         internal bool IsValorFuncaoServidor { get; private set; }
-
-        internal bool IsFormatarSomenteNumero { get; private set; }
-
+        internal bool IsFormatarSomenteNumero { get; }
         internal string ValorFuncaoServidor { get; }
-
-        internal bool IsRelacaoChaveEstrangeira
-        {
-            get
-            {
-                return this.EstruturaRelacaoChaveEstrangeira != null;
-            }
-        }
-
-        internal bool IsPossuiIndiceTextoCompleto { get; private set; }
-
-        internal bool IsNotificarAlteracaoPropriedade { get; private set; }
-
-        public bool IsAutorizarAlteracaoPropriedade { get; private set; }
+        internal bool IsRelacaoChaveEstrangeira => this.EstruturaRelacaoChaveEstrangeira != null;
+        internal bool IsPossuiIndiceTextoCompleto { get; }
+        internal bool IsNotificarAlteracaoPropriedade { get; }
+        public bool IsAutorizarAlteracaoPropriedade { get; }
 
         /// <summary>
         /// Construtor campo do TipoComplexo
@@ -88,14 +63,14 @@ namespace Snebur.AcessoDados.Estrutura
         {
             this.Propriedade = propriedade;
             this.NomeCampo = this.RetornarNomeCampo();
-            this.ValorPadrao = ReflexaoUtil.RetornarValorPadraoPropriedade(this.Propriedade);
+            //this.ValorPadrao = ReflexaoUtil.RetornarValorPadraoPropriedade(this.Propriedade);
 
             this.TipoPrimarioEnum = ReflexaoUtil.RetornarTipoPrimarioEnum(this.Propriedade.PropertyType);
             this.TipoSql = this.RetornarTipoBanco();
             this.OpcoesSomenteLeitura = this.RetornarOpcoesSomenteLeitura();
-             
+
             this.NomeParametro = String.Format("@{0}", this.NomeCampo);
-             
+
             this.NomeCampoSensivel = this.RetornarNomeCampoSensivel();
 
             this.AtributoValorPadrao = this.RetornarAtributoValorPadrao();
@@ -126,7 +101,7 @@ namespace Snebur.AcessoDados.Estrutura
             {
                 return atributo.OpcoesSomenteLeitura;
             }
-            return new OpcoesSomenteLeitura(false );
+            return new OpcoesSomenteLeitura(false);
         }
 
         private string RetornarValorParametroServidor()
@@ -137,7 +112,7 @@ namespace Snebur.AcessoDados.Estrutura
                 var atributoDataHoraServidor = this.Propriedade.GetCustomAttribute<ValorPadraoDataHoraServidorAttribute>();
                 if (atributoDataHoraServidor != null)
                 {
-                    var isDataHoraUTC = atributoDataHoraServidor.DataHoraUTC;
+                    var isDataHoraUTC = atributoDataHoraServidor.IsDataHoraUTC;
                     this.IsValorFuncaoServidor = true;
                     return isDataHoraUTC ? " GETUTCDATE() " : " GETUTCDATE() ";
                 }

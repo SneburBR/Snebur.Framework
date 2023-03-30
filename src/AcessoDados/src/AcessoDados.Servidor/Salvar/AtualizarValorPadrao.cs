@@ -1,4 +1,5 @@
-﻿using Snebur.Dominio;
+﻿using Snebur.AcessoDados.Estrutura;
+using Snebur.Dominio;
 using Snebur.Dominio.Atributos;
 using Snebur.Utilidade;
 using System;
@@ -48,29 +49,58 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             //}
         }
 
-        internal static void Atualizar(EntidadeAlterada entidadeAlterada, 
+        internal static void Atualizar(EntidadeAlterada entidadeAlterada,
                                        BaseContextoDados contexto)
         {
             var entidade = entidadeAlterada.Entidade;
-            if (entidade.Id == 0)
+            var entidadeInterna = (IEntidadeInterna)entidadeAlterada.Entidade;
+            //var propriedades = ReflexaoUtil.RetornarPropriedades(entidade.GetType());
+            //var propriedades = EntidadeUtil.RetornarPropriedadesCampos(entidade.GetType(), EnumFiltroPropriedadeCampo.IgnorarChavePrimaria |
+            //                                                                               EnumFiltroPropriedadeCampo.IgnorarPropriedadeProtegida);
+            //foreach (var propriedade in propriedades)
+            //{
+
+            var estruturaEntidade = entidadeAlterada.EstruturaEntidade;
+            var estruturasCapaValorPadrao = RetornarEstruturasCamos(estruturaEntidade, entidade);
+
+            if (estruturasCapaValorPadrao?.Length > 0)
             {
-                //var propriedades = ReflexaoUtil.RetornarPropriedades(entidade.GetType());
-                var propriedades = EntidadeUtil.RetornarPropriedadesCampos(entidade.GetType(), EnumFiltroPropriedadeCampo.IgnorarChavePrimaria |
-                                                                                               EnumFiltroPropriedadeCampo.IgnorarPropriedadeProtegida);
-                foreach (var propriedade in propriedades)
+                entidadeInterna.DesativarValidacaoProprieadesAbertas();
+
+                foreach (var estruturaCampo in estruturasCapaValorPadrao)
                 {
+                    var propriedade = estruturaCampo.Propriedade;
+
+
                     var valorPropriedade = propriedade.GetValue(entidade);
-                    var valorPadrao = AtualizarValorPadrao.RetornarValorPropriedade(contexto, 
-                                                                                    entidade, 
+                    var valorPadrao = AtualizarValorPadrao.RetornarValorPropriedade(contexto,
+                                                                                    entidade,
                                                                                     propriedade,
                                                                                     valorPropriedade);
                     if (valorPadrao != null && valorPadrao != valorPropriedade)
                     {
+                        entidadeInterna.AdicionarProprieadeAberta(propriedade.Name);
+
                         propriedade.SetValue(entidade, valorPadrao);
                         entidadeAlterada.PropriedadesAtualizadas.Add(propriedade);
                     }
                 }
+                entidadeInterna.AtivarValidacaoProprieadesAbertas();
             }
+        }
+
+        private static EstruturaCampo[] RetornarEstruturasCamos(EstruturaEntidade estruturaEntidade,
+                                                                Entidade entidade)
+        {
+            if (entidade.Id == 0)
+            {
+                return estruturaEntidade.TodasEstruturasCamposValorPadraoInsert;
+            }
+            if (entidade.__PropriedadesAlteradas?.Count > 0)
+            {
+                return estruturaEntidade.TodasEstruturasCamposValorPadraoUpdate;
+            }
+            return null;
         }
 
         private static object RetornarValorPropriedade(BaseContextoDados contexto,
@@ -109,8 +139,8 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                 var atributoValorPadrao = AtualizarValorPadrao.RetornarAtributoValorPradao(propriedade);
                 if (atributoValorPadrao != null)
                 {
-                    return atributoValorPadrao.RetornarValorPadrao(contexto, 
-                                                                   entidade, 
+                    return atributoValorPadrao.RetornarValorPadrao(contexto,
+                                                                   entidade,
                                                                    valorPropriedade);
                 }
 

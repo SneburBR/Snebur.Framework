@@ -11,9 +11,9 @@ namespace Snebur.AcessoDados.Seguranca
 
         [IgnorarPropriedadeTS]
         [IgnorarPropriedadeTSReflexao]
-        HashSet<string> PropriedadesAutorizadas { get; }
+        List<string> PropriedadesAutorizadas { get; }
 
-        [IgnorarMetodoTSAttribute]
-        void AtribuirPropriedadeAutorizadas(HashSet<string> propriedadesAutorizadas);
+        [IgnorarMetodoTS]
+        void AtribuirPropriedadeAutorizadas(List<string> propriedadesAutorizadas);
     }
 }

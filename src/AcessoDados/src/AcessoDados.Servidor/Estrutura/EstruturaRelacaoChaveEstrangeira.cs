@@ -9,13 +9,13 @@ namespace Snebur.AcessoDados.Estrutura
         internal EstruturaCampo EstruturaCampoChaveEstrangeira { get; set; }
 
         internal EstruturaRelacaoChaveEstrangeira(PropertyInfo propriedade,
-                                     EstruturaEntidade estruturaEntidade,
-                                     EstruturaEntidade estruturaEntidadeChaveEstrangeira,
-                                     EstruturaCampo estrutaCampoChaveEstrangeira) :
-                                     base(propriedade, estruturaEntidade)
+                                                  EstruturaEntidade estruturaEntidade,
+                                                  EstruturaEntidade estruturaEntidadeChaveEstrangeira,
+                                                  EstruturaCampo estrutaCampoChaveEstrangeira) :
+                                                  base(propriedade, estruturaEntidade)
         {
             this.EstruturaCampoChaveEstrangeira = estrutaCampoChaveEstrangeira;
-            this.Requerido = AjudanteEstruturaBancoDados.PropriedadeRequerida(this.Propriedade);
+            this.IsRequerido = AjudanteEstruturaBancoDados.PropriedadeRequerida(this.Propriedade);
             this.EstruturaEntidadeChaveEstrangeiraDeclarada = estruturaEntidadeChaveEstrangeira;
             this.EstruturaCampoChaveEstrangeira.EstruturaRelacaoChaveEstrangeira = this;
         }

@@ -5,7 +5,7 @@ namespace Snebur.Dominio.Atributos
     [AttributeUsage(AttributeTargets.Property)]
     public class ValorPadraoIPAttribute : SomenteLeituraAttribute, IValorPadrao
     {
-
+        public bool IsValorPadraoOnUpdate { get; set; }
         public ValorPadraoIPAttribute()
         {
 

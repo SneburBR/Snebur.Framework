@@ -7,12 +7,19 @@
 		<Nullable>disable</Nullable>
 		<UserSecretsId>21621891-7d64-43a9-89e6-b94e6a6fbc80</UserSecretsId>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<Configurations>Debug;Release;Compartilhado</Configurations>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<DefineConstants>NET50; DEBUG;TRACE</DefineConstants>
 		<WarningLevel>4</WarningLevel>
 		<NoWarn>1701;1702</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Compartilhado|AnyCPU'">
+	  <DefineConstants>NET50; DEBUG;TRACE</DefineConstants>
+	  <WarningLevel>4</WarningLevel>
+	  <NoWarn>1701;1702</NoWarn>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<DefineConstants> TRACE</DefineConstants>

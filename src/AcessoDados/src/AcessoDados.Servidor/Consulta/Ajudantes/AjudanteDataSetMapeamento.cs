@@ -93,7 +93,7 @@ namespace Snebur.AcessoDados.Mapeamento
                 }
                 //Teste - o momento extado de começar a rastrear as propriedade alteradas
 
-                entidade.AtribuirPropriedadesAbertas(estruturaConsulta.PropriedadesAbertas.ToHashSet());
+                entidade.AtribuirPropriedadesAbertas(estruturaConsulta.PropriedadesAbertas);
                 entidade.AtribuirPropriedadesAutorizadas(estruturaConsulta.PropriedadesAutorizadas);
                 entidade.AtivarControladorPropriedadeAlterada();
 

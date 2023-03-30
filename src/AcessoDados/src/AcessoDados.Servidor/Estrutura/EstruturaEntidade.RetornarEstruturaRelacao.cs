@@ -77,7 +77,7 @@ namespace Snebur.AcessoDados.Estrutura
 
                     }
 
-                    var estruturaEntidade = EstruturaBancoDados.Atual.EstruturasEntidade[tipo.Name];
+                    var estruturaEntidade = this.EstruturaBancoDados.EstruturasEntidade[tipo.Name];
                     return estruturaEntidade.RetornarEstruturaRelacao(chave, true, false);
                 }
                 else

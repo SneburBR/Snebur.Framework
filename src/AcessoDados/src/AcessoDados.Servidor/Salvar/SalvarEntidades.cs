@@ -443,7 +443,8 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                     entidadesNotificacaoPropriedadeAlterada = NormalizarEntidade.RetornarEntidadesNormalizada(this.Contexto, entidadesNotificacaoPropriedadeAlterada);
                     entidadesNormalizada.AddRange(entidadesNotificacaoPropriedadeAlterada);
 
-                    if (EstruturaBancoDados.Atual.TipoEntidadeNotificaoPropriedadeAlteradaGenerica != null)
+                    
+                    if (this.Contexto.EstruturaBancoDados.TipoEntidadeNotificaoPropriedadeAlteradaGenerica != null)
                     {
                         //Propriedade alteradas GENERICAS
                         var entidadesNotificacaoPropriedadeAlteradaGenerica = this.RetornarEntidadesAlteracaoPropriedadeGenericas(entidadesNormalizada);

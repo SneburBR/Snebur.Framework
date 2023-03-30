@@ -80,17 +80,17 @@ namespace Snebur.AcessoDados
         }
         #region IEstruturaConsultaSeguranca  
 
-        private HashSet<string> _propriedadesAutorizadas;
+        private List<string> _propriedadesAutorizadas;
 
         [NaoMapear]
         [IgnorarGlobalizacao]
         [IgnorarPropriedadeTS]
         [IgnorarPropriedadeTSReflexao]
-        HashSet<string> IEstruturaConsultaSeguranca.PropriedadesAutorizadas { get => this._propriedadesAutorizadas; }
+        List<string> IEstruturaConsultaSeguranca.PropriedadesAutorizadas { get => this._propriedadesAutorizadas; }
 
         public bool ContarRegistros { get => this.RetornarValorPropriedade(this._contarRegistros); set => this.NotificarValorPropriedadeAlterada(this._contarRegistros, this._contarRegistros = value); }
 
-        void IEstruturaConsultaSeguranca.AtribuirPropriedadeAutorizadas(HashSet<string> propriedadesAutorizadas)
+        void IEstruturaConsultaSeguranca.AtribuirPropriedadeAutorizadas(List<string> propriedadesAutorizadas)
         {
             this._propriedadesAutorizadas = propriedadesAutorizadas;
         }

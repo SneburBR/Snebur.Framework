@@ -25,12 +25,12 @@ namespace Snebur.AcessoDados
                                                           params Expression<Func<TEntidade, object>>[] expressoesPropriedade) where TEntidade : Entidade
         {
 
-            var clone = entidade.CloneSomenteId(expressoesPropriedade);
-            var propriedadesAbertas = new HashSet<string>();
+            var clone = entidade.CloneSomenteId( expressoesPropriedade);
+            var propriedadesAbertas = new List<string>();
             foreach (var expressao in expressoesPropriedade)
             {
                 var propriedade = ExpressaoUtil.RetornarPropriedade(expressao);
-                if(propriedade.TrySetValue(clone, propriedade.GetValue(entidade)))
+                if (propriedade.TrySetValue(clone, propriedade.GetValue(entidade)))
                 {
                     propriedadesAbertas.Add(propriedade.Name);
                 }
@@ -91,7 +91,7 @@ namespace Snebur.AcessoDados
             }
         }
 
-        public static void AbrirRelacao<TEntidade, TRelacao>(this IContextoDados contexto, 
+        public static void AbrirRelacao<TEntidade, TRelacao>(this IContextoDados contexto,
                                                     TEntidade entidade, Expression<Func<TEntidade, TRelacao>> expressaoRelacao) where TEntidade : Entidade where TRelacao : Entidade
         {
             AbrirRelacoes(contexto, entidade, expressaoRelacao);
@@ -116,7 +116,7 @@ namespace Snebur.AcessoDados
         }
 
         public static void AbrirColecoes<TEntidade>(this IContextoDados contexto,
-                                                    TEntidade entidade, 
+                                                    TEntidade entidade,
                                                     params Expression<Func<TEntidade, IEnumerable>>[] expressoesColecao) where TEntidade : Entidade
         {
             var entidadeRecuperada = contexto.RetornarConsulta<TEntidade>(entidade.GetType()).

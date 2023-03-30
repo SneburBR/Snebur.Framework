@@ -241,7 +241,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
         private Dictionary<string, RelacaoChaveEstrageniraDependente> RetornarEntidadesRelacaoChaveEstrangeiraDepedente()
         {
             var relacoesDepedente = new Dictionary<string, RelacaoChaveEstrageniraDependente>();
-            var estruturasRelacaoChaveEstrangeira = this.EstruturaEntidade.RetornarTodasRelacoesChaveEstrangeira();
+            var estruturasRelacaoChaveEstrangeira = this.EstruturaEntidade.TodasRelacoesChaveEstrangeira();
 
             var estruturas = new List<EstruturaRelacao>();
             foreach (var estruturaRelacaoChaveEstrangeira in estruturasRelacaoChaveEstrangeira)
@@ -260,7 +260,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 
         private bool IsIgnorarRelacaoDepedenta(Entidade entidadeRelacao)
         {
-            var estruturaEntidadeRelacao = EstruturaBancoDados.Atual.EstruturasEntidade[entidadeRelacao.GetType().Name];
+            var estruturaEntidadeRelacao = this.Contexto.EstruturaBancoDados.EstruturasEntidade[entidadeRelacao.GetType().Name];
             return estruturaEntidadeRelacao.IsImplementaInterfaceISessaoUsuario;
         }
 
