@@ -3,7 +3,7 @@
 namespace Snebur.Dominio.Atributos
 {
     [IgnorarAtributoTS]
-    [AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Class)]
     public class MaximoRegistroPorConsultaAttribute : Attribute
     {
         public int MaximoRegistroPorConsulta { get; set; }

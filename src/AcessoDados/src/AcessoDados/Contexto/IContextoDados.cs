@@ -20,13 +20,13 @@ namespace Snebur.AcessoDados
 
         EstruturaConsulta RetornarEstruturaConsulta(Type tipoEntidade);
 
-        ResultadoSalvar Salvar(Entidade entidade);
+        ResultadoSalvar Salvar(IEntidade entidade);
 
-        ResultadoExcluir Excluir(Entidade entidade);
+        ResultadoExcluir Excluir(IEntidade entidade);
 
-        ResultadoExcluir Excluir(Entidade entidade, string relacoesEmCascata);
+        ResultadoExcluir Excluir(IEntidade entidade, string relacoesEmCascata);
 
-        ResultadoExcluir Excluir(List<Entidade> entidades);
+        ResultadoExcluir Excluir(IEnumerable<IEntidade> entidades);
 
 
         //ResultadoSalvar Salvar(params IEntidade[] entidades);

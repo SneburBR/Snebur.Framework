@@ -14,6 +14,7 @@ using Snebur.Servicos;
 using Snebur.Utilidade;
 using Snebur.Linq;
 using System.Diagnostics;
+using System.Collections;
 
 #if NET7_0
 using Microsoft.Data.SqlClient;
@@ -114,7 +115,7 @@ namespace Snebur.AcessoDados
             ErroUtil.ValidarReferenciaNula(configuracaoAcessoDados, nameof(configuracaoAcessoDados));
 
             this.SqlSuporte = new BancoDadosSuporta(this, flagsNaoSuporta);
-            this.ConectionString = AplicacaoSnebur.Atual.ConnectionStrings[configuracaoAcessoDados] ?? throw new ErroNaoDefinido($"Não foi encontrada o String de conexao '{configuracaoAcessoDados}' no arquivo de configuração da aplicação ConnectionStrings App.Config ou Web.Config ");
+            this.ConectionString = AplicacaoSnebur.Atual.ConnectionStrings[configuracaoAcessoDados] ?? throw new ErroNaoDefinido($"Não foi encontrada o String de conexão '{configuracaoAcessoDados}' no arquivo de configuração da aplicação ConnectionStrings App.Config ou Web.Config ");
 
             if (String.IsNullOrWhiteSpace(identificadorProprietario))
             {
@@ -252,14 +253,6 @@ namespace Snebur.AcessoDados
                                                                                       informacaoSessaoUsuario);
         }
 
-        //protected ContextoDados(string configuracaoAcessoDados, bool isSemGerenciamentoUsurioEMigracao) :
-        //                        this(configuracaoAcessoDados, ConfiguracaoAcessoDados.IdentificadorProprietarioGlobal, true)
-        //{
-        //    this.IsValidarUsuarioSessaoUsuario = false;
-        //    this.IsAnonimo = true;
-
-        //}
-
 
         #endregion
 
@@ -353,44 +346,20 @@ namespace Snebur.AcessoDados
 
         public ResultadoSalvar Salvar(params IEntidade[] entidades)
         {
-            var lista = new List<Entidade>();
-            foreach (var entidade in entidades)
-            {
-                lista.Add((Entidade)entidade);
-            }
-            return this.Salvar(lista);
+            return this.Salvar(entidades, false);
         }
 
-        public ResultadoSalvar Salvar(params Entidade[] entidades)
-        {
-            var lista = new List<Entidade>();
-            lista.AddRange(entidades);
-            return this.Salvar(lista);
-        }
-
-        public ResultadoSalvar Salvar(ListaEntidades<Entidade> entidades)
-        {
-            var lista = new List<Entidade>();
-            lista.AddRange(entidades);
-            return this.Salvar(lista);
-        }
-
-        public ResultadoSalvar Salvar(IEnumerable<Entidade> entidades)
-        {
-            return this.Salvar(entidades.ToList(), false);
-        }
-
-        public override ResultadoSalvar Salvar(List<Entidade> entidades)
+        public override ResultadoSalvar Salvar(IEnumerable<IEntidade> entidades)
         {
             return this.Salvar(entidades, false);
         }
 
-        public override ResultadoSalvar Salvar(Entidade entidade)
+        public override ResultadoSalvar Salvar(IEntidade entidade)
         {
-            return this.Salvar(new List<Entidade> { entidade }, false);
+            return this.Salvar(new List<IEntidade> { entidade }, false);
         }
 
-        public ResultadoSalvar Salvar(List<Entidade> entidades, bool ignorarErro)
+        public ResultadoSalvar Salvar(IEnumerable<IEntidade> entidades, bool ignorarErro)
         {
             this.ValidarSessaoUsuario();
 
@@ -398,6 +367,7 @@ namespace Snebur.AcessoDados
             {
                 ignorarErro = false;
             }
+
             var resultado = this.SalvarPermissao(entidades);
             if (resultado.Erro != null && (!ignorarErro))
             {
@@ -406,7 +376,7 @@ namespace Snebur.AcessoDados
             return resultado;
         }
 
-        private ResultadoSalvar SalvarPermissao(List<Entidade> entidades)
+        private ResultadoSalvar SalvarPermissao(IEnumerable<IEntidade> entidades)
         {
             var permissao = this.SeguracaContextoDados?.PermissaoSalvar(this.UsuarioLogado, this.UsuarioAvalista, entidades) ?? EnumPermissao.Autorizado;
             if (permissao == EnumPermissao.Autorizado)
@@ -420,88 +390,18 @@ namespace Snebur.AcessoDados
             };
         }
 
-        private ResultadoSalvar SalvarInterno(List<Entidade> entidades)
+        private ResultadoSalvar SalvarInterno(IEnumerable<IEntidade> entidades)
         {
-            using (var salvarEntidades = new SalvarEntidades(this, entidades.ToHashSet(), false, true))
+            var entidadesHashSet = entidades.OfType<Entidade>().ToHashSet();
+            using (var salvarEntidades = new SalvarEntidades(this, entidadesHashSet, false, true))
             {
                 return (ResultadoSalvar)salvarEntidades.Salvar();
             }
         }
         #endregion
 
-        #region Excluir
 
 
-        //Excluir
-
-        public ResultadoExcluir Excluir<TEntidade>(TEntidade entidade, Expression<Func<TEntidade, object>> expressaoPropriedade) where TEntidade : Entidade
-        {
-            var relacoes = Util.RetornarRelacoesAbertas<TEntidade>(expressaoPropriedade);
-            return this.Excluir(new List<Entidade> { entidade }, relacoes);
-        }
-
-        public ResultadoExcluir Excluir<TEntidade>(IEnumerable<TEntidade> entidades, Expression<Func<TEntidade, object>> expressaoPropriedade) where TEntidade : Entidade
-        {
-            var relacoes = Util.RetornarRelacoesAbertas<TEntidade>(expressaoPropriedade);
-            return this.Excluir(entidades.ToList<Entidade>(), relacoes);
-        }
-
-        public ResultadoExcluir Excluir<TEntidade>(TEntidade entidade, params Expression<Func<TEntidade, object>>[] expressoesPropriedade) where TEntidade : Entidade
-        {
-            var relacoes = Util.RetornarRelacoesAbertas<TEntidade>(expressoesPropriedade);
-            return this.Excluir(new List<Entidade> { entidade }, relacoes);
-        }
-
-        public ResultadoExcluir Excluir<TEntidade>(IEnumerable<TEntidade> entidades, params Expression<Func<TEntidade, object>>[] expressoesPropriedade) where TEntidade : Entidade
-        {
-            var relacoes = Util.RetornarRelacoesAbertas<TEntidade>(expressoesPropriedade);
-            return this.Excluir(entidades.ToList<Entidade>(), relacoes);
-        }
-
-        public override ResultadoExcluir Excluir(List<Entidade> entidades)
-        {
-            return this.Excluir(entidades, null, false);
-        }
-        public override ResultadoExcluir Excluir(List<Entidade> entidades, string relacoesEmCascata)
-        {
-            return this.Excluir(entidades, relacoesEmCascata, false);
-        }
-
-        public override ResultadoExcluir Excluir(Entidade entidade)
-        {
-            return this.Excluir(new List<Entidade> { entidade });
-        }
-
-        public override ResultadoExcluir Excluir(Entidade entidade, string relacoesEmCascata)
-        {
-            return this.Excluir(new List<Entidade> { entidade }, relacoesEmCascata);
-        }
-
-        public ResultadoExcluir Excluir(IEnumerable<Entidade> entidades, string relacoesEmCascata, bool ignorarErro)
-        {
-            this.ValidarSessaoUsuario();
-
-            var entidadesExcluir = this.RetornarEntidadesExcluirEmCascata(entidades, relacoesEmCascata);
-            using (var salvar = new SalvarEntidades(this, entidadesExcluir.ToHashSet(), true, false))
-            {
-                var resultado = salvar.Salvar();
-                if (resultado.Erro != null && !ignorarErro)
-                {
-                    throw resultado.Erro;
-                }
-                return resultado as ResultadoExcluir;
-            }
-        }
-
-        #endregion
-
-        //public bool AtualizarOrdenacao(IOrdenacao entidade, IOrdenacao entidadeReferencia, EnumPosicaoOrdenacao posicaoOrdenacao)
-        //{
-        //    var estruturaEntidade = this.EstruturaBancoDados.EstruturasEntidade[entidade.GetType().Name];
-        //    var estruturaCampoOrdenacao = estruturaEntidade.EstruturaCampoOrdenacao;
-
-        //    return false;
-        //}
 
         #endregion
 
@@ -856,7 +756,7 @@ namespace Snebur.AcessoDados
                 this.__estruturasCamposSomenteLeituraSobreEscrever.Value.Clear();
                 this.__estruturasCamposSomenteLeituraSobreEscrever = null;
             }
-            
+
             base.DisposeInterno();
             (AplicacaoSnebur.Atual as IAplicacaoContextoDados)?.ConexaoDadosDispensado(this);
         }

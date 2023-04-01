@@ -7,7 +7,7 @@ namespace Snebur.AcessoDados.Seguranca
     internal partial class SeguracaContextoDados
     {
 
-        private void AplicarRestricoesFiltro(List<AutorizacaoEntidade> autorizacoes, List<Entidade> entidades)
+        private void AplicarRestricoesFiltro(List<AutorizacaoEntidade> autorizacoes, IEnumerable<IEntidade> entidades)
         {
             foreach (var autorizacao in autorizacoes)
             {
@@ -15,7 +15,7 @@ namespace Snebur.AcessoDados.Seguranca
             }
         }
 
-        private void AplicarRestricoesFiltro(AutorizacaoEntidade autorizacao, List<Entidade> entidades)
+        private void AplicarRestricoesFiltro(AutorizacaoEntidade autorizacao, IEnumerable<IEntidade> entidades)
         {
             var restricoes = autorizacao.RetornarRestricoesFiltro();
             if (restricoes.Count > 0)

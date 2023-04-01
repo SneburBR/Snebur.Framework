@@ -12,22 +12,16 @@ namespace Snebur.AcessoDados.Servidor.Salvar
     internal partial class SalvarEntidades : IDisposable
     {
         internal List<EntidadeAlterada> EntidadesAlteradas { get; set; }
-
         internal Queue<EntidadeAlterada> Fila { get; set; }
-
         internal BaseContextoDados Contexto { get; set; }
-
         internal BaseConexao Conexao { get; set; }
-
         internal bool IsNotificarAlteracaoPropriedade { get; set; }
-
         internal bool Excluir { get; set; }
-
         private int ContadorParametro { get; set; }
 
         internal SalvarEntidades(BaseContextoDados contexto,
                                  HashSet<Entidade> entidades,
-                                 bool excluir,
+                                 bool isExcluir,
                                  bool isNotificarAlteracaoPropriedade)
         {
             foreach (var entidade in entidades)
@@ -35,7 +29,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                 entidade.AtivarControladorPropriedadeAlterada();
             }
 
-            this.Excluir = excluir;
+            this.Excluir = isExcluir;
             this.IsNotificarAlteracaoPropriedade = isNotificarAlteracaoPropriedade;
             this.Fila = new Queue<EntidadeAlterada>();
             this.Contexto = contexto;
@@ -43,7 +37,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             this.EntidadesAlteradas = this.RetornarEntidadesAlteradas(entidades);
             this.Fila = FilaEntidadeAlterada.RetornarFila(this.EntidadesAlteradas);
 
-            if (excluir)
+            if (isExcluir)
             {
                 this.Fila = new Queue<EntidadeAlterada>(this.Fila.Reverse());
             }
@@ -301,8 +295,10 @@ namespace Snebur.AcessoDados.Servidor.Salvar
         //Salvar
         private ResultadoSalvar RetornarResultadoSalvar(List<EntidadeAlterada> entidadesAlterada)
         {
-            var resultadoSalvar = new ResultadoSalvar();
-            resultadoSalvar.IsSucesso = true;
+            var resultadoSalvar = new ResultadoSalvar
+            {
+                IsSucesso = true
+            };
 
             foreach (var entidadeAlterada in entidadesAlterada)
             {

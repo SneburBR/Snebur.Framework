@@ -172,7 +172,10 @@ namespace Snebur.Comunicacao
                 }
                 else if (ReflexaoUtil.TipoRetornaColecao(parametroMetodo.ParameterType))
                 {
-                    if ((!Object.ReferenceEquals(parametroMetodo.ParameterType.GetGenericTypeDefinition(), typeof(List<>))))
+                    var definitionType = parametroMetodo.ParameterType.GetGenericTypeDefinition();
+
+                    if ((!Object.ReferenceEquals(definitionType, typeof(List<>))) &&
+                        (!Object.ReferenceEquals(definitionType, typeof(IEnumerable<>))))
                     {
                         throw new ErroSeguranca("Suportado somente tipo List(Of T ) T = sub classe de BaseDominio  ", EnumTipoLogSeguranca.ParametrosComunicacaoInvalidos);
                     }
@@ -184,8 +187,9 @@ namespace Snebur.Comunicacao
 
 
                     var tipoItemColecao = parametroMetodo.ParameterType.GetGenericArguments().Single();
-
-                    if (!(tipoItemColecao.IsSubclassOf(typeof(BaseDominio)) || ReflexaoUtil.TipoRetornaTipoPrimario(tipoItemColecao)))
+                    if (!(tipoItemColecao.IsSubclassOf(typeof(BaseDominio)) ||
+                          typeof(IEntidade).IsAssignableFrom(tipoItemColecao) ||
+                          ReflexaoUtil.TipoRetornaTipoPrimario(tipoItemColecao)))
                     {
                         throw new ErroSeguranca("O tipo não é suportado  " + tipoItemColecao.Name, EnumTipoLogSeguranca.ParametrosComunicacaoInvalidos);
                     }

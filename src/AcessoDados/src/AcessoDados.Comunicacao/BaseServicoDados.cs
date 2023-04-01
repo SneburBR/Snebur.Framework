@@ -24,12 +24,12 @@ namespace Snebur.AcessoDados.Comunicacao
             return this.ContextoDados.RetornarValorScalar(estruturaConsulta);
         }
 
-        public ResultadoSalvar Salvar(List<Entidade> entidades)
+        public ResultadoSalvar Salvar(IEnumerable<IEntidade> entidades)
         {
             return this.ContextoDados.Salvar(entidades, true);
         }
 
-        public ResultadoExcluir Excluir(List<Entidade> entidades, string relacoesEmCascata)
+        public ResultadoExcluir Excluir(IEnumerable<IEntidade> entidades, string relacoesEmCascata)
         {
             return this.ContextoDados.Excluir(entidades, relacoesEmCascata, true);
         }

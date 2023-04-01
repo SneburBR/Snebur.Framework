@@ -27,13 +27,13 @@ namespace Snebur.AcessoDados.Cliente
             return this.ChamarServico<ResultadoConsulta>(MethodBase.GetCurrentMethod(), parametros);
         }
 
-        public ResultadoSalvar Salvar(List<Entidade> entidades)
+        public ResultadoSalvar Salvar(IEnumerable<IEntidade> entidades)
         {
             object[] parametros = { entidades };
             return this.ChamarServico<ResultadoSalvar>(MethodBase.GetCurrentMethod(), parametros);
         }
 
-        public ResultadoExcluir Excluir(List<Entidade> entidades, string relacoesEmCascata)
+        public ResultadoExcluir Excluir(IEnumerable<IEntidade> entidades, string relacoesEmCascata)
         {
             object[] parametros = { entidades, relacoesEmCascata };
             return this.ChamarServico<ResultadoExcluir>(MethodBase.GetCurrentMethod(), parametros);

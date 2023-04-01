@@ -41,13 +41,18 @@ namespace Snebur.Comunicacao
 
         public abstract void InicializarManipuladores();
 
-         
+
         #region Métodos privados
 
-      
+
 
         private bool IsRequicaoValida(HttpRequest request, bool isValidarUrlMd5)
         {
+            if (DebugUtil.IsAttached)
+            {
+                return true;
+            }
+
             if (!this.IsAplicacaoAutorizada(request))
             {
                 this.NotificarLogSeguranca(request, EnumTipoLogSeguranca.AplicacaoNaoAutorizada);
@@ -259,7 +264,7 @@ namespace Snebur.Comunicacao
 
     public static class NameValueCollectionEx
     {
-        public static string GetValue(this NameValueCollection value, 
+        public static string GetValue(this NameValueCollection value,
                                       string chave)
         {
             return value[chave];

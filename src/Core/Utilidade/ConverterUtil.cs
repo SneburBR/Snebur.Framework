@@ -18,6 +18,8 @@ namespace Snebur.Utilidade
 
         public static object Converter(object valor, Type tipo)
         {
+
+            var tipoValor = valor?.GetType();
             if (valor == null || valor == DBNull.Value)
             {
                 if (tipo.IsValueType)
@@ -30,32 +32,43 @@ namespace Snebur.Utilidade
                 }
                 return null;
             }
+
             if (ReflexaoUtil.IsTipoNullable(tipo))
             {
                 tipo = ReflexaoUtil.RetornarTipoSemNullable(tipo);
             }
-            if (ReflexaoUtil.TipoIgualOuHerda(valor.GetType(), tipo))
+
+            if (ReflexaoUtil.TipoIgualOuHerda(tipoValor, tipo))
             {
                 return valor;
             }
-            else
+         
+
+            if (tipo.IsValueType || tipo == typeof(String))
             {
-                if (tipo.IsValueType || tipo == typeof(String))
+                if (tipo.IsEnum)
                 {
-                    if (tipo.IsEnum)
-                    {
-                        return Enum.ToObject(tipo, Convert.ToInt32(valor));
-                    }
-                    return ConverterUtil.ConverterTipoPrimario(valor, ReflexaoUtil.RetornarTipoPrimarioEnum(tipo));
+                    return Enum.ToObject(tipo, Convert.ToInt32(valor));
                 }
-                else
+                return ConverterUtil.ConverterTipoPrimario(valor, ReflexaoUtil.RetornarTipoPrimarioEnum(tipo));
+            }
+
+            if (tipo.IsInterface)
+            {
+                if (tipo.IsAssignableFrom(tipoValor))
                 {
-                    throw new ErroConverter(String.Format("Não possível converter o tipo {0} para {1} ", valor.GetType().Name, tipo.Name));
+                    return valor;
                 }
             }
+
+            return Convert.ChangeType(valor, tipo);
+
+            //throw new ErroConverter(String.Format("Não possível converter o tipo {0} para {1} ", valor.GetType().Name, tipo.Name));
+
+
         }
 
-      
+
         public static object ConverterTipoPrimario(object valor,
                                                   EnumTipoPrimario tipoPrimarioEnum)
         {
@@ -238,7 +251,7 @@ namespace Snebur.Utilidade
             {
                 return 0M;
             }
-            return Convert.ToDecimal(valor,  provider ?? CultureInfo.InvariantCulture);
+            return Convert.ToDecimal(valor, provider ?? CultureInfo.InvariantCulture);
         }
 
         public static double ParaSingle(object valor, IFormatProvider provider = null)
@@ -267,21 +280,21 @@ namespace Snebur.Utilidade
             return Convert.ToDouble(valor, provider ?? CultureInfo.InvariantCulture);
         }
 
-       
+
         public static DateTime ParaDateTime(object valor)
         {
             if (valor is DateTime d)
             {
                 return d;
             }
-            
+
             if (ConverterUtil.IsValorVazioOuNull(valor))
             {
                 return DateTime.Now;
             }
             var dataString = valor.ToString();
 
-            if (DateTime.TryParse(dataString, 
+            if (DateTime.TryParse(dataString,
                                   CultureInfo.CurrentCulture,
                                   DateTimeStyles.AssumeUniversal,
                                   out DateTime data))

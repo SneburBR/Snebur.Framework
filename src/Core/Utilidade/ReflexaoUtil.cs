@@ -7,7 +7,7 @@ namespace Snebur.Utilidade
 {
     public static partial class ReflexaoUtil
     {
-        public static System.Reflection.BindingFlags BindingFlags
+        public static BindingFlags BindingFlags
         {
             get
             {
@@ -18,6 +18,7 @@ namespace Snebur.Utilidade
                        BindingFlags.NonPublic;
             }
         }
+
         #region Metodo
 
         public static List<MethodInfo> RetornarMetodos(Type tipo, BindingFlags bindingFlags)

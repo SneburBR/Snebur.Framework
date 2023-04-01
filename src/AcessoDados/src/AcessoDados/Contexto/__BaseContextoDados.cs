@@ -109,17 +109,17 @@ namespace Snebur.AcessoDados
 
         #region IContextoDados
 
-        public abstract ResultadoSalvar Salvar(Entidade entidade);
+        public abstract ResultadoSalvar Salvar(IEntidade entidade);
 
-        public abstract ResultadoSalvar Salvar(List<Entidade> entidades);
+        public abstract ResultadoSalvar Salvar(IEnumerable<IEntidade> entidades);
 
-        public abstract ResultadoExcluir Excluir(Entidade entidade);
+        public abstract ResultadoExcluir Excluir(IEntidade entidade);
 
-        public abstract ResultadoExcluir Excluir(List<Entidade> entidades);
+        public abstract ResultadoExcluir Excluir(IEnumerable<IEntidade> entidades);
 
-        public abstract ResultadoExcluir Excluir(Entidade entidade, string relacoesEmCascata);
+        public abstract ResultadoExcluir Excluir(IEntidade entidade, string relacoesEmCascata);
 
-        public abstract ResultadoExcluir Excluir(List<Entidade> entidades, string relacoesEmCascata);
+        public abstract ResultadoExcluir Excluir(IEnumerable<IEntidade> entidades, string relacoesEmCascata);
 
         public abstract DateTime RetornarDataHora();
 

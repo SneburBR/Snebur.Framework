@@ -14,7 +14,7 @@ namespace Snebur.Dominio
 {
     [NaoCriarTabelaEntidade]
     [Plural("Entidades")]
-    public abstract class Entidade : BaseDominio, IEntidade, IEntidadeInterna, IEquatable<Entidade>, INotifyPropertyChanged, INomeTipoEntidade, IDataErrorInfo
+    public abstract class Entidade : BaseDominio, IEntidade, IEntidadeInterna, IEquatable<Entidade>, INotifyPropertyChanged, INomeTipoEntidade, IDataErrorInfo 
     {
         private bool _isValidacaoPropriedadeAbertasDesativada = false;
 

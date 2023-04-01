@@ -26,7 +26,7 @@ namespace Snebur.Utilidade
         {
             using (var md5 = MD5.Create())
             {
-                var bytes = System.Text.Encoding.UTF8.GetBytes(texto);
+                var bytes = Encoding.UTF8.GetBytes(texto);
                 bytes = md5.ComputeHash(bytes);
                 return new Guid(bytes);
             }

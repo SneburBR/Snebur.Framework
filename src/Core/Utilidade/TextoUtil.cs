@@ -432,6 +432,11 @@ namespace Snebur.Utilidade
                                                          int numeroCaracteres,
                                                          string textoFinal = null)
         {
+            if (texto == null)
+            {
+                return texto;
+            }
+
             if (texto.Length <= numeroCaracteres)
             {
                 return texto;
@@ -440,7 +445,7 @@ namespace Snebur.Utilidade
             {
                 return texto.Substring(0, numeroCaracteres - textoFinal.Length) + textoFinal;
             }
-            return texto.Substring(0, numeroCaracteres - 3);
+            return texto.Substring(0, numeroCaracteres);
         }
 
         public static string RetornarPrimeirosCaracteres(string texto, int numeroCaracteres, bool removerLinhasTabulacoes)

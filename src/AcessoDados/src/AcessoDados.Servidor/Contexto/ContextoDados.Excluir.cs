@@ -1,18 +1,84 @@
-﻿using Snebur.Dominio;
+﻿using Snebur.AcessoDados.Servidor.Salvar;
+using Snebur.Dominio;
 using Snebur.Linq;
 using Snebur.Utilidade;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace Snebur.AcessoDados
 {
     public abstract partial class BaseContextoDados : __BaseContextoDados, IServicoDados, IContextoDadosSemNotificar, IDisposable
     {
+        public override ResultadoExcluir Excluir(IEnumerable<IEntidade> entidades)
+        {
+            return this.Excluir(entidades, String.Empty, false);
+        }
 
-        private List<Entidade> RetornarEntidadesExcluirEmCascata(IEnumerable<Entidade> entidades, string relacoesEmCascata)
+        public ResultadoExcluir Excluir<TEntidade>(TEntidade entidade, Expression<Func<TEntidade, object>> expressaoPropriedade) where TEntidade : Entidade
+        {
+            var relacoes = Util.RetornarRelacoesAbertas(expressaoPropriedade);
+            return this.Excluir(new List<IEntidade> { entidade }, relacoes);
+        }
+
+        public ResultadoExcluir Excluir<TEntidade>(IEnumerable<TEntidade> entidades, Expression<Func<TEntidade, object>> expressaoPropriedade) where TEntidade : Entidade
+        {
+            var relacoes = Util.RetornarRelacoesAbertas(expressaoPropriedade);
+            return this.Excluir(entidades, relacoes);
+        }
+
+        public ResultadoExcluir Excluir<TEntidade>(TEntidade entidade, params Expression<Func<TEntidade, object>>[] expressoesPropriedade) where TEntidade : Entidade
+        {
+            var relacoes = Util.RetornarRelacoesAbertas(expressoesPropriedade);
+            return this.Excluir(new List<IEntidade> { entidade }, relacoes);
+        }
+
+        public ResultadoExcluir Excluir<TEntidade>(IEnumerable<TEntidade> entidades, params Expression<Func<TEntidade, object>>[] expressoesPropriedade) where TEntidade : Entidade
+        {
+            var relacoes = Util.RetornarRelacoesAbertas(expressoesPropriedade);
+            return this.Excluir(entidades.ToList<IEntidade>(), relacoes);
+        }
+
+        public override ResultadoExcluir Excluir(IEnumerable<IEntidade> entidades,
+                                                 string relacoesEmCascata)
+        {
+            return this.Excluir(entidades, relacoesEmCascata, false);
+        }
+
+        public override ResultadoExcluir Excluir(IEntidade entidade)
+        {
+            return this.Excluir(new List<Entidade> { entidade });
+        }
+
+        public override ResultadoExcluir Excluir(IEntidade entidade, string relacoesEmCascata)
+        {
+            return this.Excluir(new List<IEntidade> { entidade }, relacoesEmCascata);
+        }
+
+        public ResultadoExcluir Excluir(IEnumerable<IEntidade> entidades,
+                                        string relacoesEmCascata,
+                                        bool ignorarErro)
+        {
+            this.ValidarSessaoUsuario();
+
+            var entidadesExcluir = this.RetornarEntidadesExcluirEmCascata(entidades, relacoesEmCascata);
+            using (var salvar = new SalvarEntidades(this, entidadesExcluir.ToHashSet(), true, false))
+            {
+                var resultado = salvar.Salvar();
+                if (resultado.Erro != null && !ignorarErro)
+                {
+                    throw resultado.Erro;
+                }
+                return resultado as ResultadoExcluir;
+            }
+        }
+
+
+
+        private List<Entidade> RetornarEntidadesExcluirEmCascata(IEnumerable<IEntidade> entidades, string relacoesEmCascata)
         {
             var entidadesRecuperadas = new List<Entidade>();
 

@@ -1,6 +1,7 @@
 ﻿using Snebur.Dominio;
 using Snebur.Reflexao;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -188,18 +189,31 @@ namespace Snebur.Utilidade
 
         public static bool TipoRetornaColecao(Type tipo)
         {
-            if (tipo.GetInterface(typeof(System.Collections.ICollection).Name, true) != null || tipo.GetInterface(typeof(System.Collections.Generic.ICollection<>).Name, true) != null)
+            if (tipo.IsArray)
             {
-                if (tipo.IsSubclassOf(typeof(Snebur.Dominio.BaseTipoComplexo)))
-                {
-                    return false;
-                }
                 return true;
             }
-            else
+
+            if (typeof(IEnumerable).IsAssignableFrom(tipo) && tipo.IsGenericType)
             {
-                return false;
+                return true;
             }
+            return false;
+
+            //if (tipo.GetInterface(typeof(ICollection).Name, true) != null ||
+            //    tipo.GetInterface(typeof(ICollection<>).Name, true) != null ||
+            //    tipo.GetInterface(typeof(IEnumerable<>).Name, true) != null)
+            //{
+            //    if (tipo.IsSubclassOf(typeof(BaseTipoComplexo)))
+            //    {
+            //        return false;
+            //    }
+            //    return true;
+            //}
+            //else
+            //{
+            //    return false;
+            //}
         }
 
         public static bool TipoRetornaColecaoEntidade(Type tipo)
@@ -310,10 +324,10 @@ namespace Snebur.Utilidade
         }
         public static bool TipoIgualOuHerda(Type tipo, Type tipoBase)
         {
-#if DEBUG
+
             ErroUtil.ValidarReferenciaNula(tipo, nameof(tipo));
             ErroUtil.ValidarReferenciaNula(tipoBase, nameof(tipoBase));
-#endif
+
             if (tipo == tipoBase)
             {
                 return true;

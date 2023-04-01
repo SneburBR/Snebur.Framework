@@ -104,18 +104,18 @@ namespace Snebur.Utilidade
         {
             return EntidadeUtil.RetornarPropriedadesCampos(tipoEntidade, EnumFiltroPropriedadeCampo.Todas);
         }
-        
 
-        public static IValorPadrao RetornarAtributoImplementaIValorPradao(PropertyInfo propriedade)
+
+        public static TInterfaceAtributo RetornarAtributoImplementaInterface<TInterfaceAtributo>(PropertyInfo propriedade) where TInterfaceAtributo : class
         {
             var atributos = propriedade.GetCustomAttributes();
-            var tipoIValorPadrao = typeof(IValorPadrao);
-            var atributosValorPadrao = atributos.Where(x => ReflexaoUtil.TipoImplementaInterface(x.GetType(), tipoIValorPadrao, true)).ToArray();
-            if (atributosValorPadrao.Count() > 1)
+            var tipoIValorPadrao = typeof(TInterfaceAtributo);
+            var atributo = atributos.Where(x => ReflexaoUtil.TipoImplementaInterface(x.GetType(), tipoIValorPadrao, true)).ToArray();
+            if (atributo.Length > 1)
             {
-                throw new Erro($"Existe mais de um atributo que implementa a interface {nameof(IValorPadrao)}, Entidade: '{propriedade.DeclaringType.Name}', Propriedade: '{propriedade.Name}'");
+                throw new Erro($"Existe mais de um atributo que implementa a interface {typeof(TInterfaceAtributo).Name}, Entidade: '{propriedade.DeclaringType.Name}', Propriedade: '{propriedade.Name}'");
             }
-            return (IValorPadrao)atributosValorPadrao.SingleOrDefault();
+            return atributo.SingleOrDefault() as TInterfaceAtributo;
         }
 
         public static List<PropertyInfo> RetornarPropriedadesCampos(Type tipoEntidade, EnumFiltroPropriedadeCampo filtro)
@@ -142,7 +142,7 @@ namespace Snebur.Utilidade
                                                                     bool ignorarChavePrimaria = false,
                                                                     bool ignorarPropriedadeProtegida = false,
                                                                     bool ignorarChaveEstrangeira = false,
-                                                                    bool ignorarSobreescritas = false )
+                                                                    bool ignorarSobreescritas = false)
         {
             var propriedades = ReflexaoUtil.RetornarPropriedades(tipoEntidade, ignorarTipoBase);
             if (tipoEntidade.BaseType == typeof(Entidade))

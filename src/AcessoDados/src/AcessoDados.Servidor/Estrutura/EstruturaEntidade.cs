@@ -98,7 +98,7 @@ namespace Snebur.AcessoDados.Estrutura
 
         internal EstruturaCampo[] TodasEstruturasCamposValorPadraoInsert
                  => this.RetornarValoresRecursivo(ref this._todasEstruturaCamposValorPadraoInsert,
-                                          x => x.EstruturasCamposValorPadraoInsertInterno);
+                                                   x => x.EstruturasCamposValorPadraoInsertInterno);
         internal EstruturaCampo[] TodasEstruturasCamposValorPadraoUpdate
                  => this.RetornarValoresRecursivo(ref this._todasEstruturaCamposValorPadraoUpdate,
                                                   x => x.EstruturasCamposValorPadraoUpdateInterno);

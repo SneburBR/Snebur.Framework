@@ -23,7 +23,8 @@ namespace Snebur.AcessoDados.Estrutura
                 return this.NomeParametro;
             }
         }
-        internal IValorPadrao AtributoValorPadrao { get; }
+
+
         internal EnumTipoPrimario TipoPrimarioEnum { get; }
         internal SqlDbType TipoSql { get; }
         internal EstruturaRelacaoChaveEstrangeira EstruturaRelacaoChaveEstrangeira { get; set; } = null;
@@ -37,6 +38,11 @@ namespace Snebur.AcessoDados.Estrutura
         internal bool IsPossuiIndiceTextoCompleto { get; }
         internal bool IsNotificarAlteracaoPropriedade { get; }
         public bool IsAutorizarAlteracaoPropriedade { get; }
+        public bool IsValorPadrao { get; }
+
+        internal IBaseValorPadrao AtributoValorPadrao { get; }
+
+        public EnumTipoValorPadrao TipoValorPadrao { get; }
 
         /// <summary>
         /// Construtor campo do TipoComplexo
@@ -74,14 +80,8 @@ namespace Snebur.AcessoDados.Estrutura
             this.NomeCampoSensivel = this.RetornarNomeCampoSensivel();
 
             this.AtributoValorPadrao = this.RetornarAtributoValorPadrao();
+            this.TipoValorPadrao = this.RetornarTipoValorPadrao();
 
-            if (this.AtributoValorPadrao?.IsTipoNullableRequerido == true)
-            {
-                if (this.Tipo.IsValueType && !this.IsTipoNullable)
-                {
-                    this.Alertas.Add($"O propriedade {this.Propriedade.Name} da entidade {this.Propriedade.DeclaringType.Name} por valor padrao, altere o tipo da propriedade para Nullble<{this.Tipo.Name}> para o valor padrao seja inserido quando valor nullo");
-                }
-            }
             this.IsPossuiIndiceTextoCompleto = this.RetornarIsPossuiIndiceTextoCompleto();
             this.IsNotificarAlteracaoPropriedade = this.RetornarIsNotificarAlteracaoPropriedade();
             this.IsAutorizarAlteracaoPropriedade = this.RetornarIsAutorizarAlteracaoPropriedade();
@@ -91,6 +91,14 @@ namespace Snebur.AcessoDados.Estrutura
             if (this.IsFormatarSomenteNumero && this.Propriedade.PropertyType != typeof(string))
             {
                 throw new Erro($"O atributo {nameof(FormatarSomenteNumerosAttribute)} é suportado apenas para propriedade do tipo {nameof(String)}");
+            }
+
+            if (this.AtributoValorPadrao?.IsTipoNullableRequerido == true)
+            {
+                if (this.Tipo.IsValueType && !this.IsTipoNullable)
+                {
+                    this.Alertas.Add($"O propriedade {this.Propriedade.Name} da entidade {this.Propriedade.DeclaringType.Name} por valor padrão, altere o tipo da propriedade para Nullble<{this.Tipo.Name}> para o valor padrao seja inserido quando valor nullo");
+                }
             }
         }
 
@@ -120,9 +128,33 @@ namespace Snebur.AcessoDados.Estrutura
             return null;
         }
 
-        internal IValorPadrao RetornarAtributoValorPadrao()
+        private IBaseValorPadrao RetornarAtributoValorPadrao()
         {
-            return EntidadeUtil.RetornarAtributoImplementaIValorPradao(this.Propriedade);
+            return EntidadeUtil.RetornarAtributoImplementaInterface<IBaseValorPadrao>(this.Propriedade);
+        }
+
+        private EnumTipoValorPadrao RetornarTipoValorPadrao()
+        {
+            var atributo = this.AtributoValorPadrao;
+            if (atributo != null)
+            {
+           
+                if (atributo is ValorPadraoIDSessaoUsuarioAttribute)
+                {
+                    return EnumTipoValorPadrao.SessaoUsuario_Id;
+                }
+                if (atributo is ValorPadraoIDUsuarioLogadoAttribute)
+                {
+                    return EnumTipoValorPadrao.UsuarioLogado_Id;
+                }
+                if (atributo is PropriedadeIdentificadorProprietarioAttribute)
+                {
+                    return EnumTipoValorPadrao.IndentificadorProprietario;
+                }
+                return EnumTipoValorPadrao.Comum;
+
+            }
+            return EnumTipoValorPadrao.Nenhum;
         }
 
         #region Métodos internos
@@ -243,6 +275,25 @@ namespace Snebur.AcessoDados.Estrutura
         {
             return this.Propriedade.GetCustomAttribute<AutorizarAlteracaoPropriedadeAttribute>() != null;
         }
+
+        internal T RetornarAtributoValorPadrao<T>()
+        {
+            if(this.AtributoValorPadrao is T atributo)
+            {
+                return atributo;
+            }
+            throw new Exception($"Não foi possível converter o atributo de valor padrão para {typeof(T).Name} ");
+        }
+
         #endregion
+    }
+
+    public enum EnumTipoValorPadrao
+    {
+        Nenhum,
+        IndentificadorProprietario,
+        SessaoUsuario_Id,
+        UsuarioLogado_Id,
+        Comum
     }
 }

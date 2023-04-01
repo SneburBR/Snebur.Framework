@@ -59,8 +59,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             //                                                                               EnumFiltroPropriedadeCampo.IgnorarPropriedadeProtegida);
             //foreach (var propriedade in propriedades)
             //{
-
-            var estruturaEntidade = entidadeAlterada.EstruturaEntidade;
+             var estruturaEntidade = entidadeAlterada.EstruturaEntidade;
             var estruturasCapaValorPadrao = RetornarEstruturasCamos(estruturaEntidade, entidade);
 
             if (estruturasCapaValorPadrao?.Length > 0)
@@ -74,6 +73,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 
                     var valorPropriedade = propriedade.GetValue(entidade);
                     var valorPadrao = AtualizarValorPadrao.RetornarValorPropriedade(contexto,
+                                                                                    estruturaCampo,
                                                                                     entidade,
                                                                                     propriedade,
                                                                                     valorPropriedade);
@@ -104,48 +104,24 @@ namespace Snebur.AcessoDados.Servidor.Salvar
         }
 
         private static object RetornarValorPropriedade(BaseContextoDados contexto,
+                                                       EstruturaCampo estruturaCampo,
                                                        Entidade entidade,
                                                        PropertyInfo propriedade,
                                                        object valorPropriedade)
         {
-            var atributos = propriedade.GetCustomAttributes();
-            if (atributos.Count() > 0)
+
+            var tipoValorPadrao = estruturaCampo.TipoValorPadrao;
+            switch (tipoValorPadrao)
             {
-                var atributoSessaoUsuario = atributos.OfType<ValorPadraoIDSessaoUsuarioAttribute>().SingleOrDefault();
-                if (atributoSessaoUsuario != null)
-                {
-                    contexto.SqlSuporte.ValidarSuporteSessaoUsuario();
+                case EnumTipoValorPadrao.Comum:
 
-                    if (atributoSessaoUsuario.IsSomenteCadastro && entidade.Id > 0)
-                    {
-                        return null;
-                    }
-                    return contexto.SessaoUsuarioLogado.Id;
-                }
-
-                var atributoUsuarioLogado = atributos.OfType<ValorPadraoIDUsuarioLogadoAttribute>().SingleOrDefault();
-                if (atributoUsuarioLogado != null)
-                {
-                    contexto.SqlSuporte.ValidarSuporteSessaoUsuario();
-                    if (!atributoUsuarioLogado.IsPermitirUsuarioAnonimo)
-                    {
-                        if (contexto.IsAnonimo)
-                        {
-                            throw new Erro("O usuário anonimo não tem permissão para salvar setar o valor padrão do id usuario logado");
-                        }
-                    }
-                    return contexto.UsuarioLogado.Id;
-                }
-                var atributoValorPadrao = AtualizarValorPadrao.RetornarAtributoValorPradao(propriedade);
-                if (atributoValorPadrao != null)
-                {
+                    var atributoValorPadrao = estruturaCampo.RetornarAtributoValorPadrao<IValorPadrao>();
                     return atributoValorPadrao.RetornarValorPadrao(contexto,
                                                                    entidade,
                                                                    valorPropriedade);
-                }
 
-                if (atributos.OfType<PropriedadeIdentificadorProprietarioAttribute>().SingleOrDefault() != null)
-                {
+                case EnumTipoValorPadrao.IndentificadorProprietario:
+
                     var identificadorProprietario = contexto.IdentificadorProprietario;
 
                     try
@@ -158,7 +134,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                                 if (identificadorProprietarioNormalizado != ConfiguracaoUtil.IDENTIFICADOR_PROPRIETARIO_GLOBAL)
                                 {
                                     return ConverterUtil.Converter(identificadorProprietarioNormalizado,
-                                                            propriedade.PropertyType);
+                                                                   propriedade.PropertyType);
                                 }
                             }
 
@@ -173,10 +149,40 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                         throw new Erro($"Não é possível converter  identificador do proprietário {identificadorProprietario} para {propriedade.PropertyType.Name}", ex);
                     }
 
-                }
+                   
+                case EnumTipoValorPadrao.SessaoUsuario_Id:
 
+                    contexto.SqlSuporte.ValidarSuporteSessaoUsuario();
+
+                    var atributoSessaoUsuario =estruturaCampo.RetornarAtributoValorPadrao<ValorPadraoIDSessaoUsuarioAttribute>();
+                    if (atributoSessaoUsuario.IsSomenteCadastro && entidade.Id > 0)
+                    {
+                        return null;
+                    }
+                    return contexto.SessaoUsuarioLogado.Id;
+
+                case EnumTipoValorPadrao.UsuarioLogado_Id:
+
+                    contexto.SqlSuporte.ValidarSuporteSessaoUsuario();
+                    var atributoUsuarioLogado = estruturaCampo.RetornarAtributoValorPadrao<ValorPadraoIDUsuarioLogadoAttribute>();
+                    if (!atributoUsuarioLogado.IsPermitirUsuarioAnonimo)
+                    {
+                        if (contexto.IsAnonimo)
+                        {
+                            throw new Erro("O usuário anonimo não tem permissão para salvar setar o valor padrão do id usuario logado");
+                        }
+                    }
+                    return contexto.UsuarioLogado.Id;
+
+                
+                case EnumTipoValorPadrao.Nenhum:
+
+                    throw new Exception("A estrutura da campo não possui nenhum atributo de valor padrão");
+
+                default:
+                    throw new Exception($"O tipo do valor padrão {tipoValorPadrao} não é suportado");
             }
-            return null;
+
         }
 
         private static IValorPadrao RetornarAtributoValorPradao(PropertyInfo propriedade)

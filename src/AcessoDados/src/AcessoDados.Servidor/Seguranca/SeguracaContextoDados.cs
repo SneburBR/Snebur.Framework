@@ -79,7 +79,7 @@ namespace Snebur.AcessoDados.Seguranca
             return permissao;
         }
 
-        internal EnumPermissao PermissaoSalvar(IUsuario usuario, IUsuario usuarioAvalista, List<Entidade> entidades)
+        internal EnumPermissao PermissaoSalvar(IUsuario usuario, IUsuario usuarioAvalista, IEnumerable<IEntidade> entidades)
         {
             var dicionarioEntidadesAdicionar = this.RetornarTodosEntidades(entidades, EnumOperacao.Adicionar);
             var dicionarioEntidadesSalvar = this.RetornarTodosEntidades(entidades, EnumOperacao.Atualizar);
@@ -286,7 +286,7 @@ namespace Snebur.AcessoDados.Seguranca
             return EnumPermissao.Autorizado;
         }
 
-        private Dictionary<string, List<Entidade>> RetornarTodosEntidades(List<Entidade> entidades, EnumOperacao operacao)
+        private Dictionary<string, List<Entidade>> RetornarTodosEntidades(IEnumerable<IEntidade> entidades, EnumOperacao operacao)
         {
             var dicionario = new Dictionary<string, List<Entidade>>();
             this.VarrerEntidades(dicionario, entidades, new HashSet<Entidade>(), operacao);

@@ -11,9 +11,9 @@ namespace Snebur.AcessoDados
 
         ResultadoConsulta RetornarResultadoConsulta(EstruturaConsulta estruturaConsulta);
 
-        ResultadoSalvar Salvar(List<Entidade> entidades);
+        ResultadoSalvar Salvar(IEnumerable<IEntidade> entidades);
 
-        ResultadoExcluir Excluir(List<Entidade> entidades, string relacoesEmCascata);
+        ResultadoExcluir Excluir(IEnumerable<IEntidade> entidades, string relacoesEmCascata);
 
         DateTime RetornarDataHora();
 

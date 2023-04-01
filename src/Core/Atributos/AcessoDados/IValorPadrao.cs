@@ -1,5 +1,15 @@
-﻿namespace Snebur.Dominio.Atributos
+﻿using System.Runtime.InteropServices;
+
+namespace Snebur.Dominio.Atributos
 {
+
+    public interface IBaseValorPadrao 
+    {
+        bool IsTipoNullableRequerido { get; }
+        bool IsValorPadraoOnUpdate { get; }
+   
+    }
+
     [IgnorarInterfaceTS]
     public interface IConverterValorPadrao
     {
@@ -10,9 +20,10 @@
 
 
     [IgnorarInterfaceTS]
-    public interface IValorPadrao : IConverterValorPadrao
+    public interface IValorPadrao : IConverterValorPadrao, IBaseValorPadrao
     {
-        bool IsTipoNullableRequerido { get; }
-        bool IsValorPadraoOnUpdate { get; }
+     
     }
+
+ 
 }
