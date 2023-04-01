@@ -1,4 +1,5 @@
-﻿using Snebur.AcessoDados.Estrutura;
+﻿using Microsoft.VisualBasic;
+using Snebur.AcessoDados.Estrutura;
 using Snebur.Dominio;
 using Snebur.Dominio.Atributos;
 using System;
@@ -36,10 +37,13 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 
         #endregion
 
+        private long _idRollback;
+
         internal EntidadeAlterada(BaseContextoDados contexto,
                                  Entidade entidade,
                                  EstruturaEntidade estruturaEntidade, bool excluir)
         {
+            this._idRollback = entidade.Id;
             this.CamposComputado = new List<CampoComputado>();
             this.PropriedadesAtualizadas = new List<PropertyInfo>();
             this.Contexto = contexto;
@@ -273,6 +277,16 @@ namespace Snebur.AcessoDados.Servidor.Salvar
         public override string ToString()
         {
             return String.Format("{0} - {1}", base.ToString(), this.Entidade.ToString());
+        }
+
+
+        internal void SetId(long id)
+        {
+            this.Entidade.Id = id;
+        }
+        internal void Rollback()
+        {
+            this.Entidade.Id = this._idRollback;
         }
         #endregion
     }

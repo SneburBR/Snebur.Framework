@@ -120,6 +120,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                                 catch (Exception)
                                 {
                                     transacao.Rollback();
+                                    this.EntidadesAlteradas.ForEach(x => x.Rollback());
                                     throw;
                                 }
                             }
@@ -231,7 +232,8 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                             {
                                 throw new Exception(" ultimo id invalido");
                             }
-                            entidadeAlterada.Entidade.Id = id;
+                            entidadeAlterada.SetId(id);
+                            
                             return 0;
                         }
                         return cmd.ExecuteNonQuery();
