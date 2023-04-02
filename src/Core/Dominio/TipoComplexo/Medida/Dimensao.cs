@@ -26,10 +26,12 @@ namespace Snebur.Dominio
             this._largura = largura;
             this._altura = altura;
         }
+
         [IgnorarConstrutorTS]
-        public Dimensao(double largura, double altura, double dpiVisualizacao) : this(largura, altura)
+        public Dimensao(double largura, double altura,
+                        Func<double?,double> funcaoDpiVisualizacao) : this(largura, altura)
         {
-            this.DpiVisualizacao = dpiVisualizacao;
+            this.FuncaoNormalizarDpiVisualizacao = funcaoDpiVisualizacao;
         }
 
         public override string ToString()
@@ -69,7 +71,7 @@ namespace Snebur.Dominio
         {
             return new Dimensao(this.Largura, this.Altura)
             {
-                DpiVisualizacao = this.DpiVisualizacao
+                FuncaoNormalizarDpiVisualizacao = this.FuncaoNormalizarDpiVisualizacao
             };
         }
 
@@ -96,8 +98,10 @@ namespace Snebur.Dominio
         {
             return new Dimensao(this.Altura, this.Largura)
             {
-                DpiVisualizacao = this.DpiVisualizacao
+                FuncaoNormalizarDpiVisualizacao = this.FuncaoNormalizarDpiVisualizacao
             };
         }
+
+   
     }
 }

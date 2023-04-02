@@ -93,12 +93,8 @@ namespace Snebur.Dominio
 
         public override string ToString()
         {
-            return $"{this.Esquerda}-{this.Superior}-{this.Direita}-{this.Inferior}-DPI{this.DpiVisualizacao}";
+            return $"{this.Esquerda}-{this.Superior}-{this.Direita}-{this.Inferior}-DPI-{this.DpiVisualizacao:0.0}";
         }
-        //public override Margem Clone()
-        //{
-        //    throw new NotImplementedException();
-        //}
 
         #endregion
 

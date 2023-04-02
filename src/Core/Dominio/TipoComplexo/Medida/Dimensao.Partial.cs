@@ -27,7 +27,7 @@ namespace Snebur.Dominio
         {
             get
             {
-                if (this.DpiVisualizacao > 0)
+                if (this.FuncaoNormalizarDpiVisualizacao != null)
                 {
                     return this.LarguraVisualizacao;
                 }
@@ -42,7 +42,7 @@ namespace Snebur.Dominio
         {
             get
             {
-                if (this.DpiVisualizacao > 0)
+                if (this.FuncaoNormalizarDpiVisualizacao != null)
                 {
                     return this.AlturaVisualizacao;
                 }

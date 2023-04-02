@@ -13,13 +13,18 @@ namespace Snebur.Utilidade
         public const int BITS_POR_PIXELS_JPEG = 24;
 
         public const double DPI_IMPRESSAO_PADRAO = 300;
+        public const double DPI_APRESENTACAO_MAXIMO = 200;
         public const double POLEGADA = 2.54;
         public const double DPI_VISUALIZACAO_WPF = 96;
+        public const double DPI_VISUALIZACAO_WEB = 72;
 
         public const double MAXIMO_AREA_IMPRESSAO_SUPORTADA = 200 * 1024 * 1024;
 
-        public static readonly Dimensao DIMENSAO_RECIPIENTE_APRESENTACAO = new Dimensao(1920, 1080);
+        public static readonly double LARGURA_APRESENTACAO = 1920;
+        public static readonly double ALTURA_APRESENTACAO = 1080;
+        public static readonly Dimensao DIMENSAO_RECIPIENTE_APRESENTACAO = new Dimensao(LARGURA_APRESENTACAO, ALTURA_APRESENTACAO);
 
+        public static readonly Func<double?, double> FUNCAO_DPI_VISAULIZACAO = (value) => MAXIMO_AREA_IMPRESSAO_SUPORTADA;
         public static double RetornarPixelsImpressao(double medidaEmCentimetros)
         {
             return MedidaUtil.ParaPixels(medidaEmCentimetros, MedidaUtil.DPI_IMPRESSAO_PADRAO);
@@ -68,14 +73,14 @@ namespace Snebur.Utilidade
 
         public static void DefinirDpiVisualizacao(object objeto, double dpi)
         {
-            Func<double> funcao = () =>
+            Func<double?, double> funcao = (value) =>
             {
                 return dpi;
             };
             DefinirDpiVisualizacao(objeto, funcao);
         }
 
-        public static void DefinirDpiVisualizacao(object objeto, Func<double> funcaoRetornarDpi)
+        public static void DefinirDpiVisualizacao(object objeto, Func<double?, double> funcaoRetornarDpi)
         {
             if (objeto != null)
             {
@@ -84,7 +89,7 @@ namespace Snebur.Utilidade
             }
         }
 
-        private static void DefinirDpiTipoComplexo(object objeto, Func<double> funcaoRetornarDpi, HashSet<object> objetosAnalisados)
+        private static void DefinirDpiTipoComplexo(object objeto, Func<double?, double> funcaoRetornarDpi, HashSet<object> objetosAnalisados)
         {
             var tipo = objeto.GetType();
             if (ReflexaoUtil.TipoRetornaColecao(tipo))
@@ -104,7 +109,7 @@ namespace Snebur.Utilidade
 
                 if (objeto is IDpiVisualizacao objetoDpi)
                 {
-                    objetoDpi.FuncaoDpiVisualizacao = funcaoRetornarDpi;
+                    objetoDpi.FuncaoNormamlizarDpiVisualizacao = funcaoRetornarDpi;
                 }
                 if (!tipo.IsValueType && tipo != typeof(string) && !tipo.IsSubclassOf(typeof(BaseTipoComplexo)))
                 {

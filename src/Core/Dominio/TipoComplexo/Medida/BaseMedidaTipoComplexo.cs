@@ -9,34 +9,45 @@ namespace Snebur.Dominio
     [IgnorarGlobalizacao]
     public abstract class BaseMedidaTipoComplexo : BaseTipoComplexo, IDpiVisualizacao
     {
-        private Func<double> _funcaoDpiVisualizacao;
+        protected Func<double?, double> FuncaoNormalizarDpiVisualizacao;
 
         [NaoMapear]
         [IgnorarPropriedadeTSAttribute]
-        Func<double> IDpiVisualizacao.FuncaoDpiVisualizacao { get => this._funcaoDpiVisualizacao; set => this._funcaoDpiVisualizacao = value; }
-
-        [IgnorarPropriedadeTS]
-        [IgnorarPropriedadeTSReflexao]
-        [NaoMapear]
-        public double DpiVisualizacao
+        Func<double?, double> IDpiVisualizacao.FuncaoNormamlizarDpiVisualizacao
         {
-            get
-            {
-                if (this._funcaoDpiVisualizacao != null)
-                {
-                    return this._funcaoDpiVisualizacao.Invoke();
-                }
-                return 0;
-            }
-            set
-            {
-                var retorno = value;
-                this._funcaoDpiVisualizacao = () =>
-                {
-                    return retorno;
-                };
-            }
+            get => this.FuncaoNormalizarDpiVisualizacao;
+            set => this.FuncaoNormalizarDpiVisualizacao = value;
         }
+
+        public double DpiVisualizacao => this.FuncaoNormalizarDpiVisualizacao?.Invoke(null) ?? 0;
+
+        public void SetFuncaoDpiVisualizacao(Func<double?, double> funcaoNormalizarDpiVisualizacao)
+        {
+            this.FuncaoNormalizarDpiVisualizacao = funcaoNormalizarDpiVisualizacao;
+        }
+
+        //[IgnorarPropriedadeTS]
+        //[IgnorarPropriedadeTSReflexao]
+        //[NaoMapear]
+        //public double DpiVisualizacao
+        //{
+        //    get
+        //    {
+        //        if (this._funcaoNormalizarDpiVisualizacao != null)
+        //        {
+        //            return this._funcaoNormalizarDpiVisualizacao.Invoke();
+        //        }
+        //        return 0;
+        //    }
+        //    set
+        //    {
+        //        var retorno = value;
+        //        this._funcaoNormalizarDpiVisualizacao = (null) =>
+        //        {
+        //            return retorno;
+        //        };
+        //    }
+        //}
 
         protected int? RetornarValorVisualizacao(double? valor)
         {
@@ -49,14 +60,19 @@ namespace Snebur.Dominio
 
         protected int RetornarValorVisualizacao(double valor)
         {
-            if (this.DpiVisualizacao == 0 && !this.IsSerializando)
+            if (this.FuncaoNormalizarDpiVisualizacao == null)
             {
-                if (DebugUtil.IsAttached)
+                if (!this.IsSerializando)
                 {
-                    throw new Exception($"O Dpi visualização não foi definido, utilizar o método estático {nameof(MedidaUtil)}.{nameof(MedidaUtil.DefinirDpiVisualizacao)} e passar o bojeto");
+                    if (DebugUtil.IsAttached)
+                    {
+                        throw new Exception($"O DPI visualização não foi definido, utilizar o método estático {nameof(MedidaUtil)}.{nameof(MedidaUtil.DefinirDpiVisualizacao)} e passar o bojeto");
+                    }
                 }
+                return 0;
             }
-            return MedidaUtil.RetornarPixelsVisualizacao(valor, this.DpiVisualizacao);
+            var dpi = this.FuncaoNormalizarDpiVisualizacao(valor);
+            return MedidaUtil.RetornarPixelsVisualizacao(valor, dpi);
         }
 
         internal protected override BaseTipoComplexo BaseClone()
