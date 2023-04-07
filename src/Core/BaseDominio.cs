@@ -1,5 +1,6 @@
-﻿ using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Interface;
 using Snebur.Serializacao;
 using Snebur.Utilidade;
 using System;
@@ -181,9 +182,12 @@ namespace Snebur.Dominio
                 this.__IsControladorPropriedadesAlteradaAtivo = false;
             }
         }
-  
 
-        internal protected virtual void NotificarValorPropriedadeAlterada<T>(T antigoValor, T novoValor, [CallerMemberName] string nomePropriedade = "", string nomePropriedadeTipoComplexo = null)
+        internal protected virtual void NotificarValorPropriedadeAlterada<T>(T antigoValor, 
+                                                                             T novoValor, 
+                                                                             [CallerMemberName] string nomePropriedade = "",
+                                                                             string nomePropriedadeEntidade = null,
+                                                                             string nomePropriedadeTipoComplexo = null)
         {
             if (this.IsSerializando)
             {
@@ -212,7 +216,14 @@ namespace Snebur.Dominio
                         {
                             if (!this.__PropriedadesAlteradas.ContainsKey(nomePropriedade))
                             {
-                                this.__PropriedadesAlteradas.Add(nomePropriedade, new PropriedadeAlterada(nomePropriedade, antigoValor, novoValor, nomePropriedadeTipoComplexo));
+                              var novaPropriedadeAlterada =  PropriedadeAlterada.Create(nomePropriedade,
+                                                                                       antigoValor,
+                                                                                       novoValor,
+                                                                                       nomePropriedadeEntidade,
+                                                                                       nomePropriedadeTipoComplexo);
+
+
+                                this.__PropriedadesAlteradas.Add(nomePropriedade, novaPropriedadeAlterada);
                             }
                         }
                     }

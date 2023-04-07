@@ -23,7 +23,8 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                 var estruturaEntidade = this.Contexto.EstruturaBancoDados.EstruturasEntidade[entidade.GetType().Name];
                 foreach (var estruturaAlteracaoPropriedade in estruturaEntidade.TodasEstruturasAlteracaoPropriedadeGenerica)
                 {
-                    var (isExisteAltracao, valorAtual) = this.IsExisteAlteracaoPropriedade(entidade, estruturaAlteracaoPropriedade);
+                    var (isExisteAltracao, valorAtual) = this.IsExisteAlteracaoPropriedade(entidade, 
+                                                                                          estruturaAlteracaoPropriedade);
                     if (isExisteAltracao)
                     {
                         var valorPropriedade = estruturaAlteracaoPropriedade.Propriedade.GetValue(entidade);

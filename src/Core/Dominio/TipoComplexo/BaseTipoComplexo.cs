@@ -58,6 +58,7 @@ namespace Snebur.Dominio
 
         internal protected override void NotificarValorPropriedadeAlterada<T>(T antigoValor, T novoValor,
                                                                            [CallerMemberName] string nomePropriedade = "",
+                                                                           string nomePropriedadeEntidade = null,
                                                                            string nomePropriedadeTipoComplexo = null)
         {
             if (this.IsCongelado && !Util.SaoIgual(antigoValor, novoValor))
@@ -71,7 +72,8 @@ namespace Snebur.Dominio
                 this.__Entidade.NotificarValorPropriedadeAlterada(antigoValor,
                     novoValor,
                     caminhoPropriedade,
-                    this.__NomePropriedadeEntidade);
+                    this.__NomePropriedadeEntidade,
+                    nomePropriedadeTipoComplexo);
             }
             base.NotificarPropriedadeAlterada(nomePropriedade);
         }

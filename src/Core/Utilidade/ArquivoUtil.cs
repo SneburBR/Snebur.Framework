@@ -378,10 +378,10 @@ namespace Snebur.Utilidade
             return CaminhoIgual(caminhoDiretorio1, caminhoDiretorio2);
         }
 
-        public static bool CaminhoIgual(string caminho1, 
+        public static bool CaminhoIgual(string caminho1,
                                         string caminho2)
         {
-            if(caminho1 == caminho2)
+            if (caminho1 == caminho2)
             {
                 return true;
             }
@@ -393,7 +393,7 @@ namespace Snebur.Utilidade
         public static string NormalizarCaminhoArquivo(string caminhoArquivo)
         {
             return Path.GetFullPath(caminhoArquivo)
-                  .Replace( Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar).
+                  .Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar).
                   Trim();
             //caminhoArquivo = caminhoArquivo.ToLower().Replace("/", "\\");
             //return caminhoArquivo.Trim();
@@ -424,6 +424,38 @@ namespace Snebur.Utilidade
             return File.ReadAllText(caminho, encoding);
         }
 
+
+        public static void CriarArquivoTexto(string caminho, 
+                                             string contudo = null, 
+                                             bool isIgnorarEro = false)
+        {
+            if (File.Exists(caminho))
+            {
+                if (isIgnorarEro)
+                {
+                    return;
+                }
+                throw new Exception($"O arquivo já existe {caminho}");
+            }
+            try 
+            {
+                using (var sw = File.CreateText(caminho))
+                {
+                    if(contudo!= null)
+                    {
+                        sw.Write(contudo);
+                    }
+                }
+            }
+            catch
+            {
+                if (isIgnorarEro)
+                {
+                    return;
+                }
+                throw;
+            }
+        }
         public static void SalvarTexto(string caminho, string texto)
         {
             ArquivoUtil.SalvarTexto(caminho, texto, System.Text.Encoding.UTF8);

@@ -11,6 +11,8 @@ namespace Snebur.AcessoDados
 {
     public abstract class BaseContextoDados : __BaseContextoDados, IBaseServico, IServicoDados
     {
+        protected abstract BaseServicoDadosCliente RetornarServicoDadosCliente();
+
         private BaseServicoDadosCliente ServicoDados { get; }
 
         public BaseContextoDados() : base()
@@ -61,12 +63,13 @@ namespace Snebur.AcessoDados
             return this.Excluir(lista, String.Empty);
         }
 
-        public override ResultadoSalvar Salvar(Entidade entidade)
+     
+        public override ResultadoSalvar Salvar(IEntidade entidade)
         {
-            return this.Salvar(new List<Entidade> { entidade });
+            return this.Salvar(new List<IEntidade> { entidade });
         }
 
-        public override ResultadoSalvar Salvar(List<Entidade> entidades)
+        public override ResultadoSalvar Salvar(IEnumerable<IEntidade> entidades)
         {
             var resultadoSalvar = this.ServicoDados.Salvar(entidades);
             if (!resultadoSalvar.IsSucesso)
@@ -78,38 +81,35 @@ namespace Snebur.AcessoDados
             return resultadoSalvar;
         }
 
-        public override ResultadoExcluir Excluir(Entidade entidade)
+
+        public override ResultadoExcluir Excluir(IEntidade entidade)
         {
-            return this.Excluir(new List<Entidade> { entidade });
+            return this.Excluir(new List<IEntidade> { entidade });
         }
 
-        public override ResultadoExcluir Excluir(Entidade entidade, string relacoesEmCascata)
-        {
-            return this.Excluir(new List<Entidade> { entidade }, String.Empty);
-        }
 
-        public override ResultadoExcluir Excluir(List<Entidade> entidades)
+        public override ResultadoExcluir Excluir(IEnumerable<IEntidade> entidades)
         {
             return this.Excluir(entidades, String.Empty);
         }
 
-        public override ResultadoExcluir Excluir(List<Entidade> entidades, string relacoesEmCascata)
+        public override ResultadoExcluir Excluir(IEntidade entidade, string relacoesEmCascata)
+        {
+            return this.Excluir(new List<IEntidade> { entidade }, String.Empty);
+        }
+       
+
+        public override ResultadoExcluir Excluir(IEnumerable<IEntidade> entidades, string relacoesEmCascata)
         {
             return this.ServicoDados.Excluir(entidades, relacoesEmCascata);
         }
 
-
-
-        //public override DateTime RetornarDataHora(bool utc = true)
-        //{
-        //    return this.ServicoDados.RetornarDataHora(utc);
-        //}
-
+         
         #endregion
 
         #region  Normalizar entidades Salvar
 
-        private void NormailizarEntidadeSalvar(ResultadoSalvar resultadoSalvar, List<Entidade> entidades)
+        private void NormailizarEntidadeSalvar(ResultadoSalvar resultadoSalvar, IEnumerable<IEntidade> entidades)
         {
             var todasEntidades = this.RetornarTodasEntidadesSalvas(entidades);
             foreach (var entidadeSalva in resultadoSalvar.EntidadesSalvas)
@@ -133,7 +133,7 @@ namespace Snebur.AcessoDados
             }
         }
 
-        private void NormalizarEntidadesSalvar(Entidade entidade, Dictionary<Guid, Entidade> entidadesEncontradas)
+        private void NormalizarEntidadesSalvar(IEntidade entidade, Dictionary<Guid, IEntidade> entidadesEncontradas)
         {
             if (entidade == null) return;
             if (entidadesEncontradas.ContainsKey(entidade.RetornarIdentificadorReferencia()))
@@ -166,9 +166,9 @@ namespace Snebur.AcessoDados
             }
         }
 
-        private Dictionary<Guid, Entidade> RetornarTodasEntidadesSalvas(List<Entidade> entidades)
+        private Dictionary<Guid, IEntidade> RetornarTodasEntidadesSalvas(IEnumerable<IEntidade> entidades)
         {
-            var todasEntidade = new Dictionary<Guid, Entidade>();
+            var todasEntidade = new Dictionary<Guid, IEntidade>();
             foreach (var entidade in entidades)
             {
                 this.NormalizarEntidadesSalvar(entidade, todasEntidade);
@@ -252,6 +252,7 @@ namespace Snebur.AcessoDados
         }
         #endregion
 
-        protected abstract BaseServicoDadosCliente RetornarServicoDadosCliente();
+    
+  
     }
 }

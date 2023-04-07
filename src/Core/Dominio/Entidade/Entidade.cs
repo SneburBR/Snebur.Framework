@@ -1,4 +1,5 @@
 ﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Interface;
 using Snebur.Utilidade;
 using System;
 using System.Collections;
@@ -334,7 +335,8 @@ namespace Snebur.Dominio
                     {
                         if (!this.__PropriedadesAlteradas.ContainsKey(nomePropriedade))
                         {
-                            this.__PropriedadesAlteradas.Add(nomePropriedade, new PropriedadeAlterada(nomePropriedade, antigoValorChaveEstrangeira, novoValorChaveEstrangeira, null));
+                           var propriedadeAlterada = PropriedadeAlterada.Create(nomePropriedade, antigoValorChaveEstrangeira, novoValorChaveEstrangeira);
+                            this.__PropriedadesAlteradas.Add(nomePropriedade, propriedadeAlterada);
                         }
                     }
                 }

@@ -240,6 +240,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             }
             return estruturasEntidade;
         }
+
         #region Métodos privados
 
         private Dictionary<string, RelacaoChaveEstrageniraDependente> RetornarEntidadesRelacaoChaveEstrangeiraDepedente()

@@ -1,5 +1,6 @@
 ﻿using Snebur.AcessoDados.Estrutura;
 using Snebur.Dominio;
+using Snebur.Dominio.Interface;
 using Snebur.Linq;
 using Snebur.Servicos;
 using Snebur.Utilidade;

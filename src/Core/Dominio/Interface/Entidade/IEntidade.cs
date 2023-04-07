@@ -1,4 +1,6 @@
 ﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Interface;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -26,5 +28,10 @@ namespace Snebur.Dominio
         //TEntidade CloneSomenteId<TEntidade>() where TEntidade : IEntidade;
 
         //TEntidade CloneSomenteId<TEntidade>() where TEntidade : Entidade;
+
+        [IgnorarMetodoTS]
+        void AtivarControladorPropriedadeAlterada();
+
+        Guid RetornarIdentificadorReferencia();
     }
 }

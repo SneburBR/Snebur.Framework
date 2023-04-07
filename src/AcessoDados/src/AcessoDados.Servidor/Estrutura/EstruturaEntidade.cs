@@ -790,7 +790,8 @@ namespace Snebur.AcessoDados.Estrutura
                     if (this.EstruturasTipoComplexao.ContainsKey(propriedade.Name))
                     {
                         var estrturaTipoComplexo = this.EstruturasTipoComplexao[propriedade.Name];
-                        estruturasAlteracaoPropriedade.Add(new EstruturaAlteracaoPropriedadeGenerica(propriedade,
+                        estruturasAlteracaoPropriedade.Add(new EstruturaAlteracaoPropriedadeGenerica(
+                                                                propriedade,
                                                                 this,
                                                                 estrturaTipoComplexo,
                                                                 atributo));

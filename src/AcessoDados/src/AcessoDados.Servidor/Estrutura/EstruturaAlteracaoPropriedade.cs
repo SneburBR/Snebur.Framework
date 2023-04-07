@@ -28,10 +28,10 @@ namespace Snebur.AcessoDados.Estrutura
         }
 
         internal BaseEstruturaAlteracaoPropriedade(PropertyInfo propriedade,
-                                               EstruturaEntidade estruturaEntidade,
-                                               EstruturaTipoComplexo estrturaTipoComplexo,
-                                               TAtributo atributo) :
-                                               base(propriedade, estruturaEntidade)
+                                                   EstruturaEntidade estruturaEntidade,
+                                                   EstruturaTipoComplexo estrturaTipoComplexo,
+                                                   TAtributo atributo) :
+                                                   base(propriedade, estruturaEntidade)
         {
             this.Atributo = atributo;
             this.EstruturaTipoComplexo = estrturaTipoComplexo;
@@ -77,13 +77,13 @@ namespace Snebur.AcessoDados.Estrutura
     internal class EstruturaAlteracaoPropriedadeGenerica : BaseEstruturaAlteracaoPropriedade<NotificarAlteracaoPropriedadeGenericaAttribute>
     {
         internal EstruturaAlteracaoPropriedadeGenerica(PropertyInfo propriedade,
-                                             EstruturaEntidade estruturaEntidade,
-                                             EstruturaCampo estruturaCampo,
-                                             NotificarAlteracaoPropriedadeGenericaAttribute atributo) :
-                                             base(propriedade,
-                                                 estruturaEntidade,
-                                                 estruturaCampo,
-                                                 atributo)
+                                                      EstruturaEntidade estruturaEntidade,
+                                                      EstruturaCampo estruturaCampo,
+                                                      NotificarAlteracaoPropriedadeGenericaAttribute atributo) :
+                                                      base(propriedade,
+                                                          estruturaEntidade,
+                                                          estruturaCampo,
+                                                          atributo)
         {
 
 
