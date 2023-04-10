@@ -4,75 +4,42 @@ using Snebur.Dominio.Atributos;
 
 namespace Snebur.Dominio
 {
-    public enum EnumEfeitoImagem
+    public enum EnumFiltroImagem
     {
-        [Rotulo("Desconhecido")]
-        Desconhecido = -1,
+        [Rotulo("Exposição")]
+        Exposicao,
 
-        [Rotulo("Nenhum")]
-        Nenhum = 0,
+        [Rotulo("Ciano")]
+        Ciano,
 
-        [Rotulo("Preto e branco")]
-        PretoBranco = 1,
+        [Rotulo("Magenta")]
+        Magenta,
+
+        [Rotulo("Amarelo")]
+        Amarelo,
+
+        [Rotulo("Contraste")]
+        Contraste,
+
+        [Rotulo("Brilho")]
+        Brilho,
 
         [Rotulo("Sépia")]
-        Sepia = 2,
+        Sepia,
 
-        [Rotulo("Cancún")]
-        Cancum = 3,
+        [Rotulo("Saturação")]
+        Saturacao,
 
-        [Rotulo("Moscou")]
-        Moscou = 4,
+        [Rotulo("Preto e branco")]
+        PretoBranco,
 
-        [Rotulo("Dubai")]
-        Dubai = 5,
+        [Rotulo("Inverter")]
+        Inverter,
 
-        [Rotulo("Paris")]
-        Paris = 6,
+        [Rotulo("Matriz")]
+        Matriz,
 
-        [Rotulo("Chicago")]
-        Chicago = 7,
-
-        [Rotulo("Veneza")]
-        Veneza = 8,
-
-        [Rotulo("Cairo")]
-        Cairo = 9,
-
-        [Rotulo("Acapulco")]
-        Acapulco = 10,
-
-        [Rotulo("Fortaleza")]
-        Fortaleza = 11,
-
-        [Rotulo("Pequim")]
-        Pequim = 12,
-
-        [Rotulo("Atenas")]
-        Atenas = 13,
-
-        [Rotulo("Manaus")]
-        Manaus = 14,
-
-        [Rotulo("Rio")]
-        Rio = 15,
-
-        [Rotulo("Sydney")]
-        Sydney = 16,
-
-        [Rotulo("Vancouver")]
-        Vancouver = 17,
-
-        [Rotulo("São Paulo")]
-        SaoPaulo = 18,
-
-        [Rotulo("Jaipur")]
-        Jaipur = 19,
-
-        [Rotulo("Medellín")]
-        Medellin = 20,
-
-        [Rotulo("Londres")]
-        Londres = 21
+        [Rotulo("Desfoque")]
+        Desfoque
     }
 }
