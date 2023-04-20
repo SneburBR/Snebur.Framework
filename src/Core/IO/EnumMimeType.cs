@@ -13,10 +13,14 @@ namespace Snebur.Dominio
         Abw = 200,
         [Rotulo("Abode Illustrator")]
         Ai = 300,
+        [Rotulo("Animated Portable Network Graphics")]
+        Apng = 320,
         [Rotulo("Documento Arquivado (varios arquivos embutidos)")]
         Arc = 400,
         [Rotulo("Arquivo de audio e vídeo Intercalar AVI")]
         Avi = 500,
+        [Rotulo("Formato AV1 Image File Format")]
+        Avif = 520,
         [Rotulo("Formato eBook do Amazon Kindle")]
         Azw = 600,
         [Rotulo("Qualquer tipo de dados binários")]

@@ -29,6 +29,8 @@
 
         //bool IsPerfilsRGB { get; set; }
 
+        bool IsIcone { get; set; }
+
         Dimensao DimensaoImagemMiniatura { get; set; }
 
         Dimensao DimensaoImagemPequena { get; set; }

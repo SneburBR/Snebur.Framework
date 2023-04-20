@@ -5,6 +5,9 @@ namespace Snebur.Imagem
     [ConstantesTSAttribute]
     public class ConstantesImagemApresentacao
     {
+        public const int LARGURA_ICONE = 178;
+        public const int ALTURA_ICONE = 220;
+
         public const int ALTURA_IMAGEM_MINIATURA = 90;
 
         public const int LARGURA_IMAGEM_MINIATURA = 90;

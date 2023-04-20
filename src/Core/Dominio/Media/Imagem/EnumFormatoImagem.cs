@@ -9,7 +9,11 @@
         TIFF = 4,
         ICO = 5,
         GIF = 6,
-        HEIC = 7
+        HEIC = 7,
+        WEBP = 8,
+        SVG = 9,
+        AVIF = 10,
+        APNG = 11
         //OUTRO = 99
     }
 }

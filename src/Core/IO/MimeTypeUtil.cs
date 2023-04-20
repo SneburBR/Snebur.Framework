@@ -16,10 +16,14 @@ namespace Snebur.Utilidade
                     return "application/x-abiword";
                 case EnumMimeType.Ai:
                     return "application/postscript";
+                case EnumMimeType.Apng:
+                    return "image/apng";
                 case EnumMimeType.Arc:
                     return "application/octet-stream";
                 case EnumMimeType.Avi:
                     return "video/x-msvideo";
+                case EnumMimeType.Avif:
+                    return "image/avif";
                 case EnumMimeType.Azw:
                     return "application/vnd.amazon.ebook";
                 case EnumMimeType.Bin:
