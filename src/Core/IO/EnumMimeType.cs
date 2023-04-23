@@ -168,5 +168,20 @@ namespace Snebur.Dominio
         [Rotulo("7-zip archive")]
         _7z = 7200,
 
+        Dng = 7201,
+        Cr2 = 7202,
+        Nef = 7203,
+        Nrw = 7204,
+        Arw = 7205,
+        Crw = 7206,
+        Cr3 = 7207,
+        Raf = 7208,
+        Sr2 = 7209,
+        Orf = 7210,
+        NKSC = 7211,
+        GPR = 7212,
+        Srw = 7213,
+        Heic = 7214,
+
     }
 }

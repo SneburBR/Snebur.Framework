@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Web;
+using Zyoncore.Imagem;
 
 #if NET7_0
 using Microsoft.AspNetCore.Http;
@@ -18,8 +19,6 @@ namespace Snebur.ServicoArquivo
         public bool IsReusable => true;
 
         public static HashSet<EnumTamanhoImagem> TamanhosSuportados = new HashSet<EnumTamanhoImagem>(new EnumTamanhoImagem[] { EnumTamanhoImagem.Miniatura,
-                                                                                                                               EnumTamanhoImagem.Pequena,
-                                                                                                                               EnumTamanhoImagem.Media,
                                                                                                                                EnumTamanhoImagem.Grande,
                                                                                                                                EnumTamanhoImagem.Impressao });
 #if NET7_0
@@ -51,10 +50,10 @@ namespace Snebur.ServicoArquivo
 
             var caminhoImagem = this.RetornarCaminhoImagem(context);
             var response = context.Response;
-
             if (File.Exists(caminhoImagem))
             {
-                response.ContentType = "image/jpeg";
+                var mimeType = FormatoImagemUtil.RetornarMimeType(caminhoImagem);
+                response.ContentType = mimeType;
                 response.StatusCode = 200;
                 response.WriteFile(caminhoImagem);
             }

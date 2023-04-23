@@ -882,8 +882,6 @@ namespace Snebur.Utilidade
 
         public static bool IsStreamJpeg(Stream stream)
         {
-         
-
             using (var br = new BinaryReader(stream))
             {
                 var soi = br.ReadUInt16();  // Start of Image (SOI) marker (FFD8)

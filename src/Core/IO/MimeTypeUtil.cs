@@ -1,6 +1,7 @@
 ﻿using Snebur.Dominio;
 using System;
 using System.Diagnostics;
+using System.Net;
 
 namespace Snebur.Utilidade
 {
@@ -154,8 +155,34 @@ namespace Snebur.Utilidade
                     return "video/3gpp2";
                 case EnumMimeType._7z:
                     return "application/x-7z-compressed";
-
-                default: throw new Erro($"O tipo MimeType {tipo} não está definido");
+                case EnumMimeType.Dng:
+                    return "image/x-adobe-dng";
+                case EnumMimeType.Cr2:
+                    return "image/x-canon-cr2";
+                case EnumMimeType.Nef:
+                    return "image/x-nikon-nef";
+                case EnumMimeType.Arw:
+                    return "image/x-sony-arw";
+                case EnumMimeType.Crw:
+                    return "image/x-canon-crw";
+                case EnumMimeType.Cr3:
+                    return "image/x-canon-cr3";
+                case EnumMimeType.Raf:
+                    return "image/x-fuji-raf";
+                case EnumMimeType.Sr2:
+                    return "image/x-sony-sr2";
+                case EnumMimeType.Orf:
+                    return "image/x-olympus-orf";
+                case EnumMimeType.NKSC:
+                    return "image/x-nikon-nksc";
+                case EnumMimeType.GPR:
+                    return "image/x-gopro-gpr";
+                case EnumMimeType.Srw:
+                    return "image/x-samsung-srw";
+                case EnumMimeType.Heic:
+                    return "image/heic";
+                default:
+                    return "application/octet-stream";
             }
         }
         public static EnumMimeType RetornarMimeTypeEnum(string extensao)
