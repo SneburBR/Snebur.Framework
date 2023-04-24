@@ -5,7 +5,7 @@ using System.Linq;
 using System.Windows.Media;
 using Snebur.Utilidade;
 
-namespace Snebur.Imagem
+namespace Snebur.Imagens
 {
     public partial class PerfilIccUtil
     {

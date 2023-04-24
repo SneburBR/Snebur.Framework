@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
-using Snebur.Imagem;
+using Snebur.Imagens;
 using Snebur.Utilidade;
 
 namespace System.IO

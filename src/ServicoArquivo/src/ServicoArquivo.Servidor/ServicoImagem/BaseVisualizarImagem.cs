@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Web;
-using Zyoncore.Imagem;
+using Zyoncore.Imagens;
 
 #if NET7_0
 using Microsoft.AspNetCore.Http;
@@ -19,7 +19,6 @@ namespace Snebur.ServicoArquivo
         public bool IsReusable => true;
 
         public static HashSet<EnumTamanhoImagem> TamanhosSuportados = new HashSet<EnumTamanhoImagem>(new EnumTamanhoImagem[] { EnumTamanhoImagem.Miniatura,
-                                                                                                                               EnumTamanhoImagem.Grande,
                                                                                                                                EnumTamanhoImagem.Impressao });
 #if NET7_0
 
@@ -44,6 +43,7 @@ namespace Snebur.ServicoArquivo
             }
         }
 #else
+
         public void ProcessRequest(HttpContext context)
         {
             (AplicacaoSnebur.Atual as BaseAplicacaoServicoArquivo).AcessarRede();
@@ -74,6 +74,7 @@ namespace Snebur.ServicoArquivo
             var caminhoDiretorioImagem = this.RetornarDiretorioImagem(idImagem, nomeTipoImagem, tamanhoImagem);
             var nomeArquivo = ServicoArquivoUtil.RetornarNomeArquivo(idImagem, ServicoImagemUtil.RetornarExtensaoImagem(tamanhoImagem));
             return Path.Combine(caminhoDiretorioImagem, nomeArquivo);
+
             //if (!File.Exists(caminhoImagem) || isAceitarOutrosTamanho)
             //{
             //    var tamanhosImagem = EnumUtil.RetornarValoresEnum<EnumTamanhoImagem>();
@@ -152,9 +153,5 @@ namespace Snebur.ServicoArquivo
         #endregion
 
         protected abstract string RetornarRepositorioImagem(IInformacaoRepositorioImagem informacaoRepositorio);
-
-
     }
-
-
 }

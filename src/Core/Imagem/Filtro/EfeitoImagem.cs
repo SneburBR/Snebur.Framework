@@ -1,6 +1,6 @@
 ﻿using Snebur.Dominio;
 
-namespace Snebur.Imagem
+namespace Snebur.Imagens
 {
     public class EfeitoImagem
     {

@@ -6,7 +6,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Snebur.Utilidade;
 
-namespace Snebur.Imagem
+namespace Snebur.Imagens
 {
     public abstract class BaseProcessarImagem : IDisposable
     {

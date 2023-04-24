@@ -4,7 +4,7 @@ using System.IO;
 using System.Windows.Media.Imaging;
 using Snebur.Utilidade;
 
-namespace Snebur.Imagem
+namespace Snebur.Imagens
 {
     public class PngResolver
     {

@@ -9,7 +9,7 @@ using System.Windows.Media.Imaging;
 using Snebur.Dominio;
 using Snebur.Utilidade;
 
-namespace Snebur.Imagem
+namespace Snebur.Imagens
 {
     public class ConverterCorFormatoImagemUtil
     {

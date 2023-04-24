@@ -5,7 +5,7 @@ using System.IO;
 using System.Drawing.Drawing2D;
 using System;
 
-namespace Snebur.Imagem
+namespace Snebur.Imagens
 {
     public class BitmapUtil
     {

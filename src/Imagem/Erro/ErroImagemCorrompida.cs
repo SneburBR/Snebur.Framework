@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace Snebur.Imagem
+namespace Snebur.Imagens
 {
     [Serializable()]
     public class ErroImagemCorrompida : Erro

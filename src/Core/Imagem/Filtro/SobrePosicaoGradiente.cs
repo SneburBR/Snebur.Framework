@@ -1,4 +1,4 @@
-﻿namespace Snebur.Imagem
+﻿namespace Snebur.Imagens
 {
     public abstract class SobrePosicaoGradiente : SobrePosicao
     {

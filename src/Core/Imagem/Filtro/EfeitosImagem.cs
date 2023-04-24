@@ -1,5 +1,5 @@
 ﻿using Snebur.Dominio;
-using Snebur.Imagem;
+using Snebur.Imagens;
 using System.Collections.Generic;
 
 namespace Snebur.UI

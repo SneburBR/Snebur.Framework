@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Snebur.Dominio;
-using Snebur.Imagem;
+using Snebur.Imagens;
 
 namespace Snebur.Utilidade
 {

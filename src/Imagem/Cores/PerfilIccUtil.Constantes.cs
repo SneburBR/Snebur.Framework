@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
 
-namespace Snebur.Imagem
+namespace Snebur.Imagens
 {
     public partial class PerfilIccUtil
     {

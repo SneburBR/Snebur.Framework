@@ -1,6 +1,6 @@
 ﻿using Snebur.Dominio.Atributos;
 
-namespace Snebur.Imagem
+namespace Snebur.Imagens
 {
     public enum EnumDirecaoGradiente
     {

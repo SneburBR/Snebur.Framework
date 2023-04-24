@@ -1,7 +1,7 @@
 ﻿using Snebur.Dominio.Atributos;
 
 //https://github.com/asadm/NETFx
-namespace Snebur.Imagem
+namespace Snebur.Imagens
 {
     public enum EnumMixagem
     {

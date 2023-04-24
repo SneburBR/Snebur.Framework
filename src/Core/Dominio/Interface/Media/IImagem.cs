@@ -2,6 +2,7 @@
 {
     public interface IImagem : IMedia
     {
+        string ChecksumArquivoLocal { get; set; }
         bool IsExisteMiniatura { get; set; }
 
         bool IsExistePequena { get; set; }

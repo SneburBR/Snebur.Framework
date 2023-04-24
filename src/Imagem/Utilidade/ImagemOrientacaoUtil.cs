@@ -7,7 +7,7 @@ namespace Snebur.Utilidade
     using System.Linq;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
-    using Snebur.Imagem;
+    using Snebur.Imagens;
 
     public class ImagemOrientacaoUtil
     {

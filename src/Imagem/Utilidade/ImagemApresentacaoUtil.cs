@@ -1,6 +1,6 @@
 ﻿using System;
 
-using Snebur.Imagem;
+using Snebur.Imagens;
 using Snebur.Dominio;
 
 namespace Snebur.Utilidade

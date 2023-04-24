@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Zyoncore.Imagem
+namespace Zyoncore.Imagens
 {
     public static class FormatoImagemUtil
     {
@@ -152,8 +152,10 @@ namespace Zyoncore.Imagem
 
         public static EnumFormatoImagem RetornarFormatoImagem(this Stream stream)
         {
+            stream.Seek(0, SeekOrigin.Begin);
             byte[] buffer = new byte[16];
             stream.Read(buffer, 0, buffer.Length);
+            stream.Seek(0, SeekOrigin.Begin);
 
             if (IsJpeg(buffer))
             {

@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Media.Imaging;
-using Snebur.Imagem;
+using Snebur.Imagens;
 using Snebur.Utilidade;
 
 namespace System.Windows.Media.Imaging

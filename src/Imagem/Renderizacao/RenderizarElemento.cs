@@ -11,7 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Snebur.Utilidade;
 
-namespace Snebur.Imagem.Renderizacao
+namespace Snebur.Imagens.Renderizacao
 {
     public class RenderizarElemento : IDisposable
     {
