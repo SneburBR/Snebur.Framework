@@ -76,12 +76,12 @@ namespace Snebur.AcessoDados
             {
                 var consulta = this.Contexto.RetornarConsulta<ISessaoUsuario>(this.TipoSessaoUsuario);
                 consulta.Where(x => x.IdentificadorSessaoUsuario == identificadorSessaoUsuario);
-                consulta.AbrirPropriedade(x => x.Estado);
+                consulta.AbrirPropriedade(x => x.Status);
 
                 var sessaoUsuario = consulta.SingleOrDefault();
                 if (sessaoUsuario != null)
                 {
-                    return sessaoUsuario.Estado;
+                    return sessaoUsuario.Status;
                 }
                 return EnumStatusSessaoUsuario.IdentificadorSessaoUsuarioInexistente;
             }
@@ -93,7 +93,7 @@ namespace Snebur.AcessoDados
                 {
                     return true;
                 }
-                sessaoUsuario.Estado = EnumStatusSessaoUsuario.SenhaAlterada;
+                sessaoUsuario.Status = EnumStatusSessaoUsuario.SenhaAlterada;
                 this.ContextoSalvar.SalvarInternoSemNotificacao(sessaoUsuario);
                 return false;
             }
@@ -105,7 +105,7 @@ namespace Snebur.AcessoDados
                 var nowUtc = DateTime.UtcNow;
                 usuario.DataHoraUltimoAcesso = nowUtc;
                 sessaoUsuario.DataHoraUltimoAcesso = nowUtc;
-                sessaoUsuario.Estado = EnumStatusSessaoUsuario.Ativo;
+                sessaoUsuario.Status = EnumStatusSessaoUsuario.Ativo;
                 this.ContextoSalvar.SalvarInternoSemNotificacao(new IEntidade[] { usuario, sessaoUsuario }, false);
             }
 
@@ -137,7 +137,7 @@ namespace Snebur.AcessoDados
                 consulta.Where(x => x.IdentificadorSessaoUsuario == identificadorSessaoUsuario);
 
                 consulta.AbrirPropriedade(x => x.IdentificadorSessaoUsuario).
-                         AbrirPropriedade(x => x.Estado).
+                         AbrirPropriedade(x => x.Status).
                          AbrirPropriedade(x => x.StatusServicoArquivo).
                          AbrirPropriedade(x => x.Usuario_Id).
                          //AbrirPropriedade(x => x.DataHoraInicio).
@@ -166,10 +166,10 @@ namespace Snebur.AcessoDados
 
                     if (this.IsSessaoUsuarioDiferente(sessaoUsuario, usuario))
                     {
-                        sessaoUsuario.Estado = EnumStatusSessaoUsuario.UsuarioDiferente;
+                        sessaoUsuario.Status = EnumStatusSessaoUsuario.UsuarioDiferente;
 
                         var cloneSessao = (sessaoUsuario as Entidade).CloneSomenteId<Entidade>(true) as ISessaoUsuario;
-                        cloneSessao.Estado = EnumStatusSessaoUsuario.UsuarioDiferente;
+                        cloneSessao.Status = EnumStatusSessaoUsuario.UsuarioDiferente;
 
                         ((IContextoDadosSemNotificar)this.Contexto).SalvarInternoSemNotificacao(cloneSessao);
 
@@ -182,9 +182,9 @@ namespace Snebur.AcessoDados
 
                     }
                 }
-                if (sessaoUsuario.Estado == EnumStatusSessaoUsuario.Nova)
+                if (sessaoUsuario.Status == EnumStatusSessaoUsuario.Nova)
                 {
-                    sessaoUsuario.Estado = EnumStatusSessaoUsuario.Ativo;
+                    sessaoUsuario.Status = EnumStatusSessaoUsuario.Ativo;
                 }
                 return sessaoUsuario;
             }
@@ -335,7 +335,7 @@ namespace Snebur.AcessoDados
                 var ipInformacao = this.RetornarIpInformacao();
 
                 sessaoUsuario.Usuario = usuario;
-                sessaoUsuario.Estado = EnumStatusSessaoUsuario.Nova;
+                sessaoUsuario.Status = EnumStatusSessaoUsuario.Nova;
 
                 AutoMapearUtil.Mapear(informacaoSessaoUsuario, sessaoUsuario);
                 sessaoUsuario.IdentificadorProprietario = this.Contexto.IdentificadorProprietario;

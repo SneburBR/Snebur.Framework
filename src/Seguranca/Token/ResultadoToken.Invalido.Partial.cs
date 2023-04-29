@@ -15,7 +15,7 @@ namespace Snebur.Seguranca
             {
                 return new ResultadoToken
                 {
-                    Estado = EnumStatusToken.Invalido
+                    Status = EnumStatusToken.Invalido
                 };
             }
         }
@@ -34,7 +34,7 @@ namespace Snebur.Seguranca
             {
                 return new ResultadoToken<T>
                 {
-                    Estado = EnumStatusToken.Invalido
+                    Status = EnumStatusToken.Invalido
                 };
             }
         }
@@ -53,7 +53,7 @@ namespace Snebur.Seguranca
             {
                 return new ResultadoToken<T1, T2>
                 {
-                    Estado = EnumStatusToken.Invalido
+                    Status = EnumStatusToken.Invalido
                 };
             }
         }
@@ -73,7 +73,7 @@ namespace Snebur.Seguranca
             {
                 return new ResultadoToken<T1, T2, T3>
                 {
-                    Estado = EnumStatusToken.Invalido
+                    Status = EnumStatusToken.Invalido
                 };
             }
         }
@@ -95,7 +95,7 @@ namespace Snebur.Seguranca
             {
                 return new ResultadoToken<T1, T2, T3, T4>
                 {
-                    Estado = EnumStatusToken.Invalido
+                    Status = EnumStatusToken.Invalido
                 };
             }
         }
@@ -118,7 +118,7 @@ namespace Snebur.Seguranca
             {
                 return new ResultadoToken<T1, T2, T3, T4, T5>
                 {
-                    Estado = EnumStatusToken.Invalido
+                    Status = EnumStatusToken.Invalido
                 };
             }
         }

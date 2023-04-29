@@ -97,7 +97,7 @@ namespace Snebur.Comunicacao
         private bool ValidarToken(HttpRequest request, string token, bool isValidarUrlMd5)
         {
             var resultado = Token.ValidarToken(token, TimeSpan.FromSeconds(TEMPO_EXPIRAR_TOKEN));
-            if (resultado.Estado != EnumStatusToken.Valido)
+            if (resultado.Status != EnumStatusToken.Valido)
             {
                 var tipoLogSeguranca = resultado.RetornarTipoLogReguranca();
                 var mensagem = String.Format("Token : {0} - DataHora requisição : {1}, DataHora Token {2}", token, DateTime.UtcNow, resultado.DataHora);

@@ -259,12 +259,12 @@ namespace Snebur.Comunicacao
 
                 if (ex is ErroSessaoUsuarioExpirada erroSessaoUsuarioExpirada)
                 {
-                    return new ResultadoSessaoUsuarioInvalida(erroSessaoUsuarioExpirada.EstadoSessao, this.IdentificadorSessaoUsuario);
+                    return new ResultadoSessaoUsuarioInvalida(erroSessaoUsuarioExpirada.StatusSessao, this.IdentificadorSessaoUsuario);
                 }
                 var erroInterno = ex.InnerException;
                 if (erroInterno is ErroSessaoUsuarioExpirada erroInternoTipado)
                 {
-                    return new ResultadoSessaoUsuarioInvalida(erroInternoTipado.EstadoSessao, this.IdentificadorSessaoUsuario);
+                    return new ResultadoSessaoUsuarioInvalida(erroInternoTipado.StatusSessao, this.IdentificadorSessaoUsuario);
                 }
 
                 var host = httpContext.Request.RetornarUrlRequisicao().Host;

@@ -7,7 +7,7 @@ namespace Snebur.Seguranca
     {
 
         private const int TEMPO_MAXIMO_PADRAO_DIAS = 1;
-        public EnumStatusToken Estado { get; set; }
+        public EnumStatusToken Status { get; set; }
         public DateTime DataHora { get; set; }
 
         public ResultadoToken(Guid chave, DateTime dataHora, TimeSpan tempoExpirar, TimeSpan? tempoMaximo = null)
@@ -22,17 +22,17 @@ namespace Snebur.Seguranca
 
             if (chave != Token.CHAVE)
             {
-                this.Estado = EnumStatusToken.ChaveInvalida;
+                this.Status = EnumStatusToken.ChaveInvalida;
             }
             else
             {
-                this.Estado = agoraUtc < dataLimite ? EnumStatusToken.Valido : EnumStatusToken.Expirado;
-                if (this.Estado == EnumStatusToken.Valido)
+                this.Status = agoraUtc < dataLimite ? EnumStatusToken.Valido : EnumStatusToken.Expirado;
+                if (this.Status == EnumStatusToken.Valido)
                 {
                     var diferenca = dataLimite - agoraUtc;
                     if (diferenca > tempoMaximo)
                     {
-                        this.Estado = EnumStatusToken.ExpiradoDataFuturaUltrapassada;
+                        this.Status = EnumStatusToken.ExpiradoDataFuturaUltrapassada;
                     }
                 }
             }
@@ -40,11 +40,11 @@ namespace Snebur.Seguranca
 
         public EnumTipoLogSeguranca RetornarTipoLogReguranca()
         {
-            switch (this.Estado)
+            switch (this.Status)
             {
                 case (EnumStatusToken.Valido):
 
-                    throw new Exception("Não é suportado para estado válido");
+                    throw new Exception("Não é suportado para status válido");
 
                 case (EnumStatusToken.ChaveInvalida):
 
@@ -64,7 +64,7 @@ namespace Snebur.Seguranca
 
                 default:
 
-                    throw new Exception("Estado do token não suportado ");
+                    throw new Exception("Status do token não suportado ");
             }
         }
     }

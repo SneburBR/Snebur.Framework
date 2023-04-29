@@ -30,11 +30,6 @@ namespace Snebur.AcessoDados.Mapeamento
 
         internal EstruturaCampoApelido EstruturaCampoApelidoChavePrimaria { get; private set; }
 
-        /// <summary> 
-        /// Essa lista vai utilizar para otimização do filtros Where, buscando o caminho do banco pelo caminho da proprieade
-        /// Chave - CaminhoPropriedade completo PessoaFisica.Cidade.Estado.Nome
-        /// Value - Caminho do Banco = [PessoaFisicao_Cidadade_Estado].[Nome] - Apelido da Tabela PessoaFisicao_Cidadade_Estado
-        /// </summary>
         internal DicionarioEstrutura<EstruturaCampoApelido> TodasEstruturaCampoApelidoMapeado { get; private set; }
 
         internal HashSet<EstruturaCampoApelido> EstruturasCampoApelidoChaveEstrangeiraRelacoesAberta { get; private set; } = new HashSet<EstruturaCampoApelido>();

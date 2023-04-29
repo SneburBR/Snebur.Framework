@@ -85,7 +85,7 @@ namespace Snebur.AcessoDados
             {
                 if (this.SqlSuporte.IsSessaoUsuario)
                 {
-                    return this.SessaoUsuarioLogado.Estado == EnumStatusSessaoUsuario.Ativo;
+                    return this.SessaoUsuarioLogado.Status == EnumStatusSessaoUsuario.Ativo;
                 }
                 return true;
             }
@@ -509,30 +509,10 @@ namespace Snebur.AcessoDados
                     }
 
                     throw new ErroSessaoUsuarioExpirada(this.CacheSessaoUsuario.StatusSessaoUsuario,
-                        this.CacheSessaoUsuario.SessaoUsuario.IdentificadorSessaoUsuario,
-                        $"O estão da sessão '{this.CacheSessaoUsuario.SessaoUsuario.IdentificadorSessaoUsuario.ToString()}' não é valido {this.CacheSessaoUsuario.StatusSessaoUsuario.ToString()} ");
+                                                        this.CacheSessaoUsuario.SessaoUsuario.IdentificadorSessaoUsuario,
+                                                        $"O status da sessão '{this.CacheSessaoUsuario.SessaoUsuario.IdentificadorSessaoUsuario.ToString()}' não é valido {this.CacheSessaoUsuario.StatusSessaoUsuario.ToString()} ");
                 }
             }
-
-            //a validação é feita no Cache da sessão de dados
-            //if (this.IsValidarUsuarioSessaoUsuario)
-            //{
-            //    if (this.IsValidarUsuarioSessaoUsuario)
-            //    {
-            //        ValidacaoUtil.ValidarReferenciaNula(this.UsuarioLogado, nameof(this.UsuarioLogado));
-            //        ValidacaoUtil.ValidarReferenciaNula(this.SessaoUsuarioLogado, nameof(this.SessaoUsuarioLogado));
-            //        ValidacaoUtil.ValidarReferenciaNula(this.CredencialUsuario, nameof(this.CredencialUsuario));
-            //    }
-            //    if (this.SessaoUsuarioLogado.Estado != EnumStatusSessaoUsuario.Ativo)
-            //    {
-            //        throw new ErroSessaoUsuarioExpirada("A sessão do usuário expirou");
-            //    }
-            //    var credencialValida = CredencialUtil.ValidarCredencial(this.SessaoUsuarioLogado.Usuario, this.CredencialUsuario);
-            //    if (!credencialValida)
-            //    {
-            //        throw new ErroSessaoUsuarioExpirada("A credencial do usuário é diferente da sessão do usuário");
-            //    }
-            //}
         }
 
         private void VerificarAutorizacaoUsuarioIdentificadorGlobal()
