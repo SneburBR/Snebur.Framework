@@ -27,7 +27,7 @@ namespace Snebur.Dominio
 
         DateTime? DataHoraArquivoDeletado { get; set; }
 
-        EnumEstadoArquivo Estado { get; set; }
+        EnumStatusArquivo Status { get; set; }
 
         double Progresso { get; set; }
 

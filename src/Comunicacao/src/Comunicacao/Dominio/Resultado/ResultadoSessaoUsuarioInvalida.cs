@@ -11,14 +11,14 @@ namespace Snebur.Comunicacao
 
         #endregion
 
-        public EnumEstadoSessaoUsuario EstadoSessaoUsuario { get; }
+        public EnumStatusSessaoUsuario StatusSessaoUsuario { get; }
 
         public Guid IdentificadorSessaoUsuario { get; }
 
-        public ResultadoSessaoUsuarioInvalida(EnumEstadoSessaoUsuario estadoSessaoUsuario,
+        public ResultadoSessaoUsuarioInvalida(EnumStatusSessaoUsuario statusSessaoUsuario,
                                               Guid identificadorSessaoUsuario)
         {
-            this.EstadoSessaoUsuario = estadoSessaoUsuario;
+            this.StatusSessaoUsuario = statusSessaoUsuario;
             this.IdentificadorSessaoUsuario = identificadorSessaoUsuario;
         }
     }

@@ -8,13 +8,13 @@ namespace Snebur.Comunicacao
         #region Campos Privados
 
         private bool _isUsuarioEncontrado;
-        private EnumEstadoCodigoRecuperarSenha _estado;
+        private EnumStatusCodigoRecuperarSenha _status;
 
         #endregion
 
         public bool IsUsuarioEncontrado { get => this.RetornarValorPropriedade(this._isUsuarioEncontrado); set => this.NotificarValorPropriedadeAlterada(this._isUsuarioEncontrado, this._isUsuarioEncontrado = value); }
 
-        public EnumEstadoCodigoRecuperarSenha Estado { get => this.RetornarValorPropriedade(this._estado); set => this.NotificarValorPropriedadeAlterada(this._estado, this._estado = value); }
+        public EnumStatusCodigoRecuperarSenha Status { get => this.RetornarValorPropriedade(this._status); set => this.NotificarValorPropriedadeAlterada(this._status, this._status = value); }
 
     }
 }

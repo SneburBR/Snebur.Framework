@@ -17,7 +17,7 @@ namespace Snebur.Tarefa
         #region Propriedades
 
         private double _progresso;
-        private EnumEstadoTarefa _estadoTarefa { get; set; }
+        private EnumStatusTarefa _statusTarefa { get; set; }
 
         public double Progresso
         {
@@ -32,17 +32,17 @@ namespace Snebur.Tarefa
             }
         }
 
-        public EnumEstadoTarefa Estado
+        public EnumStatusTarefa Status
         {
             get
             {
-                return this._estadoTarefa;
+                return this._statusTarefa;
             }
             set
             {
-                this._estadoTarefa = value;
-                this.NotificarPropriedadeAlterada(nameof(this.Estado));
-                this.NotificarEstadoTarefaAlterado();
+                this._statusTarefa = value;
+                this.NotificarPropriedadeAlterada(nameof(this.Status));
+                this.NotificarStatusTarefaAlterado();
             }
         }
 
@@ -60,7 +60,7 @@ namespace Snebur.Tarefa
         #region Eventos
 
         public event EventHandler<ProgressoAlteradoEventArgs> ProgressoAlterado;
-        public event EventHandler<EstadoTarefaAlteradoEventArgs> EstadoTarefaAlterado;
+        public event EventHandler<StatusTarefaAlteradoEventArgs> StatusTarefaAlterado;
         //public event EventHandler<Exception> EventoErro;
 
         #endregion
@@ -76,7 +76,7 @@ namespace Snebur.Tarefa
         public BaseTarefa()
         {
             this.Identificador = Guid.NewGuid();
-            this._estadoTarefa = EnumEstadoTarefa.Aguardando;
+            this._statusTarefa = EnumStatusTarefa.Aguardando;
             this.Timeout = TIMEOUT_PADRAO;
             this.DataHoraUltimaAtividade = DateTime.Now;
         }
@@ -95,7 +95,7 @@ namespace Snebur.Tarefa
             this.TimerAnalizarTimeout = new Timer((int)this.IntervalorAnalisarTimeout.TotalMilliseconds);
             this.TimerAnalizarTimeout.Start();
 
-            this.Estado = EnumEstadoTarefa.Executando;
+            this.Status = EnumStatusTarefa.Executando;
             this.DataHoraUltimaAtividade = DateTime.Now;
             this.ExecutarInterno();
         }
@@ -105,7 +105,7 @@ namespace Snebur.Tarefa
             lock (_bloqueio)
             {
                 this.TimerAnalizarTimeout?.Stop();
-                this.Estado = (erro != null) ? EnumEstadoTarefa.Erro : EnumEstadoTarefa.Concluida;
+                this.Status = (erro != null) ? EnumStatusTarefa.Erro : EnumStatusTarefa.Concluida;
                 if (this.CallbackTarefaConcluida != null)
                 {
                     var callback = this.CallbackTarefaConcluida;
@@ -134,10 +134,10 @@ namespace Snebur.Tarefa
             }
         }
 
-        private void NotificarEstadoTarefaAlterado()
+        private void NotificarStatusTarefaAlterado()
         {
             this.DataHoraUltimaAtividade = DateTime.Now;
-            if (this.EstadoTarefaAlterado != null)
+            if (this.StatusTarefaAlterado != null)
             {
                 throw new NotImplementedException();
             }
@@ -174,21 +174,21 @@ namespace Snebur.Tarefa
 
         protected void IniciarPausamento()
         {
-            this.Estado = EnumEstadoTarefa.Pausando;
+            this.Status = EnumStatusTarefa.Pausando;
             this.DataHoraUltimaAtividade = DateTime.Now;
             this.TimerAnalizarTimeout.Stop();
         }
 
         protected void IniciarCancelamento()
         {
-            this.Estado = EnumEstadoTarefa.Cancelando;
+            this.Status = EnumStatusTarefa.Cancelando;
             this.DataHoraUltimaAtividade = DateTime.Now;
             this.TimerAnalizarTimeout.Stop();
         }
 
         protected void IniciarContinuar()
         {
-            this.Estado = EnumEstadoTarefa.Executando;
+            this.Status = EnumStatusTarefa.Executando;
             this.DataHoraUltimaAtividade = DateTime.Now;
             this.TimerAnalizarTimeout.Start();
         }
@@ -202,7 +202,7 @@ namespace Snebur.Tarefa
             {
                 this.Pausar(() =>
                 {
-                    this.Estado = EnumEstadoTarefa.Pausada;
+                    this.Status = EnumStatusTarefa.Pausada;
                     callbackConcluido?.Invoke();
                 });
             });
@@ -214,7 +214,7 @@ namespace Snebur.Tarefa
             {
                 this.Cancelar(() =>
                 {
-                    this.Estado = EnumEstadoTarefa.Cancelada;
+                    this.Status = EnumStatusTarefa.Cancelada;
                     callbackConcluido?.Invoke();
                 });
             });

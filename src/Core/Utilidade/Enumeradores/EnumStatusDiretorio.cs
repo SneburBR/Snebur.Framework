@@ -1,6 +1,6 @@
 ﻿namespace Snebur.Utilidade
 {
-    public enum EnumEstadoDiretorio
+    public enum EnumStatusDiretorio
     {
         TudoCerto = 1,
         DiretorioNaoExiste = 2,

@@ -1,6 +1,6 @@
 ﻿namespace Snebur.Seguranca
 {
-    public enum EnumEstadoToken
+    public enum EnumStatusToken
     {
         Valido = 1,
         Expirado = 2,

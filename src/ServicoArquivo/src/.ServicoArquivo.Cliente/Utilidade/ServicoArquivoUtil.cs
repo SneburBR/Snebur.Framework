@@ -20,7 +20,7 @@ namespace Snebur.FaceBot.Bot
             instancia.CaminhoArquivo = arquivo.FullName;
             instancia.NomeArquivo = arquivo.Name;
             instancia.Checksum = checksum;
-            instancia.Estado = EnumEstadoArquivo.Novo;
+            instancia.Estado = EnumStatusArquivo.Novo;
             instancia.MimeType = MimeTypeUtil.RetornarMimeTypeEnum(arquivo.Extension);
             instancia.TotalBytesLocal = arquivo.Length;
 

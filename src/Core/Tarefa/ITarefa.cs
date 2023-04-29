@@ -10,7 +10,7 @@ namespace Snebur.Tarefa
 
         Guid Identificador { get; }
 
-        EnumEstadoTarefa Estado { get; set; }
+        EnumStatusTarefa Status { get; set; }
 
         bool AtivarProgresso { get; set; }
 

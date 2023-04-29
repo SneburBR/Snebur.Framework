@@ -4,7 +4,7 @@
 //{
 //    public enum EnumTipoErroCritico
 //    {
-//        [Rotulo("O carrinho não foi finalizado, estado comprando")]
+//        [Rotulo("O carrinho não foi finalizado, status comprando")]
 //        CarrinhoNaoFinalizando = 27,
 
 //        [Rotulo("Falha no pagamento")]

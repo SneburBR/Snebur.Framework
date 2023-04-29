@@ -3,7 +3,7 @@
 namespace Snebur.Tarefa
 {
     [IgnorarEnumTS]
-    public enum EnumEstadoTarefa
+    public enum EnumStatusTarefa
     {
         Aguardando = 1,
         Executando = 2,

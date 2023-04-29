@@ -7,7 +7,7 @@ namespace Snebur.Seguranca
     {
 
         private const int TEMPO_MAXIMO_PADRAO_DIAS = 1;
-        public EnumEstadoToken Estado { get; set; }
+        public EnumStatusToken Estado { get; set; }
         public DateTime DataHora { get; set; }
 
         public ResultadoToken(Guid chave, DateTime dataHora, TimeSpan tempoExpirar, TimeSpan? tempoMaximo = null)
@@ -22,17 +22,17 @@ namespace Snebur.Seguranca
 
             if (chave != Token.CHAVE)
             {
-                this.Estado = EnumEstadoToken.ChaveInvalida;
+                this.Estado = EnumStatusToken.ChaveInvalida;
             }
             else
             {
-                this.Estado = agoraUtc < dataLimite ? EnumEstadoToken.Valido : EnumEstadoToken.Expirado;
-                if (this.Estado == EnumEstadoToken.Valido)
+                this.Estado = agoraUtc < dataLimite ? EnumStatusToken.Valido : EnumStatusToken.Expirado;
+                if (this.Estado == EnumStatusToken.Valido)
                 {
                     var diferenca = dataLimite - agoraUtc;
                     if (diferenca > tempoMaximo)
                     {
-                        this.Estado = EnumEstadoToken.ExpiradoDataFuturaUltrapassada;
+                        this.Estado = EnumStatusToken.ExpiradoDataFuturaUltrapassada;
                     }
                 }
             }
@@ -42,23 +42,23 @@ namespace Snebur.Seguranca
         {
             switch (this.Estado)
             {
-                case (EnumEstadoToken.Valido):
+                case (EnumStatusToken.Valido):
 
                     throw new Exception("Não é suportado para estado válido");
 
-                case (EnumEstadoToken.ChaveInvalida):
+                case (EnumStatusToken.ChaveInvalida):
 
                     return EnumTipoLogSeguranca.TokenChaveInvalida;
 
-                case (EnumEstadoToken.Expirado):
+                case (EnumStatusToken.Expirado):
 
                     return EnumTipoLogSeguranca.TokenExpirado;
 
-                case (EnumEstadoToken.Invalido):
+                case (EnumStatusToken.Invalido):
 
                     return EnumTipoLogSeguranca.TokenInvalido;
 
-                case (EnumEstadoToken.ExpiradoDataFuturaUltrapassada):
+                case (EnumStatusToken.ExpiradoDataFuturaUltrapassada):
 
                     return EnumTipoLogSeguranca.TokenExpiradoDataFuturaUltrapassada;
 

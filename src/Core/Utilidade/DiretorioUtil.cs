@@ -301,22 +301,22 @@ namespace Snebur.Utilidade
             }
         }
 
-        public static EnumEstadoDiretorio RetornarEstadoDiretorio(string caminhoDiretorio, long espacoMinimo)
+        public static EnumStatusDiretorio RetornarStatusDiretorio(string caminhoDiretorio, long espacoMinimo)
         {
             if (!Directory.Exists(caminhoDiretorio))
             {
-                return EnumEstadoDiretorio.DiretorioNaoExiste;
+                return EnumStatusDiretorio.DiretorioNaoExiste;
             }
             var espacoLivre = RetornarEspacoLivre(caminhoDiretorio);
             if (espacoLivre > 0 && espacoLivre < espacoMinimo)
             {
-                return EnumEstadoDiretorio.EspacoInsuficiente;
+                return EnumStatusDiretorio.EspacoInsuficiente;
             }
             if (!PossuiPermissaoGravao(caminhoDiretorio))
             {
-                return EnumEstadoDiretorio.SemPermissaoGravacao;
+                return EnumStatusDiretorio.SemPermissaoGravacao;
             }
-            return EnumEstadoDiretorio.TudoCerto;
+            return EnumStatusDiretorio.TudoCerto;
         }
 
         public static long RetornarEspacoLivre(string caminhoDiretorio)

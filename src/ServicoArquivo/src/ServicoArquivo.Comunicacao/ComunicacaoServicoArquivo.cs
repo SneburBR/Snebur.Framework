@@ -42,11 +42,11 @@ namespace Snebur.ServicoArquivo.Comunicacao
                 {
                     throw new ErroOperacaoInvalida(String.Format("Não foi encontrado o arquivo com ID : {0}", idArquivo));
                 }
-                if (arquivo.Estado != EnumEstadoArquivo.Enviando)
+                if (arquivo.Estado != EnumStatusArquivo.Enviando)
                 {
                     arquivo.DataHoraInicioEnvio = DateTime.UtcNow;
                     arquivo.IsExisteArquivo = false;
-                    arquivo.Estado = EnumEstadoArquivo.Enviando;
+                    arquivo.Estado = EnumStatusArquivo.Enviando;
                     return contexto.Salvar(arquivo).IsSucesso;
                 }
             }
@@ -64,7 +64,7 @@ namespace Snebur.ServicoArquivo.Comunicacao
                 }
                 arquivo.DataHoraFimEnvio = DateTime.UtcNow;
                 arquivo.Checksum = checksum;
-                arquivo.Estado = EnumEstadoArquivo.EnvioConcluido;
+                arquivo.Estado = EnumStatusArquivo.EnvioConcluido;
                 arquivo.TotalBytes = totalBytes;
                 arquivo.IsExisteArquivo = true;
                 return contexto.Salvar(arquivo).IsSucesso;
@@ -81,7 +81,7 @@ namespace Snebur.ServicoArquivo.Comunicacao
                     throw new ErroOperacaoInvalida(String.Format("Não foi encontrado o arquivo com ID : {0}", idArquivo));
                 }
                 arquivo.DataHoraArquivoDeletado = DateTime.UtcNow;
-                arquivo.Estado = EnumEstadoArquivo.ArquivoDeletado;
+                arquivo.Estado = EnumStatusArquivo.ArquivoDeletado;
                 return contexto.Salvar(arquivo).IsSucesso;
             }
         }

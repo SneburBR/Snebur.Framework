@@ -12,9 +12,9 @@ namespace Snebur.Dominio
 
         IIPInformacao IPInformacao { get; set; }
 
-        EnumEstadoSessaoUsuario Estado { get; set; }
+        EnumStatusSessaoUsuario Status { get; set; }
 
-        EnumEstadoServicoArquivo EstadoServicoArquivo { get; set; }
+        EnumStatusServicoArquivo StatusServicoArquivo { get; set; }
 
         string MotivoBloqueio { get; set; }
 

@@ -10,7 +10,7 @@ namespace Snebur.Dominio
 
         List<string> __PropriedadesAutorizadas { get; }
 
-        void AtivarControladorPropriedadeAlterada();
+        //void AtivarControladorPropriedadeAlterada();
 
         void AtribuirPropriedadesAbertas(List<string> PropriedadesAberta);
 

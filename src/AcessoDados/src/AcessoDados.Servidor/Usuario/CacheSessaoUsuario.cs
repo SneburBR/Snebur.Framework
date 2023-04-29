@@ -26,7 +26,7 @@ namespace Snebur.AcessoDados
 
         public ISessaoUsuario SessaoUsuario { get; private set; }
         public IUsuario Usuario { get; private set; }
-        public EnumEstadoSessaoUsuario EstadoSessaoUsuario { get; private set; }
+        public EnumStatusSessaoUsuario StatusSessaoUsuario { get; private set; }
 
         private DateTime DataHoraUltimoAcesso { get; set; }
         private Guid IdentificadorSessaoUsuario { get; }
@@ -149,25 +149,25 @@ namespace Snebur.AcessoDados
         }
         private void NotificarSessaoUsuarioAtivaInterno()
         {
-            var estadoSessaoUsuario = this.RetornarEstadoSessaoUsuario();
-            if (estadoSessaoUsuario == EnumEstadoSessaoUsuario.Ativo ||
-                estadoSessaoUsuario == EnumEstadoSessaoUsuario.Inativo ||
-                estadoSessaoUsuario == EnumEstadoSessaoUsuario.Nova)
+            var statusSessaoUsuario = this.RetornarStatusSessaoUsuario();
+            if (statusSessaoUsuario == EnumStatusSessaoUsuario.Ativo ||
+                statusSessaoUsuario == EnumStatusSessaoUsuario.Inativo ||
+                statusSessaoUsuario == EnumStatusSessaoUsuario.Nova)
             {
                 this.AjudanteSessaoUsuario.NotificarSessaoUsuarioAtiva(this.Usuario, this.SessaoUsuario);
-                estadoSessaoUsuario = EnumEstadoSessaoUsuario.Ativo;
+                statusSessaoUsuario = EnumStatusSessaoUsuario.Ativo;
             }
-            this.EstadoSessaoUsuario = estadoSessaoUsuario;
+            this.StatusSessaoUsuario = statusSessaoUsuario;
             this.TimerAtualizarEstado?.Reiniciar();
         }
 
-        private EnumEstadoSessaoUsuario RetornarEstadoSessaoUsuario()
+        private EnumStatusSessaoUsuario RetornarStatusSessaoUsuario()
         {
             if (this.IsValidarCredencialSessaoUsuario())
             {
-                return this.AjudanteSessaoUsuario.RetornarEstadoSessaoUsuario(this.IdentificadorSessaoUsuario);
+                return this.AjudanteSessaoUsuario.RetornarStatusSessaoUsuario(this.IdentificadorSessaoUsuario);
             }
-            return EnumEstadoSessaoUsuario.SenhaAlterada;
+            return EnumStatusSessaoUsuario.SenhaAlterada;
         }
 
         private bool IsValidarCredencialSessaoUsuario()

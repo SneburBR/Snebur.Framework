@@ -78,7 +78,7 @@ namespace Snebur.Comunicacao
             {
                 AplicacaoSnebur.Atual.IniciarNovaSessaoAnonima();
 
-                throw new ErroSessaoUsuarioExpirada(resultadoSessaoUsuarioInvalida.EstadoSessaoUsuario,
+                throw new ErroSessaoUsuarioExpirada(resultadoSessaoUsuarioInvalida.StatusSessaoUsuario,
                                                     resultadoSessaoUsuarioInvalida.IdentificadorSessaoUsuario,
                                                     "Sessão do usuário foi finalizada");
             }

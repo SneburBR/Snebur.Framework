@@ -4,7 +4,7 @@ namespace Snebur.Dominio
 {
     public interface ILogServicoArquivo : IEntidade
     {
-        EnumEstadoServicoArquivo EstadoServicoArquivo { get; set; }
+        EnumStatusServicoArquivo StatusServicoArquivo { get; set; }
 
         Guid IndetificadorLog { get; set; }
 

@@ -72,7 +72,7 @@ namespace Snebur.AcessoDados
 
             #region Métodos publicos
 
-            internal EnumEstadoSessaoUsuario RetornarEstadoSessaoUsuario(Guid identificadorSessaoUsuario)
+            internal EnumStatusSessaoUsuario RetornarStatusSessaoUsuario(Guid identificadorSessaoUsuario)
             {
                 var consulta = this.Contexto.RetornarConsulta<ISessaoUsuario>(this.TipoSessaoUsuario);
                 consulta.Where(x => x.IdentificadorSessaoUsuario == identificadorSessaoUsuario);
@@ -83,7 +83,7 @@ namespace Snebur.AcessoDados
                 {
                     return sessaoUsuario.Estado;
                 }
-                return EnumEstadoSessaoUsuario.IdentificadorSessaoUsuarioInexistente;
+                return EnumStatusSessaoUsuario.IdentificadorSessaoUsuarioInexistente;
             }
 
             internal bool IsValidarCredencialSessaoUsuario(ISessaoUsuario sessaoUsuario, Credencial credencial)
@@ -93,7 +93,7 @@ namespace Snebur.AcessoDados
                 {
                     return true;
                 }
-                sessaoUsuario.Estado = EnumEstadoSessaoUsuario.SenhaAlterada;
+                sessaoUsuario.Estado = EnumStatusSessaoUsuario.SenhaAlterada;
                 this.ContextoSalvar.SalvarInternoSemNotificacao(sessaoUsuario);
                 return false;
             }
@@ -105,7 +105,7 @@ namespace Snebur.AcessoDados
                 var nowUtc = DateTime.UtcNow;
                 usuario.DataHoraUltimoAcesso = nowUtc;
                 sessaoUsuario.DataHoraUltimoAcesso = nowUtc;
-                sessaoUsuario.Estado = EnumEstadoSessaoUsuario.Ativo;
+                sessaoUsuario.Estado = EnumStatusSessaoUsuario.Ativo;
                 this.ContextoSalvar.SalvarInternoSemNotificacao(new IEntidade[] { usuario, sessaoUsuario }, false);
             }
 
@@ -138,7 +138,7 @@ namespace Snebur.AcessoDados
 
                 consulta.AbrirPropriedade(x => x.IdentificadorSessaoUsuario).
                          AbrirPropriedade(x => x.Estado).
-                         AbrirPropriedade(x => x.EstadoServicoArquivo).
+                         AbrirPropriedade(x => x.StatusServicoArquivo).
                          AbrirPropriedade(x => x.Usuario_Id).
                          //AbrirPropriedade(x => x.DataHoraInicio).
                          AbrirPropriedade(x => x.DataHoraUltimoAcesso);
@@ -166,10 +166,10 @@ namespace Snebur.AcessoDados
 
                     if (this.IsSessaoUsuarioDiferente(sessaoUsuario, usuario))
                     {
-                        sessaoUsuario.Estado = EnumEstadoSessaoUsuario.UsuarioDiferente;
+                        sessaoUsuario.Estado = EnumStatusSessaoUsuario.UsuarioDiferente;
 
                         var cloneSessao = (sessaoUsuario as Entidade).CloneSomenteId<Entidade>(true) as ISessaoUsuario;
-                        cloneSessao.Estado = EnumEstadoSessaoUsuario.UsuarioDiferente;
+                        cloneSessao.Estado = EnumStatusSessaoUsuario.UsuarioDiferente;
 
                         ((IContextoDadosSemNotificar)this.Contexto).SalvarInternoSemNotificacao(cloneSessao);
 
@@ -182,9 +182,9 @@ namespace Snebur.AcessoDados
 
                     }
                 }
-                if (sessaoUsuario.Estado == EnumEstadoSessaoUsuario.Nova)
+                if (sessaoUsuario.Estado == EnumStatusSessaoUsuario.Nova)
                 {
-                    sessaoUsuario.Estado = EnumEstadoSessaoUsuario.Ativo;
+                    sessaoUsuario.Estado = EnumStatusSessaoUsuario.Ativo;
                 }
                 return sessaoUsuario;
             }
@@ -325,7 +325,7 @@ namespace Snebur.AcessoDados
 
                 if (String.IsNullOrWhiteSpace(informacaoSessaoUsuario.IdentificadorAplicacao))
                 {
-                    throw new ErroSessaoUsuarioExpirada(EnumEstadoSessaoUsuario.Cancelada,
+                    throw new ErroSessaoUsuarioExpirada(EnumStatusSessaoUsuario.Cancelada,
                         sessaoUsuario.IdentificadorSessaoUsuario,
                         $"A sessão foi finalizada para ela ainda não existe o identificador da sessão {sessaoUsuario.IdentificadorSessaoUsuario}, " +
                         $"e não possui informações suficiente para inicializar uma nova sessão ");
@@ -335,7 +335,7 @@ namespace Snebur.AcessoDados
                 var ipInformacao = this.RetornarIpInformacao();
 
                 sessaoUsuario.Usuario = usuario;
-                sessaoUsuario.Estado = EnumEstadoSessaoUsuario.Nova;
+                sessaoUsuario.Estado = EnumStatusSessaoUsuario.Nova;
 
                 AutoMapearUtil.Mapear(informacaoSessaoUsuario, sessaoUsuario);
                 sessaoUsuario.IdentificadorProprietario = this.Contexto.IdentificadorProprietario;

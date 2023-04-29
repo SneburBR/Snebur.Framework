@@ -24,7 +24,7 @@ namespace Snebur.Tarefa
         {
             get
             {
-                if (this.Estado == EnumEstadoTarefa.Pausada)
+                if (this.Status == EnumStatusTarefa.Pausada)
                 {
                     return 0;
                 }
@@ -78,7 +78,7 @@ namespace Snebur.Tarefa
         protected override void Pausar(Action callback)
         {
             this.ExecutarProximaTarefa();
-            while (this.Executando.Values.Any(x => x.Estado == EnumEstadoTarefa.Pausando))
+            while (this.Executando.Values.Any(x => x.Status == EnumStatusTarefa.Pausando))
             {
                 System.Threading.Thread.Sleep(500);
             }
@@ -94,7 +94,7 @@ namespace Snebur.Tarefa
                     executando.CancelarAsync(null);
                 }
             }
-            while (this.Executando.Values.Any(x => x.Estado == EnumEstadoTarefa.Cancelando))
+            while (this.Executando.Values.Any(x => x.Status == EnumStatusTarefa.Cancelando))
             {
                 System.Threading.Thread.Sleep(500);
             }
@@ -119,7 +119,7 @@ namespace Snebur.Tarefa
                 {
                     //################## Pausado e continuando as Tarefas ####################
 
-                    var totalTarefasEmExecucao = this.Executando.Values.Where(x => x.Estado == EnumEstadoTarefa.Executando).Count();
+                    var totalTarefasEmExecucao = this.Executando.Values.Where(x => x.Status == EnumStatusTarefa.Executando).Count();
                     if (totalTarefasEmExecucao > this.MaximoTarefasSimultaneas)
                     {
                         var tarefasExecutandos = this.Executando.ToList();
@@ -131,7 +131,7 @@ namespace Snebur.Tarefa
                     }
                     else
                     {
-                        var tarefasPausadas = this.Executando.Values.Where(x => x.Estado == EnumEstadoTarefa.Pausada).ToList();
+                        var tarefasPausadas = this.Executando.Values.Where(x => x.Status == EnumStatusTarefa.Pausada).ToList();
                         if (tarefasPausadas.Count > 0)
                         {
                             var fim = this.MaximoTarefasSimultaneas - totalTarefasEmExecucao;

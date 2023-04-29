@@ -16,7 +16,7 @@ namespace Snebur.Dominio
 
         bool IsAlterarSenhaProximoAcesso { get; set; }
 
-        EnumEstadoUsuario Estado { get; }
+        EnumStatusUsuario Status { get; }
 
 
     }

@@ -10,9 +10,9 @@ namespace Snebur.AcessoDados
     {
         internal protected override bool IsParaDepuracaoAtachada => false;
 
-        public EnumEstadoSessaoUsuario EstadoSessao { get; }
+        public EnumStatusSessaoUsuario StatusSessao { get; }
 
-        public ErroSessaoUsuarioExpirada(EnumEstadoSessaoUsuario estado,
+        public ErroSessaoUsuarioExpirada(EnumStatusSessaoUsuario status,
                                         Guid identificadorSessaoUsuario,
                                         string mensagem = "",
                                         Exception erroInterno = null,

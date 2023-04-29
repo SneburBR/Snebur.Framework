@@ -1,6 +1,6 @@
 ﻿namespace Snebur.Dominio
 {
-    public enum EnumEstadoSessaoUsuario
+    public enum EnumStatusSessaoUsuario
     {
         Nova = 100,
 

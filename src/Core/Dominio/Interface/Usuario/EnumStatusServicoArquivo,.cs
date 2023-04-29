@@ -1,6 +1,6 @@
 ﻿namespace Snebur.Dominio
 {
-    public enum EnumEstadoServicoArquivo
+    public enum EnumStatusServicoArquivo
     {
         Aguardando = 0,
         EnvioIniciado = 1,

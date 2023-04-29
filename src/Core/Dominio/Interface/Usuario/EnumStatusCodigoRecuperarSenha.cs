@@ -1,6 +1,6 @@
 ﻿namespace Snebur.Dominio
 {
-    public enum EnumEstadoCodigoRecuperarSenha
+    public enum EnumStatusCodigoRecuperarSenha
     {
         Nenhum = 0,
         Novo = 1,
