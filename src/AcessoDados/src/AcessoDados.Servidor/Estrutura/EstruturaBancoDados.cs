@@ -96,8 +96,13 @@ namespace Snebur.AcessoDados.Estrutura
             {
                 return this.EstruturasEntidade[chave];
             }
-            var estruturaEntidade = this.EstruturasEntidade.Where(x => x.Key.Equals(chave, StringComparison.InvariantCultureIgnoreCase)).Single().Value;
-            return estruturaEntidade;
+
+            var estruturasEntidade = this.EstruturasEntidade.Where(x => x.Key.Equals(chave, StringComparison.InvariantCultureIgnoreCase)).ToList();
+            if (estruturasEntidade.Count == 1)
+            {
+                return estruturasEntidade.Single().Value;
+            }
+            return null;
         }
         #endregion
 
@@ -118,19 +123,19 @@ namespace Snebur.AcessoDados.Estrutura
                 //var propriedadesConsulta = ReflectionUtils.RetornarPropriedades(contexto.GetType()).
                 //                                            Where(x => x.PropertyType.IsSubclassOf(typeof(ConsultaEntidade))).
                 //                                            Select(x => x.PropertyType).ToList();
-                 
+
                 this.MontarEstuturasEntidades(tipoContexto, sqlSuporte);
                 this.AssociarEstruturasEntidades();
-                
-               
+
+
                 if (DebugUtil.IsAttached)
                 {
                     this.AnalisarAlertasEstruturaEntidade();
                 }
-              
+
             }
         }
-         
+
         private void MontarEstuturasEntidades(Type tipoContexto, BancoDadosSuporta sqlSuporte)
         {
             var tiposPopriedadeConsulta = ContextoDadosUtil.RetornarPropriedadesIConsultaEntidade(tipoContexto).
@@ -291,7 +296,7 @@ namespace Snebur.AcessoDados.Estrutura
                 }
             }
         }
-   
+
         #endregion
 
         #region Tipos 
@@ -330,7 +335,7 @@ namespace Snebur.AcessoDados.Estrutura
         {
             return this.RetornarTipoConsultaImplementaInterface<IImagem>(true);
         }
-         
+
         #endregion
     }
 }

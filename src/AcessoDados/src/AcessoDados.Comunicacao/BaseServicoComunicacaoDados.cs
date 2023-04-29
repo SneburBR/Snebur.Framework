@@ -99,7 +99,7 @@ namespace Snebur.AcessoDados.Comunicacao
 
             }
 
-            var estado = this.ContextoDados?.SessaoUsuarioLogado?.Estado ?? Snebur.Dominio.EnumEstadoSessaoUsuario.Desconhecida;
+            var estado = this.ContextoDados?.SessaoUsuarioLogado?.Estado ?? Snebur.Dominio.EnumStatusSessaoUsuario.Desconhecida;
             var identificadorSessaoUsuario = this.ContextoDados?.SessaoUsuarioLogado?.IdentificadorSessaoUsuario ?? Guid.Empty;
             return new ResultadoSessaoUsuarioInvalida(estado, identificadorSessaoUsuario);
 

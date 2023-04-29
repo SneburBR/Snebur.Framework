@@ -4,6 +4,7 @@ using Snebur.Linq;
 using Snebur.Utilidade;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -822,6 +823,11 @@ namespace Snebur.AcessoDados.Estrutura
 
         private int RetornarMaximoRegistroPorConsulta()
         {
+            if (Debugger.IsAttached)
+            {
+                return Int32.MaxValue;
+            }
+
             var atributoMaximoRegistroPorConsulta = this.TipoEntidade.GetCustomAttribute<MaximoRegistroPorConsultaAttribute>();
             if (atributoMaximoRegistroPorConsulta != null)
             {
@@ -857,6 +863,15 @@ namespace Snebur.AcessoDados.Estrutura
         public override string ToString()
         {
             return String.Format("{0} - {1}", this.TipoEntidade.Name, base.ToString());
+        }
+
+        internal int RetornarMaximoConsulta(int take)
+        {
+            if (take == 0)
+            {
+                return this.MaximoRegistroPorConsulta;
+            }
+            return Math.Min(take, this.MaximoRegistroPorConsulta);
         }
     }
 }

@@ -90,14 +90,7 @@ namespace Snebur.AcessoDados.Mapeamento
                 {
                     var entidades = new ListaEntidades<Entidade>();
                     var idsTipoEntidade = this.RetornarIdsTipoEntidade(mapeamentoEntidade, filtroMapeamento);
-
-                    //foi alterado pelo  motivo do filtro da indentificador da instancia
-                    //uma vez o no  fo filtros do ids, o filtro do identificador da instancia por esta numa classe especializada
-                    //foreach (var idTipoEntidade in idsTipoEntidade)
-                    //{
-                    //    this.Entidades.Add(idTipoEntidade.Id, null);
-                    //}
-
+                     
                     var grupos = new List<GrupoIdTipoEntidade>();
 
                     foreach (var grupo in idsTipoEntidade.GroupBy(x => x.__NomeTipoEntidade))
@@ -113,6 +106,10 @@ namespace Snebur.AcessoDados.Mapeamento
                     foreach (var grupo in grupos)
                     {
                         var estruturaTipoEntidade = this.EstruturaBancoDados.RetornarEstruturaEntidade(grupo.NomeTipoEntidade);
+                        if(estruturaTipoEntidade== null)
+                        {
+                            throw new Erro($"Não foi encontrada a entidade do tipo {grupo.NomeTipoEntidade} herdade de {this.EstruturaEntidade.TipoEntidade.Name}");
+                        }
 
                         var menorId = grupo.Ids.First();
                         var maiorId = grupo.Ids.Last();

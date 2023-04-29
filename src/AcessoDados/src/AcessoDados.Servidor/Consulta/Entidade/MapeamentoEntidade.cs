@@ -107,7 +107,7 @@ namespace Snebur.AcessoDados.Mapeamento
             }
             else
             {
-                var take = this.EstruturaConsulta.Take > 0 ? this.EstruturaConsulta.Take : 1000;
+                var take = this.MapeamentoConsulta.EstruturaEntidade.RetornarMaximoConsulta(this.EstruturaConsulta.Take);
                 //sqlJoin = sqlJoin.Replace("ORDER BY [Id]", "WHERE not __NomeTipoEntidade is null ");
                 return $"SELECT Top {take} {sqlCampos} FROM {sqlJoin} ";
             }

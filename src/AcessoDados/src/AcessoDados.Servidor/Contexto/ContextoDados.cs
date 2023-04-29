@@ -85,7 +85,7 @@ namespace Snebur.AcessoDados
             {
                 if (this.SqlSuporte.IsSessaoUsuario)
                 {
-                    return this.SessaoUsuarioLogado.Estado == EnumEstadoSessaoUsuario.Ativo;
+                    return this.SessaoUsuarioLogado.Estado == EnumStatusSessaoUsuario.Ativo;
                 }
                 return true;
             }
@@ -501,16 +501,16 @@ namespace Snebur.AcessoDados
             {
                 ValidacaoUtil.ValidarReferenciaNula(this.CacheSessaoUsuario, nameof(this.CacheSessaoUsuario));
 
-                if (this.CacheSessaoUsuario.EstadoSessaoUsuario != EnumEstadoSessaoUsuario.Ativo)
+                if (this.CacheSessaoUsuario.StatusSessaoUsuario != EnumStatusSessaoUsuario.Ativo)
                 {
                     if (DebugUtil.IsAttached)
                     {
                         throw new Erro($"Usuário diferente da são ser foi um usuário global retomar no contexto, RetornarCredenciaisGlobais '{this.CacheSessaoUsuario.Usuario.Nome}'");
                     }
 
-                    throw new ErroSessaoUsuarioExpirada(this.CacheSessaoUsuario.EstadoSessaoUsuario,
+                    throw new ErroSessaoUsuarioExpirada(this.CacheSessaoUsuario.StatusSessaoUsuario,
                         this.CacheSessaoUsuario.SessaoUsuario.IdentificadorSessaoUsuario,
-                        $"O estão da sessão '{this.CacheSessaoUsuario.SessaoUsuario.IdentificadorSessaoUsuario.ToString()}' não é valido {this.CacheSessaoUsuario.EstadoSessaoUsuario.ToString()} ");
+                        $"O estão da sessão '{this.CacheSessaoUsuario.SessaoUsuario.IdentificadorSessaoUsuario.ToString()}' não é valido {this.CacheSessaoUsuario.StatusSessaoUsuario.ToString()} ");
                 }
             }
 
@@ -523,7 +523,7 @@ namespace Snebur.AcessoDados
             //        ValidacaoUtil.ValidarReferenciaNula(this.SessaoUsuarioLogado, nameof(this.SessaoUsuarioLogado));
             //        ValidacaoUtil.ValidarReferenciaNula(this.CredencialUsuario, nameof(this.CredencialUsuario));
             //    }
-            //    if (this.SessaoUsuarioLogado.Estado != EnumEstadoSessaoUsuario.Ativo)
+            //    if (this.SessaoUsuarioLogado.Estado != EnumStatusSessaoUsuario.Ativo)
             //    {
             //        throw new ErroSessaoUsuarioExpirada("A sessão do usuário expirou");
             //    }

@@ -75,7 +75,7 @@ namespace Snebur.AcessoDados.Mapeamento
             var sqlJoin = this.RetornarSqlConsulta(ordenacao, isLimitarPaginacao, filtroMapeamento, isRelacaoFilhos);
             if ((!isLimitarPaginacao && this.EstruturaConsulta.Take > 0) || !this.Contexto.SqlSuporte.IsOffsetFetch)
             {
-                var take = this.EstruturaConsulta.Take == 0 ? 1000 : this.EstruturaConsulta.Take;
+                var take = this.EstruturaEntidade.RetornarMaximoConsulta(this.EstruturaConsulta.Take);
                 return $"SELECT Top {take} {sqlCampos} FROM {sqlJoin}";
             }
             else
