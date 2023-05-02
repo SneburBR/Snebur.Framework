@@ -585,12 +585,18 @@ namespace Snebur.AcessoDados.Estrutura
         {
             var nomeCampoChaveEstrangeira = this.RetornarNomeCampoLigacaoRelacaoFilhos(propriedade);
             var tipoEntidadeFilho = AjudanteEstruturaBancoDados.RetornarTipoEntidadeLista(propriedade);
+            if (!estruturasEntidade.ContainsKey(tipoEntidadeFilho.Name))
+            {
+                throw new Exception($"A entidade do tipo {tipoEntidadeFilho.Name} não possui propriedade de inicialização no contexto. Verificar propriedade DbSet ");
+            }
+
             var estruturaEntidadeFilho = estruturasEntidade[tipoEntidadeFilho.Name];
 
             var estruturaCampoLigacaoFilho = estruturaEntidadeFilho.RetornarEstruturaCampo(nomeCampoChaveEstrangeira);
 
             var estruturaRelacaoFilhos = new EstruturaRelacaoFilhos(propriedade, this, estruturaEntidadeFilho, estruturaCampoLigacaoFilho);
             this.EstruturasRelacoes.Add(propriedade.Name, estruturaRelacaoFilhos);
+            
         }
 
         private string RetornarNomeCampoLigacaoRelacaoFilhos(PropertyInfo propriedade)

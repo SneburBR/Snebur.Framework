@@ -1,5 +1,6 @@
 ﻿using Snebur.Dominio;
 using System;
+using System.Globalization;
 using System.IO;
 
 namespace Snebur.Utilidade
@@ -160,6 +161,11 @@ namespace Snebur.Utilidade
                 rota = rota.Replace("--", "-");
             }
             return UriUtil.AjustarBarraInicialFinal(rota);
+        }
+
+        public static string FormatarCentimetro(double espessura)
+        {
+            return $"{espessura.ToString("0.0", new CultureInfo("pt-BR"))}cm";
         }
     }
 }
