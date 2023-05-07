@@ -14,7 +14,7 @@ namespace Snebur.AcessoDados.Comunicacao
     {
         public TContextoDados ContextoDados { get; private set; }
         public bool IsServicoTransacionadoDB { get; protected set; } = true;
-        public bool IsPermitirIdentificadorProprietarioGlobal { get; protected set; } = false;
+        public virtual bool IsPermitirIdentificadorProprietarioGlobal { get; protected set; } = false;
         public IsolationLevel IsolamentoTransacao { get; protected set; } = ConfiguracaoAcessoDados.IsolamentoLevelSalvarPadrao;
 
         private Exception ErroInicializacao;
@@ -162,5 +162,5 @@ namespace Snebur.AcessoDados.Comunicacao
         }
     }
 
-     
+
 }

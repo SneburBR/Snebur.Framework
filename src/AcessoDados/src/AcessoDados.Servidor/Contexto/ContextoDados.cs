@@ -40,7 +40,7 @@ namespace Snebur.AcessoDados
 
         private TiposSeguranca TiposSeguranca { get; }
 
-        private bool InicializandoContexto { get; } = true;
+        private bool IsContextoInicializado { get; } =false;
 
         public bool IsAnonimo { get; } = true;
 
@@ -157,8 +157,24 @@ namespace Snebur.AcessoDados
                              InformacaoSessaoUsuario informacaoSessaoUsuario,
                              string identificadorProprietario,
                              EnumFlagBancoNaoSuportado sqlNaoSuporta) : this(configuracaoAcessoDados,
+                                                                             credencial,
+                                                                             identificadorSessaoUsario,
+                                                                             informacaoSessaoUsuario,
                                                                              identificadorProprietario,
-                                                                             sqlNaoSuporta)
+                                                                             sqlNaoSuporta,
+                                                                             true)
+        {
+
+        }
+        private BaseContextoDados(string configuracaoAcessoDados,
+                                  CredencialUsuario credencial,
+                                  Guid identificadorSessaoUsario,
+                                  InformacaoSessaoUsuario informacaoSessaoUsuario,
+                                  string identificadorProprietario,
+                                  EnumFlagBancoNaoSuportado sqlNaoSuporta, 
+                                  bool isValidarUsuarioGlobal) : this(configuracaoAcessoDados,
+                                                                      identificadorProprietario,
+                                                                       sqlNaoSuporta)
         {
             ErroUtil.ValidarReferenciaNula(credencial, nameof(credencial));
 
@@ -183,10 +199,15 @@ namespace Snebur.AcessoDados
                 }
                 this.IsValidarUsuarioSessaoUsuario = true;
                 this.IsAnonimo = CredencialUtil.ValidarCredencial(this.UsuarioLogado, CredencialAnonimo.Anonimo);
-                this.VerificarAutorizacaoUsuarioIdentificadorGlobal();
+
+                if (isValidarUsuarioGlobal)
+                {
+                    this.VerificarAutorizacaoUsuarioIdentificadorGlobal();
+                }
+                
             }
 
-
+            this.IsContextoInicializado = !isValidarUsuarioGlobal;
             //this.ResultadoSessaoUsuario = this.CacheSessaoUsuario.RetornarResltadoSessaoUsuario(credencial, identificadorSessaoUsario, informacaoSessaoUsuario);
             //this.UsuarioLogado = this.ResultadoSessaoUsuario.Usuario;
             //this.SessaoUsuarioLogado = this.ResultadoSessaoUsuario.SessaoUsuario;
@@ -197,7 +218,7 @@ namespace Snebur.AcessoDados
 
             //this.SalvarInternoSemNotificacao((Entidade)this.SessaoUsuarioLogado, true);
 
-            this.InicializandoContexto = false;
+
         }
 
         protected BaseContextoDados(string configuracaoAcessoDados,
@@ -227,7 +248,8 @@ namespace Snebur.AcessoDados
                                          identificadorSessaoUsuario,
                                          informacaoSessaoUsuario,
                                          identificadorProprietario,
-                                         sqlNaoSuporta)
+                                         sqlNaoSuporta, 
+                                         false)
         {
 
             if (credencialAvalista != null)
@@ -238,7 +260,7 @@ namespace Snebur.AcessoDados
             }
 
             this.VerificarAutorizacaoUsuarioIdentificadorGlobal();
-            this.InicializandoContexto = false;
+            this.IsContextoInicializado = true;
             this.IsValidarUsuarioSessaoUsuario = true;
         }
 

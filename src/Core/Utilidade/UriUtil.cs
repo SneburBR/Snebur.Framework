@@ -162,5 +162,14 @@ namespace Snebur.Utilidade
             }
             return null;
         }
+
+        public static string RetornarHost(string url)
+        {
+            if(Uri.TryCreate(url,UriKind.Absolute, out var uri))
+            {
+                return uri.Host;
+            }
+            return null;
+        }
     }
 }

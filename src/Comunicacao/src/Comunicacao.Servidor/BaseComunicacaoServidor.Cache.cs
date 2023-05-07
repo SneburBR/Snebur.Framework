@@ -42,7 +42,7 @@ namespace Snebur.Comunicacao
         private string RetornarChaveCache(Requisicao requisicao)
         {
             var parametros = requisicao.Parametros;
-            var chaveParametros = String.Join("--", parametros.Select(x => $"{x.Key}={x.Value.GetHashCode().ToString() ?? "null"}"));
+            var chaveParametros = String.Join("--", parametros.Select(x => $"{x.Key}={x.Value?.GetHashCode().ToString() ?? "null"}"));
             return $"{this.GetType().Name}--{requisicao.Operacao}.{chaveParametros}";
         }
 

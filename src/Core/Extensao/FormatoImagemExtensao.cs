@@ -117,7 +117,6 @@ namespace Zyoncore.Imagens
                     return EnumMimeType.Eps;
                 default:
                     return EnumMimeType.Desconhecido;
-                    break;
             }
         }
 

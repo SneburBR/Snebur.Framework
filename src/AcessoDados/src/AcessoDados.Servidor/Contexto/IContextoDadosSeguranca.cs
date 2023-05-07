@@ -8,7 +8,7 @@ namespace Snebur.AcessoDados
     {
         bool IsAnonimo { get; }
 
-        bool InicializandoContexto { get; }
+        bool IsContextoInicializado { get; }
 
         TiposSeguranca TiposSeguranca { get; }
 

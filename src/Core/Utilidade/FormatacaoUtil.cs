@@ -1,30 +1,184 @@
 ﻿using Snebur.Dominio;
+using Snebur.UI;
 using System;
 using System.Globalization;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace Snebur.Utilidade
 {
     public static class FormatacaoUtil
     {
+        public static string Formatar(object valor, EnumFormatacao formatar)
+        {
+            if (valor == null)
+            {
+                return String.Empty;
+            }
+
+            switch (formatar)
+            {
+                case EnumFormatacao.Bytes:
+
+                    return FormatacaoUtil.FormatarBytes(Convert.ToInt64(valor));
+
+                case EnumFormatacao.Cep:
+                    return FormatacaoUtil.FormatarCep(Convert.ToInt64(valor));
+                case EnumFormatacao.Cpf:
+                case EnumFormatacao.Cnpj:
+
+                    return FormatacaoUtil.FormatarCpfCnpj(valor.ToString());
+                case EnumFormatacao.Telefone:
+                    return FormatacaoUtil.FormatarTelefone(valor.ToString());
+                case EnumFormatacao.Moeda:
+                    return FormatacaoUtil.FormatarMoeda(Convert.ToDecimal(valor));
+
+                case EnumFormatacao.MoedaComSinal:
+                case EnumFormatacao.Inteiro:
+                    return Convert.ToInt32(valor).ToString();
+
+                case EnumFormatacao.Decimal:
+
+                    return FormatacaoUtil.FormtarDecimal(Convert.ToDouble(valor));
+                case EnumFormatacao.Decimal1:
+                    return FormatacaoUtil.FormtarDecimal(Convert.ToDouble(valor), 1);
+                case EnumFormatacao.Decimal3:
+                    return FormatacaoUtil.FormtarDecimal(Convert.ToDouble(valor), 3);
+                case EnumFormatacao.Data:
+                    return FormatacaoUtil.FormatarData(Convert.ToDouble(valor), 3);
+                case EnumFormatacao.Hora:
+                    return FormatacaoUtil.FormatarHora(Convert.ToDouble(valor), 3);
+                case EnumFormatacao.Dimensao:
+                    return FormatacaoUtil.FormatarDimensao((Dimensao)valor);
+                case EnumFormatacao.DimensaoCm:
+                    return FormatacaoUtil.FormatarDimensaoCm((Dimensao)valor);
+                case EnumFormatacao.DimensaoPixels:
+                    return FormatacaoUtil.FormatarDimensaoPixels((Dimensao)valor);
+                case EnumFormatacao.DataHora:
+
+                case EnumFormatacao.HoraDescricao:
+
+                case EnumFormatacao.HoraDescricaoMin:
+                    break;
+                case EnumFormatacao.DataSemantica:
+                    break;
+                case EnumFormatacao.DataHoraSemantica:
+                    break;
+                case EnumFormatacao.DataSemanticaHora:
+                    break;
+                case EnumFormatacao.SimNao:
+                    break;
+                case EnumFormatacao.Trim:
+                    break;
+                case EnumFormatacao.TamanhoArquivo:
+                    break;
+                case EnumFormatacao.Porcentagem:
+                    break;
+                case EnumFormatacao.Porcentagem1:
+                    break;
+                case EnumFormatacao.Porcentagem2:
+                    break;
+                case EnumFormatacao.NaoQuebrar:
+                    break;
+                case EnumFormatacao.Pixel:
+                    break;
+                case EnumFormatacao.Tempo:
+                    break;
+                case EnumFormatacao.TempoSemantico:
+                    break;
+                case EnumFormatacao.Centimetro:
+                    break;
+                case EnumFormatacao.Grau:
+                    break;
+                case EnumFormatacao.Grau1:
+                    break;
+                case EnumFormatacao.Grau2:
+                    break;
+                case EnumFormatacao.PrimeiraLetraMaiuscula:
+                    break;
+                case EnumFormatacao.CaixaAlta:
+                    break;
+                case EnumFormatacao.CaixaBaixa:
+                    break;
+                case EnumFormatacao.Nome:
+                    break;
+                case EnumFormatacao.PositivoNegativo:
+                    break;
+                case EnumFormatacao.PositivoNegativoDecimal:
+                    break;
+                case EnumFormatacao.PortentagemPositivoNegativo:
+                    break;
+                case EnumFormatacao.Portentagem1PositivoNegativo:
+                    break;
+                case EnumFormatacao.Absoluto:
+                    break;
+                case EnumFormatacao.EntreParentes:
+                    break;
+                case EnumFormatacao.QuebrarLinhasHtml:
+                    break;
+                case EnumFormatacao.Peso:
+                    break;
+                case EnumFormatacao.Prazo:
+                    break;
+                default:
+                    break;
+            }
+
+            throw new NotImplementedException();
+        }
+
+        private static string FormatarCep(long v)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static string FormatarData(double v1, int v2)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static string FormatarHora(double v1, int v2)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static string FormatarDimensaoCm(Dimensao valor)
+        {
+            throw new NotImplementedException();
+        }
+
         public static string FormtarDecimal(double valor, int digitos = 2)
         {
-            string formatar = "0.00";
-
-            if (digitos != 2)
+            return FormtarDecimal(Convert.ToDecimal(valor), digitos);
+        }
+        public static string FormtarDecimal(decimal valor, int digitos = 2)
+        {
+            if (digitos == 0 || valor % 1 == 0)
             {
-                formatar = "0";
-                if (digitos > 0)
-                {
-                    formatar += ".";
-                }
-                for (var i = 0; i < digitos; i++)
-                {
-                    formatar += "0";
-                }
+                return $"{valor:0}";
             }
-            var ret = valor.ToString(formatar);
-            return ret;
+
+            if (digitos == 1 ||
+                ((valor - Math.Floor(valor)) * 10) % 1 == 0)
+            {
+                return $"{valor:0.0}";
+            }
+
+            if (digitos == 2 ||
+                 ((valor - Math.Floor(valor)) * 100) % 1 == 0)
+            {
+                return $"{valor:0.00}";
+            }
+
+            if (digitos == 3 || 
+                ((valor - Math.Floor(valor)) * 1000) % 1 == 0)
+            {
+                return $"{valor:0.000}";
+            }
+
+            string formatar = "0." + new string('0', digitos);
+            return valor.ToString(formatar);
+
         }
 
         public static string FormatarBytes(long totalBytes)
@@ -167,5 +321,7 @@ namespace Snebur.Utilidade
         {
             return $"{espessura.ToString("0.0", new CultureInfo("pt-BR"))}cm";
         }
+
+
     }
 }
