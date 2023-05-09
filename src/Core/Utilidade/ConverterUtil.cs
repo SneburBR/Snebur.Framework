@@ -42,7 +42,7 @@ namespace Snebur.Utilidade
             {
                 return valor;
             }
-         
+
 
             if (tipo.IsValueType || tipo == typeof(String))
             {
@@ -82,7 +82,7 @@ namespace Snebur.Utilidade
                 {
                     case EnumTipoPrimario.String:
 
-                        return Convert.ToString(valor);
+                        return ConverterUtil.ParaString(valor);
 
                     case EnumTipoPrimario.Boolean:
 
@@ -106,7 +106,7 @@ namespace Snebur.Utilidade
 
                     case EnumTipoPrimario.Guid:
 
-                        return Guid.Parse(valor.ToString());
+                        return ConverterUtil.ParaGuid(valor);
 
                     case EnumTipoPrimario.TimeSpan:
 
@@ -136,6 +136,12 @@ namespace Snebur.Utilidade
                         throw new ErroNaoSuportado(String.Format("O tipo {0} não é suportado", EnumUtil.RetornarDescricao(tipoPrimarioEnum)));
                 }
             }
+        }
+
+        private static Guid ParaGuid(object valor)
+        {
+            Guid.TryParse(valor?.ToString(), out var resultado);
+            return resultado;
         }
 
         public static bool ParaBoolean(object valor)
@@ -168,12 +174,21 @@ namespace Snebur.Utilidade
 
                         default:
 
-                            throw new ErroNaoSuportado(String.Format("Não é possivel converter o valor {0} em boleano", valorString));
+                            if (Boolean.TryParse(valorString, out var resultdo))
+                            {
+                                return resultdo;
+                            }
+                            return false;
+                            //throw new ErroNaoSuportado(String.Format("Não é possível converter o valor {0} em bollean", valorString));
                     }
                 }
                 else
                 {
-                    return Convert.ToBoolean(valor);
+                    if (valor is IConvertible convertible)
+                    {
+                        return convertible.ToBoolean(CultureInfo.CurrentCulture);
+                    }
+                    return false;
                 }
             }
         }
@@ -225,7 +240,12 @@ namespace Snebur.Utilidade
             {
                 return 0;
             }
-            return Convert.ToInt32(valor, provider ?? CultureInfo.InvariantCulture);
+
+            if (valor is IConvertible convertible)
+            {
+                return convertible.ToInt32(provider ?? CultureInfo.InvariantCulture);
+            }
+            return 0;
         }
 
         public static long ParaInt64(object valor, IFormatProvider provider = null)
@@ -238,7 +258,11 @@ namespace Snebur.Utilidade
             {
                 return 0L;
             }
-            return Convert.ToInt64(valor, provider ?? CultureInfo.InvariantCulture);
+            if (valor is IConvertible convertible)
+            {
+                return convertible.ToInt64(provider ?? CultureInfo.InvariantCulture);
+            }
+            return 0L;
         }
 
         public static decimal ParaDecimal(object valor, IFormatProvider provider = null)
@@ -251,7 +275,11 @@ namespace Snebur.Utilidade
             {
                 return 0M;
             }
-            return Convert.ToDecimal(valor, provider ?? CultureInfo.InvariantCulture);
+            if (valor is IConvertible convertible)
+            {
+                return convertible.ToDecimal(provider ?? CultureInfo.InvariantCulture);
+            }
+            return 0m;
         }
 
         public static double ParaSingle(object valor, IFormatProvider provider = null)
@@ -264,7 +292,11 @@ namespace Snebur.Utilidade
             {
                 return 0D;
             }
-            return Convert.ToSingle(valor, provider ?? CultureInfo.InvariantCulture);
+            if (valor is IConvertible convertible)
+            {
+                return convertible.ToSingle(provider ?? CultureInfo.InvariantCulture);
+            }
+            return 0f;
         }
 
         public static double ParaDouble(object valor, IFormatProvider provider = null)
@@ -277,11 +309,15 @@ namespace Snebur.Utilidade
             {
                 return 0D;
             }
-            return Convert.ToDouble(valor, provider ?? CultureInfo.InvariantCulture);
+            if (valor is IConvertible convertible)
+            {
+                return convertible.ToDouble(provider ?? CultureInfo.InvariantCulture);
+            }
+            return 0d;
         }
 
 
-        public static DateTime ParaDateTime(object valor)
+        public static DateTime ParaDateTime(object valor, IFormatProvider provider = null)
         {
             if (valor is DateTime d)
             {
@@ -328,24 +364,30 @@ namespace Snebur.Utilidade
             var partesData = partaDataString.Split(divisorData);
             var partesHora = (parteHoraString == null) ? null : parteHoraString.Split(divisorHora);
 
-            if (partesData.Length < 3)
+            if (partesData.Length >= 3)
             {
-                throw new Erro(String.Format("O valor não pode ser convertido para data {0}", dataString));
-            }
-            var parteAno = partesData[0];
-            var parteMes = partesData[1];
-            var parteDia = partesData[2];
+                var parteAno = partesData[0];
+                var parteMes = partesData[1];
+                var parteDia = partesData[2];
 
-            if (int.TryParse(parteAno, out int ano) &&
-                int.TryParse(parteMes, out int mes) &&
-                int.TryParse(parteDia, out int dia))
-            {
-                if (partesHora == null)
+                if (int.TryParse(parteAno, out int ano) &&
+                    int.TryParse(parteMes, out int mes) &&
+                    int.TryParse(parteDia, out int dia))
                 {
-                    return new DateTime(ano, mes, dia);
+                    if (partesHora == null)
+                    {
+                        return new DateTime(ano, mes, dia);
+                    }
                 }
             }
-            throw new NotImplementedException();
+
+
+            if (valor is IConvertible convertible)
+            {
+                return convertible.ToDateTime(provider ?? CultureInfo.InvariantCulture);
+            }
+
+            return DateTime.MinValue;
         }
 
         private static bool IsValorVazioOuNull(object valor)
@@ -425,13 +467,17 @@ namespace Snebur.Utilidade
             }
         }
 
-        public static string ParaString(object valorTipado, bool aceitarNulo = false)
+        public static string ParaString(object valorTipado, bool isAceitarNulo = false)
         {
-            if (valorTipado == null && !aceitarNulo)
+            if (valorTipado == null)
             {
+                if (isAceitarNulo)
+                {
+                    return null;
+                }
                 return String.Empty;
             }
-            return Convert.ToString(valorTipado);
+            return valorTipado.ToString();
         }
 
         public static string ConverterHexaParaRgbaInterno(string corHexa)
