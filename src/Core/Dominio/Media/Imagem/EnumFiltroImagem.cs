@@ -9,6 +9,31 @@ namespace Snebur.Dominio
         [Rotulo("Exposição")]
         Exposicao,
 
+        [Rotulo("Brilho")]
+        Brilho,
+         
+        [Rotulo("Contraste")]
+        Contraste,
+
+        [Rotulo("Saturação")]
+        Saturacao,
+
+
+        [Rotulo("Preto e branco")]
+        PretoBranco,
+
+        [Rotulo("Sépia")]
+        Sepia,
+
+        [Rotulo("Matriz")]
+        Matriz,
+         
+        [Rotulo("Inverter")]
+        Inverter,
+         
+        [Rotulo("Desfoque")]
+        Desfoque,
+
         [Rotulo("Ciano")]
         Ciano,
 
@@ -17,29 +42,5 @@ namespace Snebur.Dominio
 
         [Rotulo("Amarelo")]
         Amarelo,
-
-        [Rotulo("Contraste")]
-        Contraste,
-
-        [Rotulo("Brilho")]
-        Brilho,
-
-        [Rotulo("Sépia")]
-        Sepia,
-
-        [Rotulo("Saturação")]
-        Saturacao,
-
-        [Rotulo("Preto e branco")]
-        PretoBranco,
-
-        [Rotulo("Inverter")]
-        Inverter,
-
-        [Rotulo("Matriz")]
-        Matriz,
-
-        [Rotulo("Desfoque")]
-        Desfoque
     }
 }
