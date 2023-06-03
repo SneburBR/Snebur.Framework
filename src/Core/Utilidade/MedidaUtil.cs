@@ -61,7 +61,7 @@ namespace Snebur.Utilidade
             var dpiY = (int)Math.Round(MedidaUtil.RetornarDpiVisualizacao(dimensaoCentimetros.Altura, dimensaoPixels.Altura));
             if (Math.Abs(dpiX - dpiX) > tolerancia)
             {
-                throw new Erro("Dpi X e diferente do Y, foram da margem tolerancia");
+                throw new Erro($"DPI X '{dpiX}' e diferente do Y '{dpiY}', fora da margem tolerância: {tolerancia}");
             }
             return Math.Min(dpiX, dpiY);
         }

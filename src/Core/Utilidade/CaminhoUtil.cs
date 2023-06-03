@@ -159,16 +159,17 @@ namespace Snebur.Utilidade
 
         public static string NormalizarCaminho(string caminho, EnumTipoCaminho tipoCaminho)
         {
+         
             switch (tipoCaminho)
             {
                 case EnumTipoCaminho.CaminhoWeb:
 
-                    return caminho.Replace(@"\", "/");
+                    return new Uri(caminho).AbsoluteUri;
+                    //return new  caminho.Replace(@"\", "/");
 
                 case EnumTipoCaminho.CaminhoWindows:
-                    caminho = Path.GetFullPath(caminho);
-                    return caminho.Replace("/", @"\");
-
+                    return Path.GetFullPath(new Uri(caminho).LocalPath).
+                           TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
                 default:
                     throw new Erro($"Caminho não suportado {tipoCaminho}");
             }

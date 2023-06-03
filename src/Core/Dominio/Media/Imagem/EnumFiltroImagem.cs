@@ -17,8 +17,7 @@ namespace Snebur.Dominio
 
         [Rotulo("Saturação")]
         Saturacao,
-
-
+         
         [Rotulo("Preto e branco")]
         PretoBranco,
 

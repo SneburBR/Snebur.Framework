@@ -23,7 +23,7 @@ namespace Snebur.Imagens
         //public const int ALTURA_IMAGEM_GRANDE = 1080;
         //public const int LARGURA_IMAGEM_GRANDE = 1920;
 
-        public const int QUALIDADE_PADRAO = 87;
+        public const int QUALIDADE_PADRAO = 94;
 
         public const int QUALIDADE_PADRAO_THUMBNAIL = 70;
 
