@@ -14,7 +14,7 @@ namespace Snebur.Dominio.Atributos
     }
 
     [AttributeUsage(AttributeTargets.Class)]
-    public class NotificarTodasAlteracoesPropriedadeGenericaAttribute : BaseAtributoDominio
+    public class NotificarTodasAlteracoesPropriedadeGenericaAttribute : BaseAtributoDominio, INotificarAlteracaoPropriedade
     {
         public EnunFlagAlteracaoPropriedade Flags { get; }
         public NotificarTodasAlteracoesPropriedadeGenericaAttribute()

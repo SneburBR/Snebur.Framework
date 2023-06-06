@@ -789,10 +789,10 @@ namespace Snebur.AcessoDados.Estrutura
             foreach (var propriedade in propriedades)
             {
                 var atributoNotificarPropriedade = propriedade.GetCustomAttribute<NotificarAlteracaoPropriedadeGenericaAttribute>();
-                var isNotificarAlteracaoPropriedade = isNotificarTodasPropriedades || atributoNotificarPropriedade!= null;
+                var isNotificarAlteracaoPropriedade = isNotificarTodasPropriedades || atributoNotificarPropriedade != null;
                 if (isNotificarAlteracaoPropriedade)
                 {
-                    var atributo = atributoNotificarPropriedade as INotificarAlteracaoPropriedade ?? 
+                    var atributo = atributoNotificarPropriedade as INotificarAlteracaoPropriedade ??
                                    atributoNotificarTodasPropriedade as INotificarAlteracaoPropriedade;
 
                     if (atributo == null)
@@ -803,8 +803,8 @@ namespace Snebur.AcessoDados.Estrutura
                     if (this.EstruturasCampos.ContainsKey(propriedade.Name))
                     {
                         var estruturaCampo = this.EstruturasCampos[propriedade.Name];
-                        estruturasAlteracaoPropriedade.Add(new EstruturaAlteracaoPropriedadeGenerica(propriedade, 
-                                                           this, estruturaCampo, 
+                        estruturasAlteracaoPropriedade.Add(new EstruturaAlteracaoPropriedadeGenerica(propriedade,
+                                                           this, estruturaCampo,
                                                            atributo));
                         continue;
                     }
@@ -819,10 +819,12 @@ namespace Snebur.AcessoDados.Estrutura
                                                                 atributo));
                         continue;
                     }
-                     
 
-                    throw new Erro($"A propriedade {propriedade.Name} do tipo {propriedade.PropertyType.Name} declarada em {propriedade.DeclaringType.Name} não suporta o atributo " +
-                                  $"{atributo.GetType().Name}  ");
+                    if (atributoNotificarPropriedade != null)
+                    {
+                        throw new Erro($"A propriedade {propriedade.Name} do tipo {propriedade.PropertyType.Name}" +
+                                       $" declarada em {propriedade.DeclaringType.Name} não suporta o atributo {atributoNotificarPropriedade.GetType().Name} ");
+                    }
                 }
             }
 
