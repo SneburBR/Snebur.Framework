@@ -53,7 +53,7 @@ namespace Snebur
             var json = HttpUtil.RetornarString(url, null, TimeSpan.FromSeconds(5), true);
             if (!String.IsNullOrWhiteSpace(json))
             {
-                var ipInfo = JsonUtil.Deserializar<ipinfo>(json, true);
+                var ipInfo = JsonUtil.Deserializar<ipinfo>(json, EnumTipoSerializacao.Javascript);
                 var localizacao = Localizacao.Parse(ipInfo.loc);
                 var mascaraIp = IpUtil.RetornarMascaraIp4(ipInfo.ip);
 

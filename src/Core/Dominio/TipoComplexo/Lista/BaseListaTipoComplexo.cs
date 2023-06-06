@@ -88,7 +88,7 @@ namespace Snebur.Dominio
         private void SerializarLista()
         {
             this.IsSerializandoLista = true;
-            this.Json = JsonUtil.Serializar(this.ListaInterna, true);
+            this.Json = JsonUtil.Serializar(this.ListaInterna, EnumTipoSerializacao.Javascript);
             this.IsSerializandoLista = false;
         }
 
@@ -99,7 +99,7 @@ namespace Snebur.Dominio
                 this.ListaInterna.Clear();
                 if (!String.IsNullOrEmpty(this._json))
                 {
-                    var valoresTipado = JsonUtil.Deserializar<List<T>>(this._json, true);
+                    var valoresTipado = JsonUtil.Deserializar<List<T>>(this._json, EnumTipoSerializacao.Javascript);
                     this.ListaInterna.AddRange(valoresTipado);
                 }
             }

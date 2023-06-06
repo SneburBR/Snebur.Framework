@@ -41,6 +41,9 @@ namespace Snebur.Comunicacao
 
         public string NomeManipulador { get; }
         public bool IsSerializarJavascript { get; set; }
+
+        public EnumTipoSerializacao TipoSerializacao => this.IsSerializarJavascript ? EnumTipoSerializacao.Javascript : 
+                                                                                      EnumTipoSerializacao.DotNet;
         public HttpContext HttpContext { get; private set; }
 
         #endregion
@@ -87,7 +90,7 @@ namespace Snebur.Comunicacao
                 try
                 {
                     var json = PacoteUtil.DescompactarPacote(streamRequisicao);
-                    this.ContratoChamada = JsonUtil.Deserializar<ContratoChamada>(json, false);
+                    this.ContratoChamada = JsonUtil.Deserializar<ContratoChamada>(json, EnumTipoSerializacao.DotNet);
                     this.Cabecalho = this.ContratoChamada.Cabecalho;
                     this.InformacaoSessaoUsuario = this.ContratoChamada.InformacaoSessaoUsuario;
                     this.CredencialUsuario = this.ContratoChamada.Cabecalho.CredencialUsuario;

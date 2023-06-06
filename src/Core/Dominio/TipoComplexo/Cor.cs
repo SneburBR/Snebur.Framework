@@ -74,6 +74,7 @@ namespace Snebur.Dominio
         public Cor(int r, int g, int b) : this(r, g, b, 1)
         {
         }
+
         [IgnorarConstrutorTS]
         public Cor(int r, int g, int b, double a)
         {

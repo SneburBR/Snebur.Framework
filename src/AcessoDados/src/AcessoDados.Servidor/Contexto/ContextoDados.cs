@@ -737,7 +737,7 @@ namespace Snebur.AcessoDados
         {
             if (this.IdentificadorProprietario != identificadorProprietario)
             {
-                if (!this.IsIdentificadorProprietarioGlobal)
+                if (!Debugger.IsAttached && !this.IsIdentificadorProprietarioGlobal)
                 {
                     throw new Erro("O identificador atual não é global");
                 }

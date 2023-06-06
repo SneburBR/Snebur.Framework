@@ -596,7 +596,7 @@ namespace Snebur.AcessoDados.Estrutura
 
             var estruturaRelacaoFilhos = new EstruturaRelacaoFilhos(propriedade, this, estruturaEntidadeFilho, estruturaCampoLigacaoFilho);
             this.EstruturasRelacoes.Add(propriedade.Name, estruturaRelacaoFilhos);
-            
+
         }
 
         private string RetornarNomeCampoLigacaoRelacaoFilhos(PropertyInfo propriedade)
@@ -768,8 +768,6 @@ namespace Snebur.AcessoDados.Estrutura
                         }
                     }
 
-
-
                     throw new Erro($"A propriedade {propriedade.Name} do tipo {propriedade.PropertyType.Name} declarada em {propriedade.DeclaringType.Name} não suporta o atributo " +
                                     $"{atributo.GetType().Name}<{atributo.TipoEntidadeAlteracaoPropriedade.Name},nameof({atributo.PropriedadeRelacao}), nameof({atributo.PropriedadeValorAlterado.Name})> ");
                 }
@@ -777,20 +775,37 @@ namespace Snebur.AcessoDados.Estrutura
 
             return estruturasAlteracaoPropriedade.ToArray();
         }
-
         private EstruturaAlteracaoPropriedadeGenerica[] RetornarEstruturasAlteracaoPropriedadeGenerica()
         {
+            var atributoNotificarTodasPropriedade = this.TipoEntidade.GetCustomAttribute<NotificarTodasAlteracoesPropriedadeGenericaAttribute>(false);
+            var isNotificarTodasPropriedades = atributoNotificarTodasPropriedade != null;
+
+            if (isNotificarTodasPropriedades)
+            {
+                var isTeste = "";
+            }
             var estruturasAlteracaoPropriedade = new List<EstruturaAlteracaoPropriedadeGenerica>();
             var propriedades = ReflexaoUtil.RetornarPropriedades(this.TipoEntidade, true, true);
             foreach (var propriedade in propriedades)
             {
-                var atributo = propriedade.GetCustomAttribute<NotificarAlteracaoPropriedadeGenericaAttribute>();
-                if (atributo != null)
+                var atributoNotificarPropriedade = propriedade.GetCustomAttribute<NotificarAlteracaoPropriedadeGenericaAttribute>();
+                var isNotificarAlteracaoPropriedade = isNotificarTodasPropriedades || atributoNotificarPropriedade!= null;
+                if (isNotificarAlteracaoPropriedade)
                 {
+                    var atributo = atributoNotificarPropriedade as INotificarAlteracaoPropriedade ?? 
+                                   atributoNotificarTodasPropriedade as INotificarAlteracaoPropriedade;
+
+                    if (atributo == null)
+                    {
+                        throw new Erro("O atributo notificar alteração da propriedade não está definido");
+                    }
+
                     if (this.EstruturasCampos.ContainsKey(propriedade.Name))
                     {
                         var estruturaCampo = this.EstruturasCampos[propriedade.Name];
-                        estruturasAlteracaoPropriedade.Add(new EstruturaAlteracaoPropriedadeGenerica(propriedade, this, estruturaCampo, atributo));
+                        estruturasAlteracaoPropriedade.Add(new EstruturaAlteracaoPropriedadeGenerica(propriedade, 
+                                                           this, estruturaCampo, 
+                                                           atributo));
                         continue;
                     }
 
@@ -804,20 +819,7 @@ namespace Snebur.AcessoDados.Estrutura
                                                                 atributo));
                         continue;
                     }
-
-                    //if (propriedade.PropertyType.IsSubclassOf(typeof(BaseTipoComplexo)))
-                    //{
-                    //    var estrutuTipoComplexo = this.EstruturasTipoComplexao[propriedade.Name];
-                    //    foreach (var estruturaCampo in estrutuTipoComplexo.EstruturasCampo.Values)
-                    //    {
-                    //        estruturasAlteracaoPropriedade.Add(new EstruturaAlteracaoPropriedadeGenerica(propriedade,
-                    //                                                                                     this, 
-                    //                                                                                     estruturaCampo,
-                    //                                                                                     atributo));
-                    //    }
-
-                    //    continue;
-                    //}
+                     
 
                     throw new Erro($"A propriedade {propriedade.Name} do tipo {propriedade.PropertyType.Name} declarada em {propriedade.DeclaringType.Name} não suporta o atributo " +
                                   $"{atributo.GetType().Name}  ");

@@ -31,7 +31,15 @@ namespace Snebur.Dominio
         public Borda()
         {
         }
-
+        [IgnorarConstrutorTS]
+        public Borda(Cor cor, bool isInterna, double afastamento, double espessura, int arredondamento)
+        {
+            this.Cor = cor;
+            this.IsInterna = isInterna;
+            this.Afastamento = afastamento;
+            this.Espessura = espessura;
+            this.Arredondamento = arredondamento;
+        }
 
         [IgnorarConstrutorTS]
         public Borda(string corRgba, bool isInterna, double afastamento, double espessura, int arredondamento)

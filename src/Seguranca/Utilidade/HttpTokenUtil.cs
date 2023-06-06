@@ -37,7 +37,7 @@ namespace Snebur.Utilidade
 
             try
             {
-                return JsonUtil.Deserializar<T>(json, false);
+                return JsonUtil.Deserializar<T>(json, EnumTipoSerializacao.DotNet);
 
             }
             catch (Exception ex)

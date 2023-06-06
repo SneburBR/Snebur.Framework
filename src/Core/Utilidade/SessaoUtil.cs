@@ -1,14 +1,9 @@
-﻿using Snebur.Dominio;
-using Snebur.Seguranca;
+﻿using Snebur.Seguranca;
 using System;
 using System.Collections.Concurrent;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading;
-using System.Web;
 
 
 namespace Snebur.Utilidade
@@ -256,7 +251,7 @@ namespace Snebur.Utilidade
 
         private static string RetornarConteudoSalvar(object obj)
         {
-            var conteudo = JsonUtil.Serializar(obj, true);
+            var conteudo = JsonUtil.Serializar(obj, EnumTipoSerializacao.Javascript);
             if (IsCriptografarConteudoAppData)
             {
                 return CriptografiaUtil.Criptografar(CHAVE_CRIPTOGRAFIA, conteudo);
@@ -273,7 +268,7 @@ namespace Snebur.Utilidade
                     try
                     {
                         var conteudo = RetornarConteudoLeitura(caminhoArquivo);
-                        return JsonUtil.Deserializar<T>(conteudo, true);
+                        return JsonUtil.Deserializar<T>(conteudo, EnumTipoSerializacao.Javascript);
                     }
                     catch (Exception ex)
                     {

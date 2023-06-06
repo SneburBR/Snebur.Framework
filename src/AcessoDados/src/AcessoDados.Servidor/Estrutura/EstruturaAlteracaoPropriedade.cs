@@ -74,12 +74,12 @@ namespace Snebur.AcessoDados.Estrutura
 
         }
     }
-    internal class EstruturaAlteracaoPropriedadeGenerica : BaseEstruturaAlteracaoPropriedade<NotificarAlteracaoPropriedadeGenericaAttribute>
+    internal class EstruturaAlteracaoPropriedadeGenerica : BaseEstruturaAlteracaoPropriedade<INotificarAlteracaoPropriedade>
     {
         internal EstruturaAlteracaoPropriedadeGenerica(PropertyInfo propriedade,
                                                       EstruturaEntidade estruturaEntidade,
                                                       EstruturaCampo estruturaCampo,
-                                                      NotificarAlteracaoPropriedadeGenericaAttribute atributo) :
+                                                      INotificarAlteracaoPropriedade atributo) :
                                                       base(propriedade,
                                                           estruturaEntidade,
                                                           estruturaCampo,
@@ -92,7 +92,7 @@ namespace Snebur.AcessoDados.Estrutura
         internal EstruturaAlteracaoPropriedadeGenerica(PropertyInfo propriedade,
                                                        EstruturaEntidade estruturaEntidade,
                                                        EstruturaTipoComplexo estrturaTipoComplexo,
-                                                       NotificarAlteracaoPropriedadeGenericaAttribute atributo) :
+                                                       INotificarAlteracaoPropriedade atributo) :
                                                        base(propriedade,
                                                             estruturaEntidade,
                                                             estrturaTipoComplexo,

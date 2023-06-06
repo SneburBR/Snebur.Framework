@@ -194,7 +194,7 @@ namespace Snebur.ServicoArquivo.Cliente
                     using (var streamReader = new StreamReader(streamResposta, Encoding.UTF8))
                     {
                         var json = streamReader.ReadToEnd();
-                        var resultado = JsonUtil.Deserializar<ResultadoServicoArquivo>(json, false);
+                        var resultado = JsonUtil.Deserializar<ResultadoServicoArquivo>(json, EnumTipoSerializacao.DotNet);
                         return resultado;
                     }
                 }

@@ -174,7 +174,7 @@ namespace Snebur.Comunicacao
                     {
                         InternetUtil.FecharMensagemSemInternet();
                         var jsonResposta = PacoteUtil.DescompactarPacote(streamResposta);
-                        return JsonUtil.Deserializar<ResultadoChamada>(jsonResposta, false);
+                        return JsonUtil.Deserializar<ResultadoChamada>(jsonResposta, EnumTipoSerializacao.DotNet);
                     }
                 }
             }
@@ -197,7 +197,7 @@ namespace Snebur.Comunicacao
 
         private byte[] RetornarConteudoCompactado()
         {
-            var jsonString = JsonUtil.Serializar(this.ContratoChamada, false);
+            var jsonString = JsonUtil.Serializar(this.ContratoChamada, EnumTipoSerializacao.DotNet);
             return PacoteUtil.CompactarPacote(jsonString);
         }
 

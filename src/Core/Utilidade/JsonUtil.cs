@@ -18,6 +18,10 @@ namespace Snebur.Utilidade
     public static class JsonUtil
     {
 
+        private static IReferenceResolver _referenceResolver;
+
+        public static IReferenceResolver ReferenceResolver => LazyUtil.RetornarValorLazyComBloqueio(ref _referenceResolver, () => new ResolverReferencia());
+
         private static readonly JsonSerializerSettings ConfiguracoesDeserializar = new JsonSerializerSettings
         {
             TypeNameHandling = TypeNameHandling.All,
@@ -43,41 +47,41 @@ namespace Snebur.Utilidade
             DateTimeZoneHandling = DateTimeZoneHandling.Utc,
             ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
             NullValueHandling = NullValueHandling.Ignore,
-            ContractResolver = new JsonPropertiesResolver()
+            ContractResolver = new JsonPropertiesResolver(),
+            ReferenceResolverProvider = () =>
+            {
+                return JsonUtil.ReferenceResolver;
+            }
+
         };
 
-        public static T DeserializaArquivor<T>(string caminhoArquivo, bool isJavascript = true)
+        public static T DeserializaArquivor<T>(string caminhoArquivo, EnumTipoSerializacao tipoSerializacao)
         {
-            return DeserializaArquivor<T>(caminhoArquivo, Encoding.UTF8, isJavascript);
+            return DeserializaArquivor<T>(caminhoArquivo, Encoding.UTF8, tipoSerializacao);
         }
 
-        public static T DeserializaArquivor<T>(string caminhoArquivo, 
-                                              Encoding encoding, 
-                                              bool isJavascript = true)
+        public static T DeserializaArquivor<T>(string caminhoArquivo,
+                                              Encoding encoding,
+                                              EnumTipoSerializacao tipoSerializacao)
         {
             using (var fs = StreamUtil.OpenRead(caminhoArquivo))
             using (var sr = new StreamReader(fs, encoding))
             {
                 var json = sr.ReadToEnd();
-                return JsonUtil.Deserializar<T>(json, isJavascript);
+                return JsonUtil.Deserializar<T>(json, tipoSerializacao);
             }
         }
 
-        public static T Deserializar<T>(string json, bool isJavascript = true)
+        public static T Deserializar<T>(string json, EnumTipoSerializacao tipoSerializacao)
         {
             if (String.IsNullOrEmpty(json))
             {
                 return default(T);
             }
-            return (T)Deserializar(json, typeof(T), isJavascript);
+            return (T)Deserializar(json, typeof(T), tipoSerializacao);
         }
-
-        public static object Deserializar(string json, Type tipo)
-        {
-            return JsonUtil.Deserializar(json, tipo, false);
-        }
-
-        public static object Deserializar(string json, Type tipo, bool isJavascript)
+         
+        public static object Deserializar(string json, Type tipo, EnumTipoSerializacao tipoSerializacao)
         {
             try
             {
@@ -86,11 +90,11 @@ namespace Snebur.Utilidade
                     return null;
                 }
 
-                var configuracaoSerializacao = isJavascript ? JsonUtil.ConfiguracoesSerializarJavascript :
-                                                              JsonUtil.ConfiguracoesSerializarDotNet;
+                var configuracaoSerializacao = tipoSerializacao == EnumTipoSerializacao.Javascript ? JsonUtil.ConfiguracoesSerializarJavascript :
+                                                                                                     JsonUtil.ConfiguracoesSerializarDotNet;
 
                 var objeto = JsonConvert.DeserializeObject(json, tipo, configuracaoSerializacao);
-                if (!isJavascript)
+                if (tipoSerializacao == EnumTipoSerializacao.DotNet)
                 {
                     using (var normalizar = new NormalizarDeserializacao(json, objeto))
                     {
@@ -107,20 +111,20 @@ namespace Snebur.Utilidade
                 }
                 throw new ErroSerializacao(json, ex);
             }
-        } 
+        }
 
         public static void Serializar(object objeto,
-                                      bool isJavascript,
+                                      EnumTipoSerializacao tipoSerializacao,
                                       string caminhoArquivo)
         {
-            SalvarSerializacao(objeto, isJavascript, caminhoArquivo);
+            SalvarSerializacao(objeto, tipoSerializacao, caminhoArquivo);
         }
-        public static string Serializar(object objeto, bool isJavascript)
+        public static string Serializar(object objeto, EnumTipoSerializacao tipoSerializacao)
         {
-            return JsonUtil.Serializar(objeto, isJavascript, DebugUtil.IsAttached);
+            return JsonUtil.Serializar(objeto, tipoSerializacao, DebugUtil.IsAttached);
         }
 
-        public static string Serializar(object objeto, bool isJavascript, bool isIdentar)
+        public static string Serializar(object objeto, EnumTipoSerializacao tipoSerializacao, bool isIdentar)
         {
             if (objeto == null)
             {
@@ -131,8 +135,8 @@ namespace Snebur.Utilidade
                 var formatacaoJson = (isIdentar) ? Formatting.Indented :
                                                    Formatting.None;
 
-                var configuracaoSerializacao = isJavascript ? JsonUtil.ConfiguracoesSerializarJavascript :
-                                                              JsonUtil.ConfiguracoesSerializarDotNet;
+                var configuracaoSerializacao = tipoSerializacao == EnumTipoSerializacao.Javascript ? JsonUtil.ConfiguracoesSerializarJavascript :
+                                                                                                     JsonUtil.ConfiguracoesSerializarDotNet;
 
                 using (var preparar = new PrapararSerializacao(objeto))
                 {
@@ -165,11 +169,11 @@ namespace Snebur.Utilidade
         }
 
         public static void SalvarSerializacao(object objecto,
-                                             bool isJavascript,
+                                             EnumTipoSerializacao tipoSerializacao,
                                              string caminhoDestino,
                                              bool isIdentar = true)
         {
-            var json = JsonUtil.Serializar(objecto, isJavascript, isIdentar);
+            var json = JsonUtil.Serializar(objecto, tipoSerializacao, isIdentar);
             ArquivoUtil.DeletarArquivo(caminhoDestino);
             ArquivoUtil.SalvarArquivoTexto(caminhoDestino, json);
         }
@@ -237,4 +241,36 @@ namespace Snebur.Utilidade
             return jsonPropriedade;
         }
     }
+
+
+    internal class ResolverReferencia : IReferenceResolver
+    {
+        public object ResolveReference(object context, string reference)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetReference(object context, object value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsReferenced(object context, object value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddReference(object context, string reference, object value)
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
+    public enum EnumTipoSerializacao
+    {
+        Javascript = 1,
+        DotNet = 2
+    }
+
 }

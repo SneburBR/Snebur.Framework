@@ -40,7 +40,7 @@ namespace Snebur.Serializacao
 
             if (valor is BaseTipoComplexo tipoComplexto)
             {
-                return JsonUtil.Serializar(tipoComplexto, true);
+                return JsonUtil.Serializar(tipoComplexto, EnumTipoSerializacao.Javascript);
             }
             var tipoP = ReflexaoUtil.RetornarTipoPrimarioEnum(valor.GetType());
             if (tipoP == Reflexao.EnumTipoPrimario.Desconhecido ||
@@ -114,7 +114,7 @@ namespace Snebur.Serializacao
 
             if (tipo.IsSubclassOf(typeof(BaseTipoComplexo)))
             {
-                return JsonUtil.Deserializar(valorSerializado, tipo, true);
+                return JsonUtil.Deserializar(valorSerializado, tipo, EnumTipoSerializacao.Javascript);
             }
 
             var tipoSemNullable = ReflexaoUtil.RetornarTipoSemNullable(tipo);

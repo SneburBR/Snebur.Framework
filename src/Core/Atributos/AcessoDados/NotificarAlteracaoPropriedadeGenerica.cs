@@ -12,11 +12,14 @@ namespace Snebur.Dominio.Atributos
             this.Flags = flags;
         }
     }
+
     [AttributeUsage(AttributeTargets.Class)]
-    public class NotificarAlteracaoEntidadeAttribute : BaseAtributoDominio
+    public class NotificarTodasAlteracoesPropriedadeGenericaAttribute : BaseAtributoDominio
     {
-        public NotificarAlteracaoEntidadeAttribute()
+        public EnunFlagAlteracaoPropriedade Flags { get; }
+        public NotificarTodasAlteracoesPropriedadeGenericaAttribute()
         {
+
         }
     }
 

@@ -81,7 +81,7 @@ namespace Snebur.Comunicacao
             resultadoChamada.DataHora = DateTime.UtcNow;
             resultadoChamada.NomeServico = this.GetType().Name;
 
-            return JsonUtil.Serializar(resultadoChamada, requisicao.IsSerializarJavascript);
+            return JsonUtil.Serializar(resultadoChamada, requisicao.TipoSerializacao);
         }
 
         protected virtual object RetornarResultadoOperacao(Requisicao requisicao,
@@ -114,10 +114,10 @@ namespace Snebur.Comunicacao
             if (!DebugUtil.IsAttached)
             {
                 var mensagem = this.RetornarMensagemLogLentidao(requisicao.Operacao, tempo);
-                LogUtil.DesempenhoAsync(mensagem, tempo, Servicos.EnumTipoLogDesempenho.LentidaoServicoComunicacao, false,
+                LogUtil.DesempenhoAsync(mensagem, tempo, EnumTipoLogDesempenho.LentidaoServicoComunicacao, false,
                 (Guid identificador) =>
                 {
-                    var json = JsonUtil.Serializar(requisicao, true);
+                    var json = JsonUtil.Serializar(requisicao, EnumTipoSerializacao.Javascript);
                     var nomeArquivo = identificador.ToString() + ".json";
                     var caminho = Path.Combine(ConfiguracaoUtil.CaminhoAppDataAplicacaoLogs, "Desempenho", nomeArquivo);
                     ArquivoUtil.SalvarArquivoTexto(caminho, json, Encoding.UTF8);

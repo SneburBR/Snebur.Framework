@@ -129,7 +129,7 @@ namespace Snebur.Comunicacao
         public string RetornarContratoSerializado(MethodBase metodo, params object[] parametros)
         {
             var contrato = this.RetornarContratoChamada(metodo, metodo, false, parametros);
-            return JsonUtil.Serializar(contrato, false, true);
+            return JsonUtil.Serializar(contrato, EnumTipoSerializacao.DotNet, true);
         }
 
         #endregion

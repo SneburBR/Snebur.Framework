@@ -73,7 +73,7 @@ namespace Snebur.ServicoArquivo
                     //context.Response.AddHeader("Access-Control-Allow-Origin", "*")
                     //context.Response.AddHeader("Access-Control-Allow-Methods", "POST")
                     context.Response.ContentType = "text/json; charset=UTF-8";
-                    var respostaString = JsonUtil.Serializar(resposta, true);
+                    var respostaString = JsonUtil.Serializar(resposta, EnumTipoSerializacao.Javascript);
                     await context.Response.WriteAsync(respostaString);
                 }
             }
@@ -127,7 +127,7 @@ namespace Snebur.ServicoArquivo
                     context.Response.ContentEncoding = Encoding.UTF8;
 
 
-                    var respostaString = JsonUtil.Serializar(resposta, true);
+                    var respostaString = JsonUtil.Serializar(resposta, EnumTipoSerializacao.Javascript);
                     context.Response.Write(respostaString);
                 }
             }
