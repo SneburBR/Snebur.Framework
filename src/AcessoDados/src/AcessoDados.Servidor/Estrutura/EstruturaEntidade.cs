@@ -784,6 +784,7 @@ namespace Snebur.AcessoDados.Estrutura
             {
                 var isTeste = "";
             }
+
             var estruturasAlteracaoPropriedade = new List<EstruturaAlteracaoPropriedadeGenerica>();
             var propriedades = ReflexaoUtil.RetornarPropriedades(this.TipoEntidade, true, true);
             foreach (var propriedade in propriedades)
