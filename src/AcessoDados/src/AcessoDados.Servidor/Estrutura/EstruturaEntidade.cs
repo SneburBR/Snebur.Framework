@@ -779,12 +779,7 @@ namespace Snebur.AcessoDados.Estrutura
         {
             var atributoNotificarTodasPropriedade = this.TipoEntidade.GetCustomAttribute<NotificarTodasAlteracoesPropriedadeGenericaAttribute>(false);
             var isNotificarTodasPropriedades = atributoNotificarTodasPropriedade != null;
-
-            if (isNotificarTodasPropriedades)
-            {
-                var isTeste = "";
-            }
-
+             
             var estruturasAlteracaoPropriedade = new List<EstruturaAlteracaoPropriedadeGenerica>();
             var propriedades = ReflexaoUtil.RetornarPropriedades(this.TipoEntidade, true, true);
             foreach (var propriedade in propriedades)
