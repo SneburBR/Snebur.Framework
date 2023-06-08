@@ -16,6 +16,7 @@ namespace Snebur.UI
         Titulo,
         SubTitulo,
         SubTitulo2,
+        Normal,
         Corpo,
         Corpo2,
         Descricao,

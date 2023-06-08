@@ -5,7 +5,10 @@
         Vazio = BaseEnumApresentacao.Vazio,
         Padrao = 0,
         Pequeno = 1,
-        Medio = 2,
-        Grande = 3
+        PequenoMedio = 2,
+        MediodPequeno =3,
+        Medio = 4,
+        MedioGrande =5,
+        Grande = 6
     }
 }
