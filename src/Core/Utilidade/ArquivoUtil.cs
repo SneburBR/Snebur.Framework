@@ -408,25 +408,32 @@ namespace Snebur.Utilidade
             return LerTexto(arquivoScript.FullName);
         }
 
-        public static string LerTexto(string caminho)
+        public static string TryLerTexto(string caminho, Encoding encoding = null)
         {
-            return LerTexto(caminho, Encoding.UTF8);
-        }
+            try
+            {
+                return LerTexto(caminho, encoding );
+            }
+            catch
+            {
+                return null;
+            }
+        } 
 
-        public static string LerTexto(string caminho, bool utf8)
+        public static string LerTexto(string caminho, bool isUtf8)
         {
-            var encoding = (utf8) ? Encoding.UTF8 : Encoding.Default;
+            var encoding = (isUtf8) ? Encoding.UTF8 : Encoding.Default;
             return LerTexto(caminho, encoding);
         }
 
-        public static string LerTexto(string caminho, Encoding encoding)
+        public static string LerTexto(string caminho, Encoding encoding = null)
         {
-            return File.ReadAllText(caminho, encoding);
+            return File.ReadAllText(caminho, encoding ?? Encoding.UTF8);
         }
 
 
-        public static void CriarArquivoTexto(string caminho, 
-                                             string contudo = null, 
+        public static void CriarArquivoTexto(string caminho,
+                                             string contudo = null,
                                              bool isIgnorarEro = false)
         {
             if (File.Exists(caminho))
@@ -437,11 +444,11 @@ namespace Snebur.Utilidade
                 }
                 throw new Exception($"O arquivo já existe {caminho}");
             }
-            try 
+            try
             {
                 using (var sw = File.CreateText(caminho))
                 {
-                    if(contudo!= null)
+                    if (contudo != null)
                     {
                         sw.Write(contudo);
                     }
