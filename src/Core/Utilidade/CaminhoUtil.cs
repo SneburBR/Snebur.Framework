@@ -8,9 +8,9 @@ namespace Snebur.Utilidade
     {
         public static bool IsFullPath(string path)
         {
-            return !String.IsNullOrWhiteSpace(path) && 
-                    path.IndexOfAny(Path.GetInvalidPathChars().ToArray()) == -1 && 
-                    Path.IsPathRooted(path) && 
+            return !String.IsNullOrWhiteSpace(path) &&
+                    path.IndexOfAny(Path.GetInvalidPathChars().ToArray()) == -1 &&
+                    Path.IsPathRooted(path) &&
                     !Path.GetPathRoot(path).Equals(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal);
         }
 
@@ -93,7 +93,12 @@ namespace Snebur.Utilidade
             return String.Equals(caminhoAbsoluto1, caminhoAbsoluto2, StringComparison.OrdinalIgnoreCase);
         }
 
-        public static string RetornarCaminhosAbsoluto(string caminhoRelativo, string caminhoBase)
+        public static string RetornarCaminhoCompleto(string caminhoRelativo, string caminhoBase)
+        {
+            return RetornarCaminhoAbsoluto(caminhoRelativo, caminhoBase);
+        }
+
+        public static string RetornarCaminhoAbsoluto(string caminhoRelativo, string caminhoBase)
         {
             var caminho = Path.Combine(caminhoBase, caminhoRelativo);
             return Path.GetFullPath(caminho);
@@ -174,7 +179,7 @@ namespace Snebur.Utilidade
                 case EnumTipoCaminho.CaminhoWeb:
 
                     return new Uri(caminho).AbsoluteUri;
-                    //return new  caminho.Replace(@"\", "/");
+                //return new  caminho.Replace(@"\", "/");
 
                 case EnumTipoCaminho.CaminhoWindows:
                     return Path.GetFullPath(new Uri(caminho).LocalPath).
@@ -238,7 +243,7 @@ namespace Snebur.Utilidade
                         return null;
                     }
                 }
-                if(arquivo.Exists)
+                if (arquivo.Exists)
                 {
                     return arquivo;
                 }
