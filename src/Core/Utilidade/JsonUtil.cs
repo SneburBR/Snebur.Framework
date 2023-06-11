@@ -72,6 +72,18 @@ namespace Snebur.Utilidade
             }
         }
 
+        public static T TryDeserializar<T>(string json, EnumTipoSerializacao tipoSerializacao)
+        {
+            try
+            {
+                return JsonUtil.Deserializar<T>(json, tipoSerializacao);
+            }
+            catch
+            {
+                return default;
+            }
+        }
+
         public static T Deserializar<T>(string json, EnumTipoSerializacao tipoSerializacao)
         {
             if (String.IsNullOrEmpty(json))
@@ -80,7 +92,7 @@ namespace Snebur.Utilidade
             }
             return (T)Deserializar(json, typeof(T), tipoSerializacao);
         }
-         
+
         public static object Deserializar(string json, Type tipo, EnumTipoSerializacao tipoSerializacao)
         {
             try

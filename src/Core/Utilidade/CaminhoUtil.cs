@@ -1,10 +1,19 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 
 namespace Snebur.Utilidade
 {
     public static class CaminhoUtil
     {
+        public static bool IsFullPath(string path)
+        {
+            return !String.IsNullOrWhiteSpace(path) && 
+                    path.IndexOfAny(Path.GetInvalidPathChars().ToArray()) == -1 && 
+                    Path.IsPathRooted(path) && 
+                    !Path.GetPathRoot(path).Equals(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal);
+        }
+
         public static string RetornarCaminhoArquivoBackup(string caminhoArquivo)
         {
             return RetornarCaminhoArquivoBackup(caminhoArquivo, 0);
@@ -136,6 +145,7 @@ namespace Snebur.Utilidade
             {
                 return new FileInfo(caminho);
             }
+
             if (Directory.Exists(caminho))
             {
                 return new DirectoryInfo(caminho);
@@ -159,7 +169,6 @@ namespace Snebur.Utilidade
 
         public static string NormalizarCaminho(string caminho, EnumTipoCaminho tipoCaminho)
         {
-         
             switch (tipoCaminho)
             {
                 case EnumTipoCaminho.CaminhoWeb:
@@ -233,14 +242,11 @@ namespace Snebur.Utilidade
                 {
                     return arquivo;
                 }
-                
             }
             catch
             {
-
             }
             return null;
-
         }
     }
 
