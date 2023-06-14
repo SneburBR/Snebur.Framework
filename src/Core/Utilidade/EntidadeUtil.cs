@@ -37,6 +37,15 @@ namespace Snebur.Utilidade
             }
         }
 
+        public static FieldInfo RetornarCampoPrivadoChaveEstrangeira(Type tipoEntidade,
+                                                                     PropertyInfo propriedade)
+        {
+            var propriedadeChaveEstrangeira = RetornarPropriedadeChaveEstrangeira(tipoEntidade, propriedade);
+            var filedName = $"_{TextoUtil.RetornarPrimeiraLetraMinusculo(propriedadeChaveEstrangeira.Name)}";
+            var fi = tipoEntidade.GetField(filedName, BindingFlags.NonPublic | BindingFlags.Instance);
+            return fi;
+        }
+
         public static PropertyInfo RetornarPropriedadeChaveEstrangeira(Type tipoEntidade, PropertyInfo propriedade)
         {
             var atributoChaveEstrangeira = propriedade.RetornarAtributoChaveEstrangeira();
@@ -63,8 +72,19 @@ namespace Snebur.Utilidade
             return propriedade;
         }
 
-        public static long RetornarValorIdChaveEstrangeira(Entidade entidade, PropertyInfo propriedade)
+        public static long? RetornarValorIdChaveEstrangeira(Entidade entidade,
+                                                           PropertyInfo propriedade,
+                                                           bool isPreferirCampoPrivado = false)
         {
+            if (isPreferirCampoPrivado)
+            {
+                var campo = EntidadeUtil.RetornarCampoPrivadoChaveEstrangeira(entidade.GetType(), propriedade);
+                if (campo != null)
+                {
+                    return ConverterUtil.Para<long?>(campo.GetValue(entidade));
+                }
+            }
+
             var valorEntidade = propriedade.GetValue(entidade);
             if (valorEntidade is Entidade)
             {
@@ -74,7 +94,7 @@ namespace Snebur.Utilidade
             {
                 var propriedadeChaveEstrangeira = EntidadeUtil.RetornarPropriedadeChaveEstrangeira(entidade.GetType(), propriedade);
                 var valorPropriedade = propriedadeChaveEstrangeira.GetValue(entidade);
-                return Convert.ToInt64(valorPropriedade);
+                return ConverterUtil.Para<long?>(valorPropriedade);
             }
         }
 
