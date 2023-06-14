@@ -180,6 +180,7 @@ namespace Snebur.AcessoDados
                             //TipoDeclaradoAssemblyQualifiedName = propriedade.DeclaringType.AssemblyQualifiedName
                         };
 
+                        relacaoAbertaListaEntidade.EstruturaConsulta.IsIncluirDeletados = this.EstruturaConsulta.IsIncluirDeletados;
                         relacaoAbertaListaEntidade.EstruturaConsulta.TipoEntidadeConsulta = tipoPropridadeItemBaseEntidade;
                         relacaoAbertaListaEntidade.EstruturaConsulta.NomeTipoEntidade = tipoPropridadeItemBaseEntidade.Name;
                         //relacaoAbertaListaEntidade.EstruturaConsulta.TipoEntidadeAssemblyQualifiedName = tipoPropridadeItemBaseEntidade.AssemblyQualifiedName;

@@ -4,10 +4,11 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 {
     internal class ComandoCampoComputado : Comando
     {
+        internal EstruturaCampo EstruturaCampo { get; }
 
-        internal EstruturaCampo EstruturaCampo { get; set; }
-
-        internal ComandoCampoComputado(EntidadeAlterada entidadeAlterada, EstruturaEntidade estruturaEntidade, EstruturaCampo estruturaCampo) : base(entidadeAlterada, estruturaEntidade)
+        internal ComandoCampoComputado(EntidadeAlterada entidadeAlterada,
+                                       EstruturaEntidade estruturaEntidade,
+                                       EstruturaCampo estruturaCampo) : base(entidadeAlterada, estruturaEntidade)
         {
             this.EstruturaCampo = estruturaCampo;
             this.SqlCommando = this.RetornarSqlComando();
@@ -15,11 +16,14 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 
         private string RetornarSqlComando()
         {
+            var estruturaEntidade = this.EstruturaEntidade;
             var sb = new StringBuilderSql();
             sb.AppendFormat(" SELECT [{0}] FROM [{1}].[{2}] WHERE  [{1}].[{2}] .[{3}] = {4} ",
-                            this.EstruturaCampo.NomeCampo, this.EstruturaEntidade.Schema, this.EstruturaEntidade.NomeTabela,
-                            this.EstruturaEntidade.EstruturaCampoChavePrimaria.NomeCampo,
-                            this.EstruturaEntidade.EstruturaCampoChavePrimaria.NomeParametro);
+                            this.EstruturaCampo.NomeCampo,
+                            estruturaEntidade.Schema,
+                            estruturaEntidade.NomeTabela,
+                            estruturaEntidade.EstruturaCampoChavePrimaria.NomeCampo,
+                            estruturaEntidade.EstruturaCampoChavePrimaria.NomeParametro);
 
             this.EstruturasCampoParametro.Add(this.EstruturaEntidade.EstruturaCampoChavePrimaria);
             return sb.ToString();

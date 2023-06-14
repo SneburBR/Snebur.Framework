@@ -9,16 +9,11 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 {
     internal abstract class Comando : IDisposable
     {
-        internal EntidadeAlterada EntidadeAlterada { get; set; }
-
-        internal EstruturaEntidade EstruturaEntidade { get; set; }
-
-        internal DbCommand DbCommand { get; set; }
-
-        internal Entidade Entidade { get; set; }
-
+        internal EntidadeAlterada EntidadeAlterada { get; }
+        internal EstruturaEntidade EstruturaEntidade { get; }
+        internal DbCommand DbCommand { get; }
+        internal Entidade Entidade { get; }
         internal string SqlCommando { get; set; }
-
         internal List<EstruturaCampo> EstruturasCampoParametro { get; } = new List<EstruturaCampo>();
 
         internal Comando(EntidadeAlterada entidadeAlterada, EstruturaEntidade estruturaEntidade)
@@ -69,10 +64,8 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             {
                 return entidadeRelacao.Id;
             }
-            else
-            {
-                return Convert.ToInt64(this.RetornarValorCampoPrimario(estruturaCampo));
-            }
+            return Convert.ToInt64(this.RetornarValorCampoPrimario(estruturaCampo));
+
         }
 
         private object RetornarValorCampoPrimario(EstruturaCampo estruturaCampo)
@@ -92,16 +85,20 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                 }
                 return valorPropriedade;
             }
-            else if (estruturaCampo.Tipo.IsEnum)
+
+            if (estruturaCampo.Tipo.IsEnum)
             {
                 var valorPropriedade = ReflexaoUtil.RetornarValorPropriedade(this.Entidade, estruturaCampo.Propriedade);
                 return Convert.ToInt32(valorPropriedade);
             }
-            else
-            {
-                return ReflexaoUtil.RetornarValorPropriedade(this.Entidade, estruturaCampo.Propriedade);
-            }
+            return ReflexaoUtil.RetornarValorPropriedade(this.Entidade, estruturaCampo.Propriedade);
         }
+
+        public override string ToString()
+        {
+            return this.SqlCommando;
+        }
+
         #region IDisposable 
 
         public void Dispose()

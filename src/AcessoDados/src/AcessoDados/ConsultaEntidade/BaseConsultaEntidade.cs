@@ -7,21 +7,23 @@ namespace Snebur.AcessoDados
     {
         #region Propriedades
 
-        protected Type TipoEntidadeConsulta { get; set; }
+        protected Type TipoEntidadeConsulta { get; }
 
-        public EstruturaConsulta EstruturaConsulta { get; set; }
+        public EstruturaConsulta EstruturaConsulta { get; }
 
-        public __BaseContextoDados ContextoDados { get; set; }
+        public __BaseContextoDados ContextoDados { get; }
 
         #endregion
 
         #region Construtores
 
-        public BaseConsultaEntidade(__BaseContextoDados contextoDados, Type tipoEntidadeConsulta) : this(contextoDados, tipoEntidadeConsulta, null)
+        protected BaseConsultaEntidade(__BaseContextoDados contextoDados, Type tipoEntidadeConsulta) : this(contextoDados, tipoEntidadeConsulta, null)
         {
         }
 
-        public BaseConsultaEntidade(__BaseContextoDados contextoDados, Type tipoEntidadeConsulta, EstruturaConsulta estruturaConsulta)
+        protected BaseConsultaEntidade(__BaseContextoDados contextoDados,
+                                       Type tipoEntidadeConsulta,
+                                       EstruturaConsulta estruturaConsulta)
         {
             this.TipoEntidadeConsulta = tipoEntidadeConsulta;
             this.ContextoDados = contextoDados;
@@ -33,7 +35,6 @@ namespace Snebur.AcessoDados
                     TipoEntidadeConsulta = tipoEntidadeConsulta,
                     NomeTipoEntidade = tipoEntidadeConsulta.Name,
                     TipoEntidadeAssemblyQualifiedName = tipoEntidadeConsulta.RetornarAssemblyQualifiedName()
-                    //TipoEntidadeAssemblyQualifiedName = tipoEntidadeConsulta.AssemblyQualifiedName
                 };
             }
             else

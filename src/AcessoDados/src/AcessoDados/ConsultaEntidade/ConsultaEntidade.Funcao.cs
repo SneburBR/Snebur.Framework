@@ -15,12 +15,15 @@ namespace Snebur.AcessoDados
 
         private T RetornarValorFuncao<T>(EnumTipoFuncao tipoFuncaoEnum, Expression expressao)
         {
-            var estruturaConsultaEscalar = new EstruturaConsulta();
-            estruturaConsultaEscalar.TipoEntidadeConsulta = this.EstruturaConsulta.TipoEntidadeConsulta;
-            estruturaConsultaEscalar.TipoFuncaoEnum = tipoFuncaoEnum;
-            estruturaConsultaEscalar.NomeTipoEntidade = this.EstruturaConsulta.NomeTipoEntidade;
-            estruturaConsultaEscalar.TipoEntidadeAssemblyQualifiedName = this.EstruturaConsulta.TipoEntidadeAssemblyQualifiedName;
-            estruturaConsultaEscalar.FiltroGrupoE = this.EstruturaConsulta.FiltroGrupoE;
+            var estruturaConsultaEscalar = new EstruturaConsulta
+            {
+                IsIncluirDeletados = this.EstruturaConsulta.IsIncluirDeletados,
+                TipoEntidadeConsulta = this.EstruturaConsulta.TipoEntidadeConsulta,
+                TipoFuncaoEnum = tipoFuncaoEnum,
+                NomeTipoEntidade = this.EstruturaConsulta.NomeTipoEntidade,
+                TipoEntidadeAssemblyQualifiedName = this.EstruturaConsulta.TipoEntidadeAssemblyQualifiedName,
+                FiltroGrupoE = this.EstruturaConsulta.FiltroGrupoE
+            };
 
             if (estruturaConsultaEscalar.Take > 0 || estruturaConsultaEscalar.Skip > 0)
             {

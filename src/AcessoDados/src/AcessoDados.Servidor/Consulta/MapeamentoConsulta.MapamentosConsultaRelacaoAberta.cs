@@ -172,9 +172,11 @@ namespace Snebur.AcessoDados.Mapeamento
             }
             else
             {
-                var estruturaConsulta = new EstruturaConsulta();
-                estruturaConsulta.IsMostrarDeletados = this.EstruturaConsulta.IsMostrarDeletados;
-                estruturaConsulta.IsMostrarInativos = this.EstruturaConsulta.IsMostrarInativos;
+                var estruturaConsulta = new EstruturaConsulta
+                {
+                    IsIncluirDeletados = this.EstruturaConsulta.IsIncluirDeletados,
+                    IsIncluirInativos = this.EstruturaConsulta.IsIncluirInativos
+                };
                 return estruturaConsulta;
             }
         }
@@ -228,7 +230,6 @@ namespace Snebur.AcessoDados.Mapeamento
                     };
 
                     relacaoAbartaColecao.EstruturaConsulta = ((RelacaoAbertaColecao)relacaoAberta).EstruturaConsulta;
-
                     consulta.ColecoesAberta.Add(nomePropriedade, relacaoAbartaColecao);
 
                     return;
@@ -260,7 +261,7 @@ namespace Snebur.AcessoDados.Mapeamento
                         TipoDeclaradoAssemblyQualifiedName = estruturaRelacao.Propriedade.DeclaringType.AssemblyQualifiedName,
                         CaminhoPropriedade = nomePropriedade,
                     };
-
+                    relacaoAbartaColecao.EstruturaConsulta.IsIncluirDeletados = this.EstruturaConsulta.IsIncluirDeletados;
                     consulta.ColecoesAberta.Add(nomePropriedade, relacaoAbartaColecao);
                     return;
                 }
@@ -275,7 +276,7 @@ namespace Snebur.AcessoDados.Mapeamento
                         TipoDeclaradoAssemblyQualifiedName = estruturaRelacao.Propriedade.DeclaringType.AssemblyQualifiedName,
                         CaminhoPropriedade = nomePropriedade,
                     };
-
+                    relacaoAbartaColecao.EstruturaConsulta.IsIncluirDeletados = this.EstruturaConsulta.IsIncluirDeletados;
                     consulta.ColecoesAberta.Add(nomePropriedade, relacaoAbartaColecao);
 
                     return;

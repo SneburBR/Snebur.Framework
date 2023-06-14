@@ -22,7 +22,6 @@ namespace Snebur.AcessoDados.Mapeamento
                     {
 
                         var filtroMapeamento = this.RetornarFiltroMapeamento(mapeamento);
-
                         var entidades = mapeamento.RetornarEntidades(filtroMapeamento);
                         this.MapearRelacaoAberta(entidades, mapeamento);
                     }

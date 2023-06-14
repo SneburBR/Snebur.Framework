@@ -63,7 +63,8 @@ namespace Snebur.AcessoDados.Mapeamento
 
             if (!(filtroMapeamento is FiltroMapeamentoIds) || isRelacaoFilhos)
             {
-                if (!this.EstruturaConsulta.IsMostrarDeletados && this.EstruturaEntidade.EstruturaCampoDelatado != null)
+                if (!this.EstruturaConsulta.IsIncluirDeletados && 
+                     this.EstruturaEntidade.EstruturaCampoDelatado != null)
                 {
                     if (!isOperadorWhereAdicionado)
                     {

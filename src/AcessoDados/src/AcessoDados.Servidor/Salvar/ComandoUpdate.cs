@@ -29,7 +29,8 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             {
                 if (!this.EstruturasCampoParametro.All(x => x.IsAutorizarAlteracaoPropriedade))
                 {
-                    throw new ErroSeguranca("Não é autorizado atualizar uma entidade somente leitura, somente os campos autorizados", Servicos.EnumTipoLogSeguranca.AlterarandoEntidadeSomenteLeitura);
+                    throw new ErroSeguranca("Não é autorizado atualizar uma entidade somente leitura, somente os campos autorizados", 
+                                            EnumTipoLogSeguranca.AlterarandoEntidadeSomenteLeitura);
                 }
             }
 

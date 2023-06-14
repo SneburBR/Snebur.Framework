@@ -112,7 +112,7 @@ namespace Snebur.AcessoDados
 
         public ConsultaEntidade<TEntidade> IncluirDeletados()
         {
-            this.EstruturaConsulta.IsMostrarDeletados = true;
+            this.EstruturaConsulta.IsIncluirDeletados = true;
             return this;
         }
 

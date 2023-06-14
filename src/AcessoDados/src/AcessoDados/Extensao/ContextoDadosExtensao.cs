@@ -13,10 +13,16 @@ namespace Snebur.AcessoDados
     public static class ContextoDadosExtensao
     {
         public static void SalvarPropriedade<TEntidade>(this IContextoDados contexto,
-                                                       TEntidade entidade,
-                                                        Expression<Func<TEntidade, object>> expressaoPropriedad) where TEntidade : Entidade
+                                                         TEntidade entidade,
+                                                         Expression<Func<TEntidade, object>> expressaoPropriedad) where TEntidade : Entidade
         {
             SalvarPropriedades(contexto, entidade, expressaoPropriedad);
+        }
+        public static void SalvarPropriedade<TEntidade>(this IContextoDados contexto,
+                                                        IEnumerable<TEntidade> entidades,
+                                                        Expression<Func<TEntidade, object>> expressaoPropriedad) where TEntidade : Entidade
+        {
+            SalvarPropriedades(contexto, entidades, expressaoPropriedad);
         }
 
 
@@ -25,7 +31,7 @@ namespace Snebur.AcessoDados
                                                           params Expression<Func<TEntidade, object>>[] expressoesPropriedade) where TEntidade : Entidade
         {
 
-            var clone = entidade.CloneSomenteId( expressoesPropriedade);
+            var clone = entidade.CloneSomenteId(expressoesPropriedade);
             var propriedadesAbertas = new List<string>();
             foreach (var expressao in expressoesPropriedade)
             {
@@ -38,6 +44,31 @@ namespace Snebur.AcessoDados
             var entidadeInterna = (IEntidadeInterna)clone;
             entidadeInterna.AtribuirPropriedadesAbertas(propriedadesAbertas);
             contexto.Salvar(clone);
+        }
+
+        public static void SalvarPropriedades<TEntidade>(this IContextoDados contexto,
+                                                         IEnumerable<TEntidade> entidades,
+                                                         params Expression<Func<TEntidade, object>>[] expressoesPropriedade) where TEntidade : Entidade
+        {
+
+            var entidadesSalvar = new List<TEntidade>();
+            foreach(var entidade in entidades)
+            {
+                var clone = entidade.CloneSomenteId(expressoesPropriedade);
+                var propriedadesAbertas = new List<string>();
+                foreach (var expressao in expressoesPropriedade)
+                {
+                    var propriedade = ExpressaoUtil.RetornarPropriedade(expressao);
+                    if (propriedade.TrySetValue(clone, propriedade.GetValue(entidade)))
+                    {
+                        propriedadesAbertas.Add(propriedade.Name);
+                    }
+                }
+                var entidadeInterna = (IEntidadeInterna)clone;
+                entidadeInterna.AtribuirPropriedadesAbertas(propriedadesAbertas);
+                entidadesSalvar.Add(clone);
+            }
+            contexto.Salvar(entidadesSalvar);
         }
 
 

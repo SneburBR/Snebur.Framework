@@ -15,7 +15,7 @@ namespace Snebur.AcessoDados.Mapeamento
                                     EstruturaEntidade estruturaEntidade,
                                     EstruturaBancoDados estruturaBancoDados,
                                     BaseConexao conexaoDB,
-                                    BaseContextoDados contexto) :
+                                    BaseContextoDados contexto ) :
                                     base(mapeamentoConsulta, estruturaEntidade, estruturaBancoDados, conexaoDB, contexto)
         {
             if ((this.EstruturaConsulta.Take == 0) ||
