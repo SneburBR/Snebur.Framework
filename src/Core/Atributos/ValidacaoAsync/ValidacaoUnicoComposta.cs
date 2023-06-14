@@ -1,4 +1,5 @@
-﻿using Snebur.Utilidade;
+﻿using Snebur.Linq;
+using Snebur.Utilidade;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,34 +69,58 @@ namespace Snebur.Dominio.Atributos
                     this.NomesPropriedade.Add(nomePropriedade);
                 }
             }
-            if (ReflexaoUtil.TipoImplementaInterface(this.TipoEntidade, typeof(IDeletado)))
+
+            if (ReflexaoUtil.TipoImplementaInterface(tipoEntidade, typeof(IDeletado)))
             {
                 var propriedadeIsDeletado = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nameof(IDeletado.IsDeletado), true);
+                var propriedadeDataHoraDeletado = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nameof(IDeletado.DataHoraDeletado), true);
                 if (propriedadeIsDeletado != null)
                 {
                     this.Filtros.Add(new FiltroPropriedadeIndexar(propriedadeIsDeletado,
                                                                   EnumOperadorComparacao.Igual,
                                                                   "0"));
                 }
-                //var propriedadeDataHoraDeletado = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nameof(IDeletado.DataHoraDeletado), true);
-                //if (!this.Propriedades.Any(x => x.Propriedade == propriedadeDataHoraDeletado))
-                //{
-                //    this.Propriedades.Add(new PropriedadeIndexar(propriedadeDataHoraDeletado, true));
-                //}
+
+                if (propriedadeDataHoraDeletado != null)
+                {
+                    this.Filtros.Add(new FiltroPropriedadeIndexar(propriedadeDataHoraDeletado,
+                                     EnumOperadorComparacao.Igual,
+                                     "null"));
+                }
             }
+
+            if (this.Filtros.Count > 0)
+            {
+                var propriedadesFiltro = this.Filtros.Select(x => x.Propriedade).ToList();
+                var propriedadesEmConclito = this.Propriedades.Where(x => propriedadesFiltro.Contains(x.Propriedade)).
+                                                                                             Select(x => x.Propriedade);
+                if (propriedadesEmConclito.Count() > 0)
+                {
+                    throw new Erro($"Remover as propriedades  em conflitos {String.Join(",", propriedadesEmConclito.Select(x=> x.Name))}" +
+                                   $" no  índice {nameof(ValidacaoUnicoCompostaAttribute)} em {tipoEntidade.Name} ");
+                }
+
+                var duplicados = propriedadesFiltro.Duplicados();
+                if (duplicados.Count() > 0)
+                {
+                    throw new Erro($"Remover as propriedades  em conflitos {String.Join(",", duplicados.Select(x => x.Name))}" +
+                                   $" no  índice {nameof(ValidacaoUnicoCompostaAttribute)} em {tipoEntidade.Name} ");
+                }
+            }
+
         }
         private PropriedadeIndexar RetornarPropriedadeIndexar(string nomePropriedade)
         {
             var tipoEntidade = this.TipoEntidade;
-            var aceitaNulo = nomePropriedade.EndsWith("?");
-            if (aceitaNulo)
+            var isAceitaNulo = nomePropriedade.EndsWith("?");
+            if (isAceitaNulo)
             {
                 nomePropriedade = nomePropriedade.Substring(0, nomePropriedade.Length - 1);
             }
             var propriedade = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nomePropriedade, true);
             if (propriedade != null)
             {
-                return new PropriedadeIndexar(propriedade, aceitaNulo);
+                return new PropriedadeIndexar(propriedade, isAceitaNulo);
             }
             return null;
         }

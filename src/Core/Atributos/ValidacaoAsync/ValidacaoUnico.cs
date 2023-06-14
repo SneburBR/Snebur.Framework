@@ -15,6 +15,7 @@ namespace Snebur.Dominio.Atributos
         public ValidacaoUnicoAttribute(bool isAceitaNulo = true)
         {
             this.IsAceitaNulo = isAceitaNulo;
+
         }
 
         #region IAtributoValidacao

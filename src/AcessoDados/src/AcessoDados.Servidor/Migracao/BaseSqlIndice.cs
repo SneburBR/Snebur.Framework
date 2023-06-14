@@ -138,6 +138,10 @@ namespace Snebur.AcessoDados
                                                           FiltroPropriedadeIndexar propriedadeFiltro)
         {
             var operador = propriedadeFiltro.OperadoprString;
+            if(propriedadeFiltro.Valor == "null" || propriedadeFiltro.Valor == null)
+            {
+                return $" {estruturaCampo.NomeCampo} IS NULL ";
+            }
             return $" {estruturaCampo.NomeCampo} {operador} {propriedadeFiltro.Valor} ";
         }
 

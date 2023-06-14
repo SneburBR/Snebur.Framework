@@ -2,6 +2,7 @@
 using Snebur.Dominio.Atributos;
 using Snebur.Utilidade;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -127,9 +128,11 @@ namespace Snebur.AcessoDados
                 }
 
                 var propriedadesValidacaoUnico = this.RetornarPropriedadesValidacaoUnico(tipoEntidade);
-                foreach (var propriedade in propriedadesValidacaoUnico)
+                foreach (var (propriedades, filtros) in propriedadesValidacaoUnico)
                 {
-                    sqlsMigration.Add(new SqlValidacaoUnico(estruturaEntidade, propriedade));
+                    sqlsMigration.Add(new SqlValidacaoUnico(estruturaEntidade, propriedades, filtros));
+                    var sql = sqlsMigration.Last().RetornarSql();
+
                 }
 
                 var propriedadesValorPadraoDataHoraServidor = this.RetornarPropriedadesDataHoraServidor(tipoEntidade);
@@ -171,20 +174,40 @@ namespace Snebur.AcessoDados
             return ReflexaoUtil.TipoPossuiAtributo(tipoEntidade, typeof(ValidacaoUnicoCompostaAttribute), false);
         }
 
-        private List<PropriedadeIndexar> RetornarPropriedadesValidacaoUnico(Type tipoEntidade)
+        private List<(List<PropriedadeIndexar>, List< FiltroPropriedadeIndexar>)> RetornarPropriedadesValidacaoUnico(Type tipoEntidade)
         {
             //############################################### analisar melhor a regra quando o o valor nulo podem ser duplicados
-            var propriedadesIndexar = new List<PropriedadeIndexar>();
+            var grupoPropriedadesIndexar = new List<(List<PropriedadeIndexar>, List<FiltroPropriedadeIndexar>)>();
             var propriedades = ReflexaoUtil.RetornarPropriedades(tipoEntidade, true);
             foreach (var propriedade in propriedades)
             {
                 var atributoValidacaoUnico = propriedade.GetCustomAttribute<ValidacaoUnicoAttribute>();
                 if (atributoValidacaoUnico != null)
                 {
+                    var propriedadesIndexar = new List<PropriedadeIndexar>();
+                    var propriedadesFiltros = new List<FiltroPropriedadeIndexar>();
                     propriedadesIndexar.Add(new PropriedadeIndexar(propriedade, !atributoValidacaoUnico.IsAceitaNulo));
+                    if (ReflexaoUtil.TipoImplementaInterface(tipoEntidade, typeof(IDeletado)))
+                    {
+                        var propriedadeIsDeletado = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nameof(IDeletado.IsDeletado), true);
+                        var propriedadeDataHoraDeletado = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nameof(IDeletado.DataHoraDeletado), true);
+                        if (propriedadeIsDeletado != null)
+                        {
+                            propriedadesFiltros.Add(new FiltroPropriedadeIndexar(propriedadeIsDeletado,
+                                                                          EnumOperadorComparacao.Igual,
+                                                                          "0"));
+                        }
+                        if(propriedadeDataHoraDeletado!= null)
+                        {
+                              propriedadesFiltros.Add(new FiltroPropriedadeIndexar(propriedadeDataHoraDeletado,
+                                                      EnumOperadorComparacao.Igual,
+                                                      null));
+                        }
+                    }
+                    grupoPropriedadesIndexar.Add((propriedadesIndexar, propriedadesFiltros));
                 }
             }
-            return propriedadesIndexar;
+            return grupoPropriedadesIndexar;
         }
 
         private List<PropertyInfo> RetornarPropriedadesDataHoraServidor(Type tipoEntidade)
