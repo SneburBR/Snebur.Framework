@@ -215,11 +215,12 @@ namespace Snebur.Utilidade
 
         public static T Para<T>(object valor)
         {
-            if (valor == null || DBNull.Value == valor)
+            if (valor == null || DBNull.Value == valor  || 
+               (valor is string str && String.IsNullOrEmpty(str)))
             {
                 return default;
             }
-
+ 
             var tipo = typeof(T);
             var tipoPrimario = ReflexaoUtil.RetornarTipoPrimarioEnum(tipo);
             if (tipoPrimario == EnumTipoPrimario.Desconhecido)
