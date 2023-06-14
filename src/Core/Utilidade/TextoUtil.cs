@@ -357,20 +357,21 @@ namespace Snebur.Utilidade
 
         public static string RetornarPrimeiraLetraMaiuscula(string texto)
         {
-            if (String.IsNullOrWhiteSpace(texto))
+            if (texto?.Length > 0 && Char.IsLower(texto[0]))
             {
-                return String.Empty;
+                return Char.ToUpper(texto[0]) + texto.Substring(1);
             }
-            var primeiraLetra = texto.Substring(0, 1).ToUpper();
-            var restante = texto.Substring(1, texto.Length - 1);
-            return String.Concat(primeiraLetra, restante);
+            return texto;
         }
 
         public static string RetornarPrimeiraLetraMinusculo(string texto)
         {
-            var primeiraLetra = texto.Substring(0, 1).ToLower();
-            var restante = texto.Substring(1, texto.Length - 1);
-            return String.Concat(primeiraLetra, restante);
+            if (texto?.Length > 0 && Char.IsUpper(texto[0]))
+            {
+                return Char.ToLower(texto[0]) + texto.Substring(1);
+            }
+            return texto;
+
         }
 
         public static string RetornarInicioMinusculo(string texto, int quantidadeCaracteres)
