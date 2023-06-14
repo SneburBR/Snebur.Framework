@@ -83,26 +83,26 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task<ResultadoExcluir> ExcluirAsync(this BaseContextoDados contexto,
+        public static Task<ResultadoDeletar> ExcluirAsync(this BaseContextoDados contexto,
                                                          List<Entidade> entidades)
         {
             return Task.Factory.StartNew(() =>
             {
-                return contexto.Excluir(entidades);
+                return contexto.Deletar(entidades);
             });
         }
 
-        public static Task<ResultadoExcluir> ExcluirAsync(this BaseContextoDados contexto,
+        public static Task<ResultadoDeletar> ExcluirAsync(this BaseContextoDados contexto,
                                                           List<Entidade> entidades,
                                                           string relacoesEmCascata)
         {
             return Task.Factory.StartNew(() =>
             {
-                return contexto.Excluir(entidades, relacoesEmCascata);
+                return contexto.Deletar(entidades, relacoesEmCascata);
             });
         }
 
-        public static Task<ResultadoExcluir> ExcluirAsync(this BaseContextoDados contexto,
+        public static Task<ResultadoDeletar> ExcluirAsync(this BaseContextoDados contexto,
                                                          Entidade entidade)
         {
             return Task.Factory.StartNew(() =>

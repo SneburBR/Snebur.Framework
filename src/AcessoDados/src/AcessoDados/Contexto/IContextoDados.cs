@@ -22,11 +22,11 @@ namespace Snebur.AcessoDados
 
         ResultadoSalvar Salvar(IEntidade entidade);
 
-        ResultadoExcluir Excluir(IEntidade entidade);
+        ResultadoDeletar Deletar(IEntidade entidade);
 
-        ResultadoExcluir Excluir(IEntidade entidade, string relacoesEmCascata);
+        ResultadoDeletar Deletar(IEntidade entidade, string relacoesEmCascata);
 
-        ResultadoExcluir Excluir(IEnumerable<IEntidade> entidades);
+        ResultadoDeletar Deletar(IEnumerable<IEntidade> entidades);
 
 
         //ResultadoSalvar Salvar(params IEntidade[] entidades);

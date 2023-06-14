@@ -11,17 +11,18 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 {
     internal partial class SalvarEntidades : IDisposable
     {
-        internal List<EntidadeAlterada> EntidadesAlteradas { get; set; }
-        internal Queue<EntidadeAlterada> Fila { get; set; }
-        internal BaseContextoDados Contexto { get; set; }
+        internal List<EntidadeAlterada> EntidadesAlteradas { get; private set; }
+        internal Queue<EntidadeAlterada> Fila { get; private set; }
+        internal BaseContextoDados Contexto { get; private set; }
         internal BaseConexao Conexao { get; set; }
-        internal bool IsNotificarAlteracaoPropriedade { get; set; }
-        internal bool Excluir { get; set; }
-        private int ContadorParametro { get; set; }
+        internal bool IsNotificarAlteracaoPropriedade { get; }
+        internal EnumOpcaoSalvar OpcaoSalvar { get; }
+
+        private int ContadorParametro;
 
         internal SalvarEntidades(BaseContextoDados contexto,
                                  HashSet<Entidade> entidades,
-                                 bool isExcluir,
+                                 EnumOpcaoSalvar opcaoDeletar,
                                  bool isNotificarAlteracaoPropriedade)
         {
             foreach (var entidade in entidades)
@@ -29,7 +30,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                 entidade.AtivarControladorPropriedadeAlterada();
             }
 
-            this.Excluir = isExcluir;
+            this.OpcaoSalvar = opcaoDeletar;
             this.IsNotificarAlteracaoPropriedade = isNotificarAlteracaoPropriedade;
             this.Fila = new Queue<EntidadeAlterada>();
             this.Contexto = contexto;
@@ -37,7 +38,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             this.EntidadesAlteradas = this.RetornarEntidadesAlteradas(entidades);
             this.Fila = FilaEntidadeAlterada.RetornarFila(this.EntidadesAlteradas);
 
-            if (isExcluir)
+            if (opcaoDeletar != EnumOpcaoSalvar.Salvar)
             {
                 this.Fila = new Queue<EntidadeAlterada>(this.Fila.Reverse());
             }
@@ -45,7 +46,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 
         internal Resultado Salvar(bool ignorarValidacao = false)
         {
-            if (!this.Excluir && !ignorarValidacao)
+            if (this.OpcaoSalvar == EnumOpcaoSalvar.Salvar && !ignorarValidacao)
             {
                 var entidades = Enumerable.Reverse(this.Fila).Select(x => x.Entidade).ToList();
                 var errosValidacao = ValidarEntidades.Validar(this.Contexto, entidades.ToList());
@@ -112,12 +113,13 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                                         {
                                             throw new Erro($"A entidade não foi salvar {entidadeAlterada.Entidade.__CaminhoTipo}");
                                         }
+                                        entidadeAlterada.RetornarCommandos();
                                         entidadesAltearas.Add(entidadeAlterada);
                                     }
                                     transacao.Commit();
                                     //return this.RetornarResultado(entidadesAltearas);
                                 }
-                                catch (Exception)
+                                catch
                                 {
                                     transacao.Rollback();
                                     this.EntidadesAlteradas.ForEach(x => x.Rollback());
@@ -125,7 +127,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                                 }
                             }
                         }
-                        catch (Exception)
+                        catch
                         {
                             throw;
                         }
@@ -233,7 +235,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                                 throw new Exception(" ultimo id invalido");
                             }
                             entidadeAlterada.SetId(id);
-                            
+
                             return 0;
                         }
                         return cmd.ExecuteNonQuery();
@@ -267,30 +269,28 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             }
         }
 
-
         #region Resultado 
 
         private Resultado RetornarResultado(List<EntidadeAlterada> entidadesAlterada)
         {
-            if (this.Excluir)
-            {
-                return this.RetornarResultadoExcluir(entidadesAlterada);
-            }
-            else
+            if (this.OpcaoSalvar == EnumOpcaoSalvar.Salvar)
             {
                 return this.RetornarResultadoSalvar(entidadesAlterada);
             }
+            return this.RetornarResultadoDeletar(entidadesAlterada);
         }
+
         //Erro
         private Resultado RetornarResultadoErro(Exception erro)
         {
-            if (this.Excluir)
+            if (this.OpcaoSalvar == EnumOpcaoSalvar.Salvar)
             {
-                return this.RetornarResultadoErroExcluir(erro);
+                return this.RetornarResultadoErroSalvar(erro);
             }
             else
             {
-                return this.RetornarResultadoErroSalvar(erro);
+                return this.RetornarResultadoErroDeletar(erro);
+
             }
         }
 
@@ -364,16 +364,16 @@ namespace Snebur.AcessoDados.Servidor.Salvar
         }
         //Excluir
 
-        private ResultadoExcluir RetornarResultadoExcluir(List<EntidadeAlterada> entidadesAlterada)
+        private ResultadoDeletar RetornarResultadoDeletar(List<EntidadeAlterada> entidadesAlterada)
         {
-            var resultado = new ResultadoExcluir();
+            var resultado = new ResultadoDeletar();
             resultado.IsSucesso = true;
             return resultado;
         }
 
-        private ResultadoExcluir RetornarResultadoErroExcluir(Exception erro)
+        private ResultadoDeletar RetornarResultadoErroDeletar(Exception erro)
         {
-            var resultado = new ResultadoExcluir
+            var resultado = new ResultadoDeletar
             {
                 IsSucesso = false,
                 MensagemErro = ErroUtil.RetornarDescricaoDetalhadaErro(erro),
@@ -408,29 +408,18 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                 if (entidade != null)
                 {
                     var estruturaEntidade = this.Contexto.EstruturaBancoDados.EstruturasEntidade[entidade.GetType().Name];
-                    var entidadeAlterada = new EntidadeAlterada(this.Contexto, entidade, estruturaEntidade, this.Excluir);
+                    var entidadeAlterada = new EntidadeAlterada(this.Contexto, entidade, estruturaEntidade, this.OpcaoSalvar);
                     entidadesAlterada.Add(entidadeAlterada);
                     AtualizarValorPadrao.Atualizar(entidadeAlterada, this.Contexto);
                 }
             }
+            return NormalizarEntidadeAlterada.RetornarEntidadesAlteradaNormalizada(this.Contexto, entidadesAlterada);
 
-            if (this.Excluir)
-            {
-                return NormalizarEntidadeAlterada.RetornarEntidadesAlteradaNormalizada(this.Contexto, entidadesAlterada);
-            }
-            else
-            {
-                return NormalizarEntidadeAlterada.RetornarEntidadesAlteradaNormalizada(this.Contexto, entidadesAlterada);
-            }
         }
 
         private HashSet<Entidade> RetornarEntidadesNormalizadas(HashSet<Entidade> entidades)
         {
-            if (this.Excluir)
-            {
-                return entidades;
-            }
-            else
+            if (this.OpcaoSalvar == EnumOpcaoSalvar.Salvar)
             {
                 var entidadesNormalizada = NormalizarEntidade.RetornarEntidadesNormalizada(this.Contexto, entidades);
                 if (this.IsNotificarAlteracaoPropriedade)
@@ -441,7 +430,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                     entidadesNotificacaoPropriedadeAlterada = NormalizarEntidade.RetornarEntidadesNormalizada(this.Contexto, entidadesNotificacaoPropriedadeAlterada);
                     entidadesNormalizada.AddRange(entidadesNotificacaoPropriedadeAlterada);
 
-                    
+
                     if (this.Contexto.EstruturaBancoDados.TipoEntidadeNotificaoPropriedadeAlteradaGenerica != null)
                     {
                         //Propriedade alteradas GENERICAS
@@ -453,6 +442,8 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                 ///AtualizarValorPadrao.Atualizar(entidades, this.Contexto);
                 return entidadesNormalizada;
             }
+            return entidades;
+
         }
 
         #endregion
@@ -462,7 +453,21 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 
         public void Dispose()
         {
+            this.Fila?.Clear();
+            this.EntidadesAlteradas?.Clear();
+
+            this.Fila = null;
+            this.EntidadesAlteradas = null;
+            this.Contexto = null;
+            this.Conexao = null;
         }
         #endregion
+    }
+
+    public enum EnumOpcaoSalvar
+    {
+        Salvar = 0,
+        Deletar = 1,
+        DeletarRegistro = 2
     }
 }

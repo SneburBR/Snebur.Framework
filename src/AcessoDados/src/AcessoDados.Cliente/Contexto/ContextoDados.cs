@@ -49,18 +49,18 @@ namespace Snebur.AcessoDados
             return this.Salvar(lista);
         }
 
-        public ResultadoExcluir Excluir(params Entidade[] entidades)
+        public ResultadoDeletar Excluir(params Entidade[] entidades)
         {
             var lista = new List<Entidade>();
             lista.AddRange(entidades);
-            return this.Excluir(lista, String.Empty);
+            return this.Deletar(lista, String.Empty);
         }
 
-        public ResultadoExcluir Exclur(ListaEntidades<Entidade> entidades)
+        public ResultadoDeletar Exclur(ListaEntidades<Entidade> entidades)
         {
             var lista = new List<Entidade>();
             lista.AddRange(entidades);
-            return this.Excluir(lista, String.Empty);
+            return this.Deletar(lista, String.Empty);
         }
 
      
@@ -82,26 +82,26 @@ namespace Snebur.AcessoDados
         }
 
 
-        public override ResultadoExcluir Excluir(IEntidade entidade)
+        public override ResultadoDeletar Deletar(IEntidade entidade)
         {
-            return this.Excluir(new List<IEntidade> { entidade });
+            return this.Deletar(new List<IEntidade> { entidade });
         }
 
 
-        public override ResultadoExcluir Excluir(IEnumerable<IEntidade> entidades)
+        public override ResultadoDeletar Deletar(IEnumerable<IEntidade> entidades)
         {
-            return this.Excluir(entidades, String.Empty);
+            return this.Deletar(entidades, String.Empty);
         }
 
-        public override ResultadoExcluir Excluir(IEntidade entidade, string relacoesEmCascata)
+        public override ResultadoDeletar Deletar(IEntidade entidade, string relacoesEmCascata)
         {
-            return this.Excluir(new List<IEntidade> { entidade }, String.Empty);
+            return this.Deletar(new List<IEntidade> { entidade }, String.Empty);
         }
        
 
-        public override ResultadoExcluir Excluir(IEnumerable<IEntidade> entidades, string relacoesEmCascata)
+        public override ResultadoDeletar Deletar(IEnumerable<IEntidade> entidades, string relacoesEmCascata)
         {
-            return this.ServicoDados.Excluir(entidades, relacoesEmCascata);
+            return this.ServicoDados.Deletar(entidades, relacoesEmCascata);
         }
 
          

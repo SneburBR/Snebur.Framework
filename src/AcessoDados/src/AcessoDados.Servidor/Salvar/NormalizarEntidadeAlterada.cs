@@ -16,7 +16,8 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 
         internal Dictionary<string, EntidadeAlterada> EntidadesAlteradasNormalizadas { get; set; }
 
-        private NormalizarEntidadeAlterada(BaseContextoDados contexto, List<EntidadeAlterada> entidadesAlteradas)
+        private NormalizarEntidadeAlterada(BaseContextoDados contexto, 
+                                           List<EntidadeAlterada> entidadesAlteradas)
         {
             this.EntidadesAlteradasNormalizadas = new Dictionary<string, EntidadeAlterada>();
             this.Contexto = contexto;
@@ -105,7 +106,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                         {
                             estruturaRelacaoNn.EstruturaRelacaoPaiEntidadeFilho.Propriedade.SetValue(entidadeRelacaoNn, entidadeFilhoNn);
                         }
-                        var novaEntidadeAlterada = new EntidadeAlterada(this.Contexto, entidadeRelacaoNn, estruturaRelacaoNn.EstruturaEntidadeRelacaoNn, false);
+                        var novaEntidadeAlterada = new EntidadeAlterada(this.Contexto, entidadeRelacaoNn, estruturaRelacaoNn.EstruturaEntidadeRelacaoNn, EnumOpcaoSalvar.Salvar);
                         this.EntidadesAlteradasNormalizadas.Add(novaEntidadeAlterada.IdentificadorEntidade, novaEntidadeAlterada);
                     }
                 }
@@ -120,8 +121,8 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                         var entidadeRelacaoNn = consultaEntidadeRelacaoNn.SingleOrDefault();
                         if (entidadeRelacaoNn != null)
                         {
-                            var entidadeExcluida = new EntidadeAlterada(this.Contexto, entidadeRelacaoNn, estruturaRelacaoNn.EstruturaEntidadeRelacaoNn, true);
-                            this.EntidadesAlteradasNormalizadas.Add(entidadeExcluida.IdentificadorEntidade, entidadeExcluida);
+                            var entidadeDeletadas = new EntidadeAlterada(this.Contexto, entidadeRelacaoNn, estruturaRelacaoNn.EstruturaEntidadeRelacaoNn, EnumOpcaoSalvar.Deletar);
+                            this.EntidadesAlteradasNormalizadas.Add(entidadeDeletadas.IdentificadorEntidade, entidadeDeletadas);
                         }
                     }
                 }

@@ -365,7 +365,6 @@ namespace Snebur.AcessoDados
 
         #region Salvar
 
-
         public ResultadoSalvar Salvar(params IEntidade[] entidades)
         {
             return this.Salvar(entidades, false);
@@ -415,15 +414,12 @@ namespace Snebur.AcessoDados
         private ResultadoSalvar SalvarInterno(IEnumerable<IEntidade> entidades)
         {
             var entidadesHashSet = entidades.OfType<Entidade>().ToHashSet();
-            using (var salvarEntidades = new SalvarEntidades(this, entidadesHashSet, false, true))
+            using (var salvarEntidades = new SalvarEntidades(this, entidadesHashSet, EnumOpcaoSalvar.Salvar, true))
             {
                 return (ResultadoSalvar)salvarEntidades.Salvar();
             }
         }
         #endregion
-
-
-
 
         #endregion
 
@@ -489,7 +485,7 @@ namespace Snebur.AcessoDados
         ResultadoSalvar IContextoDadosSemNotificar.SalvarInternoSemNotificacao(IEntidade[] p_entidades, bool ignorarValidacao)
         {
             var entidades = p_entidades.Cast<Entidade>().ToList();
-            using (var salvarEntidades = new SalvarEntidades(this, entidades.ToHashSet(false), false, false))
+            using (var salvarEntidades = new SalvarEntidades(this, entidades.ToHashSet(false), EnumOpcaoSalvar.Salvar, false))
             {
                 var resultado = salvarEntidades.Salvar(ignorarValidacao);
                 if (resultado.IsSucesso && resultado.Erro == null)

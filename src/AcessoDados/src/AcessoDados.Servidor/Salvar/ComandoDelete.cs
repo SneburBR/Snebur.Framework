@@ -5,7 +5,6 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 {
     internal class ComandoDelete : Comando
     {
-
         internal bool IsComandoUpdade { get; set; }
 
         internal string SqlCommandoIDeletado { get; set; }

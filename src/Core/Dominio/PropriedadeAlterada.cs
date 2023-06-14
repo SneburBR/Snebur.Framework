@@ -51,8 +51,8 @@ namespace Snebur.Dominio
         }
 
         internal static PropriedadeAlterada Create(string nomePropriedade,
-                                                   long antigoValor,
-                                                   long novoValor)
+                                                   long? antigoValor,
+                                                   long? novoValor)
         {
             return new PropriedadeAlterada(nomePropriedade,
                                            antigoValor,

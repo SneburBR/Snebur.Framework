@@ -4,7 +4,7 @@
     {
         Nova = 1,
         Atualizar = 2,
-        Excluir = 3,
+        Deletar = 3,
         Nenhuma = 4
     }
 }

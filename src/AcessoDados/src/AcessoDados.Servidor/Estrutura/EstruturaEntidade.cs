@@ -60,7 +60,7 @@ namespace Snebur.AcessoDados.Estrutura
         internal bool IsImplementaInterfaceIUsuario { get; }
         internal bool IsImplementaInterfaceISessaoUsuario { get; }
         internal bool IsSomenteLeitura { get; }
-        internal bool IsExcluirRegistro { get; }
+        internal bool IsDeletarRegistro { get; }
         public bool IsAutorizarInstanciaNaoEspecializada { get; }
         internal EnumInterfaceEntidade[] InterfacesImplementasFlags => EnumUtil.RetornarFlags<EnumInterfaceEntidade>(this.InterfacesImplementasEnum);
         internal int MaximoRegistroPorConsulta { get; }
@@ -183,7 +183,7 @@ namespace Snebur.AcessoDados.Estrutura
             this.IsImplementaInterfaceIAtividadeUsuario = this.InterfacesImplementasEnum.HasFlag(EnumInterfaceEntidade.IAtividadeUsuario);
             this.IsImplementaInterfaceIUsuario = this.InterfacesImplementasEnum.HasFlag(EnumInterfaceEntidade.IUsuario);
             this.IsImplementaInterfaceISessaoUsuario = this.InterfacesImplementasEnum.HasFlag(EnumInterfaceEntidade.ISessaoUsuario);
-            this.IsExcluirRegistro = ReflexaoUtil.TipoPossuiAtributo(this.TipoEntidade, typeof(ExcluirRegristroAttribute), true);
+            this.IsDeletarRegistro = ReflexaoUtil.TipoPossuiAtributo(this.TipoEntidade, typeof(DeletarRegristroAttribute), true);
             this.IsAutorizarInstanciaNaoEspecializada = ReflexaoUtil.TipoPossuiAtributo(this.TipoEntidade, typeof(AutorizarInstanciaNaoEspecializadaAttribute), true);
             this.IsSomenteLeitura = this.RetornarIsSomenteLeitura();
 

@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -15,9 +16,10 @@ namespace Snebur.Dominio
 {
     [NaoCriarTabelaEntidade]
     [Plural("Entidades")]
-    public abstract class Entidade : BaseDominio, IEntidade, IEntidadeInterna, IEquatable<Entidade>, INotifyPropertyChanged, INomeTipoEntidade, IDataErrorInfo 
+    public abstract class Entidade : BaseDominio, IEntidade, IEntidadeInterna, IEquatable<Entidade>, INotifyPropertyChanged, INomeTipoEntidade, IDataErrorInfo
     {
         private bool _isValidacaoPropriedadeAbertasDesativada = false;
+        private bool __isExisteAlteracaoTipoCompleto;
 
         [OcultarColuna]
         public abstract long Id { get; set; }
@@ -243,23 +245,25 @@ namespace Snebur.Dominio
             this.NotificarPropriedadeAlterada(nomePropriedade);
         }
 
-        internal protected virtual void NotificarValorPropriedadeAlteradaChaveEstrangeiraAlterada<T>
-                 (T antivoValor, T novoValor)
+        internal protected virtual void NotificarValorPropriedadeAlteradaChaveEstrangeiraAlterada<T>(
+                                            T antigoValor,
+                                            T novoValor)
         {
 
         }
 
-        internal protected virtual void NotificarValorPropriedadeAlteradaChaveEstrangeiraAlterada<T>
-                 (T antivoValor, T novoValor,
-                  string nomePropriedadeRelacao,
-                  Entidade entidadeRelacao,
-                  [CallerMemberName] string nomePropriedade = "")
+        internal protected virtual void NotificarValorPropriedadeAlteradaChaveEstrangeiraAlterada<T> (
+                                            T antigoValor,
+                                            T novoValor,
+                                            string nomePropriedadeRelacao,
+                                            Entidade entidadeRelacao,
+                                            [CallerMemberName] string nomePropriedade = "")
         {
-            this.NotificarValorPropriedadeAlterada(antivoValor, novoValor, nomePropriedade);
+            this.NotificarValorPropriedadeAlterada(antigoValor, novoValor, nomePropriedade);
 
             if (this.__IsControladorPropriedadesAlteradaAtivo)
             {
-                if (!Util.SaoIgual(antivoValor, novoValor))
+                if (!Util.SaoIgual(antigoValor, novoValor))
                 {
                     if (entidadeRelacao != null)
                     {
@@ -269,26 +273,15 @@ namespace Snebur.Dominio
                             propriedadeRelacao.SetValue(this, null);
                         }
                     }
-
-                    //var propriedadeRelacao = this.__TipoEntidade.
-                    //    GetProperties().
-                    //    Where(x => x.GetCustomAttribute<ChaveEstrangeiraAttribute>()?.NomePropriedade == nomePropriedade).
-                    //    FirstOrDefault();
-
-                    //var entidade = propriedadeRelacao.GetValue(this);
-                    //if (entidade is Entidade entidadeTipada)
-                    //{
-                    //    if (!entidadeTipada.Id.Equals(novoValor))
-                    //    {
-                    //        propriedadeRelacao.SetValue(this, null);
-                    //    }
-                    //}
+                     
                 }
             }
         }
 
         //para server valor null na chave estrangeira de chaveEstrangeira_Id = null
-        internal protected virtual void NotificarValorPropriedadeAlteradaRelacao(object antigoValor, object novoValor, [CallerMemberName] string nomePropriedade = "")
+        internal protected virtual void NotificarValorPropriedadeAlteradaRelacao(object antigoValor, 
+                                                                                 object novoValor, 
+                                                                                 [CallerMemberName] string nomePropriedade = "")
         {
             if (this.IsSerializando)
             {
@@ -301,26 +294,31 @@ namespace Snebur.Dominio
                 {
                     var tipoEntidade = this.GetType();
                     var propriedade = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nomePropriedade);
-                    var propriedadeChaveEstrageira = EntidadeUtil.RetornarPropriedadeChaveEstrangeira(tipoEntidade, propriedade);
+                    
 
                     if (novoValor is Entidade entidade)
                     {
-                        var antigoValorChaveEstrangeira = Convert.ToInt64(propriedadeChaveEstrageira.GetValue(this));
+                        var antigoValorChaveEstrangeira = EntidadeUtil.RetornarValorIdChaveEstrangeira(this, propriedade, true);
                         var novoValorChaveEstrangeira = entidade.Id;
                         if (antigoValorChaveEstrangeira != novoValorChaveEstrangeira || novoValorChaveEstrangeira == 0)
                         {
+                            var propriedadeChaveEstrageira = EntidadeUtil.RetornarPropriedadeChaveEstrangeira(tipoEntidade, propriedade);
                             if (novoValorChaveEstrangeira > 0)
                             {
                                 propriedadeChaveEstrageira.SetValue(this, novoValorChaveEstrangeira);
                             }
-                            this.NotificarValorPropriedadeAlteradaChaveEstrangeira(antigoValorChaveEstrangeira, novoValorChaveEstrangeira, propriedadeChaveEstrageira.Name);
+                            this.NotificarValorPropriedadeAlteradaChaveEstrangeira(antigoValorChaveEstrangeira, 
+                                                                                   novoValorChaveEstrangeira, 
+                                                                                   propriedadeChaveEstrageira.Name);
                         }
                     }
                 }
             }
         }
 
-        private void NotificarValorPropriedadeAlteradaChaveEstrangeira(long antigoValorChaveEstrangeira, long novoValorChaveEstrangeira, string nomePropriedade)
+        private void NotificarValorPropriedadeAlteradaChaveEstrangeira(long? antigoValorChaveEstrangeira, 
+                                                                       long? novoValorChaveEstrangeira, 
+                                                                       string nomePropriedade)
         {
             if (this.IsSerializando)
             {
@@ -335,7 +333,9 @@ namespace Snebur.Dominio
                     {
                         if (!this.__PropriedadesAlteradas.ContainsKey(nomePropriedade))
                         {
-                           var propriedadeAlterada = PropriedadeAlterada.Create(nomePropriedade, antigoValorChaveEstrangeira, novoValorChaveEstrangeira);
+                            var propriedadeAlterada = PropriedadeAlterada.Create(nomePropriedade, 
+                                                                                 antigoValorChaveEstrangeira,
+                                                                                 novoValorChaveEstrangeira);
                             this.__PropriedadesAlteradas.Add(nomePropriedade, propriedadeAlterada);
                         }
                     }
@@ -363,6 +363,7 @@ namespace Snebur.Dominio
         {
             return this.__PropriedadesAlteradas;
         }
+
         [EditorBrowsable(EditorBrowsableState.Never)]
         public List<ErroValidacao> RetornarErrosValidacao(object contextoDados)
         {
@@ -517,9 +518,7 @@ namespace Snebur.Dominio
         #endregion
 
         #region Métodos privados 
-
-        private bool __isExisteAlteracaoTipoCompleto;
-
+         
         private bool RetornarIsExisteAlteracaoPropriedade()
         {
             if (this.Id == 0)
@@ -539,7 +538,9 @@ namespace Snebur.Dominio
             {
                 return true;
             }
-            var propriedadesRelacoesNn = this.GetType().GetProperties().Where(x => x.GetCustomAttribute<RelacaoNnAttribute>() != null);
+            var propriedadesRelacoesNn = this.GetType().GetProperties().
+                                                        Where(x => x.GetCustomAttribute<RelacaoNnAttribute>() != null);
+
             foreach (var propriedade in propriedadesRelacoesNn)
             {
                 var lista = propriedade.GetValue(this) as IListaEntidades;
@@ -548,7 +549,10 @@ namespace Snebur.Dominio
                     return true;
                 }
             }
-            var propriedadesTipoCompleso = this.GetType().GetProperties().Where(x => x.PropertyType.IsSubclassOf(typeof(BaseTipoComplexo))).ToList();
+            var propriedadesTipoCompleso = this.GetType().GetProperties().
+                                                          Where(x => x.PropertyType.IsSubclassOf(typeof(BaseTipoComplexo))).
+                                                          ToList();
+
             foreach (var propriedade in propriedadesTipoCompleso)
             {
                 if (this.__propriedadesAbertas == null ||
@@ -658,6 +662,7 @@ namespace Snebur.Dominio
             Validator.TryValidateObject(this, new ValidationContext(this, null, null), resultado, true);
             return resultado;
         }
+
         //public IEntidade CloneSomenteId()
         //{
         //    return CloneSomenteId<IEntidade>();
@@ -720,7 +725,7 @@ namespace Snebur.Dominio
             {
                 if (this is IDeletado deletado && deletado.IsDeletado)
                 {
-                    throw new Erro("Um entidade deletada não pode ser ativada");
+                    throw new Erro("Uma entidade deletada não pode ser ativada");
                 }
             }
             base.NotificarValorPropriedadeAlterada(antigoValor, novoValor, nomePropriedade);

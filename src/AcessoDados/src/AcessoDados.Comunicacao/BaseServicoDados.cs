@@ -1,4 +1,5 @@
-﻿using Snebur.Dominio;
+﻿using Snebur.AcessoDados.Servidor.Salvar;
+using Snebur.Dominio;
 using System.Collections.Generic;
 
 namespace Snebur.AcessoDados.Comunicacao
@@ -29,9 +30,9 @@ namespace Snebur.AcessoDados.Comunicacao
             return this.ContextoDados.Salvar(entidades, true);
         }
 
-        public ResultadoExcluir Excluir(IEnumerable<IEntidade> entidades, string relacoesEmCascata)
+        public ResultadoDeletar Deletar(IEnumerable<IEntidade> entidades, string relacoesEmCascata)
         {
-            return this.ContextoDados.Excluir(entidades, relacoesEmCascata, true);
+            return this.ContextoDados.Deletar(entidades, relacoesEmCascata);
         }
 
         #endregion

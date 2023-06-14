@@ -14,34 +14,24 @@ namespace Snebur.AcessoDados.Servidor.Salvar
         #region Propriedades
 
         internal Entidade Entidade { get; }
-
         internal bool IsImplementaIDeletado { get; set; }
-
-        internal string IdentificadorEntidade
-        {
-            get { return this.Entidade.__IdentificadorEntidade; }
-        }
-
         internal EnumTipoAlteracao TipoAlteracao { get; }
-
         internal EstruturaEntidade EstruturaEntidade { get; }
-
         internal Dictionary<string, RelacaoChaveEstrageniraDependente> EntidadesRelacaoChaveEstrangeiraDepedente { get; set; }
-
         internal List<CampoComputado> CamposComputado { get; set; }
-
         internal List<PropertyInfo> PropriedadesAtualizadas { get; set; }
-
         internal BaseContextoDados Contexto { get; }
         public List<Comando> Comandos { get; internal set; }
 
+        internal string IdentificadorEntidade => this.Entidade.__IdentificadorEntidade;
         #endregion
 
         private long _idRollback;
 
         internal EntidadeAlterada(BaseContextoDados contexto,
                                  Entidade entidade,
-                                 EstruturaEntidade estruturaEntidade, bool excluir)
+                                 EstruturaEntidade estruturaEntidade,
+                                 EnumOpcaoSalvar opcaoSalvar)
         {
             this._idRollback = entidade.Id;
             this.CamposComputado = new List<CampoComputado>();
@@ -50,14 +40,16 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             this.Entidade = entidade;
             this.EstruturaEntidade = estruturaEntidade;
 
-            if (excluir)
+            if (opcaoSalvar != EnumOpcaoSalvar.Salvar)
             {
                 if (!(entidade.Id > 0))
                 {
                     throw new ErroOperacaoInvalida("Não é possível excluir uma entidade com id 0");
                 }
-                if (estruturaEntidade.IsImplementaInterfaceIDeletado &&
-                    !estruturaEntidade.IsExcluirRegistro)
+
+                if (estruturaEntidade.IsImplementaInterfaceIDeletado &&  
+                    !estruturaEntidade.IsDeletarRegistro &&
+                    opcaoSalvar == EnumOpcaoSalvar.Deletar)
                 {
 
                     this.IsImplementaIDeletado = true;
@@ -75,18 +67,18 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                         entidadeAtivo.IsAtivo = false;
                     }
 
-                    if (estruturaEntidade.IsImplementaInterfaceIOrdenacao)
-                    {
-                        var entidadeOrdenada = entidade as IOrdenacao;
-                        //entidadeOrdenada.Ordenacao = Double.MaxValue;
-                    }
+                    //if (estruturaEntidade.IsImplementaInterfaceIOrdenacao)
+                    //{
+                    //    var entidadeOrdenada = entidade as IOrdenacao;
+                    //    entidadeOrdenada.Ordenacao = Double.MaxValue;
+                    //}
                     this.AtualizarValorEntidadeDeletada();
 
                     this.TipoAlteracao = EnumTipoAlteracao.Atualizar;
                 }
                 else
                 {
-                    this.TipoAlteracao = EnumTipoAlteracao.Excluir;
+                    this.TipoAlteracao = EnumTipoAlteracao.Deletar;
                 }
             }
             else
@@ -129,7 +121,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 
                     return this.RetornarComandosSalvar();
 
-                case (EnumTipoAlteracao.Excluir):
+                case (EnumTipoAlteracao.Deletar):
 
                     return this.RetornarComandosExcluir();
 
@@ -170,7 +162,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                         }
                         break;
 
-                    case EnumTipoAlteracao.Excluir:
+                    case EnumTipoAlteracao.Deletar:
 
                         throw new ErroOperacaoInvalida("Operação invalida");
 

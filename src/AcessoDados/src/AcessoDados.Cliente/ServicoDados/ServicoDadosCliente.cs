@@ -33,10 +33,10 @@ namespace Snebur.AcessoDados.Cliente
             return this.ChamarServico<ResultadoSalvar>(MethodBase.GetCurrentMethod(), parametros);
         }
 
-        public ResultadoExcluir Excluir(IEnumerable<IEntidade> entidades, string relacoesEmCascata)
+        public ResultadoDeletar Deletar(IEnumerable<IEntidade> entidades, string relacoesEmCascata)
         {
             object[] parametros = { entidades, relacoesEmCascata };
-            return this.ChamarServico<ResultadoExcluir>(MethodBase.GetCurrentMethod(), parametros);
+            return this.ChamarServico<ResultadoDeletar>(MethodBase.GetCurrentMethod(), parametros);
         }
 
         public DateTime RetornarDataHora()

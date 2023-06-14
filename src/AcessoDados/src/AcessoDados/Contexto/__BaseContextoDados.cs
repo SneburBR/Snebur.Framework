@@ -113,13 +113,13 @@ namespace Snebur.AcessoDados
 
         public abstract ResultadoSalvar Salvar(IEnumerable<IEntidade> entidades);
 
-        public abstract ResultadoExcluir Excluir(IEntidade entidade);
+        public abstract ResultadoDeletar Deletar(IEntidade entidade);
 
-        public abstract ResultadoExcluir Excluir(IEnumerable<IEntidade> entidades);
+        public abstract ResultadoDeletar Deletar(IEnumerable<IEntidade> entidades);
 
-        public abstract ResultadoExcluir Excluir(IEntidade entidade, string relacoesEmCascata);
+        public abstract ResultadoDeletar Deletar(IEntidade entidade, string relacoesEmCascata);
 
-        public abstract ResultadoExcluir Excluir(IEnumerable<IEntidade> entidades, string relacoesEmCascata);
+        public abstract ResultadoDeletar Deletar(IEnumerable<IEntidade> entidades, string relacoesEmCascata);
 
         public abstract DateTime RetornarDataHora();
 

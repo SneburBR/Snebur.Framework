@@ -23,7 +23,7 @@ namespace Snebur.AcessoDados
             this.ValidarEntidadesSeguranca(entidades);
 
             var entidadesTipada = entidades.Cast<Entidade>().ToHashSet();
-            using (var salvarEntidades = new SalvarEntidades(this, entidadesTipada, false, false))
+            using (var salvarEntidades = new SalvarEntidades(this, entidadesTipada, EnumOpcaoSalvar.Salvar, false))
             {
                 var resultado = salvarEntidades.Salvar(false);
                 if (resultado.Erro != null)
@@ -33,23 +33,23 @@ namespace Snebur.AcessoDados
                 return resultado as ResultadoSalvar;
             }
         }
-        ResultadoExcluir IContextoDadosSeguranca.ExcluirSeguranca(IEntidade entidade)
+        ResultadoDeletar IContextoDadosSeguranca.ExcluirSeguranca(IEntidade entidade)
         {
             return (this as IContextoDadosSeguranca).ExcluirSeguranca(new List<IEntidade>() { entidade });
         }
-        ResultadoExcluir IContextoDadosSeguranca.ExcluirSeguranca(List<IEntidade> entidades)
+        ResultadoDeletar IContextoDadosSeguranca.ExcluirSeguranca(List<IEntidade> entidades)
         {
             this.ValidarEntidadesSeguranca(entidades);
 
             var entidadesTipada = entidades.Cast<Entidade>().ToHashSet();
-            using (var salvar = new SalvarEntidades(this, entidadesTipada, true, false))
+            using (var salvar = new SalvarEntidades(this, entidadesTipada, EnumOpcaoSalvar.Deletar, false))
             {
                 var resultado = salvar.Salvar();
                 if (resultado.Erro != null)
                 {
                     throw resultado.Erro;
                 }
-                return resultado as ResultadoExcluir;
+                return resultado as ResultadoDeletar;
             }
         }
 
