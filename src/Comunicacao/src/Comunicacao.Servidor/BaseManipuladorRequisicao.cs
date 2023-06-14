@@ -126,10 +126,21 @@ namespace Snebur.Comunicacao
                 this.TentarRegistrarManipulador(nomeServico);
                 if (!this.Manipuladores.ContainsKey(nomeServico))
                 {
-                    throw new ErroManipualdorNaoEncontrado(String.Format("O manipulador {0} não foi encontrado, deve ser inicializado no construtor do manipulador do WebService", nomeServico));
+                    if (DebugUtil.IsAttached)
+                    {
+                        throw new ErroManipualdorNaoEncontrado(String.Format("O manipulador {0} não foi encontrado, deve ser inicializado no construtor do manipulador do WebService", nomeServico));
+                    }
+                    return null;
                 }
             }
             return this.Manipuladores[nomeServico];
+        }
+
+        public void NotificarServicoNaoEncontado(HttpContext httpContext, 
+                                                 string nomeServico)
+        {
+            LogUtil.SegurancaAsync(nomeServico, EnumTipoLogSeguranca.ServicoNaoEncontrado);
+            httpContext.Response.StatusCode = 404;
         }
 
         private void TentarRegistrarManipulador(string nomeServico)

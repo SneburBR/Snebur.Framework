@@ -231,6 +231,11 @@ namespace Snebur.Comunicacao
                 var identificadorProprietario = this.RetornarIdentificadorProprietario(request);
                 var nomeManipulador = request.Headers[ParametrosComunicacao.MANIPULADOR];
                 var tipoManipulador = this.RetornarTipoServico(nomeManipulador);
+                if(tipoManipulador== null)
+                {
+                    this.NotificarServicoNaoEncontado(httpContext, nomeManipulador);
+                    return;
+                }
                 using (var servico = (BaseComunicacaoServidor)Activator.CreateInstance(tipoManipulador))
                 {
                     try
