@@ -78,6 +78,6 @@ namespace Snebur.Servicos
 
         ArquivoVersaoPublicacaoNaoEncontrado = 26,
 
-
+        ServicoNaoEncontrado = 27,
     }
 }

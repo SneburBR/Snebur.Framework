@@ -104,7 +104,7 @@ namespace Snebur.Utilidade
             return Guid.Empty;
         }
 
-        public static void SegurancaAsync(string mensagem, EnumTipoLogSeguranca tipo, bool erroIsAttach = true)
+        public static void SegurancaAsync( string mensagem, EnumTipoLogSeguranca tipo, bool erroIsAttach = true)
         {
             if (SegurancaUtil.IsGerarLogErro(tipo))
             {
@@ -346,6 +346,11 @@ namespace Snebur.Utilidade
                 }
             }
         }
+
+    }
+
+    public abstract class InfoRequisicao
+    {
 
     }
 }

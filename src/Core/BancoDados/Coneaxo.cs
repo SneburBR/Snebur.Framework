@@ -81,7 +81,10 @@ namespace Snebur.BancoDados
         {
             var tipo = typeof(T);
             var propriedades = tipo.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(x => x.GetMethod.IsPublic && (x.SetMethod?.IsPublic ?? false));
-            var propriedadesChavePrimaria = tipo.GetProperties().Where(x => x.GetCustomAttribute<KeyAttribute>() != null).ToList();
+            var propriedadesChavePrimaria = tipo.GetProperties().
+                                                 Where(x => x.GetCustomAttribute<KeyAttribute>() != null).
+                                                 ToList();
+
             var dataTable = this.RetornarDataTable(sql, propriedadesChavePrimaria, parametros);
             var retorno = new List<T>();
 
