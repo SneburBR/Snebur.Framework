@@ -4,13 +4,13 @@ namespace Snebur.Utilidade
 {
     public static class LazyUtil
     {
-        private static readonly object _bloqueioValor = new object();
+        private static readonly object _bloqueioLazy = new object();
 
         public static T RetornarValorLazyComBloqueio<T>(ref T? valor, Func<T> retornarValor) where T : struct
         {
             if (!valor.HasValue)
             {
-                lock (_bloqueioValor)
+                lock (_bloqueioLazy)
                 {
                     if (!valor.HasValue)
                     {
@@ -25,7 +25,7 @@ namespace Snebur.Utilidade
         {
             if (valor == null)
             {
-                lock (_bloqueioValor)
+                lock (_bloqueioLazy)
                 {
                     if (valor == null)
                     {
@@ -40,7 +40,7 @@ namespace Snebur.Utilidade
         {
             if (!valor.HasValue)
             {
-                lock (_bloqueioValor)
+                lock (_bloqueioLazy)
                 {
                     if (!valor.HasValue)
                     {

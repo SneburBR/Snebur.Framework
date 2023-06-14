@@ -53,13 +53,13 @@ namespace Snebur.Utilidade
                 case EnumFormatacaoBytes.Bytes:
                     return String.Format("{0} bytes", totalBytes);
                 case EnumFormatacaoBytes.Kilobytes:
-                    return String.Format("{0} Kb", FormatacaoUtil.FormtarDecimal(FormatarByteUtil.ConverterParaKB(totalBytes), casasDecimais));
+                    return String.Format("{0} Kb", FormatacaoUtil.FormatarDecimal(FormatarByteUtil.ConverterParaKB(totalBytes), casasDecimais));
                 case EnumFormatacaoBytes.Megabytes:
-                    return string.Format("{0} Mb", FormatacaoUtil.FormtarDecimal(FormatarByteUtil.ConverterParaMB(totalBytes), casasDecimais));
+                    return string.Format("{0} Mb", FormatacaoUtil.FormatarDecimal(FormatarByteUtil.ConverterParaMB(totalBytes), casasDecimais));
                 case EnumFormatacaoBytes.Gigabytes:
-                    return string.Format("{0} Gb", FormatacaoUtil.FormtarDecimal(FormatarByteUtil.ConverterParaGB(totalBytes), casasDecimais));
+                    return string.Format("{0} Gb", FormatacaoUtil.FormatarDecimal(FormatarByteUtil.ConverterParaGB(totalBytes), casasDecimais));
                 case EnumFormatacaoBytes.Terabytes:
-                    return string.Format("{0} Tb", FormatacaoUtil.FormtarDecimal(FormatarByteUtil.ConverterParaGB(totalBytes), casasDecimais));
+                    return string.Format("{0} Tb", FormatacaoUtil.FormatarDecimal(FormatarByteUtil.ConverterParaGB(totalBytes), casasDecimais));
                 default:
                     throw new NotSupportedException("Formato não suportado.");
             }

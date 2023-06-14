@@ -3,12 +3,12 @@ using Snebur.UI;
 using System;
 using System.Globalization;
 using System.IO;
-using System.Runtime.CompilerServices;
 
 namespace Snebur.Utilidade
 {
     public static class FormatacaoUtil
     {
+        private const int CASAS_DECIMAL_PADRAO = 2;
         public static string Formatar(object valor, EnumFormatacao formatar)
         {
             if (valor == null)
@@ -39,11 +39,11 @@ namespace Snebur.Utilidade
 
                 case EnumFormatacao.Decimal:
 
-                    return FormatacaoUtil.FormtarDecimal(Convert.ToDouble(valor));
+                    return FormatacaoUtil.FormatarDecimal(Convert.ToDouble(valor));
                 case EnumFormatacao.Decimal1:
-                    return FormatacaoUtil.FormtarDecimal(Convert.ToDouble(valor), 1);
+                    return FormatacaoUtil.FormatarDecimal(Convert.ToDouble(valor), 1);
                 case EnumFormatacao.Decimal3:
-                    return FormatacaoUtil.FormtarDecimal(Convert.ToDouble(valor), 3);
+                    return FormatacaoUtil.FormatarDecimal(Convert.ToDouble(valor), 3);
                 case EnumFormatacao.Data:
                     return FormatacaoUtil.FormatarData(Convert.ToDouble(valor), 3);
                 case EnumFormatacao.Hora:
@@ -147,11 +147,61 @@ namespace Snebur.Utilidade
             throw new NotImplementedException();
         }
 
-        public static string FormtarDecimal(double valor, int digitos = 2)
+        public static string FormatarDecimal(double? valor)
         {
-            return FormtarDecimal(Convert.ToDecimal(valor), digitos);
+            return FormatarDecimal(valor, CASAS_DECIMAL_PADRAO);
         }
-        public static string FormtarDecimal(decimal valor, int digitos = 2)
+
+        public static string FormatarDecimal(double valor)
+        {
+            return FormatarDecimal(valor, CASAS_DECIMAL_PADRAO);
+        }
+        public static string FormatarDecimal(double? valor,
+                                             EnumDivisorDecimal divisorDecimal = EnumDivisorDecimal.CulturaAtual)
+        {
+            return FormatarDecimal(valor, CASAS_DECIMAL_PADRAO, divisorDecimal);
+        }
+        public static string FormatarDecimal(double valor,
+                                             EnumDivisorDecimal divisorDecimal = EnumDivisorDecimal.CulturaAtual)
+        {
+            return FormatarDecimal(valor, CASAS_DECIMAL_PADRAO, divisorDecimal);
+        }
+        public static string FormatarDecimal(double? valor, 
+                                             int casasDecimal,
+                                             EnumDivisorDecimal divisorDecimal = EnumDivisorDecimal.CulturaAtual)
+        {
+            if (valor == null)
+            {
+                return "0";
+            }
+            return FormatarDecimal(valor.Value, casasDecimal, divisorDecimal);
+        }
+
+        public static string FormatarDecimal(double valor,
+                                             int casasDecimal,
+                                             EnumDivisorDecimal divisorDecimal= EnumDivisorDecimal.CulturaAtual)
+        {
+            return FormatarDecimal(Convert.ToDecimal(valor), casasDecimal, divisorDecimal);
+        }
+        private static string FormatarDecimal(decimal valor, 
+                                              int casasDecimal, 
+                                              EnumDivisorDecimal divisorDecimal)
+        {
+            var resultado = FormatarDecimalInterno(valor, casasDecimal);
+            if(divisorDecimal== EnumDivisorDecimal.CulturaAtual)
+            {
+                return resultado;
+            }
+
+            if(divisorDecimal == EnumDivisorDecimal.Ponto)
+            {
+                return resultado.Replace(",", ".");
+            }
+            return resultado.Replace(".", ",");
+
+        }
+
+        private static string FormatarDecimalInterno(decimal valor, int digitos)
         {
             if (digitos == 0 || valor % 1 == 0)
             {
@@ -170,7 +220,7 @@ namespace Snebur.Utilidade
                 return $"{valor:0.00}";
             }
 
-            if (digitos == 3 || 
+            if (digitos == 3 ||
                 ((valor - Math.Floor(valor)) * 1000) % 1 == 0)
             {
                 return $"{valor:0.000}";
@@ -323,5 +373,12 @@ namespace Snebur.Utilidade
         }
 
 
+    }
+
+  public  enum EnumDivisorDecimal
+    {
+        CulturaAtual,
+        Ponto,
+        Virgula
     }
 }
