@@ -1,4 +1,5 @@
-﻿using Snebur.Dominio;
+﻿using Snebur.Comunicacao;
+using Snebur.Dominio;
 using Snebur.Seguranca;
 using Snebur.Utilidade;
 using System;
@@ -34,7 +35,7 @@ namespace Snebur
                 return null;
             }
         }
-           
+
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override InformacaoSessaoUsuario InformacaoSessaoUsuario
@@ -46,7 +47,7 @@ namespace Snebur
                 {
                     lock ((httpContext.Items as ICollection).SyncRoot)
                     {
-                        
+
                         if (httpContext.Items.ContainsKey(ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL))
                         {
                             return (InformacaoSessaoUsuario)httpContext.Items[ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL];
@@ -187,6 +188,22 @@ namespace Snebur
                 return httpContext;
             }
             throw new Exception($"Não foi possível converter HttpContext para o tipo {typeof(T).Name}");
+        }
+
+        public InfoRequisicao RetornarInfoRequisicao()
+        {
+            var httpContext = this.HttpContext;
+            if (httpContext == null)
+            {
+                return null;
+            }
+
+            return new InfoRequisicao
+            {
+                CredencialUsuario = this.CredencialUsuario.IdentificadorUsuario,
+                IpRequisicao = this.IpRequisicao,
+                UserAgent = this.UserAgent
+            };
         }
 
         #endregion

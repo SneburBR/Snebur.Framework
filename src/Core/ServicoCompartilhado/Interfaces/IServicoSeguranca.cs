@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Snebur.Comunicacao;
+using System;
 
 namespace Snebur.Servicos
 {
@@ -6,6 +7,7 @@ namespace Snebur.Servicos
     {
         Guid NotificarLogSeguranca(string mensagem,
                                    string stackTrace,
+                                   InfoRequisicao infoRequisicao,
                                    EnumTipoLogSeguranca tipoLogSeguranca,
                                    BaseInformacaoAdicionalServicoCompartilhado informacaoAdicional);
     }

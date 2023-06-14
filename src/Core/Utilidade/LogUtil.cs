@@ -1,7 +1,9 @@
-﻿using Snebur.Servicos;
+﻿using Snebur.Comunicacao;
+using Snebur.Servicos;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -92,20 +94,32 @@ namespace Snebur.Utilidade
             }
             try
             {
-                return AplicacaoSnebur.Atual.ServicoErro.NotificarErro(nomeTipoErro, ex.Message, stackTrace, descricaoCompleta, nivelErro, informacaoAdicional);
+                return AplicacaoSnebur.Atual.ServicoErro.NotificarErro(nomeTipoErro, 
+                                                                       mensagem, 
+                                                                       stackTrace, 
+                                                                       descricaoCompleta, 
+                                                                       nivelErro, 
+                                                                       informacaoAdicional);
             }
             catch
             {
                 if (!(AplicacaoSnebur.Atual.ServicoErro is ServicoErroLocal))
                 {
-                    return new ServicoErroLocal().NotificarErro(nomeTipoErro, ex.Message, ex.StackTrace, descricaoCompleta, nivelErro, informacaoAdicional);
+                    return new ServicoErroLocal().NotificarErro(nomeTipoErro,
+                                                                mensagem,
+                                                                ex.StackTrace, 
+                                                                descricaoCompleta,
+                                                                nivelErro, 
+                                                                informacaoAdicional);
                 }
             }
             return Guid.Empty;
         }
 
-        public static void SegurancaAsync( string mensagem, EnumTipoLogSeguranca tipo, bool erroIsAttach = true)
+        public static void SegurancaAsync(string mensagem, EnumTipoLogSeguranca tipo, bool erroIsAttach = true)
         {
+            var infoRequisicao = AplicacaoSnebur.Atual.AspNet.RetornarInfoRequisicao();
+
             if (SegurancaUtil.IsGerarLogErro(tipo))
             {
                 if (DebugUtil.IsAttached)
@@ -118,10 +132,12 @@ namespace Snebur.Utilidade
                 }
                 LogUtil.ErroAsync(new Erro(mensagem));
             }
+
             ThreadUtil.ExecutarAsync(() =>
             {
                 var informacaoAdicional = ServicoCompartilhadoUtil.RetornarInformacaoAdicionalServicoCompartilhado();
                 LogUtil.Seguranca(mensagem,
+                                  infoRequisicao,
                                   tipo,
                                   informacaoAdicional);
 
@@ -129,17 +145,26 @@ namespace Snebur.Utilidade
         }
         [EditorBrowsable(EditorBrowsableState.Never)]
         private static Guid Seguranca(string mensagem,
+                                      InfoRequisicao infoRequisicao,
                                       EnumTipoLogSeguranca tipoLogSeguranca,
                                       BaseInformacaoAdicionalServicoCompartilhado informacaoAdicional)
         {
             var stackTrace = Environment.StackTrace;
             try
             {
-                return AplicacaoSnebur.Atual.ServicoSeguranca.NotificarLogSeguranca(mensagem, stackTrace, tipoLogSeguranca, informacaoAdicional);
+                return AplicacaoSnebur.Atual.ServicoSeguranca.NotificarLogSeguranca(mensagem,
+                                                                                    stackTrace,
+                                                                                    infoRequisicao,
+                                                                                    tipoLogSeguranca,
+                                                                                    informacaoAdicional);
             }
             catch
             {
-                return new ServicoLogSegurancaLocal().NotificarLogSeguranca(mensagem, stackTrace, tipoLogSeguranca, informacaoAdicional);
+                return new ServicoLogSegurancaLocal().NotificarLogSeguranca(mensagem,
+                                                                            stackTrace,
+                                                                            infoRequisicao,
+                                                                            tipoLogSeguranca,
+                                                                            informacaoAdicional);
             }
         }
 
@@ -155,7 +180,7 @@ namespace Snebur.Utilidade
         public static void LogAsync(string mensagem, bool salvarLogLocal)
         {
             var informacaoAdicional = ServicoCompartilhadoUtil.RetornarInformacaoAdicionalServicoCompartilhado();
-            ThreadUtil.ExecutarAsync((Action)(() =>
+            ThreadUtil.ExecutarAsync((() =>
             {
                 Log(mensagem, informacaoAdicional, salvarLogLocal);
 
@@ -346,13 +371,9 @@ namespace Snebur.Utilidade
                 }
             }
         }
-
-    }
-
-    public abstract class InfoRequisicao
-    {
-
     }
 }
- 
+
+
+
 

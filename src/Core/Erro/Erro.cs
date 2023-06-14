@@ -8,6 +8,7 @@ namespace System
     [Serializable]
     public class Erro : Exception, ISerializable
     {
+
         internal protected virtual bool IsNotificarErro => true;
 
         internal protected virtual bool IsParaDepuracaoAtachada => true;
@@ -41,6 +42,9 @@ namespace System
                 LogUtil.ErroAsync(this, nomeMetodo, caminhoArquivo, linhaDoErro);
                 this.NotificaoEnviada = true;
             }
+
+            GerenciadorErros.Instancia.AnalisarErroAsync(this);
+
 #endif
         }
         #region Serialização 

@@ -1,5 +1,7 @@
-﻿using Snebur.Utilidade;
+﻿using Snebur.Comunicacao;
+using Snebur.Utilidade;
 using System;
+using System.Text;
 
 namespace Snebur.Servicos
 {
@@ -7,12 +9,20 @@ namespace Snebur.Servicos
     {
         public Guid NotificarLogSeguranca(string mensagem,
                               string stackTrace,
+                              InfoRequisicao infoRequisicao,
                               EnumTipoLogSeguranca tipoLogSeguranca,
                               BaseInformacaoAdicionalServicoCompartilhado informacaoAdicional)
         {
+            var sb = new StringBuilder();
             var descricaoTipo = EnumUtil.RetornarDescricao(tipoLogSeguranca);
-            mensagem = String.Format("Tipo : {0} \n{1}", descricaoTipo, mensagem);
-
+            sb.AppendLine("Tipo:" + descricaoTipo);
+            if (infoRequisicao != null)
+            {
+                sb.AppendLine("IP" + infoRequisicao.IpRequisicao);
+                sb.AppendLine("UserAgente" + infoRequisicao.UserAgent);
+                sb.AppendLine("Usuário" + infoRequisicao.CredencialUsuario);
+            }
+            sb.AppendLine(mensagem);
             this.SalvarLog(mensagem);
             this.IsDebugAttachDispararErro = true;
             return Guid.NewGuid();

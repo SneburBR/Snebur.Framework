@@ -1,4 +1,5 @@
-﻿using Snebur.Dominio.Atributos;
+﻿using Snebur.Comunicacao;
+using Snebur.Dominio.Atributos;
 
 namespace Snebur
 {
@@ -25,6 +26,8 @@ namespace Snebur
         //[EditorBrowsable(EditorBrowsableState.Never)]
         string UserAgent { get; }
         string IpRequisicao { get; }
+
+        InfoRequisicao RetornarInfoRequisicao();
 
         //string RetornarIpDaRequisicao();
     }
