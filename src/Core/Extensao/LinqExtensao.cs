@@ -1,5 +1,6 @@
 ﻿using Snebur.Dominio;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -33,6 +34,13 @@ namespace Snebur.Linq
             }
         }
 
+        public static void AddIfTrue<T>(this ICollection<T> colecao, T item, bool isAdd)
+        {
+            if (isAdd)
+            {
+                colecao.Add(item);
+            }
+        }
         public static void AddRangeNew<T>(this ICollection<T> colecao, ICollection<T> itens)
         {
             colecao.Clear();
@@ -65,6 +73,13 @@ namespace Snebur.Linq
             {
                 colecao.Remove(item);
             }
+        }
+
+        public static IEnumerable<T> Duplicados<T>(this IEnumerable<T> item)
+        {
+            return item.GroupBy(x => x).
+                        SelectMany(g => g.Skip(1)).
+                        Distinct();
         }
 
         public static ListaEntidades<TEntidade> ToList<TEntidade>(this ListaEntidades<TEntidade> colecao) where TEntidade : Entidade
@@ -159,6 +174,7 @@ namespace Snebur.Linq
             }
             return default;
         }
+
         #region Sum
 
         public static float SumOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, float> selector)
