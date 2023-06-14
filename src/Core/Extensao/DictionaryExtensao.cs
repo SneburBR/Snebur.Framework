@@ -11,7 +11,7 @@ namespace System
             {
                 return valor;
             }
-            return default(TValue);
+            return default;
         }
 
         public static void AddOrUpdate<TKey, TValue>(this Dictionary<TKey, TValue> dicionario, 
