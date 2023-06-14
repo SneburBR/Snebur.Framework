@@ -19,6 +19,10 @@ namespace Snebur.Dominio
             var erros = new List<ErroValidacao>();
             foreach (var entidade in this.Entidades)
             {
+                if(entidade is IDeletado deletado && deletado.IsDeletado) 
+                {
+                    continue;
+                }
                 //Propriedades
                 var propriedades = ReflexaoUtil.RetornarPropriedades(entidade.GetType());
                 foreach (var propriedade in propriedades)
