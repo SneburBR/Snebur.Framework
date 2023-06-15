@@ -115,11 +115,7 @@ namespace Snebur.AcessoDados
             this.EstruturaConsulta.IsIncluirDeletados = true;
             return this;
         }
-
-
-
-
-
+         
 
 
         //public TEntidade RetornarPorId(long id)

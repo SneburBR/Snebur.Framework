@@ -8,10 +8,8 @@ namespace Snebur.AcessoDados
         #region Campos Privados
 
         #endregion
-
-        [IgnorarPropriedadeTS, IgnorarPropriedadeTSReflexao]
-        public bool IsIncluirDeletados => this.EstruturaConsulta.IsIncluirDeletados;
-        public EstruturaConsulta EstruturaConsulta { get; set; } = new EstruturaConsulta();
+       
+        public EstruturaConsulta EstruturaConsulta { get; set; } 
 
         public RelacaoAbertaColecao() : base()
         {

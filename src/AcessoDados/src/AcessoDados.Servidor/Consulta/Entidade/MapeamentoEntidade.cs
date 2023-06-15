@@ -1,5 +1,6 @@
 ﻿using Snebur.AcessoDados.Estrutura;
 using Snebur.Dominio;
+using Snebur.Linq;
 using Snebur.Utilidade;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace Snebur.AcessoDados.Mapeamento
                                     EstruturaEntidade estruturaEntidade,
                                     EstruturaBancoDados estruturaBancoDados,
                                     BaseConexao conexaoDB,
-                                    BaseContextoDados contexto ) :
+                                    BaseContextoDados contexto) :
                                     base(mapeamentoConsulta, estruturaEntidade, estruturaBancoDados, conexaoDB, contexto)
         {
             if ((this.EstruturaConsulta.Take == 0) ||
@@ -67,7 +68,6 @@ namespace Snebur.AcessoDados.Mapeamento
 
             //var estruturasCamposEntidadeAtual = this.TodasEstruturaCampoMapeado.Values.Where(x => x.EstruturaEntidadeApelido == this.EstruturaEntidadeApelido);
             var estruturasCampoApelido = this.RetornarEstuturaCamposApelido();
-
             var camposCaminhoBanco = estruturasCampoApelido.Select(x => x.RetornarCaminhoBancoApelido());
             var sqlCampos = String.Join(sepador, camposCaminhoBanco);
             return AjudanteSql.RetornarSqlFormatado(sqlCampos);
@@ -75,14 +75,27 @@ namespace Snebur.AcessoDados.Mapeamento
 
         internal List<EstruturaCampoApelido> RetornarEstuturaCamposApelido()
         {
-            if (this.EstruturaConsulta.PropriedadesAbertas.Count == 0)
+            var propriedadesAbertas = this.EstruturaConsulta.PropriedadesAbertas;
+            if (propriedadesAbertas.Count == 0)
             {
                 return this.TodasEstruturaCampoApelidoMapeado.Values.ToList();
             }
-            var estruturasCampoApelido = new List<EstruturaCampoApelido>();
-            estruturasCampoApelido.Add(this.EstruturaCampoApelidoChavePrimaria);
+            var estruturasCampoApelido = new List<EstruturaCampoApelido>
+            {
+                this.EstruturaCampoApelidoChavePrimaria
+            };
 
-            foreach (var propriedadeAberta in this.EstruturaConsulta.PropriedadesAbertas)
+            if (this.EstruturaEntidade.IsImplementaInterfaceIDeletado)
+            {
+                propriedadesAbertas.AddIfNotExits(nameof(IDeletado.IsDeletado));
+            }
+
+            if (this.EstruturaEntidade.IsImplementaInterfaceIOrdenacao)
+            {
+                propriedadesAbertas.AddIfNotExits(nameof(IOrdenacao.Ordenacao));
+            }
+
+            foreach (var propriedadeAberta in propriedadesAbertas)
             {
                 var estruturaCampoApelido = this.TodasEstruturaCampoApelidoMapeado[propriedadeAberta];
                 estruturasCampoApelido.Add(estruturaCampoApelido);

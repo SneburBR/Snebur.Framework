@@ -18,6 +18,7 @@ namespace Snebur.AcessoDados
             var estruturaConsultaEscalar = new EstruturaConsulta
             {
                 IsIncluirDeletados = this.EstruturaConsulta.IsIncluirDeletados,
+                IsIncluirInativos = this.EstruturaConsulta.IsIncluirInativos,
                 TipoEntidadeConsulta = this.EstruturaConsulta.TipoEntidadeConsulta,
                 TipoFuncaoEnum = tipoFuncaoEnum,
                 NomeTipoEntidade = this.EstruturaConsulta.NomeTipoEntidade,

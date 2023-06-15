@@ -147,7 +147,8 @@ namespace Snebur.AcessoDados.Mapeamento
             this.AbrirRelacoes();
         }
 
-        private ListaEntidades<Entidade> RetornarEntidades(EstruturaEntidade estruturaEntidade, BaseFiltroMapeamento filtro)
+        private ListaEntidades<Entidade> RetornarEntidades(EstruturaEntidade estruturaEntidade, 
+                                                           BaseFiltroMapeamento filtro)
         {
             using (var mapeamentoEntidade = new MapeamentoEntidade(this, estruturaEntidade, this.EstruturaBancoDados, this.ConexaoDB, this.Contexto))
             {

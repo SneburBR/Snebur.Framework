@@ -49,13 +49,16 @@ namespace Snebur.AcessoDados
             {
                 throw new ErroNaoSuportado(String.Format("A propriedade não suportada para ordenacao {0}", ultimaPropriedade.Name));
             }
-            var ordenacao = new Ordenacao();
-            ordenacao.CaminhoPropriedade = caminhoPropriedade;
-            ordenacao.SentidoOrdenacaoEnum = sentido;
+            var ordenacao = new Ordenacao
+            {
+                CaminhoPropriedade = caminhoPropriedade,
+                SentidoOrdenacaoEnum = sentido
+            };
             consultaAcessoDados.Ordenacoes.Add(caminhoPropriedade, ordenacao);
 
             return this;
         }
+
         //private ConsultaEntidade<TEntidade> OrdernarBackup(Expression<Func<TEntidade, object>> caminho, EnumSentidoOrdenacao sentido)
         //{
         //    var expressao = (Expression)caminho;

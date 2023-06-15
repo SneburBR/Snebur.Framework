@@ -262,6 +262,7 @@ namespace Snebur.AcessoDados.Mapeamento
                         CaminhoPropriedade = nomePropriedade,
                     };
                     relacaoAbartaColecao.EstruturaConsulta.IsIncluirDeletados = this.EstruturaConsulta.IsIncluirDeletados;
+                    relacaoAbartaColecao.EstruturaConsulta.IsIncluirInativos = this.EstruturaConsulta.IsIncluirInativos;
                     consulta.ColecoesAberta.Add(nomePropriedade, relacaoAbartaColecao);
                     return;
                 }
@@ -277,6 +278,7 @@ namespace Snebur.AcessoDados.Mapeamento
                         CaminhoPropriedade = nomePropriedade,
                     };
                     relacaoAbartaColecao.EstruturaConsulta.IsIncluirDeletados = this.EstruturaConsulta.IsIncluirDeletados;
+                    relacaoAbartaColecao.EstruturaConsulta.IsIncluirDeletados = this.EstruturaConsulta.IsIncluirInativos;
                     consulta.ColecoesAberta.Add(nomePropriedade, relacaoAbartaColecao);
 
                     return;

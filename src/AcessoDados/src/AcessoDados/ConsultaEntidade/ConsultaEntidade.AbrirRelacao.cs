@@ -48,7 +48,7 @@ namespace Snebur.AcessoDados
             return this;
         }
 
-       
+
 
         public ConsultaEntidade<TEntidade> AbrirRelacoes(params string[] caminhosPropriedade)
         {
@@ -88,8 +88,8 @@ namespace Snebur.AcessoDados
 
 
 
-        private ConsultaEntidade<TEntidade> AbrirRelacao(EstruturaConsulta estruturaConsulta, 
-                                                         List<PropertyInfo> propriedades, 
+        private ConsultaEntidade<TEntidade> AbrirRelacao(EstruturaConsulta estruturaConsulta,
+                                                         List<PropertyInfo> propriedades,
                                                          bool isFiltro)
         {
             var propriedadesCaminhoParcial = new List<PropertyInfo>();
@@ -100,8 +100,8 @@ namespace Snebur.AcessoDados
             {
                 var propriedade = this.NormalizarPropriedadeRelacaoEspecializda(p);
                 propriedadesCaminhoParcial.Add(propriedade);
-                propriedadesCaminhoComplemento.Add(propriedade);  
-                
+                propriedadesCaminhoComplemento.Add(propriedade);
+
                 var caminhoPropriedadeParcial = AjudanteConsultaEntidade.RetornarCaminhoPropriedade(propriedadesCaminhoParcial);
                 var caminhoPropriedadeCompleto = AjudanteConsultaEntidade.RetornarCaminhoPropriedade(propriedadesCaminhoComplemento);
                 var caminhoPropriedade = AjudanteConsultaEntidade.RetornarCaminhoPropriedade(propriedadesCaminhoParcial);
@@ -176,18 +176,18 @@ namespace Snebur.AcessoDados
                             TipoEntidadeAssemblyQualifiedName = tipoPropridadeItemBaseEntidade.RetornarAssemblyQualifiedName(),
                             //TipoEntidadeAssemblyQualifiedName = tipoPropridadeItemBaseEntidade.AssemblyQualifiedName,
                             NomeTipoDeclarado = propriedade.DeclaringType.Name,
-                            TipoDeclaradoAssemblyQualifiedName = propriedade.DeclaringType.RetornarAssemblyQualifiedName()
-                            //TipoDeclaradoAssemblyQualifiedName = propriedade.DeclaringType.AssemblyQualifiedName
+                            TipoDeclaradoAssemblyQualifiedName = propriedade.DeclaringType.RetornarAssemblyQualifiedName(),
+                            EstruturaConsulta = new EstruturaConsulta
+                            {
+                                IsIncluirDeletados = this.EstruturaConsulta.IsIncluirDeletados,
+                                IsIncluirInativos = this.EstruturaConsulta.IsIncluirInativos,
+                                TipoEntidadeConsulta = tipoPropridadeItemBaseEntidade,
+                                NomeTipoEntidade = tipoPropridadeItemBaseEntidade.Name,
+                                TipoEntidadeAssemblyQualifiedName = tipoPropridadeItemBaseEntidade.RetornarAssemblyQualifiedName()
+                            }
                         };
 
-                        relacaoAbertaListaEntidade.EstruturaConsulta.IsIncluirDeletados = this.EstruturaConsulta.IsIncluirDeletados;
-                        relacaoAbertaListaEntidade.EstruturaConsulta.TipoEntidadeConsulta = tipoPropridadeItemBaseEntidade;
-                        relacaoAbertaListaEntidade.EstruturaConsulta.NomeTipoEntidade = tipoPropridadeItemBaseEntidade.Name;
-                        //relacaoAbertaListaEntidade.EstruturaConsulta.TipoEntidadeAssemblyQualifiedName = tipoPropridadeItemBaseEntidade.AssemblyQualifiedName;
-                        relacaoAbertaListaEntidade.EstruturaConsulta.TipoEntidadeAssemblyQualifiedName = tipoPropridadeItemBaseEntidade.RetornarAssemblyQualifiedName();
-
                         estruturaConsultaAtual.ColecoesAberta.Add(caminhoPropriedadeParcial, relacaoAbertaListaEntidade);
-
                         estruturaConsultaAtual = relacaoAbertaListaEntidade.EstruturaConsulta;
                         propriedadesCaminhoParcial.Clear();
                     }
@@ -203,9 +203,7 @@ namespace Snebur.AcessoDados
             }
             return this;
         }
-
-      
-
+         
         private PropertyInfo NormalizarPropriedadeRelacaoEspecializda(PropertyInfo propriedade)
         {
             var atributoPropriedadeEspecializada = propriedade.GetCustomAttribute<PropriedadeTSEspecializadaAttribute>();
@@ -241,11 +239,11 @@ namespace Snebur.AcessoDados
                                                   string caminhoPropriedadeCompleto,
                                                   bool isFiltro)
         {
-            var mapemaneto = this.RetornarMapeamento(estruturaConsultaAtual, 
-                                                     caminhoPropreidade, 
+            var mapemaneto = this.RetornarMapeamento(estruturaConsultaAtual,
+                                                     caminhoPropreidade,
                                                      isFiltro);
 
-            if(mapemaneto.Propriedade.DeclaringType != propriedade.DeclaringType)
+            if (mapemaneto.Propriedade.DeclaringType != propriedade.DeclaringType)
             {
                 var tipos = new Type[] { propriedade .DeclaringType,
                                          mapemaneto.Propriedade.DeclaringType };
@@ -258,7 +256,6 @@ namespace Snebur.AcessoDados
 
                 throw new Exception(mensagem);
             }
-
         }
 
         private BaseRelacaoAberta RetornarMapeamento(EstruturaConsulta estruturaConsultaAtual,
