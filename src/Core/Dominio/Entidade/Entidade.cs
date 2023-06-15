@@ -591,6 +591,10 @@ namespace Snebur.Dominio
             //}
             if (propriedadesAberta?.Count > 0)
             {
+                if(this is IDeletado && !propriedadesAberta.Contains(nameof(IDeletado.IsDeletado)))
+                {
+                    propriedadesAberta.Add(nameof(IDeletado.IsDeletado));
+                }
                 this.__propriedadesAbertas = propriedadesAberta;
             }
         }
