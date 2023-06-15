@@ -41,6 +41,22 @@ namespace Snebur.Linq
                 colecao.Add(item);
             }
         }
+        public static void AddIfNotExits<T>(this ICollection<T> colecao, T item)
+        {
+            if (!colecao.Contains(item))
+            {
+                colecao.Add(item);
+            }
+        }
+
+        public static void AddRangeIfNotExits<T>(this ICollection<T> colecao, ICollection<T> itens)
+        {
+            foreach (var item in itens)
+            {
+                colecao.AddIfNotExits(item);
+            }
+        }
+
         public static void AddRangeNew<T>(this ICollection<T> colecao, ICollection<T> itens)
         {
             colecao.Clear();
@@ -427,6 +443,6 @@ namespace Snebur.Linq
             hashSet.Remove(null);
             return hashSet;
         }
- 
+
     }
 }
