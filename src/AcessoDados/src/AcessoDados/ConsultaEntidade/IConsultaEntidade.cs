@@ -51,6 +51,8 @@ namespace Snebur.AcessoDados
 
         ConsultaEntidade<TEntidade> WhereIn(Expression<Func<TEntidade, long>> expressaoPropriedade, IEnumerable<long> lista);
 
+        ConsultaEntidade<TEntidade> WhereIn(Expression<Func<TEntidade, long?>> expressaoPropriedade, IEnumerable<long> lista);
+
         ConsultaEntidade<TEntidade> WhereIn(Expression<Func<TEntidade, Enum>> expressaoPropriedade, IEnumerable<int> lista);
 
         ConsultaEntidade<TEntidade> OrderBy(Expression<Func<TEntidade, object>> expressaoPropriedade);
@@ -64,8 +66,6 @@ namespace Snebur.AcessoDados
         ConsultaEntidade<TEntidade> AbrirRelacao(string caminhoPropriedade);
 
         ConsultaEntidade<TEntidade> AbrirRelacoes<TRelacao>(params Expression<Func<TEntidade, TRelacao>>[] expressoes) where TRelacao : IEntidade;
-
-        //ConsultaEntidade<TEntidade> AbrirRelacao<TRelacao>(Expression<Func<TEntidade, IEnumerable<TRelacao>>> expressao) where TRelacao : IEntidade;
 
         ConsultaEntidade<TEntidade> AbrirColecao(Expression<Func<TEntidade, IEnumerable>> expressao);
 
@@ -89,14 +89,11 @@ namespace Snebur.AcessoDados
 
         ConsultaEntidade<TEntidade> AbrirPropriedadeTipoComplexo<TTipoComplexo>(Expression<Func<TEntidade, TTipoComplexo>> expresssao) where TTipoComplexo : BaseTipoComplexo;
 
-        //ConsultaEntidade<TEntidade> AbrirColecoes<TRelacao>(params Expression<Func<TEntidade, IEnumerable<TRelacao>>>[] expressoes) where TRelacao : IEntidade;
-        //ConsultaEntidade<TEntidade> AbrirRelacao(string caminhoPropriedade);
-
         ConsultaEntidade<TEntidade> AdicionarFiltroPropriedade(PropertyInfo propriedade, EnumOperadorFiltro operador, object valor);
 
         //TEntidade RetornarPorId(long id);
 
-        #region Funcoes
+        #region Funções
 
         #region Sum 
 
@@ -184,7 +181,7 @@ namespace Snebur.AcessoDados
 
         #endregion
 
-        #region Colecao
+        #region Coleção
 
         ConsultaEntidade<TEntidade> WhereColecao<TRelacao>(Expression<Func<TEntidade, ListaEntidades<TRelacao>>> caminhoColecao, Expression<Func<TRelacao, bool>> filtro) where TRelacao : Entidade;
 

@@ -55,6 +55,12 @@ namespace Snebur.AcessoDados
             return consulta.WhereIn(expressaoPropriedade, lista);
         }
 
+        public ConsultaEntidade<TEntidade> WhereIn(Expression<Func<TEntidade, long?>> expressaoPropriedade, IEnumerable<long> lista)
+        {
+            var consulta = new ConsultaEntidade<TEntidade>(this.ContextoDados);
+            return consulta.WhereIn(expressaoPropriedade, lista);
+        }
+         
         public ConsultaEntidade<TEntidade> WhereIn(Expression<Func<TEntidade, Enum>> expressaoPropriedade, IEnumerable<int> lista)
         {
             var consulta = new ConsultaEntidade<TEntidade>(this.ContextoDados);
@@ -120,6 +126,7 @@ namespace Snebur.AcessoDados
         {
             return new ConsultaEntidade<TEntidade>(this.ContextoDados, this.TipoEntidade).AdicionarFiltroPropriedade(propriedade, operador, valor);
         }
+
         #region Abrir  Relação
 
         public ConsultaEntidade<TEntidade> AbrirRelacao(List<PropertyInfo> propriedades)

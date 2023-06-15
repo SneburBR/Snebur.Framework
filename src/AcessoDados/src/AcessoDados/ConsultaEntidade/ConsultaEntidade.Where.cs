@@ -51,6 +51,11 @@ namespace Snebur.AcessoDados
             return this.WhereInInterno(expressaoPropriedade, lista.Select(x => x.ToString()).ToList());
         }
 
+        public ConsultaEntidade<TEntidade> WhereIn(Expression<Func<TEntidade, long?>> expressaoPropriedade, IEnumerable<long> lista)
+        {
+            return this.WhereInInterno(expressaoPropriedade, lista.Select(x => x.ToString()).ToList());
+        }
+
         public ConsultaEntidade<TEntidade> WhereIn(Expression<Func<TEntidade, Enum>> expressaoPropriedade, IEnumerable<int> lista)
         {
             return this.WhereInInterno(expressaoPropriedade, lista.Cast<string>().ToList());
@@ -77,7 +82,7 @@ namespace Snebur.AcessoDados
 
         private void AdicionarFiltro(EstruturaConsulta estruturaConsulta, Expression expressao, BaseFiltroGrupo grupoFiltroAtual)
         {
-            if (expressao is System.Linq.Expressions.LambdaExpression)
+            if (expressao is LambdaExpression)
             {
                 var lambdaExpression = (LambdaExpression)expressao;
                 expressao = lambdaExpression.Body;
@@ -94,7 +99,7 @@ namespace Snebur.AcessoDados
                     case ExpressionType.GreaterThanOrEqual:
 
                         var logicalBinaryExpression = (BinaryExpression)expressao;
-                        var filtroPropriedade = Ajudantes.AjudanteFiltroPropriedade.RetornarFiltroPropriedadeLogico(estruturaConsulta, logicalBinaryExpression);
+                        var filtroPropriedade = AjudanteFiltroPropriedade.RetornarFiltroPropriedadeLogico(estruturaConsulta, logicalBinaryExpression);
 
                         //filtroPropriedade.CaminhoPropriedade
                         this.AbrirRelacaoFiltro(estruturaConsulta, filtroPropriedade.CaminhoPropriedade);
@@ -161,7 +166,7 @@ namespace Snebur.AcessoDados
                         }
                     case ExpressionType.MemberAccess:
 
-                        //Esperamos uma expressão boleana
+                        //Esperamos uma expressão boolean
                         var expressaoMembro = (MemberExpression)(expressao);
                         if (expressaoMembro.Type == typeof(Boolean))
                         {
