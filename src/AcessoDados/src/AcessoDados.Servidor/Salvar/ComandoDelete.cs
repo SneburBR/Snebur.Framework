@@ -5,6 +5,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 {
     internal class ComandoDelete : Comando
     {
+        internal override bool IsAdiconarParametrosChavePrimaria => true;
         internal bool IsComandoUpdade { get; set; }
 
         internal string SqlCommandoIDeletado { get; set; }
@@ -27,8 +28,9 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 
         private string RetornarSqlCommnadoDelete()
         {
+            var estruturaChavePrimaria = this.EstruturaEntidade.EstruturaCampoChavePrimaria;
             var sb = new StringBuilderSql();
-            sb.AppendFormat(" DELETE FROM [{0}].[{1}] WHERE {2} = {3}", this.EstruturaEntidade.Schema, this.EstruturaEntidade.NomeTabela, this.EstruturaEntidade.EstruturaCampoChavePrimaria.NomeCampoSensivel, this.EntidadeAlterada.Entidade.Id);
+            sb.Append($" DELETE FROM [{this.EstruturaEntidade.Schema}].[{this.EstruturaEntidade.NomeTabela}] WHERE {estruturaChavePrimaria.NomeCampoSensivel} = {estruturaChavePrimaria.NomeParametro}");
             return sb.ToString();
         }
 
@@ -36,5 +38,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
         {
             throw new ErroNaoImplementado();
         }
+
+        
     }
 }

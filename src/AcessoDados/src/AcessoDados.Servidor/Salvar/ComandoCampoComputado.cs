@@ -4,6 +4,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 {
     internal class ComandoCampoComputado : Comando
     {
+        internal override bool IsAdiconarParametrosChavePrimaria { get; }= false;
         internal EstruturaCampo EstruturaCampo { get; }
 
         internal ComandoCampoComputado(EntidadeAlterada entidadeAlterada,
@@ -18,13 +19,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
         {
             var estruturaEntidade = this.EstruturaEntidade;
             var sb = new StringBuilderSql();
-            sb.AppendFormat(" SELECT [{0}] FROM [{1}].[{2}] WHERE  [{1}].[{2}] .[{3}] = {4} ",
-                            this.EstruturaCampo.NomeCampo,
-                            estruturaEntidade.Schema,
-                            estruturaEntidade.NomeTabela,
-                            estruturaEntidade.EstruturaCampoChavePrimaria.NomeCampo,
-                            estruturaEntidade.EstruturaCampoChavePrimaria.NomeParametro);
-
+            sb.Append($" SELECT [{this.EstruturaCampo.NomeCampo}] FROM [{estruturaEntidade.Schema}].[{estruturaEntidade.NomeTabela}] WHERE  [{estruturaEntidade.Schema}].[{estruturaEntidade.NomeTabela}] .[{estruturaEntidade.EstruturaCampoChavePrimaria.NomeCampo}] = {estruturaEntidade.EstruturaCampoChavePrimaria.NomeParametro} ");
             this.EstruturasCampoParametro.Add(this.EstruturaEntidade.EstruturaCampoChavePrimaria);
             return sb.ToString();
         }

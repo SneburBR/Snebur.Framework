@@ -13,6 +13,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 {
     internal class ComandoUpdate : Comando
     {
+        internal override bool IsAdiconarParametrosChavePrimaria => true;
         public Dictionary<string, PropriedadeAlterada> PropriedadesAlterada { get; private set; }
 
         internal bool ExisteAtualizacao { get => this.EstruturasCampoParametro.Count > 0; }
@@ -88,14 +89,16 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 
         private string RetornarSqlCommando()
         {
-            var camposAtualizar = this.EstruturasCampoParametro.Select(x => String.Format(" {0} = {1} ", x.NomeCampoSensivel, x.NomeParametroOuValorFuncaoServidor)).ToList();
-
+            var camposAtualizar = this.EstruturasCampoParametro.Select(x => $" {x.NomeCampoSensivel} = {x.NomeParametroOuValorFuncaoServidor} ").ToList();
+            var estrutraChavePrimaria = this.EstruturaEntidade.EstruturaCampoChavePrimaria;
             var sb = new StringBuilderSql();
-            sb.AppendFormat(" UpDaTe [{0}].[{1}] SET ", this.EstruturaEntidade.Schema, this.EstruturaEntidade.NomeTabela);
-            sb.Append(String.Format(" {0}  ", String.Join(",", camposAtualizar)));
-            sb.Append(String.Format(" WHERE {0} = {1} ", this.EstruturaEntidade.EstruturaCampoChavePrimaria.NomeCampoSensivel, this.EntidadeAlterada.Entidade.Id));
+            sb.AppendFormat($" UpDaTe [{this.EstruturaEntidade.Schema}].[{this.EstruturaEntidade.NomeTabela}]  " );
+            sb.Append($" SET {String.Join(",", camposAtualizar)}  ");
+            sb.Append($" WHERE {estrutraChavePrimaria.NomeCampoSensivel} = {estrutraChavePrimaria.NomeParametro}");
             return sb.ToString();
         }
+
+        
         //this.EstruturasCampoParametro.AddRange(this.EstruturaEntidade.EstruturasCampos.Values);
     }
 }

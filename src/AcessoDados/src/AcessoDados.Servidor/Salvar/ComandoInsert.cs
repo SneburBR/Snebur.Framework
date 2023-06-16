@@ -6,6 +6,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 {
     internal class ComandoInsert : Comando
     {
+        internal override bool IsAdiconarParametrosChavePrimaria => false;
         internal bool IsRecuperarUltimoId { get; }
 
         internal ComandoInsert(EntidadeAlterada entidadeAlterada, EstruturaEntidade estruturaEntidade, bool isRecuperarUltimoId) : base(entidadeAlterada, estruturaEntidade)
