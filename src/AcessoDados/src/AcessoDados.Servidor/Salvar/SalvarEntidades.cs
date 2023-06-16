@@ -38,7 +38,8 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             this.EntidadesAlteradas = this.RetornarEntidadesAlteradas(entidades);
             this.Fila = FilaEntidadeAlterada.RetornarFila(this.EntidadesAlteradas);
 
-            if (opcaoDeletar != EnumOpcaoSalvar.Salvar)
+            if (opcaoDeletar == EnumOpcaoSalvar.Deletar ||
+                opcaoDeletar == EnumOpcaoSalvar.DeletarRegistro)
             {
                 this.Fila = new Queue<EntidadeAlterada>(this.Fila.Reverse());
             }
@@ -205,7 +206,10 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             return this.RetornarResultado(entidadesAltearas);
         }
 
-        internal int ExecutarCommando(DbConnection conexao, DbTransaction transacao, EntidadeAlterada entidadeAlterada, Comando comando)
+        internal int ExecutarCommando(DbConnection conexao, 
+                                     DbTransaction transacao, 
+                                     EntidadeAlterada entidadeAlterada, 
+                                     Comando comando)
         {
             using (var cmd = this.Conexao.RetornarNovoComando(comando.SqlCommando, null, conexao, transacao))
             {

@@ -153,8 +153,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                     case EnumTipoAlteracao.Atualizar:
 
                         
-                        var comandoUpdate = new ComandoUpdate(this, 
-                                                             estruturaEntidade);
+                        var comandoUpdate = new ComandoUpdate(this,  estruturaEntidade);
                         if (comandoUpdate.ExisteAtualizacao)
                         {
                             comandos.Add(comandoUpdate);

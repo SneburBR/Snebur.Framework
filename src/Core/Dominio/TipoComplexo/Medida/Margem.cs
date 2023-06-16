@@ -1,4 +1,5 @@
 ﻿using Snebur.Dominio.Atributos;
+using System;
 
 namespace Snebur.Dominio
 {
@@ -45,6 +46,7 @@ namespace Snebur.Dominio
             this._direita = direita;
             this._inferior = inferior;
         }
+
         #region Operadores
 
         public static bool operator ==(Margem margem1, Margem margem2)
@@ -94,6 +96,11 @@ namespace Snebur.Dominio
         public override string ToString()
         {
             return $"{this.Esquerda}-{this.Superior}-{this.Direita}-{this.Inferior}-DPI-{this.DpiVisualizacao:0.0}";
+        }
+
+        public string ToStringDecimal(int casas = 2)
+        {
+            return $"{this.Esquerda.FormatDecimal(casas)},{this.Superior.FormatDecimal(casas)},{this.Direita.FormatDecimal(casas)}-{this.Inferior.FormatDecimal(casas)}";
         }
 
         #endregion

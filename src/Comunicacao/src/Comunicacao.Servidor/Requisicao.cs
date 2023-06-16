@@ -17,31 +17,22 @@ namespace Snebur.Comunicacao
 {
     public class Requisicao : IDisposable
     {
+        private string _jsonRequisacao;
+
         #region Propriedades
 
         public Cabecalho Cabecalho { get; private set; }
-
         public ContratoChamada ContratoChamada { get; private set; }
-
         public CredencialServico CredencialServico { get; private set; }
-
         public CredencialUsuario CredencialUsuario { get; private set; }
-
         public CredencialUsuario CredencialAvalisata { get; private set; }
-
         public InformacaoSessaoUsuario InformacaoSessaoUsuario { get; private set; }
-
         public string IdentificadorProprietario { get; private set; }
-
         public string Operacao { get; private set; }
-
         public DateTime DataHoraChamada { get; private set; }
-
         public Dictionary<string, object> Parametros { get; private set; }
-
         public string NomeManipulador { get; }
         public bool IsSerializarJavascript { get; set; }
-
         public EnumTipoSerializacao TipoSerializacao => this.IsSerializarJavascript ? EnumTipoSerializacao.Javascript : 
                                                                                       EnumTipoSerializacao.DotNet;
         public HttpContext HttpContext { get; private set; }
@@ -90,6 +81,10 @@ namespace Snebur.Comunicacao
                 try
                 {
                     var json = PacoteUtil.DescompactarPacote(streamRequisicao);
+                    if (DebugUtil.IsAttached)
+                    {
+                        this._jsonRequisacao = json;
+                    }
                     this.ContratoChamada = JsonUtil.Deserializar<ContratoChamada>(json, EnumTipoSerializacao.DotNet);
                     this.Cabecalho = this.ContratoChamada.Cabecalho;
                     this.InformacaoSessaoUsuario = this.ContratoChamada.InformacaoSessaoUsuario;
