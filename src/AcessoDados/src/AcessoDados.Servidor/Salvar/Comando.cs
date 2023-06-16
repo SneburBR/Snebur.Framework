@@ -4,6 +4,7 @@ using Snebur.Utilidade;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Drawing;
 
 namespace Snebur.AcessoDados.Servidor.Salvar
 {
@@ -16,6 +17,8 @@ namespace Snebur.AcessoDados.Servidor.Salvar
         internal string SqlCommando { get; set; }
         internal List<EstruturaCampo> EstruturasCampoParametro { get; } = new List<EstruturaCampo>();
 
+        internal abstract bool IsAdiconarParametrosChavePrimaria { get; }
+
         internal Comando(EntidadeAlterada entidadeAlterada, EstruturaEntidade estruturaEntidade)
         {
             this.EntidadeAlterada = entidadeAlterada;
@@ -23,13 +26,21 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             this.EstruturaEntidade = estruturaEntidade;
         }
 
-        internal List<ParametroCampo> RetornarParametros()
+        internal virtual List<ParametroCampo> RetornarParametros()
         {
             var parametros = new List<ParametroCampo>();
+
             foreach (var estruturaCampo in this.EstruturasCampoParametro)
             {
                 var valor = this.RetornarValorCampo(estruturaCampo);
                 var pametro = new ParametroCampo(estruturaCampo, valor);
+                parametros.Add(pametro);
+            }
+
+            if (this.IsAdiconarParametrosChavePrimaria)
+            {
+                var estruturaCampoChavePrimaria = this.EstruturaEntidade.EstruturaCampoChavePrimaria;
+                var pametro = new ParametroCampo(estruturaCampoChavePrimaria, this.Entidade.Id);
                 parametros.Add(pametro);
             }
             return parametros;
