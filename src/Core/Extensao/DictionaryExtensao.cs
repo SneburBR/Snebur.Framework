@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace System
@@ -14,17 +15,35 @@ namespace System
             return default;
         }
 
-        public static void AddOrUpdate<TKey, TValue>(this Dictionary<TKey, TValue> dicionario, 
+        public static void AddOrUpdate<TKey, TValue>(this Dictionary<TKey, TValue> dicionario,
                                        TKey key,
                                        TValue value)
         {
-            if (dicionario.ContainsKey(key))
+            lock ((dicionario as ICollection).SyncRoot)
             {
-                dicionario[key] = value;
+                if (dicionario.ContainsKey(key))
+                {
+                    dicionario[key] = value;
+                }
+                else
+                {
+                    dicionario.Add(key, value);
+                }
             }
-            else
+        }
+
+        public static bool TryAdd<TKey, TValue>(this Dictionary<TKey, TValue> dicionario,
+                                               TKey key,
+                                               TValue value)
+        {
+            lock ((dicionario as ICollection).SyncRoot)
             {
+                if (dicionario.ContainsKey(key))
+                {
+                    return false;
+                }
                 dicionario.Add(key, value);
+                return true;
             }
         }
 
@@ -56,6 +75,8 @@ namespace System
                                               userState,
                                               funcaoRetornarValor);
         }
+
+
         private static TValue GetOrAddWithLockKeyInterno<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> dicionario,
                                                          TKey chave,
                                                          object userState,
@@ -116,16 +137,18 @@ namespace System
             return GetOrAddWithLockKeyInterno(dicionario, chave, userState, funcaoRetornarValor, tentativa += 1);
 #endif
         }
+
+
         private static readonly Dictionary<int, Dictionary<int, object>> _dicionariosBloqueio = new Dictionary<int, Dictionary<int, object>>();
-        private static readonly object _bloqueioDicionario = new object();
-        private static readonly object _bloqueioChave = new object();
+        //private static readonly object _bloqueioDicionario = new object();
+        //private static readonly object _bloqueioChave = new object();
         private static object RetornarBloqueio<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> dicionario,
                                                             TKey chave)
         {
             var hashDicionario = dicionario.GetHashCode();
             if (!_dicionariosBloqueio.ContainsKey(hashDicionario))
             {
-                lock (_bloqueioDicionario)
+                lock ((dicionario as ICollection).SyncRoot)
                 {
                     if (!_dicionariosBloqueio.ContainsKey(hashDicionario))
                     {
@@ -133,12 +156,13 @@ namespace System
                     }
                 }
             }
+
             var hashChave = chave.GetHashCode();
             var dicionarioBloqueio = _dicionariosBloqueio[hashDicionario];
 
             if (!dicionarioBloqueio.ContainsKey(hashChave))
             {
-                lock (_bloqueioDicionario)
+                lock ((dicionario as ICollection).SyncRoot)
                 {
                     if (!dicionarioBloqueio.ContainsKey(hashChave))
                     {
