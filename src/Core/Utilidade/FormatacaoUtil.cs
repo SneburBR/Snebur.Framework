@@ -6,7 +6,7 @@ using System.IO;
 
 namespace Snebur.Utilidade
 {
-    public static class FormatacaoUtil
+    public static partial class FormatacaoUtil
     {
         private const int CASAS_DECIMAL_PADRAO = 2;
         public static string Formatar(object valor, EnumFormatacao formatar)
@@ -39,15 +39,15 @@ namespace Snebur.Utilidade
 
                 case EnumFormatacao.Decimal:
 
-                    return FormatacaoUtil.FormatarDecimal(Convert.ToDouble(valor));
+                    return FormatacaoUtil.FormatarDecimal(Convert.ToDecimal(valor));
                 case EnumFormatacao.Decimal1:
-                    return FormatacaoUtil.FormatarDecimal(Convert.ToDouble(valor), 1);
+                    return FormatacaoUtil.FormatarDecimal(Convert.ToDecimal(valor), 1);
                 case EnumFormatacao.Decimal3:
-                    return FormatacaoUtil.FormatarDecimal(Convert.ToDouble(valor), 3);
+                    return FormatacaoUtil.FormatarDecimal(Convert.ToDecimal(valor), 3);
                 case EnumFormatacao.Data:
-                    return FormatacaoUtil.FormatarData(Convert.ToDouble(valor), 3);
+                    return FormatacaoUtil.FormatarData( valor, 3);
                 case EnumFormatacao.Hora:
-                    return FormatacaoUtil.FormatarHora(Convert.ToDouble(valor), 3);
+                    return FormatacaoUtil.FormatarHora( valor, 3);
                 case EnumFormatacao.Dimensao:
                     return FormatacaoUtil.FormatarDimensao((Dimensao)valor);
                 case EnumFormatacao.DimensaoCm:
@@ -132,12 +132,12 @@ namespace Snebur.Utilidade
             throw new NotImplementedException();
         }
 
-        private static string FormatarData(double v1, int v2)
+        private static string FormatarData(object v1, int v2)
         {
             throw new NotImplementedException();
         }
 
-        private static string FormatarHora(double v1, int v2)
+        private static string FormatarHora(object v1, int v2)
         {
             throw new NotImplementedException();
         }
@@ -147,89 +147,7 @@ namespace Snebur.Utilidade
             throw new NotImplementedException();
         }
 
-        public static string FormatarDecimal(double? valor)
-        {
-            return FormatarDecimal(valor, CASAS_DECIMAL_PADRAO);
-        }
-
-        public static string FormatarDecimal(double valor)
-        {
-            return FormatarDecimal(valor, CASAS_DECIMAL_PADRAO);
-        }
-        public static string FormatarDecimal(double? valor,
-                                             EnumDivisorDecimal divisorDecimal = EnumDivisorDecimal.CulturaAtual)
-        {
-            return FormatarDecimal(valor, CASAS_DECIMAL_PADRAO, divisorDecimal);
-        }
-        public static string FormatarDecimal(double valor,
-                                             EnumDivisorDecimal divisorDecimal = EnumDivisorDecimal.CulturaAtual)
-        {
-            return FormatarDecimal(valor, CASAS_DECIMAL_PADRAO, divisorDecimal);
-        }
-        public static string FormatarDecimal(double? valor, 
-                                             int casasDecimal,
-                                             EnumDivisorDecimal divisorDecimal = EnumDivisorDecimal.CulturaAtual)
-        {
-            if (valor == null)
-            {
-                return "0";
-            }
-            return FormatarDecimal(valor.Value, casasDecimal, divisorDecimal);
-        }
-
-        public static string FormatarDecimal(double valor,
-                                             int casasDecimal,
-                                             EnumDivisorDecimal divisorDecimal= EnumDivisorDecimal.CulturaAtual)
-        {
-            return FormatarDecimal(Convert.ToDecimal(valor), casasDecimal, divisorDecimal);
-        }
-        private static string FormatarDecimal(decimal valor, 
-                                              int casasDecimal, 
-                                              EnumDivisorDecimal divisorDecimal)
-        {
-            var resultado = FormatarDecimalInterno(valor, casasDecimal);
-            if(divisorDecimal== EnumDivisorDecimal.CulturaAtual)
-            {
-                return resultado;
-            }
-
-            if(divisorDecimal == EnumDivisorDecimal.Ponto)
-            {
-                return resultado.Replace(",", ".");
-            }
-            return resultado.Replace(".", ",");
-
-        }
-
-        private static string FormatarDecimalInterno(decimal valor, int digitos)
-        {
-            if (digitos == 0 || valor % 1 == 0)
-            {
-                return $"{valor:0}";
-            }
-
-            if (digitos == 1 ||
-                ((valor - Math.Floor(valor)) * 10) % 1 == 0)
-            {
-                return $"{valor:0.0}";
-            }
-
-            if (digitos == 2 ||
-                 ((valor - Math.Floor(valor)) * 100) % 1 == 0)
-            {
-                return $"{valor:0.00}";
-            }
-
-            if (digitos == 3 ||
-                ((valor - Math.Floor(valor)) * 1000) % 1 == 0)
-            {
-                return $"{valor:0.000}";
-            }
-
-            string formatar = "0." + new string('0', digitos);
-            return valor.ToString(formatar);
-
-        }
+       
 
         public static string FormatarBytes(long totalBytes)
         {
