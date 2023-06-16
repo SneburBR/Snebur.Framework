@@ -1,4 +1,6 @@
-﻿namespace System
+﻿using Snebur.Utilidade;
+
+namespace System
 {
     public static class NumeroExtensao
     {
@@ -20,6 +22,23 @@
         public static int ToInt32(this double value, MidpointRounding midpointRounding = MidpointRounding.ToEven)
         {
             return (int)Math.Round(value, midpointRounding);
+        }
+
+        public static string FormatDecimal(this double value, int casasDecimal = 2)
+        {
+            return FormatacaoUtil.FormatarDecimal(value, casasDecimal);
+        }
+        public static string FormatDecimal(this double? value, int casasDecimal = 2)
+        {
+            return FormatacaoUtil.FormatarDecimal(value, casasDecimal);
+        }
+        public static string FormatDecimal(this decimal? value, int casasDecimal = 2)
+        {
+            return FormatacaoUtil.FormatarDecimal(value, casasDecimal);
+        }
+        public static string FormatDecimal(this decimal value, int casasDecimal = 2)
+        {
+            return FormatacaoUtil.FormatarDecimal(value, casasDecimal);
         }
     }
 }
