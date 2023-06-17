@@ -399,11 +399,14 @@ namespace Snebur.AcessoDados
 
         private ResultadoSalvar SalvarPermissao(IEnumerable<IEntidade> entidades)
         {
-            var permissao = this.SeguracaContextoDados?.PermissaoSalvar(this.UsuarioLogado, this.UsuarioAvalista, entidades) ?? EnumPermissao.Autorizado;
+            var permissao = this.SeguracaContextoDados?.PermissaoSalvar(this.UsuarioLogado,
+                                                                        this.UsuarioAvalista, 
+                                                                        entidades) ?? EnumPermissao.Autorizado;
             if (permissao == EnumPermissao.Autorizado)
             {
                 return this.SalvarInterno(entidades);
             }
+
             return new ResultadoSalvar
             {
                 Permissao = permissao,
@@ -414,11 +417,14 @@ namespace Snebur.AcessoDados
         private ResultadoSalvar SalvarInterno(IEnumerable<IEntidade> entidades)
         {
             var entidadesHashSet = entidades.OfType<Entidade>().ToHashSet();
-            using (var salvarEntidades = new SalvarEntidades(this, entidadesHashSet, EnumOpcaoSalvar.Salvar, true))
+            using (var salvarEntidades = new SalvarEntidades(this, entidadesHashSet, 
+                                                             EnumOpcaoSalvar.Salvar,
+                                                             true))
             {
                 return (ResultadoSalvar)salvarEntidades.Salvar();
             }
         }
+
         #endregion
 
         #endregion
