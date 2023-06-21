@@ -34,6 +34,36 @@ namespace Snebur.Linq
             }
         }
 
+        public static T Pop<T>(this IList<T> colecao)
+        {
+            if (colecao?.Count > 0)
+            {
+                lock ((colecao as ICollection).SyncRoot)
+                {
+                    var item = colecao[colecao.Count - 1];
+                    colecao.RemoveAt(colecao.Count - 1);
+                    return item;
+                }
+            }
+            return default;
+        }
+
+        //shift
+        public static T Shift<T>(this IList<T> colecao)
+        {
+            if (colecao?.Count > 0)
+            {
+                lock ((colecao as ICollection).SyncRoot)
+                {
+                    var item = colecao[0];
+                    colecao.RemoveAt(0);
+                    return item;
+                }
+            }
+            return default;
+
+        }
+
         public static void AddIfTrue<T>(this ICollection<T> colecao, T item, bool isAdd)
         {
             if (isAdd)
