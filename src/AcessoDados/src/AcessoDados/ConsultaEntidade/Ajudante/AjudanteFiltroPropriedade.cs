@@ -48,7 +48,7 @@ namespace Snebur.AcessoDados.Ajudantes
             {
                 if (caminhoPropriedade.Contains("."))
                 {
-                    throw new InvalidOperationException("não possivel filtrar um propriedade interface com caminho");
+                    throw new InvalidOperationException("não é possível filtrar um propriedade interface com caminho");
                 }
                 propriedade = AjudanteConsultaEntidade.RetornarPropriedadeInterface(estruturaConsulta.TipoEntidadeConsulta, propriedade);
             }
@@ -59,7 +59,7 @@ namespace Snebur.AcessoDados.Ajudantes
             {
                 if (valorPropriedade is Entidade && !valorPropriedade.GetType().IsTipoIguaOuHerda(propriedade.PropertyType))
                 {
-                    throw new Erro($"A entidade '{valorPropriedade.GetType().Name}' não é compativel com tipo propriedade '{propriedade.Name}' do tipo '{propriedade.PropertyType.Name}' ");
+                    throw new Erro($"A entidade '{valorPropriedade.GetType().Name}' não é compatível com tipo propriedade '{propriedade.Name}' do tipo '{propriedade.PropertyType.Name}' ");
                 }
 
                 var novoCaminhoPropriedade = caminhoPropriedade.Contains(".") ? caminhoPropriedade.Substring(0, caminhoPropriedade.LastIndexOf(".") + 1) : String.Empty;
@@ -193,7 +193,7 @@ namespace Snebur.AcessoDados.Ajudantes
                             Guid guidValor;
                             if (!Guid.TryParse(valorPropriedade.ToString(), out guidValor))
                             {
-                                throw new Erro(String.Format("Não foi possivel converter o valor {0} para guid", valorPropriedade.ToString()));
+                                throw new Erro(String.Format("Não foi possível converter o valor {0} para guid", valorPropriedade.ToString()));
                             }
                         }
                         break;

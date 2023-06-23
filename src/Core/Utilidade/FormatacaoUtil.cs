@@ -19,7 +19,6 @@ namespace Snebur.Utilidade
             switch (formatar)
             {
                 case EnumFormatacao.Bytes:
-
                     return FormatacaoUtil.FormatarBytes(Convert.ToInt64(valor));
 
                 case EnumFormatacao.Cep:
@@ -200,24 +199,6 @@ namespace Snebur.Utilidade
         public static (string, string) FormatarNomeSobreNome(string nomeCompleto)
         {
             return FormatacaoNomeUtil.FormatarNomeSobrenome(nomeCompleto);
-            //string retornarSobreNome(List<string> partes)
-            //{
-            //    if (partes.Count > 1)
-            //    {
-            //        return String.Join(" ", partes.Skip(1).Select(x => TextoUtil.RetornarPrimeiraLetraMaiuscula(x)));
-            //    }
-            //    return String.Empty;
-            //}
-
-            //if (!String.IsNullOrEmpty(nomeCompleto))
-            //{
-            //    var partes = nomeCompleto.Trim().Split(' ').Where(x => !String.IsNullOrWhiteSpace(x)).ToList();
-            //    var nome = TextoUtil.RetornarPrimeiraLetraMaiuscula(partes.First());
-            //    var sobrenome = retornarSobreNome(partes);
-            //    return (nome, sobrenome);
-
-            //}
-            //return (String.Empty, String.Empty);
         }
 
         public static string FormatarMoeda(decimal valorPedidoInterface)

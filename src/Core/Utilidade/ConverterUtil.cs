@@ -18,7 +18,6 @@ namespace Snebur.Utilidade
 
         public static object Converter(object valor, Type tipo)
         {
-
             var tipoValor = valor?.GetType();
             if (valor == null || valor == DBNull.Value)
             {
@@ -62,13 +61,8 @@ namespace Snebur.Utilidade
             }
 
             return Convert.ChangeType(valor, tipo);
-
-            //throw new ErroConverter(String.Format("Não possível converter o tipo {0} para {1} ", valor.GetType().Name, tipo.Name));
-
-
         }
-
-
+         
         public static object ConverterTipoPrimario(object valor,
                                                   EnumTipoPrimario tipoPrimarioEnum)
         {

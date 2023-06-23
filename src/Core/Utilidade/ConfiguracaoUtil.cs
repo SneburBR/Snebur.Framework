@@ -32,7 +32,6 @@ namespace Snebur.Utilidade
         public static string UrlServicoArquivo => AplicacaoSnebur.Atual.UrlServicoArquivo;
         public static string UrlServicoDados => AplicacaoSnebur.Atual.UrlServicoDados;
         public static string UrlServicoImagem => AplicacaoSnebur.Atual.UrlServicoImagem;
-
         public static Guid ChaveSeguranca => LazyUtil.RetornarValorLazyComBloqueio(ref _chaveSeguranca, RetornarChaveSeguranca);
 
         private static Guid RetornarChaveSeguranca()
@@ -220,119 +219,6 @@ namespace Snebur.Utilidade
             }
             return caminhoAppData;
         }
-        #region OBSOLETO
-
-        //private static Configuration _configuracaoAppData;
-
-        //public static Configuration ConfiguracaoAppData
-        //{
-        //    get
-        //    {
-        //        if (ConfiguracaoUtil._configuracaoAppData == null)
-        //        {
-        //            try
-        //            {
-        //                ConfiguracaoUtil._configuracaoAppData = ConfiguracaoUtil.RetornarConfiguracaoAppData();
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                throw new Erro("Não foi possivel carregar o arquivo de configuracao appdata", ex);
-        //            }
-        //        }
-        //        return _configuracaoAppData;
-        //    }
-        //}
-
-        //private static string RetornarCaminhoArquivoConfiguracao()
-        //{
-        //    var configuracaoLocalAppData = System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal);
-
-        //    var arquivoExe = new FileInfo(Process.GetCurrentProcess().MainModule.FileName);
-        //    var nomeArquivoConfig = String.Format("{0}.config", arquivoExe.Name);
-        //    //var caminhoOrigemConfiguracaoConfiguracao = Path.Combine(arquivoExe.Directory.FullName, nomeArquivoConfig);
-        //    var caminhoOrigemConfiguracao = configuracaoLocalAppData.FilePath;
-        //    var caminhoDestinoConfiguracaoAppData = Path.Combine(ConfiguracaoUtil.CaminhoAppDataAplicacao, nomeArquivoConfig);
-
-        //    if (File.Exists(caminhoDestinoConfiguracaoAppData))
-        //    {
-        //        ArquivoUtil.DeletarArquivo(caminhoDestinoConfiguracaoAppData, false, true);
-        //    }
-        //    ArquivoUtil.CopiarArquivo(caminhoOrigemConfiguracao, caminhoDestinoConfiguracaoAppData, false, true, true);
-        //    ConfiguracaoUtil.NormalizarArquivoConfiguracao(caminhoOrigemConfiguracao, caminhoDestinoConfiguracaoAppData);
-
-        //    return caminhoDestinoConfiguracaoAppData;
-        //}
-
-        //private static Configuration RetornarConfiguracaoAppData()
-        //{
-        //    if (SistemaUtil.TipoAplicacao == EnumTipoAplicacao.DotNet_Wpf)
-        //    {
-        //        var caminhoConfiguracaoAppData = ConfiguracaoUtil.RetornarCaminhoArquivoConfiguracao();
-        //        var mapeamento = new ExeConfigurationFileMap();
-        //        //var mapeamento = new ExeConfigurationFileMap(caminhoConfiguracaoAppData);
-        //        mapeamento.ExeConfigFilename = caminhoConfiguracaoAppData;
-        //        //mapeamento.LocalUserConfigFilename = caminhoConfiguracaoAppData;
-        //        //mapeamento.RoamingUserConfigFilename = caminhoConfiguracaoAppData;
-
-        //        //xxx.
-        //        var configuracaoExe = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-        //        var configuracaoAppData = System.Configuration.ConfigurationManager.OpenMappedExeConfiguration(mapeamento, ConfigurationUserLevel.None);
-
-        //        //var configuracaoAppData = System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal);
-
-        //        foreach (var chave in ConfigurationManager.AppSettings.AllKeys)
-        //        {
-        //            if (configuracaoAppData.AppSettings.Settings[chave] == null)
-        //            {
-        //                configuracaoAppData.AppSettings.Settings.Add(chave, ConfigurationManager.AppSettings[chave]);
-        //            }
-        //        }
-        //        for (var i = 0; i < configuracaoExe.ConnectionStrings.ConnectionStrings.Count; i++)
-        //        {
-        //            var connectionStringExe = configuracaoExe.ConnectionStrings.ConnectionStrings[i];
-        //            var nomeConnectionString = connectionStringExe.Name;
-        //            var connectionStringAppData = configuracaoAppData.ConnectionStrings.ConnectionStrings[nomeConnectionString];
-
-        //            if (connectionStringAppData == null)
-        //            {
-        //                ConnectionStringSettings connectionStringItem = connectionStringExe;
-        //                configuracaoAppData.ConnectionStrings.ConnectionStrings.Add(connectionStringItem);
-        //                //configuracaoAppData.ConnectionStrings.ConnectionStrings[nomeConnectionString].ConnectionString = connectionStringExe.ConnectionString;
-        //                //configuracaoAppData.ConnectionStrings.ConnectionStrings[nomeConnectionString].ProviderName = connectionStringExe.ProviderName;
-        //            }
-        //        }
-        //        configuracaoAppData.Save(ConfigurationSaveMode.Full, true);
-        //        return configuracaoAppData;
-        //    }
-        //    throw new Erro(" O tipo de aplicação não é suportado");
-        //}
-
-        /// <summary>
-        /// Substituir o arquivos appSetting.config e connectionString.config
-        /// </summary>
-        //private static void NormalizarArquivoConfiguracao(string caminhoArquivoConfiguracao, string caminnhoArquivoConfiguracaoAppData)
-        //{
-        //    var diretorioConfiguracao = new FileInfo(caminhoArquivoConfiguracao).Directory.FullName;
-
-        //    var caminhoOrigemConfiguracaoAppSettings = Path.Combine(diretorioConfiguracao, ConfiguracaoUtil.NOME_ARQUIVO_APP_SETTINGS);
-        //    var caminhoOrigemConfiguracaoConnectionStringSettings = Path.Combine(diretorioConfiguracao, ConfiguracaoUtil.NOME_ARQUIVO_CONNECTION_STRINGS);
-
-        //    var doc = new XmlDocument();
-        //    using (var msConfigAppData = new MemoryStream(File.ReadAllBytes(caminnhoArquivoConfiguracaoAppData)))
-        //    {
-        //        doc.Load(msConfigAppData);
-
-        //        var existeAlteracao = ConfiguracaoUtil.SubstiturNoXmlArquivoConfiguracao(doc, "appSettings", caminhoOrigemConfiguracaoAppSettings);
-        //        existeAlteracao = existeAlteracao || ConfiguracaoUtil.SubstiturNoXmlArquivoConfiguracao(doc, "connectionStrings", caminhoOrigemConfiguracaoConnectionStringSettings);
-
-        //        if (existeAlteracao)
-        //        {
-        //            doc.Save(caminnhoArquivoConfiguracaoAppData);
-        //        }
-        //    }
-        //}
-
-        #endregion
 
         /// <summary>
         /// 

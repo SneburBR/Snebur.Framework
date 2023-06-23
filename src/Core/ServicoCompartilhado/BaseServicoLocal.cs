@@ -7,10 +7,8 @@ namespace Snebur.Servicos
 {
     public abstract class BaseServicoLocal
     {
-
         private static object Bloqueio = new object();
         protected bool IsDebugAttachDispararErro { get; set; }
-
         private string _retornarRepositorioLogs;
         private string RetornarRepositorioLogs
         {
@@ -62,7 +60,7 @@ namespace Snebur.Servicos
             try
             {
                 var nomeArquivo = String.Format("{0}.log", DateTime.Now.ToString("yyyy-MMMM-dd"));
-                var caminhoArquivo = System.IO.Path.Combine(this.RetornarRepositorioLogs, nomeArquivo);
+                var caminhoArquivo = Path.Combine(this.RetornarRepositorioLogs, nomeArquivo);
 
                 lock (Bloqueio)
                 {
