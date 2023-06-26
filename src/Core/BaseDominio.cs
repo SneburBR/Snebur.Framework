@@ -20,7 +20,7 @@ namespace Snebur.Dominio
         private bool _isSerializando;
 
         //flag exclusiva do serializador
-        private bool __isControleProprieadesDestativado;
+        //private bool __isControleProprieadesDestativado;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [IgnorarGlobalizacao]
@@ -96,8 +96,7 @@ namespace Snebur.Dominio
 
         [NaoMapear]
         [IgnorarGlobalizacao]
-        [IgnorarPropriedadeTS]
-        [IgnorarPropriedadeTSReflexao]
+        [IgnorarPropriedadeTS, IgnorarPropriedadeTSReflexao]
         [PropriedadeProtegida]
         [XmlIgnore]
         public virtual bool __IsExisteAlteracao
@@ -117,9 +116,8 @@ namespace Snebur.Dominio
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [NaoMapear]
-        [IgnorarPropriedadeTS]
-        [IgnorarPropriedadeTSReflexao]
-        internal protected bool __IsControladorPropriedadesAlteradaAtivo { get; private set; } = false;
+        [IgnorarPropriedadeTS, IgnorarPropriedadeTSReflexao]
+        public bool __IsControladorPropriedadesAlteradaAtivo { get; private set; } = false;
 
         [XmlIgnore]
         [IgnorarPropriedadeTS]
@@ -135,10 +133,11 @@ namespace Snebur.Dominio
                 }
                 else
                 {
-                    if (this.__isControleProprieadesDestativado)
-                    {
-                        this.AtivarControladorPropriedadeAlterada();
-                    }
+                    //if (this.__isControleProprieadesDestativado)
+                    //{
+                    //    this.AtivarControladorPropriedadeAlterada();
+                    //}
+                    this.AtivarControladorPropriedadeAlterada();
                 }
                 this._isSerializando = value;
             }
@@ -146,8 +145,7 @@ namespace Snebur.Dominio
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [XmlIgnore]
-        [IgnorarPropriedadeTS]
-        [IgnorarPropriedadeTSReflexao]
+        [IgnorarPropriedadeTS, IgnorarPropriedadeTSReflexao]
         internal protected bool __IsClonado { get; set; }
         #endregion
 
@@ -159,6 +157,7 @@ namespace Snebur.Dominio
             this.__IdentificadorUnico = Guid.NewGuid();
             //this.__IdentificadorReferencia = this.__IdentificadorUnico;
         }
+
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void AtivarControladorPropriedadeAlterada()
         {
@@ -167,7 +166,7 @@ namespace Snebur.Dominio
                 this.__PropriedadesAlteradas = new Dictionary<string, PropriedadeAlterada>();
             }
             this.__IsControladorPropriedadesAlteradaAtivo = true;
-            this.__isControleProprieadesDestativado = false;
+            //this.__isControleProprieadesDestativado = false;
         }
 
         private void DestivarControladorPropriedadeAlterada()
@@ -178,13 +177,13 @@ namespace Snebur.Dominio
                 {
                     this.__PropriedadesAlteradas = null;
                 }
-                this.__isControleProprieadesDestativado = true;
+                //this.__isControleProprieadesDestativado = true;
                 this.__IsControladorPropriedadesAlteradaAtivo = false;
             }
         }
 
-        internal protected virtual void NotificarValorPropriedadeAlterada<T>(T antigoValor, 
-                                                                             T novoValor, 
+        internal protected virtual void NotificarValorPropriedadeAlterada<T>(T antigoValor,
+                                                                             T novoValor,
                                                                              [CallerMemberName] string nomePropriedade = "",
                                                                              string nomePropriedadeEntidade = null,
                                                                              string nomePropriedadeTipoComplexo = null)
@@ -196,7 +195,7 @@ namespace Snebur.Dominio
 
             if (this.__IsControladorPropriedadesAlteradaAtivo)
             {
-                if (this.__PropriedadesAlteradas.TryGetValue(nomePropriedade, 
+                if (this.__PropriedadesAlteradas.TryGetValue(nomePropriedade,
                                                             out PropriedadeAlterada propriedadeAlterada))
                 {
                     if (Util.SaoIgual((T)propriedadeAlterada.AntigoValor, novoValor) && !this.__IsClonado)
@@ -216,11 +215,11 @@ namespace Snebur.Dominio
                         {
                             if (!this.__PropriedadesAlteradas.ContainsKey(nomePropriedade))
                             {
-                              var novaPropriedadeAlterada =  PropriedadeAlterada.Create(nomePropriedade,
-                                                                                       antigoValor,
-                                                                                       novoValor,
-                                                                                       nomePropriedadeEntidade,
-                                                                                       nomePropriedadeTipoComplexo);
+                                var novaPropriedadeAlterada = PropriedadeAlterada.Create(nomePropriedade,
+                                                                                         antigoValor,
+                                                                                         novoValor,
+                                                                                         nomePropriedadeEntidade,
+                                                                                         nomePropriedadeTipoComplexo);
 
 
                                 this.__PropriedadesAlteradas.Add(nomePropriedade, novaPropriedadeAlterada);
@@ -346,6 +345,7 @@ namespace Snebur.Dominio
         [OnSerializing]
         internal void OnSerializingMethod(StreamingContext context)
         {
+            this.DestivarControladorPropriedadeAlterada();
             this.IsSerializando = true;
         }
 
