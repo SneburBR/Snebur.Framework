@@ -15,6 +15,7 @@ namespace Snebur.Comunicacao
                                         base(mensagem, erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
         {
         }
+
         #region Serializacao 
 
         public ErroComunicacao()

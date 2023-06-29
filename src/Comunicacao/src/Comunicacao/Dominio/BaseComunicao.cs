@@ -7,8 +7,12 @@ namespace Snebur.Comunicacao
     [IgnorarGlobalizacao]
     public class BaseComunicao : BaseDominio
     {
-        #region Campos Privados
 
-        #endregion
+		#region Campos Privados
+
+
+		#endregion
+
+      
     }
 }
