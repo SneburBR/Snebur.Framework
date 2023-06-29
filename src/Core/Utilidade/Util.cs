@@ -64,6 +64,17 @@ namespace Snebur.Utilidade
             {
                 return objeto1.Equals(objeto2);
             }
+
+            if (objeto1 == null && objeto2 is string str2)
+            {
+                return String.IsNullOrEmpty(str2);
+            }
+
+            if(objeto2 == null && objeto1 is string str1)
+            {
+                return String.IsNullOrEmpty(str1);
+            }
+
             if (objeto1 == null ^ objeto2 == null)
             {
                 return false;
