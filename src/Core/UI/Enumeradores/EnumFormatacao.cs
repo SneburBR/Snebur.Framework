@@ -33,6 +33,8 @@ namespace Snebur.UI
 
         Dimensao,
 
+        Margem,
+
         DimensaoCm,
 
         DimensaoPixels,
