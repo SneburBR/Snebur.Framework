@@ -198,7 +198,8 @@ namespace Snebur.Dominio
                 if (this.__PropriedadesAlteradas.TryGetValue(nomePropriedade,
                                                             out PropriedadeAlterada propriedadeAlterada))
                 {
-                    if (Util.SaoIgual((T)propriedadeAlterada.AntigoValor, novoValor) && !this.__IsClonado)
+                    if (!this.__IsClonado &&
+                        Util.SaoIgual(propriedadeAlterada.AntigoValor, novoValor))
                     {
                         this.__PropriedadesAlteradas.Remove(nomePropriedade);
                     }
