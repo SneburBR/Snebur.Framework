@@ -104,8 +104,13 @@ namespace Snebur.Utilidade
             return tipo.GetProperties(bindingFlags).ToList();
         }
 
-        public static List<PropertyInfo> RetornarPropriedades(Type tipo, System.Reflection.BindingFlags bindingFlags, bool ignorarPropriedadesTipoBase = false)
+        public static List<PropertyInfo> RetornarPropriedades(Type tipo, BindingFlags bindingFlags, bool ignorarPropriedadesTipoBase = false)
         {
+            if (ignorarPropriedadesTipoBase)
+            {
+                bindingFlags = bindingFlags | BindingFlags.DeclaredOnly;
+            }
+
             var propriedades = ReflexaoUtil.RetornarPropriedades(tipo, bindingFlags);
             if (ignorarPropriedadesTipoBase && tipo.BaseType != null)
             {
@@ -117,7 +122,7 @@ namespace Snebur.Utilidade
             }
         }
 
-        public static bool PropriedaPublica(PropertyInfo pi)
+        public static bool PropriedadePublica(PropertyInfo pi)
         {
             return pi.CanWrite && pi.GetSetMethod(true).IsPublic;
         }
