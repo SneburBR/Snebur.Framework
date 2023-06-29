@@ -2,23 +2,17 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Snebur.Comunicacao
 {
     public abstract partial class BaseComunicacaoServidor
     {
-        private static TimeSpan TEMPO_CACHE_PADRAO = TimeSpan.FromMinutes(20);
+        private static TimeSpan TEMPO_CACHE_PADRAO = TimeSpan.FromMinutes(10);
+        private static TimeSpan TEMPO_CACHE_MAXIMO_PADRAO = TimeSpan.FromHours(1);
 
         private static readonly ConcurrentDictionary<string, ConteudoCache> Caches = new ConcurrentDictionary<string, ConteudoCache>();
-
-#if DEBUG
-        private static bool __isManterCacheDebug = !DebugUtil.IsAttached || true;
-#else
-        private static bool __isManterCacheDebug = true;
-#endif
-
 
         private Dictionary<string, TimeSpan> _temposManterOperacao;
 
@@ -35,33 +29,102 @@ namespace Snebur.Comunicacao
         }
 
         protected bool IsManterCache { get; set; }
+
         protected List<string> OperacoesIgnorarCaches { get; } = new List<string>();
 
-        protected TimeSpan TempoCachePadrao { get; set; } = TEMPO_CACHE_PADRAO;
+        /// <summary>
+        /// Intervalo tempo para atualizar sem fazer o usuário esperar a atualização
+        /// </summary>
+        protected TimeSpan TempoCachePadrao { get; set; } = DebugUtil.IsAttached ? TimeSpan.FromMinutes(2) : TEMPO_CACHE_PADRAO;
 
-        private string RetornarChaveCache(Requisicao requisicao)
+        /// <summary>
+        /// Tempo máximo do cache, caso não tenha nenhum requisição nesse intervalo e esse tempo for atingindo o usuário deverá esperar atualização do cache
+        /// </summary>
+        protected TimeSpan TempoCacheMaximo { get; set; } = TEMPO_CACHE_MAXIMO_PADRAO;
+
+
+        private string RetornarResultadoChamadaSerializadoCache(Dictionary<string, object> parametros,
+                                                                string operacao,
+                                                                EnumTipoSerializacao tipoSerializacao)
         {
-            var parametros = requisicao.Parametros;
-            var chaveParametros = String.Join("--", parametros.Select(x => $"{x.Key}={x.Value?.GetHashCode().ToString() ?? "null"}"));
-            return $"{this.GetType().Name}--{requisicao.Operacao}.{chaveParametros}";
+
+            lock (this.RetornarObjetoBloqueioThreadCache(parametros, operacao, tipoSerializacao))
+            {
+                var conteudoCache = this.RetornarConteudoCache(parametros, operacao, tipoSerializacao);
+                if (conteudoCache != null)
+                {
+                    var tempoCacheOperado = this.RetornarTempoMantarCache(operacao);
+                    var isAtualzarCache = (DateTime.UtcNow - conteudoCache.DataHora) > tempoCacheOperado;
+                    if (isAtualzarCache && !conteudoCache.IsAtualizandoCache)
+                    {
+                        conteudoCache.IsAtualizandoCache = true;
+                        this._isPodeDispensarServico = false;
+                        Task.Run(() => this.AtualizarCache(parametros,
+                                                           operacao,
+                                                           conteudoCache,
+                                                           tipoSerializacao));
+                    }
+                    return conteudoCache.Conteudo;
+                }
+
+                var resultado = this.RetornarResultadoChamadaSerializadoInterno(parametros, operacao, tipoSerializacao);
+                this.SalvarChace(parametros, operacao, resultado, tipoSerializacao);
+                return resultado;
+            }
         }
 
-        private string RetornarConteudoCache(Requisicao requisicao)
+        private void AtualizarCache(Dictionary<string, object> parametros,
+                                    string operacao,
+                                    ConteudoCache conteudoCache,
+                                    EnumTipoSerializacao tipoSerializacao)
         {
-            if (this.IsManterCache && __isManterCacheDebug &&
-                !this.OperacoesIgnorarCaches.Contains(requisicao.Operacao))
+            try
             {
 
-                var chave = this.RetornarChaveCache(requisicao);
+                var resultado = this.RetornarResultadoChamadaSerializadoInterno(parametros,
+                                                                                operacao,
+                                                                                tipoSerializacao);
+
+                this.SalvarChace(parametros, operacao, resultado, tipoSerializacao);
+            }
+            catch
+            {
+                Caches.TryRemove(conteudoCache.Chave, out var _);
+            }
+            finally
+            {
+                conteudoCache.IsAtualizandoCache = false;
+                this._isPodeDispensarServico = true;
+                this.Dispose();
+            }
+
+        }
+
+        private string RetornarChaveCache(Dictionary<string, object> parametros,
+                                         string operacao,
+                                         EnumTipoSerializacao tipoSerializacao)
+        {
+            var chaveParametros = String.Join("--", parametros.Select(x => $"{x.Key}={x.Value?.GetHashCode().ToString() ?? "null"}"));
+            return $"{this.GetType().Name}--{operacao}.{chaveParametros}--{tipoSerializacao}";
+        }
+        private ConteudoCache RetornarConteudoCache(Dictionary<string, object> parametros,
+                                                    string operacao,
+                                                    EnumTipoSerializacao tipoSerializacao)
+        {
+            if (this.IsManterCache &&
+                !this.OperacoesIgnorarCaches.Contains(operacao))
+            {
+                var chave = this.RetornarChaveCache(parametros,
+                                                    operacao,
+                                                    tipoSerializacao);
+
                 if (Caches.TryGetValue(chave, out var conteudo))
                 {
-                    var tempoCacheOperado = this.RetornarTempoMantarCache(requisicao.Operacao);
-
-                    if (conteudo.Tempo > tempoCacheOperado)
+                    if (conteudo.Tempo > this.TempoCacheMaximo)
                     {
                         return null;
                     }
-                    return conteudo.Conteudo;
+                    return conteudo;
                 }
             }
             return null;
@@ -76,18 +139,22 @@ namespace Snebur.Comunicacao
             return this.TempoCachePadrao;
         }
 
-        private void SalvarChace(Requisicao requisicao, string conteudo)
+        private void SalvarChace(Dictionary<string, object> parametros,
+                                string operacao,
+                                string conteudo,
+                                EnumTipoSerializacao tipoSerializacao)
         {
             if (this.IsManterCache)
             {
-                var chave = this.RetornarChaveCache(requisicao);
-
+                var chave = this.RetornarChaveCache(parametros, operacao, tipoSerializacao);
                 if (Caches.ContainsKey(chave))
                 {
-                    Caches.TryRemove(chave, out var conteudoCacheAntigo);
+                    if (Caches.TryRemove(chave, out var cache))
+                    {
+                        cache.IsAtualizandoCache = false;
+                    }
                 }
-                var conteudoCache = new ConteudoCache(conteudo);
-                Caches.TryAdd(chave, conteudoCache);
+                Caches.TryAdd(chave, new ConteudoCache(chave, conteudo));
             }
         }
 
@@ -111,13 +178,15 @@ namespace Snebur.Comunicacao
         private class ConteudoCache
         {
             public string Conteudo { get; }
+            public string Chave { get; }
 
             public DateTime DataHora { get; }
-
             public TimeSpan Tempo => DateTime.UtcNow - this.DataHora;
-
-            public ConteudoCache(string conteudo)
+            public bool IsAtualizandoCache { get; set; }
+            public ConteudoCache(string chave,
+                                 string conteudo)
             {
+                this.Chave = chave;
                 this.Conteudo = conteudo;
                 this.DataHora = DateTime.UtcNow;
             }

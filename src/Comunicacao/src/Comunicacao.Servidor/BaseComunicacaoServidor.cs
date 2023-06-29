@@ -13,6 +13,8 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Web;
+using System.Threading.Tasks;
+using System.Net.Http;
 
 #if NET7_0
 using Microsoft.AspNetCore.Http;
@@ -23,6 +25,7 @@ namespace Snebur.Comunicacao
     public abstract partial class BaseComunicacaoServidor : IHttpHandler, IDisposable, IBaseServico
     {
         private static readonly long TEMPO_LIMITE_PADRAO_LOG_DESEMPEHO = (DebugUtil.IsAttached) ? (long)TimeSpan.FromSeconds(5).TotalMilliseconds : (long)TimeSpan.FromSeconds(2).TotalMilliseconds;
+        protected bool _isPodeDispensarServico = true;
 
         #region Propriedades
         protected abstract CredencialServico CredencialServico { get; }
@@ -44,48 +47,85 @@ namespace Snebur.Comunicacao
         #endregion
 
         #region  IHttpHandler - Construtor 
-         
+
         private string RetornarResultadoChamadaSerializado(Requisicao requisicao,
                                                            HttpContext httpContext)
         {
-            if (this.IsManterCache && !this.OperacoesIgnorarCaches.Contains(requisicao.Operacao))
+            var tempo = Stopwatch.StartNew();
+            var resultado = this.RetornarResultadoChamadaSerializadoInterno(requisicao, httpContext);
+            if (tempo.ElapsedMilliseconds > this.RetonarTempoLimiteOperacao(requisicao))
             {
-                return this.RetornarResultadoChamadaSerializadoCache(requisicao, httpContext);
+                this.NotificarLogLentidaoAsync(requisicao, tempo);
             }
-            return this.RetornarResultadoChamadaSerializadoInterno(requisicao, httpContext);
-        }
-
-        private string RetornarResultadoChamadaSerializadoCache(Requisicao requisicao, HttpContext httpContext)
-        {
-            lock (this.RetornarObjetoBloqueioThreadCache(requisicao))
-            {
-                var resultadoEmCache = this.RetornarConteudoCache(requisicao);
-                if (resultadoEmCache != null)
-                {
-                    return resultadoEmCache;
-                }
-
-                var resultado = this.RetornarResultadoChamadaSerializadoInterno(requisicao, httpContext);
-                this.SalvarChace(requisicao, resultado);
-                return resultado;
-            }
+            return resultado;
         }
 
         private string RetornarResultadoChamadaSerializadoInterno(Requisicao requisicao, HttpContext httpContext)
         {
-            var metodoOperacao = this.RetornarMetodo(requisicao.Operacao);
-            var parametros = this.RetornarParametrosMetodoOperacao(metodoOperacao, requisicao.Parametros);
-            parametros = this.NormalizarParametros(parametros);
+            var parametros = requisicao.Parametros;
+            var operacao = requisicao.Operacao;
 
-            var resultadoChamada = this.RetornarResultadoChamada(requisicao, httpContext, parametros);
-            resultadoChamada.DataHora = DateTime.UtcNow;
-            resultadoChamada.NomeServico = this.GetType().Name;
-
-            return JsonUtil.Serializar(resultadoChamada, requisicao.TipoSerializacao);
+            try
+            {
+                if (this.IsManterCache && !this.OperacoesIgnorarCaches.Contains(requisicao.Operacao))
+                {
+                    return this.RetornarResultadoChamadaSerializadoCache(parametros, operacao, requisicao.TipoSerializacao);
+                }
+                return this.RetornarResultadoChamadaSerializadoInterno(parametros,
+                                                                        operacao,
+                                                                        requisicao.TipoSerializacao);
+            }
+            catch(Exception ex)
+            {
+                var resultadoErro = this.RetornarResultadoChamadaErroInterno(ex, operacao);
+                LogUtil.ErroAsync(new ErroComunicacao(resultadoErro.MensagemErro, ex));
+                return JsonUtil.Serializar(resultadoErro, requisicao.TipoSerializacao);
+            }
         }
 
-        protected virtual object RetornarResultadoOperacao(Requisicao requisicao,
-                                                           MethodInfo metodoOperacao,
+        private ResultadoChamadaErro RetornarResultadoChamadaErroInterno(Exception ex, string operacao)
+        {
+            if (ex is ErroSessaoUsuarioExpirada erroSessaoUsuarioExpirada)
+            {
+                return new ResultadoSessaoUsuarioInvalida(erroSessaoUsuarioExpirada.StatusSessao, 
+                                                          this.IdentificadorSessaoUsuario,
+                                                          "Sessão expirada");
+            }
+            var erroInterno = ex.InnerException;
+            if (erroInterno is ErroSessaoUsuarioExpirada erroInternoTipado)
+            {
+                return new ResultadoSessaoUsuarioInvalida(erroInternoTipado.StatusSessao,
+                                                          this.IdentificadorSessaoUsuario,
+                                                          "Sessão inválida");
+            }
+
+            var mensagemErro = ErroUtil.RetornarDescricaoCompletaErro(ex,
+                                                                     operacao,
+                                                                     "",
+                                                                     0);
+
+            return new ResultadoChamadaErroInternoServidor
+            {
+                MensagemErro = mensagemErro,
+                StatusCode = (int)HttpStatusCode.InternalServerError
+            };
+        }
+
+        private string RetornarResultadoChamadaSerializadoInterno(Dictionary<string, object> dicionarParametros,
+                                                                 string operacao,
+                                                                 EnumTipoSerializacao tipoSerializacao)
+        {
+            var metodoOperacao = this.RetornarMetodo(operacao);
+            var parametros = this.RetornarParametrosMetodoOperacao(metodoOperacao, dicionarParametros);
+            parametros = this.NormalizarParametros(parametros);
+
+            var resultadoChamada = this.RetornarResultadoChamada(operacao, parametros);
+            resultadoChamada.DataHora = DateTime.UtcNow;
+            resultadoChamada.NomeServico = this.GetType().Name;
+            return JsonUtil.Serializar(resultadoChamada, tipoSerializacao);
+        }
+
+        protected virtual object RetornarResultadoOperacao(MethodInfo metodoOperacao,
                                                            object[] parametros)
         {
             if (!this.IsBloqueiarThreadSessaoUsuario)
@@ -109,7 +149,8 @@ namespace Snebur.Comunicacao
             return BaseComunicacaoServidor.TEMPO_LIMITE_PADRAO_LOG_DESEMPEHO;
         }
 
-        private void NotificarLogLentidaoAsync(Requisicao requisicao, Stopwatch tempo)
+        private void NotificarLogLentidaoAsync(Requisicao requisicao, 
+                                               Stopwatch tempo)
         {
             if (!DebugUtil.IsAttached)
             {
@@ -233,59 +274,17 @@ namespace Snebur.Comunicacao
             return resultadoOperacao;
         }
 
-        protected ResultadoChamada RetornarResultadoChamada(Requisicao requisicao,
-                                                            HttpContext httpContext,
-                                                            object[] parametros)
+        private ResultadoChamada RetornarResultadoChamada(string operacao,
+                                                          object[] parametros)
         {
-            var metodoOperacao = this.RetornarMetodo(requisicao.Operacao);
-            var tempo = Stopwatch.StartNew();
-            try
-            {
-                var resultadoOperacao = this.RetornarResultadoOperacao(requisicao, metodoOperacao, parametros);
+            var metodoOperacao = this.RetornarMetodo(operacao);
+         
+           
+                var resultadoOperacao = this.RetornarResultadoOperacao(metodoOperacao, parametros);
                 resultadoOperacao = this.NormalizarResultadoOperacao(resultadoOperacao);
-                tempo.Stop();
-
-                if (tempo.ElapsedMilliseconds > this.RetonarTempoLimiteOperacao(requisicao))
-                {
-                    this.NotificarLogLentidaoAsync(requisicao, tempo);
-                }
-
-                var resultadoChamada = this.RetornarResultadoChamadaInterno(resultadoOperacao);
-                resultadoChamada.TempoOperacao = (int)tempo.ElapsedMilliseconds;
-                return resultadoChamada;
-            }
-            catch (Exception ex)
-            {
-
-                if (ex is ErroSessaoUsuarioExpirada erroSessaoUsuarioExpirada)
-                {
-                    return new ResultadoSessaoUsuarioInvalida(erroSessaoUsuarioExpirada.StatusSessao, this.IdentificadorSessaoUsuario);
-                }
-                var erroInterno = ex.InnerException;
-                if (erroInterno is ErroSessaoUsuarioExpirada erroInternoTipado)
-                {
-                    return new ResultadoSessaoUsuarioInvalida(erroInternoTipado.StatusSessao, this.IdentificadorSessaoUsuario);
-                }
-
-                var host = httpContext.Request.RetornarUrlRequisicao().Host;
-                //var host = httpContext.Request.Url.Host;
-                if (host.EndsWith(ConstantesDominioSuperior.DOMIMIO_SUPERIOR_LOCALHOST) ||
-                    host.EndsWith(ConstantesDominioSuperior.DOMIMIO_SUPERIOR_INTERNO))
-                {
-                    var mensagemErro = ErroUtil.RetornarDescricaoCompletaErro(ex,
-                                                                              metodoOperacao.Name, 
-                                                                              "",
-                                                                              0);
-
-                    return new ResultadoChamadaErroInternoServidor
-                    {
-                        MensagemErro = mensagemErro,
-                        TempoOperacao = (int)tempo.ElapsedMilliseconds,
-                        StatusCode = (int)HttpStatusCode.InternalServerError
-                    };
-                }
-                throw;
-            }
+  
+                return this.RetornarResultadoChamadaInterno(resultadoOperacao);
+           
         }
 
         private ResultadoChamada RetornarResultadoChamadaInterno(object resultado)
@@ -333,7 +332,6 @@ namespace Snebur.Comunicacao
             }
 
             throw new ErroNaoSuportado(String.Format("O tipo do resultado da operação não é suportado {0} ", tipo.Name));
-
         }
 
         private ResultadoChamadaLista RetornarResultadoChamadaLista(ICollection valores, Type tipoItem)
@@ -401,15 +399,16 @@ namespace Snebur.Comunicacao
             return metodos.Single();
         }
 
-        private object RetornarObjetoBloqueioThreadCache(Requisicao requisicao)
+        private object RetornarObjetoBloqueioThreadCache(Dictionary<string, object> parametros, 
+                                                        string operacao,
+                                                        EnumTipoSerializacao tipoSerializacao)
         {
-            var chaveRequisica = this.RetornarChaveCache(requisicao);
+            var chaveRequisica = this.RetornarChaveCache(parametros, operacao, tipoSerializacao);
             return ThreadUtil.RetornarBloqueio(chaveRequisica);
         }
 
         protected virtual object RetornarObjetoBloqueioThread()
         {
-
             throw new Erro($" esse método deve ser sobre escrito quando {nameof(this.IsBloqueiarThreadSessaoUsuario)} for true .");
         }
 
@@ -434,7 +433,7 @@ namespace Snebur.Comunicacao
 
         public virtual void Dispose()
         {
-          
+            
         }
 
         #endregion

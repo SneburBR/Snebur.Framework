@@ -3,27 +3,38 @@ using Snebur.Servicos;
 using Snebur.Utilidade;
 using System;
 using System.Data;
-using System.Net.Http;
 using System.Reflection;
 using System.Text;
-using System.Web;
 
 namespace Snebur.AcessoDados.Comunicacao
 {
     public abstract class BaseServicoComunicacaoDados<TContextoDados> : BaseComunicacaoServidor, IDisposable where TContextoDados : BaseContextoDados
     {
+        private bool _isServicoTransacionadoDB = true;
+        private Exception _erroInicializacao;
+
         public TContextoDados ContextoDados { get; private set; }
-        public bool IsServicoTransacionadoDB { get; protected set; } = true;
-        public virtual bool IsPermitirIdentificadorProprietarioGlobal { get; protected set; } = false;
         public IsolationLevel IsolamentoTransacao { get; protected set; } = ConfiguracaoAcessoDados.IsolamentoLevelSalvarPadrao;
+        public virtual bool IsPermitirIdentificadorProprietarioGlobal { get; protected set; } = false;
 
-        private Exception ErroInicializacao;
-
+        public bool IsServicoTransacionadoDB
+        {
+            get => this.IsManterCache == false && this._isServicoTransacionadoDB;
+            protected set
+            {
+                if (this.IsManterCache && value)
+                {
+                    throw new Erro("Não é possível ativar IsServicoTransacionadoDB quando IsManterCache está ativado");
+                }
+                this._isServicoTransacionadoDB = value;
+            }
+        }
+         
         private bool IsSessaoUsuarioValida
         {
             get
             {
-                return this.ErroInicializacao == null &&
+                return this._erroInicializacao == null &&
                        this.ContextoDados?.IsSessaoUsuarioAtiva == true;
             }
         }
@@ -53,7 +64,7 @@ namespace Snebur.AcessoDados.Comunicacao
             }
             catch (Exception ex)
             {
-                this.ErroInicializacao = ex;
+                this._erroInicializacao = ex;
             }
         }
 
@@ -62,15 +73,14 @@ namespace Snebur.AcessoDados.Comunicacao
             this.ContextoDados = contexto;
         }
 
-        protected override object RetornarResultadoOperacao(Requisicao requisicao,
-                                                            MethodInfo metodoOperacao,
+        protected override object RetornarResultadoOperacao(MethodInfo metodoOperacao,
                                                             object[] parametros)
         {
             try
             {
                 if (this.IsSessaoUsuarioValida)
                 {
-                    var resultado = base.RetornarResultadoOperacao(requisicao, metodoOperacao, parametros);
+                    var resultado = base.RetornarResultadoOperacao(metodoOperacao, parametros);
                     if (this.ContextoDados.IsExisteTransacao)
                     {
                         this.ContextoDados.Commit();
@@ -78,9 +88,9 @@ namespace Snebur.AcessoDados.Comunicacao
                     return resultado;
                 }
 
-                if (this.ErroInicializacao != null)
+                if (this._erroInicializacao != null)
                 {
-                    throw this.ErroInicializacao;
+                    throw this._erroInicializacao;
                 }
             }
             catch (Exception ex)
@@ -96,13 +106,13 @@ namespace Snebur.AcessoDados.Comunicacao
                     var mensagemErro = $"Erro ao executar método {metodoOperacao.Name} no serviço {this.GetType().Name}\r\n{detalhesParametros}";
                     throw new ErroComunicacao(mensagemErro, ex);
                 }
-
             }
 
             var status = this.ContextoDados?.SessaoUsuarioLogado?.Status ?? Snebur.Dominio.EnumStatusSessaoUsuario.Desconhecida;
             var identificadorSessaoUsuario = this.ContextoDados?.SessaoUsuarioLogado?.IdentificadorSessaoUsuario ?? Guid.Empty;
-            return new ResultadoSessaoUsuarioInvalida(status, identificadorSessaoUsuario);
-
+            return new ResultadoSessaoUsuarioInvalida(status,
+                                                      identificadorSessaoUsuario,
+                                                      "Sessão do usuário inválida");
         }
 
         private bool IsErroSessaoInvalida(Exception ex)
@@ -142,7 +152,6 @@ namespace Snebur.AcessoDados.Comunicacao
                 {
                     resultadoTipoado.Comandos.AddRange(this.ContextoDados.Comandos);
                 }
-
             }
 #endif
             return resultadoOperacao;
@@ -156,9 +165,12 @@ namespace Snebur.AcessoDados.Comunicacao
 
         public override void Dispose()
         {
-            base.Dispose();
-            this.ContextoDados?.Dispose();
-            this.ContextoDados = null;
+            if (this._isPodeDispensarServico)
+            {
+                base.Dispose();
+                this.ContextoDados?.Dispose();
+                this.ContextoDados = null;
+            }
         }
     }
 
