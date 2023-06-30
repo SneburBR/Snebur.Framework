@@ -1,4 +1,6 @@
-﻿namespace Snebur.Comunicacao
+﻿using Snebur.Dominio.Atributos;
+
+namespace Snebur.Comunicacao
 {
     public abstract class ResultadoChamadaErro : ResultadoChamada
     {
@@ -11,6 +13,7 @@
 
         #endregion
 
+        [CampoProtegido]
         public string MensagemErro { get => this.RetornarValorPropriedade(this._mensagemErro); set => this.NotificarValorPropriedadeAlterada(this._mensagemErro, this._mensagemErro = value); }
         public object Erro { get => this.RetornarValorPropriedade(this._erro); set => this.NotificarValorPropriedadeAlterada(this._erro, this._erro = value); }
         public int StatusCode { get => this.RetornarValorPropriedade(this._statusCode); set => this.NotificarValorPropriedadeAlterada(this._statusCode, this._statusCode = value); }
