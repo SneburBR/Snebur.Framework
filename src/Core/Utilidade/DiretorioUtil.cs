@@ -455,7 +455,7 @@ namespace Snebur.Utilidade
             }
             if (!ignorarErro)
             {
-                throw new Erro("O diretorio não foi encontrado");
+                throw new Erro("O diretório não foi encontrado");
             }
             return null;
         }
@@ -464,9 +464,9 @@ namespace Snebur.Utilidade
         {
             try
             {
-                var caminhoTemp = System.IO.Path.Combine(caminhoDiretorio);
+                var caminhoTemp = Path.Combine(caminhoDiretorio);
                 DiretorioUtil.CriarDiretorio(caminhoTemp);
-                var caminhoArquivoTemp = System.IO.Path.Combine(caminhoTemp, $"{Guid.NewGuid().ToString()}.txt");
+                var caminhoArquivoTemp = Path.Combine(caminhoTemp, $"{Guid.NewGuid()}.txt");
                 File.WriteAllText(caminhoArquivoTemp, Guid.NewGuid().ToString(), Encoding.UTF8);
                 var atributos = File.GetAttributes(caminhoArquivoTemp) | FileAttributes.Hidden;
                 File.SetAttributes(caminhoArquivoTemp, atributos);
