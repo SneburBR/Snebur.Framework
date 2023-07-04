@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
@@ -69,50 +68,7 @@ namespace Snebur.Utilidade
         {
             return Encoding.ASCII.GetBytes(str);
         }
-        private static bool VerificarSeExisteContaEmail(string smtpServer, string emailAddress)
-        {
-            const string CRLF = "\r\n";
-            byte[] dataBuffer;
-            string responseString;
-            using (TcpClient tcpClient = new TcpClient(smtpServer, 25))
-            {
-                using (NetworkStream netStream = tcpClient.GetStream())
-                {
-                    using (StreamReader reader = new StreamReader(netStream))
-                    {
-                        responseString = reader.ReadLine();
-                    }
-
-                    // Perform HELO to SMTP Server and get Response
-                    dataBuffer = Encoding.ASCII.GetBytes($"HELO {Dns.GetHostName()}{CRLF}");
-                    netStream.Write(dataBuffer, 0, dataBuffer.Length);
-                    using (StreamReader reader = new StreamReader(netStream))
-                    {
-                        responseString = reader.ReadLine();
-                    }
-
-                    // Send sender email and get Response
-                    dataBuffer = Encoding.ASCII.GetBytes($"MAIL FROM:<noreply@domain.com>{CRLF}");
-                    netStream.Write(dataBuffer, 0, dataBuffer.Length);
-                    using (StreamReader reader = new StreamReader(netStream))
-                    {
-                        responseString = reader.ReadLine();
-                    }
-
-                    // Send recpient email and get Response
-                    dataBuffer = Encoding.ASCII.GetBytes($"RCPT TO:<{emailAddress}>{CRLF}");
-                    netStream.Write(dataBuffer, 0, dataBuffer.Length);
-                    using (StreamReader reader = new StreamReader(netStream))
-                    {
-                        responseString = reader.ReadLine();
-                    }
-
-                    // Return true if response code is 250, false otherwise
-                    return GetResponseCode(responseString) == 250;
-                }
-            }
-        }
-
+         
         private static int GetResponseCode(string responseString)
         {
             int statusCode;

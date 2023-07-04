@@ -21,7 +21,6 @@ namespace Snebur.BancoDados
     {
         public string ConnectionString { get; set; }
 
-
         public Conexao(string connectionString)
         {
             if (AplicacaoSnebur.Atual.ConnectionStrings[connectionString] != null)
