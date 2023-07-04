@@ -399,5 +399,10 @@ namespace Snebur.Utilidade
             }
             return false;
         }
+
+        public static bool IsExisteContaEmail(string email)
+        {
+            return ValidacaoEmailUtil.IsExisteEmail(email);
+        }
     }
 }
