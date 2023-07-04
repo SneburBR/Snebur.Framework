@@ -33,7 +33,7 @@ namespace Snebur.BancoDados
                 this.ConnectionString = connectionString;
             }
         }
-        public DataTable RetornarDataTable(string sql,
+        private DataTable RetornarDataTable(string sql,
                                           List<PropertyInfo> propriedadesChavePrimaria,
                                           SqlParameter[] parametros)
         {
