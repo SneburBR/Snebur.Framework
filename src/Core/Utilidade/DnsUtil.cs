@@ -93,7 +93,10 @@ namespace Snebur.Utilidade
                         int preference = this.Response[pos + 13];
                         pos += 14; //offset
                         string record = ParseMXRecord(pos, out pos);
-                        dnsRecords.Add(new DnsRecord() { Preference = preference, Record = record });
+                        if (!String.IsNullOrWhiteSpace(record))
+                        {
+                            dnsRecords.Add(new DnsRecord() { Preference = preference, Record = record });
+                        }
                         nAnswers--;
                     }
                     return dnsRecords.ToArray();

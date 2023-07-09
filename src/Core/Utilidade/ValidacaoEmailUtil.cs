@@ -8,6 +8,7 @@ namespace Snebur.Utilidade
 {
     public static class ValidacaoEmailUtil
     {
+        private static readonly int[] PortasSmtp = new int[] { 587, 25 };
         public static bool IsExisteEmail(string email)
         {
             var dominio = email.Split('@')[1];
@@ -16,20 +17,24 @@ namespace Snebur.Utilidade
             {
                 foreach (var record in dnsRecords.OrderBy(x => x.Preference))
                 {
-                    var isExisteConta = ValidacaoEmailUtil.IsEmailAccountValid(record.Record, email);
-                    if (isExisteConta)
+                    foreach(var porta in PortasSmtp)
                     {
-                        return true;
+                        var isExisteConta = ValidacaoEmailUtil.IsEmailAccountValid(record.Record, email, porta);
+                        if (isExisteConta)
+                        {
+                            return true;
+                        }
                     }
+                    
                 }
             }
             return false;
         }
 
-        private static bool IsEmailAccountValid(string tcpClient, string emailAddress)
+        private static bool IsEmailAccountValid(string tcpClient, string emailAddress, int porta)
         {
             string CRLF = "\r\n";
-            using (var tClient = new TcpClient(tcpClient, 25))
+            using (var tClient = new TcpClient(tcpClient, porta))
             {
                 byte[] dataBuffer;
                 string responseString;
@@ -68,13 +73,13 @@ namespace Snebur.Utilidade
         {
             return Encoding.ASCII.GetBytes(str);
         }
-         
+
         private static int GetResponseCode(string responseString)
         {
             int statusCode;
             try
             {
-                if(responseString== null)
+                if (responseString == null)
                 {
                     return -1;
                 }
