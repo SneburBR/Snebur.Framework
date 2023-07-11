@@ -18,7 +18,16 @@ namespace Snebur.Dominio
         public double? Direita { get => this._direita; set => this.NotificarValorPropriedadeAlterada(this._direita, this._direita = value); }
 
         public double? Inferior { get => this._inferior; set => this.NotificarValorPropriedadeAlterada(this._inferior, this._inferior = value); }
+         
+        public double MaiorValor => Math.Max(this.Esquerda ?? 0, Math.Max(this.Superior ?? 0, Math.Max(this.Direita ?? 0, this.Inferior ?? 0)));
 
+        public double MenorValor => Math.Min(this.Esquerda ?? 0, Math.Min(this.Superior ?? 0, Math.Min(this.Direita ?? 0, this.Inferior ?? 0)));
+        public double ValorMedio => (this.Esquerda ?? 0 + this.Superior ?? 0 + this.Direita ?? 0 + this.Inferior ?? 0) / 4;
+
+        public double Vertical => Math.Min((this.Superior ?? 0), (this.Inferior ?? 0));
+        public double Horizontal => Math.Min((this.Esquerda ?? 0), (this.Direita ?? 0));
+        
+        
         public Margem()
         {
         }
