@@ -1,4 +1,6 @@
-﻿namespace Snebur.UI
+﻿using Snebur.Dominio.Atributos;
+
+namespace Snebur.UI
 {
     public enum EnumBotoesAlerta
     {
@@ -8,7 +10,9 @@
         Nenhum,
         //Cancelar,
         //Continuar,
+        [Rotulo("OK")]
         Ok,
+        [Rotulo("OK, cancelar")]
         OkCancelar,
         Personalizado
     }

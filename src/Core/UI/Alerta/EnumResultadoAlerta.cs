@@ -1,4 +1,6 @@
-﻿namespace Snebur.UI
+﻿using Snebur.Dominio.Atributos;
+
+namespace Snebur.UI
 {
     public enum EnumResultadoAlerta
     {
@@ -7,6 +9,7 @@
         Continuar,
         Cancelar,
         Fechar,
+        [Rotulo("OK")]
         Ok,
         EfetuarPgto
     }
