@@ -102,21 +102,18 @@ namespace Snebur.Utilidade
             //return Encoding.UTF8.GetString(bytesString, 0, texto.Length);
         }
 
-        public static string[] DividirLetraMaiuscula(string descricao)
+        public static string[] DividirLetraMaiuscula(string nome)
         {
+            var reader= new StringReader(nome);
             var partes = new List<string>();
             var parteAtual = new StringBuilder();
-            var len = descricao.Length;
-            for (var i = 0; i < len; i++)
+            var caracter = reader.Read();
+            do  
             {
-                var caracter = descricao[i];
-                var isFim = (i == (len - 1));
-                if (Char.IsUpper(caracter) || isFim)
+                var isUpper = Char.IsUpper((char)caracter);
+                var isProximoLowerOrFim = Char.IsLower((char)reader.Peek());
+                if (isUpper && isProximoLowerOrFim && parteAtual.Length> 0)
                 {
-                    if (isFim)
-                    {
-                        parteAtual.Append(caracter);
-                    }
                     var parte = parteAtual.ToString();
                     if (!String.IsNullOrEmpty(parte))
                     {
@@ -124,10 +121,52 @@ namespace Snebur.Utilidade
                     }
                     parteAtual.Clear();
                 }
-                parteAtual.Append(caracter);
+                if (!Char.IsWhiteSpace((char)caracter))
+                {
+                    parteAtual.Append((char)caracter);
+                }
+                
+                caracter = reader.Read();
+
+                if(caracter == -1)
+                {
+                    var parte = parteAtual.ToString();
+                    if (!String.IsNullOrEmpty(parte))
+                    {
+                        partes.Add(parte);
+                    }
+                }
             }
+            while (caracter != -1);
             return partes.ToArray();
+
         }
+        //public static string[] xxxx(string descricao)
+        //{
+        //    var partes = new List<string>();
+        //    var parteAtual = new StringBuilder();
+        //    var len = descricao.Length;
+        //    for (var i = 0; i < len; i++)
+        //    {
+        //        var caracter = descricao[i];
+        //        var isFim = (i == (len - 1));
+        //        if (Char.IsUpper(caracter) || isFim)
+        //        {
+        //            if (isFim)
+        //            {
+        //                parteAtual.Append(caracter);
+        //            }
+        //            var parte = parteAtual.ToString();
+        //            if (!String.IsNullOrEmpty(parte))
+        //            {
+        //                partes.Add(parte);
+        //            }
+        //            parteAtual.Clear();
+        //        }
+        //        parteAtual.Append(caracter);
+        //    }
+        //    return partes.ToArray();
+        //}
         /// <summary>
         /// Remove os caracteres especiais de uma string
         /// </summary>
@@ -624,6 +663,7 @@ namespace Snebur.Utilidade
         {
             return String.Join(separador, partes.Where(x => !String.IsNullOrWhiteSpace(x)));
         }
+
         #region  CACHE FILTROS 
 
         private static object _bloqueio = new object();
