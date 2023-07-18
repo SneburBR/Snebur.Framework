@@ -48,6 +48,7 @@ namespace Snebur.BancoDados
                         {
                             cmd.Parameters.Add(parametro);
                         }
+                        cmd.CommandTimeout = TimeSpan.FromMinutes(5).Seconds;
                         using (var ad = new SqlDataAdapter(cmd))
                         {
                             ad.Fill(dt);
@@ -178,6 +179,7 @@ namespace Snebur.BancoDados
                         {
                             using (var cmd = new SqlCommand(sql, conexao, trans))
                             {
+                                cmd.CommandTimeout = (int)TimeSpan.FromMinutes(100).TotalSeconds;
                                 acao?.Invoke(cmd);
                                 cmd.ExecuteNonQuery();
                             }
