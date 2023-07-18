@@ -174,7 +174,7 @@ namespace Snebur.Linq
             return default(TResult);
         }
 
-        public static TSource MaxOrDefault<TSource>(this ICollection<TSource> colecao, TSource item)
+        public static TSource MaxOrDefault<TSource>(this ICollection<TSource> colecao)
         {
             if (colecao.Count > 0)
             {
@@ -183,7 +183,7 @@ namespace Snebur.Linq
             return default(TSource);
         }
 
-        public static TResult MaxOrDefault<TSource, TResult>(this ICollection<TSource> colecao, TSource item, Func<TSource, TResult> selector)
+        public static TResult MaxOrDefault<TSource, TResult>(this ICollection<TSource> colecao, Func<TSource, TResult> selector)
         {
             if (colecao.Count > 0)
             {
