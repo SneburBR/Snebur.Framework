@@ -79,7 +79,7 @@ namespace Snebur.Linq
             }
         }
 
-        public static void AddRangeIfNotExits<T>(this ICollection<T> colecao, ICollection<T> itens)
+        public static void AddRangeIfNotExits<T>(this ICollection<T> colecao, IEnumerable<T> itens)
         {
             foreach (var item in itens)
             {
@@ -87,7 +87,7 @@ namespace Snebur.Linq
             }
         }
 
-        public static void AddRangeNew<T>(this ICollection<T> colecao, ICollection<T> itens)
+        public static void AddRangeNew<T>(this ICollection<T> colecao, IEnumerable<T> itens)
         {
             colecao.Clear();
 
@@ -162,7 +162,7 @@ namespace Snebur.Linq
             {
                 return colecao.Min();
             }
-            return default(TSource);
+            return default;
         }
 
         public static TResult MinOrDefault<TSource, TResult>(this IEnumerable<TSource> colecao, Func<TSource, TResult> selector)
@@ -171,7 +171,7 @@ namespace Snebur.Linq
             {
                 return colecao.Min(selector);
             }
-            return default(TResult);
+            return default;
         }
 
         public static TSource MaxOrDefault<TSource>(this ICollection<TSource> colecao)
@@ -180,7 +180,7 @@ namespace Snebur.Linq
             {
                 return colecao.Max();
             }
-            return default(TSource);
+            return default;
         }
 
         public static TResult MaxOrDefault<TSource, TResult>(this ICollection<TSource> colecao, Func<TSource, TResult> selector)
