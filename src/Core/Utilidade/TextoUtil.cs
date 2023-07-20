@@ -104,15 +104,15 @@ namespace Snebur.Utilidade
 
         public static string[] DividirLetraMaiuscula(string nome)
         {
-            var reader= new StringReader(nome);
+            var reader = new StringReader(nome);
             var partes = new List<string>();
             var parteAtual = new StringBuilder();
             var caracter = reader.Read();
-            do  
+            do
             {
                 var isUpper = Char.IsUpper((char)caracter);
                 var isProximoLowerOrFim = Char.IsLower((char)reader.Peek());
-                if (isUpper && isProximoLowerOrFim && parteAtual.Length> 0)
+                if (isUpper && isProximoLowerOrFim && parteAtual.Length > 0)
                 {
                     var parte = parteAtual.ToString();
                     if (!String.IsNullOrEmpty(parte))
@@ -125,10 +125,10 @@ namespace Snebur.Utilidade
                 {
                     parteAtual.Append((char)caracter);
                 }
-                
+
                 caracter = reader.Read();
 
-                if(caracter == -1)
+                if (caracter == -1)
                 {
                     var parte = parteAtual.ToString();
                     if (!String.IsNullOrEmpty(parte))
@@ -662,6 +662,20 @@ namespace Snebur.Utilidade
         public static string Concatar(string separador, params string[] partes)
         {
             return String.Join(separador, partes.Where(x => !String.IsNullOrWhiteSpace(x)));
+        }
+
+        public static string Repeat(char c, int quantidade)
+        {
+            return new String(c, quantidade);
+        }
+        public static string Repeat(string texto, int quantidade)
+        {
+            var sb = new StringBuilder();
+            for (var i = 0; i < quantidade; i++)
+            {
+                sb.Append(texto);
+            }
+            return sb.ToString();
         }
 
         #region  CACHE FILTROS 

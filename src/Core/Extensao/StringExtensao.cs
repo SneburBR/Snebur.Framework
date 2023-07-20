@@ -128,6 +128,11 @@ namespace System
             return TextoUtil.RemoverCaracteresEspecial(str);
         }
 
+        public static string Repeat(this string srt, int numeroRepeticoes)
+        {
+            return TextoUtil.Repeat(srt, numeroRepeticoes);
+        }
+
     }
 
     public static class EncodingUtil
