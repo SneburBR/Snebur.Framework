@@ -230,6 +230,10 @@ namespace Snebur.AcessoDados.Estrutura
 
                     return SqlDbType.TinyInt;
 
+                case (EnumTipoPrimario.Char):
+
+                    return SqlDbType.Char;
+
                 default:
 
                     throw new Erro("O tipo primário não é suportado");
