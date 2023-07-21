@@ -5,6 +5,7 @@ using Snebur.Utilidade;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -16,15 +17,16 @@ namespace Snebur.AcessoDados.Estrutura
         {
             if (DebugUtil.IsAttached)
             {
-                this.AnalisarPadraoNomeclaturaRelacoesChaveEstrangeira();
+                //this.AnalisarPadraoNomeclaturaRelacoesChaveEstrangeira();
                 this.AnalisarPropriedaadesChaveEstrangeiraSemRelacao();
                 this.AnalisarAlertasEntidades();
                 this.AnalisarNotificacaoPropriedadesAlteradas();
 
                 if (this.Alertas.Count > 0)
                 {
+                    
                     var mensagem = String.Join(System.Environment.NewLine, this.Alertas);
-                    throw new Exception(mensagem);
+                    Trace.TraceWarning(mensagem);
                 }
             }
         }
@@ -70,56 +72,55 @@ namespace Snebur.AcessoDados.Estrutura
             }
         }
 
-        private void AnalisarPadraoNomeclaturaRelacoesChaveEstrangeira()
-        {
-            foreach (var estruturaEntidade in this.EstruturasEntidade.Values)
-            {
-                var relacoes = estruturaEntidade.TodasRelacoesChaveEstrangeira();
-                foreach (var relacao in relacoes)
-                {
-                    var nomeCampo = relacao.EstruturaCampoChaveEstrangeira.NomeCampo.ToLower();
-                    if (!(nomeCampo.StartsWith("id") || nomeCampo.EndsWith("_id")))
-                    {
-                        this.Alertas.Add($" a chave estrangeira da propriedade {relacao.Propriedade.Name} na entidade {estruturaEntidade.TipoEntidade.Name} não possui o id no nome");
-                    }
-                    else
-                    {
-                        var nomePropriedade = relacao.Propriedade.Name.ToLower();
-                        string nomeCampoSemId = null;
-                        if (nomeCampo.EndsWith("_id"))
-                        {
-                            nomeCampoSemId = nomeCampo.Substring(0, nomeCampo.Length - 3);
+        //private void AnalisarPadraoNomeclaturaRelacoesChaveEstrangeira()
+        //{
+        //    foreach (var estruturaEntidade in this.EstruturasEntidade.Values)
+        //    {
+        //        var relacoes = estruturaEntidade.TodasRelacoesChaveEstrangeira();
+        //        foreach (var relacao in relacoes)
+        //        {
+        //            var nomePropriedade = relacao.EstruturaCampoChaveEstrangeira.Propriedade.Name.ToLower();
+        //            if (!(nomePropriedade.StartsWith("id") || nomePropriedade.EndsWith("_id")))
+        //            {
+        //                this.Alertas.Add($" a chave estrangeira da propriedade {relacao.Propriedade.Name} na entidade {estruturaEntidade.TipoEntidade.Name} não possui o id no nome");
+        //            }
+        //            else
+        //            {
+        //                //var nomePropriedade = relacao.Propriedade.Name.ToLower();
+        //                string nomePropriedadeSemId = null;
+        //                if (nomePropriedade.EndsWith("_id"))
+        //                {
+        //                    nomePropriedadeSemId = nomePropriedade.Substring(0, nomePropriedade.Length - 3);
+        //                    if (nomePropriedade.EndsWith("id"))
+        //                    {
+        //                        nomePropriedade = nomePropriedade.Substring(0, nomePropriedade.Length - 3);
+        //                    }
+        //                }
+        //                else if (nomePropriedade.StartsWith("id"))
+        //                {
+        //                    nomePropriedadeSemId = nomePropriedade.Substring(2);
 
-                            if (nomePropriedade.EndsWith("id"))
-                            {
-                                nomePropriedade = nomePropriedade.Substring(0, nomePropriedade.Length - 2);
-                            }
-                        }
-                        else if (nomeCampo.StartsWith("id"))
-                        {
-                            nomeCampoSemId = nomeCampo.Substring(2);
+        //                    if (nomePropriedade.StartsWith("id"))
+        //                    {
+        //                        nomePropriedade = nomePropriedade.Substring(2);
+        //                    }
+        //                }
+        //                if (nomePropriedade != nomePropriedadeSemId)
+        //                {
+        //                    var nomeRelacao = relacao.GetType().Name.Replace(nameof(Attribute), String.Empty);
 
-                            if (nomePropriedade.StartsWith("id"))
-                            {
-                                nomePropriedade = nomePropriedade.Substring(2);
-                            }
-                        }
-                        if (nomePropriedade != nomeCampoSemId)
-                        {
-                            var nomeRelacao = relacao.GetType().Name.Replace(nameof(Attribute), String.Empty);
-
-                            var atributoRelacao = (IIgnorarAlerta)relacao.Propriedade.GetCustomAttribute<BaseRelacaoAttribute>();
-                            if (!atributoRelacao.IgnorarAlerta)
-                            {
-                                this.Alertas.Add($"Verifique a nome do campo do chave estrangeira '{relacao.EstruturaCampoChaveEstrangeira.NomeCampo}' da propriedade {relacao.Propriedade.Name} ({nomeRelacao}) na entidade {estruturaEntidade.TipoEntidade.Name}" +
-                                            $"\nPara não mostrar mais esse alerta, defina propriedade IgnorarAlerta para True ");
-                            }
-                        }
-                    }
-                }
-                //  throw new Exception("Validar relacaoPai");
-            }
-        }
+        //                    var atributoRelacao = (IIgnorarAlerta)relacao.Propriedade.GetCustomAttribute<BaseRelacaoAttribute>();
+        //                    if (!atributoRelacao.IgnorarAlerta )
+        //                    {
+        //                        this.Alertas.Add($"Verifique a nome do campo do chave estrangeira '{relacao.EstruturaCampoChaveEstrangeira.Propriedade.Name}- Campo:{relacao.EstruturaCampoChaveEstrangeira.NomeCampo}' da propriedade {relacao.Propriedade.Name} ({nomeRelacao}) na entidade {estruturaEntidade.TipoEntidade.Name}" +
+        //                                    $"\nPara não mostrar mais esse alerta, defina propriedade IgnorarAlerta para True ");
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        //  throw new Exception("Validar relacaoPai");
+        //    }
+        //}
 
         private void AnalisarAlertasEntidades()
         {

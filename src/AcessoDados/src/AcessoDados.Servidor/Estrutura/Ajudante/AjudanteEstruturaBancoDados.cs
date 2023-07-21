@@ -63,7 +63,7 @@ namespace Snebur.AcessoDados.Estrutura
             var atributoTable = (TabelaAttribute)tipo.GetCustomAttribute(typeof(TabelaAttribute), false);
             if (atributoTable == null)
             {
-                throw new Exception($"O atriburo {nameof(TabelaAttribute)} não foi encontrado no tipo {tipo.RetornarCaminhoTipo()}");
+                throw new Exception($"O atributo {nameof(TabelaAttribute)} não foi encontrado no tipo {tipo.RetornarCaminhoTipo()}");
             }
             if (String.IsNullOrEmpty(atributoTable.Schema))
             {
@@ -144,15 +144,15 @@ namespace Snebur.AcessoDados.Estrutura
 
                 default:
 
-                    throw new Erro(String.Format("O tipo relacão enum {0} não é suportado", EnumUtil.RetornarDescricao(tipoRelacaoEnum)));
+                    throw new Erro(String.Format("O tipo relação enum {0} não é suportado", EnumUtil.RetornarDescricao(tipoRelacaoEnum)));
             }
             if (propriedades.Count == 0)
             {
                 if (!ignorarPropridadesClasseBase)
                 {
                     throw new Erro($"A propriedade relação não foi encontrada,  Tipo dae entidade : '{tipoEntidade.Name}', " +
-                                  $" Tipo da propriedade propriedade  relação : {tipoPropriedadeRelacao.Name} ," +
-                                  $" Tipo da relacao : {EnumUtil.RetornarDescricao(tipoRelacaoEnum)} ");
+                                  $" Tipo da propriedade relação : {tipoPropriedadeRelacao.Name} ," +
+                                  $" Tipo da relação : {EnumUtil.RetornarDescricao(tipoRelacaoEnum)} ");
                 }
                 else
                 {
@@ -161,7 +161,7 @@ namespace Snebur.AcessoDados.Estrutura
             }
             if (propriedades.Count > 1)
             {
-                throw new Erro(String.Format("O existe mais de uma propriedade relacao "));
+                throw new Erro(String.Format("O existe mais de uma propriedade relação "));
             }
             return propriedades.Single();
         }
@@ -205,6 +205,7 @@ namespace Snebur.AcessoDados.Estrutura
                 return AjudanteEstruturaBancoDados.RetornarTipoGerencio(tipoGenerico.BaseType);
             }
         }
+
         #region TiposComplexos
 
         internal static List<PropertyInfo> RetornarPropriedadesTipoComplexo(Type tipoEntidade)

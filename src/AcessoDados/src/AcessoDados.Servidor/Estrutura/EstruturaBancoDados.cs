@@ -159,7 +159,7 @@ namespace Snebur.AcessoDados.Estrutura
                 if (tipoEntidade.BaseType.IsSubclassOf(typeof(Entidade)))
                 {
                     throw new Erro($"O tipo base {tipoEntidade.BaseType.Name} da entidade {tipoEntidade.Name} não foi mapeado. " +
-                                   $"Mapiei sempre o tipo mais abstrato da entidade. Você pode configurar um atalho ");
+                                   $"Mapeie sempre o tipo mais abstrato da entidade. Você pode configurar um atalho ");
                 }
                 this.MontarEstruturaEntidade(tipoEntidade, sqlSuporte);
             }
