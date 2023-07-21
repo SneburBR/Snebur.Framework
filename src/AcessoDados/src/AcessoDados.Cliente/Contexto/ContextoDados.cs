@@ -63,7 +63,6 @@ namespace Snebur.AcessoDados
             return this.Deletar(lista, String.Empty);
         }
 
-     
         public override ResultadoSalvar Salvar(IEntidade entidade)
         {
             return this.Salvar(new List<IEntidade> { entidade });
@@ -97,14 +96,14 @@ namespace Snebur.AcessoDados
         {
             return this.Deletar(new List<IEntidade> { entidade }, String.Empty);
         }
-       
+
 
         public override ResultadoDeletar Deletar(IEnumerable<IEntidade> entidades, string relacoesEmCascata)
         {
             return this.ServicoDados.Deletar(entidades, relacoesEmCascata);
         }
 
-         
+
         #endregion
 
         #region  Normalizar entidades Salvar
@@ -251,8 +250,12 @@ namespace Snebur.AcessoDados
             return this.ServicoDados.RetornarDataHoraUTC();
         }
         #endregion
+         
+    }
 
-    
-  
+    public abstract class BaseContextoDados<T> : BaseContextoDados where T : __BaseContextoDados, new()
+    {
+        private static T _instancia;
+        public static T Instancia => LazyUtil.RetornarValorLazyComBloqueio(ref _instancia, () => new T());
     }
 }
