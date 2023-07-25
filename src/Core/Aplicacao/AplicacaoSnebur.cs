@@ -409,15 +409,17 @@ namespace Snebur
         #endregion
 
         #region Construtor
-
         protected AplicacaoSnebur()
         {
-            if (AplicacaoSnebur._aplicacao != null)
+            lock (_bloqueio)
             {
-                throw new Exception($"Já existe uma aplicação inicializada: {AplicacaoSnebur._aplicacao?.GetType().Name}");
+                if (AplicacaoSnebur._aplicacao != null)
+                {
+                    throw new Exception($"Já existe uma aplicação inicializada: {AplicacaoSnebur._aplicacao?.GetType().Name}");
+                }
+                AplicacaoSnebur._aplicacao = this;
             }
-
-            AplicacaoSnebur._aplicacao = this;
+          
             AppDomain.CurrentDomain.UnhandledException += this.Aplicacao_UnhandledException;
             //AppDomain.CurrentDomain.FirstChanceException += this.Aplicacao_FirstChanceException;
             AppDomain.CurrentDomain.ProcessExit += this.Aplicacao_ProcessExit;
