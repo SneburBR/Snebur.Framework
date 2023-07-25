@@ -13,18 +13,6 @@ namespace Snebur
         public static AplicacaoSnebur Atual
         {
             get => AplicacaoSnebur._aplicacao;
-            //get => LazyUtil.RetornarValorLazyComBloqueio(ref _aplicacao, AplicacaoSnebur.RetornarAplicacaoAtual);
-            private set
-            {
-                lock (_bloqueio)
-                {
-                    if(_aplicacao != null)
-                    {
-                        throw new Exception("Já existe uma instancia da aplicação.");
-                    }
-                    _aplicacao = value;
-                }
-            }
         }
 
         public static T AtualTipada<T>() where T : AplicacaoSnebur

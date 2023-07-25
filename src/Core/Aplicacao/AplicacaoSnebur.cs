@@ -412,8 +412,12 @@ namespace Snebur
 
         protected AplicacaoSnebur()
         {
-            AplicacaoSnebur._aplicacao = this;
+            if (AplicacaoSnebur._aplicacao != null)
+            {
+                throw new Exception($"Já existe uma aplicação inicializada: {AplicacaoSnebur._aplicacao?.GetType().Name}");
+            }
 
+            AplicacaoSnebur._aplicacao = this;
             AppDomain.CurrentDomain.UnhandledException += this.Aplicacao_UnhandledException;
             //AppDomain.CurrentDomain.FirstChanceException += this.Aplicacao_FirstChanceException;
             AppDomain.CurrentDomain.ProcessExit += this.Aplicacao_ProcessExit;
@@ -421,8 +425,8 @@ namespace Snebur
             this.TimerAplicacaoAtiva = new System.Timers.Timer((int)TimeSpan.FromMinutes(INTERVALO_NOTIFICAR_APLICACAO_ATIVA).TotalMilliseconds);
             this.TimerAplicacaoAtiva.Elapsed += this.Aplicacao_NotificarAplicacaoAtiva;
 
-            System.Threading.Thread.CurrentThread.CurrentCulture = this.CulturaPadrao;
-            System.Threading.Thread.CurrentThread.CurrentUICulture = this.CulturaPadrao;
+            Thread.CurrentThread.CurrentCulture = this.CulturaPadrao;
+            Thread.CurrentThread.CurrentUICulture = this.CulturaPadrao;
 
             //WPF
             //Implementar classe AplicacaoSneburWpf que herdade AplicacaoSnebur
@@ -768,7 +772,7 @@ namespace Snebur
             //throw new NotImplementedException();
             //return IpUtil.RetornarIPInformacaoRequisicao(isRetornarNullNaoEncotnrado).IP;
         }
-         
+
 #if NET7_0 == false
 
         protected virtual NameValueCollection RetornarAppSettings()
