@@ -1,5 +1,6 @@
 ﻿using Snebur.AcessoDados.Estrutura;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Snebur.AcessoDados.Mapeamento
 {
@@ -8,18 +9,21 @@ namespace Snebur.AcessoDados.Mapeamento
 
         internal SortedSet<long> Ids { get; }
 
-        internal FiltroMapeamentoIds(BaseFiltroMapeamento filtroMapeamentoBase,
-                                   SortedSet<long> ids) : base(filtroMapeamentoBase)
+        internal FiltroMapeamentoIds(SortedSet<long> ids, string nomeTipoEntidade) :
+                                      base(new FiltroMapeamentoEntre(new FiltroMapeamentoVazio(),
+                                                                       ids.Min(),
+                                                                       ids.Max(),
+                                                                       nomeTipoEntidade))
         {
             this.Ids = ids;
         }
 
-        internal FiltroMapeamentoIds(SortedSet<long> ids) : base(new FiltroMapeamentoVazio())
-        {
-            this.Ids = ids;
-        }
-
-        internal FiltroMapeamentoIds(EstruturaCampo estruturaCampoFiltro, SortedSet<long> ids) : base(new FiltroMapeamentoVazio())
+        internal FiltroMapeamentoIds(EstruturaCampo estruturaCampoFiltro,
+                                     SortedSet<long> ids) :
+                                          base(new FiltroMapeamentoEntre(new FiltroMapeamentoVazio(),
+                                                                         estruturaCampoFiltro,
+                                                                         ids.Min(),
+                                                                         ids.Max()))
         {
             this.EstruturaCampoFiltro = estruturaCampoFiltro;
             this.Ids = ids;

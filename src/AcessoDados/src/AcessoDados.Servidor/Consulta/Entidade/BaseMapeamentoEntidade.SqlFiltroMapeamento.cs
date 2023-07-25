@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 
 namespace Snebur.AcessoDados.Mapeamento
 {
@@ -9,7 +10,8 @@ namespace Snebur.AcessoDados.Mapeamento
         private string RetornarSqlFiltroMapeamento(BaseFiltroMapeamento filtro)
         {
             var sqlFiltroBase = "";
-            if (filtro.FiltroMapeamentoBase != null && (!(filtro.FiltroMapeamentoBase is FiltroMapeamentoVazio)))
+            if (filtro.FiltroMapeamentoBase != null && 
+                (!(filtro.FiltroMapeamentoBase is FiltroMapeamentoVazio)))
             {
                 //Aqui bicho pega
                 sqlFiltroBase = this.RetornarSqlFiltroMapeamento(filtro.FiltroMapeamentoBase);
@@ -39,13 +41,13 @@ namespace Snebur.AcessoDados.Mapeamento
         {
             var caminhoCampoFiltro = this.RetornarCaminhoCampoFiltro(filtro);
 
-            string sql = "";
+            var sb = new StringBuilder();
             if (filtro.NomeTipoEntidade != null && ConfiguracaoAcessoDados.TipoBancoDadosEnum == EnumTipoBancoDados.PostgreSQLImob)
             {
-                sql = String.Format(" CAST( tableoid::regclass As text) = '{0}' AND  ", filtro.NomeTipoEntidade);
+                sb.Append($" CAST( tableoid::regclass As text) = '{filtro.NomeTipoEntidade}' AND  ");
             }
-            sql += String.Format(" ( {0} BETWEEN {1} AND  {2} ) ", caminhoCampoFiltro, filtro.MenorId, filtro.MaiorId);
-            return sql;
+            sb.Append($" ( {caminhoCampoFiltro} BETWEEN {filtro.MenorId} AND  { filtro.MaiorId} ) ");
+            return sb.ToString();
         }
 
         private string RetornarSqlFiltroMapeamentoIds(FiltroMapeamentoIds filtro)

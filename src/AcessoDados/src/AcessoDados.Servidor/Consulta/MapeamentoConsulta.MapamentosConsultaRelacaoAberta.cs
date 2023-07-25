@@ -10,8 +10,8 @@ namespace Snebur.AcessoDados.Mapeamento
     {
         internal void MontarMapamentosConsultaRelacaoAberta()
         {
-            var propriedadesParcial = new List<PropertyInfo>();
-            var mapeamentosRelacaoAberta = new DicionarioEstrutura<MapeamentoConsultaRelacaoAberta>();
+            //var propriedadesParcial = new List<PropertyInfo>();
+            //var mapeamentosRelacaoAberta = new DicionarioEstrutura<MapeamentoConsultaRelacaoAberta>();
 
             foreach (var relacaoAberta in this.EstruturaConsulta.RetornarTodasRelacoesAberta())
             {

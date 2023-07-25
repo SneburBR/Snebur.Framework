@@ -68,15 +68,15 @@ namespace Snebur.AcessoDados.Mapeamento
             var isRelacaoFilhos = this.MapeamentoConsulta is MapeamentoConsultaRelacaoAbertaFilhos;
             var sqlCampos = this.RetornarSqlCampos();
             var sqlJoin = this.RetornarSqlConsulta(ordenacao, isLimitarPaginacao, filtroMapeamento, isRelacaoFilhos);
-            if ((!isLimitarPaginacao && this.EstruturaConsulta.Take > 0) || !this.Contexto.SqlSuporte.IsOffsetFetch)
-            {
-                var take = this.EstruturaEntidade.RetornarMaximoConsulta(this.EstruturaConsulta.Take);
-                return $"SELECT Top {take} {sqlCampos} FROM {sqlJoin}";
-            }
-            else
-            {
-                return $"SELECT  {sqlCampos} FROM {sqlJoin}";
-            }
+            //if ((!isLimitarPaginacao && this.EstruturaConsulta.Take > 0) || !this.Contexto.SqlSuporte.IsOffsetFetch)
+            //{
+            var take = this.EstruturaEntidade.RetornarMaximoConsulta(this.EstruturaConsulta.Take);
+            return $"SELECT Top {take} {sqlCampos} FROM {sqlJoin}";
+            //}
+            //else
+            //{
+            //    return $"SELECT  {sqlCampos} FROM {sqlJoin}";
+            //}
         }
 
         internal string RetornarSqlContagem(BaseFiltroMapeamento filtro)
@@ -165,7 +165,7 @@ namespace Snebur.AcessoDados.Mapeamento
         }
         #endregion
 
-        #region Metodos privados
+        #region Métodos privados
 
         internal protected abstract string RetornarSqlCampos();
 

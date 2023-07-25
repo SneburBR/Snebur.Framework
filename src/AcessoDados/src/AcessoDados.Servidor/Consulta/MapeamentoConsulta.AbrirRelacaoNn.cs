@@ -18,7 +18,9 @@ namespace Snebur.AcessoDados.Mapeamento
             {
                 idsChaveEstrangeiraFilho.Add(0L);
             }
-            var filtro = new FiltroMapeamentoIds(mapeamento.EstruturaEntidade.EstruturaCampoChavePrimaria, idsChaveEstrangeiraFilho);
+             
+            var filtro = new FiltroMapeamentoIds(mapeamento.EstruturaEntidade.EstruturaCampoChavePrimaria, 
+                                                 idsChaveEstrangeiraFilho);
             var entidadesNn = mapeamento.RetornarEntidades(filtro);
 
             this.MapearRelacaoAbertaNn(entidadesNn, mapeamento, estruturaIds);
@@ -78,20 +80,26 @@ namespace Snebur.AcessoDados.Mapeamento
 
         private Dictionary<long, SortedSet<long>> RetornarEstruturaIdEntidadeIdChaveEstrangeira(MapeamentoConsultaRelacaoAbertaNn mapeamento)
         {
-            var idsChavePrimara = new SortedSet<long>(this.Entidades.Keys);
+            var resultado = new Dictionary<long, SortedSet<long>>();
+            if (this.Entidades.Count == 0)
+            {
+                return resultado;
+            }
 
+            var idsChavePrimara = new SortedSet<long>(this.Entidades.Keys);
             var estruturaCampoChaveEstrangeiraNn = mapeamento.EstruturaRelacaoNn.EstruturaCampoChaveEstrangeiraPai;
             var estruturaCampoChaveEstrangeiraFilho = mapeamento.EstruturaRelacaoNn.EstruturaCampoChaveEstrangeiraFilho;
 
             var propriedadeEntidade = estruturaCampoChaveEstrangeiraNn.Propriedade;
             var propriedadeChaveEstrangeiraFilho = estruturaCampoChaveEstrangeiraFilho.Propriedade;
-
-            var filtro = new FiltroMapeamentoIds(estruturaCampoChaveEstrangeiraNn, idsChavePrimara);
+             
+            var filtro = new FiltroMapeamentoIds(estruturaCampoChaveEstrangeiraNn,
+                                                 idsChavePrimara);
 
             var tipoEntidade = mapeamento.TipoEntidade;
             var estruturaEntidadeNn = mapeamento.EstruturaRelacaoNn.EstruturaEntidadeRelacaoNn;
 
-            var resultado = new Dictionary<long, SortedSet<long>>();
+   
             foreach (var idChavePrimaria in idsChavePrimara)
             {
                 resultado.Add(idChavePrimaria, new SortedSet<long>());

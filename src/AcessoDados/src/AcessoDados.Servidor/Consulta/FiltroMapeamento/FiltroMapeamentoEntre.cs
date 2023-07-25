@@ -15,6 +15,7 @@ namespace Snebur.AcessoDados.Mapeamento
                                        long maiorId,
                                        string nomeTipoEntidade) : base(filtroMapeamentoBase)
         {
+            
             this.MenorId = menorId;
             this.MaiorId = maiorId;
             this.NomeTipoEntidade = nomeTipoEntidade;
@@ -46,6 +47,18 @@ namespace Snebur.AcessoDados.Mapeamento
                                            menorId,
                                            maiorId,
                                            null)
+        {
+            this.EstruturaCampoFiltro = estruturaCampoFiltro;
+        }
+
+        internal FiltroMapeamentoEntre(BaseFiltroMapeamento filtroMapeamentoBase,
+                                       EstruturaCampo estruturaCampoFiltro,
+                                       long menorId,
+                                       long maiorId) :
+                                       this(filtroMapeamentoBase,
+                                            menorId,
+                                            maiorId,
+                                            null)
         {
             this.EstruturaCampoFiltro = estruturaCampoFiltro;
         }

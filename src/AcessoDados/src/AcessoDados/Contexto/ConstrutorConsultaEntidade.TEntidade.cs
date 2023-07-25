@@ -144,7 +144,7 @@ namespace Snebur.AcessoDados
             return new ConsultaEntidade<TEntidade>(this.ContextoDados, this.TipoEntidade).AbrirRelacao(expressao);
         }
 
-        public ConsultaEntidade<TEntidade> AbrirRelacoes<TRelacao>(Expression<Func<TEntidade, TRelacao>>[] expressoes) where TRelacao : IEntidade
+        public ConsultaEntidade<TEntidade> AbrirRelacoes(Expression<Func<TEntidade, object>>[] expressoes) 
         {
             return new ConsultaEntidade<TEntidade>(this.ContextoDados, this.TipoEntidade).AbrirRelacoes(expressoes);
         }

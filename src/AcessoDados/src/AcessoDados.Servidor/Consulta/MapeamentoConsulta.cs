@@ -86,7 +86,11 @@ namespace Snebur.AcessoDados.Mapeamento
             }
             else
             {
-                using (var mapeamentoEntidade = new MapeamentoEntidade(this, this.EstruturaEntidade, this.EstruturaBancoDados, this.ConexaoDB, this.Contexto))
+                using (var mapeamentoEntidade = new MapeamentoEntidade(this, 
+                                                                       this.EstruturaEntidade, 
+                                                                       this.EstruturaBancoDados, 
+                                                                       this.ConexaoDB,
+                                                                       this.Contexto))
                 {
                     var entidades = new ListaEntidades<Entidade>();
                     var idsTipoEntidade = this.RetornarIdsTipoEntidade(mapeamentoEntidade, filtroMapeamento);
@@ -125,10 +129,9 @@ namespace Snebur.AcessoDados.Mapeamento
                                 throw new Exception("menorId != grupo.Ids.Min()");
                             }
                         }
-                        var filtroMapeamentoEntre = new FiltroMapeamentoEntre(filtroMapeamento,
-                            menorId, maiorId, grupo.NomeTipoEntidade);
-
-                        var filtroMapeamentoId = new FiltroMapeamentoIds(filtroMapeamento, grupo.Ids);
+                  
+                        var filtroMapeamentoId = new FiltroMapeamentoIds(grupo.Ids,
+                                                                         grupo.NomeTipoEntidade);
 
                         var entidadesEspecializada = this.RetornarEntidades(estruturaTipoEntidade, filtroMapeamentoId);
 
@@ -174,7 +177,11 @@ namespace Snebur.AcessoDados.Mapeamento
             var menorId = ids.Min();
             var maiorId = ids.Max();
 
-            var filtroEntre = new FiltroMapeamentoEntre(filtroMapeamento.EstruturaCampoFiltro, menorId, maiorId);
+            var filtroEntre = new FiltroMapeamentoEntre(filtroMapeamento,
+                                                        filtroMapeamento.EstruturaCampoFiltro, 
+                                                        menorId,
+                                                        maiorId);
+
             var idsTipoEntidade = mapeamentoEntidade.RetornarIdTipoEntidade(filtroEntre);
 
             var resultado = new List<IdTipoEntidade>();
@@ -197,6 +204,7 @@ namespace Snebur.AcessoDados.Mapeamento
                 return mapeamentoEntidade.RetornarContagem(filtro);
             }
         }
+
         #region IDisposable
 
         public override void Dispose()

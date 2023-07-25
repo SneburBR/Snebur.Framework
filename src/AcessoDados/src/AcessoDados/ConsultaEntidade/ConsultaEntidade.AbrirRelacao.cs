@@ -39,7 +39,7 @@ namespace Snebur.AcessoDados
             return this.AbrirRelacao(this.EstruturaConsulta, expressao, false);
         }
 
-        public ConsultaEntidade<TEntidade> AbrirRelacoes<TRelacao>(params Expression<Func<TEntidade, TRelacao>>[] expressoes) where TRelacao : IEntidade
+        public ConsultaEntidade<TEntidade> AbrirRelacoes(params Expression<Func<TEntidade, object>>[] expressoes) 
         {
             foreach (var expressao in expressoes)
             {

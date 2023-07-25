@@ -59,7 +59,8 @@ namespace Snebur.AcessoDados.Mapeamento
             }
         }
 
-        private BaseFiltroMapeamento RetornarFiltroMapeamentoRelacaoAbertaPai(MapeamentoConsultaRelacaoAbertaPai mapeamentoPai)
+        private BaseFiltroMapeamento RetornarFiltroMapeamentoRelacaoAbertaPai(
+                                        MapeamentoConsultaRelacaoAbertaPai mapeamentoPai)
         {
             var ids = new SortedSet<long>();
             var propriedadeChaveEstrangeira = mapeamentoPai.EstruturaRelacaoPai.EstruturaCampoChaveEstrangeira.Propriedade;
@@ -82,10 +83,11 @@ namespace Snebur.AcessoDados.Mapeamento
                 //gambiarra
                 ids.Add(0);
             }
-            return new FiltroMapeamentoIds(ids);
+            var nomeTipoEntidade = mapeamentoPai.TipoEntidade.Name;
+            return new FiltroMapeamentoIds(ids, nomeTipoEntidade);
         }
 
-        private BaseFiltroMapeamento RetornarFiltroMapeamentoRelacaoAbertaUmUm(MapeamentoConsultaRelacaoAbertaUmUm mapeamentoUmUm)
+        private BaseFiltroMapeamento RetornarFiltroMapeamentoRelacaoAbertaUmUm( MapeamentoConsultaRelacaoAbertaUmUm mapeamentoUmUm)
         {
             var ids = new SortedSet<long>();
             var propriedadeChaveEstrangeira = mapeamentoUmUm.EstruturaRelacaoUmUm.EstruturaCampoChaveEstrangeira.Propriedade;
@@ -105,7 +107,8 @@ namespace Snebur.AcessoDados.Mapeamento
                 //gambiarra
                 ids.Add(0);
             }
-            return new FiltroMapeamentoIds(ids);
+            var nomeTipoEntidade = mapeamentoUmUm.PropriedadeRelacaoAberta.PropertyType.Name;
+            return new FiltroMapeamentoIds(ids, nomeTipoEntidade);
         }
 
         private BaseFiltroMapeamento RetornarFiltroMapeamentoRelacaoAbertaUmUmReversa(MapeamentoConsultaRelacaoAbertaUmUmReversa mapeamentoUmUm)
@@ -131,11 +134,13 @@ namespace Snebur.AcessoDados.Mapeamento
         {
             var idsChavePrimara = new SortedSet<long>(this.Entidades.Keys);
             var estruturaCampoChaveEstrangeira = mapeamentoFilhos.EstruturaRelacaoFilhos.EstruturaCampoChaveEstrangeira;
-            return new FiltroMapeamentoIds(estruturaCampoChaveEstrangeira, idsChavePrimara);
+            return new FiltroMapeamentoIds(estruturaCampoChaveEstrangeira, 
+                                           idsChavePrimara);
         }
         #endregion
 
-        private void MapearRelacaoAberta(Dictionary<long, Entidade> entidades, MapeamentoConsultaRelacaoAberta mapeamento)
+        private void MapearRelacaoAberta(Dictionary<long, Entidade> entidades, 
+                                         MapeamentoConsultaRelacaoAberta mapeamento)
         {
             switch (mapeamento)
             {
@@ -165,7 +170,8 @@ namespace Snebur.AcessoDados.Mapeamento
             }
         }
 
-        private void MapearRelacaoAbertaPai(Dictionary<long, Entidade> entidadesRelacaoPai, MapeamentoConsultaRelacaoAbertaPai mapeamentoPai)
+        private void MapearRelacaoAbertaPai(Dictionary<long, Entidade> entidadesRelacaoPai, 
+                                            MapeamentoConsultaRelacaoAbertaPai mapeamentoPai)
         {
             var propriedadeChaveEstrangeira = mapeamentoPai.EstruturaRelacaoPai.EstruturaCampoChaveEstrangeira.Propriedade;
             var propriedadeRelacaoPai = mapeamentoPai.EstruturaRelacao.Propriedade;
@@ -179,13 +185,12 @@ namespace Snebur.AcessoDados.Mapeamento
                     {
                         if (!entidadesRelacaoPai.ContainsKey(idChaveEstrangeira))
                         {
-                            throw new Erro(String.Format("Não foi encontrado a chave estrangeira {0} ", idChaveEstrangeira));
+                            throw new Erro($"Não foi encontrado a chave estrangeira {mapeamentoPai.TipoEntidade.Name} ({idChaveEstrangeira} )");
                         }
                         var entidadeRelacaoPai = entidadesRelacaoPai[idChaveEstrangeira];
                         propriedadeRelacaoPai.SetValue(entidade, entidadeRelacaoPai);
                     }
                 }
-
             }
         }
 

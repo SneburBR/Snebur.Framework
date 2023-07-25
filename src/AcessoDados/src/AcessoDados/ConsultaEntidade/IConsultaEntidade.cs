@@ -65,7 +65,7 @@ namespace Snebur.AcessoDados
 
         ConsultaEntidade<TEntidade> AbrirRelacao(string caminhoPropriedade);
 
-        ConsultaEntidade<TEntidade> AbrirRelacoes<TRelacao>(params Expression<Func<TEntidade, TRelacao>>[] expressoes) where TRelacao : IEntidade;
+        ConsultaEntidade<TEntidade> AbrirRelacoes(params Expression<Func<TEntidade, object>>[] expressoes);
 
         ConsultaEntidade<TEntidade> AbrirColecao(Expression<Func<TEntidade, IEnumerable>> expressao);
 
