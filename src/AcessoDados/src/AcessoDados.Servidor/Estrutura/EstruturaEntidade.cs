@@ -829,15 +829,14 @@ namespace Snebur.AcessoDados.Estrutura
 
         private int RetornarMaximoRegistroPorConsulta()
         {
-            if (Debugger.IsAttached)
-            {
-                return Int32.MaxValue;
-            }
-
             var atributoMaximoRegistroPorConsulta = this.TipoEntidade.GetCustomAttribute<MaximoRegistroPorConsultaAttribute>();
             if (atributoMaximoRegistroPorConsulta != null)
             {
                 return atributoMaximoRegistroPorConsulta.MaximoRegistroPorConsulta;
+            }
+            if (Debugger.IsAttached)
+            {
+                return 10000;
             }
             return EstruturaEntidade.MAXIMO_REGISTRO_POR_CONSULTA;
         }
