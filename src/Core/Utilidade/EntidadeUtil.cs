@@ -46,7 +46,51 @@ namespace Snebur.Utilidade
             return fi;
         }
 
-        public static PropertyInfo RetornarPropriedadeChaveEstrangeira(Type tipoEntidade, PropertyInfo propriedade)
+        public static PropertyInfo RetornarPropriedadeChaveEstrangeiraRelacaoFilhos(Type tipoEntidade,
+                                                                                    PropertyInfo propriedadeRelacoesFilhos)
+        {
+            var atributoRelacaoFilhos = propriedadeRelacoesFilhos.GetCustomAttribute<RelacaoFilhosAttribute>();
+            if (atributoRelacaoFilhos == null)
+            {
+                throw new Erro($"Não foi encontrado o atributo RelacaoFilhosAttribute para a propriedade {propriedadeRelacoesFilhos.Name} em {propriedadeRelacoesFilhos.DeclaringType.Name} ");
+            }
+
+            if (!propriedadeRelacoesFilhos.PropertyType.IsGenericType ||
+                 propriedadeRelacoesFilhos.PropertyType.GetGenericArguments().Count() != 1)
+            {
+                throw new Erro($"O da propriedade {propriedadeRelacoesFilhos.Name} em {propriedadeRelacoesFilhos.DeclaringType.Name} não é uma coleção de entidades");
+            }
+
+            var tipoEntidadeRelacao = propriedadeRelacoesFilhos.PropertyType.GetGenericArguments().Single();
+            if (!String.IsNullOrWhiteSpace(atributoRelacaoFilhos.NomePropriedadeChaveEstrangeira))
+            {
+                var proriedade = tipoEntidadeRelacao.GetProperty(atributoRelacaoFilhos.NomePropriedadeChaveEstrangeira);
+                if (proriedade == null)
+                {
+                    throw new Erro($"Não foi encontrado a propriedade {atributoRelacaoFilhos.NomePropriedadeChaveEstrangeira} em {tipoEntidade.Name} ");
+                }
+                return proriedade;
+            }
+
+            var propriedadesRelacaoPai = tipoEntidadeRelacao.GetProperties().
+                                                               Where(x => x.PropertyType == tipoEntidade || x.PropertyType.IsSubclassOf(tipoEntidade)).
+                                                               ToList();
+
+            if (propriedadesRelacaoPai.Count == 1)
+            {
+                var propriedadeRelacaoPai = propriedadesRelacaoPai[0];
+                return RetornarPropriedadeChaveEstrangeira(propriedadeRelacaoPai.DeclaringType, 
+                                                           propriedadeRelacaoPai);
+            }
+            if (propriedadesRelacaoPai.Count == 0)
+            {
+                throw new Erro($"Não foi encontrado uma propriedade do tipo {tipoEntidade.Name} em {tipoEntidadeRelacao.Name} ");
+            }
+            throw new Erro($"Foi encontrado mais de uma propriedade do tipo {tipoEntidade.Name} em {tipoEntidadeRelacao.Name} ");
+        }
+
+        public static PropertyInfo RetornarPropriedadeChaveEstrangeira(Type tipoEntidade, 
+                                                                       PropertyInfo propriedade)
         {
             var atributoChaveEstrangeira = propriedade.RetornarAtributoChaveEstrangeira();
             if (atributoChaveEstrangeira == null)
