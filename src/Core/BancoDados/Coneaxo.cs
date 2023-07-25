@@ -19,17 +19,19 @@ namespace Snebur.BancoDados
 {
     public class Conexao
     {
-        public string ConnectionString { get; set; }
+        public string NomeConnectionString { get; }
+        public string ConnectionString { get; }
 
-        public Conexao(string connectionString)
+        public Conexao(string nomeConnectionString)
         {
-            if (AplicacaoSnebur.Atual.ConnectionStrings[connectionString] != null)
+            this.NomeConnectionString = nomeConnectionString;
+            if (AplicacaoSnebur.Atual.ConnectionStrings[nomeConnectionString] != null)
             {
-                this.ConnectionString = AplicacaoSnebur.Atual.ConnectionStrings[connectionString];
+                this.ConnectionString = AplicacaoSnebur.Atual.ConnectionStrings[nomeConnectionString];
             }
             else
             {
-                this.ConnectionString = connectionString;
+                this.ConnectionString = nomeConnectionString;
             }
         }
         private DataTable RetornarDataTable(string sql,
