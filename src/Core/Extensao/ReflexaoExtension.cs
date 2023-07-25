@@ -32,9 +32,9 @@ namespace System.Reflection
             }
         }
 
-        public static bool TrySetValue(this PropertyInfo propriedade, 
-                                      object obj, object value, 
-                                      bool isLogErro=false)
+        public static bool TrySetValue(this PropertyInfo propriedade,
+                                      object obj, object value,
+                                      bool isLogErro = false)
         {
             try
             {
@@ -44,10 +44,10 @@ namespace System.Reflection
                     return true;
                 }
 
-                
+
                 return false;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 if (isLogErro)
                 {
@@ -100,5 +100,7 @@ namespace System.Reflection
             }
             throw new Erro(String.Format("Não foi encontrado um chave estrangeira para a propriedade {0} em {1} ", propriedade.Name, propriedade.DeclaringType.Name));
         }
+
+        
     }
 }

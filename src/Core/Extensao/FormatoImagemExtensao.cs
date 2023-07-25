@@ -474,7 +474,6 @@ namespace Zyoncore.Imagens
                     return false;
                 }
             }
-
             return true;
         }
 
@@ -553,15 +552,14 @@ namespace Zyoncore.Imagens
                     break;
                 }
             }
-
             return hasSignature;
         }
 
         public static bool IsOrf(byte[] buffer)
         {
             byte[] orfSignature = new byte[] { 0x49, 0x49, 0x2A, 0x00 };
-
             bool hasSignature = true;
+
             for (int i = 0; i < orfSignature.Length; i++)
             {
                 if (buffer[i] != orfSignature[i])
@@ -570,7 +568,6 @@ namespace Zyoncore.Imagens
                     break;
                 }
             }
-
             return hasSignature;
         }
 
@@ -587,7 +584,6 @@ namespace Zyoncore.Imagens
                     break;
                 }
             }
-
             return hasSignature;
         }
 
@@ -616,7 +612,6 @@ namespace Zyoncore.Imagens
 
         public static bool IsEps(byte[] buffer)
         {
-
             if (buffer[0] == 197 &&
                 buffer[1] == 208 &&
                 buffer[2] == 211 &&
@@ -626,7 +621,5 @@ namespace Zyoncore.Imagens
             }
             return (buffer[0] == 0x25 && buffer[1] == 0x21 && buffer[2] == 0x50 && buffer[3] == 0x53);
         }
-         
     }
- 
-}
+ }
