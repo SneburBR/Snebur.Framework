@@ -3,6 +3,7 @@ using Snebur.Dominio.Atributos;
 using Snebur.Utilidade;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -29,13 +30,14 @@ namespace Snebur.AcessoDados
                     }
                     if (_tiposEntidade == null)
                     {
-                        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                        var assemblies = RetornarTodosAssemblies();
                         if (assemblies.Count() > 0)
                         {
                             _tiposEntidade = new Dictionary<string, Type>();
                             foreach (var assembly in assemblies)
                             {
-                                if (assembly.IsAssemblySnebur() || assembly.IsAssemblyEntidades())
+                                if (assembly.IsAssemblySnebur() ||
+                                    assembly.IsAssemblyEntidades())
                                 {
                                     var tipos = TipoEntidadeUtil.RetornarTiposEntidade(assembly);
                                     if (tipos != null)
@@ -60,6 +62,27 @@ namespace Snebur.AcessoDados
                     }
                 }
                 return TipoEntidadeUtil.TiposEntidade;
+            }
+        }
+
+        private static IEnumerable<Assembly> RetornarTodosAssemblies()
+        {
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                LoadReferencedAssembly(assembly);
+            }
+            return AppDomain.CurrentDomain.GetAssemblies();
+        }
+
+        private static void LoadReferencedAssembly(Assembly assembly)
+        {
+            foreach (var name in assembly.GetReferencedAssemblies())
+            {
+                if (name.Name.Contains("Entidades") &&
+                   !AppDomain.CurrentDomain.GetAssemblies().Any(a => a.FullName == name.FullName))
+                {
+                    LoadReferencedAssembly(Assembly.Load(name));
+                }
             }
         }
 
