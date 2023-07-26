@@ -54,6 +54,10 @@ namespace Snebur.AcessoDados
                 CaminhoPropriedade = caminhoPropriedade,
                 SentidoOrdenacaoEnum = sentido
             };
+            if (consultaAcessoDados.Ordenacoes.ContainsKey(caminhoPropriedade))
+            {
+                throw new Exception($"A propriedade {caminhoPropriedade} já foi ordenada");
+            }
             consultaAcessoDados.Ordenacoes.Add(caminhoPropriedade, ordenacao);
 
             return this;
