@@ -37,6 +37,10 @@ namespace Snebur.Utilidade
 
                         return EnumTipoPrimario.Guid;
 
+                    case nameof(Int16):
+
+                        return EnumTipoPrimario.Integer;
+
                     case nameof(Int32):
 
                         return EnumTipoPrimario.Integer;
