@@ -1,4 +1,5 @@
 ﻿using Snebur.Dominio;
+using Snebur.Dominio.Atributos;
 using Snebur.Reflexao;
 using Snebur.Utilidade;
 using System;
@@ -30,6 +31,12 @@ namespace Snebur.AcessoDados.Ajudantes
                     {
                         tipoEntidadeAtual = propriedade.PropertyType;
                     }
+                }
+                var atributoProprieadeInterface = propriedade.GetCustomAttribute<PropriedadeInterfaceAttribute>();
+                if (atributoProprieadeInterface != null)
+                {
+                    propriedade = ReflexaoUtil.RetornarPropriedade(propriedade.DeclaringType, 
+                                                                   atributoProprieadeInterface.NomePropriedade);
                 }
                 partes.Add(propriedade.Name);
             }
@@ -114,6 +121,7 @@ namespace Snebur.AcessoDados.Ajudantes
 
                         return EnumTipoPrimario.String;
 
+                    case nameof(Byte):
                     case nameof(Int16):
                     case nameof(Int32):
 
