@@ -104,7 +104,8 @@ namespace Snebur.BancoDados
             return retorno;
         }
 
-        public object RetornarValorScalar(string sql)
+        public object RetornarValorScalar(string sql, 
+                                          params SqlParameter[] parametros)
         {
             object valorEscalor;
             using (var conexao = new SqlConnection(this.ConnectionString))
@@ -114,6 +115,10 @@ namespace Snebur.BancoDados
                 {
                     using (var cmd = new SqlCommand(sql, conexao))
                     {
+                        foreach (var parametro in parametros)
+                        {
+                            cmd.Parameters.Add(parametro);
+                        }
                         valorEscalor = cmd.ExecuteScalar();
                     }
                 }
@@ -133,7 +138,20 @@ namespace Snebur.BancoDados
             return valorEscalor;
         }
 
-        public void ExecutarComando(string sql)
+        public bool TryExecutarComando(string sql, params SqlParameter[] parametros)
+        {
+            try
+            {
+                this.ExecutarComando(sql, parametros);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        public void ExecutarComando(string sql, 
+                                    params SqlParameter[] parametros)
         {
             using (var conexao = new SqlConnection(this.ConnectionString))
             {
@@ -142,6 +160,10 @@ namespace Snebur.BancoDados
                 {
                     using (var cmd = new SqlCommand(sql, conexao))
                     {
+                        foreach (var parametro in parametros)
+                        {
+                            cmd.Parameters.Add(parametro);
+                        }
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -156,7 +178,8 @@ namespace Snebur.BancoDados
             }
         }
 
-        public bool ExecutarComandos(IEnumerable<string> sqls, bool isIgnorarErro = false)
+        public bool ExecutarComandos(IEnumerable<string> sqls,
+                                      bool isIgnorarErro = false)
         {
             return this.ExecutarComandos(sqls, null, isIgnorarErro);
         }
@@ -167,7 +190,8 @@ namespace Snebur.BancoDados
         /// <param name="acao"> A acao será invokada em cadas script </param>
         public bool ExecutarComandos(IEnumerable<string> sqls,
                                      Action<SqlCommand> acao,
-                                     bool isIgnorarErro = false)
+                                     bool isIgnorarErro,
+                                     params SqlParameter[] parametros)
         {
             using (var conexao = new SqlConnection(this.ConnectionString))
             {
@@ -181,6 +205,10 @@ namespace Snebur.BancoDados
                         {
                             using (var cmd = new SqlCommand(sql, conexao, trans))
                             {
+                                foreach (var parametro in parametros)
+                                {
+                                    cmd.Parameters.Add(parametro);
+                                }
                                 cmd.CommandTimeout = (int)TimeSpan.FromMinutes(100).TotalSeconds;
                                 acao?.Invoke(cmd);
                                 cmd.ExecuteNonQuery();
