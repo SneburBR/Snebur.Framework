@@ -126,6 +126,10 @@ namespace Snebur.Utilidade
 
                         return Char.Parse(valor.ToString());
 
+                    case EnumTipoPrimario.Byte:
+
+                        return Convert.ToByte(valor);
+
                     default:
                         throw new ErroNaoSuportado(String.Format("O tipo {0} não é suportado", EnumUtil.RetornarDescricao(tipoPrimarioEnum)));
                 }
