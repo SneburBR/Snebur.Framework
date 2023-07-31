@@ -26,7 +26,7 @@ namespace Snebur.Utilidade
         {
             TypeNameHandling = TypeNameHandling.All,
             DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
-            DateTimeZoneHandling = DateTimeZoneHandling.Utc,
+            DateTimeZoneHandling = DateTimeZoneHandling.RoundtripKind,
             ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
         };
 
@@ -34,7 +34,7 @@ namespace Snebur.Utilidade
         {
             TypeNameHandling = TypeNameHandling.None,
             DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
-            DateTimeZoneHandling = DateTimeZoneHandling.Utc,
+            DateTimeZoneHandling = DateTimeZoneHandling.RoundtripKind,
             ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
             NullValueHandling = NullValueHandling.Ignore,
             ContractResolver = new JsonPropertiesResolver(),
