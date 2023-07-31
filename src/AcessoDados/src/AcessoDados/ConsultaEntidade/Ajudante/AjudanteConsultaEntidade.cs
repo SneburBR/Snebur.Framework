@@ -23,7 +23,8 @@ namespace Snebur.AcessoDados.Ajudantes
             return String.Join(".", propriedades.Select(x => x.Name));
         }
 
-        public static PropertyInfo RetornarPropriedadeInterface(Type tipoDeclarado, PropertyInfo ipropriedade)
+        public static PropertyInfo RetornarPropriedadeInterface(Type tipoDeclarado,
+                                                                PropertyInfo ipropriedade)
         {
             if (!ipropriedade.DeclaringType.IsInterface)
             {

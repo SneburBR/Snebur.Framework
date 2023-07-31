@@ -13,6 +13,6 @@ namespace Snebur.AcessoDados
     {
         void NovoConexaoDados(BaseContextoDados baseContextoDados);
         void ConexaoDadosDispensado(BaseContextoDados baseContextoDados);
-        BaseContextoDados RetornarContextoDadoAtual();
+        TBaseContextoDados RetornarContextoDadoAtual<TBaseContextoDados>() where TBaseContextoDados: BaseContextoDados;
     }
 }

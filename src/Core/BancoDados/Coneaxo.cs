@@ -93,13 +93,21 @@ namespace Snebur.BancoDados
             foreach (DataRow row in dataTable.Rows)
             {
                 var item = Activator.CreateInstance<T>();
-                foreach (var propriedade in propriedades)
+                if(propriedades.Count() > 0)
                 {
-                    var valor = row[propriedade.Name];
-                    var valorTipado = ConverterUtil.Converter(valor, propriedade.PropertyType);
-                    propriedade.SetValue(item, valorTipado);
+                    foreach (var propriedade in propriedades)
+                    {
+                        var valor = row[propriedade.Name];
+                        var valorTipado = ConverterUtil.Converter(valor, propriedade.PropertyType);
+                        propriedade.SetValue(item, valorTipado);
+                    }
+                    retorno.Add(item);
                 }
-                retorno.Add(item);
+                else
+                {
+                    retorno.Add((T)Convert.ChangeType(row[0], typeof(T)));
+                }
+               
             }
             return retorno;
         }
