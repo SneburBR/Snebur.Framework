@@ -12,7 +12,5 @@ namespace Snebur.AcessoDados
             this.ContextoDados = contexto;
             this.TipoEntidade = tipoEntidade;
         }
-
-
     }
 }

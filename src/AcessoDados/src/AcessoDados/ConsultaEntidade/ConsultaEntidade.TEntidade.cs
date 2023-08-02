@@ -1,5 +1,6 @@
 ﻿using Snebur.Dominio;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Snebur.AcessoDados
@@ -54,11 +55,10 @@ namespace Snebur.AcessoDados
         }
         #region Executar no servico
 
-        public ListaEntidades<TEntidade> ToList()
+        public List<TEntidade> ToList()
         {
             var resultadoConsulta = this.RetornarResultadoConsulta();
-
-            var lista = new ListaEntidades<TEntidade>();
+            var lista = new List<TEntidade>();
             lista.AddRange(resultadoConsulta.Entidades.Cast<TEntidade>());
             return lista;
         }

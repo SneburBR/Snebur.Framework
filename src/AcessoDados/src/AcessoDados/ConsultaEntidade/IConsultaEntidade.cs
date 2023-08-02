@@ -27,7 +27,7 @@ namespace Snebur.AcessoDados
 
         ConsultaEntidade<TEntidade> Skip(int skip);
 
-        ListaEntidades<TEntidade> ToList();
+        List<TEntidade> ToList();
 
         TEntidade Find(long id);
 

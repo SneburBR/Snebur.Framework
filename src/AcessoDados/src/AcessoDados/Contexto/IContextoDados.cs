@@ -37,11 +37,11 @@ namespace Snebur.AcessoDados
 
         //ResultadoSalvar Salvar(List<Entidade> entidades);
 
-        //ResultadoExcluir Excluir(params Entidade[] entidades);
+        //ResultadoDeletar Deletar(params Entidade[] entidades);
 
-        //ResultadoExcluir Exclur(ListaEntidades<Entidade> entidades);
+        //ResultadoDeletar Deletar(ListaEntidades<Entidade> entidades);
 
-        //ResultadoExcluir Excluir(List<Entidade> entidades, string relacoesEmCascata);
+        //ResultadoDeletar Deletar(List<Entidade> entidades, string relacoesEmCascata);
 
         //DateTime RetornarDataHora(bool utc = true);
     }

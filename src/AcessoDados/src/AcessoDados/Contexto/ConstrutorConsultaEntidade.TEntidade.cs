@@ -77,7 +77,7 @@ namespace Snebur.AcessoDados
             return new ConsultaEntidade<TEntidade>(this.ContextoDados, this.TipoEntidade).Skip(skip);
         }
 
-        public ListaEntidades<TEntidade> ToList()
+        public List<TEntidade> ToList()
         {
             return new ConsultaEntidade<TEntidade>(this.ContextoDados, this.TipoEntidade).ToList();
         }
