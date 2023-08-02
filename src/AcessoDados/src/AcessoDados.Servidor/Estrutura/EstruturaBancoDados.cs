@@ -28,9 +28,14 @@ namespace Snebur.AcessoDados.Estrutura
         internal TiposSeguranca TiposSeguranca { get; }
         internal Type TipoContexto { get; }
 
+        internal DateTimeKind DateTimeKindPadrao { get; }
+
+
+
         #region  Construtor 
 
-        internal EstruturaBancoDados(Type tipoContexto, BancoDadosSuporta sqlSuporte)
+        internal EstruturaBancoDados(Type tipoContexto, 
+                                     BancoDadosSuporta sqlSuporte)
         {
             this.TipoContexto = tipoContexto;
             this.EstruturasEntidade = new DicionarioEstrutura<EstruturaEntidade>();
@@ -39,7 +44,6 @@ namespace Snebur.AcessoDados.Estrutura
 
             this.TipoEntidadeArquivo = this.RetornarTipoEntidadeArquivo();
             this.TipoEntidadeImagem = this.RetornarTipoEntidadeImagem();
-
             if (sqlSuporte.IsSessaoUsuario)
             {
                 this.TipoUsuario = this.RetornarTipoUsuario();
@@ -49,6 +53,7 @@ namespace Snebur.AcessoDados.Estrutura
                 this.TipoEntidadeNotificaoPropriedadeAlteradaGenerica = this.RetornarTipoEntidadeNotificaoPropriedadeAlteradaGenerica();
                 this.TiposSeguranca = new TiposSeguranca(this);
             }
+            this.DateTimeKindPadrao = sqlSuporte.IsDataHoraUtc ?  DateTimeKind.Utc : DateTimeKind.Local;
 
         }
         #endregion

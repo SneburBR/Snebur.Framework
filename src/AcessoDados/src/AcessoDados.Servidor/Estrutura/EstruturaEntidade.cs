@@ -74,6 +74,8 @@ namespace Snebur.AcessoDados.Estrutura
         internal List<EstruturaCampo> EstruturasCamposComputadoBanco { get; }
         internal List<EstruturaCampo> EstruturasCamposComputadoServico { get; }
 
+        internal List<EstruturaCampo> EstruturasCamposIndiceTextoCompleto { get; } = new List<EstruturaCampo>();
+
         internal List<string> Alertas = new List<string>();
 
         internal bool IsPossuiEntidadesEspecializacao => this.IsAbstrata || this.EstruturasEntidadeEspecializada.Count > 0;
@@ -137,7 +139,7 @@ namespace Snebur.AcessoDados.Estrutura
         #region Construtor
 
         internal EstruturaEntidade(EstruturaBancoDados estruturaBancoDados,
-                                    Type tipo,
+                                   Type tipo,
                                    EstruturaEntidade estruturaEntidadeBase,
                                    BancoDadosSuporta sqlSuporte)
         {

@@ -26,6 +26,7 @@ namespace Snebur.AcessoDados.Estrutura
 
 
         internal EnumTipoPrimario TipoPrimarioEnum { get; }
+        internal DateTimeKind? DateTimeKind { get; set; }
         internal SqlDbType TipoSql { get; }
         internal EstruturaRelacaoChaveEstrangeira EstruturaRelacaoChaveEstrangeira { get; set; } = null;
         internal PropertyInfo PropriedadeTipoComplexo { get; } = null;
@@ -100,6 +101,10 @@ namespace Snebur.AcessoDados.Estrutura
                     this.Alertas.Add($"O propriedade {this.Propriedade.Name} da entidade {this.Propriedade.DeclaringType.Name} por valor padrão, altere o tipo da propriedade para Nullble<{this.Tipo.Name}> para o valor padrao seja inserido quando valor nullo");
                 }
             }
+            if (this.IsPossuiIndiceTextoCompleto)
+            {
+                this.EstruturaEntidade.EstruturasCamposIndiceTextoCompleto.Add(this);
+            }
         }
 
         private OpcoesSomenteLeitura RetornarOpcoesSomenteLeitura()
@@ -138,7 +143,7 @@ namespace Snebur.AcessoDados.Estrutura
             var atributo = this.AtributoValorPadrao;
             if (atributo != null)
             {
-           
+
                 if (atributo is ValorPadraoIDSessaoUsuarioAttribute)
                 {
                     return EnumTipoValorPadrao.SessaoUsuario_Id;
@@ -282,7 +287,7 @@ namespace Snebur.AcessoDados.Estrutura
 
         internal T RetornarAtributoValorPadrao<T>()
         {
-            if(this.AtributoValorPadrao is T atributo)
+            if (this.AtributoValorPadrao is T atributo)
             {
                 return atributo;
             }

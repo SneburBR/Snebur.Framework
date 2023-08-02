@@ -75,7 +75,7 @@ namespace Snebur.AcessoDados.Mapeamento
                 {
                     var estruturaColuna = estruturasColuna[j];
                     var valorDB = linha[estruturaColuna.Posicao];
-
+                  
                     var valorPropriedade = AjudanteDataSetMapeamento.RetornarValorConvertido(valorDB, estruturaColuna);
                     if (estruturaColuna.IsTipoComplexo)
                     {
@@ -88,6 +88,7 @@ namespace Snebur.AcessoDados.Mapeamento
                     }
                     else
                     {
+                        
                         estruturaColuna.Propriedade.SetValue(entidade, valorPropriedade);
                     }
                 }
@@ -102,7 +103,10 @@ namespace Snebur.AcessoDados.Mapeamento
             return entidades;
         }
 
-        internal static object RetornarValorConvertido(object valorDB, EstruturaColuna estruturaColuna)
+ 
+
+        internal static object RetornarValorConvertido(object valorDB, 
+                                                       EstruturaColuna estruturaColuna)
         {
             if (ReflexaoUtil.TipoIgualOuHerda(valorDB.GetType(), estruturaColuna.Propriedade.PropertyType))
             {
@@ -116,6 +120,16 @@ namespace Snebur.AcessoDados.Mapeamento
                 }
                 else
                 {
+                    if(valorDB is DateTime dateTime)
+                    {
+                        if(dateTime.Kind == DateTimeKind.Unspecified)
+                        {
+                            var kind = estruturaColuna.EstruturaCampo.DateTimeKind ??
+                                       estruturaColuna.EstruturaCampo.EstruturaEntidade.EstruturaBancoDados.DateTimeKindPadrao;
+                            return DateTime.SpecifyKind(dateTime, kind);
+                        }
+                        return dateTime;
+                    }
                     return ConverterUtil.Converter(valorDB, estruturaColuna.Tipo);
                 }
             }
