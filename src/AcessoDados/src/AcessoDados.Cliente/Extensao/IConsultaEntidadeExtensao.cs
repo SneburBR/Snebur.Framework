@@ -1,5 +1,6 @@
 ﻿using Snebur.Dominio;
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -17,7 +18,7 @@ namespace Snebur.AcessoDados
             return Task.Factory.StartNew(() => consulta.Exists(id));
         }
 
-        public static Task<ListaEntidades<TEntidade>> ToListAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta) where TEntidade : IEntidade
+        public static Task<List<TEntidade>> ToListAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta) where TEntidade : IEntidade
         {
             return Task.Factory.StartNew(() => consulta.ToList());
         }

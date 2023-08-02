@@ -49,14 +49,14 @@ namespace Snebur.AcessoDados
             return this.Salvar(lista);
         }
 
-        public ResultadoDeletar Excluir(params Entidade[] entidades)
+        public ResultadoDeletar Deletar(params Entidade[] entidades)
         {
             var lista = new List<Entidade>();
             lista.AddRange(entidades);
             return this.Deletar(lista, String.Empty);
         }
 
-        public ResultadoDeletar Exclur(ListaEntidades<Entidade> entidades)
+        public ResultadoDeletar Deletar(ListaEntidades<Entidade> entidades)
         {
             var lista = new List<Entidade>();
             lista.AddRange(entidades);

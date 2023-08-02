@@ -83,7 +83,7 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task<ResultadoDeletar> ExcluirAsync(this BaseContextoDados contexto,
+        public static Task<ResultadoDeletar> DeletarAsync(this BaseContextoDados contexto,
                                                          List<Entidade> entidades)
         {
             return Task.Factory.StartNew(() =>
@@ -92,7 +92,7 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task<ResultadoDeletar> ExcluirAsync(this BaseContextoDados contexto,
+        public static Task<ResultadoDeletar> DeletarAsync(this BaseContextoDados contexto,
                                                           List<Entidade> entidades,
                                                           string relacoesEmCascata)
         {
@@ -102,12 +102,12 @@ namespace Snebur.AcessoDados
             });
         }
 
-        public static Task<ResultadoDeletar> ExcluirAsync(this BaseContextoDados contexto,
+        public static Task<ResultadoDeletar> DeletarAsync(this BaseContextoDados contexto,
                                                          Entidade entidade)
         {
             return Task.Factory.StartNew(() =>
             {
-                return contexto.Excluir(entidade);
+                return contexto.Deletar(entidade);
             });
         }
 
