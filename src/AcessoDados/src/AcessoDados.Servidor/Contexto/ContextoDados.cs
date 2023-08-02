@@ -774,6 +774,7 @@ namespace Snebur.AcessoDados
         ColunaNomeTipoEntidade = 2,
         SessaoUsuario = 4,
         Migracao = 8,
+        DataHoraUtc = 16,
     }
 
 
