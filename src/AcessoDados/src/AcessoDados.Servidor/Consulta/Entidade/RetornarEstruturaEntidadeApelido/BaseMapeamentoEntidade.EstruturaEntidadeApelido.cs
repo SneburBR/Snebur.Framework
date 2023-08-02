@@ -90,7 +90,9 @@ namespace Snebur.AcessoDados.Mapeamento
             return estruturaEntidadeApelidoOrigem;
         }
 
-        private EstruturaCampoApelido RetornarEstruturaCampoApelido(EstruturaCampo estruturaCampo, string caminhoPropriedadeParcial, EstruturaEntidadeApelido estruturaEntidadeApelido)
+        private EstruturaCampoApelido RetornarEstruturaCampoApelido(EstruturaCampo estruturaCampo, 
+                                                                    string caminhoPropriedadeParcial, 
+                                                                    EstruturaEntidadeApelido estruturaEntidadeApelido)
         {
             var ponto = String.IsNullOrWhiteSpace(caminhoPropriedadeParcial) ? "" : ".";
             var caminhoPropriedade = String.Format("{0}{1}{2}", caminhoPropriedadeParcial, ponto, estruturaCampo.RetornarCaminhoPropriedade());

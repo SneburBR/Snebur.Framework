@@ -27,7 +27,7 @@ namespace Snebur.Dominio
         IRegraOperacao Atualizar { get; set; }
 
         [ValidacaoRequerido]
-        IRegraOperacao Excluir { get; set; }
+        IRegraOperacao Deletar { get; set; }
 
         IEnumerable<IPermissaoCampo> PermissoesCampo { get; }
 

@@ -149,14 +149,11 @@ namespace Snebur.AcessoDados
                 }
 
                 var propriedadesIndexarTextoCompleto = this.RetornarPropriedadesIndexarTextoCompleto(tipoEntidade);
-                if (propriedadesIndexarTextoCompleto.Count > 1)
+                if (propriedadesIndexarTextoCompleto.Count >0 )
                 {
-                    throw new Erro($"O  apenas um atributo  {nameof(IndexarTextoCompletoAttribute)} é suportado por tabela. ");
+                    sqlsMigration.Add(new SqlIndexarTextoCompleto(estruturaEntidade, propriedadesIndexarTextoCompleto));
                 }
-                foreach (var propriedade in propriedadesIndexarTextoCompleto)
-                {
-                    sqlsMigration.Add(new SqlIndexarTextoCompleto(estruturaEntidade, propriedade));
-                }
+                 
                 if (ReflexaoUtil.TipoImplementaInterface(tipoEntidade, typeof(IOrdenacao), true))
                 {
                     var nomePropriedade = ReflexaoUtil.RetornarNomePropriedade<IOrdenacao>(x => x.Ordenacao);
@@ -174,7 +171,7 @@ namespace Snebur.AcessoDados
             return ReflexaoUtil.TipoPossuiAtributo(tipoEntidade, typeof(ValidacaoUnicoCompostaAttribute), false);
         }
 
-        private List<(List<PropriedadeIndexar>, List< FiltroPropriedadeIndexar>)> RetornarPropriedadesValidacaoUnico(Type tipoEntidade)
+        private List<(List<PropriedadeIndexar>, List<FiltroPropriedadeIndexar>)> RetornarPropriedadesValidacaoUnico(Type tipoEntidade)
         {
             //############################################### analisar melhor a regra quando o o valor nulo podem ser duplicados
             var grupoPropriedadesIndexar = new List<(List<PropriedadeIndexar>, List<FiltroPropriedadeIndexar>)>();
@@ -197,11 +194,11 @@ namespace Snebur.AcessoDados
                                                                           EnumOperadorComparacao.Igual,
                                                                           "0"));
                         }
-                        if(propriedadeDataHoraDeletado!= null)
+                        if (propriedadeDataHoraDeletado != null)
                         {
-                              propriedadesFiltros.Add(new FiltroPropriedadeIndexar(propriedadeDataHoraDeletado,
-                                                      EnumOperadorComparacao.Igual,
-                                                      null));
+                            propriedadesFiltros.Add(new FiltroPropriedadeIndexar(propriedadeDataHoraDeletado,
+                                                    EnumOperadorComparacao.Igual,
+                                                    null));
                         }
                     }
                     grupoPropriedadesIndexar.Add((propriedadesIndexar, propriedadesFiltros));

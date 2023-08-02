@@ -273,12 +273,5 @@ namespace Snebur.Comunicacao
 
     }
 
-    public static class NameValueCollectionEx
-    {
-        public static string GetValue(this NameValueCollection value,
-                                      string chave)
-        {
-            return value[chave];
-        }
-    }
+   
 }

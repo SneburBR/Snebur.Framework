@@ -7,7 +7,7 @@ namespace Snebur.Dominio.Atributos
     {
         public bool IgnorarAlerta { get; set; }
 
-        public EnumTipoExclusaoRelacao TipoExclusao { get; set; } = EnumTipoExclusaoRelacao.NaoExcluir;
+        public EnumTipoExclusaoRelacao TipoExclusao { get; set; } = EnumTipoExclusaoRelacao.NaoDeletar;
 
         public RelacaoUmUmAttribute()
         {

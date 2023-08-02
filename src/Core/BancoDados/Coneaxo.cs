@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 using Snebur.Utilidade;
+using Snebur.Dominio;
 
 #if NET7_0
 using Microsoft.Data.SqlClient;
@@ -17,10 +18,10 @@ using System.Data.SqlClient;
 
 namespace Snebur.BancoDados
 {
-    public class Conexao
+    public class Conexao : IDisposable
     {
-        public string NomeConnectionString { get; }
-        public string ConnectionString { get; }
+        private string NomeConnectionString;
+        private string ConnectionString;
 
         public Conexao(string nomeConnectionString)
         {
@@ -82,9 +83,10 @@ namespace Snebur.BancoDados
         public List<T> Mapear<T>(string sql, params SqlParameter[] parametros)
         {
             var tipo = typeof(T);
-            var propriedades = tipo.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(x => x.GetMethod.IsPublic && (x.SetMethod?.IsPublic ?? false));
+            var propriedades = tipo.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(x => x.DeclaringType != typeof(BaseDominio) &&
+                                                                                                          x.GetMethod.IsPublic && (x.SetMethod?.IsPublic ?? false));
             var propriedadesChavePrimaria = tipo.GetProperties().
-                                                 Where(x => x.GetCustomAttribute<KeyAttribute>() != null).
+                                                 Where(x => x.GetCustomAttribute<KeyAttribute>() != null  ).
                                                  ToList();
 
             var dataTable = this.RetornarDataTable(sql, propriedadesChavePrimaria, parametros);
@@ -93,7 +95,7 @@ namespace Snebur.BancoDados
             foreach (DataRow row in dataTable.Rows)
             {
                 var item = Activator.CreateInstance<T>();
-                if(propriedades.Count() > 0)
+                if (propriedades.Any())
                 {
                     foreach (var propriedade in propriedades)
                     {
@@ -107,12 +109,12 @@ namespace Snebur.BancoDados
                 {
                     retorno.Add((T)Convert.ChangeType(row[0], typeof(T)));
                 }
-               
+
             }
             return retorno;
         }
 
-        public object RetornarValorScalar(string sql, 
+        public object RetornarValorScalar(string sql,
                                           params SqlParameter[] parametros)
         {
             object valorEscalor;
@@ -158,7 +160,7 @@ namespace Snebur.BancoDados
                 return false;
             }
         }
-        public void ExecutarComando(string sql, 
+        public void ExecutarComando(string sql,
                                     params SqlParameter[] parametros)
         {
             using (var conexao = new SqlConnection(this.ConnectionString))
@@ -265,6 +267,12 @@ namespace Snebur.BancoDados
 
                     throw new Exception($"o tipo {tipo.Name} não é suportado");
             }
+        }
+
+        public void Dispose()
+        {
+            this.ConnectionString = null;
+            this.NomeConnectionString = null;
         }
     }
 }

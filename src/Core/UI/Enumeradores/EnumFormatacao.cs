@@ -13,6 +13,8 @@ namespace Snebur.UI
 
         Cnpj, // "cnpj",
 
+        CpfCnpj, // "cpfcnpj",
+
         Telefone, // "telefone",
 
         Moeda, // "moeda",

@@ -1,6 +1,6 @@
 ﻿//namespace Snebur.Comunicacao
 //{
-//    public class ResultadoExcluir : BaseComunicao
+//    public class ResultadoDeletar : BaseComunicao
 //    {
 
 //        #region Campos Privados

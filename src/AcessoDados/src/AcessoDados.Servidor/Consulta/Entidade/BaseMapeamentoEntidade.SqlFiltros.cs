@@ -182,9 +182,20 @@ namespace Snebur.AcessoDados.Mapeamento
 
 
 
-                if (estruturaCampo.IsPossuiIndiceTextoCompleto && this.IsOperadorTextoPesquisa(filtroPropriedade.Operador))
+                if (estruturaCampo.IsPossuiIndiceTextoCompleto && 
+                    this.IsOperadorTextoPesquisa(filtroPropriedade.Operador))
                 {
-                    return this.RetornarSqlTextoCompletoPesquisa(estruturaCampoApelidoPropriedade, filtroPropriedade, nomeParametro);
+                    var estruturasCampos = estruturaCampo.EstruturaEntidade.EstruturasCamposIndiceTextoCompleto;
+                    if(estruturasCampos.Count > 1)
+                    {
+                        var estruturasCamposApelidos = estruturasCampos.Select(x => this.RetornarEstruturaCampoApelido(x.Propriedade.Name)).ToList();
+                        return this.RetornarSqlTextoCompletoPesquisa(estruturasCamposApelidos,
+                                                                     filtroPropriedade,
+                                                                     nomeParametro);
+                    }
+                    return this.RetornarSqlTextoCompletoPesquisa(estruturaCampoApelidoPropriedade, 
+                                                                 filtroPropriedade, 
+                                                                 nomeParametro);
                 }
                 else
                 {
@@ -215,13 +226,28 @@ namespace Snebur.AcessoDados.Mapeamento
             }
         }
 
-        private string RetornarSqlTextoCompletoPesquisa(EstruturaCampoApelido estruturaCampoApelidoPropriedade, FiltroPropriedade filtroPropriedade, string nomeParametro)
+        private string RetornarSqlTextoCompletoPesquisa(List<EstruturaCampoApelido> estruturasCampoApelidoPropriedade,
+                                                        FiltroPropriedade filtroPropriedade,
+                                                        string nomeParametro)
+        {
+
+            var valor = filtroPropriedade.Valor as string ?? String.Empty;
+            var valorPesquisa = this.RetornarValorPesquisaTextoCompleto(valor, filtroPropriedade.Operador);
+            this.Parametros.Add(this.ConexaoDB.RetornarNovoParametro(estruturasCampoApelidoPropriedade.First().EstruturaCampo, nomeParametro, valorPesquisa));
+            var prefixoNot = filtroPropriedade.Operador == EnumOperadorFiltro.Diferente ? " not " : "";
+            var colunas = String.Join(", ", estruturasCampoApelidoPropriedade.Select(x => x.CaminhoBanco));
+            return $" {prefixoNot} CONTAINS( ({colunas}), {nomeParametro} )   ";
+        }
+
+        private string RetornarSqlTextoCompletoPesquisa(EstruturaCampoApelido estruturaCampoApelidoPropriedade, 
+                                                        FiltroPropriedade filtroPropriedade, 
+                                                        string nomeParametro)
         {
             var valor = filtroPropriedade.Valor as string ?? String.Empty;
             var valorPesquisa = this.RetornarValorPesquisaTextoCompleto(valor, filtroPropriedade.Operador);
             this.Parametros.Add(this.ConexaoDB.RetornarNovoParametro(estruturaCampoApelidoPropriedade.EstruturaCampo, nomeParametro, valorPesquisa));
             var prefixoNot = filtroPropriedade.Operador == EnumOperadorFiltro.Diferente ? " not " : "";
-            return $" {prefixoNot} CONTAINS( {estruturaCampoApelidoPropriedade.CaminhoBanco}, {nomeParametro} )   ";
+            return $" {prefixoNot} CONTAINS( ({estruturaCampoApelidoPropriedade.CaminhoBanco}), {nomeParametro} )   ";
         }
 
         private string RetornarValorPesquisaTextoCompleto(string valor, EnumOperadorFiltro operador)

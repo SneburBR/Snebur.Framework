@@ -79,7 +79,10 @@ namespace Snebur.AcessoDados
                 {
                     using (var transacao = conexao.BeginTransaction(ConfiguracaoAcessoDados.IsolamentoLevelConsultaPadrao))
                     {
-                        using (var cmd = this.RetornarNovoComando(sql, parametros, conexao, transacao))
+                        using (var cmd = this.RetornarNovoComando(sql, 
+                                                                  parametros,
+                                                                  conexao, 
+                                                                  transacao))
                         {
                             using (var ad = this.RetornarNovoDataAdapter(cmd))
                             {

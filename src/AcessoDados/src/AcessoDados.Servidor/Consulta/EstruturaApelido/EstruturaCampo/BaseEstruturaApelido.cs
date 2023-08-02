@@ -25,12 +25,7 @@ namespace Snebur.AcessoDados.Mapeamento
             this.CaminhoPropriedade = caminhoPropriedade;
             this.EstruturaCampo = estruturaCampo;
             this.EstruturaEntidadeApelido = estruturaEntidadeApelido;
-
-            //if (this.EstruturaCampo.IsTipoComplexo)
-            //{
-            //    this.ChavePropriedade = this.RetornarChavePropriedade();
-
-            //}
+             
         }
 
         private string RetornarChavePropriedade()

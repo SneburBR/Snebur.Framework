@@ -35,12 +35,12 @@ namespace Snebur.EntityFramework
             }
         }
 
-        public static string RetornarSqlExcluirTodosRegistro(Type tipo)
+        public static string RetornarSqlDeletarTodosRegistro(Type tipo)
         {
             return string.Format(" DELETE FROM dbo.[{0}] ", SqlUtils.RetornarNomeTabela(tipo));
         }
 
-        public static string RetornarSqlExcluirIndice(string nome, string tabela)
+        public static string RetornarSqlDeletarIndice(string nome, string tabela)
         {
             return string.Format(" IF EXISTS (select * from sys.indexes where object_id = OBJECT_ID(N'[dbo].[{0}]') AND name = N'{1}')    DROP INDEX [{1}] ON [dbo].[{0}] ", tabela, nome);
         }

@@ -5,7 +5,7 @@
     [IgnorarGlobalizacao]
     public enum EnumTipoExclusaoRelacao
     {
-        NaoExcluir = 1,
+        NaoDeletar = 1,
 
         Cascata = 2,
 
