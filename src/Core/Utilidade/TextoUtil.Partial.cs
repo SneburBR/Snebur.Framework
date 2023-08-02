@@ -18,7 +18,8 @@ namespace Snebur.Utilidade
 
             private const string ACENTOS = "ÀÁÂÃÈÉÊÌÍÎÒÓÔÕÚÛÜÇÑàáâãäèéêëìíîòóôõùúûüçñ´~^¨`";
             private const string ACENTOS_MAPEADOS = "AAAAEEEIIIOOOOUUUCNaaaaaeeeeiiioooouuuucn     ";
-            private const string PONTOS_SINAIS = "+-.,";
+            private const string PONTOS_SINAIS = "+-.,()";
+            private const string PONTOS_SINAIS_SIMBOLOS = ",.;:?!|+-_.,@~^`´&$#*/\\§%|(){}[]<>";
 
             private static HashSet<char> _numeros;
             private static HashSet<char> _letras;
@@ -36,9 +37,13 @@ namespace Snebur.Utilidade
                     ref _pontosSinais,
                     () => TextoUtilConstantes.PONTOS_SINAIS.ToArray().ToHashSet());
 
-            internal static HashSet<char> NumerosPontsSinais => LazyUtil.RetornarValorLazy(
+            internal static HashSet<char> NumerosPontosSinais => LazyUtil.RetornarValorLazy(
                     ref _numerosPontosSinais,
                     () => (TextoUtilConstantes.NUMEROS + TextoUtilConstantes.PONTOS_SINAIS).ToArray().ToHashSet());
+
+            internal static HashSet<char> NumerosPontosSinaisSimbolos => LazyUtil.RetornarValorLazy(
+                    ref _numerosPontosSinais,
+                    () => (TextoUtilConstantes.NUMEROS + TextoUtilConstantes.PONTOS_SINAIS_SIMBOLOS).ToArray().ToHashSet());
 
             internal static HashSet<char> Letras => LazyUtil.RetornarValorLazy(
                      ref _letras,

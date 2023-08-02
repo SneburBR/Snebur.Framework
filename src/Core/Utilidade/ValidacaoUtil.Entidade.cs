@@ -157,6 +157,8 @@ namespace Snebur.Utilidade
             }
             switch (valorPropriedade)
             {
+                case bool _:
+                    return true;
                 case string str:
                     return !String.IsNullOrWhiteSpace(str);
                 case int int32:

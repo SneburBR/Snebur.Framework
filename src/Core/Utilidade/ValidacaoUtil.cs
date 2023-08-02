@@ -337,6 +337,11 @@ namespace Snebur.Utilidade
             return TextoUtil.IsSomenteNumeros(texto);
         }
 
+        public static bool IsSomenteNumerosPontosSinaisSimbolos(string texto)
+        {
+            return TextoUtil.IsSomenteNumerosPontosSinaisSimbolos(texto);
+        }
+
         public static bool IsSomenteNumerosPontosSinais(string texto)
         {
             return TextoUtil.IsSomenteNumerosPontosSinais(texto);

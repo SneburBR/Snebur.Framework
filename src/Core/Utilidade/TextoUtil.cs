@@ -602,7 +602,13 @@ namespace Snebur.Utilidade
         public static bool IsSomenteNumerosPontosSinais(string texto)
         {
             return TextoUtil.IsTextoValidoInterno(texto,
-              TextoUtilConstantes.NumerosPontsSinais);
+              TextoUtilConstantes.NumerosPontosSinais);
+        }
+
+        public static bool IsSomenteNumerosPontosSinaisSimbolos(string texto)
+        {
+            return TextoUtil.IsTextoValidoInterno(texto,
+              TextoUtilConstantes.NumerosPontosSinaisSimbolos);
         }
 
         private static bool IsTextoValidoInterno(string texto, HashSet<char> caracteresPermitidoObjetos)
