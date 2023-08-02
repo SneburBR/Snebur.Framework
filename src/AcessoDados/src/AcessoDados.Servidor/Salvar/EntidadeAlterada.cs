@@ -44,7 +44,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             {
                 if (!(entidade.Id > 0))
                 {
-                    throw new ErroOperacaoInvalida("Não é possível excluir uma entidade com id 0");
+                    throw new ErroOperacaoInvalida("Não é possível deletar uma entidade com id 0");
                 }
 
                 if (estruturaEntidade.IsImplementaInterfaceIDeletado &&  
@@ -123,7 +123,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 
                 case (EnumTipoAlteracao.Deletar):
 
-                    return this.RetornarComandosExcluir();
+                    return this.RetornarComandosDeletar();
 
                 default:
 
@@ -200,9 +200,9 @@ namespace Snebur.AcessoDados.Servidor.Salvar
         }
         #endregion
 
-        #region Excluir
+        #region Deletar
 
-        private List<Comando> RetornarComandosExcluir()
+        private List<Comando> RetornarComandosDeletar()
         {
             var comandos = new List<Comando>();
             var estruturasEntidade = this.RetornarEstruturasEntidade();

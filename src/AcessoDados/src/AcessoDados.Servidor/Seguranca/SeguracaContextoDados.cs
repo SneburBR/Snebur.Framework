@@ -25,7 +25,7 @@ namespace Snebur.AcessoDados.Seguranca
             var relacoesAberta = ReflexaoUtil.RetornarNomesPropriedade<IPermissaoEntidade>(x => x.Adicionar,
                                                                                            x => x.Atualizar,
                                                                                            x => x.Leitura,
-                                                                                           x => x.Excluir,
+                                                                                           x => x.Deletar,
                                                                                            x => x.Identificacao);
 
             var colecoesAberta = ReflexaoUtil.RetornarNomesPropriedade<IPermissaoEntidade>(x => x.PermissoesCampo,
@@ -136,11 +136,13 @@ namespace Snebur.AcessoDados.Seguranca
             return EnumPermissao.Negado;
         }
 
-        internal EnumPermissao PermissaoExcluir(IUsuario usuario, IUsuario usuarioAvalista, List<Entidade> entidades)
+        internal EnumPermissao PermissaoDeletar(IUsuario usuario, 
+                                                IUsuario usuarioAvalista, 
+                                                List<Entidade> entidades)
         {
-            var dicionarioEntidades = this.RetornarTodosEntidades(entidades, EnumOperacao.Excluir);
+            var dicionarioEntidades = this.RetornarTodosEntidades(entidades, EnumOperacao.Deletar);
             var nomesTipoEntidade = dicionarioEntidades.Keys.ToHashSet();
-            var autorizacoes = this.RetornarAutorizacoes(usuario, EnumOperacao.Excluir, nomesTipoEntidade, dicionarioEntidades, null);
+            var autorizacoes = this.RetornarAutorizacoes(usuario, EnumOperacao.Deletar, nomesTipoEntidade, dicionarioEntidades, null);
 
             var permissao = this.RetornarPermissao(usuario, usuarioAvalista, autorizacoes);
             if ((permissao == EnumPermissao.Autorizado) ||
@@ -202,7 +204,7 @@ namespace Snebur.AcessoDados.Seguranca
 
                 case EnumOperacao.Adicionar:
                 case EnumOperacao.Atualizar:
-                case EnumOperacao.Excluir:
+                case EnumOperacao.Deletar:
 
                     var entidades = dicionario[nomeTipoEntidade];
                     return new AutorizacaoEntidadeSalvar(nomeTipoEntidade, operacao, entidades);
@@ -347,7 +349,7 @@ namespace Snebur.AcessoDados.Seguranca
                 }
                 else if (entidade.Id > 0)
                 {
-                    if (operacao == EnumOperacao.Atualizar || operacao == EnumOperacao.Excluir || operacao == EnumOperacao.Leitura)
+                    if (operacao == EnumOperacao.Atualizar || operacao == EnumOperacao.Deletar || operacao == EnumOperacao.Leitura)
                     {
                         return true;
                     }

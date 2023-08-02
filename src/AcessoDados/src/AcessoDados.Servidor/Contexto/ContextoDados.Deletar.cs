@@ -90,8 +90,8 @@ namespace Snebur.AcessoDados
         {
             this.ValidarSessaoUsuario();
 
-            var entidadesExcluir = this.RetornarEntidadesDeletarEmCascata(entidades, relacoesEmCascata);
-            using (var salvar = new SalvarEntidades(this, entidadesExcluir.ToHashSet(), opcaoSalvar, false))
+            var entidadesDeletar = this.RetornarEntidadesDeletarEmCascata(entidades, relacoesEmCascata);
+            using (var salvar = new SalvarEntidades(this, entidadesDeletar.ToHashSet(), opcaoSalvar, false))
             {
                 var resultado = salvar.Salvar();
                 if (resultado.Erro != null && !ignorarErro)
@@ -168,7 +168,7 @@ namespace Snebur.AcessoDados
         }
 
 
-        //private List<Entidade> RetornarEntidadesExcluirEmCascataObsoleto(IEnumerable<Entidade> entidades, string relacoesEmCascata)
+        //private List<Entidade> RetornarEntidadesDeletarEmCascataObsoleto(IEnumerable<Entidade> entidades, string relacoesEmCascata)
         //{
         //    if (String.IsNullOrEmpty(relacoesEmCascata))
         //    {
@@ -219,7 +219,7 @@ namespace Snebur.AcessoDados
         //                                }
 
         //                            }
-        //                            //retorno.AddRange(this.RetornarEntidadesExcluirEmCascata(entidadeRecuperada, propriedadeRelacao.ToQueue()));
+        //                            //retorno.AddRange(this.RetornarEntidadesDeletarEmCascata(entidadeRecuperada, propriedadeRelacao.ToQueue()));
 
         //                        }
         //                    }

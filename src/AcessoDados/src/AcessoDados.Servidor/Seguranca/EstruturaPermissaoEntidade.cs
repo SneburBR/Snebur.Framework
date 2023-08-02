@@ -31,9 +31,9 @@ namespace Snebur.AcessoDados.Seguranca
 
                     return this.PermissaoEntidade.Atualizar;
 
-                case EnumOperacao.Excluir:
+                case EnumOperacao.Deletar:
 
-                    return this.PermissaoEntidade.Excluir;
+                    return this.PermissaoEntidade.Deletar;
 
                 default:
 
@@ -50,7 +50,7 @@ namespace Snebur.AcessoDados.Seguranca
             ValidacaoUtil.ValidarReferenciaNula(permissaoEntidade.Leitura, nameof(permissaoEntidade.Leitura));
             ValidacaoUtil.ValidarReferenciaNula(permissaoEntidade.Atualizar, nameof(permissaoEntidade.Atualizar));
             ValidacaoUtil.ValidarReferenciaNula(permissaoEntidade.Adicionar, nameof(permissaoEntidade.Adicionar));
-            ValidacaoUtil.ValidarReferenciaNula(permissaoEntidade.Excluir, nameof(permissaoEntidade.Excluir));
+            ValidacaoUtil.ValidarReferenciaNula(permissaoEntidade.Deletar, nameof(permissaoEntidade.Deletar));
 
             foreach (var permissaoCampo in this.PermissaoEntidade.PermissoesCampo)
             {

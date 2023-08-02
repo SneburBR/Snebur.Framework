@@ -14,6 +14,7 @@ namespace Snebur.AcessoDados
         public bool IsColunaNomeTipoEntidade { get; }
         public bool IsSessaoUsuario { get; }
         public bool IsMigracao { get; }
+        public bool IsDataHoraUtc { get; } 
 
         internal BancoDadosSuporta(BaseContextoDados contextoDados,
                                     EnumFlagBancoNaoSuportado flags)
@@ -22,6 +23,7 @@ namespace Snebur.AcessoDados
             this.IsColunaNomeTipoEntidade = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.ColunaNomeTipoEntidade);
             this.IsSessaoUsuario = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.SessaoUsuario);
             this.IsMigracao = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.Migracao);
+            this.IsDataHoraUtc = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.DataHoraUtc);
         }
 
         private bool IsSuporta(EnumFlagBancoNaoSuportado sqlNaoSuporta, EnumFlagBancoNaoSuportado flag)

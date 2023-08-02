@@ -8,6 +8,6 @@
 
         Atualizar = 3,
 
-        Excluir = 4
+        Deletar = 4
     }
 }

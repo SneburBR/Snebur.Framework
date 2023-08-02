@@ -366,7 +366,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             };
             return resultado;
         }
-        //Excluir
+        //Deletar
 
         private ResultadoDeletar RetornarResultadoDeletar(List<EntidadeAlterada> entidadesAlterada)
         {

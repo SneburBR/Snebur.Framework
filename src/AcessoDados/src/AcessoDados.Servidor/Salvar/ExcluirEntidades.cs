@@ -10,7 +10,7 @@
 
 //namespace Snebur.AcessoDados.Servidor.Salvar
 //{
-//    internal class ExcluirEntidades: IDisposable
+//    internal class DeletarEntidades: IDisposable
 //    {
 //        internal List<EntidadeAlterada> EntidadesAlteradas { get; set; }
 
@@ -20,7 +20,7 @@
 
 //        internal BaseConexao Conexao { get; set; }
 
-//        internal ExcluirEntidades(ContextoDados contexto, List<Entidade> entidades)
+//        internal DeletarEntidades(ContextoDados contexto, List<Entidade> entidades)
 //        {
 //            this.Fila = new Queue<EntidadeAlterada>();
 //            this.Contexto = contexto;

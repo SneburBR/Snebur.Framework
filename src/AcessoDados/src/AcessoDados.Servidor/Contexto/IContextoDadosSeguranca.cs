@@ -20,9 +20,9 @@ namespace Snebur.AcessoDados
 
         ResultadoSalvar SalvarSeguranca(List<IEntidade> entidades);
 
-        ResultadoDeletar ExcluirSeguranca(IEntidade entidade);
+        ResultadoDeletar DeletarSeguranca(IEntidade entidade);
 
-        ResultadoDeletar ExcluirSeguranca(List<IEntidade> entidades);
+        ResultadoDeletar DeletarSeguranca(List<IEntidade> entidades);
 
         IConsultaEntidade<TEntidade> RetornarConsulta<TEntidade>() where TEntidade : IEntidade;
 

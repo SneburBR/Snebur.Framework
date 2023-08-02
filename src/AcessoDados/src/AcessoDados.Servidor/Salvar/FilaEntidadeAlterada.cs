@@ -33,7 +33,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
         {
             var proximaEntidade = this.Restantes.FirstOrDefault(x =>
              {
-                 return (/*(x.TipoAlteracao == EnumTipoAlteracao.Excluir && x.IsImplementaIDeletado) ||*/
+                 return (/*(x.TipoAlteracao == EnumTipoAlteracao.Deletar && x.IsImplementaIDeletado) ||*/
                           x.EntidadesRelacaoChaveEstrangeiraDepedente == null ||
                           x.EntidadesRelacaoChaveEstrangeiraDepedente.Count == 0 ||
                           x.EntidadesRelacaoChaveEstrangeiraDepedente.All(r =>

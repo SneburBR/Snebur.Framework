@@ -33,11 +33,11 @@ namespace Snebur.AcessoDados
                 return resultado as ResultadoSalvar;
             }
         }
-        ResultadoDeletar IContextoDadosSeguranca.ExcluirSeguranca(IEntidade entidade)
+        ResultadoDeletar IContextoDadosSeguranca.DeletarSeguranca(IEntidade entidade)
         {
-            return (this as IContextoDadosSeguranca).ExcluirSeguranca(new List<IEntidade>() { entidade });
+            return (this as IContextoDadosSeguranca).DeletarSeguranca(new List<IEntidade>() { entidade });
         }
-        ResultadoDeletar IContextoDadosSeguranca.ExcluirSeguranca(List<IEntidade> entidades)
+        ResultadoDeletar IContextoDadosSeguranca.DeletarSeguranca(List<IEntidade> entidades)
         {
             this.ValidarEntidadesSeguranca(entidades);
 
