@@ -90,6 +90,10 @@ namespace Snebur.AcessoDados.Mapeamento
             var estruturaCampoApelidoPropriedade = this.RetornarEstruturaCampoApelido(this.EstruturaEntidade.EstruturaCampoChavePrimaria.Propriedade.Name);
             var caminhoCampoFiltro = estruturaCampoApelidoPropriedade.CaminhoBanco;
 
+            if(filtro.Ids== null)
+            {
+                filtro.Ids = new List<long>();
+            }
             if (filtro.Ids.Count == 0)
             {
                 filtro.Ids.Add(0);
