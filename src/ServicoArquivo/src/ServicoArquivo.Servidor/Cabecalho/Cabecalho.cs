@@ -22,12 +22,12 @@ namespace Snebur.ServicoArquivo
             }
         }
 
-        
+
         protected string RetornarString(string chave)
         {
             if (!String.IsNullOrWhiteSpace(this.HttpContext.Request.Headers[chave]))
             {
-                var valor = this.HttpContext.Request.Headers[chave];
+                var valor = Uri.UnescapeDataString(this.HttpContext.Request.Headers[chave]);
                 if (!String.IsNullOrEmpty(valor))
                 {
                     return Base64Util.Decode(valor);
