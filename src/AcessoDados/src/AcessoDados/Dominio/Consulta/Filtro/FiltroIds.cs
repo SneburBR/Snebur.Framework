@@ -10,7 +10,7 @@ namespace Snebur.AcessoDados
 
         #endregion
 
-        public List<long> Ids { get; set; }
+        public List<long> Ids { get; set; } = new List<long>();
 
         public FiltroIds(List<long> ids)
         {

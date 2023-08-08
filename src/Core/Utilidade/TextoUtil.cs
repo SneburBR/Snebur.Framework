@@ -23,6 +23,7 @@ namespace Snebur.Utilidade
             {
                 return null;
             }
+        
             var sb = new StringBuilder();
             var acentosMapeado = TextoUtilConstantes.AcentosMapeado;
 

@@ -223,7 +223,6 @@ namespace Snebur.ServicoArquivo
 
         #endregion
 
-
         #region Métodos privados
 
 #if NET7_0 == false

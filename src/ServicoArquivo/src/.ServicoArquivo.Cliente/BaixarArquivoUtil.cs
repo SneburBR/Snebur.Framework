@@ -58,12 +58,11 @@ namespace Snebur.ServicoArquivo.Cliente
                                                     arquivo.GetType().AssemblyQualifiedName);
         }
         public static MemoryStream RetornarStream(string urlServico,
-                                              long idArquivo,
-                                              string nomeTipoArquivo,
-                                              string nomeTipoQualificado)
+                                                  long idArquivo,
+                                                  string nomeTipoArquivo,
+                                                  string nomeTipoQualificado)
         {
             //var identificadorSessao = AplicacaoSnebur.Atual.IdentificadorSessaoUsuario;
-
             var informacao = AplicacaoSnebur.Atual.InformacaoSessaoUsuario;
             var identificadorProprietario = AplicacaoSnebur.Atual.IdentificadorProprietario;
             var credencialUsuario = AplicacaoSnebur.Atual.CredencialUsuario;
@@ -77,6 +76,7 @@ namespace Snebur.ServicoArquivo.Cliente
                                   credencialUsuario,
                                   TIMEOUT_PADRAO);
         }
+
         public static MemoryStream RetornarStream(string urlServico,
                                                   long idArquivo,
                                                   string nomeTipoArquivo,
@@ -107,8 +107,7 @@ namespace Snebur.ServicoArquivo.Cliente
             var nomeAssembly = AplicacaoSnebur.Atual.NomeAplicacao;
             var parametros = new Dictionary<string, string>();
             var token = Token.RetornarToken();
-
-
+             
             parametros.Add(ConstantesServicoArquivo.ID_ARQUIVO, idArquivo.ToString());
             parametros.Add(ConstantesServicoArquivo.ASEMMBLY_QUALIFIED_NAME, nomeTipoQualificado);
             parametros.Add(ConstantesServicoArquivo.NOME_TIPO_ARQUIVO, nomeTipoArquivo);

@@ -12,8 +12,7 @@ namespace Snebur.Dominio
                                              IListaEntidades<TEntidade> where TEntidade : IEntidade
     {
 
-        public Guid IdentificadorEntidadesRemovida { get; set; }
-
+        //public Guid IdentificadorEntidadesRemovida { get; set; }
         public bool IsAberta { get; set; } = false;
 
         //public Dictionary<string, IEntidade> EntidadesRemovida { get; set; } = new Dictionary<string, IEntidade>();

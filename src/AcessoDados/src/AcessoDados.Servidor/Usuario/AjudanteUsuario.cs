@@ -19,7 +19,7 @@ namespace Snebur.AcessoDados
 
             #region Propriedades privadas
 
-            private BaseContextoDados Contexto { get; set; }
+            internal BaseContextoDados Contexto { get; private set; }
 
             private IContextoDadosSemNotificar ContextoSalvar => this.Contexto as IContextoDadosSemNotificar;
 
@@ -113,14 +113,20 @@ namespace Snebur.AcessoDados
             internal IUsuario RetornarUsuario(Credencial credencial)
             {
                 var identificadorUsuario = credencial.IdentificadorUsuario;
-
+                
                 var consultaUsuario = this.Contexto.RetornarConsulta<IUsuario>(this.TipoUsuario);
                 consultaUsuario = consultaUsuario.Where(x => x.IdentificadorUsuario == identificadorUsuario);
 
                 var usuario = consultaUsuario.SingleOrDefault();
-                if (usuario != null && !credencial.Validar(usuario))
+                if (usuario != null)
                 {
-                    return null;
+                    if (!credencial.Validar(usuario))
+                    {
+                        var msgErro = $"AjudanteSessaoUsuarioInterno.RetornarUsuario. Credencial inválida {usuario.Senha} <> {credencial.Senha}";
+                        LogUtil.ErroAsync(new Exception(msgErro));
+                        return null;
+                    }
+
                 }
                 return usuario;
             }

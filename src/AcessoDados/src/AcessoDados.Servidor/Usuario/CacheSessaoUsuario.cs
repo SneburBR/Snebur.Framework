@@ -102,7 +102,7 @@ namespace Snebur.AcessoDados
             this.Usuario = this.AjudanteSessaoUsuario.RetornarUsuario(this.Credencial);
             if (this.Usuario == null)
             {
-                throw new ErroSessaoUsuarioInvalida("O usuário em cache não foi encontrado");
+                throw new ErroSessaoUsuarioInvalida($" O usuário em cache não foi encontrado: {this.Credencial.IdentificadorUsuario} -- {this.Credencial.Senha}. {this.AjudanteSessaoUsuario.Contexto.IdentificadorProprietario} {this.AjudanteSessaoUsuario.Contexto.Conexao.ConnectionString}");
                 //this.Usuario = this.AjudanteSessaoUsuario.RetornarUsuario(CredencialAnonimo.Anonimo);
                 //throw new Erro($"Não foi possível retornar o usuário para a credencial  {this.Credencial.IdentificadorUsuario}");
             }
