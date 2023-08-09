@@ -157,23 +157,7 @@ namespace Snebur.Dominio
             return this.RetornarValorPropriedade(valor, nomePropriedade);
         }
 
-        internal protected virtual int RetornarValorPropriedadeChaveEstrangeira(int valor, Entidade relacao, [CallerMemberName] string nomePropriedade = "")
-        {
-            if (relacao != null)
-            {
-                return (int)relacao.Id;
-            }
-            return this.RetornarValorPropriedade(valor, nomePropriedade);
-        }
-
-        internal protected virtual byte RetornarValorPropriedadeChaveEstrangeira(byte valor, Entidade relacao, [CallerMemberName] string nomePropriedade = "")
-        {
-            if (relacao != null)
-            {
-                return (byte)relacao.Id;
-            }
-            return this.RetornarValorPropriedade(valor, nomePropriedade);
-        }
+        
 
         internal protected virtual long? RetornarValorPropriedadeChaveEstrangeira(long? valor, Entidade relacao, [CallerMemberName] string nomePropriedade = "")
         {
@@ -183,24 +167,7 @@ namespace Snebur.Dominio
             }
             return this.RetornarValorPropriedade(valor, nomePropriedade);
         }
-
-        internal protected virtual int? RetornarValorPropriedadeChaveEstrangeira(int? valor, Entidade relacao, [CallerMemberName] string nomePropriedade = "")
-        {
-            if (relacao != null)
-            {
-                return (int?)relacao.Id;
-            }
-            return this.RetornarValorPropriedade(valor, nomePropriedade);
-        }
-        internal protected virtual byte? RetornarValorPropriedadeChaveEstrangeira(byte? valor, Entidade relacao, [CallerMemberName] string nomePropriedade = "")
-        {
-            if (relacao != null)
-            {
-                return (byte?)relacao.Id;
-            }
-            return this.RetornarValorPropriedade(valor, nomePropriedade);
-        }
-
+         
         internal protected override T RetornarValorPropriedade<T>(T valor, [CallerMemberName] string nomePropriedade = "")
         {
             if (this.__IsControladorPropriedadesAlteradaAtivo)
