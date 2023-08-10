@@ -166,7 +166,7 @@ namespace Snebur.AcessoDados.Estrutura
             return propriedades.Single();
         }
 
-        internal static string RetornarNomeCampoChaveEstrangeira(PropertyInfo propriedade)
+        internal static string RetornarNomePropriedadeChaveEstrangeira(PropertyInfo propriedade)
         {
             var atributoChaveEstrangeira = propriedade.RetornarAtributoChaveEstrangeira();
             if (atributoChaveEstrangeira == null)

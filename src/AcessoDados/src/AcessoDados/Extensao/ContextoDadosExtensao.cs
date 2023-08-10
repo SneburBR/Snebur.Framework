@@ -127,6 +127,11 @@ namespace Snebur.AcessoDados
         {
             AbrirRelacoes(contexto, entidade, expressaoRelacao);
         }
+        public static void AbrirRelacao<TEntidade, TRelacao>(this IContextoDados contexto,
+                                                    IEnumerable<TEntidade> entidade, Expression<Func<TEntidade, TRelacao>> expressaoRelacao) where TEntidade : Entidade where TRelacao : Entidade
+        {
+            AbrirRelacoes(contexto, entidade, expressaoRelacao);
+        }
 
         public static void AbrirRelacoes<TEntidade, TRelacao>(this IContextoDados contexto,
                                                     TEntidade entidade,
@@ -143,6 +148,28 @@ namespace Snebur.AcessoDados
                 var propriedades = ExpressaoUtil.RetornarPropriedades(expressao);
                 var propriedade = propriedades.First();
                 propriedade.SetValue(entidade, propriedade.GetValue(entidadeRecuperada));
+            }
+        }
+
+        public static void AbrirRelacoes<TEntidade, TRelacao>(this IContextoDados contexto,
+                                            IEnumerable<TEntidade> entidades,
+                                            params Expression<Func<TEntidade, TRelacao>>[] expressoesRelacao) where TEntidade : Entidade where TRelacao : Entidade
+        {
+
+            var ids = entidades.Select(x => x.Id).ToList();
+            var consulta = contexto.RetornarConsulta<TEntidade>(typeof(TEntidade)).
+                                                    WhereIds(ids);
+            consulta.AbrirRelacoes(expressoesRelacao);
+            var entidadesRecuperada = consulta.ToList();
+            foreach (var entidade in entidades)
+            {
+                var entidadeRecuperada = entidadesRecuperada.Where(x => x.Id == entidade.Id).Single();
+                foreach (var expressao in expressoesRelacao)
+                {
+                    var propriedades = ExpressaoUtil.RetornarPropriedades(expressao);
+                    var propriedade = propriedades.First();
+                    propriedade.SetValue(entidade, propriedade.GetValue(entidadeRecuperada));
+                }
             }
         }
 

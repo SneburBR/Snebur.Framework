@@ -1,4 +1,5 @@
-﻿using Snebur.AcessoDados.Estrutura;
+﻿using Snebur.AcessoDados.Consulta;
+using Snebur.AcessoDados.Estrutura;
 using Snebur.Dominio;
 using Snebur.Utilidade;
 using System;
@@ -8,8 +9,7 @@ using System.Linq;
 
 namespace Snebur.AcessoDados.Mapeamento
 {
-    internal partial class MapeamentoConsulta :
-                            BaseMapeamentoConsulta
+    internal partial class MapeamentoConsulta : BaseMapeamentoConsulta
     {
 
         private Dictionary<long, Entidade> Entidades { get; }
@@ -47,11 +47,11 @@ namespace Snebur.AcessoDados.Mapeamento
             }
         }
 
-        internal ResultadoConsulta RetornarResultadoConsulta()
+        internal ResultadoConsultaMapeamento RetornarResultadoConsulta()
         {
             //Agrupar as consultas
 
-            var resultadoConsulta = new ResultadoConsulta();
+            var resultadoConsulta = new ResultadoConsultaMapeamento();
             this.ExecutarConsulta(new FiltroMapeamentoVazio());
 
             resultadoConsulta.Entidades.AddRange(this.Entidades.Values);
@@ -150,7 +150,7 @@ namespace Snebur.AcessoDados.Mapeamento
             this.AbrirRelacoes();
         }
 
-        private ListaEntidades<Entidade> RetornarEntidades(EstruturaEntidade estruturaEntidade, 
+        private List<Entidade> RetornarEntidades(EstruturaEntidade estruturaEntidade, 
                                                            BaseFiltroMapeamento filtro)
         {
             using (var mapeamentoEntidade = new MapeamentoEntidade(this, estruturaEntidade, this.EstruturaBancoDados, this.ConexaoDB, this.Contexto))

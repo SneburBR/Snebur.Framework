@@ -3,8 +3,7 @@ using System.Reflection;
 
 namespace Snebur.AcessoDados.Mapeamento
 {
-    internal abstract class MapeamentoConsultaRelacaoAberta :
-                            MapeamentoConsulta
+    internal abstract class MapeamentoConsultaRelacaoAberta :MapeamentoConsulta
     {
         internal protected EstruturaRelacao EstruturaRelacao { get; set; }
         internal protected BaseRelacaoAberta RelacaoAberta { get; set; }

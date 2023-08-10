@@ -53,6 +53,7 @@ namespace Snebur.AcessoDados
             this.EstruturaConsulta.Skip = skip;
             return this;
         }
+
         #region Executar no servico
 
         public List<TEntidade> ToList()

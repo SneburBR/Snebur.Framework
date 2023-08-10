@@ -24,7 +24,6 @@ namespace Snebur.AcessoDados.Estrutura
 
                 if (this.Alertas.Count > 0)
                 {
-                    
                     var mensagem = String.Join(System.Environment.NewLine, this.Alertas);
                     Trace.TraceWarning(mensagem);
                 }
