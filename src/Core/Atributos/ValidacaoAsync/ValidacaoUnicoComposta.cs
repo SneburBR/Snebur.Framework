@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 namespace Snebur.Dominio.Atributos
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = true, Inherited = true)]
-    public class ValidacaoUnicoCompostaAttribute : BaseAtributoValidacaoAsync
+    public class ValidacaoUnicoCompostaAttribute : BaseAtributoValidacaoAsync, IAtributoMigracao
     {
         [IgnorarPropriedadeTS]
         [IgnorarPropriedadeTSReflexao]
@@ -32,6 +32,9 @@ namespace Snebur.Dominio.Atributos
         public string[] NomesPropriedadeOuFiltro { get; }
 
         public bool IsCriarIndicesNomeBanco { get; set; } = true;
+
+        [IgnorarPropriedadeTS, IgnorarPropriedadeTSReflexao]
+        public bool IsIgnorarMigracao { get; set; }
 
         public ValidacaoUnicoCompostaAttribute(Type tipoEntidade,
                                                params string[] nomesPropriedadeOuFiltro)

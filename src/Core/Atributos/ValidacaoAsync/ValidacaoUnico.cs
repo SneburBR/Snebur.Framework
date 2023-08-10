@@ -5,12 +5,15 @@ using System.Reflection;
 namespace Snebur.Dominio.Atributos
 {
     [AttributeUsage(AttributeTargets.Property)]
-    public class ValidacaoUnicoAttribute : BaseAtributoValidacaoAsync, IAtributoValidacao
+    public class ValidacaoUnicoAttribute : BaseAtributoValidacaoAsync, IAtributoValidacao, IAtributoMigracao
     {
         [MensagemValidacao]
         public static string MensagemValidacao { get; set; } = "O {0} '{1}' já existe.";
 
         public bool IsAceitaNulo { get; set; }
+
+        [IgnorarPropriedadeTS, IgnorarPropriedadeTSReflexao]
+        public bool IsIgnorarMigracao { get; set; }
 
         public ValidacaoUnicoAttribute(bool isAceitaNulo = true)
         {

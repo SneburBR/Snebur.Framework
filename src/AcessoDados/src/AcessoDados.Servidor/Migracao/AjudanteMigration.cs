@@ -119,7 +119,7 @@ namespace Snebur.AcessoDados
                 if (this.PossuiValidacaoUnicoComposta(tipoEntidade))
                 {
                     var atributos = tipoEntidade.GetCustomAttributes<ValidacaoUnicoCompostaAttribute>(false);
-                    foreach (var atributo in atributos)
+                    foreach (var atributo in atributos.Where(x=> x.IsIgnorarMigracao == false))
                     {
                         sqlsMigration.Add(new SqlValidacaoUnico(estruturaEntidade,
                                                                 atributo.Propriedades,
@@ -145,12 +145,22 @@ namespace Snebur.AcessoDados
                 var propriedadesIndexar = this.RetornarPropriedadesIndexar(tipoEntidade);
                 foreach (var propriedade in propriedadesIndexar)
                 {
+                    var atributo = propriedade.GetCustomAttribute<IndexarAttribute>();
+                    if (atributo.IsIgnorarMigracao)
+                    {
+                        continue;
+                    }
                     sqlsMigration.Add(new SqlIndexar(estruturaEntidade, new PropriedadeIndexar(propriedade)));
                 }
 
                 var propriedadesIndexarTextoCompleto = this.RetornarPropriedadesIndexarTextoCompleto(tipoEntidade);
                 if (propriedadesIndexarTextoCompleto.Count >0 )
                 {
+                    var atributos = propriedadesIndexarTextoCompleto.Select(x=> x.GetCustomAttribute<IndexarTextoCompletoAttribute>());
+                    if (atributos.Any(x=> x.IsIgnorarMigracao))
+                    {
+                        continue;
+                    }
                     sqlsMigration.Add(new SqlIndexarTextoCompleto(estruturaEntidade, propriedadesIndexarTextoCompleto));
                 }
                  
@@ -179,7 +189,7 @@ namespace Snebur.AcessoDados
             foreach (var propriedade in propriedades)
             {
                 var atributoValidacaoUnico = propriedade.GetCustomAttribute<ValidacaoUnicoAttribute>();
-                if (atributoValidacaoUnico != null)
+                if (atributoValidacaoUnico != null && atributoValidacaoUnico.IsIgnorarMigracao== false)
                 {
                     var propriedadesIndexar = new List<PropriedadeIndexar>();
                     var propriedadesFiltros = new List<FiltroPropriedadeIndexar>();
