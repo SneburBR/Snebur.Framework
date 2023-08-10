@@ -38,10 +38,9 @@ namespace Snebur.AcessoDados.Mapeamento
             return resultado;
         }
 
-        internal static ListaEntidades<Entidade> MapearDataTable(IEstruturaConsultaSeguranca estruturaConsulta, DataTable dataTable, MapeamentoEntidade mapeamento)
+        internal static List<Entidade> MapearDataTable(IEstruturaConsultaSeguranca estruturaConsulta, DataTable dataTable, MapeamentoEntidade mapeamento)
         {
-            var entidades = new ListaEntidades<Entidade>();
-
+            var entidades = new List<Entidade>();
             var estruturasColuna = new List<EstruturaColuna>();
             foreach (var estruturaCampoApelido in mapeamento.EstruturaEntidadeApelido.EstruturasCampoApelido)
             {

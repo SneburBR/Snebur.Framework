@@ -1,4 +1,6 @@
-﻿namespace Snebur.AcessoDados
+﻿using System.Collections.Generic;
+
+namespace Snebur.AcessoDados
 {
     public abstract partial class BaseContextoDados
     {
@@ -6,6 +8,6 @@
         //{
         //    EstruturaBancoDados.Inicializar(typeof(TContexto));
         //}
-        
+        internal HashSet<IInterceptador> InterceptoresAtivos { get; }= new HashSet<IInterceptador>();
     }
 }

@@ -1,4 +1,5 @@
-﻿using Snebur.Dominio;
+﻿using Snebur.AcessoDados.Mapeamento;
+using Snebur.Dominio;
 using Snebur.Utilidade;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,10 @@ namespace Snebur.AcessoDados.Estrutura
         public object _bloqueio = new object();
 
         internal bool IsEstruturasEntidadeMontada { get; private set; }
-        internal DicionarioEstrutura<EstruturaEntidade> EstruturasEntidade { get; }
-        internal DicionarioEstrutura<Type> TiposEntidade { get; }
-        internal DicionarioEstrutura<PropertyInfo> TodasPropriedades { get; }
+        internal DicionarioEstrutura<EstruturaEntidade> EstruturasEntidade { get; } = new DicionarioEstrutura<EstruturaEntidade>();
+        internal DicionarioEstrutura<Type> TiposEntidade { get; } = new DicionarioEstrutura<Type>();
+        internal DicionarioEstrutura<PropertyInfo> TodasPropriedades { get; } = new DicionarioEstrutura<PropertyInfo>();
+        internal Dictionary<Type, IntercepetadorModel> Interceptadores { get; } = new Dictionary<Type, IntercepetadorModel>();
         internal Assembly AssemblyEntidades { get; private set; }
         internal List<string> Alertas { get; } = new List<string>();
         internal Type TipoEntidadeArquivo { get; }
@@ -34,29 +36,29 @@ namespace Snebur.AcessoDados.Estrutura
 
         #region  Construtor 
 
-        internal EstruturaBancoDados(Type tipoContexto, 
+        internal EstruturaBancoDados(Type tipoContexto,
                                      BancoDadosSuporta sqlSuporte)
         {
             this.TipoContexto = tipoContexto;
-            this.EstruturasEntidade = new DicionarioEstrutura<EstruturaEntidade>();
-            this.TiposEntidade = new DicionarioEstrutura<Type>();
+            this.PopularInterceptadores();
             this.MontarEstruturaBancoDados(this.TipoContexto, sqlSuporte);
-
             this.TipoEntidadeArquivo = this.RetornarTipoEntidadeArquivo();
             this.TipoEntidadeImagem = this.RetornarTipoEntidadeImagem();
-            if (sqlSuporte.IsSessaoUsuario)
+            this.TipoEntidadeNotificaoPropriedadeAlteradaGenerica = this.RetornarTipoEntidadeNotificaoPropriedadeAlteradaGenerica();
+            this.TipoHistoricoManutencao = this.RetornarTipoHistoricoManutenacao();
+            this.TiposSeguranca = new TiposSeguranca(this);
+
+            if (sqlSuporte.IsSessaoUsuarioContextoAtual)
             {
                 this.TipoUsuario = this.RetornarTipoUsuario();
                 this.TipoSessaoUsuario = this.RetornarTipoSessaoUsuario();
                 this.TipoIpInformacao = this.RetornarTipoIpInformacao();
-                this.TipoHistoricoManutencao = this.RetornarTipoHistoricoManutenacao();
-                this.TipoEntidadeNotificaoPropriedadeAlteradaGenerica = this.RetornarTipoEntidadeNotificaoPropriedadeAlteradaGenerica();
-                this.TiposSeguranca = new TiposSeguranca(this);
             }
-            this.DateTimeKindPadrao = sqlSuporte.IsDataHoraUtc ?  DateTimeKind.Utc : DateTimeKind.Local;
+            this.DateTimeKindPadrao = sqlSuporte.IsDataHoraUtc ? DateTimeKind.Utc : DateTimeKind.Local;
 
         }
         #endregion
+
 
         internal Type RetornarTipoConsultaImplementaInterface<TIInterface>(bool ignorarNaoEncontrado = false)
         {
@@ -92,6 +94,7 @@ namespace Snebur.AcessoDados.Estrutura
             }
             return tiposInterface.Single();
         }
+
 
         #region Métodos internos
 
@@ -300,6 +303,37 @@ namespace Snebur.AcessoDados.Estrutura
                     this.AssociarNiveisEstruturasEspecializadas(estruturaEntidade, estruturaEntidadeEspecializada.TipoEntidade, nivel);
                 }
             }
+        }
+
+        private void PopularInterceptadores()
+        {
+            var tipos = this.TipoContexto.Assembly.GetLoadableTypes().Where(x => typeof(IInterceptador).IsAssignableFrom(x)).ToList();
+            if(tipos.Count> 0)
+            {
+                var grupos = tipos.GroupBy(x => getTipoEntidade(x));
+                foreach (var grupo in grupos)
+                {
+                    var tipoEntidade = grupo.Key;
+                    if (!tipoEntidade.IsSubclassOf(typeof(Entidade)))
+                    {
+                        throw new Exception($"O tipo {tipoEntidade.Name} não é uma entidade");
+                    }
+                    var interceptorModel = new IntercepetadorModel(tipoEntidade, grupo.ToArray());
+                    this.Interceptadores.Add(tipoEntidade, interceptorModel);
+                }
+
+                Type getTipoEntidade(Type type)
+                {
+                    var tipoInterceptorGenerico = type.GetInterfaces().Where(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IInterceptador<,>)).FirstOrDefault();
+                    if (tipoInterceptorGenerico != null)
+                    {
+                        return tipoInterceptorGenerico.GetGenericArguments().LastOrDefault();
+                    }
+
+                    throw new Exception($"O tipo {type.Name} não implementa a interface IInterceptador<,>");
+                }
+            }
+           
         }
 
         #endregion

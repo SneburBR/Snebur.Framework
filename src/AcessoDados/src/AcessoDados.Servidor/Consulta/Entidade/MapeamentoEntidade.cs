@@ -26,13 +26,31 @@ namespace Snebur.AcessoDados.Mapeamento
             }
         }
 
-        internal protected ListaEntidades<Entidade> RetornarEntidades(BaseFiltroMapeamento filtro, int tentativa = 0)
+        internal protected List<Entidade> RetornarEntidades(BaseFiltroMapeamento filtro,
+                                                                      int tentativa = 0)
         {
             var sql = this.RetornarSql(true, true, filtro);
             try
             {
                 var dataTable = this.ConexaoDB.RetornarDataTable(sql, this.Parametros);
                 var entidades = AjudanteDataSetMapeamento.MapearDataTable(this.EstruturaConsulta, dataTable, this);
+                if (this.EstruturaEntidade.IsInterceptar && entidades.Count > 0)
+                {
+                    var interceptor = this.EstruturaEntidade?.Interceptador;
+                    if (!this.Contexto.InterceptoresAtivos.Contains(interceptor))
+                    {
+                        this.Contexto.InterceptoresAtivos.Add(interceptor);
+                        try
+                        {
+                            entidades = interceptor.__Interceptar(this.Contexto, entidades) as List<Entidade>;
+                        }
+                        finally
+                        {
+                            this.Contexto.InterceptoresAtivos.Remove(interceptor);
+                        }
+                    }
+                    return entidades;
+                }
                 return entidades;
             }
             catch
@@ -43,12 +61,10 @@ namespace Snebur.AcessoDados.Mapeamento
                 }
                 throw;
             }
-
         }
 
         internal protected List<IdTipoEntidade> RetornarIdTipoEntidade(BaseFiltroMapeamento filtro)
         {
-
             var sql = this.RetornarSqlIdTipoEntidade(filtro);
             var dataTable = this.ConexaoDB.RetornarDataTable(sql, this.Parametros);
             var idsTipoEntidade = AjudanteDataSetMapeamento.MapearIdTipoEntidade(dataTable);

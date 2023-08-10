@@ -134,6 +134,9 @@ namespace Snebur.AcessoDados.Estrutura
         internal EstruturaRelacaoNn[] TodasRelacoesNn()
                  => this.RetornarTodasEstruturasRelacaoRecursiva(ref this._todasRelacoesNn);
 
+        internal IInterceptador Interceptador { get; }
+
+        internal bool IsInterceptar { get; set; }
         #endregion
 
         #region Construtor
@@ -188,7 +191,8 @@ namespace Snebur.AcessoDados.Estrutura
             this.IsDeletarRegistro = ReflexaoUtil.TipoPossuiAtributo(this.TipoEntidade, typeof(DeletarRegristroAttribute), true);
             this.IsAutorizarInstanciaNaoEspecializada = ReflexaoUtil.TipoPossuiAtributo(this.TipoEntidade, typeof(AutorizarInstanciaNaoEspecializadaAttribute), true);
             this.IsSomenteLeitura = this.RetornarIsSomenteLeitura();
-
+            this.Interceptador = this.RetornarInterceptador(estruturaBancoDados, estruturaEntidadeBase);
+            this.IsInterceptar = this.Interceptador != null;
             //if (this.IsChavePrimariaAutoIncrimento)
             //{
             //    if (this.IsAbstrata && isBancoDadosNaoGerenciavel || !isBancoDadosNaoGerenciavel)
@@ -213,8 +217,6 @@ namespace Snebur.AcessoDados.Estrutura
             //    this.EstruturasCampos.Add(NOME_PROPRIEDADE_ID, this.EstruturaCampoChavePrimaria);
             //}
         }
-
-
 
         #endregion
 
@@ -432,6 +434,11 @@ namespace Snebur.AcessoDados.Estrutura
                 return this.EstruturaCampoNomeTipoEntidade;
             }
 
+            if (this.EstruturaCampoChavePrimaria.Propriedade.Name == chave)
+            {
+                return this.EstruturaCampoChavePrimaria;
+            }
+
             if (DebugUtil.IsAttached)
             {
                 if (this.EstruturasCampos.Any(x => x.Key.Equals(chave, StringComparison.InvariantCultureIgnoreCase)))
@@ -540,27 +547,35 @@ namespace Snebur.AcessoDados.Estrutura
             }
 
             var estruturaEntidadePai = estruturasEntidade[propriedade.PropertyType.Name];
-            var nomeCampoChaveEstrangeira = AjudanteEstruturaBancoDados.RetornarNomeCampoChaveEstrangeira(propriedade);
-
-            if (!this.EstruturasCampos.ContainsKey(nomeCampoChaveEstrangeira))
-            {
-                throw new Exception($"Não existe o campo {nomeCampoChaveEstrangeira} em {this.TipoEntidade.Name} ");
-            }
-            var estruturaCampoChaveEstrangeira = this.EstruturasCampos[nomeCampoChaveEstrangeira];
-
+            var nomePropriedadeChaveEstrangeira = AjudanteEstruturaBancoDados.RetornarNomePropriedadeChaveEstrangeira(propriedade);
+            var estruturaCampoChaveEstrangeira = this.RetornarEstruturaCampoChaveEstrangeira(nomePropriedadeChaveEstrangeira);
             this.EstruturasRelacoes.Add(propriedade.Name, new EstruturaRelacaoPai(propriedade, this, estruturaEntidadePai, estruturaCampoChaveEstrangeira));
+        }
+
+        public EstruturaCampo RetornarEstruturaCampoChaveEstrangeira(string nomePropriedadeChaveEstrageira)
+        {
+            if (this.EstruturasCampos.ContainsKey(nomePropriedadeChaveEstrageira))
+            {
+                return this.EstruturasCampos[nomePropriedadeChaveEstrageira];
+            }
+
+            if (this.EstruturaCampoChavePrimaria.Propriedade.Name == nomePropriedadeChaveEstrageira)
+            {
+                return this.EstruturaCampoChavePrimaria;
+            }
+            throw new Exception($"Não existe o campo {nomePropriedadeChaveEstrageira} em {this.TipoEntidade.Name} ");
         }
 
         private void AdicionarEstruturaRelacaoUmUm(PropertyInfo propriedade, DicionarioEstrutura<EstruturaEntidade> estruturasEntidade)
         {
             var estruturaEntidadePai = estruturasEntidade[propriedade.PropertyType.Name];
-            var nomeCampoChaveEstrangeira = AjudanteEstruturaBancoDados.RetornarNomeCampoChaveEstrangeira(propriedade);
-            var estruturaCampoChaveEstrangeira = this.EstruturasCampos[nomeCampoChaveEstrangeira];
-
+            var nomePropriedadeChaveEstrangeira = AjudanteEstruturaBancoDados.RetornarNomePropriedadeChaveEstrangeira(propriedade);
+            var estruturaCampoChaveEstrangeira = this.RetornarEstruturaCampoChaveEstrangeira(nomePropriedadeChaveEstrangeira);
             this.EstruturasRelacoes.Add(propriedade.Name, new EstruturaRelacaoUmUm(propriedade, this, estruturaEntidadePai, estruturaCampoChaveEstrangeira));
         }
 
-        private void AdicionarEstruturaRelacaoUmUmReversa(PropertyInfo propriedade, DicionarioEstrutura<EstruturaEntidade> estruturasEntidade)
+        private void AdicionarEstruturaRelacaoUmUmReversa(PropertyInfo propriedade, 
+                                                            DicionarioEstrutura<EstruturaEntidade> estruturasEntidade)
         {
             var atributoRelacaoUmUmReversa = propriedade.GetCustomAttribute<RelacaoUmUmReversaAttribute>();
             var estruturaEntidadePai = estruturasEntidade[propriedade.PropertyType.Name];
@@ -644,10 +659,10 @@ namespace Snebur.AcessoDados.Estrutura
 
             var estruturasRelacaoPai = estruturaEntidadeRelacaoNn.EstruturasRelacoes.Values.OfType<EstruturaRelacaoPai>().ToList();
 
-            var nomeCampoChaveEstrangeiraPai = AjudanteEstruturaBancoDados.RetornarNomeCampoChaveEstrangeira(propriedadeRelacaoEntidadePai);
-            var nomeCampoChaveEstrangeiraFilho = AjudanteEstruturaBancoDados.RetornarNomeCampoChaveEstrangeira(propriedadeRelacaoEntidadeFilho);
-            var estruturaCampoChaveEstrangeiraPai = estruturaEntidadeRelacaoNn.RetornarEstruturaCampo(nomeCampoChaveEstrangeiraPai);
-            var estruturaCampoChaveEstrangeiraFilho = estruturaEntidadeRelacaoNn.RetornarEstruturaCampo(nomeCampoChaveEstrangeiraFilho);
+            var nomePropriedadehaveEstrangeiraPai = AjudanteEstruturaBancoDados.RetornarNomePropriedadeChaveEstrangeira(propriedadeRelacaoEntidadePai);
+            var nomePropriedadeChaveEstrangeiraFilho = AjudanteEstruturaBancoDados.RetornarNomePropriedadeChaveEstrangeira(propriedadeRelacaoEntidadeFilho);
+            var estruturaCampoChaveEstrangeiraPai = estruturaEntidadeRelacaoNn.RetornarEstruturaCampo(nomePropriedadehaveEstrangeiraPai);
+            var estruturaCampoChaveEstrangeiraFilho = estruturaEntidadeRelacaoNn.RetornarEstruturaCampo(nomePropriedadeChaveEstrangeiraFilho);
 
             var estruturaRelacaoNn = new EstruturaRelacaoNn(propriedade, estruturaEntidadeRelacaoNn, estruturaEntidadePai, estruturaEntidadeFilho, estruturaCampoChaveEstrangeiraPai, estruturaCampoChaveEstrangeiraFilho);
 
@@ -675,7 +690,17 @@ namespace Snebur.AcessoDados.Estrutura
 
         private EstruturaCampo RetornarEstruturaCampoIdentificadorProprietario()
         {
-            return this.EstruturasCampos.Values.Where(x => ReflexaoUtil.PropriedadePossuiAtributo(x.Propriedade, typeof(PropriedadeIdentificadorProprietarioAttribute))).SingleOrDefault();
+            var campoIdentificadorProprietario = this.EstruturasCampos.Values.Where(x => ReflexaoUtil.PropriedadePossuiAtributo(x.Propriedade, typeof(PropriedadeIdentificadorProprietarioAttribute))).SingleOrDefault();
+            if (campoIdentificadorProprietario != null)
+            {
+                return campoIdentificadorProprietario;
+            }
+
+            if (ReflexaoUtil.PropriedadePossuiAtributo(this.EstruturaCampoChavePrimaria.Propriedade, typeof(PropriedadeIdentificadorProprietarioAttribute)))
+            {
+                return this.EstruturaCampoChavePrimaria;
+            }
+            return null;
         }
 
         private EstruturaCampo RetornarEstruturaEstruturaCampoUsuario()
@@ -781,7 +806,7 @@ namespace Snebur.AcessoDados.Estrutura
         {
             var atributoNotificarTodasPropriedade = this.TipoEntidade.GetCustomAttribute<NotificarTodasAlteracoesPropriedadeGenericaAttribute>(false);
             var isNotificarTodasPropriedades = atributoNotificarTodasPropriedade != null;
-             
+
             var estruturasAlteracaoPropriedade = new List<EstruturaAlteracaoPropriedadeGenerica>();
             var propriedades = ReflexaoUtil.RetornarPropriedades(this.TipoEntidade, true, true);
             foreach (var propriedade in propriedades)
@@ -865,6 +890,23 @@ namespace Snebur.AcessoDados.Estrutura
             }
             return null;
         }
+
+        private IInterceptador RetornarInterceptador(EstruturaBancoDados estruturaBancoDados,
+                                                     EstruturaEntidade estruturaEntidadeBase)
+        {
+            var interceptorBase = estruturaEntidadeBase?.Interceptador;
+            if (estruturaBancoDados.Interceptadores.ContainsKey(this.TipoEntidade))
+            {
+                var interceptador = estruturaBancoDados.Interceptadores[this.TipoEntidade].Instancia;
+                if (interceptorBase != null)
+                {
+                    interceptador.SetInterceptadorBase(interceptorBase);
+                }
+                return interceptador;
+            }
+            return estruturaEntidadeBase?.Interceptador;
+        }
+
         #endregion
 
         public override string ToString()
@@ -881,4 +923,6 @@ namespace Snebur.AcessoDados.Estrutura
             return Math.Min(take, this.MaximoRegistroPorConsulta);
         }
     }
+
+
 }
