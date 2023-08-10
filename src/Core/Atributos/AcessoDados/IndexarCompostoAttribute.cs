@@ -7,10 +7,13 @@ namespace Snebur.Dominio.Atributos
 {
     [IgnorarAtributoTS]
     [AttributeUsage(AttributeTargets.Class)]
-    public class IndexarCompostoAttribute : Attribute
+    public class IndexarCompostoAttribute : Attribute, IAtributoMigracao
     {
         public Type TipoEntidade { get; }
         public string[] NomesPropriedade { get; }
+
+        [IgnorarPropriedadeTS, IgnorarPropriedadeTSReflexao]
+        public bool IsIgnorarMigracao { get; set; }
         public List<PropriedadeIndexar> Propriedades { get; } = new List<PropriedadeIndexar>();
 
         public IndexarCompostoAttribute(Type tipoEntidade, params string[] nomesPropriedade)
