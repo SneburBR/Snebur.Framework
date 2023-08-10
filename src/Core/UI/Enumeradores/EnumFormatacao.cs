@@ -107,6 +107,8 @@ namespace Snebur.UI
 
         Peso, //"peso",
 
-        Prazo // "prazo",
+        Prazo, // "prazo",
+
+        DoisPontosFinal
     }
 }
