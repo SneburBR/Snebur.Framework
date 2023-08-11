@@ -68,7 +68,6 @@ namespace Snebur.AcessoDados
         public TEntidade Single()
         {
             this.EstruturaConsulta.Take = 2;
-            
             return (TEntidade)this.RetornarResultadoConsulta().Entidades.Single();
         }
 

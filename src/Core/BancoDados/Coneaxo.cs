@@ -20,7 +20,7 @@ namespace Snebur.BancoDados
 {
     public class Conexao : IDisposable
     {
-        private string NomeConnectionString;
+        public string NomeConnectionString;
         private string ConnectionString;
 
         public Conexao(string nomeConnectionString)
