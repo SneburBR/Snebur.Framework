@@ -11,6 +11,9 @@ namespace Snebur.Dominio
         DiasCorrido = 1,
 
         [Rotulo("Horas")]
-        Horas = 2
+        Horas = 2,
+
+        [Rotulo("Horas úteis")]
+        HorasUteis = 3,
     }
 }
