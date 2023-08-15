@@ -43,8 +43,6 @@ namespace System.Reflection
                     propriedade.SetValue(obj, value);
                     return true;
                 }
-
-
                 return false;
             }
             catch (Exception ex)
@@ -100,7 +98,5 @@ namespace System.Reflection
             }
             throw new Erro(String.Format("Não foi encontrado um chave estrangeira para a propriedade {0} em {1} ", propriedade.Name, propriedade.DeclaringType.Name));
         }
-
-        
     }
 }
