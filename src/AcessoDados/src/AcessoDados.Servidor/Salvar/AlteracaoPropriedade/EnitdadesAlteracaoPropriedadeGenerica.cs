@@ -23,7 +23,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                 var estruturaEntidade = this.Contexto.EstruturaBancoDados.EstruturasEntidade[entidade.GetType().Name];
                 foreach (var estruturaAlteracaoPropriedade in estruturaEntidade.TodasEstruturasAlteracaoPropriedadeGenerica)
                 {
-                    var (isExisteAltracao, valorAtual) = this.IsExisteAlteracaoPropriedade(entidade, 
+                    var (isExisteAltracao, valorAtual) = this.IsExisteAlteracaoPropriedade(entidade,
                                                                                           estruturaAlteracaoPropriedade);
                     if (isExisteAltracao)
                     {
@@ -33,7 +33,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                             var ultimaAlteracao = this.RetornarUtlimaAlteracaoGenerica(entidade, estruturaEntidade, estruturaAlteracaoPropriedade);
                             if (ultimaAlteracao != null)
                             {
-                                ultimaAlteracao.DataHoraFimAlteracao = DateTime.UtcNow;
+                                ultimaAlteracao.DataHoraFimAlteracao = this.Contexto.EstruturaBancoDados.IsDateTimeUtc ? DateTime.UtcNow : DateTime.Now;
                                 alteracoesPropriedade.Add((Entidade)ultimaAlteracao);
                             }
                         }
@@ -50,7 +50,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 
                         novaAlteracao.NomeTipoEntidade = estruturaEntidade.NomeTipoEntidade;
                         novaAlteracao.NomePropriedade = estruturaAlteracaoPropriedade.Propriedade.Name;
-                        novaAlteracao.TipoPrimario =   estruturaAlteracaoPropriedade.EstruturaCampo?.TipoPrimarioEnum;
+                        novaAlteracao.TipoPrimario = estruturaAlteracaoPropriedade.EstruturaCampo?.TipoPrimarioEnum;
                         novaAlteracao.IsTipoComplexo = estruturaAlteracaoPropriedade.IsTipoComplexo;
                         novaAlteracao.Usuario = this.Contexto.UsuarioLogado;
                         novaAlteracao.SessaoUsuario = this.Contexto.SessaoUsuarioLogado;
