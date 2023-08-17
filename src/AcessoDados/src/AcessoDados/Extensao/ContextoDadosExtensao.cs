@@ -42,7 +42,12 @@ namespace Snebur.AcessoDados
             }
             var entidadeInterna = (IEntidadeInterna)clone;
             entidadeInterna.AtribuirPropriedadesAbertas(propriedadesAbertas);
-            return contexto.Salvar(clone);
+            var resultado = contexto.Salvar(clone);
+            if (resultado.IsSucesso)
+            {
+                entidade.__PropriedadesAlteradas?.RemoveAll(propriedadesAbertas);
+            }
+            return resultado;
         }
 
         public static ResultadoSalvar SalvarPropriedades<TEntidade>(this IContextoDados contexto,
@@ -50,27 +55,40 @@ namespace Snebur.AcessoDados
                                                          params Expression<Func<TEntidade, object>>[] expressoesPropriedade) where TEntidade : Entidade
         {
             var entidadesSalvar = new List<TEntidade>();
+            var propriedadesAbertas = new List<PropertyInfo>();
+            var nomesPropriedades = new List<string>();
+            foreach (var expressao in expressoesPropriedade)
+            {
+                var propriedade = ExpressaoUtil.RetornarPropriedade(expressao);
+                propriedadesAbertas.Add(propriedade);
+            }
+
             foreach (var entidade in entidades)
             {
                 var clone = entidade.CloneSomenteId(expressoesPropriedade);
-                var propriedadesAbertas = new List<string>();
-                foreach (var expressao in expressoesPropriedade)
+                foreach (var propriedade in propriedadesAbertas)
                 {
-                    var propriedade = ExpressaoUtil.RetornarPropriedade(expressao);
-                    if (propriedade.TrySetValue(clone, propriedade.GetValue(entidade)))
+
+                    if (!propriedade.TrySetValue(clone, propriedade.GetValue(entidade)))
                     {
-                        propriedadesAbertas.Add(propriedade.Name);
+                        nomesPropriedades.Remove(propriedade.Name);
                     }
                 }
                 var entidadeInterna = (IEntidadeInterna)clone;
-                entidadeInterna.AtribuirPropriedadesAbertas(propriedadesAbertas);
+                entidadeInterna.AtribuirPropriedadesAbertas(nomesPropriedades);
                 entidadesSalvar.Add(clone);
             }
-            return contexto.Salvar(entidadesSalvar);
+            var resultado = contexto.Salvar(entidadesSalvar);
+            if (resultado.IsSucesso)
+            {
+                foreach (var entidade in entidadesSalvar)
+                {
+                    entidade.__PropriedadesAlteradas?.RemoveAll(nomesPropriedades);
+                }
+            }
+            return resultado;
         }
-
-
-
+         
         public static void RecuperarPropriedade<TEntidade>(this IContextoDados contexto,
                                                           TEntidade entidade,
                                                           Expression<Func<TEntidade, object>> expressaoPropriedade) where TEntidade : Entidade
