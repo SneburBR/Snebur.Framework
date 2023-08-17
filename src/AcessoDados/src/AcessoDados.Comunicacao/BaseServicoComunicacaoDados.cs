@@ -2,6 +2,7 @@
 using Snebur.Servicos;
 using Snebur.Utilidade;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
 using System.Text;
@@ -17,6 +18,8 @@ namespace Snebur.AcessoDados.Comunicacao
         public IsolationLevel IsolamentoTransacao { get; protected set; } = ConfiguracaoAcessoDados.IsolamentoLevelSalvarPadrao;
         public virtual bool IsPermitirIdentificadorProprietarioGlobal { get; protected set; } = false;
 
+        protected List<Action> ExecutarDepoisCommit { get; } = new List<Action>();
+
         public bool IsServicoTransacionadoDB
         {
             get => this.IsManterCache == false && this._isServicoTransacionadoDB;
@@ -29,7 +32,7 @@ namespace Snebur.AcessoDados.Comunicacao
                 this._isServicoTransacionadoDB = value;
             }
         }
-         
+
         private bool IsSessaoUsuarioValida
         {
             get
@@ -85,6 +88,7 @@ namespace Snebur.AcessoDados.Comunicacao
                     {
                         this.ContextoDados.Commit();
                     }
+                    this.ExecutarDepoisCommit.ForEach(acao => acao());  
                     return resultado;
                 }
 

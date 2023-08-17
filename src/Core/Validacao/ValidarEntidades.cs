@@ -27,7 +27,8 @@ namespace Snebur.Dominio
                 var propriedades = ReflexaoUtil.RetornarPropriedades(entidade.GetType());
                 foreach (var propriedade in propriedades)
                 {
-                    if (entidade.Id == 0 || (entidade.__PropriedadesAlteradas != null && entidade.__PropriedadesAlteradas.ContainsKey(propriedade.Name)))
+                    if (entidade.Id == 0 || (entidade.__PropriedadesAlteradas != null && 
+                                             entidade.__PropriedadesAlteradas.ContainsKey(propriedade.Name)))
                     {
                         var atributosValidacao = ValidacaoUtil.RetornarAtributosValidacao(propriedade);
                         if (atributosValidacao.Count > 0)
@@ -41,7 +42,10 @@ namespace Snebur.Dominio
                                     {
                                         NomeTipoEntidade = entidade.__NomeTipoEntidade,
                                         NomePropriedade = propriedade.Name,
-                                        Mensagem = String.Format("Entidade : '{0}' - {1}", entidade.__NomeTipoEntidade, atributoValidacao.RetornarMensagemValidacao(propriedade, entidade, valorPropriedade)),
+                                        Mensagem = String.Format("Entidade : '{0}' - {1}", entidade.__NomeTipoEntidade, 
+                                                                                           atributoValidacao.RetornarMensagemValidacao(propriedade, 
+                                                                                                                                       entidade, 
+                                                                                                                                       valorPropriedade)),
                                         NomeTipoValidacao = atributoValidacao.GetType().Name
                                     };
 
