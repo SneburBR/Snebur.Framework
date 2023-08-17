@@ -15,9 +15,28 @@ namespace System
             return default;
         }
 
+        public static void RemoveAll<TKey, TValue>(this Dictionary<TKey, TValue> dicionario, IEnumerable<TKey> keys)
+        {
+            foreach (var key in keys)
+            {
+                dicionario.TryRemove(key);
+            }
+        }
+
+        public static void TryRemove<TKey, TValue>(this Dictionary<TKey, TValue> dicionario, TKey key)
+        {
+            lock ((dicionario as ICollection).SyncRoot)
+            {
+                if (dicionario.ContainsKey(key))
+                {
+                    dicionario.Remove(key);
+                }
+            }
+        }
+
         public static void AddOrUpdate<TKey, TValue>(this Dictionary<TKey, TValue> dicionario,
-                                       TKey key,
-                                       TValue value)
+                                   TKey key,
+                                   TValue value)
         {
             lock ((dicionario as ICollection).SyncRoot)
             {

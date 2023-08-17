@@ -32,6 +32,8 @@ namespace Snebur.AcessoDados.Estrutura
 
         internal DateTimeKind DateTimeKindPadrao { get; }
 
+        internal bool IsDateTimeUtc => this.DateTimeKindPadrao == DateTimeKind.Utc; 
+
 
 
         #region  Construtor 
