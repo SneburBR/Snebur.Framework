@@ -370,7 +370,7 @@ namespace Snebur.Dominio
             return ValidarEntidades.Validar(contextoDados, this);
         }
 
-        public TEntidade CloneSomenteId<TEntidade>(Expression<Func<TEntidade, object>>[] expressoesPropriedade) where TEntidade : Entidade, IEntidade
+        public TEntidade CloneSomenteId<TEntidade>(Expression<Func<TEntidade, object>>[] expressoesPropriedade = null) where TEntidade : Entidade, IEntidade
         {
             var entidadeClonada = (TEntidade)Activator.CreateInstance(this.__TipoEntidade);
             entidadeClonada.__IsClonado = true;
@@ -382,7 +382,7 @@ namespace Snebur.Dominio
                 foreach (var expressaPropriedade in expressoesPropriedade)
                 {
                     var propriedade = ExpressaoUtil.RetornarPropriedade(expressaPropriedade);
-                    if (propriedade.DeclaringType != typeof(Entidade))
+                    if (propriedade.DeclaringType != typeof(Entidade)  )
                     {
                         propriedade.TrySetValue(entidadeClonada, propriedade.GetValue(this), true);
                     }
