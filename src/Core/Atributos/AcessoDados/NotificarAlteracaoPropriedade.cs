@@ -24,10 +24,10 @@ namespace Snebur.Dominio.Atributos
         public NotificarAlteracaoPropriedadeAttribute(Type tipoEntidadeAlteracaoPropriedade,
                                                       string nomePropriedadeRelacao,
                                                       string nomePropriedadeAlterada,
-                                                      EnumOpcoesAlterarPropriedade flags = EnumOpcoesAlterarPropriedade.None)
+                                                      EnumOpcoesAlterarPropriedade opcoes = EnumOpcoesAlterarPropriedade.Nenhuma)
         {
             this.TipoEntidadeAlteracaoPropriedade = tipoEntidadeAlteracaoPropriedade;
-            this.Opcoes = flags;
+            this.Opcoes = opcoes;
 
             var nomePropriedadeValorAntigo = this.RetornarNomePropriedadeValorAntigo(nomePropriedadeAlterada);
             this.NomePropriedadeRelacao = nomePropriedadeRelacao;
