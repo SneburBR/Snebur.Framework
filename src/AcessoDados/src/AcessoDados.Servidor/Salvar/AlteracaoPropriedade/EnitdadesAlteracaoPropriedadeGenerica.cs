@@ -23,11 +23,25 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                 var estruturaEntidade = this.Contexto.EstruturaBancoDados.EstruturasEntidade[entidade.GetType().Name];
                 foreach (var estruturaAlteracaoPropriedade in estruturaEntidade.TodasEstruturasAlteracaoPropriedadeGenerica)
                 {
-                    var (isExisteAltracao, valorAtual) = this.IsExisteAlteracaoPropriedade(entidade,
+                    var (isExisteAltracao, valorAntigo) = this.IsExisteAlteracaoPropriedade(entidade,
                                                                                           estruturaAlteracaoPropriedade);
                     if (isExisteAltracao)
                     {
                         var valorPropriedade = estruturaAlteracaoPropriedade.Propriedade.GetValue(entidade);
+                        if (estruturaAlteracaoPropriedade.IsIgnorarValorAntigoNull && valorAntigo == null)
+                        {
+                            continue;
+                        }
+
+                        if (estruturaAlteracaoPropriedade.IsIgnorarZeroIgualNull)
+                        {
+                            if ((valorPropriedade is null || valorPropriedade.Equals(0)) &&
+                                (valorAntigo is null || valorAntigo.Equals(0)))
+                            {
+                                continue;
+                            }
+                        }
+
                         if (estruturaAlteracaoPropriedade.IsSalvarDataHoraFimAlteracao)
                         {
                             var ultimaAlteracao = this.RetornarUtlimaAlteracaoGenerica(entidade, estruturaEntidade, estruturaAlteracaoPropriedade);
@@ -45,7 +59,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                         novaAlteracao.ValorPropriedadeAlterada = SerializacaoUtil.SerializarTipoSimples(valorPropriedade).
                                                                                   RetornarPrimeirosCaracteres(5000);
 
-                        novaAlteracao.ValorPropriedadeAntigo = SerializacaoUtil.SerializarTipoSimples(valorAtual).
+                        novaAlteracao.ValorPropriedadeAntigo = SerializacaoUtil.SerializarTipoSimples(valorAntigo).
                                                                                   RetornarPrimeirosCaracteres(5000);
 
                         novaAlteracao.NomeTipoEntidade = estruturaEntidade.NomeTipoEntidade;

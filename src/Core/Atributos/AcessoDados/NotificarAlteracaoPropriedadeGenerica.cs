@@ -6,17 +6,17 @@ namespace Snebur.Dominio.Atributos
     [AttributeUsage(AttributeTargets.Property)]
     public class NotificarAlteracaoPropriedadeGenericaAttribute : BaseAtributoDominio, INotificarAlteracaoPropriedade
     {
-        public EnunFlagAlteracaoPropriedade Flags { get; }
-        public NotificarAlteracaoPropriedadeGenericaAttribute(EnunFlagAlteracaoPropriedade flags = EnunFlagAlteracaoPropriedade.None)
+        public EnumOpcoesAlterarPropriedade Opcoes { get; }
+        public NotificarAlteracaoPropriedadeGenericaAttribute(EnumOpcoesAlterarPropriedade opcoes = EnumOpcoesAlterarPropriedade.None)
         {
-            this.Flags = flags;
+            this.Opcoes = opcoes;
         }
     }
 
     [AttributeUsage(AttributeTargets.Class)]
     public class NotificarTodasAlteracoesPropriedadeGenericaAttribute : BaseAtributoDominio, INotificarAlteracaoPropriedade
     {
-        public EnunFlagAlteracaoPropriedade Flags { get; }
+        public EnumOpcoesAlterarPropriedade Opcoes { get; }
         public NotificarTodasAlteracoesPropriedadeGenericaAttribute()
         {
 
@@ -26,6 +26,6 @@ namespace Snebur.Dominio.Atributos
     [IgnorarInterfaceTS]
     public interface INotificarAlteracaoPropriedade
     {
-        EnunFlagAlteracaoPropriedade Flags { get; }
+        EnumOpcoesAlterarPropriedade Opcoes { get; }
     }
 }

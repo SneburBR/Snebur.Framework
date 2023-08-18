@@ -12,9 +12,11 @@ namespace Snebur.AcessoDados.Estrutura
         public EstruturaTipoComplexo EstruturaTipoComplexo { get; }
         public TAtributo Atributo { get; }
         public bool IsTipoComplexo { get; }
-        public bool IsNotificarNovoCadastro => this.Atributo.Flags.HasFlag(EnunFlagAlteracaoPropriedade.NotificarNovoCadastro);
-        public bool IsVerificarAlteracaoBanco => this.Atributo.Flags.HasFlag(EnunFlagAlteracaoPropriedade.VerificarAlteracaoNoBanco);
-        public bool IsSalvarDataHoraFimAlteracao => this.Atributo.Flags.HasFlag(EnunFlagAlteracaoPropriedade.AtualizarDataHoraFimAlteracao);
+        public bool IsNotificarNovoCadastro => (this.Atributo.Opcoes & EnumOpcoesAlterarPropriedade.NotificarNovoCadastro) == EnumOpcoesAlterarPropriedade.NotificarNovoCadastro;
+        public bool IsVerificarAlteracaoBanco => (this.Atributo.Opcoes & EnumOpcoesAlterarPropriedade.VerificarAlteracaoNoBanco) == EnumOpcoesAlterarPropriedade.VerificarAlteracaoNoBanco;
+        public bool IsSalvarDataHoraFimAlteracao => (this.Atributo.Opcoes & EnumOpcoesAlterarPropriedade.AtualizarDataHoraFimAlteracao) == EnumOpcoesAlterarPropriedade.AtualizarDataHoraFimAlteracao;
+        public bool IsIgnorarZeroIgualNull => (this.Atributo.Opcoes & EnumOpcoesAlterarPropriedade.IgnorarZeroIgualNull) == EnumOpcoesAlterarPropriedade.IgnorarZeroIgualNull;
+        public bool IsIgnorarValorAntigoNull => (this.Atributo.Opcoes & EnumOpcoesAlterarPropriedade.IgnorarValorAntigoNull) == EnumOpcoesAlterarPropriedade.IgnorarValorAntigoNull;
 
         internal BaseEstruturaAlteracaoPropriedade(PropertyInfo propriedade,
                                                    EstruturaEntidade estruturaEntidade,

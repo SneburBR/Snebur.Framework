@@ -19,15 +19,15 @@ namespace Snebur.Dominio.Atributos
         public PropertyInfo PropriedadeValorAlterado { get; }
         public PropertyInfo PropriedadeValorAntigo { get; }
  
-        public EnunFlagAlteracaoPropriedade Flags { get; }
+        public EnumOpcoesAlterarPropriedade Opcoes { get; }
          
         public NotificarAlteracaoPropriedadeAttribute(Type tipoEntidadeAlteracaoPropriedade,
                                                       string nomePropriedadeRelacao,
                                                       string nomePropriedadeAlterada,
-                                                      EnunFlagAlteracaoPropriedade flags = EnunFlagAlteracaoPropriedade.None)
+                                                      EnumOpcoesAlterarPropriedade flags = EnumOpcoesAlterarPropriedade.None)
         {
             this.TipoEntidadeAlteracaoPropriedade = tipoEntidadeAlteracaoPropriedade;
-            this.Flags = flags;
+            this.Opcoes = flags;
 
             var nomePropriedadeValorAntigo = this.RetornarNomePropriedadeValorAntigo(nomePropriedadeAlterada);
             this.NomePropriedadeRelacao = nomePropriedadeRelacao;
