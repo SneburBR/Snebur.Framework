@@ -47,6 +47,7 @@ namespace Snebur.AcessoDados
                                 {
                                     try
                                     {
+                                        cmd.CommandTimeout = 50000;
                                         cmd.ExecuteNonQuery();
                                         DepuracaoUtil.EscreverSaida(this.Contexto, new List<DbParameter>(), sql);
                                     }

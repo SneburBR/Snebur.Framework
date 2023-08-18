@@ -173,10 +173,10 @@ namespace Snebur.Dominio
         {
             if (this.__IsControladorPropriedadesAlteradaAtivo)
             {
-                if (this.__PropriedadesAlteradas?.Count == 0)
-                {
-                    this.__PropriedadesAlteradas = null;
-                }
+                //if (this.__PropriedadesAlteradas?.Count == 0)
+                //{
+                //    this.__PropriedadesAlteradas = null;
+                //}
                 //this.__isControleProprieadesDestativado = true;
                 this.__IsControladorPropriedadesAlteradaAtivo = false;
             }
