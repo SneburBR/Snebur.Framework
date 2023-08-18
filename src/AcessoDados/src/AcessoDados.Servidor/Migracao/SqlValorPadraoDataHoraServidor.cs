@@ -10,14 +10,16 @@ namespace Snebur.AcessoDados
     internal class SqlValorPadraoDataHoraServidor : SqlMigracao
     {
         internal PropertyInfo Propriedade { get; set; }
-        internal bool DataHoraUTC { get; set; }
+        internal bool IsDataHoraUTC { get; set; }
         internal string CampoChavePrimaria { get; set; }
         internal string CampoDataHoraPadrao { get; set; }
 
-        internal SqlValorPadraoDataHoraServidor(EstruturaEntidade estruturaEntidade, PropertyInfo propriedade, bool dataHoraUTc) : base(estruturaEntidade, new List<PropertyInfo> { propriedade })
+        internal SqlValorPadraoDataHoraServidor(EstruturaEntidade estruturaEntidade, 
+                                                PropertyInfo propriedade, 
+                                                bool isDataHoraUTc) : base(estruturaEntidade, new List<PropertyInfo> { propriedade })
         {
             this.Propriedade = propriedade;
-            this.DataHoraUTC = dataHoraUTc;
+            this.IsDataHoraUTC = isDataHoraUTc;
             this.CampoChavePrimaria = this.EstruturaEntidade.EstruturaCampoChavePrimaria.NomeCampo;
             this.CampoDataHoraPadrao = this.Campos.Single();
         }
@@ -27,7 +29,7 @@ namespace Snebur.AcessoDados
             var nomeFuncao = this.RetornarNomeFuncao();
             var nomeGatilho = this.RetornarNomeGatilho();
 
-            var funcaoDataHora = (!this.DataHoraUTC) ? " statement_timestamp()" : " CAST(statement_timestamp() at time zone 'utc' AS timestamp)";
+            var funcaoDataHora = (!this.IsDataHoraUTC) ? " statement_timestamp()" : " CAST(statement_timestamp() at time zone 'utc' AS timestamp)";
 
             var sb = new StringBuilder();
 
@@ -51,7 +53,7 @@ namespace Snebur.AcessoDados
 
         protected override string RetornarSql_SqlServer()
         {
-            var funcaoHora = (this.DataHoraUTC) ? " GETUTCDATE() " : " GETDATE() ";
+            var funcaoHora = (this.IsDataHoraUTC) ? " GETUTCDATE() " : " GETDATE() ";
             var nomeGatilho = this.RetornarNomeGatilho();
             var sb = new StringBuilder();
 
