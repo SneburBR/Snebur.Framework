@@ -5,6 +5,8 @@ namespace Snebur.UI
     [IgnorarEnumTS]
     public enum EnumFormatacao
     {
+        Nenhuma, 
+
         Bytes,// "bytes",
 
         Cep, // "cep",
