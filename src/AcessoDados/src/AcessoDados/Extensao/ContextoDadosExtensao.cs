@@ -1,4 +1,5 @@
 ﻿using Snebur.Dominio;
+using Snebur.Serializacao;
 using Snebur.Utilidade;
 using System;
 using System.Collections;
@@ -7,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace Snebur.AcessoDados
 {
@@ -30,24 +32,39 @@ namespace Snebur.AcessoDados
                                                                     TEntidade entidade,
                                                                     params Expression<Func<TEntidade, object>>[] expressoesPropriedade) where TEntidade : Entidade
         {
-            var clone = entidade.CloneSomenteId(expressoesPropriedade);
-            var propriedadesAbertas = new List<string>();
-            foreach (var expressao in expressoesPropriedade)
+            if (entidade.__IsExisteAlteracao)
             {
-                var propriedade = ExpressaoUtil.RetornarPropriedade(expressao);
-                if (propriedade.TrySetValue(clone, propriedade.GetValue(entidade)))
+                var clone = entidade.CloneSomenteId<TEntidade>(null);
+                (clone as IBaseDominioControladorPropriedade).DestivarControladorPropriedadeAlterada();
+                var propriedadesAbertas = new List<string>();
+                foreach (var expressao in expressoesPropriedade)
                 {
-                    propriedadesAbertas.Add(propriedade.Name);
+                    var propriedade = ExpressaoUtil.RetornarPropriedade(expressao);
+                    if (entidade.__PropriedadesAlteradas?.ContainsKey(propriedade.Name) == true)
+                    {
+                        if (propriedade.TrySetValue(clone, propriedade.GetValue(entidade)))
+                        {
+                            propriedadesAbertas.Add(propriedade.Name);
+                            clone.__PropriedadesAlteradas.Add(propriedade.Name, entidade.__PropriedadesAlteradas[propriedade.Name]);
+                        }
+                    }
                 }
+                clone.AtivarControladorPropriedadeAlterada();
+                var entidadeInterna = (IEntidadeInterna)clone;
+                entidadeInterna.AtribuirPropriedadesAbertas(propriedadesAbertas);
+                var resultado = contexto.Salvar(clone);
+                if (resultado.IsSucesso)
+                {
+                    entidade.__PropriedadesAlteradas?.RemoveAll(propriedadesAbertas);
+                }
+                return resultado;
             }
-            var entidadeInterna = (IEntidadeInterna)clone;
-            entidadeInterna.AtribuirPropriedadesAbertas(propriedadesAbertas);
-            var resultado = contexto.Salvar(clone);
-            if (resultado.IsSucesso)
+
+            return new ResultadoSalvar
             {
-                entidade.__PropriedadesAlteradas?.RemoveAll(propriedadesAbertas);
-            }
-            return resultado;
+                IsSucesso = true,
+                MensagemErro = "Nenhuma propriedade foi alterada"
+            };
         }
 
         public static ResultadoSalvar SalvarPropriedades<TEntidade>(this IContextoDados contexto,
@@ -65,19 +82,31 @@ namespace Snebur.AcessoDados
 
             foreach (var entidade in entidades)
             {
-                var clone = entidade.CloneSomenteId(expressoesPropriedade);
-                foreach (var propriedade in propriedadesAbertas)
+                if (entidade.__IsExisteAlteracao)
                 {
-
-                    if (!propriedade.TrySetValue(clone, propriedade.GetValue(entidade)))
+                    var clone = entidade.CloneSomenteId<TEntidade>(null);
+                    (clone as IBaseDominioControladorPropriedade).DestivarControladorPropriedadeAlterada();
+                    foreach (var propriedade in propriedadesAbertas)
                     {
-                        nomesPropriedades.Remove(propriedade.Name);
+                        if (entidade.__PropriedadesAlteradas?.ContainsKey(propriedade.Name) == true)
+                        {
+                            if (propriedade.TrySetValue(clone, propriedade.GetValue(entidade)))
+                            {
+                                clone.__PropriedadesAlteradas.Add(propriedade.Name, entidade.__PropriedadesAlteradas[propriedade.Name]);
+                            }
+                            else
+                            {
+                                nomesPropriedades.Remove(propriedade.Name);
+                            }
+                        }
                     }
+                    var entidadeInterna = (IEntidadeInterna)clone;
+                    entidadeInterna.AtribuirPropriedadesAbertas(nomesPropriedades);
+                    entidadesSalvar.Add(clone);
                 }
-                var entidadeInterna = (IEntidadeInterna)clone;
-                entidadeInterna.AtribuirPropriedadesAbertas(nomesPropriedades);
-                entidadesSalvar.Add(clone);
             }
+
+
             var resultado = contexto.Salvar(entidadesSalvar);
             if (resultado.IsSucesso)
             {
@@ -88,7 +117,10 @@ namespace Snebur.AcessoDados
             }
             return resultado;
         }
-         
+
+        
+
+
         public static void RecuperarPropriedade<TEntidade>(this IContextoDados contexto,
                                                           TEntidade entidade,
                                                           Expression<Func<TEntidade, object>> expressaoPropriedade) where TEntidade : Entidade
@@ -132,6 +164,7 @@ namespace Snebur.AcessoDados
                 foreach (var entidade in entidades)
                 {
                     var entidadeRecuperada = entidadesRecuperada.Where(x => x.Id == entidade.Id).Single();
+                    AdicionarPropriedadeAberta(entidade, propriedade.Name);
                     propriedade.SetValue(entidade, propriedade.GetValue(entidadeRecuperada));
                 }
 
@@ -163,15 +196,27 @@ namespace Snebur.AcessoDados
             {
                 var propriedades = ExpressaoUtil.RetornarPropriedades(expressao);
                 var propriedade = propriedades.First();
+                AdicionarPropriedadeAberta(entidade, propriedade.Name);
+
                 propriedade.SetValue(entidade, propriedade.GetValue(entidadeRecuperada));
             }
         }
 
-        public static void AbrirRelacoes<TEntidade, TRelacao>(this IContextoDados contexto,
-                                            IEnumerable<TEntidade> entidades,
-                                            params Expression<Func<TEntidade, TRelacao>>[] expressoesRelacao) where TEntidade : Entidade where TRelacao : Entidade
+        private static void AdicionarPropriedadeAberta(IEntidadeInterna entidade,
+                                                       string nomePropriedade)
         {
+            if (entidade.__PropriedadesAbertas?.Count > 0 &&
+                !entidade.__PropriedadesAbertas.Contains(nomePropriedade))
+            {
+                entidade.__PropriedadesAbertas.Add(nomePropriedade);
+            }
+        }
 
+
+        public static void AbrirRelacoes<TEntidade, TRelacao>(this IContextoDados contexto,
+                                                             IEnumerable<TEntidade> entidades,
+                                                              params Expression<Func<TEntidade, TRelacao>>[] expressoesRelacao) where TEntidade : Entidade where TRelacao : Entidade
+        {
             var ids = entidades.Select(x => x.Id).ToList();
             var consulta = contexto.RetornarConsulta<TEntidade>(typeof(TEntidade)).
                                                     WhereIds(ids);
@@ -179,11 +224,13 @@ namespace Snebur.AcessoDados
             var entidadesRecuperada = consulta.ToList();
             foreach (var entidade in entidades)
             {
+
                 var entidadeRecuperada = entidadesRecuperada.Where(x => x.Id == entidade.Id).Single();
                 foreach (var expressao in expressoesRelacao)
                 {
                     var propriedades = ExpressaoUtil.RetornarPropriedades(expressao);
                     var propriedade = propriedades.First();
+                    AdicionarPropriedadeAberta(entidade, propriedade.Name);
                     propriedade.SetValue(entidade, propriedade.GetValue(entidadeRecuperada));
                 }
             }
@@ -200,6 +247,7 @@ namespace Snebur.AcessoDados
             foreach (var expressao in expressoesColecao)
             {
                 var propriedade = ExpressaoUtil.RetornarPropriedade(expressao);
+                AdicionarPropriedadeAberta(entidade, propriedade.Name);
                 propriedade.SetValue(entidade, propriedade.GetValue(entidadeRecuperada));
             }
         }
