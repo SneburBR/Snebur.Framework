@@ -10,7 +10,6 @@ namespace Snebur.AcessoDados.Mapeamento
     internal abstract partial class BaseMapeamentoEntidade
     {
         internal const string NOME_PROPRIEDADE_ID = "Id";
-
         private int ContadorParametro = 0;
 
         private string RetornarSqlFiltros()
@@ -20,6 +19,7 @@ namespace Snebur.AcessoDados.Mapeamento
             {
                 sb.AppendLine(this.RetornarSqlFiltroGrupo(this.EstruturaConsulta.FiltroGrupoE));
             }
+
             if (this.EstruturaConsulta.FiltroGrupoOU.Filtros.Count > 0)
             {
                 if (this.EstruturaConsulta.FiltroGrupoE.Filtros.Count > 0)
@@ -69,7 +69,6 @@ namespace Snebur.AcessoDados.Mapeamento
                         throw new ErroNaoSuportado(String.Format("O filtro não suportado {0} ", filtro.GetType().Name));
 
                 }
-
             }
 
             if (filtros.Count > 0)
@@ -102,7 +101,6 @@ namespace Snebur.AcessoDados.Mapeamento
             var idsString = String.Join(", ", filtro.Ids.OrderBy(x => x));
             var sql = String.Format(" ( {0} BETWEEN {1} AND {2} ) AND ", caminhoCampoFiltro, filtro.Ids.Min(), filtro.Ids.Max());
             return sql + String.Format(" {0} IN ( {1} ) ", caminhoCampoFiltro, idsString);
-
         }
 
         private string RetornarFiltroPropriedadeIn(FiltroPropriedadeIn filtro)

@@ -8,6 +8,6 @@ namespace Snebur.AcessoDados
         //{
         //    EstruturaBancoDados.Inicializar(typeof(TContexto));
         //}
-        internal HashSet<IInterceptador> InterceptoresAtivos { get; }= new HashSet<IInterceptador>();
+     
     }
 }

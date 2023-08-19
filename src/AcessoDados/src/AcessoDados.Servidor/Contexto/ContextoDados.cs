@@ -106,7 +106,11 @@ namespace Snebur.AcessoDados
             }
         }
 
+        internal HashSet<IInterceptador> InterceptoresAtivos { get; } = new HashSet<IInterceptador>();
+        internal bool IsInterceptar { get; set; } = true;
+
         #endregion
+
 
         #region Construtor
 
@@ -780,6 +784,18 @@ namespace Snebur.AcessoDados
                 this.IsIdentificadorProprietarioGlobal = false;
             }
         }
+
+        public void DesativarInterceptores()
+        {
+            this.IsInterceptar = false;
+        }
+
+        public void AtivarInterceptores()
+        {
+            this.IsInterceptar = true;
+        }
+
+
 
         #region IDisposable
 

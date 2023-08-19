@@ -52,7 +52,6 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                             }
                         }
 
-
                         var novaAlteracao = (IAlteracaoPropriedadeGenerica)Activator.CreateInstance(this.Contexto.EstruturaBancoDados.TipoEntidadeNotificaoPropriedadeAlteradaGenerica);
                         novaAlteracao.IdEntidade = entidade.Id;
 

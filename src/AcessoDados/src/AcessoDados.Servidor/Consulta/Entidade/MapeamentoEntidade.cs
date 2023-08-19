@@ -37,7 +37,8 @@ namespace Snebur.AcessoDados.Mapeamento
                 if (this.EstruturaEntidade.IsInterceptar && entidades.Count > 0)
                 {
                     var interceptor = this.EstruturaEntidade?.Interceptador;
-                    if (!this.Contexto.InterceptoresAtivos.Contains(interceptor))
+                    if (this.Contexto.IsInterceptar && 
+                        !this.Contexto.InterceptoresAtivos.Contains(interceptor))
                     {
                         this.Contexto.InterceptoresAtivos.Add(interceptor);
                         try
