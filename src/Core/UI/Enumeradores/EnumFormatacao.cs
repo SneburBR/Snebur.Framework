@@ -20,6 +20,7 @@ namespace Snebur.UI
         Telefone, // "telefone",
 
         Moeda, // "moeda",
+        MoedaIgnorarSemValor,
 
         MoedaComSinal, // "moedacomsinal"
 

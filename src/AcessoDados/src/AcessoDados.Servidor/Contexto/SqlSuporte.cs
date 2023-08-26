@@ -11,8 +11,7 @@ namespace Snebur.AcessoDados
 {
     public class BancoDadosSuporta
     {
- 
-        public bool IsOffsetFetch { get; }
+         public bool IsOffsetFetch { get; }
         public bool IsColunaNomeTipoEntidade { get; }
         public bool IsSessaoUsuario { get; }
         public bool IsSessaoUsuarioHerdada { get; }
@@ -51,7 +50,7 @@ namespace Snebur.AcessoDados
 
         internal void ValidarSuporteSessaoUsuario()
         {
-            if (this.IsSessaoUsuarioHerdada)
+            if (this.IsSessaoUsuarioHerdada || this.IsSessaoUsuario)
             {
                 return;
             }
