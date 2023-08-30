@@ -31,5 +31,14 @@ namespace Snebur.Utilidade
                 return new Guid(bytes);
             }
         }
+
+        public static bool IsMd5(string value)
+        {
+            if (String.IsNullOrEmpty(value))
+            {
+                return false;
+            }
+            return ValidacaoUtil.IsMd5(value);
+        }
     }
 }

@@ -15,7 +15,10 @@ namespace Snebur.Utilidade
         private static readonly Regex RegexValidacaoEmail = new Regex(@"^[a-zA-Z0-9][a-zA-Z0-9\\._-]+@([a-zA-Z0-9\._-]+\.)[a-zA-Z-0-9]{2}");
         private static readonly Regex RegexCorHexa = new Regex("^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3}|[a-fA-F0-9]{8})$");
         private static readonly Regex RegexCorRgba = new Regex(@"^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*(\d+(?:\.\d+)?)\s*)?\)$");
-
+        private static readonly Regex RegexMd5 = new Regex("^[a-f0-9]{32}$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex RegexSha1 = new Regex("^[a-f0-9]{40}$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex RegexSha256 = new Regex("^[a-f0-9]{64}$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex RegexGuid = new Regex("^[a-f0-9]{8}(-?[a-f0-9]{4}){3}-?[a-f0-9]{12}$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         public static List<ValidationResult> RetornarPendencias(object instancia)
         {
             var pendencias = new List<ValidationResult>();
@@ -346,6 +349,7 @@ namespace Snebur.Utilidade
         {
             return TextoUtil.IsSomenteNumerosPontosSinais(texto);
         }
+
         #region Nome
 
         public static bool IsNomeCompleto(string nomeCompleto)
@@ -408,6 +412,24 @@ namespace Snebur.Utilidade
         public static bool IsExisteContaEmail(string email)
         {
             return ValidacaoEmailUtil.IsExisteEmail(email);
+        }
+
+        public static bool IsMd5(string value)
+        {
+            if (value != null)
+            {
+                return RegexMd5.IsMatch(value.Trim());
+            }
+            return false;
+        }
+
+        public static bool IsGuid(string value)
+        {
+            if (value != null)
+            {
+                return RegexGuid.IsMatch(value.Trim());
+            }
+            return false;
         }
     }
 }
