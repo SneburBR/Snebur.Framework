@@ -38,7 +38,8 @@ namespace Snebur.AcessoDados
 
             #region Construtor
 
-            private AjudanteSessaoUsuarioInterno(BaseContextoDados contexto, List<IUsuario> usuariosSistema)
+            private AjudanteSessaoUsuarioInterno(BaseContextoDados contexto,
+                                                 List<IUsuario> usuariosSistema)
             {
                 this.Contexto = contexto;
                 this.Conexao = this.Contexto.Conexao;
@@ -98,15 +99,13 @@ namespace Snebur.AcessoDados
                 return false;
             }
 
-            internal void NotificarSessaoUsuarioAtiva(IUsuario usuario, ISessaoUsuario sessaoUsuario)
+            internal void NotificarSessaoUsuarioAtiva(IUsuario usuario, 
+                                                      ISessaoUsuario sessaoUsuario)
             {
                 //var usuarioClone = usuario.CloneSomenteId<IUsuario>();
                 //var sessaoUsuarioClone = sessaoUsuario.CloneSomenteId<ISessaoUsuario>();
-                var nowUtc = DateTime.UtcNow;
-                usuario.DataHoraUltimoAcesso = nowUtc;
-                sessaoUsuario.DataHoraUltimoAcesso = nowUtc;
-                sessaoUsuario.Status = EnumStatusSessaoUsuario.Ativo;
-                this.ContextoSalvar.SalvarInternoSemNotificacao(new IEntidade[] { usuario, sessaoUsuario }, false);
+                this.ContextoSalvar.NotificarSessaoUsuarioAtiva(usuario, sessaoUsuario);
+         
             }
 
 

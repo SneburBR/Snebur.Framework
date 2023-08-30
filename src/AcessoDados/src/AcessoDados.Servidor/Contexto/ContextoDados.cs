@@ -554,6 +554,17 @@ namespace Snebur.AcessoDados
             }
         }
 
+       
+        public virtual void NotificarSessaoUsuarioAtiva(IUsuario usuario,
+                                                           ISessaoUsuario sessaoUsuario)
+        {
+            var nowUtc = DateTime.UtcNow;
+            usuario.DataHoraUltimoAcesso = nowUtc;
+            sessaoUsuario.DataHoraUltimoAcesso = nowUtc;
+            sessaoUsuario.Status = EnumStatusSessaoUsuario.Ativo;
+            (this as IContextoDadosSemNotificar).SalvarInternoSemNotificacao(new IEntidade[] { usuario, sessaoUsuario }, false);
+        }
+
         #endregion
 
         #endregion
@@ -795,7 +806,10 @@ namespace Snebur.AcessoDados
             this.IsInterceptar = true;
         }
 
+        #region
 
+       
+        #endregion
 
         #region IDisposable
 

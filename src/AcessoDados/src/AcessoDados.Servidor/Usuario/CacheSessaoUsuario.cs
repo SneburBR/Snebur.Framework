@@ -20,8 +20,8 @@ namespace Snebur.AcessoDados
 
         private static readonly double TIMEOUT_REMOVER_CACHE = DebugUtil.IsAttached ? TimeSpan.FromMinutes(5).TotalMilliseconds :
                                                                                       TimeSpan.FromHours(2).TotalMilliseconds;
-        
-        private static readonly double TIMEOUT_ATUALIZAR_STATUS_SESSAO = DebugUtil.IsAttached?  TimeSpan.FromMinutes(1).TotalMilliseconds:
+
+        private static readonly double TIMEOUT_ATUALIZAR_STATUS_SESSAO = DebugUtil.IsAttached ? TimeSpan.FromMinutes(1).TotalMilliseconds :
                                                                                                 TimeSpan.FromMinutes(3).TotalMilliseconds;
 
         public ISessaoUsuario SessaoUsuario { get; private set; }
@@ -53,6 +53,7 @@ namespace Snebur.AcessoDados
             this.Credencial = credencial;
             this.InformacaoSessaoUsuario = informacaoSessaoUsuario;
             this.AjudanteSessaoUsuario = AjudanteSessaoUsuarioInterno.RetornarAjudanteUsuario(contexto);
+            this.TimerAtualizarStatus.Stop();
         }
 
         internal void Inicializar()
@@ -109,16 +110,18 @@ namespace Snebur.AcessoDados
             this.SessaoUsuario = this.AjudanteSessaoUsuario.RetornarSessaoUsuario(this.Usuario, this.IdentificadorSessaoUsuario, this.InformacaoSessaoUsuario);
 
             this.NotificarSessaoUsuarioAtivaInterno();
-            //this.TimerAtualizarStatus = new Timer(CacheSessaoUsuario.TIMEOUT_ATUALIZAR_ESTADO_SESSAO);
-            this.DataHoraUltimoAcesso = DateTime.Now;
-            var timer = this.TimerAtualizarStatus;
-            if (timer != null && !timer.Enabled)
+            if (this.TimerAtualizarStatus == null)
             {
-                timer.AutoReset = true;
-                timer.Elapsed += this.TimerAtualizarStatus_Elapsed;
-                timer.Start();
-
+                this.TimerAtualizarStatus = new Timer(CacheSessaoUsuario.TIMEOUT_ATUALIZAR_STATUS_SESSAO);
             }
+
+            this.DataHoraUltimoAcesso = DateTime.Now;
+
+            var timer = this.TimerAtualizarStatus;
+            timer.AutoReset = true;
+            timer.Elapsed -= this.TimerAtualizarStatus_Elapsed;
+            timer.Elapsed += this.TimerAtualizarStatus_Elapsed;
+            timer.Reiniciar();
         }
 
         private void TimerAtualizarStatus_Elapsed(object sender, ElapsedEventArgs e)

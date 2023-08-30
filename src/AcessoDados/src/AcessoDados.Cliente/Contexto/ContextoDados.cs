@@ -250,7 +250,9 @@ namespace Snebur.AcessoDados
             return this.ServicoDados.RetornarDataHoraUTC();
         }
         #endregion
-         
+
+        
+
     }
 
     public abstract class BaseContextoDados<T> : BaseContextoDados where T : __BaseContextoDados, new()

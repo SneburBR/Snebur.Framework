@@ -53,6 +53,7 @@ namespace Snebur.AcessoDados
         {
             return this.RetornarNovoParametro(estruturaCampo, estruturaCampo.NomeParametro, valor);
         }
+
         #region IConexaoBancoDados
 
         internal DataTable RetornarDataTable(string sql, List<DbParameter> parametros)
@@ -93,7 +94,7 @@ namespace Snebur.AcessoDados
                 }
                 catch(Exception erroInterno)
                 {
-                    throw new ErroConsultaSql(String.Format("Erro ao preencher o dataTable DataAdpater: Sql {0} ", sql), erroInterno);
+                    throw new ErroConsultaSql($"Erro ao preencher o dataTable DataAdpater: Sql {sql} ", erroInterno);
                 }
                 finally
                 {
