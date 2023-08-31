@@ -287,6 +287,11 @@ namespace Snebur.AcessoDados.Mapeamento
             }
             else
             {
+                if (!this.TodasEstruturaCampoApelidoMapeado.ContainsKey(caminhoPropriedade))
+                {
+                    throw new Exception($"Não foi encontrado o caminho da propriedade {caminhoPropriedade} na entidade {this.EstruturaEntidade.NomeTipoEntidade}" +
+                                        $"\r\n Problemas conhecidos, retornar valor scalar como Count, Max, Min Avg etc ");
+                }
                 return this.TodasEstruturaCampoApelidoMapeado[caminhoPropriedade];
             }
         }

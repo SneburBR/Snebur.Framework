@@ -29,7 +29,7 @@ namespace Snebur.AcessoDados.Mapeamento
         internal protected List<Entidade> RetornarEntidades(BaseFiltroMapeamento filtro,
                                                                       int tentativa = 0)
         {
-            var sql = this.RetornarSql(true, true, filtro);
+            var sql = this.RetornarSql(filtro, isIncluirOrdenacaoPaginacao: true);
             try
             {
                 var dataTable = this.ConexaoDB.RetornarDataTable(sql, this.Parametros);
@@ -37,7 +37,7 @@ namespace Snebur.AcessoDados.Mapeamento
                 if (this.EstruturaEntidade.IsInterceptar && entidades.Count > 0)
                 {
                     var interceptor = this.EstruturaEntidade?.Interceptador;
-                    if (this.Contexto.IsInterceptar && 
+                    if (this.Contexto.IsInterceptar &&
                         !this.Contexto.InterceptoresAtivos.Contains(interceptor))
                     {
                         this.Contexto.InterceptoresAtivos.Add(interceptor);
@@ -77,6 +77,11 @@ namespace Snebur.AcessoDados.Mapeamento
             var sql = this.RetornarSqlContagem(filtro);
             var contagem = Convert.ToInt32(this.ConexaoDB.RetornarValorScalar(sql, this.Parametros));
             return contagem;
+        }
+
+        private string RetornarSqlContagem(BaseFiltroMapeamento filtro)
+        {
+            return this.MontarSql(filtro, sqlCampos: "COUNT(*)", isIncluirOrdenacaoPaginacao: false);
         }
 
         internal protected override string RetornarSqlCampos()
@@ -127,20 +132,11 @@ namespace Snebur.AcessoDados.Mapeamento
 
         internal string RetornarSqlIdTipoEntidade(BaseFiltroMapeamento filtroMapeamento)
         {
-            var isRelacaoFilhos = this.MapeamentoConsulta is MapeamentoConsultaRelacaoAbertaFilhos;
             filtroMapeamento.IsIdTipoEntidade = true;
             var sqlCampos = this.RetornarSqlCamposIdTipoEntidade(filtroMapeamento);
-            var sqlJoin = this.RetornarSqlConsulta(true, true, filtroMapeamento, isRelacaoFilhos);
-            if (this.Contexto.SqlSuporte.IsOffsetFetch)
-            {
-                return $"SELECT {sqlCampos} FROM {sqlJoin}";
-            }
-            else
-            {
-                var take = this.MapeamentoConsulta.EstruturaEntidade.RetornarMaximoConsulta(this.EstruturaConsulta.Take);
-                //sqlJoin = sqlJoin.Replace("ORDER BY [Id]", "WHERE not __NomeTipoEntidade is null ");
-                return $"SELECT Top {take} {sqlCampos} FROM {sqlJoin} ";
-            }
+            return this.MontarSql(filtroMapeamento, 
+                                  sqlCampos, 
+                                  isIncluirOrdenacaoPaginacao: true);
         }
 
         internal string RetornarSqlCamposIdTipoEntidade(BaseFiltroMapeamento filtro)

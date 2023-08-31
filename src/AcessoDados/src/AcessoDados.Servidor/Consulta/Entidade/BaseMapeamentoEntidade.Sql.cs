@@ -8,8 +8,31 @@ namespace Snebur.AcessoDados.Mapeamento
 {
     internal abstract partial class BaseMapeamentoEntidade
     {
+        internal string MontarSql(BaseFiltroMapeamento filtroMapeamento,
+                                  string sqlCampos,
+                                  bool isIncluirOrdenacaoPaginacao)
+        {
+            var isRelacaoFilhos = this.MapeamentoConsulta is MapeamentoConsultaRelacaoAbertaFilhos;
+            var sqlJoin = this.RetornarSqlConsulta(filtroMapeamento, isRelacaoFilhos, isIncluirOrdenacaoPaginacao);
+            if (this.Contexto.SqlSuporte.IsOffsetFetch || !isIncluirOrdenacaoPaginacao)
+            {
+                return $"SELECT {sqlCampos} FROM {sqlJoin}";
+            }
+            else
+            {
+                var take = this.MapeamentoConsulta.EstruturaEntidade.RetornarMaximoConsulta(this.EstruturaConsulta.Take);
+                //sqlJoin = sqlJoin.Replace("ORDER BY [Id]", "WHERE not __NomeTipoEntidade is null ");
+                return $"SELECT Top {take} {sqlCampos} FROM {sqlJoin} ";
+            }
+        }
+         
+        
+
+
         //é precisa refazer, 
-        protected string RetornarSqlConsulta(bool ordenacao, bool limitePaginacao, BaseFiltroMapeamento filtroMapeamento, bool isRelacaoFilhos)
+        protected string RetornarSqlConsulta(BaseFiltroMapeamento filtroMapeamento,
+                                             bool isRelacaoFilhos,
+                                             bool isIncluirOrdenacaoPaginacao)
         {
             ErroUtil.ValidarReferenciaNula(filtroMapeamento, nameof(filtroMapeamento));
 
@@ -63,7 +86,7 @@ namespace Snebur.AcessoDados.Mapeamento
 
             if (!(filtroMapeamento is FiltroMapeamentoIds) || isRelacaoFilhos)
             {
-                if (!this.EstruturaConsulta.IsIncluirDeletados && 
+                if (!this.EstruturaConsulta.IsIncluirDeletados &&
                      this.EstruturaEntidade.EstruturaCampoDelatado != null)
                 {
                     if (!isOperadorWhereAdicionado)
@@ -107,7 +130,7 @@ namespace Snebur.AcessoDados.Mapeamento
                 }
 
             }
-            if (ordenacao)
+            if (isIncluirOrdenacaoPaginacao)
             {
                 if (this.EstruturaConsulta.Ordenacoes.Count > 0)
                 {
@@ -128,9 +151,9 @@ namespace Snebur.AcessoDados.Mapeamento
                     }
                 }
             }
-            if (limitePaginacao)
+            if (isIncluirOrdenacaoPaginacao)
             {
-                if (this.EstruturaEntidade.EstruturaCampoOrdenacao == null && (this.EstruturaConsulta.Ordenacoes.Count == 0 || !ordenacao))
+                if (this.EstruturaEntidade.EstruturaCampoOrdenacao == null && (this.EstruturaConsulta.Ordenacoes.Count == 0))
                 {
                     sb.AppendLine(this.RetornarSqlOrdenacaoChavePrimaria(filtroMapeamento));
                 }
@@ -246,7 +269,7 @@ namespace Snebur.AcessoDados.Mapeamento
                 return sqlLimite;
             }
 
-            if(skip> 0)
+            if (skip > 0)
             {
                 throw new Exception("O banco da deados não tem suporte ao OFFSET FETCH");
             }
