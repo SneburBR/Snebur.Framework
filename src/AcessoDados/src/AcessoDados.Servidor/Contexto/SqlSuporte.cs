@@ -19,8 +19,7 @@ namespace Snebur.AcessoDados
         public bool IsMigracao { get; }
         public bool IsDataHoraUtc { get; }
 
-        internal BancoDadosSuporta(BaseContextoDados contextoDados,
-                                    EnumFlagBancoNaoSuportado flags)
+        internal BancoDadosSuporta(  EnumFlagBancoNaoSuportado flags)
         {
             this.IsOffsetFetch = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.OffsetFetch);
             this.IsColunaNomeTipoEntidade = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.ColunaNomeTipoEntidade);

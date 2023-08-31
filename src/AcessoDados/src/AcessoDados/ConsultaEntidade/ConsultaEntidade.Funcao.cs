@@ -23,7 +23,8 @@ namespace Snebur.AcessoDados
                 TipoFuncaoEnum = tipoFuncaoEnum,
                 NomeTipoEntidade = this.EstruturaConsulta.NomeTipoEntidade,
                 TipoEntidadeAssemblyQualifiedName = this.EstruturaConsulta.TipoEntidadeAssemblyQualifiedName,
-                FiltroGrupoE = this.EstruturaConsulta.FiltroGrupoE
+                FiltroGrupoE = this.EstruturaConsulta.FiltroGrupoE,
+                RelacoesAbertaFiltro= this.EstruturaConsulta.RelacoesAbertaFiltro,
             };
 
             if (estruturaConsultaEscalar.Take > 0 || estruturaConsultaEscalar.Skip > 0)

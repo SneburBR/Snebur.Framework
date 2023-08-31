@@ -100,11 +100,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             var sqlCampos = String.Join(", ", campos);
 
             var sqlValorAtual = new StringBuilderSql();
-            sqlValorAtual.AppendFormat(" SELECT [Id], {0} FROM [{1}].[{2}] WHERE [{3}] = {4}", sqlCampos,
-                                                                                               estruturaEntidade.Schema,
-                                                                                               estruturaEntidade.NomeTabela,
-                                                                                               estruturaEntidade.EstruturaCampoChavePrimaria.NomeCampo,
-                                                                                               entidade.Id);
+            sqlValorAtual.Append($" SELECT [Id], {sqlCampos} FROM [{estruturaEntidade.Schema}].[{estruturaEntidade.NomeTabela}] WHERE [{estruturaEntidade.EstruturaCampoChavePrimaria.NomeCampo}] = {entidade.Id}" );
 
             var dataTable = this.Conexao.RetornarDataTable(sqlValorAtual.ToString(), null);
             var valorAtualTipoComplexo = this.RetornarValorTipoComplexo(estruturaTipoComplexo, dataTable);
@@ -158,9 +154,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             var estruturaEntidade = estruturaAlteracaoPropriedade.EstruturaEntidade;
             var estruturaCampo = estruturaAlteracaoPropriedade.EstruturaCampo;
             var sqlValorAtual = new StringBuilderSql();
-            sqlValorAtual.AppendFormat(" SELECT [{0}] FROM [{1}].[{2}] WHERE [{3}] = {4}", estruturaCampo.NomeCampo, estruturaEntidade.Schema,
-                                                                                           estruturaEntidade.NomeTabela, estruturaEntidade.EstruturaCampoChavePrimaria.NomeCampo,
-                                                                                           entidade.Id);
+            sqlValorAtual.Append($" SELECT [{estruturaCampo.NomeCampo}] FROM [{estruturaEntidade.Schema}].[{estruturaEntidade.NomeTabela}] WHERE [{estruturaEntidade.EstruturaCampoChavePrimaria.NomeCampo}] = {entidade.Id}");
 
             var valorBancoAtual = this.Conexao.RetornarValorScalar(sqlValorAtual.ToString(), null);
             var valorBancoAtualTipado = ConverterUtil.Converter(valorBancoAtual, estruturaCampo.Propriedade.PropertyType);

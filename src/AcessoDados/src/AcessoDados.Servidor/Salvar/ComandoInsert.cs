@@ -34,7 +34,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             var camposParametros = this.EstruturasCampoParametro.Select(x => x.NomeParametroOuValorFuncaoServidor).ToList();
 
             var sb = new StringBuilderSql();
-            sb.AppendFormat($" InSeRt INTO [{this.EstruturaEntidade.Schema}].[{this.EstruturaEntidade.NomeTabela}] ");
+            sb.Append($" INSERT INTO [{this.EstruturaEntidade.Schema}].[{this.EstruturaEntidade.NomeTabela}] ");
             sb.Append($"( {String.Join(",", campos)} ) ");
             sb.Append(" VALUES ");
             sb.AppendLine($"( {String.Join(",", camposParametros)} ); ");

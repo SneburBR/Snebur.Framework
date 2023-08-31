@@ -43,7 +43,7 @@ namespace Snebur.AcessoDados.Mapeamento
             }
             using (var mapeamentoEntidade = new MapeamentoEntidade(this, this.EstruturaEntidade, this.EstruturaBancoDados, this.ConexaoDB, this.Contexto))
             {
-                return mapeamentoEntidade.RetornarSql(true, true, new FiltroMapeamentoVazio());
+                return mapeamentoEntidade.RetornarSql(new FiltroMapeamentoVazio(), isIncluirOrdenacaoPaginacao: true);
             }
         }
 
@@ -86,15 +86,15 @@ namespace Snebur.AcessoDados.Mapeamento
             }
             else
             {
-                using (var mapeamentoEntidade = new MapeamentoEntidade(this, 
-                                                                       this.EstruturaEntidade, 
-                                                                       this.EstruturaBancoDados, 
+                using (var mapeamentoEntidade = new MapeamentoEntidade(this,
+                                                                       this.EstruturaEntidade,
+                                                                       this.EstruturaBancoDados,
                                                                        this.ConexaoDB,
                                                                        this.Contexto))
                 {
                     var entidades = new ListaEntidades<Entidade>();
                     var idsTipoEntidade = this.RetornarIdsTipoEntidade(mapeamentoEntidade, filtroMapeamento);
-                     
+
                     var grupos = new List<GrupoIdTipoEntidade>();
 
                     foreach (var grupo in idsTipoEntidade.GroupBy(x => x.__NomeTipoEntidade))
@@ -110,7 +110,7 @@ namespace Snebur.AcessoDados.Mapeamento
                     foreach (var grupo in grupos)
                     {
                         var estruturaTipoEntidade = this.EstruturaBancoDados.RetornarEstruturaEntidade(grupo.NomeTipoEntidade);
-                        if(estruturaTipoEntidade== null)
+                        if (estruturaTipoEntidade == null)
                         {
                             throw new Erro($"Não foi encontrada a entidade do tipo {grupo.NomeTipoEntidade} herdade de {this.EstruturaEntidade.TipoEntidade.Name}");
                         }
@@ -129,7 +129,7 @@ namespace Snebur.AcessoDados.Mapeamento
                                 throw new Exception("menorId != grupo.Ids.Min()");
                             }
                         }
-                  
+
                         var filtroMapeamentoId = new FiltroMapeamentoIds(grupo.Ids,
                                                                          grupo.NomeTipoEntidade);
 
@@ -150,7 +150,7 @@ namespace Snebur.AcessoDados.Mapeamento
             this.AbrirRelacoes();
         }
 
-        private List<Entidade> RetornarEntidades(EstruturaEntidade estruturaEntidade, 
+        private List<Entidade> RetornarEntidades(EstruturaEntidade estruturaEntidade,
                                                            BaseFiltroMapeamento filtro)
         {
             using (var mapeamentoEntidade = new MapeamentoEntidade(this, estruturaEntidade, this.EstruturaBancoDados, this.ConexaoDB, this.Contexto))
@@ -178,7 +178,7 @@ namespace Snebur.AcessoDados.Mapeamento
             var maiorId = ids.Max();
 
             var filtroEntre = new FiltroMapeamentoEntre(filtroMapeamento,
-                                                        filtroMapeamento.EstruturaCampoFiltro, 
+                                                        filtroMapeamento.EstruturaCampoFiltro,
                                                         menorId,
                                                         maiorId);
 

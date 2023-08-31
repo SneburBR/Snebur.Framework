@@ -120,7 +120,7 @@ namespace Snebur.AcessoDados
         {
             ErroUtil.ValidarReferenciaNula(configuracaoAcessoDados, nameof(configuracaoAcessoDados));
 
-            this.SqlSuporte = new BancoDadosSuporta(this, flagsNaoSuporta);
+            this.SqlSuporte = new BancoDadosSuporta( flagsNaoSuporta);
             this.ConectionString = AplicacaoSnebur.Atual.ConnectionStrings[configuracaoAcessoDados] ?? throw new ErroNaoDefinido($"Não foi encontrada o String de conexão '{configuracaoAcessoDados}' no arquivo de configuração da aplicação ConnectionStrings App.Config ou Web.Config ");
 
             if (String.IsNullOrWhiteSpace(identificadorProprietario))
@@ -340,7 +340,10 @@ namespace Snebur.AcessoDados
         {
             this.ValidarSessaoUsuario();
 
-            using (var mapeamento = new MapeamentoConsultaValorSaclar(estruturaConsulta, this.EstruturaBancoDados, this.Conexao, this))
+            using (var mapeamento = new MapeamentoConsultaValorScalar(estruturaConsulta, 
+                                                                     this.EstruturaBancoDados, 
+                                                                     this.Conexao,
+                                                                     this))
             {
                 return mapeamento.RetornarValorScalar();
             }

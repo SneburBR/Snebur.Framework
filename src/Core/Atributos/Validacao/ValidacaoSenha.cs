@@ -8,7 +8,7 @@ namespace Snebur.Dominio.Atributos
     public class ValidacaoSenhaAttribute : BaseAtributoValidacao, IAtributoValidacao
     {
         public int TamanhoMinimo { get; set; } = 4;
-        public int TamanhoMaximo { get; set; } = 16;
+        public int TamanhoMaximo { get; set; } = 36;
 
         private string MensagemValidacao = "O campo {0} é invalido.";
 
@@ -36,7 +36,8 @@ namespace Snebur.Dominio.Atributos
 
         #region IAtributoValidacao
 
-        public override bool IsValido(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
+        public override bool IsValido(PropertyInfo propriedade, 
+                                     object paiPropriedade, object valorPropriedade)
         {
             var senha = Convert.ToString(valorPropriedade);
             if (!(senha.Length >= this.TamanhoMinimo))

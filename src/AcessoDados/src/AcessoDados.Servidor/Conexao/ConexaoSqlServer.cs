@@ -54,7 +54,6 @@ namespace Snebur.AcessoDados
             return new SqlDataAdapter((SqlCommand)cmd);
         }
 
-
         internal protected override DbParameter RetornarNovoParametro(EstruturaCampo estruturaCampo, string nomeParametro, object valor)
         {
             var parametro = new SqlParameter(nomeParametro, estruturaCampo.TipoSql)

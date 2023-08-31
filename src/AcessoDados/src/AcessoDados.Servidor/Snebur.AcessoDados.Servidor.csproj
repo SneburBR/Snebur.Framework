@@ -24,6 +24,11 @@
 		<None Remove="Bibliotecas\**" />
 	</ItemGroup>
 	<ItemGroup>
+	  <Compile Remove="Consulta\Entidade\BaseMapeamentoEntidade.Sql.cs" />
+	  <Compile Remove="Consulta\Entidade\BaseMapeamentoEntidade.SqlFiltroMapeamento.cs" />
+	  <Compile Remove="Consulta\Entidade\BaseMapeamentoEntidade.SqlFiltros.cs" />
+	</ItemGroup>
+	<ItemGroup>
 		<None Remove="Snebur.AcessoDados.Servidor.csproj.vspscc" />
 		<None Remove="Snebur.AcessoDados.Servidor.Net50.csproj.vspscc" />
 	</ItemGroup>

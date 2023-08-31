@@ -5,7 +5,6 @@ namespace Snebur.AcessoDados
 {
     internal class AjudanteSql
     {
-
         internal static string RetornarSqlFormatado(string sql, params object[] args)
         {
             var sqlFormatado = String.Format(sql, args);

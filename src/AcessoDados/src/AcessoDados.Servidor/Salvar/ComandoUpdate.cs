@@ -92,7 +92,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             var camposAtualizar = this.EstruturasCampoParametro.Select(x => $" {x.NomeCampoSensivel} = {x.NomeParametroOuValorFuncaoServidor} ").ToList();
             var estrutraChavePrimaria = this.EstruturaEntidade.EstruturaCampoChavePrimaria;
             var sb = new StringBuilderSql();
-            sb.AppendFormat($" UpDaTe [{this.EstruturaEntidade.Schema}].[{this.EstruturaEntidade.NomeTabela}]  " );
+            sb.Append($" UPDATE [{this.EstruturaEntidade.Schema}].[{this.EstruturaEntidade.NomeTabela}]  " );
             sb.Append($" SET {String.Join(",", camposAtualizar)}  ");
             sb.Append($" WHERE {estrutraChavePrimaria.NomeCampoSensivel} = {estrutraChavePrimaria.NomeParametro}");
             return sb.ToString();
