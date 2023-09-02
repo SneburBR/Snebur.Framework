@@ -83,13 +83,18 @@ namespace Snebur.BancoDados
         public List<T> Mapear<T>(string sql, params SqlParameter[] parametros)
         {
             var tipo = typeof(T);
-            var propriedades = tipo.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(x => x.DeclaringType != typeof(BaseDominio) &&
-                                                                                                          x.GetMethod.IsPublic && (x.SetMethod?.IsPublic ?? false));
+            var propriedades = tipo.GetProperties(BindingFlags.Public | BindingFlags.Instance).
+                                    Where(x => x.DeclaringType != typeof(BaseDominio) &&
+                                               x.GetMethod.IsPublic && (x.SetMethod?.IsPublic ?? false));
+            
             var propriedadesChavePrimaria = tipo.GetProperties().
                                                  Where(x => x.GetCustomAttribute<KeyAttribute>() != null  ).
                                                  ToList();
 
-            var dataTable = this.RetornarDataTable(sql, propriedadesChavePrimaria, parametros);
+            var dataTable = this.RetornarDataTable(sql,
+                                                   propriedadesChavePrimaria,
+                                                   parametros);
+
             var retorno = new List<T>();
 
             foreach (DataRow row in dataTable.Rows)
@@ -114,8 +119,8 @@ namespace Snebur.BancoDados
             return retorno;
         }
 
-        public object RetornarValorScalar(string sql,
-                                          params SqlParameter[] parametros)
+        public T RetornarValorScalar<T>(string sql,
+                                       params SqlParameter[] parametros)
         {
             object valorEscalor;
             using (var conexao = new SqlConnection(this.ConnectionString))
@@ -145,7 +150,7 @@ namespace Snebur.BancoDados
             {
                 valorEscalor = null;
             }
-            return valorEscalor;
+            return ConverterUtil.Para<T>(valorEscalor);
         }
 
         public bool TryExecutarComando(string sql, params SqlParameter[] parametros)
