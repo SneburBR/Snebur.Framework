@@ -42,8 +42,5 @@ namespace Snebur.BancoDados
             }
             return pametros.ToArray();
         }
-
-        public string V { get; }
-        public List<long> IdsFotoPedido { get; }
     }
 }
