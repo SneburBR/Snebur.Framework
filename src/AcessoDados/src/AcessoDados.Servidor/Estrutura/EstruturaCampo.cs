@@ -1,4 +1,5 @@
-﻿using Snebur.Dominio.Atributos;
+﻿using Snebur.Dominio;
+using Snebur.Dominio.Atributos;
 using Snebur.Reflexao;
 using Snebur.Utilidade;
 using System;
@@ -156,6 +157,10 @@ namespace Snebur.AcessoDados.Estrutura
                 {
                     return EnumTipoValorPadrao.IndentificadorProprietario;
                 }
+                if(atributo is ValorPadraoAttribute valorPadrao)
+                {
+                    return valorPadrao.TipoValorPadrao;
+                }
                 return EnumTipoValorPadrao.Comum;
 
             }
@@ -297,12 +302,5 @@ namespace Snebur.AcessoDados.Estrutura
         #endregion
     }
 
-    public enum EnumTipoValorPadrao
-    {
-        Nenhum,
-        IndentificadorProprietario,
-        SessaoUsuario_Id,
-        UsuarioLogado_Id,
-        Comum
-    }
+   
 }

@@ -25,7 +25,6 @@ namespace Snebur.Utilidade
                             return true;
                         }
                     }
-                    
                 }
             }
             return false;

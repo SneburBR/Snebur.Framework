@@ -1,5 +1,6 @@
 ﻿using Snebur.UI;
 using System;
+using System.Runtime;
 
 namespace Snebur.Dominio.Atributos
 {
@@ -9,6 +10,7 @@ namespace Snebur.Dominio.Atributos
     {
         public EnumOpcoesAlterarPropriedade Opcoes { get; }
         public string Formatacao { get; set; }
+   
         public Type TipoPropriedade { get; set; }
         //public NotificarAlteracaoPropriedadeGenericaAttribute(EnumOpcoesAlterarPropriedade opcoes = EnumOpcoesAlterarPropriedade.None)
         //{
@@ -17,7 +19,7 @@ namespace Snebur.Dominio.Atributos
         //}
 
         //[IgnorarConstrutorTS]
-        public NotificarAlteracaoPropriedadeGenericaAttribute([TipoTS("string")] EnumFormatacao formatacao = EnumFormatacao.Nenhuma, 
+        public NotificarAlteracaoPropriedadeGenericaAttribute([TipoTS("string")] EnumFormatacao formatacao = EnumFormatacao.Nenhuma,
                                                               Type tipoPropriedade = null,
                                                               EnumOpcoesAlterarPropriedade opcoes = EnumOpcoesAlterarPropriedade.Nenhuma)
         {
