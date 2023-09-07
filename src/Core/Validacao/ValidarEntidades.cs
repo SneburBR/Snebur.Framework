@@ -51,7 +51,7 @@ namespace Snebur.Dominio
 
                                     if (DebugUtil.IsAttached)
                                     {
-                                        throw new Erro(erroValidacao.Mensagem);
+                                        //throw new Erro(erroValidacao.Mensagem);
                                     }
                                     erros.Add(erroValidacao);
                                 }

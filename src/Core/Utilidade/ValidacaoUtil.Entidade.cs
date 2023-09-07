@@ -159,6 +159,8 @@ namespace Snebur.Utilidade
             {
                 case bool _:
                     return true;
+                case char ch:
+                    return ch != '\0';
                 case string str:
                     return !String.IsNullOrWhiteSpace(str);
                 case int int32:

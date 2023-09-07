@@ -9,22 +9,56 @@ namespace Snebur.Dominio.Atributos
     public class NotificarAlteracaoPropriedadeGenericaAttribute : BaseAtributoDominio, INotificarAlteracaoPropriedade
     {
         public EnumOpcoesAlterarPropriedade Opcoes { get; }
-        public string Formatacao { get; set; }
-   
-        public Type TipoPropriedade { get; set; }
-        //public NotificarAlteracaoPropriedadeGenericaAttribute(EnumOpcoesAlterarPropriedade opcoes = EnumOpcoesAlterarPropriedade.None)
-        //{
-        //    this.TipoPropriedade = null;
-        //    this.Opcoes = opcoes;
-        //}
+        public string Formatacao { get; set; } = EnumFormatacao.Nenhuma.ToString().ToLower();
+        public Type TipoPropriedadeRelacao { get; set; }
+        public string CaminhoTipoPropriedadeRelacao { get; set; }
+        public bool IsEnum { get; set; }
+        
+        public NotificarAlteracaoPropriedadeGenericaAttribute([TipoTS("string")] EnumFormatacao formatacao,
+                                                              Type tipoPropriedadeRelacao,
+                                                              string caminhoTipoPropriedadeRelacao,
+                                                              EnumOpcoesAlterarPropriedade opcoes)
+        {
+            this.TipoPropriedadeRelacao = tipoPropriedadeRelacao;
+            this.CaminhoTipoPropriedadeRelacao = caminhoTipoPropriedadeRelacao;
+            this.Formatacao = formatacao.ToString().ToLower();
+            this.Opcoes = opcoes;
+        }
 
-        //[IgnorarConstrutorTS]
-        public NotificarAlteracaoPropriedadeGenericaAttribute([TipoTS("string")] EnumFormatacao formatacao = EnumFormatacao.Nenhuma,
-                                                              Type tipoPropriedade = null,
+        [IgnorarConstrutorTS]
+        public NotificarAlteracaoPropriedadeGenericaAttribute()
+        {
+
+        }
+
+        [IgnorarConstrutorTS]
+        public NotificarAlteracaoPropriedadeGenericaAttribute(EnumFormatacao formatacao)
+        {
+            this.Formatacao = formatacao.ToString().ToLower();
+        }
+
+        [IgnorarConstrutorTS]
+        public NotificarAlteracaoPropriedadeGenericaAttribute(EnumOpcoesAlterarPropriedade opcoes)
+        {
+            this.Opcoes = opcoes;   
+        }
+
+        [IgnorarConstrutorTS]
+        public NotificarAlteracaoPropriedadeGenericaAttribute(Type tipoPropriedadeRelacao,
                                                               EnumOpcoesAlterarPropriedade opcoes = EnumOpcoesAlterarPropriedade.Nenhuma)
         {
-            this.TipoPropriedade = tipoPropriedade;
-            this.Formatacao = formatacao.ToString().ToLower();
+            this.TipoPropriedadeRelacao = tipoPropriedadeRelacao;
+            this.CaminhoTipoPropriedadeRelacao = $"{tipoPropriedadeRelacao.Namespace}.{tipoPropriedadeRelacao.Name}";
+            this.Opcoes = opcoes;
+            this.IsEnum = tipoPropriedadeRelacao.IsEnum;
+        }
+
+        [IgnorarConstrutorTS]
+        public NotificarAlteracaoPropriedadeGenericaAttribute(string caminhoTipoPropriedadeRelacao,
+                                                             EnumOpcoesAlterarPropriedade opcoes = EnumOpcoesAlterarPropriedade.Nenhuma)
+        {
+            this.CaminhoTipoPropriedadeRelacao = caminhoTipoPropriedadeRelacao;
+            this.Formatacao = EnumFormatacao.Nenhuma.ToString().ToLower();
             this.Opcoes = opcoes;
         }
     }
