@@ -7,6 +7,7 @@
         VerificarAlteracaoNoBanco = 4,
         AtualizarDataHoraFimAlteracao = 8,
         IgnorarZeroIgualNull = 16,
-        IgnorarValorAntigoNull = 32
+        IgnorarValorAntigoNull = 32,
+        Proteger = 64,
     }
 }

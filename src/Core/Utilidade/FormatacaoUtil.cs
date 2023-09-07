@@ -119,6 +119,9 @@ namespace Snebur.Utilidade
                     break;
                 case EnumFormatacao.Prazo:
                     break;
+                case EnumFormatacao.Proteger:
+                    return FormatacaoUtil.Proteger(valor.ToString());
+                    
                 default:
                     break;
             }
@@ -271,7 +274,23 @@ namespace Snebur.Utilidade
             return $"{espessura.ToString("0.0", new CultureInfo("pt-BR"))}cm";
         }
 
+        public static string Proteger(string valor)
+        {
+            if(valor?.Length > 3)
+            {
+                return valor.Trim().Substring(0, 3) + "*****"; ;
+            }
+            return "*****";
+        }
 
+        public static string ProtegerEmail(string valor)
+        {
+            if (valor?.Length > 3 && ValidacaoUtil.IsEmail(valor))
+            {
+                return valor.Trim().Substring(0, 3) + "*****" + valor.Substring(valor.IndexOf('@'));
+            }
+            return "*****";
+        }
     }
 
   public  enum EnumDivisorDecimal

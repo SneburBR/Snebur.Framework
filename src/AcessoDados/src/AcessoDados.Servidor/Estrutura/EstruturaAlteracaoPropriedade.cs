@@ -17,6 +17,7 @@ namespace Snebur.AcessoDados.Estrutura
         public bool IsSalvarDataHoraFimAlteracao => (this.Atributo.Opcoes & EnumOpcoesAlterarPropriedade.AtualizarDataHoraFimAlteracao) == EnumOpcoesAlterarPropriedade.AtualizarDataHoraFimAlteracao;
         public bool IsIgnorarZeroIgualNull => (this.Atributo.Opcoes & EnumOpcoesAlterarPropriedade.IgnorarZeroIgualNull) == EnumOpcoesAlterarPropriedade.IgnorarZeroIgualNull;
         public bool IsIgnorarValorAntigoNull => (this.Atributo.Opcoes & EnumOpcoesAlterarPropriedade.IgnorarValorAntigoNull) == EnumOpcoesAlterarPropriedade.IgnorarValorAntigoNull;
+        public bool IsProteger => (this.Atributo.Opcoes & EnumOpcoesAlterarPropriedade.Proteger) == EnumOpcoesAlterarPropriedade.Proteger;
 
         internal BaseEstruturaAlteracaoPropriedade(PropertyInfo propriedade,
                                                    EstruturaEntidade estruturaEntidade,

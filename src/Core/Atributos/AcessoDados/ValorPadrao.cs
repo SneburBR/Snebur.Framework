@@ -6,8 +6,23 @@ namespace Snebur.Dominio.Atributos
     [AttributeUsage(AttributeTargets.Property)]
     public class ValorPadraoAttribute : Attribute, IValorPadrao
     {
+        private bool _isValorPadraoOnUpdate;
+        private EnumTipoValorPadrao _tipoValorPadrao = EnumTipoValorPadrao.Comum;
+
         public object ValorPadrao { get; set; }
-        public bool IsValorPadraoOnUpdate { get; set; }
+        public bool IsValorPadraoQuandoNull { get; set; }
+        public EnumTipoValorPadrao TipoValorPadrao
+        {
+            get => this.IsValorPadraoQuandoNull ? EnumTipoValorPadrao.ValorPropriedadeNull : _tipoValorPadrao;
+            set => _tipoValorPadrao = value;
+        }
+         
+        public bool IsValorPadraoOnUpdate
+        {
+            get => this.IsValorPadraoQuandoNull || this._isValorPadraoOnUpdate;
+            set => this._isValorPadraoOnUpdate = value;
+        }
+   
 
         public ValorPadraoAttribute(Enum valorPadrao)
         {
@@ -44,7 +59,7 @@ namespace Snebur.Dominio.Atributos
             this.ValorPadrao = valorPadrao;
         }
 
-        public object RetornarValorPadrao(object contexto, 
+        public object RetornarValorPadrao(object contexto,
                                           Entidade entidade,
                                           object valorPropriedade)
         {

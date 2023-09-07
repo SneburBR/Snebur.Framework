@@ -5,9 +5,17 @@ namespace Snebur.UI
     [IgnorarEnumTS]
     public enum EnumFormatacao
     {
-        Nenhuma, 
+        Nenhuma,
 
+        Absoluto,
+         
         Bytes,// "bytes",
+
+        CaixaAlta, // "caixaalta",
+
+        CaixaBaixa, // "caixabaixa"
+         
+        Centimetro, // "centimetro",
 
         Cep, // "cep",
 
@@ -16,69 +24,32 @@ namespace Snebur.UI
         Cnpj, // "cnpj",
 
         CpfCnpj, // "cpfcnpj",
-
-        Telefone, // "telefone",
-
-        Moeda, // "moeda",
-        MoedaIgnorarSemValor,
-
-        MoedaComSinal, // "moedacomsinal"
-
-        Inteiro, // "inteiro",
-
-        Decimal, // "decimal",
-
-        Decimal1, // "decimal1",
-
-        Decimal3, // "decimal3",
-
+         
         Data, // "data",
-
-        Hora, // "hora",
-
-        Dimensao,
-
-        Margem,
-
-        DimensaoCm,
-
-        DimensaoPixels,
-
+         
         DataHora, // "datahora",
-
-        HoraDescricao, // "datahoradescricao",
-
-        HoraDescricaoMin, // "datahoradescricaomin",
 
         DataSemantica,
 
         DataHoraSemantica, // "datahorasemantico",
 
         DataSemanticaHora, // "datahorasemantico",
+         
+        Decimal, // "decimal",
 
-        SimNao, // "simnao",
+        Decimal1, // "decimal1",
 
-        Trim, // "trim",
+        Decimal3, // "decimal3",
 
-        TamanhoArquivo, // "tamanhoarquivo",
+        Dimensao,
 
-        Porcentagem, // "porcentagem",
+        DimensaoCm,
 
-        Porcentagem1, // "porcentagem1",
+        DimensaoPixels,
 
-        Porcentagem2, // "porcentagem2",
+        DoisPontosFinal,
 
-        NaoQuebrar, // "naoquebrar",
-
-        Pixel, // "pixel",
-
-        //Celular , // "celular",
-
-        Tempo, // "tempo",
-
-        TempoSemantico, // "temposemantico",
-
-        Centimetro, // "centimetro",
+        EntreParentes,
 
         Grau, // "grau",
 
@@ -86,32 +57,63 @@ namespace Snebur.UI
 
         Grau2, // "grau2",
 
-        PrimeiraLetraMaiuscula, // "primeiraletramaiuscula",
+        Hora, // "hora",
 
-        CaixaAlta, // "caixaalta",
+        HoraDescricao, // "datahoradescricao",
 
-        CaixaBaixa, // "caixabaixa"
+        HoraDescricaoMin, // "datahoradescricaomin",
+
+        Inteiro, // "inteiro",
+         
+        Margem,
+
+        Moeda, // "moeda",
+
+        MoedaIgnorarSemValor,
+
+        MoedaComSinal, // "moedacomsinal"
+         
+        NaoQuebrar, // "naoquebrar",
 
         Nome,
+
+        Prazo, // "prazo",
+
+        Peso, //"peso",
+
+        Pixel, // "pixel",
+         
+        Porcentagem, // "porcentagem",
+
+        Porcentagem1, // "porcentagem1",
+
+        Porcentagem2, // "porcentagem2",
+         
+        PortentagemPositivoNegativo, //"porcentagempositivonegativo",
+
+        Portentagem1PositivoNegativo, //"porcentagem1positivonegativo",
 
         PositivoNegativo, //"positivonegativo",
 
         PositivoNegativoDecimal,//"positivonegativodecimal"
 
-        PortentagemPositivoNegativo, //"porcentagempositivonegativo",
+        PrimeiraLetraMaiuscula, // "primeiraletramaiuscula",
 
-        Portentagem1PositivoNegativo, //"porcentagem1positivonegativo",
+        Proteger, // "proteger",
 
-        Absoluto,
-
-        EntreParentes,
+        SimNao, // "simnao",
 
         QuebrarLinhasHtml, //"quebrarlinhahtml",
 
-        Peso, //"peso",
+        Tempo, // "tempo",
 
-        Prazo, // "prazo",
+        TempoSemantico, // "temposemantico",
+         
+        TamanhoArquivo, // "tamanhoarquivo",
 
-        DoisPontosFinal
+        Telefone, // "telefone",
+
+        Trim, // "trim",
+          
     }
 }

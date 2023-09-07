@@ -55,11 +55,21 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                         var novaAlteracao = (IAlteracaoPropriedadeGenerica)Activator.CreateInstance(this.Contexto.EstruturaBancoDados.TipoEntidadeNotificaoPropriedadeAlteradaGenerica);
                         novaAlteracao.IdEntidade = entidade.Id;
 
-                        novaAlteracao.ValorPropriedadeAlterada = SerializacaoUtil.SerializarTipoSimples(valorPropriedade).
-                                                                                  RetornarPrimeirosCaracteres(5000);
+                     
+                        if (estruturaAlteracaoPropriedade.IsProteger)
+                        {
+                            novaAlteracao.ValorPropriedadeAlterada =  FormatacaoUtil.Proteger(valorPropriedade?.ToString());
+                            novaAlteracao.ValorPropriedadeAntigo = FormatacaoUtil.Proteger(valorAntigo?.ToString());
+                        }
+                        else
+                        {
+                            novaAlteracao.ValorPropriedadeAlterada = SerializacaoUtil.SerializarTipoSimples(valorPropriedade).
+                                                                               RetornarPrimeirosCaracteres(5000);
 
-                        novaAlteracao.ValorPropriedadeAntigo = SerializacaoUtil.SerializarTipoSimples(valorAntigo).
-                                                                                  RetornarPrimeirosCaracteres(5000);
+                            novaAlteracao.ValorPropriedadeAntigo = SerializacaoUtil.SerializarTipoSimples(valorAntigo).
+                                                                                      RetornarPrimeirosCaracteres(5000);
+
+                        }
 
                         novaAlteracao.NomeTipoEntidade = estruturaEntidade.NomeTipoEntidade;
                         novaAlteracao.NomePropriedade = estruturaAlteracaoPropriedade.Propriedade.Name;

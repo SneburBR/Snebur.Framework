@@ -59,7 +59,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             //                                                                               EnumFiltroPropriedadeCampo.IgnorarPropriedadeProtegida);
             //foreach (var propriedade in propriedades)
             //{
-             var estruturaEntidade = entidadeAlterada.EstruturaEntidade;
+            var estruturaEntidade = entidadeAlterada.EstruturaEntidade;
             var estruturasCapaValorPadrao = RetornarEstruturasCamos(estruturaEntidade, entidade);
 
             if (estruturasCapaValorPadrao?.Length > 0)
@@ -113,12 +113,22 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             var tipoValorPadrao = estruturaCampo.TipoValorPadrao;
             switch (tipoValorPadrao)
             {
-                case EnumTipoValorPadrao.Comum:
+                case EnumTipoValorPadrao.ValorPropriedadeNull:
+                    {
 
-                    var atributoValorPadrao = estruturaCampo.RetornarAtributoValorPadrao<IValorPadrao>();
-                    return atributoValorPadrao.RetornarValorPadrao(contexto,
-                                                                   entidade,
-                                                                   valorPropriedade);
+                        var atributoValorPadrao = estruturaCampo.RetornarAtributoValorPadrao<IValorPadrao>();
+                        return atributoValorPadrao.RetornarValorPadrao(contexto,
+                                                                       entidade,
+                                                                       valorPropriedade);
+                    }
+                case EnumTipoValorPadrao.Comum:
+                    {
+                        var atributoValorPadrao = estruturaCampo.RetornarAtributoValorPadrao<IValorPadrao>();
+                        return atributoValorPadrao.RetornarValorPadrao(contexto,
+                                                                       entidade,
+                                                                       valorPropriedade);
+                    }
+
 
                 case EnumTipoValorPadrao.IndentificadorProprietario:
 
@@ -149,12 +159,12 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                         throw new Erro($"Não é possível converter  identificador do proprietário {identificadorProprietario} para {propriedade.PropertyType.Name}", ex);
                     }
 
-                   
+
                 case EnumTipoValorPadrao.SessaoUsuario_Id:
 
                     contexto.SqlSuporte.ValidarSuporteSessaoUsuario();
 
-                    var atributoSessaoUsuario =estruturaCampo.RetornarAtributoValorPadrao<ValorPadraoIDSessaoUsuarioAttribute>();
+                    var atributoSessaoUsuario = estruturaCampo.RetornarAtributoValorPadrao<ValorPadraoIDSessaoUsuarioAttribute>();
                     if (atributoSessaoUsuario.IsSomenteCadastro && entidade.Id > 0)
                     {
                         return null;
@@ -174,7 +184,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                     }
                     return contexto.UsuarioLogado.Id;
 
-                
+
                 case EnumTipoValorPadrao.Nenhum:
 
                     throw new Exception("A estrutura da campo não possui nenhum atributo de valor padrão");
