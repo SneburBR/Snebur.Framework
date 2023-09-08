@@ -7,6 +7,7 @@
         SessaoUsuario_Id,
         UsuarioLogado_Id,
         Comum,
-        ValorPropriedadeNull
+        ValorPropriedadeNull,
+        ValorPropriedadeNullOrWhiteSpace
     }
 }

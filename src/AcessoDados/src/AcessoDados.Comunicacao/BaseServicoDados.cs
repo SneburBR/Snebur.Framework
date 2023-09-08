@@ -1,5 +1,4 @@
-﻿using Snebur.AcessoDados.Servidor.Salvar;
-using Snebur.Dominio;
+﻿using Snebur.Dominio;
 using System.Collections.Generic;
 
 namespace Snebur.AcessoDados.Comunicacao

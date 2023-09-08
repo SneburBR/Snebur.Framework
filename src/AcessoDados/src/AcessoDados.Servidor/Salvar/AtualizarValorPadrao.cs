@@ -113,23 +113,24 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             var tipoValorPadrao = estruturaCampo.TipoValorPadrao;
             switch (tipoValorPadrao)
             {
+                
                 case EnumTipoValorPadrao.ValorPropriedadeNull:
-                    {
+                    
+                        if(valorPropriedade != null)
+                        {
+                            return null;
+                        }
+                        break;
+                case EnumTipoValorPadrao.ValorPropriedadeNullOrWhiteSpace:
 
-                        var atributoValorPadrao = estruturaCampo.RetornarAtributoValorPadrao<IValorPadrao>();
-                        return atributoValorPadrao.RetornarValorPadrao(contexto,
-                                                                       entidade,
-                                                                       valorPropriedade);
+                    if(String.IsNullOrWhiteSpace(valorPropriedade?.ToString()))
+                    {
+                        return null;
                     }
+                    break;
+
                 case EnumTipoValorPadrao.Comum:
-                    {
-                        var atributoValorPadrao = estruturaCampo.RetornarAtributoValorPadrao<IValorPadrao>();
-                        return atributoValorPadrao.RetornarValorPadrao(contexto,
-                                                                       entidade,
-                                                                       valorPropriedade);
-                    }
-
-
+                    break;
                 case EnumTipoValorPadrao.IndentificadorProprietario:
 
                     var identificadorProprietario = contexto.IdentificadorProprietario;
@@ -193,6 +194,10 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                     throw new Exception($"O tipo do valor padrão {tipoValorPadrao} não é suportado");
             }
 
+            var atributoValorPadrao = estruturaCampo.RetornarAtributoValorPadrao<IValorPadrao>();
+            return atributoValorPadrao.RetornarValorPadrao(contexto,
+                                                           entidade,
+                                                           valorPropriedade);
         }
 
         private static IValorPadrao RetornarAtributoValorPradao(PropertyInfo propriedade)

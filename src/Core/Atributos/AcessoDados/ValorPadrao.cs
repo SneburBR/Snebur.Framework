@@ -11,10 +11,19 @@ namespace Snebur.Dominio.Atributos
 
         public object ValorPadrao { get; set; }
         public bool IsValorPadraoQuandoNull { get; set; }
+        public bool IsValorPadraoQuandoNullOrWhiteSpace { get; set; }
+     
         public EnumTipoValorPadrao TipoValorPadrao
         {
-            get => this.IsValorPadraoQuandoNull ? EnumTipoValorPadrao.ValorPropriedadeNull : _tipoValorPadrao;
-            set => _tipoValorPadrao = value;
+            get 
+            {
+             return  this.IsValorPadraoQuandoNull 
+                    ? EnumTipoValorPadrao.ValorPropriedadeNull 
+                    :   this.IsValorPadraoQuandoNullOrWhiteSpace  ? EnumTipoValorPadrao.ValorPropriedadeNullOrWhiteSpace
+                                                                  : this._tipoValorPadrao;
+
+            }
+            set => this._tipoValorPadrao = value;
         }
          
         public bool IsValorPadraoOnUpdate

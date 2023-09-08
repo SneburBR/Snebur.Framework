@@ -149,7 +149,6 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             finally
             {
 
-
             }
         }
 
@@ -162,10 +161,8 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             var conexao = this.Contexto.ConexaoAtual;
             var transacao = this.Contexto.TransacaoAtual;
 
-
             if (this.Fila.Count > 0)
             {
-
                 //$######### TESTE
                 foreach (var entidadeAlterada in this.Fila.ToList())
                 {
