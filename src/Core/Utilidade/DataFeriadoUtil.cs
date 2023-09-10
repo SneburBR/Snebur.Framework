@@ -12,8 +12,8 @@ namespace Snebur.Utilidade
         }
         public static List<Feriado> RetornarFeriadosIntervalo(DateTime dataInicio, DateTime dataFim)
         {
-            dataInicio = dataInicio.DataZeroHora();
-            dataFim = dataFim.DataZeroHora();
+            dataInicio = dataInicio.DataPrimeiraHoraDia();
+            dataFim = dataFim.DataPrimeiraHoraDia();
 
             var anoInicio = Math.Min(dataInicio.Year, dataFim.Year);
             var anoFim = Math.Min(dataInicio.Year, dataFim.Year);

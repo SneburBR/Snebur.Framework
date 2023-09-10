@@ -57,10 +57,25 @@ namespace Snebur.Utilidade
             return false;
         }
 
-        public static DateTime DataZeroHora(this DateTime data, bool isUtc = true)
+        public static DateTime DataPrimeiraHoraDia(this DateTime data, bool isUtc = true)
         {
             var tipo = isUtc ? DateTimeKind.Utc : DateTimeKind.Local;
-            return new DateTime(data.Year, data.Month, data.Day, 0, 0, 0, tipo);
+            return DataPrimeiraHoraDia(data, tipo);
+        }
+        public static DateTime DataPrimeiraHoraDia(this DateTime data, DateTimeKind kind)
+        {
+            return new DateTime(data.Year, data.Month, data.Day, 0, 0, 0, kind);
+        }
+
+        public static DateTime DataUltimaHora(this DateTime data, bool isUtc = true)
+        {
+            var tipo = isUtc ? DateTimeKind.Utc : DateTimeKind.Local;
+            return DataUltimaHora(data, tipo);
+        }
+
+        public static DateTime DataUltimaHora(this DateTime data, DateTimeKind kind)
+        {
+            return new DateTime(data.Year, data.Month, data.Day, 23, 59, 59, kind);
         }
 
         public static string ToDirectoryName(this DateTime dateTime, 

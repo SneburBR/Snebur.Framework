@@ -14,4 +14,6 @@ namespace Snebur.Dominio.Atributos
             this.TipoExclusao = tipoExclusao;
         }
     }
+
+  
 }

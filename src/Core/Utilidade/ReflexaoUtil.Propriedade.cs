@@ -204,7 +204,9 @@ namespace Snebur.Utilidade
             return ReflexaoUtil.RetornarPropriedade(tipo, nomePropriedade, false);
         }
 
-        public static PropertyInfo RetornarPropriedade(Type tipo, string nomePropriedade, bool ignorarPropriedadeNaoEncontrada)
+        public static PropertyInfo RetornarPropriedade(Type tipo, 
+                                                       string nomePropriedade, 
+                                                       bool ignorarPropriedadeNaoEncontrada)
         {
             Type tipoAtual = tipo;
 
@@ -213,6 +215,7 @@ namespace Snebur.Utilidade
             while (!Object.ReferenceEquals(tipoAtual, typeof(object)))
             {
                 pi = tipoAtual.GetProperty(nomePropriedade, ReflexaoUtil.BindingFlags);
+                pi = tipoAtual.GetProperty(nomePropriedade);
                 if (pi != null)
                 {
                     return pi;
