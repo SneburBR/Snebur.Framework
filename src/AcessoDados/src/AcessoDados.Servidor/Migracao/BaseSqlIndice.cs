@@ -37,16 +37,29 @@ namespace Snebur.AcessoDados
 
         private void PopularCamposFiltros()
         {
+            //if (this.EstruturaEntidade.IsImplementaInterfaceIDeletado)
+            //{
+            //    var estruturaCampoIsDeletado = this.EstruturaEntidade.EstruturaCampoDelatado;
+            //    var expressao = $" ( {estruturaCampoIsDeletado.NomeCampo} = 0 )";
+            //    this.CamposFiltros.Add(new CampoFiltro {
+            //        Campo = estruturaCampoIsDeletado.NomeCampo,
+            //        Expressao = expressao 
+            //    });
+            //}
+
             foreach (var propriedadeIndexar in this.PropriedadesIndexar.Where(x => !x.IsPermitirNulo))
             {
                 var estruturaCampo = this.RetornarEstruturaCampo(propriedadeIndexar.Propriedade);
                 if (estruturaCampo.IsAceitaNulo)
                 {
                     var expressao = $" ( {estruturaCampo.NomeCampo} IS NOT NULL)";
-                    this.CamposFiltros.Add(new CampoFiltro { Campo = estruturaCampo.NomeCampo, Expressao = expressao });
+                    this.CamposFiltros.Add(new CampoFiltro { 
+                        Campo = estruturaCampo.NomeCampo, 
+                        Expressao = expressao 
+                    });
                 }
             }
-
+             
             if (this.PropriedadesFiltros?.Count > 0)
             {
                 foreach (var propriedadeFiltro in this.PropriedadesFiltros)
