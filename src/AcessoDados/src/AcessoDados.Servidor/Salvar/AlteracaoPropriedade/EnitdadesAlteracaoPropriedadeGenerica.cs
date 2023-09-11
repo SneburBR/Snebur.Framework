@@ -58,8 +58,10 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                      
                         if (estruturaAlteracaoPropriedade.IsProteger)
                         {
-                            novaAlteracao.ValorPropriedadeAlterada =  FormatacaoUtil.Proteger(valorPropriedade?.ToString());
-                            novaAlteracao.ValorPropriedadeAntigo = FormatacaoUtil.Proteger(valorAntigo?.ToString());
+                            novaAlteracao.ValorPropriedadeAlterada =  FormatacaoUtil.Proteger(valorPropriedade?.ToString()).
+                                                                                     RetornarPrimeirosCaracteres(5000);
+                            novaAlteracao.ValorPropriedadeAntigo = FormatacaoUtil.Proteger(valorAntigo?.ToString()).
+                                                                                  RetornarPrimeirosCaracteres(5000); ;
                         }
                         else
                         {
