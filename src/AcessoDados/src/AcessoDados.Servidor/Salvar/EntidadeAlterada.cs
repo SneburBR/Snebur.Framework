@@ -59,7 +59,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                     entidadeDeletada.IsDeletado = true;
                     entidadeDeletada.SessaoUsuarioDeletado_Id = this.Contexto.SessaoUsuarioLogado.Id;
                     entidadeDeletada.SessaoUsuarioDeletado = this.Contexto.SessaoUsuarioLogado;
-                    entidadeDeletada.DataHoraDeletado = DateTime.UtcNow;
+                    entidadeDeletada.DataHoraDeletado = this.Contexto.SqlSuporte.IsDataHoraUtc ? DateTime.UtcNow : DateTime.Now;
 
                     if (estruturaEntidade.IsImplementaInterfaceIAtivo)
                     {
@@ -130,6 +130,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                     throw new ErroNaoSuportado("O tipo da alteração não é suportado");
             }
         }
+
         #region Salvar
 
         private List<Comando> RetornarComandosSalvar()

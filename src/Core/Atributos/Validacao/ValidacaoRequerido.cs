@@ -22,7 +22,7 @@ namespace Snebur.Dominio.Atributos
 
         }
 
-        public ValidacaoRequeridoAttribute([IgnorarParametrTS] Type tipoEntidade,
+        public ValidacaoRequeridoAttribute([IgnorarParametroTS] Type tipoEntidade,
                                            [ParametroOpcionalTS] EnumOpcoesComparacaoAuxiliar opcoesComparacaoAuxiliar,
                                            [ParametroOpcionalTS] string nomePropridadeAuxiliar,
                                            [ParametroOpcionalTS] bool isValidoSeAuxiliarInvalido = false)

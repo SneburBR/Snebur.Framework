@@ -121,8 +121,7 @@ namespace Snebur.AcessoDados.Comunicacao
 
         private bool IsErroSessaoInvalida(Exception ex)
         {
-            return ErroUtil.IsTipo<ErroSessaoUsuarioExpirada>(ex) ||
-                   ErroUtil.IsTipo<ErroSessaoUsuarioInvalida>(ex);
+            return ErroUtil.IsErroSessaoInvalida(ex);
         }
 
         private string RetornarDetalhesParametros(MethodInfo metodoOperacao, object[] valoresParametros)

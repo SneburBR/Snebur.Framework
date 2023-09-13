@@ -98,6 +98,7 @@ namespace Snebur.Utilidade
             {
                 return SessaoUtil.IdentificadoresSessaoUsuario[AplicacaoSnebur.Atual.CredencialUsuario.IdentificadorUsuario];
             }
+
             lock (_bloqueioIdentificadorSessaoUsuario)
             {
                 if (!IdentificadoresSessaoUsuario.ContainsKey(AplicacaoSnebur.Atual.CredencialUsuario.IdentificadorUsuario))

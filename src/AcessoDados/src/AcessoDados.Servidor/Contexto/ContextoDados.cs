@@ -87,7 +87,7 @@ namespace Snebur.AcessoDados
             {
                 if (this.SqlSuporte.IsSessaoUsuario)
                 {
-                    return this.SessaoUsuarioLogado.Status == EnumStatusSessaoUsuario.Ativo;
+                    return this.SessaoUsuarioLogado.Status == EnumStatusSessaoUsuario.Ativo  ;
                 }
                 return true;
             }
@@ -120,7 +120,7 @@ namespace Snebur.AcessoDados
         {
             ErroUtil.ValidarReferenciaNula(configuracaoAcessoDados, nameof(configuracaoAcessoDados));
 
-            this.SqlSuporte = new BancoDadosSuporta( flagsNaoSuporta);
+            this.SqlSuporte = new BancoDadosSuporta(flagsNaoSuporta);
             this.ConectionString = AplicacaoSnebur.Atual.ConnectionStrings[configuracaoAcessoDados] ?? throw new ErroNaoDefinido($"Não foi encontrada o String de conexão '{configuracaoAcessoDados}' no arquivo de configuração da aplicação ConnectionStrings App.Config ou Web.Config ");
 
             if (String.IsNullOrWhiteSpace(identificadorProprietario))
@@ -340,8 +340,8 @@ namespace Snebur.AcessoDados
         {
             this.ValidarSessaoUsuario();
 
-            using (var mapeamento = new MapeamentoConsultaValorScalar(estruturaConsulta, 
-                                                                     this.EstruturaBancoDados, 
+            using (var mapeamento = new MapeamentoConsultaValorScalar(estruturaConsulta,
+                                                                     this.EstruturaBancoDados,
                                                                      this.Conexao,
                                                                      this))
             {
@@ -557,7 +557,7 @@ namespace Snebur.AcessoDados
             }
         }
 
-       
+
         public virtual void NotificarSessaoUsuarioAtiva(IUsuario usuario,
                                                            ISessaoUsuario sessaoUsuario)
         {
@@ -566,6 +566,11 @@ namespace Snebur.AcessoDados
             sessaoUsuario.DataHoraUltimoAcesso = nowUtc;
             sessaoUsuario.Status = EnumStatusSessaoUsuario.Ativo;
             (this as IContextoDadosSemNotificar).SalvarInternoSemNotificacao(new IEntidade[] { usuario, sessaoUsuario }, false);
+        }
+
+        public virtual bool IsContinuarSeSessaoInvalida()
+        {
+            return false;
         }
 
         #endregion
@@ -580,13 +585,25 @@ namespace Snebur.AcessoDados
             {
                 ValidacaoUtil.ValidarReferenciaNula(this.CacheSessaoUsuario, nameof(this.CacheSessaoUsuario));
 
-                if (this.CacheSessaoUsuario.StatusSessaoUsuario != EnumStatusSessaoUsuario.Ativo)
+                if (this.CacheSessaoUsuario.StatusSessaoUsuario != EnumStatusSessaoUsuario.Ativo  )
                 {
                     if (DebugUtil.IsAttached)
                     {
                         throw new Erro($"Usuário diferente da são ser foi um usuário global retomar no contexto, RetornarCredenciaisGlobais '{this.CacheSessaoUsuario.Usuario.Nome}'");
                     }
 
+                    if (this.CacheSessaoUsuario.SessaoUsuario != null &&
+                        this.CacheSessaoUsuario.Usuario != null)
+                    {
+                        var usuario = this.CacheSessaoUsuario.Usuario;
+                        var sessaoUsuario = this.CacheSessaoUsuario.SessaoUsuario;
+
+                        if (this.IsContinuarSeSessaoInvalida())
+                        {
+                            this.NotificarSessaoUsuarioAtiva(usuario, sessaoUsuario);
+                            return;
+                        }
+                    }
                     throw new ErroSessaoUsuarioExpirada(this.CacheSessaoUsuario.StatusSessaoUsuario,
                                                         this.CacheSessaoUsuario.SessaoUsuario.IdentificadorSessaoUsuario,
                                                         $"O status da sessão '{this.CacheSessaoUsuario.SessaoUsuario.IdentificadorSessaoUsuario.ToString()}' não é valido {this.CacheSessaoUsuario.StatusSessaoUsuario.ToString()} ");
@@ -811,7 +828,7 @@ namespace Snebur.AcessoDados
 
         #region
 
-       
+
         #endregion
 
         #region IDisposable

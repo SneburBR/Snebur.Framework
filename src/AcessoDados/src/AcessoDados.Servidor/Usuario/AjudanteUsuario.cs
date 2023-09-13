@@ -87,7 +87,8 @@ namespace Snebur.AcessoDados
                 return EnumStatusSessaoUsuario.IdentificadorSessaoUsuarioInexistente;
             }
 
-            internal bool IsValidarCredencialSessaoUsuario(ISessaoUsuario sessaoUsuario, Credencial credencial)
+            internal bool IsValidarCredencialSessaoUsuario(ISessaoUsuario sessaoUsuario, 
+                                                           Credencial credencial)
             {
                 var usuario = this.RetornarUsuario(credencial);
                 if (usuario != null)

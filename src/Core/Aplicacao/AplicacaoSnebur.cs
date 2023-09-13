@@ -419,7 +419,7 @@ namespace Snebur
                 }
                 AplicacaoSnebur._aplicacao = this;
             }
-          
+
             AppDomain.CurrentDomain.UnhandledException += this.Aplicacao_UnhandledException;
             //AppDomain.CurrentDomain.FirstChanceException += this.Aplicacao_FirstChanceException;
             AppDomain.CurrentDomain.ProcessExit += this.Aplicacao_ProcessExit;
@@ -707,7 +707,7 @@ namespace Snebur
             return ConfiguracaoUtil.AmbienteServidor;
         }
 
-        protected virtual InformacaoSessaoUsuario RetornarInformacaoSessaoUsuario()
+        public InformacaoSessaoUsuario RetornarInformacaoSessaoUsuario()
         {
             var tipoAplicacao = this.TipoAplicacao;
             var userAgent = this.AspNet?.UserAgent;
@@ -773,6 +773,11 @@ namespace Snebur
             return IpUtil.RetornarIPInformacao(String.Empty).IP;
             //throw new NotImplementedException();
             //return IpUtil.RetornarIPInformacaoRequisicao(isRetornarNullNaoEncotnrado).IP;
+        }
+
+        public virtual bool IsCredencialAvalistaPermirteContinuarSessaoInvalido(CredencialUsuario crendencial)
+        {
+            return false;
         }
 
 #if NET7_0 == false

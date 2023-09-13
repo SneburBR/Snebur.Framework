@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Snebur.AcessoDados;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -130,6 +131,13 @@ namespace Snebur.Utilidade
                 var mensagem = String.Format("A referencia '{0}' não foi definida", nomeReferencia);
                 throw new ErroNaoDefinido(mensagem, null, nomeMetodo, caminhoArquivo, linhaDoErro);
             }
+        }
+
+        public static bool IsErroSessaoInvalida(Exception ex)
+        {
+            LogUtil.ErroAsync(ex);
+            return ErroUtil.IsTipo<ErroSessaoUsuarioExpirada>(ex) ||
+                   ErroUtil.IsTipo<ErroSessaoUsuarioInvalida>(ex);
         }
     }
 }

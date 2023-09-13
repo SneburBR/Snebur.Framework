@@ -13,6 +13,10 @@ namespace Snebur.Dominio
     }
     public class InformacaoSessaoUsuario : InformacaoSessao, IIdentificadorSessaoUsuario
     {
+        public InformacaoSessaoUsuario()
+        {
+            this.IdentificadorSessaoUsuario = Guid.NewGuid();
+        }
         public Guid IdentificadorSessaoUsuario { get; set; }
     }
 }
