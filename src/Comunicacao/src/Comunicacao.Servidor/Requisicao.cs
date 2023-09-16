@@ -8,6 +8,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Web;
+using System.Xml.Serialization;
+using System.Text.Json.Serialization;
 
 #if NET7_0
 using Microsoft.AspNetCore.Http;
@@ -35,6 +37,8 @@ namespace Snebur.Comunicacao
         public bool IsSerializarJavascript { get; set; }
         public EnumTipoSerializacao TipoSerializacao => this.IsSerializarJavascript ? EnumTipoSerializacao.Javascript : 
                                                                                       EnumTipoSerializacao.DotNet;
+
+        [XmlIgnore, JsonIgnore]
         public HttpContext HttpContext { get; private set; }
 
         #endregion
