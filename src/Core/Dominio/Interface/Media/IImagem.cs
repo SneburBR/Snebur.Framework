@@ -32,6 +32,8 @@
 
         bool IsIcone { get; set; }
 
+        bool IsImagemProcessada { get; set; }
+
         Dimensao DimensaoImagemMiniatura { get; set; }
 
         Dimensao DimensaoImagemPequena { get; set; }
