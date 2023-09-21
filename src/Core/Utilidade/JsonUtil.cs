@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -22,15 +23,7 @@ namespace Snebur.Utilidade
 
         public static IReferenceResolver ReferenceResolver => LazyUtil.RetornarValorLazyComBloqueio(ref _referenceResolver, () => new ResolverReferencia());
 
-        private static readonly JsonSerializerSettings ConfiguracoesDeserializar = new JsonSerializerSettings
-        {
-            TypeNameHandling = TypeNameHandling.All,
-            DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
-            DateTimeZoneHandling = DateTimeZoneHandling.RoundtripKind,
-            ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
-        };
-
-        private static readonly JsonSerializerSettings ConfiguracoesSerializarJavascript = new JsonSerializerSettings
+        private static readonly JsonSerializerSettings ConfiguracoesJavascript = new JsonSerializerSettings
         {
             TypeNameHandling = TypeNameHandling.None,
             DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
@@ -40,7 +33,7 @@ namespace Snebur.Utilidade
             ContractResolver = new JsonPropertiesResolver(),
         };
 
-        private static readonly JsonSerializerSettings ConfiguracoesSerializarDotNet = new JsonSerializerSettings
+        private static readonly JsonSerializerSettings ConfiguracoesDotNet = new JsonSerializerSettings
         {
             TypeNameHandling = TypeNameHandling.All,
             DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
@@ -86,14 +79,32 @@ namespace Snebur.Utilidade
 
         public static T Deserializar<T>(string json, EnumTipoSerializacao tipoSerializacao)
         {
+            return Deserializar<T>(json, tipoSerializacao, CultureInfo.InvariantCulture);
+        }
+        public static T Deserializar<T>(string json,
+                                        EnumTipoSerializacao tipoSerializacao,
+                                        CultureInfo culture)
+        {
             if (String.IsNullOrEmpty(json))
             {
                 return default(T);
             }
-            return (T)Deserializar(json, typeof(T), tipoSerializacao);
+            return (T)Deserializar(json, typeof(T), tipoSerializacao, culture);
         }
 
-        public static object Deserializar(string json, Type tipo, EnumTipoSerializacao tipoSerializacao)
+        public static object Deserializar(string json,
+                                          Type tipo,
+                                          EnumTipoSerializacao tipoSerializacao)
+        {
+            return Deserializar(json,
+                                tipo,
+                                tipoSerializacao,
+                                CultureInfo.InvariantCulture);
+        }
+        public static object Deserializar(string json,
+                                      Type tipo,
+                                      EnumTipoSerializacao tipoSerializacao,
+                                      CultureInfo culture)
         {
             try
             {
@@ -102,8 +113,10 @@ namespace Snebur.Utilidade
                     return null;
                 }
 
-                var configuracaoSerializacao = tipoSerializacao == EnumTipoSerializacao.Javascript ? JsonUtil.ConfiguracoesSerializarJavascript :
-                                                                                                     JsonUtil.ConfiguracoesSerializarDotNet;
+                var configuracaoSerializacao = tipoSerializacao == EnumTipoSerializacao.Javascript ? JsonUtil.ConfiguracoesJavascript :
+                                                                                                     JsonUtil.ConfiguracoesDotNet;
+
+                configuracaoSerializacao.Culture = culture ?? CultureInfo.InvariantCulture;
 
                 var objeto = JsonConvert.DeserializeObject(json, tipo, configuracaoSerializacao);
                 if (tipoSerializacao == EnumTipoSerializacao.DotNet)
@@ -133,10 +146,18 @@ namespace Snebur.Utilidade
         }
         public static string Serializar(object objeto, EnumTipoSerializacao tipoSerializacao)
         {
-            return JsonUtil.Serializar(objeto, tipoSerializacao, DebugUtil.IsAttached);
+            return JsonUtil.Serializar(objeto,
+                                      tipoSerializacao,
+                                      CultureInfo.InvariantCulture,
+                                      DebugUtil.IsAttached,
+                                      false);
         }
 
-        public static string Serializar(object objeto, EnumTipoSerializacao tipoSerializacao, bool isIdentar)
+        public static string Serializar(object objeto,
+                                        EnumTipoSerializacao tipoSerializacao,
+                                        CultureInfo cultureInfo,
+                                        bool isIdentar,
+                                        bool isPrepararSerializacao = true)
         {
             if (objeto == null)
             {
@@ -147,8 +168,17 @@ namespace Snebur.Utilidade
                 var formatacaoJson = (isIdentar) ? Formatting.Indented :
                                                    Formatting.None;
 
-                var configuracaoSerializacao = tipoSerializacao == EnumTipoSerializacao.Javascript ? JsonUtil.ConfiguracoesSerializarJavascript :
-                                                                                                     JsonUtil.ConfiguracoesSerializarDotNet;
+                var configuracaoSerializacao = tipoSerializacao == EnumTipoSerializacao.Javascript
+                                                    ? JsonUtil.ConfiguracoesJavascript
+                                                    : JsonUtil.ConfiguracoesDotNet;
+
+                configuracaoSerializacao.Culture = cultureInfo ?? CultureInfo.InvariantCulture;
+
+
+                if (!isPrepararSerializacao)
+                {
+                    return JsonConvert.SerializeObject(objeto, formatacaoJson, configuracaoSerializacao);
+                }
 
                 using (var preparar = new PrapararSerializacao(objeto))
                 {
@@ -185,7 +215,12 @@ namespace Snebur.Utilidade
                                              string caminhoDestino,
                                              bool isIdentar = true)
         {
-            var json = JsonUtil.Serializar(objecto, tipoSerializacao, isIdentar);
+            var json = JsonUtil.Serializar(objecto,
+                                          tipoSerializacao,
+                                          CultureInfo.InvariantCulture,
+                                          isIdentar,
+                                          false);
+
             ArquivoUtil.DeletarArquivo(caminhoDestino);
             ArquivoUtil.SalvarArquivoTexto(caminhoDestino, json);
         }
@@ -211,6 +246,24 @@ namespace Snebur.Utilidade
                 memberInfos.Add(tipoBaseDominio.GetField(nameof(IBaseDominioReferencia.__IsBaseDominioReferencia), flags));
             }
             return memberInfos;
+        }
+
+        public static string IndentarJson(string json,
+                                          CultureInfo culture)
+        {
+            try
+            {
+                var objeto = JsonUtil.Deserializar<object>(json, EnumTipoSerializacao.Javascript, culture);
+                return JsonUtil.Serializar(objeto,
+                                          EnumTipoSerializacao.Javascript,
+                                          culture,
+                                          true,
+                                          false);
+            }
+            catch
+            {
+                return json;
+            }
         }
     }
 
@@ -283,6 +336,7 @@ namespace Snebur.Utilidade
     {
         Javascript = 1,
         DotNet = 2
+
     }
 
 }
