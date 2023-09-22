@@ -9,17 +9,17 @@ namespace Snebur.AcessoDados
 {
     internal class OrdenacaoUtil
     {
-        internal static PropertyInfo RetornarPropriedadeOrdenacao(Type tipoEntidade)
+        internal static (PropertyInfo, OrdenacaoOpcoesAttribute) RetornarPropriedadeOrdenacao(Type tipoEntidade)
         {
             var nomePropriedade = nameof(IOrdenacao.Ordenacao);
             var propriedade = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nomePropriedade, true);
             if (propriedade != null)
             {
-                return propriedade;
+                var atributo = propriedade.GetCustomAttribute<OrdenacaoOpcoesAttribute>();
+                return (propriedade, atributo);
             }
 
             var metodos = tipoEntidade.GetInterfaceMap(typeof(IOrdenacao)).TargetMethods;
-
             propriedade = tipoEntidade.GetProperties(BindingFlags.NonPublic | BindingFlags.Instance)
                                                     .Where(p => metodos.Contains(p.GetGetMethod(true)))
                                                     .Where(prop => metodos.Contains(prop.GetSetMethod(true)))
@@ -33,7 +33,7 @@ namespace Snebur.AcessoDados
                     var propriedadeMapeada = ReflexaoUtil.RetornarPropriedade(tipoEntidade, atributo.NomePropriedadeMapeada, true);
                     if (propriedadeMapeada != null)
                     {
-                        return propriedadeMapeada;
+                        return (propriedadeMapeada, atributo);
                     }
                 }
             }

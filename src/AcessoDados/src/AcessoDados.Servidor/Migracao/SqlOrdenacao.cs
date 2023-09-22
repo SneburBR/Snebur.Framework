@@ -16,7 +16,9 @@ namespace Snebur.AcessoDados
         internal string CampoChavePrimaria { get; set; }
         internal string CampoOrdenacao { get; set; }
 
-        internal SqlOrdenacao(EstruturaEntidade estruturaEntidade, PropertyInfo propriedade, EnumOrdenacaoNovoRegistro ordencaoNovoRegistro) : base(estruturaEntidade, new List<PropertyInfo>() { propriedade })
+        internal SqlOrdenacao(EstruturaEntidade estruturaEntidade, 
+                              PropertyInfo propriedade, 
+                              EnumOrdenacaoNovoRegistro ordencaoNovoRegistro) : base(estruturaEntidade, new List<PropertyInfo>() { propriedade })
         {
             this.Propriedade = propriedade;
             this.OrdenacaoNovoRegistro = ordencaoNovoRegistro;

@@ -14,7 +14,7 @@ namespace Snebur.AcessoDados
     {
         private BaseContextoDados Contexto { get; set; }
         private BaseConexao Conexao { get; set; }
-        private List<SqlMigracao> SqlsMigration { get; set; }
+        //private List<SqlMigracao> SqlsMigration { get; set; }
 
         private const string NOME_CAMPO_MIGRACAO_SNEBUR = "MigracaoSnebur";
         private const string SQL_CRIAR_CAMPO_MIGRACAO_SNEBUR = "IF NOT EXISTS (select * from sys.columns where object_id = OBJECT_ID(N'[dbo].[__MigrationHistory]')  and [name] ='" + NOME_CAMPO_MIGRACAO_SNEBUR + "') ALTER TABLE [dbo].[__MigrationHistory] ADD [" + NOME_CAMPO_MIGRACAO_SNEBUR + "] [bit] NOT NULL DEFAULT 0 ";
@@ -25,12 +25,12 @@ namespace Snebur.AcessoDados
         {
             this.Contexto = contexto;
             this.Conexao = this.Contexto.Conexao;
-            this.SqlsMigration = this.RetornarSqlsMigration();
+            //this.SqlsMigration = this.RetornarSqlsMigration();
         }
 
         internal void Migrar()
         {
-            this.SqlsMigration = this.RetornarSqlsMigration();
+            //this.SqlsMigration = this.RetornarSqlsMigration();
             using (var conexao = this.Conexao.RetornarNovaConexao())
             {
                 conexao.Open();
@@ -38,7 +38,8 @@ namespace Snebur.AcessoDados
                 {
                     if (this.ExisteMigracaoSneburPendente(conexao))
                     {
-                        foreach (var sqlMigration in this.SqlsMigration)
+                        var sqlsMigracao = this.RetornarSqlsMigration();
+                        foreach (var sqlMigration in sqlsMigracao)
                         {
                             if (!this.ExisteMigracao(conexao, sqlMigration))
                             {
@@ -165,8 +166,7 @@ namespace Snebur.AcessoDados
 
                 if (ReflexaoUtil.TipoImplementaInterface(tipoEntidade, typeof(IOrdenacao), true))
                 {
-                    var propriedade = OrdenacaoUtil.RetornarPropriedadeOrdenacao(tipoEntidade);
-                    var atributo = propriedade.GetCustomAttribute<OrdenacaoOpcoesAttribute>();
+                    var (propriedade, atributo) = OrdenacaoUtil.RetornarPropriedadeOrdenacao(tipoEntidade);
                     var isIgnorarMigracao = atributo?.IsIgnorarMigracao ?? false;
 
                     if (!isIgnorarMigracao)
