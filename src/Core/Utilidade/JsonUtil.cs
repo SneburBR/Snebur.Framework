@@ -144,13 +144,14 @@ namespace Snebur.Utilidade
         {
             SalvarSerializacao(objeto, tipoSerializacao, caminhoArquivo);
         }
-        public static string Serializar(object objeto, EnumTipoSerializacao tipoSerializacao)
+        public static string Serializar(object objeto,
+                                        EnumTipoSerializacao tipoSerializacao)
         {
             return JsonUtil.Serializar(objeto,
-                                      tipoSerializacao,
-                                      CultureInfo.InvariantCulture,
-                                      DebugUtil.IsAttached,
-                                      false);
+                                       tipoSerializacao,
+                                       cultureInfo: CultureInfo.InvariantCulture,
+                                       isIdentar: DebugUtil.IsAttached,
+                                       isPrepararSerializacao: true);
         }
 
         public static string Serializar(object objeto,
@@ -177,7 +178,9 @@ namespace Snebur.Utilidade
 
                 if (!isPrepararSerializacao)
                 {
-                    return JsonConvert.SerializeObject(objeto, formatacaoJson, configuracaoSerializacao);
+                    return JsonConvert.SerializeObject(objeto,
+                                                       formatacaoJson,
+                                                       configuracaoSerializacao);
                 }
 
                 using (var preparar = new PrapararSerializacao(objeto))
