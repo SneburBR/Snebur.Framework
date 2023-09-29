@@ -6,6 +6,8 @@ namespace System
 {
     public static class DictionaryExtensao
     {
+        private static readonly Dictionary<int, Dictionary<int, object>> _dicionariosBloqueio = new Dictionary<int, Dictionary<int, object>>();
+
         public static TValue GetValueOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> dicionario, TKey key)
         {
             if (dicionario.TryGetValue(key, out TValue valor))
@@ -156,9 +158,7 @@ namespace System
             return GetOrAddWithLockKeyInterno(dicionario, chave, userState, funcaoRetornarValor, tentativa += 1);
 #endif
         }
-
-
-        private static readonly Dictionary<int, Dictionary<int, object>> _dicionariosBloqueio = new Dictionary<int, Dictionary<int, object>>();
+         
         //private static readonly object _bloqueioDicionario = new object();
         //private static readonly object _bloqueioChave = new object();
         private static object RetornarBloqueio<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> dicionario,
@@ -167,11 +167,11 @@ namespace System
             var hashDicionario = dicionario.GetHashCode();
             if (!_dicionariosBloqueio.ContainsKey(hashDicionario))
             {
-                lock ((dicionario as ICollection).SyncRoot)
+                lock ((_dicionariosBloqueio as ICollection).SyncRoot)
                 {
                     if (!_dicionariosBloqueio.ContainsKey(hashDicionario))
                     {
-                        _dicionariosBloqueio.Add(hashDicionario, new Dictionary<int, object>());
+                        _dicionariosBloqueio.TryAdd(hashDicionario, new Dictionary<int, object>());
                     }
                 }
             }
@@ -181,7 +181,7 @@ namespace System
 
             if (!dicionarioBloqueio.ContainsKey(hashChave))
             {
-                lock ((dicionario as ICollection).SyncRoot)
+                lock ((_dicionariosBloqueio as ICollection).SyncRoot)
                 {
                     if (!dicionarioBloqueio.ContainsKey(hashChave))
                     {
