@@ -3,32 +3,78 @@ using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 
 namespace Snebur.Utilidade
 {
     public static class ValidacaoEmailUtil
     {
-        private static readonly int[] PortasSmtp = new int[] { 587, 25 };
+        private static readonly int[] PortasSmtp = new int[] { 587, 465, 25 };
+
         public static bool IsExisteEmail(string email)
         {
             var dominio = email.Split('@')[1];
             var dnsRecords = DnsUtil.GetDnsRecords(dominio, QueryType.MX);
-            if (dnsRecords?.Count() > 0)
+            if (dnsRecords?.Length > 0)
             {
                 foreach (var record in dnsRecords.OrderBy(x => x.Preference))
                 {
-                    foreach(var porta in PortasSmtp)
+                    var isEmailValid = IsEmailAccountValid(email, record);
+                    if(isEmailValid)
                     {
-                        var isExisteConta = ValidacaoEmailUtil.IsEmailAccountValid(record.Record, email, porta);
-                        if (isExisteConta)
-                        {
-                            return true;
-                        }
+                        return true;
                     }
                 }
             }
             return false;
         }
+
+        private static bool IsEmailAccountValid(string email, DnsUtil.DnsRecord record)
+        {
+            var operetions = new Func<CancellationToken, bool>[ValidacaoEmailUtil.PortasSmtp.Length];
+
+            for (var i = 0; i < ValidacaoEmailUtil.PortasSmtp.Length; i++)
+            {
+                var porta = ValidacaoEmailUtil.PortasSmtp[i];
+                operetions[i] = token =>
+                {
+                    return ValidacaoEmailUtil.IsEmailAccountValid(record.Record,
+                                                                    email,
+                                                                    porta);
+                };
+            }
+
+            try
+            {
+                var t = OperationWithTimeout.ExecuteWithTimeout(operetions, 3000);
+                return t.Result;
+            }
+            catch
+            {
+                return false;
+            }
+      
+        }
+
+        //private static bool TryIsEmailAccountValid(string tcpClient,
+        //                                           string emailAddress,
+        //                                           int porta)
+        //{
+        //    try
+        //    {
+        //        Func<CancellationToken, bool> operation = token =>
+        //        {
+        //            return ValidacaoEmailUtil.IsEmailAccountValid(tcpClient, emailAddress, porta);
+        //        };
+
+        //        var t = ThreadUtil.ExecuteWithTimeout(operation, 5000);
+        //        return t.Result;
+        //    }
+        //    catch
+        //    {
+        //        return false;
+        //    }
+        //}
 
         private static bool IsEmailAccountValid(string tcpClient, string emailAddress, int porta)
         {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Azure;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -248,7 +249,19 @@ namespace Snebur.Utilidade
             {
             }
         }
+
         #region Timeout
+        public static Task<T> ExecuteWithTimeout<T>(Func<CancellationToken, T>[] operations, double timeout)
+        {
+            return OperationWithTimeout.ExecuteWithTimeout(operations, timeout);
+        }
+
+        public static Task<T> ExecuteWithTimeout<T>(Func<CancellationToken, T> operation,
+                                               double timeout)
+        {
+            return OperationWithTimeout.ExecuteWithTimeout(operation, timeout);
+        }
+
         public static int SetTimeout(Action acao, int timeout)
         {
             return GerenadorTimeout.SetTimeout(acao, timeout);
