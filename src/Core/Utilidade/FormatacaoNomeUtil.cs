@@ -44,8 +44,7 @@ namespace Snebur.Utilidade
         public static string FormatarNomeUltimoSobrenome(string nomeCompleto)
         {
             var partesNomeCompleto = FormatacaoNomeUtil.RetornarPartes(nomeCompleto);
-            var nome = partesNomeCompleto.First();
-
+            //var nome = partesNomeCompleto.First();
             var partesNome = new List<string>();
             var partesSobrenome = partesNomeCompleto.ToList();
             foreach (var parte in partesNomeCompleto)
@@ -59,8 +58,8 @@ namespace Snebur.Utilidade
             }
 
             var primeiroNome = String.Join(" ", partesNome.Take(1));
-            var sobrenome = partesSobrenome.Last();
-            return primeiroNome.Trim() + " " + sobrenome.Trim();
+            var sobrenome = partesSobrenome?.LastOrDefault() ?? String.Empty;
+            return (primeiroNome.Trim() + " " + sobrenome.Trim()).Trim();
         }
 
         public static string FormatarNomeCompleto(string nome, string sobrenome)
