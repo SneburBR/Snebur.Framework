@@ -6,7 +6,8 @@ using System.Linq;
 using System.Net;
 
 using System.Text;
- 
+using System.Threading;
+
 namespace Snebur.Utilidade
 {
 
@@ -106,7 +107,19 @@ namespace Snebur.Utilidade
         {
             return RetornarBytesCabecalhoResposta(new Uri(url), cabecalho, timeout, ignorarErro);
         }
-        public static Tuple<byte[], WebHeaderCollection> RetornarBytesCabecalhoResposta(Uri uri, Dictionary<string, string> cabecalho, TimeSpan timeout, bool ignorarErro)
+
+        public static Tuple<byte[], WebHeaderCollection> RetornarBytesCabecalhoResposta(Uri uri,
+                                                                                        Dictionary<string, string> cabecalho,
+                                                                                        TimeSpan timeout,
+                                                                                        bool ignorarErro)
+        {
+            return RetornarBytesCabecalhoResposta(uri, cabecalho, timeout, ignorarErro, 0);
+        }
+        private static Tuple<byte[], WebHeaderCollection> RetornarBytesCabecalhoResposta(Uri uri,
+                                                                                         Dictionary<string, string> cabecalho,
+                                                                                         TimeSpan timeout,
+                                                                                         bool ignorarErro,
+                                                                                         int tentativa)
         {
             try
             {
@@ -134,14 +147,28 @@ namespace Snebur.Utilidade
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (!ignorarErro)
+                if (tentativa > 5)
                 {
-                    throw;
+                    LogUtil.ErroAsync(ex);
+                    if (!ignorarErro)
+                    {
+                        throw;
+                    }
+                    return null;
                 }
+
+                Thread.Sleep(tentativa * 1000);
+
+                return RetornarBytesCabecalhoResposta(
+                    uri,
+                    cabecalho,
+                    timeout,
+                    ignorarErro,
+                    tentativa += 1);
+
             }
-            return null;
         }
 
         public static MemoryStream RetornarMemoryStream(string url)
