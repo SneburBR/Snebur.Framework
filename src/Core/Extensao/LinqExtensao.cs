@@ -8,6 +8,13 @@ namespace Snebur.Linq
 {
     public static class LinqExtensao
     {
+        public static readonly object __lock = new object();
+
+        public static object SyncLock(this IEnumerable enumerable)
+        {
+            return (enumerable as ICollection)?.SyncRoot ?? LinqExtensao.__lock;
+        }
+
         public static T TryGet<T>(this IList<T> colecao, int index)
         {
             if (index < colecao.Count)
@@ -38,7 +45,7 @@ namespace Snebur.Linq
         {
             if (colecao?.Count > 0)
             {
-                lock ((colecao as ICollection).SyncRoot)
+                lock (colecao.SyncLock())
                 {
                     var item = colecao[colecao.Count - 1];
                     colecao.RemoveAt(colecao.Count - 1);
@@ -53,7 +60,7 @@ namespace Snebur.Linq
         {
             if (colecao?.Count > 0)
             {
-                lock ((colecao as ICollection).SyncRoot)
+                lock (colecao.SyncLock())
                 {
                     var item = colecao[0];
                     colecao.RemoveAt(0);
@@ -89,13 +96,15 @@ namespace Snebur.Linq
 
         public static void AddRangeNew<T>(this ICollection<T> colecao, IEnumerable<T> itens)
         {
-            colecao.Clear();
-
-            foreach (var item in itens)
+            lock (colecao.SyncLock())
             {
-                colecao.Add(item);
+                colecao.Clear();
+                foreach (var item in itens)
+                {
+                    colecao.Add(item);
+                }
             }
-        }
+         }
 
         public static void AddRange<T>(this ICollection<T> colecao, IEnumerable<T> itens)
         {

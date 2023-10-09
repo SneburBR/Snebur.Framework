@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Newtonsoft.Json.Linq;
+using Snebur.Linq;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 
@@ -6,9 +8,19 @@ namespace System
 {
     public static class DictionaryExtensao
     {
-        private static readonly Dictionary<int, Dictionary<int, object>> _dicionariosBloqueio = new Dictionary<int, Dictionary<int, object>>();
+        private static readonly IDictionary<int, Dictionary<int, object>> _dicionariosBloqueio = new Dictionary<int, Dictionary<int, object>>();
 
-        public static TValue GetValueOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> dicionario, TKey key)
+        public static object SyncLock(this IDictionary dict)
+        {
+            return (dict as IEnumerable)?.SyncLock() ?? LinqExtensao.__lock;
+        }
+
+        //public static object SyncLock<TKey, TValue>(this IDictionary<TKey, TValue> dict)
+        //{
+        //    return (dict as IEnumerable)?.SyncLock() ?? LinqExtensao.__lock;
+        //}
+#if NET7_0 == false
+        public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dicionario, TKey key)
         {
             if (dicionario.TryGetValue(key, out TValue valor))
             {
@@ -16,8 +28,9 @@ namespace System
             }
             return default;
         }
+#endif
 
-        public static void RemoveAll<TKey, TValue>(this Dictionary<TKey, TValue> dicionario, IEnumerable<TKey> keys)
+        public static void RemoveAll<TKey, TValue>(this IDictionary<TKey, TValue> dicionario, IEnumerable<TKey> keys)
         {
             foreach (var key in keys)
             {
@@ -25,9 +38,9 @@ namespace System
             }
         }
 
-        public static void TryRemove<TKey, TValue>(this Dictionary<TKey, TValue> dicionario, TKey key)
+        public static void TryRemove<TKey, TValue>(this IDictionary<TKey, TValue> dicionario, TKey key)
         {
-            lock ((dicionario as ICollection).SyncRoot)
+            lock (dicionario.SyncLock())
             {
                 if (dicionario.ContainsKey(key))
                 {
@@ -36,11 +49,11 @@ namespace System
             }
         }
 
-        public static void AddOrUpdate<TKey, TValue>(this Dictionary<TKey, TValue> dicionario,
+        public static void AddOrUpdate<TKey, TValue>(this IDictionary<TKey, TValue> dicionario,
                                    TKey key,
                                    TValue value)
         {
-            lock ((dicionario as ICollection).SyncRoot)
+            lock (dicionario.SyncLock())
             {
                 if (dicionario.ContainsKey(key))
                 {
@@ -53,11 +66,11 @@ namespace System
             }
         }
 
-        public static bool TryAdd<TKey, TValue>(this Dictionary<TKey, TValue> dicionario,
+        public static bool TryAdd<TKey, TValue>(this IDictionary<TKey, TValue> dicionario,
                                                TKey key,
                                                TValue value)
         {
-            lock ((dicionario as ICollection).SyncRoot)
+            lock (dicionario.SyncLock())
             {
                 if (dicionario.ContainsKey(key))
                 {
@@ -167,7 +180,7 @@ namespace System
             var hashDicionario = dicionario.GetHashCode();
             if (!_dicionariosBloqueio.ContainsKey(hashDicionario))
             {
-                lock ((_dicionariosBloqueio as ICollection).SyncRoot)
+                lock (dicionario.SyncLock())
                 {
                     if (!_dicionariosBloqueio.ContainsKey(hashDicionario))
                     {
@@ -181,7 +194,7 @@ namespace System
 
             if (!dicionarioBloqueio.ContainsKey(hashChave))
             {
-                lock ((_dicionariosBloqueio as ICollection).SyncRoot)
+                lock (dicionario.SyncLock())
                 {
                     if (!dicionarioBloqueio.ContainsKey(hashChave))
                     {
