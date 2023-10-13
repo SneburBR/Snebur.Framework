@@ -13,6 +13,11 @@ namespace Snebur.AcessoDados
     {
         public TEntidade Find(long id)
         {
+            return this.Where(x => x.Id == id).Single();
+        }
+
+        public TEntidade FindOrDefault(long id)
+        {
             return this.Where(x => x.Id == id).SingleOrDefault();
         }
 
