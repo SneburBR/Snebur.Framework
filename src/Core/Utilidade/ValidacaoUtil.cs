@@ -431,5 +431,12 @@ namespace Snebur.Utilidade
             }
             return false;
         }
+
+        public static bool IsPossuiEspacoEmBranco(string value)
+        {
+            if (value == null) return false;
+            var reg = new Regex(@"\s");
+            return reg.IsMatch(value);
+        }
     }
 }
