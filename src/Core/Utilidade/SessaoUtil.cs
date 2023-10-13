@@ -1,6 +1,7 @@
 ﻿using Snebur.Seguranca;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -94,35 +95,42 @@ namespace Snebur.Utilidade
 
         public static Guid RetornarIdentificadorSessaoUsuario()
         {
-            if (IdentificadoresSessaoUsuario.ContainsKey(AplicacaoSnebur.Atual.CredencialUsuario.IdentificadorUsuario))
+            var identificadorUsuario = AplicacaoSnebur.Atual.CredencialUsuario.IdentificadorUsuario;
+            if (IdentificadoresSessaoUsuario.ContainsKey(identificadorUsuario))
             {
-                return SessaoUtil.IdentificadoresSessaoUsuario[AplicacaoSnebur.Atual.CredencialUsuario.IdentificadorUsuario];
+                return SessaoUtil.IdentificadoresSessaoUsuario[identificadorUsuario];
             }
 
             lock (_bloqueioIdentificadorSessaoUsuario)
             {
-                if (!IdentificadoresSessaoUsuario.ContainsKey(AplicacaoSnebur.Atual.CredencialUsuario.IdentificadorUsuario))
+                if (!IdentificadoresSessaoUsuario.ContainsKey(identificadorUsuario))
                 {
                     var caminhoArquivo = SessaoUtil.RetornarCaminhoArquivoIdentificadorSessaoUsuario();
-                    var identificador = Guid.Empty;
+                    var identificadorSessaoUsuario = Guid.Empty;
                     if (File.Exists(caminhoArquivo))
                     {
-                        identificador = SessaoUtil.RetornarConteudoAppData<Guid>(caminhoArquivo);
+                        identificadorSessaoUsuario = SessaoUtil.RetornarConteudoAppData<Guid>(caminhoArquivo);
                     }
-                    if (identificador == Guid.Empty)
+                    if (identificadorSessaoUsuario == Guid.Empty)
                     {
-                        identificador = Guid.NewGuid();
-                        SessaoUtil.SalvarIdentificadorSessaoUsuario(identificador);
+                        identificadorSessaoUsuario = Guid.NewGuid();
+                        SessaoUtil.SalvarIdentificadorSessaoUsuario(identificadorSessaoUsuario);
                     }
-                    SessaoUtil.IdentificadoresSessaoUsuario.TryAdd(AplicacaoSnebur.Atual.CredencialUsuario.IdentificadorUsuario, identificador);
+                    SessaoUtil.IdentificadoresSessaoUsuario.TryAdd(identificadorUsuario, identificadorSessaoUsuario);
                 }
             }
             return SessaoUtil.RetornarIdentificadorSessaoUsuario();
         }
-        private static void SalvarIdentificadorSessaoUsuario(Guid identificador)
+
+        private static void SalvarIdentificadorSessaoUsuario( Guid identificadorSessaoUsuario)
         {
+            var identificadorUsuario = AplicacaoSnebur.Atual.CredencialUsuario.IdentificadorUsuario;
+            if (IdentificadoresSessaoUsuario.ContainsKey(identificadorUsuario))
+            {
+                IdentificadoresSessaoUsuario.TryRemove(identificadorUsuario, out _);
+            }
             var caminhoArquivo = SessaoUtil.RetornarCaminhoArquivoIdentificadorSessaoUsuario();
-            SessaoUtil.SalvarConteudoAppData(identificador, caminhoArquivo);
+            SessaoUtil.SalvarConteudoAppData(identificadorSessaoUsuario, caminhoArquivo);
         }
 
         private static string RetornarCaminhoArquivoIdentificadorSessaoUsuario()
