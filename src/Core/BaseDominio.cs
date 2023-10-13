@@ -212,7 +212,7 @@ namespace Snebur.Dominio
                 {
                     if (!Util.SaoIgual(antigoValor, novoValor) || this.__IsClonado)
                     {
-                        lock ((this.__PropriedadesAlteradas as ICollection).SyncRoot)
+                        lock (this.__PropriedadesAlteradas.SyncLock())
                         {
                             if (!this.__PropriedadesAlteradas.ContainsKey(nomePropriedade))
                             {

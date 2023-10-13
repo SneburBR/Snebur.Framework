@@ -6,28 +6,25 @@ namespace System.Linq
 {
     public static class ListaEntidades
     {
-        /// <summary>
-        /// Método usando para expressoes, ex AbriRelacao(Cliente.Pedidos.Incluir().Produtos.Incluir().ConfiguracaoProduto)
-        /// </summary>
-        /// <returns></returns>
+ 
         public static TEntidade Incluir<TEntidade>(this ListaEntidades<TEntidade> source) where TEntidade : IEntidade
         {
-            return default(TEntidade);
+            return default;
         }
 
         public static TEntidade Incluir<TEntidade>(this IListaEntidades<TEntidade> source) where TEntidade : IEntidade
         {
-            return default(TEntidade);
+            return default;
         }
 
         public static TEntidade Incluir<TEntidade>(this IEnumerable<TEntidade> source) where TEntidade : IEntidade
         {
-            return default(TEntidade);
+            return default;
         }
 
         public static TEntidadeEspecializar IncluirTipado<TEntidadeEspecializar>(this IListaEntidades source) where TEntidadeEspecializar : IEntidade
         {
-            return default(TEntidadeEspecializar);
+            return default;
         }
 
         public static void Add<TEntidade>(this IEnumerable<TEntidade> colecao, IEntidade entidade) where TEntidade : IEntidade
@@ -44,7 +41,7 @@ namespace System.Linq
                 xxx.Add(entidade);
                 return;
             }
-            throw new Exception(" Coleção está vazia ou não foi possivel converter para IlistaEntidaedes");
+            throw new Exception(" Coleção está vazia ou não foi possível converter para IlistaEntidaedes");
         }
 
         public static void Remove<TEntidade>(this IEnumerable<TEntidade> colecao, IEntidade entidade) where TEntidade : IEntidade
@@ -52,7 +49,7 @@ namespace System.Linq
             var lista = colecao as IListaEntidades;
             if (lista == null)
             {
-                throw new Exception(" Coleção está vazia ou não foi possivel converter para IlistaEntidaedes");
+                throw new Exception(" Coleção está vazia ou não foi possível converter para IlistaEntidaedes");
             }
             lista.Remove(entidade);
         }

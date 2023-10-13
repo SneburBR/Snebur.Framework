@@ -15,15 +15,13 @@ namespace Snebur.Seguranca
         public CredencialUsuario()
         {
         }
+
         [IgnorarConstrutorTS]
         public CredencialUsuario(string identificadorUsuario, string senha) : base(identificadorUsuario, senha)
         {
-        }
-        //public CredencialUsuario(string identificadorUsuario, string senha, Guid identificadorSessaoUsuario) : base(identificadorUsuario, senha)
-        //{
-        //    this.IdentificadorSessaoUsuario = identificadorSessaoUsuario;
-        //}
 
+        }
+         
         public string RetornarIdentificadorEmail()
         {
             if (ValidacaoUtil.IsEmail(this.IdentificadorAmigavel))

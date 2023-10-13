@@ -9,6 +9,10 @@ namespace System
 {
     public static class StringExtensao
     {
+        public static string ReplaceRegex(this string str, string pattern, string replacement)
+        {
+            return Regex.Replace(str, pattern, replacement, RegexOptions.IgnoreCase);
+        }
         public static string RetornarInicio(this string str, string seperador, bool isIncluirSeperador = false)
         {
             if (str.Contains(seperador))

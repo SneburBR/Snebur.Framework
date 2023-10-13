@@ -88,6 +88,10 @@ namespace Snebur.Linq
 
         public static void AddRangeIfNotExits<T>(this ICollection<T> colecao, IEnumerable<T> itens)
         {
+            if (itens == null)
+            {
+                return;
+            }
             foreach (var item in itens)
             {
                 colecao.AddIfNotExits(item);
@@ -96,6 +100,11 @@ namespace Snebur.Linq
 
         public static void AddRangeNew<T>(this ICollection<T> colecao, IEnumerable<T> itens)
         {
+            if (itens == null)
+            {
+                return;
+            }
+
             lock (colecao.SyncLock())
             {
                 colecao.Clear();
@@ -108,6 +117,11 @@ namespace Snebur.Linq
 
         public static void AddRange<T>(this ICollection<T> colecao, IEnumerable<T> itens)
         {
+            if (itens == null)
+            {
+                return;
+            }
+
             foreach (var item in itens)
             {
                 colecao.Add(item);
@@ -116,6 +130,11 @@ namespace Snebur.Linq
 
         public static void AddRangeNotNull<T>(this ICollection<T> colecao, IEnumerable<T> itens)
         {
+            if(itens == null)
+            {
+                return;
+            }
+
             foreach (var item in itens)
             {
                 colecao.AddIsNotNull(item);
@@ -124,6 +143,11 @@ namespace Snebur.Linq
 
         public static void RemoveRange<T>(this ICollection<T> colecao, IEnumerable<T> itens)
         {
+            if (itens == null)
+            {
+                return;
+            }
+
             foreach (var item in itens.ToList())
             {
                 colecao.Remove(item);

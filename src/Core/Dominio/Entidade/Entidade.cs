@@ -329,7 +329,7 @@ namespace Snebur.Dominio
             {
                 if (!this.__PropriedadesAlteradas.ContainsKey(nomePropriedade))
                 {
-                    lock ((this.__PropriedadesAlteradas as ICollection).SyncRoot)
+                    lock (this.__PropriedadesAlteradas.SyncLock())
                     {
                         if (!this.__PropriedadesAlteradas.ContainsKey(nomePropriedade))
                         {

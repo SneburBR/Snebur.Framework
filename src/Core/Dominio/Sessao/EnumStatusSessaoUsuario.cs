@@ -21,6 +21,7 @@
         UsuarioDiferente = 900,
 
         IdentificadorSessaoUsuarioInexistente = 1000,
+
         Desconhecida = 1001
     }
 }

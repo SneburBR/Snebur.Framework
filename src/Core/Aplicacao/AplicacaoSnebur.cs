@@ -752,7 +752,7 @@ namespace Snebur
         {
             if (!this.UrlsServico.ContainsKey(chaveConfiguracao))
             {
-                lock (((ICollection)this.UrlsServico).SyncRoot)
+                lock ( this.UrlsServico.SyncLock())
                 {
                     if (!this.UrlsServico.ContainsKey(chaveConfiguracao))
                     {
@@ -780,6 +780,12 @@ namespace Snebur
             return false;
         }
 
+        public virtual IUsuario RetornarUsuario(object contextoDados,
+                                                   CredencialUsuario credencial)
+        {
+            return null;
+        }
+
 #if NET7_0 == false
 
         protected virtual NameValueCollection RetornarAppSettings()
@@ -801,6 +807,9 @@ namespace Snebur
             }
             return connectionStrings;
         }
+
+       
+
 #endif
 
     }
