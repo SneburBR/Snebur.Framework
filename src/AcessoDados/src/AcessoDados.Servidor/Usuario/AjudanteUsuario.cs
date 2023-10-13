@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using Snebur.AcessoDados.Estrutura;
 using Snebur.Dominio;
 using Snebur.Dominio.Atributos;
 using Snebur.Seguranca;
@@ -16,34 +17,30 @@ namespace Snebur.AcessoDados
     {
         private partial class AjudanteSessaoUsuarioInterno : IDisposable
         {
-            private BaseContextoDados _contexto;
+            //private BaseContextoDados _contexto;
             private IUsuario _usuarioAnonimo;
 
             #region Propriedades privadas
 
-            internal BaseContextoDados Contexto
-            {
-                get
-                {
-                    if (this._contexto.IsDispensado)
-                    {
-                        throw new Exception($"O contexto de dados {this._contexto} foi dispensado");
-                    }
-                    return this._contexto;
-                }
-                private set
-                {
-                    if (value.IsDispensado)
-                    {
-                        throw new Exception($"O contexto de dados {value} foi dispensado");
-                    }
-                    this._contexto = value;
-                }
-            }
-
-            private IContextoDadosSemNotificar ContextoSalvar => this.Contexto as IContextoDadosSemNotificar;
-
-            private BaseConexao Conexao => this.Contexto.Conexao;
+            //internal BaseContextoDados Contexto
+            //{
+            //    get
+            //    {
+            //        if (this._contexto.IsDispensado)
+            //        {
+            //            throw new Exception($"O contexto de dados {this._contexto} foi dispensado");
+            //        }
+            //        return this._contexto;
+            //    }
+            //    private set
+            //    {
+            //        if (value.IsDispensado)
+            //        {
+            //            throw new Exception($"O contexto de dados {value} foi dispensado");
+            //        }
+            //        this._contexto = value;
+            //    }
+            //}
 
             private Type TipoUsuario { get; set; }
 
@@ -53,19 +50,21 @@ namespace Snebur.AcessoDados
 
 
             private List<IUsuario> Usuarios { get; set; }
+            internal IUsuario UsuarioAnonimo { get; }
 
             #endregion
 
             #region Construtor
 
             private AjudanteSessaoUsuarioInterno(BaseContextoDados contexto,
+                                                 EstruturaBancoDados estruturaBancoDados,
                                                  List<IUsuario> usuariosSistema)
             {
-                this.Contexto = contexto;
                 this.Usuarios = usuariosSistema;
-                this.TipoUsuario = this.Contexto.EstruturaBancoDados.TipoUsuario;
-                this.TipoSessaoUsuario = this.Contexto.EstruturaBancoDados.TipoSessaoUsuario;
-                this.TipoIpInformacao = this.Contexto.EstruturaBancoDados.TipoIpInformacao;
+                this.TipoUsuario = estruturaBancoDados.TipoUsuario;
+                this.TipoSessaoUsuario = estruturaBancoDados.TipoSessaoUsuario;
+                this.TipoIpInformacao = estruturaBancoDados.TipoIpInformacao;
+                this._usuarioAnonimo = this.RetornarUsuario(contexto, CredencialAnonimo.Anonimo);
 
                 //this.PropriedadeIdentificadorUsuario = this.RetornarPropriedadeIdentificadorUsuario();
                 //this.PropriedadeIdentificadorSessaoUsuario = this.RetornarPropriedadeIdentificadorSessaoUsuario();
@@ -73,28 +72,20 @@ namespace Snebur.AcessoDados
                 //this.PropriedadeRelacaoUsuario = this.RetornarPropriedadeRelacaoUsuario();
                 //this.PropriedadeIp = this.RetornarPropriedadeIp();
 
-                this.SalvarUsuariosSistemas();
+                this.SalvarUsuariosSistemas(contexto);
             }
 
             #endregion
 
-            internal IUsuario UsuarioAnonimo
-            {
-                get
-                {
-                    if (this._usuarioAnonimo == null)
-                    {
-                        this._usuarioAnonimo = this.RetornarUsuario(CredencialAnonimo.Anonimo);
-                    }
-                    return this._usuarioAnonimo;
-                }
-            }
+
+
 
             #region Métodos públicos
 
-            internal EnumStatusSessaoUsuario RetornarStatusSessaoUsuario(Guid identificadorSessaoUsuario)
+            internal EnumStatusSessaoUsuario RetornarStatusSessaoUsuario(BaseContextoDados contexto,
+                                                                         Guid identificadorSessaoUsuario)
             {
-                var consulta = this.Contexto.RetornarConsulta<ISessaoUsuario>(this.TipoSessaoUsuario);
+                var consulta = contexto.RetornarConsulta<ISessaoUsuario>(this.TipoSessaoUsuario);
                 consulta.Where(x => x.IdentificadorSessaoUsuario == identificadorSessaoUsuario);
                 consulta.AbrirPropriedade(x => x.Status);
 
@@ -106,34 +97,37 @@ namespace Snebur.AcessoDados
                 return EnumStatusSessaoUsuario.IdentificadorSessaoUsuarioInexistente;
             }
 
-            internal bool IsValidarCredencialSessaoUsuario(ISessaoUsuario sessaoUsuario,
+            internal bool IsValidarCredencialSessaoUsuario(BaseContextoDados contexto,
+                                                           ISessaoUsuario sessaoUsuario,
                                                            Credencial credencial)
             {
-                var usuario = this.RetornarUsuario(credencial);
+                var usuario = this.RetornarUsuario(contexto, credencial);
                 if (usuario != null)
                 {
                     return true;
                 }
                 sessaoUsuario.Status = EnumStatusSessaoUsuario.SenhaAlterada;
-                this.ContextoSalvar.SalvarInternoSemNotificacao(sessaoUsuario);
+                (contexto as IContextoDadosSemNotificar).SalvarInternoSemNotificacao(sessaoUsuario);
                 return false;
             }
 
-            internal void NotificarSessaoUsuarioAtiva(IUsuario usuario,
+            internal void NotificarSessaoUsuarioAtiva(BaseContextoDados contexto, 
+                                                      IUsuario usuario,
                                                       ISessaoUsuario sessaoUsuario)
             {
                 //var usuarioClone = usuario.CloneSomenteId<IUsuario>();
                 //var sessaoUsuarioClone = sessaoUsuario.CloneSomenteId<ISessaoUsuario>();
-                this.ContextoSalvar.NotificarSessaoUsuarioAtiva(usuario, sessaoUsuario);
+                (contexto as IContextoDadosSemNotificar).NotificarSessaoUsuarioAtiva(usuario, sessaoUsuario);
 
             }
 
 
-            internal IUsuario RetornarUsuario(Credencial credencial)
+            internal IUsuario RetornarUsuario(BaseContextoDados contexto,
+                                              Credencial credencial)
             {
                 var identificadorUsuario = credencial.IdentificadorUsuario;
 
-                var consultaUsuario = this.Contexto.RetornarConsulta<IUsuario>(this.TipoUsuario);
+                var consultaUsuario = contexto.RetornarConsulta<IUsuario>(this.TipoUsuario);
                 consultaUsuario = consultaUsuario.Where(x => x.IdentificadorUsuario == identificadorUsuario);
                 var usuario = consultaUsuario.SingleOrDefault();
                 if (usuario != null)
@@ -148,13 +142,16 @@ namespace Snebur.AcessoDados
                 }
                 if (credencial is CredencialUsuario credencialUsuario)
                 {
-                    return AplicacaoSnebur.Atual.RetornarUsuario(this.Contexto, credencialUsuario);
+                    return AplicacaoSnebur.Atual.RetornarUsuario(contexto, credencialUsuario);
                 }
                 return null;
 
             }
 
-            internal ISessaoUsuario RetornarSessaoUsuario(IUsuario usuario, Guid identificadorSessaoUsuario, InformacaoSessaoUsuario informacaoSessaoUsuario)
+            internal ISessaoUsuario RetornarSessaoUsuario(BaseContextoDados contexto,
+                                                          IUsuario usuario,
+                                                          Guid identificadorSessaoUsuario,
+                                                          InformacaoSessaoUsuario informacaoSessaoUsuario)
             {
                 if (Guid.Empty == identificadorSessaoUsuario)
                 {
@@ -162,7 +159,7 @@ namespace Snebur.AcessoDados
                     //throw new ErroNaoDefinido(String.Format("O identificador da sessão do usuario não foi definido"));
                 }
 
-                var consulta = this.Contexto.RetornarConsulta<ISessaoUsuario>(this.TipoSessaoUsuario);
+                var consulta = contexto.RetornarConsulta<ISessaoUsuario>(this.TipoSessaoUsuario);
                 consulta.Where(x => x.IdentificadorSessaoUsuario == identificadorSessaoUsuario);
 
                 consulta.AbrirPropriedade(x => x.IdentificadorSessaoUsuario).
@@ -185,22 +182,22 @@ namespace Snebur.AcessoDados
                     if (informacaoSessaoUsuario == null)
                     {
                         throw new ErroSessaoUsuarioInvalida("A informação da sessão do usuário é requerido para criar uma nova sessão");
-                        //throw new ErroNaoDefinido(String.Format("A informação da sessão do usuario é requerido para criar uma nova sessão"));
+                        //throw new ErroNaoDefinido(String.Format("A informação da sessão do usuário é requerido para criar uma nova sessão"));
                     }
 
-                    sessaoUsuario = this.RetornarNovaSessaoUsuario(usuario, informacaoSessaoUsuario);
+                    sessaoUsuario = this.RetornarNovaSessaoUsuario(contexto, usuario, informacaoSessaoUsuario);
                 }
                 else
                 {
 
-                    if (this.IsSessaoUsuarioDiferente(sessaoUsuario, usuario))
+                    if (this.IsSessaoUsuarioDiferente(contexto, sessaoUsuario, usuario))
                     {
                         sessaoUsuario.Status = EnumStatusSessaoUsuario.UsuarioDiferente;
 
                         var cloneSessao = (sessaoUsuario as Entidade).CloneSomenteId<Entidade>(true) as ISessaoUsuario;
                         cloneSessao.Status = EnumStatusSessaoUsuario.UsuarioDiferente;
 
-                        ((IContextoDadosSemNotificar)this.Contexto).SalvarInternoSemNotificacao(cloneSessao);
+                        ((IContextoDadosSemNotificar)contexto).SalvarInternoSemNotificacao(cloneSessao);
 
                         var mensagem = $"O usuário {usuario.Nome} ({usuario.Id}) não pertence da sessão do usuário do identificador" +
                                        $" {informacaoSessaoUsuario.IdentificadorSessaoUsuario} ";
@@ -218,13 +215,14 @@ namespace Snebur.AcessoDados
                 return sessaoUsuario;
             }
 
-            private bool IsSessaoUsuarioDiferente(ISessaoUsuario sessaoUsuario,
+            private bool IsSessaoUsuarioDiferente(BaseContextoDados contexto,
+                                                  ISessaoUsuario sessaoUsuario,
                                                   IUsuario usuario)
             {
 
                 if (sessaoUsuario.Usuario_Id != usuario.Id)
                 {
-                    var credenciasGlobal = this.Contexto.RetornarCredenciaisGlobais();
+                    var credenciasGlobal = contexto.RetornarCredenciaisGlobais();
                     var credencialUsuario = usuario.RetornarCredencial();
 
                     if (usuario.IsAnonimo || credenciasGlobal.Contains(credencialUsuario))
@@ -233,11 +231,11 @@ namespace Snebur.AcessoDados
                     }
 
 
-                    var usuarioSessao = this.Contexto.RetornarConsulta<IUsuario>(this.TipoUsuario).
-                                          Where(x => x.Id == sessaoUsuario.Usuario_Id).
-                                          AbrirPropriedade(x => x.Nome).
-                                          AbrirPropriedade(x => x.IdentificadorUsuario).
-                                          AbrirPropriedade(x => x.Senha).Single();
+                    var usuarioSessao = contexto.RetornarConsulta<IUsuario>(this.TipoUsuario).
+                                                 Where(x => x.Id == sessaoUsuario.Usuario_Id).
+                                                 AbrirPropriedade(x => x.Nome).
+                                                 AbrirPropriedade(x => x.IdentificadorUsuario).
+                                                 AbrirPropriedade(x => x.Senha).Single();
 
                     var credencialUsuarioSessao = usuarioSessao.RetornarCredencial();
                     if (usuarioSessao.IsAnonimo || credenciasGlobal.Contains(credencialUsuarioSessao))
@@ -251,24 +249,25 @@ namespace Snebur.AcessoDados
 
             }
 
-            private ISessaoUsuario RetornarSessaoUsuario(Guid identificadorSessaoUsuario)
+            private ISessaoUsuario RetornarSessaoUsuario(BaseContextoDados contexto,
+                                                         Guid identificadorSessaoUsuario)
             {
-                var sessaoUsuario = this.Contexto.RetornarConsulta<ISessaoUsuario>(this.TipoSessaoUsuario).
-                                                  Where(x => x.IdentificadorSessaoUsuario == identificadorSessaoUsuario).
-                                                  AbrirRelacao(x => x.Usuario).SingleOrDefault();
+                var sessaoUsuario = contexto.RetornarConsulta<ISessaoUsuario>(this.TipoSessaoUsuario).
+                                             Where(x => x.IdentificadorSessaoUsuario == identificadorSessaoUsuario).
+                                             AbrirRelacao(x => x.Usuario).SingleOrDefault();
 
                 if (sessaoUsuario == null)
                 {
                     throw new Erro(String.Format("Não foi encontrado a sessão usuario do identificador {0}", identificadorSessaoUsuario.ToString()));
                 }
-                sessaoUsuario.DataHoraUltimoAcesso = this.Contexto.RetornarDataHora();
+                sessaoUsuario.DataHoraUltimoAcesso = contexto.RetornarDataHora();
                 return sessaoUsuario;
             }
 
-            private IIPInformacao RetornarIpInformacao(int tentativa = 0)
+            private IIPInformacao RetornarIpInformacao(BaseContextoDados contexto, int tentativa = 0)
             {
                 var ip = AplicacaoSnebur.Atual.AspNet.IpRequisicao;
-                var ipInformacao = this.RetornarIpInformacao(ip);
+                var ipInformacao = this.RetornarIpInformacao(contexto, ip);
                 if (ipInformacao != null)
                 {
                     return ipInformacao;
@@ -280,14 +279,14 @@ namespace Snebur.AcessoDados
                     var dadosIpInformacao = IpUtil.RetornarIPInformacao(ip);
                     if (dadosIpInformacao.IP != ip)
                     {
-                        ipInformacao = this.RetornarIpInformacao(dadosIpInformacao.IP);
+                        ipInformacao = this.RetornarIpInformacao(contexto, dadosIpInformacao.IP);
                         if (ipInformacao != null)
                         {
                             return ipInformacao;
                         }
                     }
                     AutoMapearUtil.Mapear(dadosIpInformacao, novoIpInformacao);
-                    this.Contexto.Salvar(novoIpInformacao as Entidade);
+                    contexto.Salvar(novoIpInformacao as Entidade);
                     return novoIpInformacao;
                 }
                 catch (Exception)
@@ -297,19 +296,20 @@ namespace Snebur.AcessoDados
                         throw;
                     }
                     Thread.Sleep(200);
-                    return this.RetornarIpInformacao(tentativa += 1);
+                    return this.RetornarIpInformacao(contexto, tentativa += 1);
                 }
 
             }
 
-            private IIPInformacao RetornarIpInformacao(string ip)
+            private IIPInformacao RetornarIpInformacao(BaseContextoDados contexto,
+                                                       string ip)
             {
                 if (String.IsNullOrEmpty(ip))
                 {
                     return null;
                 }
 
-                var consultaIpInformacao = this.Contexto.RetornarConsulta<IIPInformacaoEntidade>(this.TipoIpInformacao);
+                var consultaIpInformacao = contexto.RetornarConsulta<IIPInformacaoEntidade>(this.TipoIpInformacao);
                 consultaIpInformacao = consultaIpInformacao.Where(x => x.IP == ip);
 
                 var ipInformacao = consultaIpInformacao.SingleOrDefault();
@@ -324,12 +324,12 @@ namespace Snebur.AcessoDados
 
             #region Métodos privados
 
-            private void SalvarUsuariosSistemas()
+            private void SalvarUsuariosSistemas(BaseContextoDados contexto)
             {
                 var usuariosSalvar = new List<Entidade>();
                 foreach (var usuario in this.Usuarios)
                 {
-                    var consulta = this.Contexto.RetornarConsulta<IUsuario>(this.TipoUsuario);
+                    var consulta = contexto.RetornarConsulta<IUsuario>(this.TipoUsuario);
                     consulta = consulta.Where(x => x.IdentificadorUsuario == usuario.IdentificadorUsuario);
 
                     var existeUsuario = consulta.SingleOrDefault() != null;
@@ -341,11 +341,12 @@ namespace Snebur.AcessoDados
                 if (usuariosSalvar.Count > 0)
                 {
                     var entidades = usuariosSalvar.ToArray<IEntidade>();
-                    (this.Contexto as IContextoDadosSemNotificar).SalvarInternoSemNotificacao(entidades, true);
+                    (contexto as IContextoDadosSemNotificar).SalvarInternoSemNotificacao(entidades, true);
                 }
             }
 
-            private ISessaoUsuario RetornarNovaSessaoUsuario(IUsuario usuario,
+            private ISessaoUsuario RetornarNovaSessaoUsuario(BaseContextoDados contexto,
+                                                             IUsuario usuario,
                                                              InformacaoSessaoUsuario informacaoSessaoUsuario)
             {
                 var sessaoUsuario = (ISessaoUsuario)Activator.CreateInstance(this.TipoSessaoUsuario);
@@ -361,18 +362,18 @@ namespace Snebur.AcessoDados
                 }
 
 
-                var ipInformacao = this.RetornarIpInformacao();
+                var ipInformacao = this.RetornarIpInformacao(contexto);
 
                 sessaoUsuario.Usuario = usuario;
                 sessaoUsuario.Status = EnumStatusSessaoUsuario.Nova;
 
                 AutoMapearUtil.Mapear(informacaoSessaoUsuario, sessaoUsuario);
-                sessaoUsuario.IdentificadorProprietario = this.Contexto.IdentificadorProprietario;
+                sessaoUsuario.IdentificadorProprietario = contexto.IdentificadorProprietario;
                 sessaoUsuario.IPInformacao = ipInformacao;
                 sessaoUsuario.IP = ipInformacao.IP;
 
 
-                (this.Contexto as IContextoDadosSemNotificar).SalvarInternoSemNotificacao((Entidade)sessaoUsuario);
+                (contexto as IContextoDadosSemNotificar).SalvarInternoSemNotificacao((Entidade)sessaoUsuario);
                 return sessaoUsuario;
             }
 

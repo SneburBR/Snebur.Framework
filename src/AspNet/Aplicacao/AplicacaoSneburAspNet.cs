@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Web;
+using Snebur.Linq;
 
 #if NET7_0
 using Microsoft.AspNetCore.Http;
@@ -45,7 +46,7 @@ namespace Snebur
                 var httpContext = this.HttpContext;
                 if (httpContext != null)
                 {
-                    lock ((httpContext.Items as ICollection).SyncRoot)
+                    lock (httpContext.Items.SyncLock())
                     {
 
                         if (httpContext.Items.ContainsKey(ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL))
@@ -66,7 +67,7 @@ namespace Snebur
                 var httpContext = this.HttpContext;
                 if (httpContext != null)
                 {
-                    lock ((httpContext.Items as ICollection).SyncRoot)
+                    lock (httpContext.Items.SyncLock())
                     {
                         if (httpContext.Items.ContainsKey(ConstantesItensRequsicao.CHAVE_IDENTIFICADOR_PROPRIETARIO))
                         {
@@ -86,7 +87,7 @@ namespace Snebur
                 var httpContext = this.HttpContext;
                 if (httpContext != null)
                 {
-                    lock ((httpContext.Items as ICollection).SyncRoot)
+                    lock (httpContext.Items.SyncLock())
                     {
                         if (httpContext.Items.ContainsKey(ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL))
                         {
@@ -107,7 +108,7 @@ namespace Snebur
                 var httpContext = this.HttpContext;
                 if (httpContext != null)
                 {
-                    lock ((httpContext.Items as ICollection).SyncRoot)
+                    lock (httpContext.Items.SyncLock())
                     {
                         if (httpContext.Items.ContainsKey(ConstantesItensRequsicao.CHAVE_CREDENCIAL_USUARIO))
                         {

@@ -10,6 +10,7 @@ using System.IO;
 using System.Web;
 using System.Xml.Serialization;
 using System.Text.Json.Serialization;
+using Snebur.Linq;
 
 #if NET7_0
 using Microsoft.AspNetCore.Http;
@@ -209,7 +210,7 @@ namespace Snebur.Comunicacao
         private void AdicionarItensrequisicaoAtual( )
         {
             var context = this.HttpContext;
-            lock ((context.Items as ICollection).SyncRoot)
+            lock (context.Items.SyncLock())
             {
                 context.AdicionrItem(ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL, this.InformacaoSessaoUsuario);
                 context.AdicionrItem(ConstantesItensRequsicao.CHAVE_CREDENCIAL_USUARIO, this.CredencialUsuario);
@@ -228,7 +229,7 @@ namespace Snebur.Comunicacao
         private void RemoverItensRequisicaoAtual()
         {
             var context = this.HttpContext;
-            lock ((context.Items as ICollection).SyncRoot)
+            lock (context.Items.SyncLock())
             {
                 context.RemoverItem(ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL);
                 context.RemoverItem(ConstantesItensRequsicao.CHAVE_CREDENCIAL_USUARIO);

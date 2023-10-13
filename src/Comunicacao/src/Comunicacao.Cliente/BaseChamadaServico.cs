@@ -3,6 +3,7 @@ using Snebur.Utilidade;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 
 namespace Snebur.Comunicacao
@@ -114,7 +115,7 @@ namespace Snebur.Comunicacao
 
             var identificadorUsuario = CriptografiaUtil.Criptografar(token, this.ContratoChamada.Cabecalho.CredencialUsuario.IdentificadorUsuario);
             var identifcadorProprietario = this.ContratoChamada.Cabecalho.IdentificadorProprietario;
-            
+        
             requisicaoHttp.Headers[ConstantesCabecalho.IDENTIFICADOR_USUARIO] = identificadorUsuario;
             requisicaoHttp.Headers[ConstantesCabecalho.SENHA] = CriptografiaUtil.Criptografar(token, this.ContratoChamada.Cabecalho.CredencialServico.Senha);
             requisicaoHttp.Headers[ConstantesCabecalho.NOME_ASSEMBLY_APLICACAO] = nomeAssembly;
@@ -147,12 +148,13 @@ namespace Snebur.Comunicacao
             requisicaoHttp.ContentType = "application/octet-stream";
             requisicaoHttp.ContentLength = conteudo.Length;
             requisicaoHttp.Method = "POST";
-
+             
             requisicaoHttp.Headers.Add(ParametrosComunicacao.TOKEN, WebUtility.UrlEncode(token));
             requisicaoHttp.Headers.Add(ParametrosComunicacao.MANIPULADOR, this.NomeManipulador);
+            requisicaoHttp.Timeout = (int)TimeSpan.FromMinutes(2).TotalMilliseconds;
 
 #if DEBUG
-            if (DebugUtil.IsAttached)
+            if (Debugger.IsAttached)
             {
                 requisicaoHttp.Timeout = (int)TimeSpan.FromHours(1).TotalMilliseconds;
             }

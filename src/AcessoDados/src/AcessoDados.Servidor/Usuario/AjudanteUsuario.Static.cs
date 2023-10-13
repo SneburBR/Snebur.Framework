@@ -17,12 +17,13 @@ namespace Snebur.AcessoDados
                     {
                         if (_ajudanteSessaoUsuario == null)
                         {
-                            _ajudanteSessaoUsuario = new AjudanteSessaoUsuarioInterno(contexto, 
-                                                                                     contexto.RetornarUsuariosSistemaInterno());
+                            _ajudanteSessaoUsuario = new AjudanteSessaoUsuarioInterno(contexto,
+                                                                                      contexto.EstruturaBancoDados,
+                                                                                      contexto.RetornarUsuariosSistemaInterno());
                         }
                     }
                 }
-                _ajudanteSessaoUsuario.Contexto = contexto;
+                //_ajudanteSessaoUsuario.Contexto = contexto;
                 return _ajudanteSessaoUsuario;
             }
 

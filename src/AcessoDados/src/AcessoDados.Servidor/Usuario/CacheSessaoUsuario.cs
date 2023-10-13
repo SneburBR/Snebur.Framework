@@ -105,7 +105,7 @@ namespace Snebur.AcessoDados
             {
                 return null;
             }
-            return this.AjudanteSessaoUsuario.RetornarUsuario(credencialAvalista);
+            return this.AjudanteSessaoUsuario.RetornarUsuario(this.Contexto, credencialAvalista);
         }
 
         internal IUsuario UsuarioAnonimo
@@ -120,14 +120,17 @@ namespace Snebur.AcessoDados
         {
             ValidacaoUtil.ValidarReferenciaNula(this.Credencial, nameof(this.Credencial));
 
-            this.Usuario = this.AjudanteSessaoUsuario.RetornarUsuario(this.Credencial);
+            this.Usuario = this.AjudanteSessaoUsuario.RetornarUsuario(this.Contexto, this.Credencial);
             if (this.Usuario == null)
             {
-                throw new ErroSessaoUsuarioInvalida($" O usuário em cache não foi encontrado: {this.Credencial.IdentificadorUsuario} -- {this.Credencial.Senha}. {this.AjudanteSessaoUsuario.Contexto.IdentificadorProprietario} {this.AjudanteSessaoUsuario.Contexto.Conexao.ConnectionString}");
+                throw new ErroSessaoUsuarioInvalida($" O usuário em cache não foi encontrado: {this.Credencial.IdentificadorUsuario} -- {this.Credencial.Senha}. {this.Contexto.IdentificadorProprietario} {this.Contexto.Conexao.ConnectionString}");
                 //this.Usuario = this.AjudanteSessaoUsuario.RetornarUsuario(CredencialAnonimo.Anonimo);
                 //throw new Erro($"Não foi possível retornar o usuário para a credencial  {this.Credencial.IdentificadorUsuario}");
             }
-            this.SessaoUsuario = this.AjudanteSessaoUsuario.RetornarSessaoUsuario(this.Usuario, this.IdentificadorSessaoUsuario, this.InformacaoSessaoUsuario);
+            this.SessaoUsuario = this.AjudanteSessaoUsuario.RetornarSessaoUsuario(this.Contexto,
+                                                                                  this.Usuario, 
+                                                                                  this.IdentificadorSessaoUsuario, 
+                                                                                  this.InformacaoSessaoUsuario);
 
             this.NotificarSessaoUsuarioAtivaInterno();
             if (this.TimerAtualizarStatus == null)
@@ -177,7 +180,7 @@ namespace Snebur.AcessoDados
                 statusSessaoUsuario == EnumStatusSessaoUsuario.Inativo ||
                 statusSessaoUsuario == EnumStatusSessaoUsuario.Nova)
             {
-                this.AjudanteSessaoUsuario.NotificarSessaoUsuarioAtiva(this.Usuario, this.SessaoUsuario);
+                this.AjudanteSessaoUsuario.NotificarSessaoUsuarioAtiva(this.Contexto, this.Usuario, this.SessaoUsuario);
                 statusSessaoUsuario = EnumStatusSessaoUsuario.Ativo;
             }
             this.StatusSessaoUsuario = statusSessaoUsuario;
@@ -188,14 +191,16 @@ namespace Snebur.AcessoDados
         {
             if (this.IsValidarCredencialSessaoUsuario())
             {
-                return this.AjudanteSessaoUsuario.RetornarStatusSessaoUsuario(this.IdentificadorSessaoUsuario);
+                return this.AjudanteSessaoUsuario.RetornarStatusSessaoUsuario(this.Contexto, this.IdentificadorSessaoUsuario);
             }
             return EnumStatusSessaoUsuario.SenhaAlterada;
         }
 
         private bool IsValidarCredencialSessaoUsuario()
         {
-            return this.AjudanteSessaoUsuario.IsValidarCredencialSessaoUsuario(this.SessaoUsuario, this.Credencial);
+            return this.AjudanteSessaoUsuario.IsValidarCredencialSessaoUsuario(this.Contexto,
+                                                                               this.SessaoUsuario,
+                                                                               this.Credencial);
         }
 
         public void FinalizarSessaoUsuario()
