@@ -1,7 +1,34 @@
-﻿namespace Snebur.Utilidade
+﻿using Snebur.Dne;
+
+namespace Snebur.Utilidade
 {
     public static class NormalizacaoUtil
     {
+        public static string NormalizarAspasDuplas(string valor)
+        {
+            if(valor== null)
+            {
+                return "\"\"";
+            }
+
+            if (valor.StartsWith("\"") && valor.EndsWith("\""))
+            {
+                return valor;
+            }
+
+            else if (valor.StartsWith("\""))
+            {
+                return $"{valor}\"";
+            }
+            else if (valor.EndsWith("\""))
+            {
+                return $"\"{valor}";
+            }
+            else
+            {
+                return $"\"{valor}\"";
+            }
+        }
         public static string NormlizarHost(string _host)
         {
             var posicao = _host.IndexOf(':');
