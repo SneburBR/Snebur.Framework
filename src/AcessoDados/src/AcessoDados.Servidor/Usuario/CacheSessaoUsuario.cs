@@ -8,6 +8,8 @@ namespace Snebur.AcessoDados
 {
     public partial class CacheSessaoUsuario : IDisposable
     {
+        private BaseContextoDados _contexto;
+
         //implementar classe de Cache para sessaoUsuario para melhorar o desenpenho, solução paliativa, uusuario o contexto pra criar sql e colocar cache
         //private const string PARAMETRO_IDENTIFICADOR_SESSAO_USUARIO = "@IdentificadorSessaoUsuario ";
         //private const string PARAMETRO_IDENTIFICADOR_USUARIO = "@IdentificadorUsuario ";
@@ -30,7 +32,25 @@ namespace Snebur.AcessoDados
 
         private DateTime DataHoraUltimoAcesso { get; set; }
         private Guid IdentificadorSessaoUsuario { get; }
-        public BaseContextoDados Contexto { get; }
+        internal BaseContextoDados Contexto
+        {
+            get
+            {
+                if (this._contexto.IsDispensado)
+                {
+                    throw new Exception($"CacheSessaoUsuario: O contexto de dados {this._contexto} foi dispensado");
+                }
+                return this._contexto;
+            }
+            set
+            {
+                if (value.IsDispensado)
+                {
+                    throw new Exception($"CacheSessaoUsuario: O contexto de dados {value} foi dispensado");
+                }
+                this._contexto = value;
+            }
+        }
 
         private Credencial Credencial { get; }
         private InformacaoSessaoUsuario InformacaoSessaoUsuario { get; }
@@ -147,10 +167,10 @@ namespace Snebur.AcessoDados
             this.DataHoraUltimoAcesso = DateTime.Now;
             if (this.IsNoticacaoStatusPendente)
             {
-                this.NotificarSessaoUsuarioAtivaInterno();
+                this.NotificarSessaoUsuarioAtivaInterno( );
             }
         }
-        private void NotificarSessaoUsuarioAtivaInterno()
+        private void NotificarSessaoUsuarioAtivaInterno( )
         {
             var statusSessaoUsuario = this.RetornarStatusSessaoUsuario();
             if (statusSessaoUsuario == EnumStatusSessaoUsuario.Ativo ||

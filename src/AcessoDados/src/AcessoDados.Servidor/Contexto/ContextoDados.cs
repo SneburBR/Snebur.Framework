@@ -606,7 +606,7 @@ namespace Snebur.AcessoDados
                     }
                     throw new ErroSessaoUsuarioExpirada(this.CacheSessaoUsuario.StatusSessaoUsuario,
                                                         this.CacheSessaoUsuario.SessaoUsuario.IdentificadorSessaoUsuario,
-                                                        $"O status da sessão '{this.CacheSessaoUsuario.SessaoUsuario.IdentificadorSessaoUsuario.ToString()}' não é valido {this.CacheSessaoUsuario.StatusSessaoUsuario.ToString()} ");
+                                                        $"O status da sessão '{this.CacheSessaoUsuario.SessaoUsuario.IdentificadorSessaoUsuario}' não é valido {this.CacheSessaoUsuario.StatusSessaoUsuario.ToString()} ");
                 }
             }
         }

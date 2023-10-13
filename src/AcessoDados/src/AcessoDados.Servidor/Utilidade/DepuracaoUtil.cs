@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using Snebur.Utilidade;
 using System.Threading.Tasks;
+using Snebur.Linq;
 
 #if NET7_0
 using Microsoft.Data.SqlClient;
@@ -42,7 +43,7 @@ namespace Snebur.AcessoDados
 #if DEBUG
             if (DebugUtil.IsAttached && false)
             {
-                lock (((ICollection)contexto.Comandos).SyncRoot)
+                lock ( contexto.Comandos.SyncLock())
                 {
                     var comandos = contexto.Comandos;
                     if (parametros != null)

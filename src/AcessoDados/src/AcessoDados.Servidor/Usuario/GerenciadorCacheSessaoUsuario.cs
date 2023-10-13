@@ -73,12 +73,13 @@ namespace Snebur.AcessoDados
             lock (SessaoUsuarioExtensao.RetornarBloqueio(identificadorSessaoUsuario))
             {
                 if (this.CachesSessaoUsuario.TryGetValue(identificadorSessaoUsuario,
-                                                     out var cacheSssaoUsuario))
+                                                         out var cacheSssaoUsuario))
                 {
                     if (cacheSssaoUsuario.IsInicializado &&
                         cacheSssaoUsuario.Usuario != null ||
                         cacheSssaoUsuario.SessaoUsuario != null)
                     {
+                        cacheSssaoUsuario.Contexto = contexto;
                         cacheSssaoUsuario.NotificarSessaoAtivaAsync();
                         return cacheSssaoUsuario;
                     }

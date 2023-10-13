@@ -6,23 +6,24 @@ namespace Snebur.AcessoDados
     {
         private partial class AjudanteSessaoUsuarioInterno
         {
-            private static object Bloqueio { get; set; } = new object();
-            private static AjudanteSessaoUsuarioInterno AjudanteSessaoUsuario { get; set; }
+            private static object _bloqueio { get; set; } = new object();
+            private static AjudanteSessaoUsuarioInterno _ajudanteSessaoUsuario { get; set; }
 
             internal static AjudanteSessaoUsuarioInterno RetornarAjudanteUsuario(BaseContextoDados contexto)
             {
-                if (AjudanteSessaoUsuario == null)
+                if (_ajudanteSessaoUsuario == null)
                 {
-                    lock (Bloqueio)
+                    lock (_bloqueio)
                     {
-                        if (AjudanteSessaoUsuario == null)
+                        if (_ajudanteSessaoUsuario == null)
                         {
-                            AjudanteSessaoUsuario = new AjudanteSessaoUsuarioInterno(contexto, contexto.RetornarUsuariosSistemaInterno());
+                            _ajudanteSessaoUsuario = new AjudanteSessaoUsuarioInterno(contexto, 
+                                                                                     contexto.RetornarUsuariosSistemaInterno());
                         }
                     }
                 }
-                AjudanteSessaoUsuario.Contexto = contexto;
-                return AjudanteSessaoUsuario;
+                _ajudanteSessaoUsuario.Contexto = contexto;
+                return _ajudanteSessaoUsuario;
             }
 
 
