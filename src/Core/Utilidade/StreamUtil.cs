@@ -17,19 +17,34 @@ namespace Snebur.Utilidade
         /// </summary>
         /// <param name="stream"></param>
         /// <returns></returns>
-        public static MemoryStream RetornarMemoryStream(Stream stream)
+        public static MemoryStream RetornarMemoryStream(Stream stream,
+                                                        Action<StreamProgressEventArgs> callbackProgresso = null)
         {
-            return StreamUtil.RetornarMemoryStreamBuferizada(stream, TAMANHO_BUFFER_PADRAO);
+            return StreamUtil.RetornarMemoryStreamBuferizada(stream,
+                                                             TAMANHO_BUFFER_PADRAO,
+                                                             callbackProgresso);
+        }
+        public static MemoryStream RetornarMemoryStreamBuferizada(Stream stream,
+                                                                  Action<StreamProgressEventArgs> callbackProgresso = null,
+                                                                  long contentLenght = 0)
+        {
+            return StreamUtil.RetornarMemoryStreamBuferizada(stream,
+                                                             TAMANHO_BUFFER_PADRAO,
+                                                             callbackProgresso,
+                                                             contentLenght);
         }
 
-        public static MemoryStream RetornarMemoryStreamBuferizada(Stream streamOrigem, int tamanhoBuffer = TAMANHO_BUFFER_PADRAO)
+        public static MemoryStream RetornarMemoryStreamBuferizada(Stream streamOrigem,
+                                                                  int tamanhoBuffer,
+                                                                  Action<StreamProgressEventArgs> callbackProgresso = null,
+                                                                  long contentLenght = 0)
         {
             if (streamOrigem.CanSeek)
             {
                 streamOrigem.Seek(0, SeekOrigin.Begin);
             }
             var ms = new MemoryStream();
-            StreamUtil.SalvarStreamBufferizada(streamOrigem, ms);
+            StreamUtil.SalvarStreamBufferizada(streamOrigem, ms, tamanhoBuffer, callbackProgresso, contentLenght);
             return ms;
         }
         public static void SalvarStreamBufferizada(Stream streamOrigem, Stream streamDestino)
@@ -39,17 +54,29 @@ namespace Snebur.Utilidade
 
         public static void SalvarStreamBufferizada(Stream streamOrigem,
                                                    Stream streamDestino,
-                                                   int tamanhoBuffer)
+                                                   int tamanhoBuffer,
+                                                   Action<StreamProgressEventArgs> callbackProgresso = null,
+                                                   long contentLenght =0)
         {
+            var totalBytesRecebitos = 0;
+            var totalBytes = streamOrigem.CanSeek ? streamOrigem.Length : contentLenght;
+            
             if (streamOrigem.CanSeek)
             {
                 streamOrigem.Seek(0, SeekOrigin.Begin);
             }
+           
             while (true)
             {
-                var buffer = new byte[TAMANHO_BUFFER_PADRAO];
-                var bytesRecebido = streamOrigem.Read(buffer, 0, TAMANHO_BUFFER_PADRAO);
+                var buffer = new byte[tamanhoBuffer];
+                var bytesRecebido = streamOrigem.Read(buffer, 0, tamanhoBuffer);
                 streamDestino.Write(buffer, 0, bytesRecebido);
+                totalBytesRecebitos += bytesRecebido;
+
+                if (callbackProgresso != null)
+                {
+                    callbackProgresso(new StreamProgressEventArgs(totalBytesRecebitos, totalBytes));
+                }
 
                 if (bytesRecebido == 0)
                 {
@@ -191,7 +218,5 @@ namespace Snebur.Utilidade
                 StreamUtil.SalvarStreamBufferizada(sr, sw);
             }
         }
-
-       
     }
 }

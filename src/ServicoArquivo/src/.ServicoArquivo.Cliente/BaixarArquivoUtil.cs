@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Web;
 
 namespace Snebur.ServicoArquivo.Cliente
@@ -19,14 +20,16 @@ namespace Snebur.ServicoArquivo.Cliente
                                                   IArquivo arquivo,
                                                   Guid identificadorSessao,
                                                   string identificadorProprietario,
-                                                  CredencialUsuario credencialUsuario)
+                                                  CredencialUsuario credencialUsuario,
+                                                  Action<StreamProgressEventArgs> callbackPrgresso = null)
         {
             return RetornarStream(urlServico,
                                   arquivo,
                                   identificadorSessao,
                                   identificadorProprietario,
                                   credencialUsuario,
-                                  TIMEOUT_PADRAO);
+                                  TIMEOUT_PADRAO,
+                                  callbackPrgresso);
         }
 
         public static MemoryStream RetornarStream(string urlServico,
@@ -34,7 +37,8 @@ namespace Snebur.ServicoArquivo.Cliente
                                                   Guid identificadorSessao,
                                                   string identificadorProprietario,
                                                   CredencialUsuario credencialUsuario,
-                                                  TimeSpan timeout)
+                                                  TimeSpan timeout,
+                                                  Action<StreamProgressEventArgs> callbackPrgresso = null)
         {
             var nomeTipoArquivo = arquivo.GetType().Name;
             var nomeTipoQualificado = arquivo.GetType().AssemblyQualifiedName;
@@ -46,21 +50,25 @@ namespace Snebur.ServicoArquivo.Cliente
                                   identificadorSessao,
                                   identificadorProprietario,
                                   credencialUsuario,
-                                  timeout);
+                                  timeout,
+                                  callbackPrgresso);
 
         }
 
-        public static MemoryStream RetornarStream(IArquivo arquivo)
+        public static MemoryStream RetornarStream(IArquivo arquivo,
+                                                  Action<StreamProgressEventArgs> callbackPrgresso)
         {
             return BaixarArquivoUtil.RetornarStream(AplicacaoSnebur.Atual.UrlServicoArquivo,
                                                     arquivo.Id,
                                                     arquivo.GetType().Name,
-                                                    arquivo.GetType().AssemblyQualifiedName);
+                                                    arquivo.GetType().AssemblyQualifiedName,
+                                                    callbackPrgresso);
         }
         public static MemoryStream RetornarStream(string urlServico,
                                                   long idArquivo,
                                                   string nomeTipoArquivo,
-                                                  string nomeTipoQualificado)
+                                                  string nomeTipoQualificado,
+                                                  Action<StreamProgressEventArgs> callbackPrgresso = null)
         {
             //var identificadorSessao = AplicacaoSnebur.Atual.IdentificadorSessaoUsuario;
             var informacao = AplicacaoSnebur.Atual.InformacaoSessaoUsuario;
@@ -74,7 +82,8 @@ namespace Snebur.ServicoArquivo.Cliente
                                   informacao.IdentificadorSessaoUsuario,
                                   identificadorProprietario,
                                   credencialUsuario,
-                                  TIMEOUT_PADRAO);
+                                  TIMEOUT_PADRAO, 
+                                  callbackPrgresso);
         }
 
         public static MemoryStream RetornarStream(string urlServico,
@@ -83,7 +92,8 @@ namespace Snebur.ServicoArquivo.Cliente
                                                   string nomeTipoQualificado,
                                                   Guid identificadorSessao,
                                                   string identificadorProprietario,
-                                                  CredencialUsuario credencialUsuario)
+                                                  CredencialUsuario credencialUsuario,
+                                                  Action<StreamProgressEventArgs> callbackPrgresso = null)
         {
             return RetornarStream(urlServico,
                                   idArquivo,
@@ -92,17 +102,19 @@ namespace Snebur.ServicoArquivo.Cliente
                                   identificadorSessao,
                                   identificadorProprietario,
                                   credencialUsuario,
-                                  TIMEOUT_PADRAO);
+                                  TIMEOUT_PADRAO,
+                                  callbackPrgresso);
         }
 
         public static MemoryStream RetornarStream(string urlServico,
-                                                    long idArquivo,
-                                                    string nomeTipoArquivo,
-                                                    string nomeTipoQualificado,
-                                                    Guid identificadorSessao,
-                                                    string identificadorProprietario,
-                                                    CredencialUsuario credencialUsuario,
-                                                    TimeSpan timeout)
+                                                  long idArquivo,
+                                                  string nomeTipoArquivo,
+                                                  string nomeTipoQualificado,
+                                                  Guid identificadorSessao,
+                                                  string identificadorProprietario,
+                                                  CredencialUsuario credencialUsuario,
+                                                  TimeSpan timeout,
+                                                  Action<StreamProgressEventArgs> callbackPrgresso = null)
         {
             var nomeAssembly = AplicacaoSnebur.Atual.NomeAplicacao;
             var parametros = new Dictionary<string, string>();
@@ -117,6 +129,7 @@ namespace Snebur.ServicoArquivo.Cliente
             parametros.Add(ConstantesCabecalho.IDENTIFICADOR_SESSAO_USUARIO, identificadorSessao.ToString());
             parametros.Add(ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO, identificadorProprietario);
 
+            
             var urlBaixaArquivo = ServicoArquivoClienteUtil.RetornarEnderecoBaixarArquivo(urlServico);
             var requisicao = (HttpWebRequest)WebRequest.Create(urlBaixaArquivo);
 
@@ -142,9 +155,12 @@ namespace Snebur.ServicoArquivo.Cliente
 
             using (var resposta = (HttpWebResponse)requisicao.GetResponse())
             {
+                
                 using (var streamResposta = resposta.GetResponseStream())
                 {
-                    return StreamUtil.RetornarMemoryStreamBuferizada(streamResposta);
+                    return StreamUtil.RetornarMemoryStreamBuferizada(streamResposta, 
+                                                                     callbackPrgresso, 
+                                                                     resposta.ContentLength);
                 }
             }
         }
