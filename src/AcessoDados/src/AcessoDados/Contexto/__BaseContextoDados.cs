@@ -155,6 +155,11 @@ namespace Snebur.AcessoDados
 
         #endregion
 
+        public override string ToString()
+        {
+            return $"{this.GetType().Name}__Usuario:{UsuarioLogado?.Nome}-{UsuarioLogado?.IdentificadorUsuario}";
+        }
+
     }
 
  
