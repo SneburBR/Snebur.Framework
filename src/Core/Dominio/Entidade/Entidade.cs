@@ -9,6 +9,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
 
 namespace Snebur.Dominio
 {
@@ -35,7 +36,7 @@ namespace Snebur.Dominio
         [EditorBrowsable(EditorBrowsableState.Never)]
         [NaoMapear]
         [IgnorarGlobalizacao]
-        [IgnorarPropriedadeTS]
+        [JsonIgnore]
         [IgnorarPropriedadeTSReflexao]
         [PropriedadeProtegida]
         public string __IdentificadorEntidade
@@ -56,7 +57,7 @@ namespace Snebur.Dominio
         [EditorBrowsable(EditorBrowsableState.Never)]
         [NaoMapear]
         [IgnorarGlobalizacao]
-        [IgnorarPropriedadeTS]
+        [JsonIgnore]
         [IgnorarPropriedadeTSReflexao]
         [PropriedadeProtegida]
         internal Type __TipoEntidade { get; }
@@ -64,7 +65,7 @@ namespace Snebur.Dominio
         [EditorBrowsable(EditorBrowsableState.Never)]
         [NaoMapear]
         [IgnorarGlobalizacao]
-        [IgnorarPropriedadeTS]
+        [JsonIgnore]
         [IgnorarPropriedadeTSReflexao]
         [PropriedadeProtegida]
         public override bool __IsExisteAlteracao
@@ -403,8 +404,8 @@ namespace Snebur.Dominio
                 var propriedades = this.__TipoEntidade.GetProperties(ReflexaoUtil.BindingFlags).
                                                                 Where(x => x.GetGetMethod() != null && x.GetGetMethod().IsPublic &&
                                                                           x.GetSetMethod() != null && x.GetSetMethod().IsPublic &&
-                                                                          (ReflexaoUtil.PropriedadeRetornaTipoPrimario(x, true) ||
-                                                                           ReflexaoUtil.PropriedadeRetornaTipoComplexo(x, true)));
+                                                                          (ReflexaoUtil.IsPropriedadeRetornaTipoPrimario(x, true) ||
+                                                                           ReflexaoUtil.IsPropriedadeRetornaTipoComplexo(x, true)));
 
                 foreach (var propriedade in propriedades)
                 {
@@ -452,7 +453,7 @@ namespace Snebur.Dominio
                 {
                     return isRelacaoEntidade;
                 }
-                if (ReflexaoUtil.TipoRetornaColecaoEntidade(propriedadeDestino.PropertyType))
+                if (ReflexaoUtil.IsTipoRetornaColecaoEntidade(propriedadeDestino.PropertyType))
                 {
                     return isColecaoEntidade;
                 }
@@ -474,7 +475,7 @@ namespace Snebur.Dominio
                     {
                         propriedade.SetValue(this, null);
                     }
-                    if (isColecao && ReflexaoUtil.TipoRetornaColecaoEntidade(propriedade.PropertyType))
+                    if (isColecao && ReflexaoUtil.IsTipoRetornaColecaoEntidade(propriedade.PropertyType))
                     {
                         var colecao = propriedade.GetValue(this);
                         if (colecao is IList colecaoTipada)

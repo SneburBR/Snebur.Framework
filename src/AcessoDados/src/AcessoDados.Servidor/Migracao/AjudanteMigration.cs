@@ -164,7 +164,7 @@ namespace Snebur.AcessoDados
                     }
                 }
 
-                if (ReflexaoUtil.TipoImplementaInterface(tipoEntidade, typeof(IOrdenacao), true))
+                if (ReflexaoUtil.IsTipoImplementaInterface(tipoEntidade, typeof(IOrdenacao), true))
                 {
                     var (propriedade, atributo) = OrdenacaoUtil.RetornarPropriedadeOrdenacao(tipoEntidade);
                     var isIgnorarMigracao = atributo?.IsIgnorarMigracao ?? false;
@@ -181,7 +181,7 @@ namespace Snebur.AcessoDados
 
         private bool PossuiValidacaoUnicoComposta(Type tipoEntidade)
         {
-            return ReflexaoUtil.TipoPossuiAtributo(tipoEntidade, typeof(ValidacaoUnicoCompostaAttribute), false);
+            return ReflexaoUtil.IsTipoPossuiAtributo(tipoEntidade, typeof(ValidacaoUnicoCompostaAttribute), false);
         }
 
         private List<(List<PropriedadeIndexar>, List<FiltroPropriedadeIndexar>)> RetornarPropriedadesValidacaoUnico(Type tipoEntidade)
@@ -197,7 +197,7 @@ namespace Snebur.AcessoDados
                     var propriedadesIndexar = new List<PropriedadeIndexar>();
                     var propriedadesFiltros = new List<FiltroPropriedadeIndexar>();
                     propriedadesIndexar.Add(new PropriedadeIndexar(propriedade, !atributoValidacaoUnico.IsAceitaNulo));
-                    if (ReflexaoUtil.TipoImplementaInterface(tipoEntidade, typeof(IDeletado)))
+                    if (ReflexaoUtil.IsTipoImplementaInterface(tipoEntidade, typeof(IDeletado)))
                     {
                         var propriedadeIsDeletado = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nameof(IDeletado.IsDeletado), true);
                         var propriedadeDataHoraDeletado = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nameof(IDeletado.DataHoraDeletado), true);
@@ -238,7 +238,7 @@ namespace Snebur.AcessoDados
         private List<PropertyInfo> RetornarPropriedadesPossuiAtributo<TAtributo>(Type tipoEntidade) where TAtributo : Attribute
         {
             var propriedades = ReflexaoUtil.RetornarPropriedades(tipoEntidade, true);
-            return propriedades.Where(x => ReflexaoUtil.PropriedadePossuiAtributo(x, typeof(TAtributo))).ToList();
+            return propriedades.Where(x => ReflexaoUtil.IsPropriedadePossuiAtributo(x, typeof(TAtributo))).ToList();
         }
 
         #region IDisposable

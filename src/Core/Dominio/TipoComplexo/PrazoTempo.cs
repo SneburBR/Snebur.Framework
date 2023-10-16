@@ -18,7 +18,7 @@ namespace Snebur.Dominio
         public EnumTipoPrazo TipoPrazo { get => this._tipoPrazo; set => this.NotificarValorPropriedadeAlterada(this._tipoPrazo, this._tipoPrazo = value); }
 
         [NaoMapear]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public TimeSpan Tempo
         {

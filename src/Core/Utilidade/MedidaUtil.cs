@@ -92,7 +92,7 @@ namespace Snebur.Utilidade
         private static void DefinirDpiTipoComplexo(object objeto, Func<double?, double> funcaoRetornarDpi, HashSet<object> objetosAnalisados)
         {
             var tipo = objeto.GetType();
-            if (ReflexaoUtil.TipoRetornaColecao(tipo))
+            if (ReflexaoUtil.IsTipoRetornaColecao(tipo))
             {
                 foreach (var item in (IEnumerable)objeto)
                 {

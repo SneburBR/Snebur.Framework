@@ -9,7 +9,7 @@ namespace Snebur.AcessoDados.Seguranca
         //[IgnorarPropriedadeTSReflexao]
         List<string> PropriedadesAbertas { get; set; }
 
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         List<string> PropriedadesAutorizadas { get; }
 

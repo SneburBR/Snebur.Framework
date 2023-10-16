@@ -122,7 +122,7 @@ namespace Snebur.Utilidade
             }
         }
 
-        public static bool PropriedadePublica(PropertyInfo pi)
+        public static bool IsPropriedadePublica(PropertyInfo pi)
         {
             return pi.CanWrite && pi.GetSetMethod(true).IsPublic;
         }
@@ -156,7 +156,7 @@ namespace Snebur.Utilidade
                     tipoAtual = propriedade.PropertyType;
                     propriedades.Add(propriedade);
 
-                    if (propriedade.PropertyType.IsGenericType && ReflexaoUtil.TipoRetornaColecaoEntidade(propriedade.PropertyType))
+                    if (propriedade.PropertyType.IsGenericType && ReflexaoUtil.IsTipoRetornaColecaoEntidade(propriedade.PropertyType))
                     {
                         tipoAtual = tipoAtual.GetGenericArguments().First();
                     }
@@ -261,22 +261,22 @@ namespace Snebur.Utilidade
             pi.SetValue(objeto, valor, ReflexaoUtil.BindingFlags, null, null, null);
         }
 
-        public static bool PropriedadeRetornaColecao(PropertyInfo pi)
+        public static bool IsPropriedadeRetornaColecao(PropertyInfo pi)
         {
-            return TipoRetornaColecao(pi.PropertyType);
+            return IsTipoRetornaColecao(pi.PropertyType);
         }
 
-        public static bool PropriedadePossuiAtributo(PropertyInfo propriedade, Type tipoAtributo, bool herdado = true)
+        public static bool IsPropriedadePossuiAtributo(PropertyInfo propriedade, Type tipoAtributo, bool herdado = true)
         {
             return propriedade.GetCustomAttributes(tipoAtributo, herdado).FirstOrDefault() != null;
         }
 
-        public static bool PropriedadeRetornaTipoPrimario(PropertyInfo propriedade, bool removerNullable = false)
+        public static bool IsPropriedadeRetornaTipoPrimario(PropertyInfo propriedade, bool removerNullable = false)
         {
             return ReflexaoUtil.TipoRetornaTipoPrimario(propriedade.PropertyType, removerNullable);
         }
 
-        public static bool PropriedadeRetornaTipoComplexo(PropertyInfo propriedade, bool removerNullable = false)
+        public static bool IsPropriedadeRetornaTipoComplexo(PropertyInfo propriedade, bool removerNullable = false)
         {
             return propriedade.PropertyType.IsSubclassOf(typeof(BaseTipoComplexo));
         }
@@ -293,7 +293,7 @@ namespace Snebur.Utilidade
             var propriedadesEncontrada = propriedades.Where(x => x.Name == nomePropriedade).ToList();
             if (propriedadesEncontrada.Count == 0)
             {
-                propriedadesEncontrada = propriedades.Where(x => ReflexaoUtil.PropriedadePossuiAtributo(x, tipoAtributo)).ToList();
+                propriedadesEncontrada = propriedades.Where(x => ReflexaoUtil.IsPropriedadePossuiAtributo(x, tipoAtributo)).ToList();
             }
             if (propriedadesEncontrada.Count == 0)
             {

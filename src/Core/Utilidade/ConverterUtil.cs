@@ -37,7 +37,7 @@ namespace Snebur.Utilidade
                 tipo = ReflexaoUtil.RetornarTipoSemNullable(tipo);
             }
 
-            if (ReflexaoUtil.TipoIgualOuHerda(tipoValor, tipo))
+            if (ReflexaoUtil.IsTipoIgualOuHerda(tipoValor, tipo))
             {
                 return valor;
             }

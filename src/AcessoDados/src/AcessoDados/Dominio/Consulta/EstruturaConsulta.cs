@@ -3,6 +3,7 @@ using Snebur.Dominio.Atributos;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Snebur.AcessoDados
 {
@@ -25,7 +26,7 @@ namespace Snebur.AcessoDados
 
 		#endregion
 
-        [IgnorarPropriedadeTS, IgnorarPropriedadeTSReflexao]
+        [JsonIgnore, IgnorarPropriedadeTSReflexao]
         internal Type TipoEntidadeConsulta { get; set; }
 
         public string NomeTipoEntidade { get => this.RetornarValorPropriedade(this._nomeTipoEntidade); set => this.NotificarValorPropriedadeAlterada(this._nomeTipoEntidade, this._nomeTipoEntidade = value); }
@@ -74,7 +75,7 @@ namespace Snebur.AcessoDados
 
         [NaoMapear]
         [IgnorarGlobalizacao]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         List<string> IEstruturaConsultaSeguranca.PropriedadesAutorizadas { get => this._propriedadesAutorizadas; }
 

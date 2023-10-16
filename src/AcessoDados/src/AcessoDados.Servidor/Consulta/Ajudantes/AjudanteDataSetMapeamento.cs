@@ -107,7 +107,7 @@ namespace Snebur.AcessoDados.Mapeamento
         internal static object RetornarValorConvertido(object valorDB, 
                                                        EstruturaColuna estruturaColuna)
         {
-            if (ReflexaoUtil.TipoIgualOuHerda(valorDB.GetType(), estruturaColuna.Propriedade.PropertyType))
+            if (ReflexaoUtil.IsTipoIgualOuHerda(valorDB.GetType(), estruturaColuna.Propriedade.PropertyType))
             {
                 return valorDB;
             }

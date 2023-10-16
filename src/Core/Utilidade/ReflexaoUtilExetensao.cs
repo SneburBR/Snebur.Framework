@@ -71,7 +71,7 @@ namespace Snebur.Utilidade
             return ReflexaoUtil.RetornarPropriedades(tipo, true).
                                     Where(x =>
                                     {
-                                        if (ReflexaoUtil.PropriedadeRetornaTipoPrimario(x, true) &&
+                                        if (ReflexaoUtil.IsPropriedadeRetornaTipoPrimario(x, true) &&
                                             x.GetGetMethod() != null && x.GetGetMethod().IsPublic &&
                                             x.GetSetMethod() != null && x.GetSetMethod().IsPublic)
                                         {

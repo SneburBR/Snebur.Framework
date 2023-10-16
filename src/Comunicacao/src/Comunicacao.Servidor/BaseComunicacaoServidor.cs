@@ -211,7 +211,7 @@ namespace Snebur.Comunicacao
                 {
                     retorno.Add(Convert.ToInt32(valorParametro));
                 }
-                else if (ReflexaoUtil.TipoRetornaColecao(parametroMetodo.ParameterType))
+                else if (ReflexaoUtil.IsTipoRetornaColecao(parametroMetodo.ParameterType))
                 {
                     var definitionType = parametroMetodo.ParameterType.GetGenericTypeDefinition();
 
@@ -221,7 +221,7 @@ namespace Snebur.Comunicacao
                         throw new ErroSeguranca("Suportado somente tipo List(Of T ) T = sub classe de BaseDominio  ", EnumTipoLogSeguranca.ParametrosComunicacaoInvalidos);
                     }
 
-                    if (!ReflexaoUtil.TipoRetornaColecao(valorParametro.GetType()))
+                    if (!ReflexaoUtil.IsTipoRetornaColecao(valorParametro.GetType()))
                     {
                         throw new ErroSeguranca("A valor do parâmetro não retorna lista como esperado no tipo do parâmetro do método", EnumTipoLogSeguranca.ParametrosComunicacaoInvalidos);
                     }
@@ -322,7 +322,7 @@ namespace Snebur.Comunicacao
                 };
             }
 
-            if (ReflexaoUtil.TipoRetornaColecao(tipo) && tipo.IsGenericType && tipo.GetGenericArguments().Count() == 1)
+            if (ReflexaoUtil.IsTipoRetornaColecao(tipo) && tipo.IsGenericType && tipo.GetGenericArguments().Count() == 1)
             {
                 var tipoItem = tipo.GetGenericArguments().Single();
 

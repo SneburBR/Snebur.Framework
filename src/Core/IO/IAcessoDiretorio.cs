@@ -16,7 +16,7 @@ namespace Snebur.IO
 
         string Senha { get; }
 
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         string NomeComputador { get; }
     }

@@ -30,7 +30,7 @@ namespace Snebur.AcessoDados
 
         public HashSet<string> PropriedadesAbertas { get; set; } = new HashSet<string>();
 
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public PropertyInfo Propriedade { get; set; }
 
@@ -58,7 +58,7 @@ namespace Snebur.AcessoDados
 
         private Type RetornarTipoEntidade(PropertyInfo propriedade)
         {
-            if (propriedade.PropertyType.IsGenericType && ReflexaoUtil.TipoRetornaColecao(propriedade.PropertyType))
+            if (propriedade.PropertyType.IsGenericType && ReflexaoUtil.IsTipoRetornaColecao(propriedade.PropertyType))
             {
                 return propriedade.PropertyType.GetGenericArguments().Single();
             }

@@ -5,11 +5,11 @@ namespace Snebur.Dominio.Atributos
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Class)]
     public class SomenteLeituraAttribute : BaseAtributoDominio
     {
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public bool IsNotificarSeguranca { get; protected set; }
 
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]        
         public virtual OpcoesSomenteLeitura OpcoesSomenteLeitura => new OpcoesSomenteLeitura(true, this.IsNotificarSeguranca);
     }

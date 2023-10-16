@@ -8,10 +8,10 @@ namespace Snebur.Dominio
 
         double Y { get; set; }
 
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         int XVisualizacao { get; }
 
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         int YVisualizacao { get; }
     }
 }

@@ -53,7 +53,7 @@ namespace Snebur.AcessoDados
                 throw new Erro(String.Format("A expressao do campo não é valida {0}", expressaoPropriedade.ToString()));
             }
             var propriedade = propriedades.Single();
-            if (!ReflexaoUtil.PropriedadeRetornaTipoPrimario(propriedade))
+            if (!ReflexaoUtil.IsPropriedadeRetornaTipoPrimario(propriedade))
             {
                 throw new Erro(String.Format("O tipo da propriedade não é um tipo campo valido {0}", propriedade.PropertyType.Name.ToString()));
             }

@@ -9,43 +9,43 @@ namespace Snebur.Dominio
 
         [JsonIgnore]
         [NaoMapear]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public int? EsquerdaVisualizacao { get => this.RetornarValorVisualizacao(this._esquerda); }
 
         [JsonIgnore]
         [NaoMapear]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public int? SuperiorVisualizacao { get => this.RetornarValorVisualizacao(this._superior); }
 
         [JsonIgnore]
         [NaoMapear]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public int? DireitaVisualizacao { get => this.RetornarValorVisualizacao(this._direita); }
 
         [JsonIgnore]
         [NaoMapear]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public int? InferiorVisualizacao { get => this.RetornarValorVisualizacao(this._inferior); }
 
         [JsonIgnore]
         [NaoMapear]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public int LarguraVisualizacao { get => this.RetornarValorVisualizacao(this._largura); }
 
         [JsonIgnore]
         [NaoMapear]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public int AlturaVisualizacao { get => this.RetornarValorVisualizacao(this._altura); }
 
         [JsonIgnore]
         [NaoMapear]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public Dimensao Dimensao
         {
@@ -58,7 +58,7 @@ namespace Snebur.Dominio
         }
         [JsonIgnore]
         [NaoMapear]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public Margem Margem
         {
@@ -73,7 +73,7 @@ namespace Snebur.Dominio
         }
         [JsonIgnore]
         [NaoMapear]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public override bool IsEmpty
         {

@@ -56,7 +56,7 @@ namespace Snebur.ServicoArquivo.Cliente
         }
 
         public static MemoryStream RetornarStream(IArquivo arquivo,
-                                                  Action<StreamProgressEventArgs> callbackPrgresso)
+                                                  Action<StreamProgressEventArgs> callbackPrgresso = null)
         {
             return BaixarArquivoUtil.RetornarStream(AplicacaoSnebur.Atual.UrlServicoArquivo,
                                                     arquivo.Id,

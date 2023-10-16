@@ -72,9 +72,9 @@ namespace Snebur.AcessoDados.Estrutura
             for (var i = 0; i < len; i++)
             {
                 var tipoEntidade = tiposEntidades[i];
-                if (ReflexaoUtil.TipoImplementaInterface(tipoEntidade, tipoInterface, false))
+                if (ReflexaoUtil.IsTipoImplementaInterface(tipoEntidade, tipoInterface, false))
                 {
-                    while (ReflexaoUtil.TipoImplementaInterface(tipoEntidade.BaseType, tipoInterface, false))
+                    while (ReflexaoUtil.IsTipoImplementaInterface(tipoEntidade.BaseType, tipoInterface, false))
                     {
                         tipoEntidade = tipoEntidade.BaseType;
                     }

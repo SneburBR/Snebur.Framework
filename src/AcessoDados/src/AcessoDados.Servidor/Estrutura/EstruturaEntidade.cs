@@ -151,7 +151,7 @@ namespace Snebur.AcessoDados.Estrutura
             this.NomeTipoEntidade = tipo.Name;
             this.SqlSuporte = sqlSuporte;
 
-            this.IsAbstrata = tipo.IsAbstract || ReflexaoUtil.TipoPossuiAtributo(tipo, typeof(AbstratoAttribute));
+            this.IsAbstrata = tipo.IsAbstract || ReflexaoUtil.IsTipoPossuiAtributo(tipo, typeof(AbstratoAttribute));
             this.InterfacesImplementasEnum = this.RetornarInterfacesEntidade();
             //this.IsImplementaInterfaceIDeletado = ReflexaoUtil.TipoImplementaInterface(tipo, typeof(IDeletado), false);
             //this.IsImplementaInterfaceIOrdenacao = ReflexaoUtil.TipoImplementaInterface(tipo, typeof(IOrdenacao), false);
@@ -188,8 +188,8 @@ namespace Snebur.AcessoDados.Estrutura
             this.IsImplementaInterfaceIAtividadeUsuario = this.InterfacesImplementasEnum.HasFlag(EnumInterfaceEntidade.IAtividadeUsuario);
             this.IsImplementaInterfaceIUsuario = this.InterfacesImplementasEnum.HasFlag(EnumInterfaceEntidade.IUsuario);
             this.IsImplementaInterfaceISessaoUsuario = this.InterfacesImplementasEnum.HasFlag(EnumInterfaceEntidade.ISessaoUsuario);
-            this.IsDeletarRegistro = ReflexaoUtil.TipoPossuiAtributo(this.TipoEntidade, typeof(DeletarRegristroAttribute), true);
-            this.IsAutorizarInstanciaNaoEspecializada = ReflexaoUtil.TipoPossuiAtributo(this.TipoEntidade, typeof(AutorizarInstanciaNaoEspecializadaAttribute), true);
+            this.IsDeletarRegistro = ReflexaoUtil.IsTipoPossuiAtributo(this.TipoEntidade, typeof(DeletarRegristroAttribute), true);
+            this.IsAutorizarInstanciaNaoEspecializada = ReflexaoUtil.IsTipoPossuiAtributo(this.TipoEntidade, typeof(AutorizarInstanciaNaoEspecializadaAttribute), true);
             this.IsSomenteLeitura = this.RetornarIsSomenteLeitura();
             this.Interceptador = this.RetornarInterceptador(estruturaBancoDados, estruturaEntidadeBase);
             this.IsInterceptar = this.Interceptador != null;
@@ -690,13 +690,13 @@ namespace Snebur.AcessoDados.Estrutura
 
         private EstruturaCampo RetornarEstruturaCampoIdentificadorProprietario()
         {
-            var campoIdentificadorProprietario = this.EstruturasCampos.Values.Where(x => ReflexaoUtil.PropriedadePossuiAtributo(x.Propriedade, typeof(PropriedadeIdentificadorProprietarioAttribute))).SingleOrDefault();
+            var campoIdentificadorProprietario = this.EstruturasCampos.Values.Where(x => ReflexaoUtil.IsPropriedadePossuiAtributo(x.Propriedade, typeof(PropriedadeIdentificadorProprietarioAttribute))).SingleOrDefault();
             if (campoIdentificadorProprietario != null)
             {
                 return campoIdentificadorProprietario;
             }
 
-            if (ReflexaoUtil.PropriedadePossuiAtributo(this.EstruturaCampoChavePrimaria.Propriedade, typeof(PropriedadeIdentificadorProprietarioAttribute)))
+            if (ReflexaoUtil.IsPropriedadePossuiAtributo(this.EstruturaCampoChavePrimaria.Propriedade, typeof(PropriedadeIdentificadorProprietarioAttribute)))
             {
                 return this.EstruturaCampoChavePrimaria;
             }
@@ -705,7 +705,7 @@ namespace Snebur.AcessoDados.Estrutura
 
         private EstruturaCampo RetornarEstruturaEstruturaCampoUsuario()
         {
-            return this.EstruturasCampos.Values.Where(x => ReflexaoUtil.PropriedadePossuiAtributo(x.Propriedade, typeof(ValorPadraoIDUsuarioLogadoAttribute))).SingleOrDefault();
+            return this.EstruturasCampos.Values.Where(x => ReflexaoUtil.IsPropriedadePossuiAtributo(x.Propriedade, typeof(ValorPadraoIDUsuarioLogadoAttribute))).SingleOrDefault();
         }
 
 
@@ -719,7 +719,7 @@ namespace Snebur.AcessoDados.Estrutura
             var estruturasCampoComputado = new List<EstruturaCampo>();
             var tipoIOrdenacao = typeof(IOrdenacao);
 
-            var entiadeImplementaOrdenacao = ReflexaoUtil.TipoImplementaInterface(this.TipoEntidade, tipoIOrdenacao, true);
+            var entiadeImplementaOrdenacao = ReflexaoUtil.IsTipoImplementaInterface(this.TipoEntidade, tipoIOrdenacao, true);
             var nomeProprieadeOrdenacao = ReflexaoUtil.RetornarNomePropriedade<IOrdenacao>(x => x.Ordenacao);
 
 
@@ -727,7 +727,7 @@ namespace Snebur.AcessoDados.Estrutura
             {
                 var propriedade = estruturaCampo.Propriedade;
 
-                if (ReflexaoUtil.PropriedadePossuiAtributo(propriedade, typeof(ValorPadraoDataHoraServidorAttribute)))
+                if (ReflexaoUtil.IsPropriedadePossuiAtributo(propriedade, typeof(ValorPadraoDataHoraServidorAttribute)))
                 {
                     estruturasCampoComputado.Add(estruturaCampo);
                     continue;
@@ -861,7 +861,8 @@ namespace Snebur.AcessoDados.Estrutura
             {
                 return atributoMaximoRegistroPorConsulta.MaximoRegistroPorConsulta;
             }
-            if (Debugger.IsAttached)
+
+            if (DebugUtil.IsAttached)
             {
                 return 10000;
             }
@@ -870,7 +871,7 @@ namespace Snebur.AcessoDados.Estrutura
 
         private EstruturaCampo RetornarEstruturaCampoOrdenacao()
         {
-            if (ReflexaoUtil.TipoImplementaInterface(this.TipoEntidade, typeof(IOrdenacao), true))
+            if (ReflexaoUtil.IsTipoImplementaInterface(this.TipoEntidade, typeof(IOrdenacao), true))
             {
                 var nomePropriedadeOrdenacao = ReflexaoUtil.RetornarNomePropriedade<IOrdenacao>(x => x.Ordenacao);
                 if (this.EstruturasCampos.ContainsKey(nomePropriedadeOrdenacao))
@@ -883,7 +884,7 @@ namespace Snebur.AcessoDados.Estrutura
 
         private EstruturaCampo RetornarEstruturaCampoDeletado()
         {
-            if (ReflexaoUtil.TipoImplementaInterface(this.TipoEntidade, typeof(IDeletado), true))
+            if (ReflexaoUtil.IsTipoImplementaInterface(this.TipoEntidade, typeof(IDeletado), true))
             {
                 var nomePropriedadeOrdenacao = ReflexaoUtil.RetornarNomePropriedade<IDeletado>(x => x.IsDeletado);
                 return this.EstruturasCampos[nomePropriedadeOrdenacao];

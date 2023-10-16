@@ -20,7 +20,7 @@ namespace Snebur.Utilidade
             {
                 return true;
             }
-            if (ReflexaoUtil.TipoIgualOuHerda(propriedade.PropertyType, typeof(Entidade)))
+            if (ReflexaoUtil.IsTipoIgualOuHerda(propriedade.PropertyType, typeof(Entidade)))
             {
                 if (valorPropriedade is Entidade)
                 {
@@ -139,7 +139,7 @@ namespace Snebur.Utilidade
         {
             var atributos = propriedade.GetCustomAttributes();
             var tipoIAtributoValidacao = typeof(IAtributoValidacao);
-            var atributosValidacao = atributos.Where(x => ReflexaoUtil.TipoImplementaInterface(x.GetType(), tipoIAtributoValidacao, false));
+            var atributosValidacao = atributos.Where(x => ReflexaoUtil.IsTipoImplementaInterface(x.GetType(), tipoIAtributoValidacao, false));
             return atributosValidacao.Cast<IAtributoValidacao>().ToList();
         }
 

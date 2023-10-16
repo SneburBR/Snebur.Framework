@@ -12,7 +12,7 @@ namespace Snebur.AcessoDados
         {
             return tipoContexto.GetProperties(ReflexaoUtil.BindingFlags).
                                   Where(x => x.PropertyType.IsInterface &&
-                                             ReflexaoUtil.TipoImplementaInterface(x.PropertyType, typeof(IConsultaEntidade), false)).ToList();
+                                             ReflexaoUtil.IsTipoImplementaInterface(x.PropertyType, typeof(IConsultaEntidade), false)).ToList();
         }
     }
 }

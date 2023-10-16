@@ -11,11 +11,11 @@ namespace Snebur.Dominio.Atributos
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = true, Inherited = true)]
     public class ValidacaoUnicoCompostaAttribute : BaseAtributoValidacaoAsync, IAtributoMigracao
     {
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public List<PropriedadeIndexar> Propriedades { get; } = new List<PropriedadeIndexar>();
 
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public List<FiltroPropriedadeIndexar> Filtros { get; } = new List<FiltroPropriedadeIndexar>();
 
@@ -26,14 +26,14 @@ namespace Snebur.Dominio.Atributos
         [MensagemValidacao]
         public static string MensagemValidacao { get; set; } = "O {0} '{1}' já existe.";
 
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public List<string> NomesPropriedade { get; } = new List<string>();
         public string[] NomesPropriedadeOuFiltro { get; }
 
         public bool IsCriarIndicesNomeBanco { get; set; } = true;
 
-        [IgnorarPropriedadeTS, IgnorarPropriedadeTSReflexao]
+        [IgnorarPropriedade, IgnorarPropriedadeTSReflexao]
         public bool IsIgnorarMigracao { get; set; }
 
         public ValidacaoUnicoCompostaAttribute(Type tipoEntidade,
@@ -73,7 +73,7 @@ namespace Snebur.Dominio.Atributos
                 }
             }
 
-            if (ReflexaoUtil.TipoImplementaInterface(tipoEntidade, typeof(IDeletado)))
+            if (ReflexaoUtil.IsTipoImplementaInterface(tipoEntidade, typeof(IDeletado)))
             {
                 var propriedadeIsDeletado = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nameof(IDeletado.IsDeletado), true);
                 var propriedadeDataHoraDeletado = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nameof(IDeletado.DataHoraDeletado), true);

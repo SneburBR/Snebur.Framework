@@ -122,7 +122,7 @@ namespace Snebur.Utilidade
             return SessaoUtil.RetornarIdentificadorSessaoUsuario();
         }
 
-        private static void SalvarIdentificadorSessaoUsuario( Guid identificadorSessaoUsuario)
+        public static void SalvarIdentificadorSessaoUsuario( Guid identificadorSessaoUsuario)
         {
             var identificadorUsuario = AplicacaoSnebur.Atual.CredencialUsuario.IdentificadorUsuario;
             if (IdentificadoresSessaoUsuario.ContainsKey(identificadorUsuario))

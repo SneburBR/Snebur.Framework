@@ -204,7 +204,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
         {
             var atributos = propriedade.GetCustomAttributes();
             var tipoIValorPadrao = typeof(IValorPadrao);
-            return (IValorPadrao)atributos.Where(x => ReflexaoUtil.TipoImplementaInterface(x.GetType(), tipoIValorPadrao, true)).SingleOrDefault();
+            return (IValorPadrao)atributos.Where(x => ReflexaoUtil.IsTipoImplementaInterface(x.GetType(), tipoIValorPadrao, true)).SingleOrDefault();
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Snebur.Dominio.Atributos
         public Type TipoEntidade { get; }
         public string[] NomesPropriedade { get; }
 
-        [IgnorarPropriedadeTS, IgnorarPropriedadeTSReflexao]
+        [IgnorarPropriedade, IgnorarPropriedadeTSReflexao]
         public bool IsIgnorarMigracao { get; set; }
         public List<PropriedadeIndexar> Propriedades { get; } = new List<PropriedadeIndexar>();
 

@@ -9,19 +9,19 @@ namespace Snebur.Dominio
 
         [JsonIgnore]
         [NaoMapear]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public int XVisualizacao { get => this.RetornarValorVisualizacao(this._x); }
 
         [JsonIgnore]
         [NaoMapear]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public int YVisualizacao { get => this.RetornarValorVisualizacao(this._y); }
 
         [JsonIgnore]
         [NaoMapear]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public override bool IsEmpty => this.X == 0 && this.Y == 0;
     }

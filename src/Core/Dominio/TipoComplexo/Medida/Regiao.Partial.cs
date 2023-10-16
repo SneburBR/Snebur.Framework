@@ -9,30 +9,30 @@ namespace Snebur.Dominio
 
         [JsonIgnore]
         [NaoMapear]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public int XVisualizacao { get => this.RetornarValorVisualizacao(this._x); }
 
         [JsonIgnore]
         [NaoMapear]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public int YVisualizacao { get => this.RetornarValorVisualizacao(this._y); }
 
         [JsonIgnore]
         [NaoMapear]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public int LarguraVisualizacao { get => this.RetornarValorVisualizacao(this._largura); }
 
         [JsonIgnore]
         [NaoMapear]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public int AlturaVisualizacao { get => this.RetornarValorVisualizacao(this._altura); }
 
         [NaoMapear]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public Posicao Posicao
         {
@@ -45,7 +45,7 @@ namespace Snebur.Dominio
         }
         [JsonIgnore]
         [NaoMapear]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public Dimensao Dimensao
         {
@@ -58,7 +58,7 @@ namespace Snebur.Dominio
         }
         [JsonIgnore]
         [NaoMapear]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public override bool IsEmpty => this.Dimensao.IsEmpty && this.Posicao.IsEmpty;
 

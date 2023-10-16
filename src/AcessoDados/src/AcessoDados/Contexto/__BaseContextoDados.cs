@@ -29,7 +29,7 @@ namespace Snebur.AcessoDados
             var assemblyEntidades = this.PropriedadesConsultaEntidade.First().
                                          PropertyType.GetGenericArguments().Single().Assembly;
 
-            return assemblyEntidades.GetAccessibleTypes().Where(x => ReflexaoUtil.TipoImplementaInterface(x, tipoInterface, true)).Single();
+            return assemblyEntidades.GetAccessibleTypes().Where(x => ReflexaoUtil.IsTipoImplementaInterface(x, tipoInterface, true)).Single();
         }
 
         public abstract object RetornarValorScalar(EstruturaConsulta estruturaConsulta);

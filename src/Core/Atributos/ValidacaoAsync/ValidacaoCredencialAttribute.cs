@@ -16,11 +16,11 @@ namespace Snebur.Dominio.Atributos
         //public string CaminhoTipoEntidadeUsuario { get; set; }
         public string NomePropriedadeIdentificador { get; set; }
 
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public Type TipoDominio { get; set; }
 
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public PropertyInfo Propriedade { get; set; }
 

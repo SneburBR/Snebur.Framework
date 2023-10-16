@@ -30,7 +30,7 @@ namespace Snebur.Utilidade
             DateTimeZoneHandling = DateTimeZoneHandling.RoundtripKind,
             ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
             NullValueHandling = NullValueHandling.Ignore,
-            ContractResolver = new JsonPropertiesResolver(),
+            ContractResolver = new JsonPropertiesResolverJavascript(),
         };
 
         private static readonly JsonSerializerSettings ConfiguracoesDotNet = new JsonSerializerSettings
@@ -40,7 +40,7 @@ namespace Snebur.Utilidade
             DateTimeZoneHandling = DateTimeZoneHandling.Utc,
             ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
             NullValueHandling = NullValueHandling.Ignore,
-            ContractResolver = new JsonPropertiesResolver(),
+            ContractResolver = new JsonPropertiesResolverDotNet(),
             ReferenceResolverProvider = () =>
             {
                 return JsonUtil.ReferenceResolver;
@@ -121,7 +121,7 @@ namespace Snebur.Utilidade
                 var objeto = JsonConvert.DeserializeObject(json, tipo, configuracaoSerializacao);
                 if (tipoSerializacao == EnumTipoSerializacao.DotNet)
                 {
-                    using (var normalizar = new NormalizarDeserializacao(json, objeto))
+                    using (var normalizar = new NormalizarDeserializacao(json, objeto, tipoSerializacao))
                     {
                         normalizar.Normalizar();
                     }
@@ -183,7 +183,7 @@ namespace Snebur.Utilidade
                                                        configuracaoSerializacao);
                 }
 
-                using (var preparar = new PrapararSerializacao(objeto))
+                using (var preparar = new PrapararSerializacao(objeto, tipoSerializacao))
                 {
                     try
                     {
@@ -227,19 +227,29 @@ namespace Snebur.Utilidade
             ArquivoUtil.DeletarArquivo(caminhoDestino);
             ArquivoUtil.SalvarArquivoTexto(caminhoDestino, json);
         }
-        public static List<MemberInfo> RetornarPropriedadesSerializavel(Type objectType, bool isCamposBaseDominio = false)
+
+        public static List<MemberInfo> RetornarPropriedadesSerializavel(Type objectType, 
+                                                                        bool isCamposBaseDominio,
+                                                                        EnumTipoSerializacao tipoSerializacao)
         {
-            var memberInfos = objectType.GetProperties().Where(x => x.GetMethod != null &&
+            var memberInfosQuery = objectType.GetProperties().Where(x => x.GetMethod != null &&
                                                                     x.SetMethod != null &&
                                                                     x.GetMethod.IsPublic &&
-                                                                    !Attribute.IsDefined(x, typeof(IgnorarPropriedadeTSAttribute)) &&
                                                                     !Attribute.IsDefined(x, typeof(JsonIgnoreAttribute)) &&
 #if NET7_0
                                                                     !Attribute.IsDefined(x, typeof(System.Text.Json.Serialization.JsonIgnoreAttribute)) &&
 #endif
-                                                                    !Attribute.IsDefined(x, typeof(XmlIgnoreAttribute)))
-                                                        .ToList<MemberInfo>();
+                                                                    !Attribute.IsDefined(x, typeof(XmlIgnoreAttribute)));
+            if (tipoSerializacao == EnumTipoSerializacao.Javascript)
+            {
+                memberInfosQuery = memberInfosQuery.Where(x => !Attribute.IsDefined(x, typeof(IgnorarPropriedadeAttribute)));
+            }
+            else if (tipoSerializacao == EnumTipoSerializacao.DotNet)
+            {
+                memberInfosQuery = memberInfosQuery.Where(x => !Attribute.IsDefined(x, typeof(IgnorarPropriedadeDotNetAttribute)));
+            }
 
+            var memberInfos = memberInfosQuery.ToList<MemberInfo>();
             if (isCamposBaseDominio && objectType.IsSubclassOf(typeof(BaseDominio)))
             {
                 var flags = BindingFlags.NonPublic | BindingFlags.Instance;
@@ -252,13 +262,14 @@ namespace Snebur.Utilidade
         }
 
         public static string IndentarJson(string json,
-                                          CultureInfo culture)
+                                          CultureInfo culture,
+                                          EnumTipoSerializacao tipoSerializacao = EnumTipoSerializacao.Javascript)
         {
             try
             {
-                var objeto = JsonUtil.Deserializar<object>(json, EnumTipoSerializacao.Javascript, culture);
+                var objeto = JsonUtil.Deserializar<object>(json, tipoSerializacao, culture);
                 return JsonUtil.Serializar(objeto,
-                                          EnumTipoSerializacao.Javascript,
+                                          tipoSerializacao,
                                           culture,
                                           true,
                                           false);
@@ -269,48 +280,7 @@ namespace Snebur.Utilidade
             }
         }
     }
-
-    internal class JsonPropertiesResolver : DefaultContractResolver
-    {
-        protected override List<MemberInfo> GetSerializableMembers(Type objectType)
-        {
-            return JsonUtil.RetornarPropriedadesSerializavel(objectType, true);
-        }
-
-        protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
-        {
-            var jsonPropriedade = base.CreateProperty(member, memberSerialization);
-            if (member is PropertyInfo propriedade)
-            {
-                if (propriedade.PropertyType != typeof(string))
-                {
-                    if (propriedade.PropertyType.GetInterface(nameof(ICollection)) != null)
-                    {
-                        jsonPropriedade.ShouldSerialize = (instancia) =>
-                        {
-                            try
-                            {
-                                var valorPropriedade = propriedade.GetValue(instancia);
-                                if (valorPropriedade is ICollection colecao)
-                                {
-                                    return colecao.Count > 0;
-                                }
-                            }
-                            catch
-                            {
-                            }
-                            return false;
-                        };
-                        //jsonPropriedade.ShouldSerialize =
-                        //    instance => (instance?.GetType().GetProperty(jsonPropriedade.PropertyName).GetValue(instance) as IEnumerable<object>)?.Count() > 0;
-                    }
-                }
-            }
-            return jsonPropriedade;
-        }
-    }
-
-
+     
     internal class ResolverReferencia : IReferenceResolver
     {
         public object ResolveReference(object context, string reference)
@@ -339,7 +309,6 @@ namespace Snebur.Utilidade
     {
         Javascript = 1,
         DotNet = 2
-
     }
 
 }

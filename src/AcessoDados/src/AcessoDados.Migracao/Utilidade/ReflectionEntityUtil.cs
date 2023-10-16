@@ -22,7 +22,7 @@ namespace Snebur.AcessoDados.Migracao
 
         public static bool PropriedadeRetornaColecaoBaseEntidade(PropertyInfo pi)
         {
-            if (ReflexaoUtil.PropriedadeRetornaColecao(pi) && pi.PropertyType.IsGenericType && pi.PropertyType.GetGenericArguments().Count() == 1 && pi.PropertyType.GetGenericArguments().Single().IsSubclassOf(typeof(Entidade)))
+            if (ReflexaoUtil.IsPropriedadeRetornaColecao(pi) && pi.PropertyType.IsGenericType && pi.PropertyType.GetGenericArguments().Count() == 1 && pi.PropertyType.GetGenericArguments().Single().IsSubclassOf(typeof(Entidade)))
             {
                 return true;
             }

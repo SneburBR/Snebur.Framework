@@ -69,8 +69,8 @@ namespace Snebur.Utilidade
                 if (propriedadeOrigem != null && (propriedadesIgnroar == null || !propriedadesIgnroar.Contains(propriedadeOrigem.Name, new IgnorarCasoSensivel())))
                 {
 
-                    if (ReflexaoUtil.TipoIgualOuHerda(propriedadeOrigem.PropertyType, propriedadeDestino.PropertyType) ||
-                       ReflexaoUtil.TipoIgualOuHerda(propriedadeDestino.PropertyType, propriedadeOrigem.PropertyType))
+                    if (ReflexaoUtil.IsTipoIgualOuHerda(propriedadeOrigem.PropertyType, propriedadeDestino.PropertyType) ||
+                       ReflexaoUtil.IsTipoIgualOuHerda(propriedadeDestino.PropertyType, propriedadeOrigem.PropertyType))
                     {
                         var isMapearPropriedade = manipuladorIsMapearPropriedade?.Invoke((propriedadeOrigem, propriedadeDestino)) ?? true;
                         if (isMapearPropriedade)

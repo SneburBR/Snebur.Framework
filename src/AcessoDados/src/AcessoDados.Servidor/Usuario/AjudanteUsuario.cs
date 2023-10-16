@@ -404,7 +404,7 @@ namespace Snebur.AcessoDados
             private PropertyInfo RetornarPropriedadeRelacaoUsuario()
             {
                 var propriedades = ReflexaoUtil.RetornarPropriedades(this.TipoSessaoUsuario);
-                var propriedadesRelacaoUsuario = propriedades.Where(x => ReflexaoUtil.TipoIgualOuHerda(x.PropertyType, this.TipoUsuario));
+                var propriedadesRelacaoUsuario = propriedades.Where(x => ReflexaoUtil.IsTipoIgualOuHerda(x.PropertyType, this.TipoUsuario));
                 if (propriedadesRelacaoUsuario.Count() == 0)
                 {
                     throw new Erro(String.Format("Nenhum propriedade relacao usuario foi encontrado na entidade Sessão do usuario {0]", this.TipoSessaoUsuario.Name));

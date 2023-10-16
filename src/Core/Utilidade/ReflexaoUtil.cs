@@ -19,7 +19,7 @@ namespace Snebur.Utilidade
             }
         }
 
-        #region Metodo
+        #region Método
 
         public static List<MethodInfo> RetornarMetodos(Type tipo, BindingFlags bindingFlags)
         {
@@ -52,12 +52,12 @@ namespace Snebur.Utilidade
 
         #region Construtor
 
-        public static bool ConstrutorPossuiAtributo(ConstructorInfo construtor, Type tipoAtributo, bool herdado = true)
+        public static bool IsConstrutorPossuiAtributo(ConstructorInfo construtor, Type tipoAtributo, bool herdado = true)
         {
             return construtor.GetCustomAttributes(tipoAtributo, herdado).FirstOrDefault() != null;
         }
 
-        public static bool ExisteConstrutorVazio(Type tipo)
+        public static bool IsExisteConstrutorVazio(Type tipo)
         {
             return tipo.GetConstructors().Any(x => x.IsPublic && x.GetParameters().Count() == 0);
         }

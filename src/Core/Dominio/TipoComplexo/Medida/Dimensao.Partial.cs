@@ -9,19 +9,19 @@ namespace Snebur.Dominio
 
         [JsonIgnore]
         [NaoMapear]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public int LarguraVisualizacao { get => this.RetornarValorVisualizacao(this._largura); }
 
         [JsonIgnore]
         [NaoMapear]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public int AlturaVisualizacao { get => this.RetornarValorVisualizacao(this._altura); }
 
         [JsonIgnore]
         [NaoMapear]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public int LarguraPixels
         {
@@ -36,7 +36,7 @@ namespace Snebur.Dominio
         }
         [NaoMapear]
         [JsonIgnore]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public int AlturaPixels
         {
@@ -51,19 +51,19 @@ namespace Snebur.Dominio
         }
         [NaoMapear]
         [JsonIgnore]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public bool IsQuadrada => this.Orientacao == EnumOrientacao.Quadrado;
 
         [NaoMapear]
         [JsonIgnore]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public override bool IsEmpty => this.Largura == 0 && this.Altura == 0;
 
         [NaoMapear]
         [JsonIgnore]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public EnumOrientacao Orientacao
         {

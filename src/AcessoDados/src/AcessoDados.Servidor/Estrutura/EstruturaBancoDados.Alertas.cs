@@ -46,8 +46,8 @@ namespace Snebur.AcessoDados.Estrutura
                         }
                     }
                 }
-                var propriedades = ReflexaoUtil.RetornarPropriedades(estruturaEntidade.TipoEntidade).Where(x => ReflexaoUtil.PropriedadePossuiAtributo(x, typeof(ChaveEstrangeiraAttribute)) ||
-                                                                                                                ReflexaoUtil.PropriedadePossuiAtributo(x, typeof(ChaveEstrangeiraRelacaoUmUmAttribute))).ToList();
+                var propriedades = ReflexaoUtil.RetornarPropriedades(estruturaEntidade.TipoEntidade).Where(x => ReflexaoUtil.IsPropriedadePossuiAtributo(x, typeof(ChaveEstrangeiraAttribute)) ||
+                                                                                                                ReflexaoUtil.IsPropriedadePossuiAtributo(x, typeof(ChaveEstrangeiraRelacaoUmUmAttribute))).ToList();
                 foreach (var propriedade in propriedades)
                 {
                     var atributos = propriedade.GetCustomAttributes<BaseRelacaoAttribute>();
@@ -187,7 +187,7 @@ namespace Snebur.AcessoDados.Estrutura
 
                 var propriedadesTipoEntidade = ReflexaoUtil.RetornarPropriedades(estruturaEntidade.TipoEntidade, true).Where(x =>
                                                                         x.PropertyType.IsSubclassOf(typeof(Entidade)) &&
-                                                                        !ReflexaoUtil.PropriedadePossuiAtributo(x, typeof(NaoMapearAttribute))).ToList();
+                                                                        !ReflexaoUtil.IsPropriedadePossuiAtributo(x, typeof(NaoMapearAttribute))).ToList();
 
                 var propriedadesRelacaoPai = estruturaEntidade.TodasRelacoesPai().Select(x => x.Propriedade).ToHashSet();
                 var propriedadesRelacaoUmUm = estruturaEntidade.TodasRelacoesUmUm().Select(x => x.Propriedade).ToHashSet();
@@ -215,7 +215,7 @@ namespace Snebur.AcessoDados.Estrutura
                     this.Alertas.Add(String.Format(" A propriedade {0} em {1}, o não foi encontrado o atributo do tipo de relação . Conferir o atributo RelacaoPai, RelacaoUmUm, RelacaoUmUmReverso ", propriedade.Name, propriedade.DeclaringType.Name));
                 }
                 //Coleções
-                var propriedadesTipoColecaEntidade = ReflexaoUtil.RetornarPropriedades(estruturaEntidade.TipoEntidade, true).Where(x => ReflexaoUtil.TipoRetornaColecao(x.PropertyType) && ReflexaoUtil.RetornarTipoGenericoColecao(x.PropertyType).IsSubclassOf(typeof(Entidade))).ToList();
+                var propriedadesTipoColecaEntidade = ReflexaoUtil.RetornarPropriedades(estruturaEntidade.TipoEntidade, true).Where(x => ReflexaoUtil.IsTipoRetornaColecao(x.PropertyType) && ReflexaoUtil.RetornarTipoGenericoColecao(x.PropertyType).IsSubclassOf(typeof(Entidade))).ToList();
 
                 var propriedadesRelacaoColecacao = estruturaEntidade.TodasRelacoesFilhos.Select(x => x.Propriedade).ToList();
                 propriedadesRelacaoColecacao.AddRange(estruturaEntidade.TodasRelacoesNn().Select(x => x.Propriedade).ToList());
@@ -241,7 +241,7 @@ namespace Snebur.AcessoDados.Estrutura
                 {
                     var atributo = estruturaAlteracaoPropriedade.Atributo;
                     var tipoPropriedadeRelacao = atributo.PropriedadeRelacao.PropertyType;
-                    if (!ReflexaoUtil.TipoIgualOuHerda(tipoPropriedadeRelacao, tipoEntidade))
+                    if (!ReflexaoUtil.IsTipoIgualOuHerda(tipoPropriedadeRelacao, tipoEntidade))
                     {
                         this.Alertas.Add($"O tipo {tipoPropriedadeRelacao.Name} da {nameof(NotificarAlteracaoPropriedadeAttribute.PropriedadeRelacao)} do atributo {nameof(NotificarAlteracaoPropriedadeAttribute)} não é compatível com a entidade {tipoEntidade.Name}");
                     }

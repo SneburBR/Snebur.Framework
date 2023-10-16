@@ -6,15 +6,15 @@ namespace Snebur.Dominio
     public interface IAlteracaoPropriedade : IAtividadeUsuario
     {
 
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         object ValorPropriedadeRelacao { get; set; }
 
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         object ValorPropriedadeAntigo { get; set; }
 
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         object ValorPropriedadeAlterada { get; set; }
 

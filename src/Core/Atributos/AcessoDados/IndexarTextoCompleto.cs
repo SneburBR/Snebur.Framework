@@ -6,7 +6,7 @@ namespace Snebur.Dominio.Atributos
     [AttributeUsage(AttributeTargets.Property)]
     public class IndexarTextoCompletoAttribute : Attribute, IAtributoMigracao
     {
-        [IgnorarPropriedadeTS, IgnorarPropriedadeTSReflexao]
+        [IgnorarPropriedade, IgnorarPropriedadeTSReflexao]
         public bool IsIgnorarMigracao { get; set; }
     }
 }

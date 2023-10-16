@@ -16,7 +16,7 @@ namespace Snebur.AcessoDados
 
         //public string Erro { get; set; }
 
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public Exception Erro { get; set; } = null;
 

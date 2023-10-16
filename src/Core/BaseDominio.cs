@@ -96,7 +96,7 @@ namespace Snebur.Dominio
 
         [NaoMapear]
         [IgnorarGlobalizacao]
-        [IgnorarPropriedadeTS, IgnorarPropriedadeTSReflexao]
+        [IgnorarPropriedade, IgnorarPropriedadeTSReflexao]
         [PropriedadeProtegida]
         [XmlIgnore]
         public virtual bool __IsExisteAlteracao
@@ -116,11 +116,11 @@ namespace Snebur.Dominio
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [NaoMapear]
-        [IgnorarPropriedadeTS, IgnorarPropriedadeTSReflexao]
+        [IgnorarPropriedade, IgnorarPropriedadeTSReflexao]
         public bool __IsControladorPropriedadesAlteradaAtivo { get; private set; } = false;
 
         [XmlIgnore]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         internal protected bool IsSerializando
         {
@@ -145,7 +145,7 @@ namespace Snebur.Dominio
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [XmlIgnore]
-        [IgnorarPropriedadeTS, IgnorarPropriedadeTSReflexao]
+        [IgnorarPropriedade, IgnorarPropriedadeTSReflexao]
         internal protected bool __IsClonado { get; set; }
         #endregion
 
@@ -251,7 +251,7 @@ namespace Snebur.Dominio
         [NaoMapear]
         [IgnorarGlobalizacao]
         [XmlIgnore]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         [OcultarColuna]
         [EditorBrowsable(EditorBrowsableState.Never)]

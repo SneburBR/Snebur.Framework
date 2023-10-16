@@ -26,16 +26,18 @@ namespace Snebur.Comunicacao
                 return this.RetornarParametroChamadaTipoPrimario(parametro, valor);
             }
 
-            if (ReflexaoUtil.TipoIgualOuHerda(tipo, (typeof(BaseDominio))))
+            if (ReflexaoUtil.IsTipoIgualOuHerda(tipo, (typeof(BaseDominio))))
             {
                 return this.RetornarParametroChamadaBaseDominio(parametro, valor);
             }
 
-            if (ReflexaoUtil.TipoRetornaColecao(tipo))
+            if (ReflexaoUtil.IsTipoRetornaColecao(tipo))
             {
                 var tipoItemLista = tipo.GetGenericArguments().Single();
 
-                if (ReflexaoUtil.TipoIgualOuHerda(tipoItemLista, typeof(BaseDominio)))
+                if (ReflexaoUtil.IsTipoIgualOuHerda(tipoItemLista, typeof(BaseDominio)) ||
+                    ReflexaoUtil.IsTipoIgualOuHerda(tipoItemLista, typeof(IEntidade)) ||
+                    ReflexaoUtil.IsTipoImplementaInterface(tipoItemLista, typeof(IEntidade)))
                 {
                     return this.RetornarParametroChamadaListaBaseDominio(parametro, valor);
                 }

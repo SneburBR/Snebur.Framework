@@ -33,7 +33,7 @@ namespace Snebur.Dominio
         [XmlIgnore]
         [NaoSerializar]
         [NaoMapear]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         public int Count => this.ListaInterna.Count;
 
         //public bool IsReadOnly => throw new NotImplementedException();

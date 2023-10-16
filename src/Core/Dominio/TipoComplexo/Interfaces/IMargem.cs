@@ -12,16 +12,16 @@ namespace Snebur.Dominio
 
         double? Inferior { get; set; }
 
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         int? EsquerdaVisualizacao { get; }
 
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         int? SuperiorVisualizacao { get; }
 
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         int? DireitaVisualizacao { get; }
 
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         int? InferiorVisualizacao { get; }
     }
 }

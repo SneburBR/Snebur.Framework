@@ -20,9 +20,12 @@ namespace Snebur.Serializacao
         private Dictionary<Guid, BaseDominioOrigem> BasesDominioOrigem = new Dictionary<Guid, BaseDominioOrigem>();
         private Dictionary<Guid, List<BaseDominioRefenciada>> BasesDominioReferenciadas = new Dictionary<Guid, List<BaseDominioRefenciada>>();
 
-        public PrapararSerializacao(object objeto)
+        private EnumTipoSerializacao TipoSerializacao;
+        public PrapararSerializacao(object objeto, 
+                                   EnumTipoSerializacao tipoSerializacao)
         {
             this.Objeto = objeto;
+            this.TipoSerializacao = tipoSerializacao;
         }
 
         internal void Preparar()
@@ -169,7 +172,7 @@ namespace Snebur.Serializacao
             }
             else
             {
-                var propriedades = JsonUtil.RetornarPropriedadesSerializavel(tipo, false);
+                var propriedades = JsonUtil.RetornarPropriedadesSerializavel(tipo, false, this.TipoSerializacao);
                 foreach (PropertyInfo proprieade in propriedades)
                 {
                     var item = proprieade.TryGetValueOrDefault(objeto);

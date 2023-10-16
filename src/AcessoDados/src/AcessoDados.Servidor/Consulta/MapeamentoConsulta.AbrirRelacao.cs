@@ -66,7 +66,7 @@ namespace Snebur.AcessoDados.Mapeamento
             var propriedadeChaveEstrangeira = mapeamentoPai.EstruturaRelacaoPai.EstruturaCampoChaveEstrangeira.Propriedade;
             foreach (var entidade in this.Entidades.Values)
             {
-                if (entidade != null && ReflexaoUtil.TipoIgualOuHerda(entidade.GetType(), propriedadeChaveEstrangeira.DeclaringType))
+                if (entidade != null && ReflexaoUtil.IsTipoIgualOuHerda(entidade.GetType(), propriedadeChaveEstrangeira.DeclaringType))
                 {
                     var idChaveEstrangeira = Convert.ToInt64(propriedadeChaveEstrangeira.GetValue(entidade));
                     if (idChaveEstrangeira > 0)
@@ -178,7 +178,7 @@ namespace Snebur.AcessoDados.Mapeamento
 
             foreach (var entidade in this.Entidades.Values)
             {
-                if (entidade != null && ReflexaoUtil.TipoIgualOuHerda(entidade.GetType(), propriedadeChaveEstrangeira.DeclaringType))
+                if (entidade != null && ReflexaoUtil.IsTipoIgualOuHerda(entidade.GetType(), propriedadeChaveEstrangeira.DeclaringType))
                 {
                     var idChaveEstrangeira = Convert.ToInt64(propriedadeChaveEstrangeira.GetValue(entidade));
                     if (idChaveEstrangeira > 0)

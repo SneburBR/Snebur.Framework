@@ -191,7 +191,7 @@ namespace Snebur.Utilidade
             return ValidacaoUtil.IsTipoNullable(tipo);
         }
 
-        public static bool TipoRetornaColecao(Type tipo)
+        public static bool IsTipoRetornaColecao(Type tipo)
         {
             if (tipo.IsArray)
             {
@@ -220,9 +220,9 @@ namespace Snebur.Utilidade
             //}
         }
 
-        public static bool TipoRetornaColecaoEntidade(Type tipo)
+        public static bool IsTipoRetornaColecaoEntidade(Type tipo)
         {
-            if (ReflexaoUtil.TipoRetornaColecao(tipo))
+            if (ReflexaoUtil.IsTipoRetornaColecao(tipo))
             {
                 if (tipo.IsGenericType &&
                     tipo.GetGenericArguments().Count() == 1)
@@ -240,7 +240,7 @@ namespace Snebur.Utilidade
             ErroUtil.ValidarReferenciaNula(tipoEntidade, nameof(tipoEntidade));
 #endif
             if (tipoEntidade.IsSubclassOf(typeof(Entidade)) ||
-                       ReflexaoUtil.TipoImplementaInterface(tipoEntidade, typeof(IEntidade)))
+                ReflexaoUtil.IsTipoImplementaInterface(tipoEntidade, typeof(IEntidade)))
             {
                 return true;
             }
@@ -250,12 +250,13 @@ namespace Snebur.Utilidade
             //}
             return false;
         }
+
         public static Type RetornarTipoGenericoColecao(Type tipo)
         {
 #if DEBUG
             ErroUtil.ValidarReferenciaNula(tipo, nameof(tipo));
 #endif
-            if (!TipoRetornaColecao(tipo))
+            if (!IsTipoRetornaColecao(tipo))
             {
                 throw new Erro(String.Format("O tipo '{0}' não é um coleção", tipo.Name));
             }
@@ -278,7 +279,7 @@ namespace Snebur.Utilidade
             }
         }
 
-        public static bool TipoAbstrato(Type tipo)
+        public static bool IsTipoAbstrato(Type tipo)
         {
 #if DEBUG
             ErroUtil.ValidarReferenciaNula(tipo, nameof(tipo));
@@ -291,7 +292,7 @@ namespace Snebur.Utilidade
             //|| tipo.GetCustomAttributes(typeof(AbstratoAttribute), false).Count > 0;
         }
 
-        public static bool TipoPossuiAtributo(Type tipo, Type tipoAtributo, bool herdado = true)
+        public static bool IsTipoPossuiAtributo(Type tipo, Type tipoAtributo, bool herdado = true)
         {
 #if DEBUG
             ErroUtil.ValidarReferenciaNula(tipo, nameof(tipo));
@@ -300,7 +301,7 @@ namespace Snebur.Utilidade
             return tipo.GetCustomAttributes(tipoAtributo, herdado).FirstOrDefault() != null;
         }
 
-        public static bool TipoImplementaInterface(Type tipo, Type tipoInterface, bool ignorarTipoBase = true)
+        public static bool IsTipoImplementaInterface(Type tipo, Type tipoInterface, bool ignorarTipoBase = true)
         {
 #if DEBUG
             ErroUtil.ValidarReferenciaNula(tipo, nameof(tipo));
@@ -326,23 +327,32 @@ namespace Snebur.Utilidade
             }
             return false;
         }
-        public static bool TipoIgualOuHerda(Type tipo, Type tipoBase)
+
+        public static bool IsTipoIgualOuHerda(Type tipo, Type tipoBase)
         {
 
             ErroUtil.ValidarReferenciaNula(tipo, nameof(tipo));
             ErroUtil.ValidarReferenciaNula(tipoBase, nameof(tipoBase));
 
-            if (tipo == tipoBase)
+            if (tipo == tipoBase || tipo.IsSubclassOf(tipoBase))
             {
                 return true;
             }
-            return tipo.IsSubclassOf(tipoBase);
+
+            if(IsTipoRetornaColecao(tipo) &&  IsTipoRetornaColecao(tipoBase) )
+            {
+                var tipoColexao = RetornarTipoGenericoColecao(tipo);
+                var tipoColexaoBase = RetornarTipoGenericoColecao(tipoBase);
+                return IsTipoIgualOuHerda(tipoColexao, tipoColexaoBase);
+            }
+            return false;
+            
         }
 
         public static bool IsTiposCompativel(Type tipo1, Type tipo2)
         {
-            return TipoIgualOuHerda(tipo1, tipo2) ||
-                    TipoIgualOuHerda(tipo2, tipo1);
+            return IsTipoIgualOuHerda(tipo1, tipo2) ||
+                    IsTipoIgualOuHerda(tipo2, tipo1);
         }
 
         public static Type RetornarTipo(string nomeNamespace, string nomeTipo)

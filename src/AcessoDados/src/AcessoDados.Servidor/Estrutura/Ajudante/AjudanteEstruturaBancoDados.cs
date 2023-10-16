@@ -74,7 +74,7 @@ namespace Snebur.AcessoDados.Estrutura
 
         internal static bool PropriedadeRequerida(PropertyInfo propriedade)
         {
-            return ReflexaoUtil.PropriedadePossuiAtributo(propriedade, typeof(ValidacaoRequeridoAttribute));
+            return ReflexaoUtil.IsPropriedadePossuiAtributo(propriedade, typeof(ValidacaoRequeridoAttribute));
         }
 
         internal static PropertyInfo RetornarPropriedadeChavePrimaria(Type tipoEntidade)
@@ -82,7 +82,7 @@ namespace Snebur.AcessoDados.Estrutura
             var proriedades = ReflexaoUtil.RetornarPropriedades(tipoEntidade);
             var propriedadesChavePrimaria = proriedades.Where(x =>
                                                             {
-                                                                if (ReflexaoUtil.PropriedadeRetornaTipoPrimario(x))
+                                                                if (ReflexaoUtil.IsPropriedadeRetornaTipoPrimario(x))
                                                                 {
                                                                     var atributoChavePrimaria = x.GetCustomAttribute<KeyAttribute>();
                                                                     return (atributoChavePrimaria != null);

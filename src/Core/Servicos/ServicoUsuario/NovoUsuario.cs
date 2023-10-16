@@ -6,7 +6,7 @@ namespace Snebur.Dominio
 {
     public class NovoUsuario : BaseDominio
     {
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public Func<object, string> FuncRetornarIdentificadorUsuario { get; set; }
 
@@ -27,7 +27,7 @@ namespace Snebur.Dominio
         public string Senha { get; set; }
 
         [IgnorarNormalizacao]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public string IdentificadorAmigavel
         {

@@ -37,7 +37,7 @@ namespace Snebur.Comunicacao
         {
             if (String.IsNullOrEmpty(urlServico))
             {
-                throw new ErroComunicacao(String.Format("A url do serviço '{0}' não foi definida.", this.GetType().Name));
+                throw new ErroComunicacao($"A url do serviço '{this.GetType().Name}' não foi definida.");
             }
 
             this.UrlServico = AmbienteServidorUtil.NormalizarUrl(urlServico);
@@ -202,7 +202,7 @@ namespace Snebur.Comunicacao
             {
                 if (!nomeMetodo.EndsWith(PARALAVRA_ASYNC))
                 {
-                    throw new Exception(String.Format("O nome do método para um chamada assincrona deve terminar com {0}", PARALAVRA_ASYNC));
+                    throw new Exception($"O nome do método para um chamada assincrona deve terminar com {PARALAVRA_ASYNC}");
                 }
                 return nomeMetodo.Substring(0, nomeMetodo.Length - PARALAVRA_ASYNC.Length);
             }
@@ -210,7 +210,8 @@ namespace Snebur.Comunicacao
         }
 
         protected virtual List<ParametroChamada> RetornarParametrosChamada(MethodBase metodoChamada,
-                                                                          MethodBase metodoParametros, bool isAsync, object[] valoresParametro)
+                                                                           MethodBase metodoParametros,
+                                                                           bool isAsync, object[] valoresParametro)
         {
 
             var parametros = metodoParametros.GetParameters().ToList();
@@ -231,9 +232,10 @@ namespace Snebur.Comunicacao
                 var valorPametro = valoresParametro[i];
                 var parametro = parametros[i];
 
-                if (valorPametro != null && !ReflexaoUtil.TipoIgualOuHerda(valorPametro.GetType(), parametro.ParameterType))
+                if (valorPametro != null && 
+                    !ReflexaoUtil.IsTipoIgualOuHerda(valorPametro.GetType(), parametro.ParameterType))
                 {
-                    throw new Exception(String.Format("O tipo do parametro {0} '{1}' é diferente do valor '{2}'", parametro.Name, parametro.ParameterType.Name, valorPametro.GetType().Name));
+                     throw new Exception($"O tipo do parâmetro {parametro.Name} '{parametro.ParameterType.Name}' é diferente do valor '{valorPametro.GetType().Name}'");
                 }
                 parametrosChamada.Add(this.RetornarParametroChamada(parametro, valorPametro));
             }

@@ -154,7 +154,7 @@ namespace Snebur.Comunicacao
             requisicaoHttp.Timeout = (int)TimeSpan.FromMinutes(2).TotalMilliseconds;
 
 #if DEBUG
-            if (Debugger.IsAttached)
+            if (DebugUtil.IsAttached)
             {
                 requisicaoHttp.Timeout = (int)TimeSpan.FromHours(1).TotalMilliseconds;
             }

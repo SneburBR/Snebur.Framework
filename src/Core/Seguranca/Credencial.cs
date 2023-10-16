@@ -12,7 +12,7 @@ namespace Snebur.Seguranca
 
         public string Senha { get; set; }
 
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public bool IsAnonimo => Util.SaoIgual(this.IdentificadorUsuario, CredencialAnonimo.Anonimo.IdentificadorUsuario);
 
@@ -30,7 +30,7 @@ namespace Snebur.Seguranca
         {
             if (obj != null)
             {
-                if ((obj is Credencial) || (ReflexaoUtil.TipoImplementaInterface(obj.GetType(), typeof(ICredencial), false)))
+                if ((obj is Credencial) || (ReflexaoUtil.IsTipoImplementaInterface(obj.GetType(), typeof(ICredencial), false)))
                 {
                     var credencialValidar = (ICredencial)obj;
                     return this.Validar(credencialValidar);
@@ -64,7 +64,7 @@ namespace Snebur.Seguranca
             }
             return false;
         }
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public bool IsEmpty
         {

@@ -12,7 +12,7 @@ namespace Snebur.Dominio.Atributos
 
         public bool IsAceitaNulo { get; set; }
 
-        [IgnorarPropriedadeTS, IgnorarPropriedadeTSReflexao]
+        [IgnorarPropriedade, IgnorarPropriedadeTSReflexao]
         public bool IsIgnorarMigracao { get; set; }
 
         public ValidacaoUnicoAttribute(bool isAceitaNulo = true)

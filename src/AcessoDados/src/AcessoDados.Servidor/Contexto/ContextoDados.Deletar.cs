@@ -154,7 +154,7 @@ namespace Snebur.AcessoDados
                         retorno.AddRange(this.RetornarTodasEntidades(entidadeTipada));
                     }
                 }
-                else if (ReflexaoUtil.TipoRetornaColecaoEntidade(propriedade.PropertyType))
+                else if (ReflexaoUtil.IsTipoRetornaColecaoEntidade(propriedade.PropertyType))
                 {
                     var entidades = propriedade.GetValue(entidadeRecuperada);
                     if (entidades is IEnumerable<Entidade> entidadesTipada && entidadesTipada != null)

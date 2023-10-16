@@ -74,7 +74,7 @@ namespace Snebur.AcessoDados
             if (!resultadoSalvar.IsSucesso)
             {
                 var descricaoEntidades = String.Join(",", entidades.Select(x => $"{x.GetType().Name}({x.Id})"));
-                throw new Erro($"Não foi possivel salvar as entidade {descricaoEntidades}\r\n{resultadoSalvar.MensagemErro}");
+                throw new Erro($"Não foi possível salvar as entidade {descricaoEntidades}\r\n{resultadoSalvar.MensagemErro}");
             }
             this.NormailizarEntidadeSalvar(resultadoSalvar, entidades);
             return resultadoSalvar;
@@ -146,7 +146,7 @@ namespace Snebur.AcessoDados
             var propriedades = ReflexaoUtil.RetornarPropriedades(entidade.GetType());
             foreach (var propriedade in propriedades)
             {
-                if (ReflexaoUtil.TipoRetornaColecaoEntidade(propriedade.PropertyType))
+                if (ReflexaoUtil.IsTipoRetornaColecaoEntidade(propriedade.PropertyType))
                 {
                     var colecao = (IEnumerable)propriedade.GetValue(entidade);
                     if (colecao != null)
@@ -212,7 +212,7 @@ namespace Snebur.AcessoDados
             var propriedades = ReflexaoUtil.RetornarPropriedades(entidade.GetType());
             foreach (var propriedade in propriedades)
             {
-                if (ReflexaoUtil.TipoRetornaColecaoEntidade(propriedade.PropertyType))
+                if (ReflexaoUtil.IsTipoRetornaColecaoEntidade(propriedade.PropertyType))
                 {
                     var colecao = (IEnumerable)propriedade.GetValue(entidade);
                     if (colecao != null)

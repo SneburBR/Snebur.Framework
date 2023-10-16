@@ -15,7 +15,7 @@ namespace Snebur.Dominio
         [ValidacaoTextoTamanho(36)]
         string Senha { get; set; }
 
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         bool IsAnonimo { get; }
     }

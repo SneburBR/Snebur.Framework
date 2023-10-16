@@ -174,7 +174,7 @@ namespace Snebur.Utilidade
         {
             var atributos = propriedade.GetCustomAttributes();
             var tipoIValorPadrao = typeof(TInterfaceAtributo);
-            var atributo = atributos.Where(x => ReflexaoUtil.TipoImplementaInterface(x.GetType(), tipoIValorPadrao, true)).ToArray();
+            var atributo = atributos.Where(x => ReflexaoUtil.IsTipoImplementaInterface(x.GetType(), tipoIValorPadrao, true)).ToArray();
             if (atributo.Length > 1)
             {
                 throw new Erro($"Existe mais de um atributo que implementa a interface {typeof(TInterfaceAtributo).Name}, Entidade: '{propriedade.DeclaringType.Name}', Propriedade: '{propriedade.Name}'");
@@ -226,7 +226,7 @@ namespace Snebur.Utilidade
             }
             return propriedades.Where(x =>
                                     {
-                                        if (ReflexaoUtil.PropriedadeRetornaTipoPrimario(x, true) &&
+                                        if (ReflexaoUtil.IsPropriedadeRetornaTipoPrimario(x, true) &&
                                             x.GetGetMethod() != null && x.GetGetMethod().IsPublic &&
                                             x.GetSetMethod() != null && x.GetSetMethod().IsPublic ||
                                             x == EntidadeUtil.PropriedadeNomeTipoEntidade)

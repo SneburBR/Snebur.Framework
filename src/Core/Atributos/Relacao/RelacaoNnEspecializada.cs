@@ -6,7 +6,7 @@ namespace Snebur.Dominio.Atributos
     [AttributeUsage(AttributeTargets.Property)]
     public class RelacaoNnEspecializadaAttribute : RelacaoNnAttribute
     {
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         public Type TipoEntidadeRelacaoEspecializada { get; set; }
 
         public RelacaoNnEspecializadaAttribute(Type tipoEntidadeRelacao, Type tipoEntidadeEspecializada) : base(tipoEntidadeRelacao)

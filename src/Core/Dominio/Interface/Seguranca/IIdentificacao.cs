@@ -12,7 +12,7 @@ namespace Snebur.Dominio
         [DefaultValue("NewId()")]
         new Guid Identificador { get; set; }
 
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         IEnumerable<IPermissaoEntidade> PermissoesEntidade { get; }
     }

@@ -5,7 +5,7 @@ namespace Snebur.Dominio.Atributos
     [AttributeUsage(AttributeTargets.Property)]
     public class RelacaoNnAttribute : BaseRelacaoAttribute
     {
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         public Type TipoEntidadeRelacao { get; set; }
 
         public string NomeTipoEntidadeRelacao { get; set; }

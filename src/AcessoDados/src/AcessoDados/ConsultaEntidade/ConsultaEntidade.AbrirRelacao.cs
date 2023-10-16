@@ -127,7 +127,7 @@ namespace Snebur.AcessoDados
                 else
                 {
                     if (propriedade.PropertyType.IsSubclassOf(typeof(Entidade)) ||
-                        ReflexaoUtil.TipoImplementaInterface(propriedade.PropertyType, typeof(IEntidade), false))
+                        ReflexaoUtil.IsTipoImplementaInterface(propriedade.PropertyType, typeof(IEntidade), false))
                     {
                         var tipoEntidade = propriedade.PropertyType;
                         if (tipoEntidade.IsInterface)

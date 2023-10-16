@@ -225,15 +225,15 @@ namespace Snebur.AcessoDados.Seguranca
             {
                 if (operacao == EnumOperacao.Leitura || operacao == EnumOperacao.Adicionar)
                 {
-                    if (ReflexaoUtil.TipoIgualOuHerda(estruturaEntidade.TipoEntidade, this.ContextoDados.TiposSeguranca.TipoUsuario))
+                    if (ReflexaoUtil.IsTipoIgualOuHerda(estruturaEntidade.TipoEntidade, this.ContextoDados.TiposSeguranca.TipoUsuario))
                     {
                         return this.ContextoDados.IsAnonimo;
                     }
-                    if (ReflexaoUtil.TipoIgualOuHerda(estruturaEntidade.TipoEntidade, this.ContextoDados.TiposSeguranca.TipoSessaoUsuario))
+                    if (ReflexaoUtil.IsTipoIgualOuHerda(estruturaEntidade.TipoEntidade, this.ContextoDados.TiposSeguranca.TipoSessaoUsuario))
                     {
                         return this.ContextoDados.IsAnonimo;
                     }
-                    if (ReflexaoUtil.TipoIgualOuHerda(estruturaEntidade.TipoEntidade, this.ContextoDados.TiposSeguranca.TipoIpInformacao))
+                    if (ReflexaoUtil.IsTipoIgualOuHerda(estruturaEntidade.TipoEntidade, this.ContextoDados.TiposSeguranca.TipoIpInformacao))
                     {
                         return true;
                     }

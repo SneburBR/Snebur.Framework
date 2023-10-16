@@ -5,7 +5,7 @@ namespace Snebur.Dominio
 {
     public interface IDpiVisualizacao
     {
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         Func<double?, double> FuncaoNormamlizarDpiVisualizacao { get; set; }
     }
 }

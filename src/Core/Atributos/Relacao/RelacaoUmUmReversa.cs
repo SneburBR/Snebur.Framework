@@ -12,7 +12,7 @@ namespace Snebur.Dominio.Atributos
     {
         public string NomePropriedadeChaveEstrangeiraReversa { get; }
 
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         public PropertyInfo PropriedadeRelacaoReversa { get; }
 
         [IgnorarConstrutorTS]

@@ -16,7 +16,7 @@ namespace Snebur.Dominio.Atributos
     public interface IChaveEstrangeiraAttribute
     {
         string NomePropriedade { get; }
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         string Name { get; }
     }
 }

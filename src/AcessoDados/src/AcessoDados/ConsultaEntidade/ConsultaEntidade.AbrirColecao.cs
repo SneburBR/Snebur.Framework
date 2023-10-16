@@ -107,7 +107,7 @@ namespace Snebur.AcessoDados
 
                 ErroUtil.ValidarStringVazia(caminhoPropriedade, nameof(caminhoPropriedade));
 
-                if (ReflexaoUtil.PropriedadeRetornaTipoPrimario(propriedade))
+                if (ReflexaoUtil.IsPropriedadeRetornaTipoPrimario(propriedade))
                 {
                     continue;
                 }

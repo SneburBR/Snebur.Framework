@@ -45,7 +45,7 @@ namespace Snebur.AcessoDados
                 }
             }
             var ultimaPropriedade = propriedades.Last();
-            if (!ReflexaoUtil.PropriedadeRetornaTipoPrimario(ultimaPropriedade))
+            if (!ReflexaoUtil.IsPropriedadeRetornaTipoPrimario(ultimaPropriedade))
             {
                 throw new ErroNaoSuportado(String.Format("A propriedade não suportada para ordenacao {0}", ultimaPropriedade.Name));
             }

@@ -12,7 +12,7 @@ namespace Snebur.Dominio
         long Id { get; set; }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         bool __IsExisteAlteracao { get; }
 

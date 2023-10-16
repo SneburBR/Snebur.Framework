@@ -44,7 +44,7 @@ namespace Snebur.Dominio
                 this.AtualizarValores();
             }
         }
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public bool IsTransparente
         {
@@ -53,7 +53,7 @@ namespace Snebur.Dominio
                 return this.Alpha == 0;
             }
         }
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public bool IsBranca
         {
@@ -104,7 +104,7 @@ namespace Snebur.Dominio
             this._rgba = rgba;
             this.AtualizarValores();
         }
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public Color ColorDrawing
         {

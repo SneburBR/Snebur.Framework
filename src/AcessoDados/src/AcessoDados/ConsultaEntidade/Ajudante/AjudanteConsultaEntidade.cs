@@ -53,7 +53,7 @@ namespace Snebur.AcessoDados.Ajudantes
             if (!(tipoEntidade == null))
             {
                 return tipoEntidade.IsSubclassOf(typeof(Entidade)) ||
-                       ReflexaoUtil.TipoImplementaInterface(tipoEntidade, typeof(IEntidade), false);
+                       ReflexaoUtil.IsTipoImplementaInterface(tipoEntidade, typeof(IEntidade), false);
             }
             return false;
         }

@@ -7,25 +7,25 @@ namespace Snebur.Dominio
     {
         [NaoMapear]
         [JsonIgnore]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public Cor Cor { get => new Cor(this.CorRgba); set => this.CorRgba = value.Rgba; }
 
         [NaoMapear]
         [JsonIgnore]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public double AfastamentoVisualizacao { get => this.RetornarValorVisualizacao(this._afastamento); }
 
         [NaoMapear]
         [JsonIgnore]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public double EspessuraVisualizacao { get => this.RetornarValorVisualizacao(this._espessura); }
 
         [NaoMapear]
         [JsonIgnore]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public bool IsExisteBorda
         {
@@ -36,7 +36,7 @@ namespace Snebur.Dominio
         }
         [NaoMapear]
         [JsonIgnore]
-        [IgnorarPropriedadeTS]
+        [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public override bool IsEmpty
         {

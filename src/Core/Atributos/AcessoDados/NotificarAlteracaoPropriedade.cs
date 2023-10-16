@@ -66,7 +66,7 @@ namespace Snebur.Dominio.Atributos
             {
                 throw new Erro($"O tipo {tipoValorAlterado.Name} da propriedade {this.PropriedadeValorAlterado.Name} em {this.TipoEntidadeAlteracaoPropriedade.Name} não é suportado");
             }
-            if (!ReflexaoUtil.TipoImplementaInterface(this.TipoEntidadeAlteracaoPropriedade, typeof(IAlteracaoPropriedade)))
+            if (!ReflexaoUtil.IsTipoImplementaInterface(this.TipoEntidadeAlteracaoPropriedade, typeof(IAlteracaoPropriedade)))
             {
                 throw new Erro($"O tipo {this.TipoEntidadeAlteracaoPropriedade.Name} não implementa a interface {nameof(IAlteracaoPropriedade)}");
             }

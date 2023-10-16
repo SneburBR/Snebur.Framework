@@ -782,7 +782,7 @@ namespace Snebur.AcessoDados
 
                 if (!estruturCampo.OpcoesSomenteLeitura.IsSomenteLeitura)
                 {
-                    if (Debugger.IsAttached)
+                    if (DebugUtil.IsAttached)
                     {
                         throw new Exception($"A propriedade {propriedade.Name} declarada  {propriedade.DeclaringType.Name} não possui o atributo somente leitura");
                     }
@@ -807,7 +807,7 @@ namespace Snebur.AcessoDados
         {
             if (this.IdentificadorProprietario != identificadorProprietario)
             {
-                if (!Debugger.IsAttached && !this.IsIdentificadorProprietarioGlobal)
+                if (!DebugUtil.IsAttached && !this.IsIdentificadorProprietarioGlobal)
                 {
                     throw new Erro("O identificador atual não é global");
                 }
