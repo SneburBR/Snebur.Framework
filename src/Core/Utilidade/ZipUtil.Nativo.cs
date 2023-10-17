@@ -276,5 +276,49 @@ namespace Snebur.Utilidade
             }
             return arquivos;
         }
+
+        public static void CompactarPasta(string diretorioOrigem,
+                                          string caminhoDestino,
+                                          bool isDeletarArquivo)
+        {
+            var arquivosParaDeletar = new List<string>();
+
+            var di = new DirectoryInfo(diretorioOrigem);
+            using (var fs = StreamUtil.CreateWrite(caminhoDestino))
+            using (var zip = new ZipArchive(fs, ZipArchiveMode.Create, true))
+            {
+                var arquivos = di.GetFiles();
+                
+                foreach (var arquivo in arquivos)
+                {
+                    if (arquivo.Attributes == (arquivo.Attributes & FileAttributes.Hidden) ||
+                        caminhoDestino.Equals(arquivo.FullName, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        continue;
+                    }
+                      
+                    var entry = zip.CreateEntry(arquivo.Name);
+                    using (var sr = entry.Open())
+                    {
+                        using (var fsArquivo = StreamUtil.OpenRead(arquivo.FullName))
+                        {
+                            fsArquivo.CopyTo(sr);
+                        }
+                    }
+
+                    if (isDeletarArquivo)
+                    {
+                        arquivosParaDeletar.Add(arquivo.FullName);
+                    }
+                }
+
+            }
+
+
+            if (isDeletarArquivo)
+            {
+                arquivosParaDeletar.ForEach(x => ArquivoUtil.DeletarArquivo(x, true));
+            }
+        }
     }
 }

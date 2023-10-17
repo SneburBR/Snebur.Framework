@@ -276,25 +276,30 @@ namespace Snebur.Utilidade
         }
 
         public static void ExcluirTodosArquivo(string caminhoDiretorio,
-                                               bool incluirSubDiretorios,
-                                               bool ignorarErro,
-                                               bool isForcar = false)
+                                               bool isIncluirSubDiretorios,
+                                               bool isIgnorarErro,
+                                               bool isForcar = false,
+                                               string[] ignorarArquvos = null )
         {
             if (Directory.Exists(caminhoDiretorio))
             {
                 var arquivos = Directory.GetFiles(caminhoDiretorio).ToList();
                 foreach (var arquivo in arquivos)
                 {
+                    if(ignorarArquvos?.Contains(Path.GetFileName(arquivo), StringComparison.InvariantCultureIgnoreCase) == true)
+                    {
+                        continue;
+                    }
                     ArquivoUtil.DeletarArquivo(arquivo,
-                                              ignorarErro,
+                                              isIgnorarErro,
                                               isForcar);
                 }
-                if (incluirSubDiretorios)
+                if (isIncluirSubDiretorios)
                 {
                     var subsDiretorio = Directory.GetDirectories(caminhoDiretorio);
                     foreach (var subDiretorio in subsDiretorio)
                     {
-                        DiretorioUtil.ExcluirTodosArquivo(subDiretorio, incluirSubDiretorios, ignorarErro);
+                        DiretorioUtil.ExcluirTodosArquivo(subDiretorio, isIncluirSubDiretorios, isIgnorarErro);
                         DiretorioUtil.ExcluirDiretorio(subDiretorio);
                     }
                 }
