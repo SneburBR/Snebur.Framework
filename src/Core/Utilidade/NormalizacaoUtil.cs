@@ -4,8 +4,13 @@ namespace Snebur.Utilidade
 {
     public static class NormalizacaoUtil
     {
-        public static string NormalizarAspasDuplas(string valor)
+        public static string NormalizarAspasDuplas(string valor, bool apenasSeTiverEspacos = false)
         {
+            if(apenasSeTiverEspacos && !ValidacaoUtil.IsPossuiEspacoEmBranco(valor))
+            {
+                return valor;
+            }
+
             if(valor== null)
             {
                 return "\"\"";
