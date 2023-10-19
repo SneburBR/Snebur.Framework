@@ -151,8 +151,8 @@ namespace Snebur.Utilidade
             }
             return null;
         }
-
-        public static void DescompactarArquivo(string caminhoArquivo, string caminhoDestino)
+         
+            public static void DescompactarArquivo(string caminhoArquivo, string caminhoDestino)
         {
             ArquivoUtil.DeletarArquivo(caminhoDestino, true);
 
@@ -225,11 +225,23 @@ namespace Snebur.Utilidade
                 }
             }
         }
-        public static List<string> Descompactar(string caminhoArquivo, string diretorioDestino)
+
+        public static List<string> Extrair(string caminhoArquivo, 
+                                           string diretorioDestino,
+                                           bool isSobreEscrever)
         {
             using (var fs = new FileStream(caminhoArquivo, FileMode.Open))
             {
-                return ZipUtil.DescompactarArquivos(fs, diretorioDestino);
+                return ZipUtil.DescompactarArquivos(fs, diretorioDestino, isSobreEscrever);
+            }
+        }
+        public static List<string> Descompactar(string caminhoArquivo, 
+                                                string diretorioDestino, 
+                                                bool isSobreEscrever = true)
+        {
+            using (var fs = new FileStream(caminhoArquivo, FileMode.Open))
+            {
+                return ZipUtil.DescompactarArquivos(fs, diretorioDestino, isSobreEscrever);
             }
         }
 
@@ -238,12 +250,17 @@ namespace Snebur.Utilidade
             return ZipUtil.DescompactarArquivos(stream, diretorioDestino, null);
         }
 
-        public static List<string> DescompactarArquivos(Stream stream, string diretorioDestino)
+        public static List<string> DescompactarArquivos(Stream stream, 
+                                                       string diretorioDestino,
+                                                        bool isSobreEscrever = true)
         {
-            return DescompactarArquivos(stream, diretorioDestino, null);
+            return DescompactarArquivos(stream, diretorioDestino, null, isSobreEscrever);
         }
 
-        public static List<string> DescompactarArquivos(Stream stream, string diretorioDestino, string senha)
+        public static List<string> DescompactarArquivos(Stream stream, 
+                                                        string diretorioDestino, 
+                                                        string senha,
+                                                        bool isSobreEscrever = true)
         {
             var arquivos = new List<string>();
             if (stream != null)
@@ -264,7 +281,14 @@ namespace Snebur.Utilidade
                                 using (var msArquivo = StreamUtil.RetornarMemoryStream(zipStream))
                                 {
                                     var arquivoDestino = new FileInfo(Path.Combine(diretorioDestino, entry.Name));
-                                    ArquivoUtil.DeletarArquivo(arquivoDestino);
+                                    if (arquivoDestino.Exists)
+                                    {
+                                        if (!isSobreEscrever)
+                                        {
+                                            continue;
+                                        }
+                                        ArquivoUtil.DeletarArquivo(arquivoDestino);
+                                    }
                                     DiretorioUtil.CriarDiretorio(arquivoDestino.Directory.FullName);
                                     File.WriteAllBytes(arquivoDestino.FullName, msArquivo.ToArray());
                                     arquivos.Add(arquivoDestino.FullName);
@@ -311,13 +335,11 @@ namespace Snebur.Utilidade
                         arquivosParaDeletar.Add(arquivo.FullName);
                     }
                 }
-
             }
-
 
             if (isDeletarArquivo)
             {
-                arquivosParaDeletar.ForEach(x => ArquivoUtil.DeletarArquivo(x, true));
+                arquivosParaDeletar.ForEach(arquivo => ArquivoUtil.DeletarArquivo(arquivo, true));
             }
         }
     }
