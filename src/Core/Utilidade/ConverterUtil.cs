@@ -62,7 +62,7 @@ namespace Snebur.Utilidade
 
             return Convert.ChangeType(valor, tipo);
         }
-         
+
         public static object ConverterTipoPrimario(object valor,
                                                   EnumTipoPrimario tipoPrimarioEnum)
         {
@@ -211,14 +211,26 @@ namespace Snebur.Utilidade
             return ConverterTipoPrimario(valor, tipoPrimario);
         }
 
+        public static T Try<T>(object valor)
+        {
+            try
+            {
+                return Para<T>(valor);
+            }
+            catch
+            {
+                return default;
+            }
+
+        }
         public static T Para<T>(object valor)
         {
-            if (valor == null || DBNull.Value == valor  || 
+            if (valor == null || DBNull.Value == valor ||
                (valor is string str && String.IsNullOrEmpty(str)))
             {
                 return default;
             }
- 
+
             var tipo = typeof(T);
             var tipoPrimario = ReflexaoUtil.RetornarTipoPrimarioEnum(tipo);
             if (tipoPrimario == EnumTipoPrimario.Desconhecido)
@@ -228,7 +240,7 @@ namespace Snebur.Utilidade
 
             return (T)ConverterTipoPrimario(valor, tipoPrimario);
         }
-
+         
         public static int ParaInt32(object valor, IFormatProvider provider = null)
         {
             if (valor is int)
