@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
@@ -437,6 +438,14 @@ namespace Snebur.Utilidade
             if (value == null) return false;
             var reg = new Regex(@"\s");
             return reg.IsMatch(value);
+        }
+
+        public static void ValidarMaiorZero<T>(T value, string nome) where T : struct, IComparable<T>
+        {
+            if (!(value.CompareTo(default) > 0))
+            {
+                throw new Exception($"O valor {nome} deve ser maior que zero");
+            }
         }
     }
 }
