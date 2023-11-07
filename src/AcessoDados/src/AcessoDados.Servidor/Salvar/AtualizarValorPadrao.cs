@@ -60,16 +60,20 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             //foreach (var propriedade in propriedades)
             //{
             var estruturaEntidade = entidadeAlterada.EstruturaEntidade;
-            var estruturasCapaValorPadrao = RetornarEstruturasCamos(estruturaEntidade, entidade);
+            var estruturasCamposValorPadrao = RetornarEstruturasCamposValorPadrao(estruturaEntidade, entidade);
 
-            if (estruturasCapaValorPadrao?.Length > 0)
+            if (estruturasCamposValorPadrao?.Length > 0)
             {
                 entidadeInterna.DesativarValidacaoProprieadesAbertas();
 
-                foreach (var estruturaCampo in estruturasCapaValorPadrao)
+                foreach (var estruturaCampo in estruturasCamposValorPadrao)
                 {
                     var propriedade = estruturaCampo.Propriedade;
 
+                    if(entidade.Id > 0 && !entidade.__PropriedadesAlteradas.ContainsKey(propriedade.Name))
+                    {
+                        continue;
+                    }
 
                     var valorPropriedade = propriedade.GetValue(entidade);
                     var valorPadrao = AtualizarValorPadrao.RetornarValorPropriedade(contexto,
@@ -89,7 +93,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             }
         }
 
-        private static EstruturaCampo[] RetornarEstruturasCamos(EstruturaEntidade estruturaEntidade,
+        private static EstruturaCampo[] RetornarEstruturasCamposValorPadrao(EstruturaEntidade estruturaEntidade,
                                                                 Entidade entidade)
         {
             if (entidade.Id == 0)
@@ -118,7 +122,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                     
                         if(valorPropriedade != null)
                         {
-                            return null;
+                            return valorPropriedade;
                         }
                         break;
                 case EnumTipoValorPadrao.ValorPropriedadeNullOrWhiteSpace:
