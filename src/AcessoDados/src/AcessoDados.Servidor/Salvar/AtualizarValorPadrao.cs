@@ -122,7 +122,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                     
                         if(valorPropriedade != null)
                         {
-                            return valorPropriedade;
+                            return null;
                         }
                         break;
                 case EnumTipoValorPadrao.ValorPropriedadeNullOrWhiteSpace:

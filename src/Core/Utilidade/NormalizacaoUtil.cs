@@ -6,12 +6,12 @@ namespace Snebur.Utilidade
     {
         public static string NormalizarAspasDuplas(string valor, bool apenasSeTiverEspacos = false)
         {
-            if(apenasSeTiverEspacos && !ValidacaoUtil.IsPossuiEspacoEmBranco(valor))
+            if (apenasSeTiverEspacos && !ValidacaoUtil.IsPossuiEspacoEmBranco(valor))
             {
                 return valor;
             }
 
-            if(valor== null)
+            if (valor == null)
             {
                 return "\"\"";
             }
@@ -47,6 +47,15 @@ namespace Snebur.Utilidade
                 }
             }
             return _host?.ToLower();
+        }
+
+        public static string NormalizarNomeParametro(string parametro)
+        {
+            if (parametro.StartsWith("_"))
+            {
+                return parametro.Substring(1);
+            }
+            return parametro;
         }
     }
 }

@@ -33,10 +33,10 @@ namespace Snebur.Comunicacao
         public string IdentificadorProprietario { get; private set; }
         public string Operacao { get; private set; }
         public DateTime DataHoraChamada { get; private set; }
-        public Dictionary<string, object> Parametros { get; private set; }
+        public Dictionary<string, object> Parametros { get; } = new Dictionary<string, object>();
         public string NomeManipulador { get; }
         public bool IsSerializarJavascript { get; set; }
-        public EnumTipoSerializacao TipoSerializacao => this.IsSerializarJavascript ? EnumTipoSerializacao.Javascript : 
+        public EnumTipoSerializacao TipoSerializacao => this.IsSerializarJavascript ? EnumTipoSerializacao.Javascript :
                                                                                       EnumTipoSerializacao.DotNet;
 
         [XmlIgnore, JsonIgnore]
@@ -49,11 +49,10 @@ namespace Snebur.Comunicacao
         public Requisicao(HttpContext httpContext,
                           CredencialServico credencialServico,
                           string identificadorProprietario,
-                          string nomeManipulador )
+                          string nomeManipulador)
         {
             this.HttpContext = httpContext;
             this.CredencialServico = credencialServico;
-            this.Parametros = new Dictionary<string, object>();
             this.IdentificadorProprietario = identificadorProprietario;
             this.NomeManipulador = nomeManipulador;
             this.DeserializarPacote(httpContext);
@@ -99,12 +98,12 @@ namespace Snebur.Comunicacao
                     this.DataHoraChamada = this.ContratoChamada.DataHora;
                     this.AdicionarItensrequisicaoAtual();
 
-                    this.IsSerializarJavascript = (this.InformacaoSessaoUsuario.TipoAplicacao == EnumTipoAplicacao.Typescript  );
+                    this.IsSerializarJavascript = (this.InformacaoSessaoUsuario.TipoAplicacao == EnumTipoAplicacao.Typescript);
 
 
                     foreach (var parametro in this.ContratoChamada.Parametros)
                     {
-                        this.Parametros.Add(parametro.Nome, this.RetornarValorParametroChamada(parametro));
+                        this.Parametros.Add(NormalizacaoUtil.NormalizarNomeParametro(parametro.Nome), this.RetornarValorParametroChamada(parametro));
                     }
                 }
                 catch (Exception erro)
@@ -205,9 +204,9 @@ namespace Snebur.Comunicacao
             }
         }
 
-#endregion
+        #endregion
 
-        private void AdicionarItensrequisicaoAtual( )
+        private void AdicionarItensrequisicaoAtual()
         {
             var context = this.HttpContext;
             lock (context.Items.SyncLock())
@@ -249,5 +248,5 @@ namespace Snebur.Comunicacao
         #endregion
     }
 
-    
+
 }

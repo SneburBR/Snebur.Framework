@@ -191,8 +191,7 @@ namespace Snebur.Comunicacao
             for (var i = 0; i <= parametrosOperacao.Count - 1; i++)
             {
                 var parametroMetodo = parametrosOperacao[i];
-                var nomeParametroOperacao = parametrosOperacao[i].Name;
-
+                var nomeParametroOperacao = NormalizacaoUtil.NormalizarNomeParametro(parametrosOperacao[i].Name);
 
                 if (!parametros.ContainsKey(nomeParametroOperacao))
                 {

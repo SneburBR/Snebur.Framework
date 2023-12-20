@@ -424,7 +424,7 @@ namespace Snebur.AcessoDados
             return this.Salvar(new List<IEntidade> { entidade }, false);
         }
 
-        public ResultadoSalvar Salvar(IEnumerable<IEntidade> entidades, bool ignorarErro)
+        public virtual ResultadoSalvar Salvar(IEnumerable<IEntidade> entidades, bool ignorarErro)
         {
             this.ValidarSessaoUsuario();
 
