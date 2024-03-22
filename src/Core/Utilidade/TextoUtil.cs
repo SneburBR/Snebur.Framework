@@ -524,10 +524,11 @@ namespace Snebur.Utilidade
                     {
                         break;
                     }
-                    if (!ignorarLinhasBranco || !String.IsNullOrWhiteSpace(texto))
+                    if (ignorarLinhasBranco && String.IsNullOrWhiteSpace(linha))
                     {
-                        linhas.Add(linha);
+                        continue;
                     }
+                    linhas.Add(linha);
                 }
             }
             return linhas;

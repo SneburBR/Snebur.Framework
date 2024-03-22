@@ -7,6 +7,48 @@ namespace Snebur.Utilidade
 {
     public static partial class TextoUtil
     {
+        public static bool IsIgual(string conteudo,
+                                   string comparar,
+                                   bool isIgnorarLinhasEmBranco,
+                                   bool isTrim)
+        {
+            var linhasConteudo = conteudo.ToLines(isIgnorarLinhasEmBranco);
+            var linhasComparar = comparar.ToLines(isIgnorarLinhasEmBranco);
+
+            if (linhasConteudo.Count != linhasComparar.Count)
+            {
+                return false;
+            }
+
+            for(var i = 0; i< linhasConteudo.Count; i++)
+            {
+                var linha = linhasConteudo[i];
+                var linhaComparar = linhasComparar[i];
+
+                if (isTrim)
+                {
+                    if(linha.Trim()!= linhaComparar.Trim())
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    if(linha!= linhaComparar)
+                    {
+                        return false;
+                    }
+                }
+
+                
+            }
+
+
+            //throw new NotImplementedException();
+            return true;
+
+       }
+
         private class TextoUtilConstantes
         {
             private const string NUMEROS = "0123456789";
