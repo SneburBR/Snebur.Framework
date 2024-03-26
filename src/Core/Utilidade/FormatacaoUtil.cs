@@ -261,10 +261,17 @@ namespace Snebur.Utilidade
 
         public static string FormatarRota(string nome)
         {
-            var rota = TextoUtil.RetornarSomentesLetrasNumeros(nome.Trim(), true, "-_/".ToCharArray()).Replace(" ", "-").ToLower();
+            var rota = TextoUtil.RetornarSomentesLetrasNumeros(nome.Trim(), true);
+            rota = rota.Replace(" ", "-").ToLower();
+             
             while (rota.Contains("--"))
             {
                 rota = rota.Replace("--", "-");
+            }
+
+            if (String.IsNullOrWhiteSpace(rota))
+            {
+                return "sem-nome";
             }
             return UriUtil.AjustarBarraInicialFinal(rota);
         }
