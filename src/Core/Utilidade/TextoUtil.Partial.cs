@@ -39,14 +39,8 @@ namespace Snebur.Utilidade
                         return false;
                     }
                 }
-
-                
             }
-
-
-            //throw new NotImplementedException();
             return true;
-
        }
 
         private class TextoUtilConstantes
