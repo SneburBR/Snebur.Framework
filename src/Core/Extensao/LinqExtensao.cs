@@ -1,6 +1,7 @@
 ﻿using Snebur.Dominio;
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,6 +13,10 @@ namespace Snebur.Linq
 
         public static object SyncLock(this IEnumerable enumerable)
         {
+            if (IsConcurrentCollection(enumerable))
+            {
+                return LinqExtensao.__lock;
+            }
             return (enumerable as ICollection)?.SyncRoot ?? LinqExtensao.__lock;
         }
 
@@ -506,6 +511,16 @@ namespace Snebur.Linq
             hashSet.Remove(null);
             return hashSet;
         }
+
+        private static bool IsConcurrentCollection(IEnumerable enumerable)
+        {
+            var typeDefinition = enumerable.GetType().GetGenericTypeDefinition();
+            return typeDefinition == typeof(ConcurrentDictionary<,>) ||
+                   typeDefinition == typeof(ConcurrentQueue<>) ||
+                   typeDefinition == typeof(ConcurrentStack<>) ||
+                   typeDefinition == typeof(ConcurrentBag<>);
+        }
+
 
     }
 }
