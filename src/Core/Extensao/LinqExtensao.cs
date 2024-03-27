@@ -514,11 +514,16 @@ namespace Snebur.Linq
 
         private static bool IsConcurrentCollection(IEnumerable enumerable)
         {
-            var typeDefinition = enumerable.GetType().GetGenericTypeDefinition();
-            return typeDefinition == typeof(ConcurrentDictionary<,>) ||
-                   typeDefinition == typeof(ConcurrentQueue<>) ||
-                   typeDefinition == typeof(ConcurrentStack<>) ||
-                   typeDefinition == typeof(ConcurrentBag<>);
+            var type = enumerable.GetType();
+            if (type.IsGenericType)
+            {
+                var typeDefinition = type.GetGenericTypeDefinition();
+                return typeDefinition == typeof(ConcurrentDictionary<,>) ||
+                       typeDefinition == typeof(ConcurrentQueue<>) ||
+                       typeDefinition == typeof(ConcurrentStack<>) ||
+                       typeDefinition == typeof(ConcurrentBag<>);
+            }
+            return false;
         }
 
 
