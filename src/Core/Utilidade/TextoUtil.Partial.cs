@@ -20,28 +20,28 @@ namespace Snebur.Utilidade
                 return false;
             }
 
-            for(var i = 0; i< linhasConteudo.Count; i++)
+            for (var i = 0; i < linhasConteudo.Count; i++)
             {
                 var linha = linhasConteudo[i];
                 var linhaComparar = linhasComparar[i];
 
                 if (isTrim)
                 {
-                    if(linha.Trim()!= linhaComparar.Trim())
+                    if (linha.Trim() != linhaComparar.Trim())
                     {
                         return false;
                     }
                 }
                 else
                 {
-                    if(linha!= linhaComparar)
+                    if (linha != linhaComparar)
                     {
                         return false;
                     }
                 }
             }
             return true;
-       }
+        }
 
         private class TextoUtilConstantes
         {
