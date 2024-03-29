@@ -1,4 +1,5 @@
 ﻿using Snebur.Dominio;
+using Snebur.Dominio.Atributos;
 using Snebur.Utilidade;
 using System;
 using System.Collections.Generic;
@@ -53,9 +54,17 @@ namespace Snebur.AcessoDados.Mapeamento
                 {
                     var identificadorProprietario = this.Contexto.IdentificadorProprietario;
 
+                    var atributoIdentificadorPropriedade = estrutaCampoIdentificadorProprietario.AtributoValorPadrao as PropriedadeIdentificadorProprietarioAttribute;
+
                     var estruturaApelido = this.TodasEstruturaCampoApelidoMapeado[estrutaCampoIdentificadorProprietario.Propriedade.Name];
                     sb.AppendLine(" WHERE ( ");
+
                     sb.AppendLine($"{estruturaApelido.CaminhoBanco} = {identificadorProprietario.ToString()} ");
+
+                    if (atributoIdentificadorPropriedade?.IsPermitirValorGlboal == true)
+                    {
+                        sb.AppendLine($" OR {estruturaApelido.CaminhoBanco} = {atributoIdentificadorPropriedade.ValorGlobal} ");
+                    }
 
                     sb.AppendLine(" ) ");
 
