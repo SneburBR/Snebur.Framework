@@ -19,7 +19,6 @@ namespace Snebur.Utilidade
             {
                 sb.Append(t.ToString("X2"));
             }
-
             return sb.ToString();
         }
 

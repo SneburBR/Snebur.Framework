@@ -22,6 +22,7 @@ namespace Snebur.Dominio
 
         [OcultarColuna]
         public abstract long Id { get; set; }
+         
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Indexar]
@@ -75,6 +76,16 @@ namespace Snebur.Dominio
                 return this.RetornarIsExisteAlteracaoPropriedade();
             }
         }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [NaoMapear]
+        [IgnorarGlobalizacao]
+        [JsonIgnore]
+        [IgnorarPropriedadeTSReflexao]
+        [PropriedadeProtegida]
+        public virtual long IdEntidadeHistoricoGenerico => this.Id;
+
+
         #region Construtor
 
         public Entidade() : base()
