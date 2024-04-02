@@ -104,6 +104,12 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                     var valorDeletado = String.Concat(minGuid, " - deletado ", propriedade.GetValue(this.Entidade)?.ToString()).RetornarPrimeirosCaracteres(maximoCaracteres);
                     propriedade.SetValue(this.Entidade, valorDeletado);
                 }
+
+                var atributoDeletado = propriedade.GetCustomAttribute<ValorDeletadoAttribute>();
+                if (atributoDeletado != null)
+                {
+                    propriedade.SetValue(this.Entidade, atributoDeletado.Valor  );
+                }
             }
         }
 
