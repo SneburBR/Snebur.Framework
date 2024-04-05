@@ -84,7 +84,7 @@ namespace System.Reflection
         /// </summary>
         /// <param name="propriedade"></param>
         /// <returns></returns>
-        public static IChaveEstrangeiraAttribute RetornarAtributoChaveEstrangeira(this PropertyInfo propriedade)
+        public static IChaveEstrangeiraAttribute RetornarAtributoChaveEstrangeira(this PropertyInfo propriedade, bool isIgnorarErro = false)
         {
             var atributoChaveEstrangeira = propriedade.GetCustomAttribute<ChaveEstrangeiraAttribute>();
             if (atributoChaveEstrangeira != null)
@@ -95,6 +95,10 @@ namespace System.Reflection
             if (atributoChaveEstrangeiraRelacaoUmUm != null)
             {
                 return atributoChaveEstrangeiraRelacaoUmUm;
+            }
+            if (isIgnorarErro)
+            {
+                return null;
             }
             throw new Erro(String.Format("Não foi encontrado um chave estrangeira para a propriedade {0} em {1} ", propriedade.Name, propriedade.DeclaringType.Name));
         }

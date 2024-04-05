@@ -100,7 +100,7 @@ namespace Snebur.AcessoDados.Estrutura
 
         #region Métodos internos
 
-        internal EstruturaEntidade RetornarEstruturaEntidade(string chave)
+        internal EstruturaEntidade RetornarEstruturaEntidade(string chave, bool isValidar = true)
         {
             if (this.EstruturasEntidade.ContainsKey(chave))
             {
@@ -111,6 +111,11 @@ namespace Snebur.AcessoDados.Estrutura
             if (estruturasEntidade.Count == 1)
             {
                 return estruturasEntidade.Single().Value;
+            }
+
+            if (isValidar)
+            {
+                throw new Erro($"Não foi encontrado a estrutura da entidade {chave} no contexto {this.TipoContexto.Name}");
             }
             return null;
         }

@@ -109,7 +109,7 @@ namespace Snebur.AcessoDados.Mapeamento
                     }
                     foreach (var grupo in grupos)
                     {
-                        var estruturaTipoEntidade = this.EstruturaBancoDados.RetornarEstruturaEntidade(grupo.NomeTipoEntidade);
+                        var estruturaTipoEntidade = this.EstruturaBancoDados.RetornarEstruturaEntidade(grupo.NomeTipoEntidade, false);
                         if (estruturaTipoEntidade == null)
                         {
                             throw new Erro($"Não foi encontrada a entidade do tipo {grupo.NomeTipoEntidade} herdade de {this.EstruturaEntidade.TipoEntidade.Name}");

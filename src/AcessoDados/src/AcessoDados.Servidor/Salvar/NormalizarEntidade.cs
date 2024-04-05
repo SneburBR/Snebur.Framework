@@ -37,8 +37,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             {
                 this.EntidadesNormalizadas.Add(entidade.__IdentificadorEntidade, entidade);
 
-                var estruturaEntidade = this.Contexto.EstruturaBancoDados.EstruturasEntidade[entidade.GetType().Name];
-
+                var estruturaEntidade = this.Contexto.EstruturaBancoDados.RetornarEstruturaEntidade(entidade.GetType().Name, true);
                 if (estruturaEntidade.IsImplementaInterfaceIAtividadeUsuario)
                 {
                     var atividadeUsuario = (IAtividadeUsuario)entidade;
