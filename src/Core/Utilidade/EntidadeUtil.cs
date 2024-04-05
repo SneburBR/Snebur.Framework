@@ -79,7 +79,7 @@ namespace Snebur.Utilidade
             if (propriedadesRelacaoPai.Count == 1)
             {
                 var propriedadeRelacaoPai = propriedadesRelacaoPai[0];
-                return RetornarPropriedadeChaveEstrangeira(propriedadeRelacaoPai.DeclaringType, 
+                return RetornarPropriedadeChaveEstrangeira(propriedadeRelacaoPai.DeclaringType,
                                                            propriedadeRelacaoPai);
             }
             if (propriedadesRelacaoPai.Count == 0)
@@ -89,7 +89,7 @@ namespace Snebur.Utilidade
             throw new Erro($"Foi encontrado mais de uma propriedade do tipo {tipoEntidade.Name} em {tipoEntidadeRelacao.Name} ");
         }
 
-        public static PropertyInfo RetornarPropriedadeChaveEstrangeira(Type tipoEntidade, 
+        public static PropertyInfo RetornarPropriedadeChaveEstrangeira(Type tipoEntidade,
                                                                        PropertyInfo propriedade)
         {
             var atributoChaveEstrangeira = propriedade.RetornarAtributoChaveEstrangeira();
@@ -104,6 +104,25 @@ namespace Snebur.Utilidade
                 throw new ErroNaoDefinido(String.Format("Não foi encontrada a propriedade chave estrangeira {0} para a propriedade {1} em {2} ", propriedadeChaveEstrangeira, propriedade.Name, tipoEntidade.Name));
             }
             return propriedadeChaveEstrangeira;
+        }
+
+        public static PropertyInfo RetornarPropriedadeRelacaoPai(Type tipoEntidade,
+                                                                 PropertyInfo propriedadeChaveEstrangeira)
+        {
+            return ReflexaoUtil.RetornarPropriedades(tipoEntidade, false)
+                        .Where(propriedade => IsPropriedadeRelacaoPai(propriedade, propriedadeChaveEstrangeira.Name))
+                        .FirstOrDefault();
+        }
+
+        private static bool IsPropriedadeRelacaoPai(PropertyInfo propriedade,
+                                                    string nomePropriedadeChaveEstrangeira)
+        {
+            var atributoChaveEstrangeira = propriedade.RetornarAtributoChaveEstrangeira(true);
+            if (atributoChaveEstrangeira != null)
+            {
+                return atributoChaveEstrangeira.NomePropriedade == nomePropriedadeChaveEstrangeira;
+            }
+            return false;
         }
 
         public static PropertyInfo RetornarPropriedadeChavaPrimaria(Type tipoEntidade)

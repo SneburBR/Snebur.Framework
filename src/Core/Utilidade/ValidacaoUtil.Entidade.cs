@@ -11,7 +11,9 @@ namespace Snebur.Utilidade
 {
     public static partial class ValidacaoUtil
     {
-        public static bool IsValidacaoRequerido(PropertyInfo propriedade, object valorPropriedade, object paiPropriedade = null)
+        public static bool IsValidacaoRequerido(PropertyInfo propriedade,
+                                                object valorPropriedade,
+                                                object paiPropriedade = null)
         {
             //var valorString = Convert.ToString(valorPropriedade);
             //if (String.IsNullOrWhiteSpace(valorString))
@@ -20,15 +22,41 @@ namespace Snebur.Utilidade
             {
                 return true;
             }
+       
+            if (propriedade.PropertyType.IsIdType() &&
+                paiPropriedade is Entidade entidade )
+            {
+                var propriedadeChaveEstrangeira = EntidadeUtil.RetornarPropriedadeRelacaoPai(entidade.GetType(),
+                                                                                             propriedade);
+
+                if(propriedadeChaveEstrangeira != null)
+                {
+                    if ((long)valorPropriedade  > 0 )
+                    {
+                        return true;
+                    }
+
+                    var valorRelacaoPai = propriedadeChaveEstrangeira.GetValue(entidade);
+                    if(valorRelacaoPai is Entidade)
+                    {
+                        return true;
+                    }
+
+                    return false;
+                }
+
+            }
+
+
             if (ReflexaoUtil.IsTipoIgualOuHerda(propriedade.PropertyType, typeof(Entidade)))
             {
                 if (valorPropriedade is Entidade)
                 {
                     return true;
                 }
-                if (paiPropriedade is Entidade)
+
+                if (paiPropriedade is Entidade baseEntidade)
                 {
-                    var baseEntidade = (Entidade)paiPropriedade;
                     var idChaveEstrangeira = EntidadeUtil.RetornarValorIdChaveEstrangeira(baseEntidade, propriedade);
                     if (idChaveEstrangeira > 0)
                     {
@@ -36,6 +64,7 @@ namespace Snebur.Utilidade
                     }
                 }
             }
+           
             if (valorPropriedade == null)
             {
                 return false;
@@ -249,6 +278,6 @@ namespace Snebur.Utilidade
                     progresso <= 100;
         }
 
-    
+
     }
 }
