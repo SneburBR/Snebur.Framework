@@ -81,7 +81,7 @@ namespace Snebur.Dominio.Atributos
             var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
 
             var opcao = this.OpcoesComparacaoAuxiliar;
-            if(opcao.HasValue && opcao!= EnumOpcoesComparacaoAuxiliar.Nenhuma)
+            if(opcao.HasValue && !this.IsValidoSeAuxiliarInvalido && opcao!= EnumOpcoesComparacaoAuxiliar.Nenhuma)
             {
                 var valorPropriedadeAuxiliar = this.RetornarValorPropriedadeAuxilizar(paiPropriedade);
                 switch (opcao.Value)
@@ -127,12 +127,7 @@ namespace Snebur.Dominio.Atributos
             {
                 return ValidacaoUtil.IsValidacaoRequerido(propriedade, valorPropriedade, paiPropriedade);
             }
-
-            if(this.IsValidoSeAuxiliarInvalido)
-            {
-                return true;
-            }
-            return false;
+            return this.IsValidoSeAuxiliarInvalido;
         }
 
         private bool IsAuxiliarValido(object paiPropriedade, object valorPropriedade)

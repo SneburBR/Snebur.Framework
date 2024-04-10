@@ -13,6 +13,7 @@ namespace Snebur.Dominio.Atributos
             this.NomePropriedade = nomePropriedade;
         }
     }
+
     public interface IChaveEstrangeiraAttribute
     {
         string NomePropriedade { get; }

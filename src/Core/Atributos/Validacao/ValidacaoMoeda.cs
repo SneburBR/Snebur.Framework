@@ -27,14 +27,15 @@ namespace Snebur.Dominio.Atributos
 
         public decimal ValorMaximo { get; set; } = Int32.MaxValue;
 
-        public decimal ValorMinimo { get; set; } = (Int32.MaxValue * -1);
+        public decimal ValorMinimo { get; set; } = Int32.MinValue;
 
         [IgnorarConstrutorTS]
-        public ValidacaoMoedaAttribute() : this(false, false, (Int32.MaxValue * -1), Int32.MaxValue)
+        public ValidacaoMoedaAttribute() : this(false, false, 0, Int32.MaxValue)
         {
         }
         [IgnorarConstrutorTS]
-        public ValidacaoMoedaAttribute(bool aceitarNulo, bool aceitarNegativo) : this(aceitarNulo, false, (Int32.MaxValue * -1), Int32.MaxValue)
+        public ValidacaoMoedaAttribute(bool aceitarNulo, bool aceitarNegativo) :
+            this(aceitarNulo, aceitarNegativo, aceitarNegativo ? 0 : Int32.MinValue, Int32.MaxValue)
         {
         }
         [IgnorarConstrutorTS]
@@ -63,6 +64,11 @@ namespace Snebur.Dominio.Atributos
             if (!ValidacaoUtil.IsValidacaoRequerido(propriedade, valorPropriedade))
             {
                 return true;
+            }
+
+            if(valorPropriedade == null)
+            {
+                return this.AceitarNulo;
             }
             var valor = Convert.ToDecimal(valorPropriedade);
             return (valor >= this.ValorMinimo && valor <= this.ValorMaximo);

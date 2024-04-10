@@ -40,7 +40,11 @@ namespace Snebur.Utilidade
         public static FieldInfo RetornarCampoPrivadoChaveEstrangeira(Type tipoEntidade,
                                                                      PropertyInfo propriedade)
         {
-            var propriedadeChaveEstrangeira = RetornarPropriedadeChaveEstrangeira(tipoEntidade, propriedade);
+            var propriedadeChaveEstrangeira = RetornarPropriedadeChaveEstrangeira(tipoEntidade, propriedade, true);
+            if (propriedadeChaveEstrangeira == null)
+            {
+                return null;
+            }
             var filedName = $"_{TextoUtil.RetornarPrimeiraLetraMinusculo(propriedadeChaveEstrangeira.Name)}";
             var fi = tipoEntidade.GetField(filedName, BindingFlags.NonPublic | BindingFlags.Instance);
             return fi;
@@ -90,17 +94,26 @@ namespace Snebur.Utilidade
         }
 
         public static PropertyInfo RetornarPropriedadeChaveEstrangeira(Type tipoEntidade,
-                                                                       PropertyInfo propriedade)
+                                                                       PropertyInfo propriedade,
+                                                                       bool isIgnorarErro = false)
         {
-            var atributoChaveEstrangeira = propriedade.RetornarAtributoChaveEstrangeira();
+            var atributoChaveEstrangeira = propriedade.RetornarAtributoChaveEstrangeira(isIgnorarErro);
             if (atributoChaveEstrangeira == null)
             {
+                if (isIgnorarErro)
+                {
+                    return null;
+                }
                 throw new ErroNaoDefinido(String.Format("O atributo chave estrangeira não foi definido na propriedade {0}", propriedade.Name));
             }
             var nomePropriedade = atributoChaveEstrangeira.Name;
             var propriedadeChaveEstrangeira = tipoEntidade.GetProperties().Where(x => x.Name == nomePropriedade).SingleOrDefault();
             if (propriedadeChaveEstrangeira == null)
             {
+                if (isIgnorarErro)
+                {
+                    return null;
+                }
                 throw new ErroNaoDefinido(String.Format("Não foi encontrada a propriedade chave estrangeira {0} para a propriedade {1} em {2} ", propriedadeChaveEstrangeira, propriedade.Name, tipoEntidade.Name));
             }
             return propriedadeChaveEstrangeira;
@@ -155,7 +168,11 @@ namespace Snebur.Utilidade
             }
             else
             {
-                var propriedadeChaveEstrangeira = EntidadeUtil.RetornarPropriedadeChaveEstrangeira(entidade.GetType(), propriedade);
+                var propriedadeChaveEstrangeira = EntidadeUtil.RetornarPropriedadeChaveEstrangeira(entidade.GetType(), propriedade, true);
+                if (propriedadeChaveEstrangeira == null)
+                {
+                    return null;
+                }
                 var valorPropriedade = propriedadeChaveEstrangeira.GetValue(entidade);
                 return ConverterUtil.Para<long?>(valorPropriedade);
             }
