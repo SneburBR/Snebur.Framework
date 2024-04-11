@@ -212,6 +212,10 @@ namespace Snebur.Comunicacao
                 }
                 else if (ReflexaoUtil.IsTipoRetornaColecao(parametroMetodo.ParameterType))
                 {
+                    if (!parametroMetodo.ParameterType.IsGenericType)
+                    {
+                        throw new Exception("O tipo do parâmetro não é suportado, somente List<T> T = sub classe de BaseDominio ou do tipo primário");
+                    }
                     var definitionType = parametroMetodo.ParameterType.GetGenericTypeDefinition();
 
                     if ((!Object.ReferenceEquals(definitionType, typeof(List<>))) &&
