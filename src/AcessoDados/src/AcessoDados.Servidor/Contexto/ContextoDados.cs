@@ -15,6 +15,8 @@ using Snebur.Utilidade;
 using Snebur.Linq;
 using System.Diagnostics;
 using System.Collections;
+using System.Data.Common;
+
 
 #if NET7_0
 using Microsoft.Data.SqlClient;
@@ -493,11 +495,12 @@ namespace Snebur.AcessoDados
             }
         }
 
-        public List<TMapeamento> MapearSql<TMapeamento>(string sql)
+        public List<TMapeamento> MapearSql<TMapeamento>(string sql, 
+                                                        List<DbParameter> parametros)
         {
             this.ValidarSessaoUsuario();
 
-            var tabela = this.Conexao.RetornarDataTable(sql, null);
+            var tabela = this.Conexao.RetornarDataTable(sql, parametros);
             var resultado = new List<TMapeamento>();
             var colunas = tabela.Columns;
             var tipoMapeamento = typeof(TMapeamento);
