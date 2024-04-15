@@ -26,47 +26,47 @@ namespace Snebur.Dne
         [ValorEnumString("BH")]
         Bahia = 5,
 
-        [Rotulo("Ceara")]
+        [Rotulo("Ceára")]
         [ValorEnumString("CE")]
         Ceara = 6,
 
-        [Rotulo("DistritoFederal")]
+        [Rotulo("Distrito Federal")]
         [ValorEnumString("DF")]
         DistritoFederal = 7,
 
-        [Rotulo("EspiritoSanto")]
+        [Rotulo("Espírito Santo")]
         [ValorEnumString("ES")]
         EspiritoSanto = 8,
 
-        [Rotulo("Goias")]
+        [Rotulo("Goiás")]
         [ValorEnumString("GO")]
         Goias = 9,
 
         [Rotulo("Maranhão")]
         [ValorEnumString("MA")]
-        Maranhão = 10,
+        Maranhao = 10,
 
-        [Rotulo("MatoGrosso")]
+        [Rotulo("Mato Grosso")]
         [ValorEnumString("MT")]
         MatoGrosso = 11,
 
-        [Rotulo("MatoGrossoDoSul")]
+        [Rotulo("Mato Grosso do Sul")]
         [ValorEnumString("MS")]
         MatoGrossoDoSul = 12,
 
-        [Rotulo("MinasGerais")]
+        [Rotulo("Minas Gerais")]
         [ValorEnumString("MG")]
         MinasGerais = 13,
 
-        [Rotulo("Para")]
+        [Rotulo("Pará")]
         [ValorEnumString("PA")]
         Para = 14,
 
-        [Rotulo("Paraiba")]
+        [Rotulo("Paraíba")]
         [ValorEnumString("PB")]
         Paraiba = 15,
 
-        [Rotulo("Parana")]
+        [Rotulo("Paraná")]
         [ValorEnumString("PR")]
         Parana = 16,
 
@@ -74,23 +74,23 @@ namespace Snebur.Dne
         [ValorEnumString("PE")]
         Pernambuco = 17,
 
-        [Rotulo("Piaui")]
+        [Rotulo("Piauí")]
         [ValorEnumString("PI")]
         Piaui = 18,
 
-        [Rotulo("RioDeJaneiro")]
+        [Rotulo("Rio de Janeiro")]
         [ValorEnumString("RJ")]
         RioDeJaneiro = 19,
 
-        [Rotulo("RioGrandeDoNorte")]
+        [Rotulo("Rio Grande do Norte")]
         [ValorEnumString("RN")]
         RioGrandeDoNorte = 20,
 
-        [Rotulo("RioGrandeDoSul")]
+        [Rotulo("Rio Grande do Sul")]
         [ValorEnumString("RS")]
         RioGrandeDoSul = 21,
 
-        [Rotulo("Rondonia")]
+        [Rotulo("Rondônia")]
         [ValorEnumString("RO")]
         Rondonia = 22,
 
@@ -98,11 +98,11 @@ namespace Snebur.Dne
         [ValorEnumString("RR")]
         Roraima = 23,
 
-        [Rotulo("SantaCatarina")]
+        [Rotulo("Santa Catarina")]
         [ValorEnumString("SC")]
         SantaCatarina = 24,
 
-        [Rotulo("SaoPaulo")]
+        [Rotulo("São Paulo")]
         [ValorEnumString("SP")]
         SaoPaulo = 25,
 
@@ -115,3 +115,4 @@ namespace Snebur.Dne
         Tocantins = 27
     }
 }
+ 
