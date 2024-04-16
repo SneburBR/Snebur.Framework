@@ -7,6 +7,7 @@
         Somar = 3,
         Maximo = 4,
         Minimo = 5,
-        Media = 6
+        Media = 6,
+        Existe = 7
     }
 }

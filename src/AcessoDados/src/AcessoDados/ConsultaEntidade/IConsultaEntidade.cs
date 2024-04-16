@@ -12,7 +12,7 @@ namespace Snebur.AcessoDados
     public interface IConsultaEntidade
     {
         int Count();
-
+        bool Any();
         EstruturaConsulta RetornarEstruturaConsulta();
 
         //IConsultaEntidade<TEntidade> AsConsulta<TEntidade>() where TEntidade : Entidade;

@@ -14,6 +14,12 @@ namespace Snebur.Dominio.Atributos
         public string NomePropridadeAuxiliar { get; set; }
 
         public bool IsValidoSeAuxiliarInvalido { get; set; } = false;
+
+        /// <summary>
+        /// Se valor comprar for diferente de null, o valor da propriedade auxiliar será comparado com este valor.
+        /// Caso contrário, o valor da propriedade auxiliar será comparado com o valor da propriedade que está sendo validada.
+        /// </summary>
+        public object ValorComparar { get; set; }
         private PropertyInfo PropriedadeAuxiliar { get; set; }
 
         [IgnorarConstrutorTS]
@@ -22,14 +28,31 @@ namespace Snebur.Dominio.Atributos
 
         }
 
+        /// <summary>
+        /// Opções de comparação do auxiliar, quando a validação requerida depende de outra propriedade.
+        /// </summary>
+        /// <param name="tipoEntidade"></param>
+        /// <param name="opcoesComparacaoAuxiliar"></param>
+        /// <param name="nomePropridadeAuxiliar">
+        /// Nome da propriedade auxiliar deve pertencer ao mesmo tipo do TipoEntidade, ambos propriedade devem ser declarada no mesmo tipo.
+        /// </param>
+        /// <param name="isValidoSeAuxiliarInvalido">
+        /// Quando á comparação é verdadeira com propriedade auxiliar for falso, o valor da propriedade não será requerido
+        /// </param>
+        /// <param name="valorComparar">
+        /// Se o valor comparar for diferente de null, o valor da propriedade auxiliar será comparado com este valor.
+        /// Caso contrário, o valor da propriedade auxiliar será comparado com o valor da propriedade que está sendo validada.
+        /// </param>
         public ValidacaoRequeridoAttribute([IgnorarParametroTS] Type tipoEntidade,
                                            [ParametroOpcionalTS] EnumOpcoesComparacaoAuxiliar opcoesComparacaoAuxiliar,
                                            [ParametroOpcionalTS] string nomePropridadeAuxiliar,
-                                           [ParametroOpcionalTS] bool isValidoSeAuxiliarInvalido = false)
+                                           [ParametroOpcionalTS] bool isValidoSeAuxiliarInvalido = false,
+                                           [ParametroOpcionalTS] object valorComparar = null)
         {
             this.OpcoesComparacaoAuxiliar = opcoesComparacaoAuxiliar;
             this.NomePropridadeAuxiliar = nomePropridadeAuxiliar;
             this.IsValidoSeAuxiliarInvalido = isValidoSeAuxiliarInvalido;
+            this.ValorComparar = valorComparar;
 
             if (opcoesComparacaoAuxiliar != EnumOpcoesComparacaoAuxiliar.Nenhuma)
             {
@@ -144,32 +167,34 @@ namespace Snebur.Dominio.Atributos
             }
 
             var valorPropriedadeAuxiliar = this.RetornarValorPropriedadeAuxilizar(paiPropriedade);
+            var valorPropriedadeComparar = this.ValorComparar ?? valorPropriedade;
 
             switch (this.OpcoesComparacaoAuxiliar.Value)
             {
                 case EnumOpcoesComparacaoAuxiliar.True:
 
                     return Convert.ToBoolean(valorPropriedadeAuxiliar);
+
                 case EnumOpcoesComparacaoAuxiliar.False:
 
                     return !Convert.ToBoolean(valorPropriedadeAuxiliar);
 
                 case EnumOpcoesComparacaoAuxiliar.Igual:
 
-                    return Util.SaoIgual(valorPropriedade, valorPropriedadeAuxiliar);
+                    return Util.SaoIgual(valorPropriedadeComparar, valorPropriedadeAuxiliar);
 
                 case EnumOpcoesComparacaoAuxiliar.Diferente:
 
-                    return !Util.SaoIgual(valorPropriedade, valorPropriedadeAuxiliar);
+                    return !Util.SaoIgual(valorPropriedadeComparar, valorPropriedadeAuxiliar);
 
                 case EnumOpcoesComparacaoAuxiliar.Maior:
                     {
                         if (valorPropriedadeAuxiliar is IComparable auxiliarComparable &&
-                            valorPropriedade is IComparable valorComparable)
+                            valorPropriedadeComparar is IComparable valorComparable)
                         {
                             return valorComparable.CompareTo(auxiliarComparable) > 0;
                         }
-                        if (valorPropriedade == null && valorPropriedadeAuxiliar != null)
+                        if (valorPropriedadeComparar == null && valorPropriedadeAuxiliar != null)
                         {
                             return true;
                         }
@@ -180,11 +205,11 @@ namespace Snebur.Dominio.Atributos
                 case EnumOpcoesComparacaoAuxiliar.MaiorIgual:
                     {
                         if (valorPropriedadeAuxiliar is IComparable auxiliarComparable &&
-                            valorPropriedade is IComparable valorComparable)
+                            valorPropriedadeComparar is IComparable valorComparable)
                         {
                             return valorComparable.CompareTo(auxiliarComparable) >= 0;
                         }
-                        if (valorPropriedade == null && valorPropriedadeAuxiliar != null)
+                        if (valorPropriedadeComparar == null && valorPropriedadeAuxiliar != null)
                         {
                             return true;
                         }
@@ -194,11 +219,11 @@ namespace Snebur.Dominio.Atributos
                 case EnumOpcoesComparacaoAuxiliar.Menor:
                     {
                         if (valorPropriedadeAuxiliar is IComparable auxiliarComparable &&
-                            valorPropriedade is IComparable valorComparable)
+                            valorPropriedadeComparar is IComparable valorComparable)
                         {
                             return valorComparable.CompareTo(auxiliarComparable) < 0;
                         }
-                        if (valorPropriedade != null && valorPropriedadeAuxiliar == null)
+                        if (valorPropriedadeComparar != null && valorPropriedadeAuxiliar == null)
                         {
                             return true;
                         }
@@ -208,12 +233,12 @@ namespace Snebur.Dominio.Atributos
                 case EnumOpcoesComparacaoAuxiliar.MenorIgual:
                     {
                         if (valorPropriedadeAuxiliar is IComparable auxiliarComparable &&
-                        valorPropriedade is IComparable valorComparable)
+                        valorPropriedadeComparar is IComparable valorComparable)
                         {
                             return valorComparable.CompareTo(auxiliarComparable) <= 0;
                         }
 
-                        if (valorPropriedade != null && valorPropriedadeAuxiliar == null)
+                        if (valorPropriedadeComparar != null && valorPropriedadeAuxiliar == null)
                         {
                             return true;
                         }
@@ -226,6 +251,7 @@ namespace Snebur.Dominio.Atributos
 
         private object RetornarValorPropriedadeAuxilizar(object paiPropriedade)
         {
+             
             var tipoPaiPropriedade = paiPropriedade.GetType();
             var propriedadeAuxiliar = this.PropriedadeAuxiliar;
             if (propriedadeAuxiliar.DeclaringType != tipoPaiPropriedade &&

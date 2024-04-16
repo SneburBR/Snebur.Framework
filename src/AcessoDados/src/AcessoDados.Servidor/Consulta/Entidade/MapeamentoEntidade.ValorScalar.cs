@@ -34,6 +34,10 @@ namespace Snebur.AcessoDados.Mapeamento
             }
             switch (this.EstruturaConsulta.TipoFuncaoEnum)
             {
+                case (EnumTipoFuncao.Existe):
+
+                    return String.Format(" TOP 1 (1) ", campo);
+
                 case (EnumTipoFuncao.Contar):
 
                     return String.Format(" COUNT({0}) ", campo);

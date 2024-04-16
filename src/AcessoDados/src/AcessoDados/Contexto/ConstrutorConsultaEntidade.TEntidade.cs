@@ -27,6 +27,11 @@ namespace Snebur.AcessoDados
             return new ConsultaEntidade<TEntidade>(this.ContextoDados, this.TipoEntidade).Exists(id);
         }
 
+        public bool Any()
+        {
+            return new ConsultaEntidade<TEntidade>(this.ContextoDados, this.TipoEntidade).Any();
+        }
+
         public int Count()
         {
             return new ConsultaEntidade<TEntidade>(this.ContextoDados, this.TipoEntidade).Count();

@@ -2,8 +2,6 @@
 
 namespace Snebur.Dne
 {
-
-    [IgnorarTSReflexao]
     public enum EnumUF
     {
         [Rotulo("Acre")]
@@ -115,4 +113,4 @@ namespace Snebur.Dne
         Tocantins = 27
     }
 }
- 
+

@@ -154,10 +154,18 @@ namespace Snebur.Utilidade
             }
             return false;
         }
+
         public static bool IsPropriedadeRequerida(PropertyInfo propriedade)
         {
             //return !propriedade.PropertyType.IsValueType || propriedade.GetCustomAttribute<ValidacaoRequeridoAttribute>() != null;
-            return propriedade.GetCustomAttribute<ValidacaoRequeridoAttribute>() != null;
+            var atributo = propriedade.GetCustomAttribute<ValidacaoRequeridoAttribute>();
+            if(atributo!= null)
+            {
+                return (atributo.OpcoesComparacaoAuxiliar == null ||
+                        atributo.OpcoesComparacaoAuxiliar == EnumOpcoesComparacaoAuxiliar.Nenhuma);
+                 
+            }
+            return false;
         }
         private static bool IsIntervaloValido(double valor, double inicio, double fim)
         {

@@ -13,6 +13,11 @@ namespace Snebur.AcessoDados
             return this.RetornarValorFuncao<int>(EnumTipoFuncao.Contar, null);
         }
 
+        public bool Any()
+        {
+            return this.RetornarValorFuncao<bool>(EnumTipoFuncao.Existe, null);
+        }
+
         private T RetornarValorFuncao<T>(EnumTipoFuncao tipoFuncaoEnum, Expression expressao)
         {
             var estruturaConsultaEscalar = new EstruturaConsulta
