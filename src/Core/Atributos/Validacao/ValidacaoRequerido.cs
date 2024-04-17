@@ -66,10 +66,13 @@ namespace Snebur.Dominio.Atributos
             {
                 throw new Exception("O nome da propriedade auxiliar deve ser informado, quando opção de validação for diferente de nenhuma.");
             }
-            var propriedade = tipoEntidade.GetProperty(this.NomePropridadeAuxiliar);
+
+            //BindingFlags propriedade internal ou publica e reaonly  ou read/write
+            var flags = BindingFlags.Public | BindingFlags.NonPublic  | BindingFlags.Instance;
+            var propriedade = tipoEntidade.GetProperty(this.NomePropridadeAuxiliar, flags);
             if (propriedade == null)
             {
-                throw new Exception("A propriedade auxiliar informada não foi encontrada.");
+                throw new Exception($"A propriedade auxiliar {this.NomePropridadeAuxiliar} informada não foi encontrada na entidade {tipoEntidade.Name}.");
             }
             return propriedade;
         }

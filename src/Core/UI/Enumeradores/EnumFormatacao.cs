@@ -81,6 +81,8 @@ namespace Snebur.UI
 
         Peso, //"peso",
 
+        PesoKg, //"pesokg",
+
         Pixel, // "pixel",
          
         Porcentagem, // "porcentagem",

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Snebur.Dominio.Atributos;
+using System;
 
 namespace Snebur.Dominio
 {
@@ -6,6 +7,8 @@ namespace Snebur.Dominio
     {
         bool IsDeletado { get; set; }
 
+        [ValorPadraoDataHoraServidor]
+        DateTime? DataHoraCadastro { get; set; }
         DateTime? DataHoraDeletado { get; set; }
 
         long? SessaoUsuarioDeletado_Id { get; set; }

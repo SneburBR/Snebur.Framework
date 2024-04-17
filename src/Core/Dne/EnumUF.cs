@@ -112,5 +112,63 @@ namespace Snebur.Dne
         [ValorEnumString("TO")]
         Tocantins = 27
     }
+
+    //public enum EnumUFSigla
+    //{
+    //    [Rotulo("AC")]
+    //    Acre = 1,
+    //    [Rotulo("AL")]
+    //    Alagoas = 2,
+    //    [Rotulo("AP")]
+    //    Amapa = 3,
+    //    [Rotulo("AM")]
+    //    Amazonas = 4,
+    //    [Rotulo("BH")]
+    //    Bahia = 5,
+    //    [Rotulo("CE")]
+    //    Ceara = 6,
+    //    [Rotulo("DF")]
+    //    DistritoFederal = 7,
+    //    [Rotulo("ES")]
+    //    EspiritoSanto = 8,
+    //    [Rotulo("GO")]
+    //    Goias = 9,
+    //    [Rotulo("MA")]
+    //    Maranhao = 10,
+    //    [Rotulo("MT")]
+    //    MatoGrosso = 11,
+    //    [Rotulo("MS")]
+    //    MatoGrossoDoSul = 12,
+    //    [Rotulo("MG")]
+    //    MinasGerais = 13,
+    //    [Rotulo("PA")]
+    //    Para = 14,
+    //    [Rotulo("PB")]
+    //    Paraiba = 15,
+    //    [Rotulo("PR")]
+    //    Parana = 16,
+    //    [Rotulo("PE")]
+    //    Pernambuco = 17,
+    //    [Rotulo("PI")]
+    //    Piaui = 18,
+    //    [Rotulo("RJ")]
+    //    RioDeJaneiro = 19,
+    //    [Rotulo("RN")]
+    //    RioGrandeDoNorte = 20,
+    //    [Rotulo("RS")]
+    //    RioGrandeDoSul = 21,
+    //    [Rotulo("RO")]
+    //    Rondonia = 22,
+    //    [Rotulo("RR")]
+    //    Roraima = 23,
+    //    [Rotulo("SC")]
+    //    SantaCatarina = 24,
+    //    [Rotulo("SP")]
+    //    SaoPaulo = 25,
+    //    [Rotulo("SE")]
+    //    Sergipe = 26,
+    //    [Rotulo("TO")]
+    //    Tocantins = 27
+    //}
 }
 
