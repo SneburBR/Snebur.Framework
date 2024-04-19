@@ -39,16 +39,19 @@ namespace Snebur.Dominio.Atributos
         {
         }
         [IgnorarConstrutorTS]
-        public ValidacaoMoedaAttribute(bool aceitarNulo, decimal valorMinimo, decimal valorMaximo) : this(aceitarNulo, valorMinimo < 0, valorMinimo, valorMaximo)
+        public ValidacaoMoedaAttribute(bool aceitarNulo, double valorMinimo, double valorMaximo) : this(aceitarNulo, valorMinimo < 0, valorMinimo, valorMaximo)
         {
         }
 
-        public ValidacaoMoedaAttribute(bool aceitarNulo, bool aceitarNegativo, decimal valorMinimo, decimal valorMaximo)
+        public ValidacaoMoedaAttribute(bool aceitarNulo,    
+                                       bool aceitarNegativo,
+                                       double valorMinimo,
+                                       double valorMaximo)
         {
             this.AceitarNulo = aceitarNulo;
             this.AceitarNegativo = aceitarNegativo;
-            this.ValorMinimo = valorMinimo;
-            this.ValorMaximo = valorMaximo;
+            this.ValorMinimo = (decimal)valorMinimo;
+            this.ValorMaximo = (decimal)valorMaximo;
 
             if (!this.AceitarNegativo && this.ValorMinimo < 0)
             {
