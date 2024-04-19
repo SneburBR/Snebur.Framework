@@ -9,5 +9,6 @@
         Migracao = 16,
         DataHoraUtc = 32,
         SessaoUsuarioHerdada = 64,
+        DatabaseGeneratedOptionIdentityPadrao = 128
     }
 }

@@ -4,6 +4,7 @@ using Snebur.Linq;
 using Snebur.Utilidade;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -673,7 +674,12 @@ namespace Snebur.AcessoDados.Estrutura
         {
             if (this.TipoEntidade.BaseType == typeof(Entidade))
             {
-                return true;
+                var atributoDataBase = this.TipoEntidade.GetCustomAttribute<DatabaseGeneratedAttribute>();
+                if(atributoDataBase != null)
+                {
+                    return atributoDataBase.DatabaseGeneratedOption == DatabaseGeneratedOption.Identity;
+                }
+                return this.SqlSuporte.IsDatabaseGeneratedOptionIdentityPadrao;
             }
             if (AjudanteEstruturaBancoDados.TipoEntidadeBaseNaoMepeada(this.TipoEntidade.BaseType))
             {

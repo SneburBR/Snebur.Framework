@@ -19,6 +19,11 @@ namespace Snebur.AcessoDados
         public bool IsMigracao { get; }
         public bool IsDataHoraUtc { get; }
 
+        /// <summary>
+        /// Por padrão, as entidade do primeiro nível da herança são mapeadas com DatabaseGeneratedOption.Identity
+        /// </summary>
+        public bool IsDatabaseGeneratedOptionIdentityPadrao { get; }
+
         internal BancoDadosSuporta(  EnumFlagBancoNaoSuportado flags)
         {
             this.IsOffsetFetch = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.OffsetFetch);
@@ -26,6 +31,7 @@ namespace Snebur.AcessoDados
 
             this.IsMigracao = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.Migracao);
             this.IsDataHoraUtc = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.DataHoraUtc);
+            this.IsDatabaseGeneratedOptionIdentityPadrao = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.DatabaseGeneratedOptionIdentityPadrao);
 
            
             this.IsSessaoUsuarioContextoAtual = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.SessaoUsuario) &&
