@@ -7,7 +7,10 @@ namespace Snebur.Dominio.Atributos
     public class ValidacaoDataExpiracaoAttribute : BaseAtributoValidacao, IAtributoValidacao
     {
         [MensagemValidacao]
-        public static string MensagemValidacao { get; set; } = "A data '{0}' de ser inferior a data de publicação.";
+        public static string MensagemValidacao { get; set; } = "A '{0}' deve ser superior a data de publicação.";
+
+        [MensagemValidacao]
+        public static string MensagemValidacaoComposta { get; set; } = "A '{0}' deve ser superior à '{1}'.";
 
         public string NomePropriedadeDataPublicacao { get; set; }
 
@@ -25,15 +28,17 @@ namespace Snebur.Dominio.Atributos
                 {
                     throw new Erro($"A propriedade {this.NomePropriedadeDataPublicacao} não foi encontrado na tipo {paiPropriedade.GetType().Name}");
                 }
+
                 var tipoPropriedadePublicacao = ReflexaoUtil.RetornarTipoSemNullable(propriedadePublicacao.PropertyType);
                 if (tipoPropriedadePublicacao != typeof(DateTime))
                 {
                     throw new Erro($" O tipo '{tipoPropriedadePublicacao.Name}' da propriedade de publicação não é suportado. Esperado '{nameof(DateTime)} ");
                 }
+
                 var dataPublicacao = ReflexaoUtil.RetornarValorPropriedade(paiPropriedade, propriedadePublicacao);
                 if (dataPublicacao is DateTime dataPublicaacaoTipada)
                 {
-                    return dataExpiracao > dataPublicaacaoTipada;
+                    return dataExpiracao.AddDays(1).RetornarDataComHoraZerada() > dataPublicaacaoTipada;
                 }
                 return false;
             }

@@ -7,7 +7,7 @@ namespace Snebur.Dominio.Atributos
     public class ValidacaoDataPublicacaoAttribute : BaseAtributoValidacao, IAtributoValidacao
     {
         [MensagemValidacao]
-        public static string MensagemValidacao { get; set; } = "A data {0} não pode ser no passado.";
+        public static string MensagemValidacao { get; set; } = "A '{0}' não pode ser anterior à data de hoje.";
 
         public ValidacaoDataPublicacaoAttribute()
         {
