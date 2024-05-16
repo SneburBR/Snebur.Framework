@@ -52,7 +52,8 @@ namespace Snebur.AcessoDados.Estrutura
         /// <param name="propriedadeTipoComplexo"></param>
         /// <param name="propriedadeCampo"></param>
         /// <param name="estruturaEntidade"></param>
-        internal EstruturaCampo(PropertyInfo propriedadeTipoComplexo, PropertyInfo propriedadeCampo,
+        internal EstruturaCampo(PropertyInfo propriedadeTipoComplexo, 
+                                PropertyInfo propriedadeCampo,
                                 EstruturaEntidade estruturaEntidade) : this(propriedadeCampo, estruturaEntidade)
         {
             this.IsTipoComplexo = true;
@@ -297,6 +298,11 @@ namespace Snebur.AcessoDados.Estrutura
                 return atributo;
             }
             throw new Exception($"Não foi possível converter o atributo de valor padrão para {typeof(T).Name} ");
+        }
+
+        internal object Normalizar(object valor)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

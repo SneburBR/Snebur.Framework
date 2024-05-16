@@ -74,7 +74,7 @@ namespace Snebur.AcessoDados.Mapeamento
                 {
                     var estruturaColuna = estruturasColuna[j];
                     var valorDB = linha[estruturaColuna.Posicao];
-                  
+
                     var valorPropriedade = AjudanteDataSetMapeamento.RetornarValorConvertido(valorDB, estruturaColuna);
                     if (estruturaColuna.IsTipoComplexo)
                     {
@@ -87,7 +87,7 @@ namespace Snebur.AcessoDados.Mapeamento
                     }
                     else
                     {
-                        
+
                         estruturaColuna.Propriedade.SetValue(entidade, valorPropriedade);
                     }
                 }
@@ -102,10 +102,16 @@ namespace Snebur.AcessoDados.Mapeamento
             return entidades;
         }
 
- 
 
-        internal static object RetornarValorConvertido(object valorDB, 
+        internal static object RetornarValorConvertido(object valorDB,
                                                        EstruturaColuna estruturaColuna)
+        {
+            return RetornarValorConvertidoInterno(valorDB, estruturaColuna);
+            //return estruturaColuna.Normalizar(valor);
+        }
+
+        private static object RetornarValorConvertidoInterno(object valorDB,
+                                                             EstruturaColuna estruturaColuna)
         {
             if (ReflexaoUtil.IsTipoIgualOuHerda(valorDB.GetType(), estruturaColuna.Propriedade.PropertyType))
             {
@@ -119,9 +125,9 @@ namespace Snebur.AcessoDados.Mapeamento
                 }
                 else
                 {
-                    if(valorDB is DateTime dateTime)
+                    if (valorDB is DateTime dateTime)
                     {
-                        if(dateTime.Kind == DateTimeKind.Unspecified)
+                        if (dateTime.Kind == DateTimeKind.Unspecified)
                         {
                             var kind = estruturaColuna.EstruturaCampo.DateTimeKind ??
                                        estruturaColuna.EstruturaCampo.EstruturaEntidade.EstruturaBancoDados.DateTimeKindPadrao;
@@ -167,6 +173,11 @@ namespace Snebur.AcessoDados.Mapeamento
             this.TipoPrimario = ReflexaoUtil.RetornarTipoPrimarioEnum(this.Propriedade.PropertyType);
             this.ValorPadrao = ReflexaoUtil.RetornarValorPadraoPropriedade(this.Propriedade);
             this.IsTipoComplexo = this.EstruturaCampo.IsTipoComplexo;
+        }
+
+        internal object Normalizar(object valor)
+        {
+            return this.EstruturaCampo.Normalizar(valor);
         }
     }
 }

@@ -19,5 +19,10 @@ namespace Snebur.AcessoDados
             base(estruturaEntidade, propriedades, filtros, true)
         {
         }
+
+        protected override string RetornarSql_SqlServer()
+        {
+            return base.RetornarSql_SqlServer();
+        }
     }
 }

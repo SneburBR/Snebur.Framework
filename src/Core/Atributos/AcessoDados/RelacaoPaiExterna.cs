@@ -6,7 +6,8 @@
         public string NomePropriedadeChaveEstrangeira { get; set; }
         public string NomeContextoDadosExterno { get; set; }
 
-        public RelacaoPaiExterna(string nomeContextoDadosExtexto, string nomePropriedadeChaveEstrangeira)  
+        public RelacaoPaiExterna(string nomeContextoDadosExtexto, 
+                                 string nomePropriedadeChaveEstrangeira)  
         {
             this.NomePropriedadeChaveEstrangeira = nomePropriedadeChaveEstrangeira;
             this.NomeContextoDadosExterno = nomeContextoDadosExtexto;

@@ -2,7 +2,6 @@
 using Snebur.Dominio.Atributos;
 using Snebur.Utilidade;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -117,7 +116,6 @@ namespace Snebur.AcessoDados
             foreach (var tipoEntidade in tiposEntidade)
             {
                 var estruturaEntidade = this.Contexto.EstruturaBancoDados.EstruturasEntidade[tipoEntidade.Name];
-
                 if (this.PossuiValidacaoUnicoComposta(tipoEntidade))
                 {
                     var atributos = tipoEntidade.GetCustomAttributes<ValidacaoUnicoCompostaAttribute>(false);

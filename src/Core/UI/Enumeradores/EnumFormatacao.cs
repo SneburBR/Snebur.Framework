@@ -67,6 +67,8 @@ namespace Snebur.UI
          
         Margem,
 
+        MelhorDecimal, // "melhordecimal",
+
         Moeda, // "moeda",
 
         MoedaIgnorarSemValor,
@@ -76,6 +78,8 @@ namespace Snebur.UI
         NaoQuebrar, // "naoquebrar",
 
         Nome,
+
+        OcultarEmail,
 
         Prazo, // "prazo",
 
@@ -103,6 +107,8 @@ namespace Snebur.UI
 
         Proteger, // "proteger",
 
+        Senha, // "senha",
+
         SimNao, // "simnao",
 
         QuebrarLinhasHtml, //"quebrarlinhahtml",
@@ -114,6 +120,8 @@ namespace Snebur.UI
         TamanhoArquivo, // "tamanhoarquivo",
 
         Telefone, // "telefone",
+
+        Titulo, // "titulo",
 
         Trim, // "trim",
           
