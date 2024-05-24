@@ -59,7 +59,7 @@ namespace Snebur.Dominio.Atributos
                 this.PropriedadeAuxiliar = this.RetornarPropriedadeAuxiliar(tipoEntidade);
             }
         }
-          
+
         private PropertyInfo RetornarPropriedadeAuxiliar(Type tipoEntidade)
         {
             if (String.IsNullOrWhiteSpace(this.NomePropridadeAuxiliar))
@@ -68,7 +68,7 @@ namespace Snebur.Dominio.Atributos
             }
 
             //BindingFlags propriedade internal ou publica e reaonly  ou read/write
-            var flags = BindingFlags.Public | BindingFlags.NonPublic  | BindingFlags.Instance;
+            var flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
             var propriedade = tipoEntidade.GetProperty(this.NomePropridadeAuxiliar, flags);
             if (propriedade == null)
             {
@@ -100,49 +100,56 @@ namespace Snebur.Dominio.Atributos
 
         #region IAtributoValidacao
 
-        public string RetornarMensagemValidacao(PropertyInfo propriedade, 
-                                                object paiPropriedade, 
+        public string RetornarMensagemValidacao(PropertyInfo propriedade,
+                                                object paiPropriedade,
                                                 object valorPropriedade)
         {
             var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
 
             var opcao = this.OpcoesComparacaoAuxiliar;
-            if(opcao.HasValue && !this.IsValidoSeAuxiliarInvalido && opcao!= EnumOpcoesComparacaoAuxiliar.Nenhuma)
+            if (opcao.HasValue && !this.IsValidoSeAuxiliarInvalido && opcao != EnumOpcoesComparacaoAuxiliar.Nenhuma)
             {
-                var valorPropriedadeAuxiliar = this.RetornarValorPropriedadeAuxilizar(paiPropriedade);
-                switch (opcao.Value)
+                if (!this.IsValidoSeAuxiliarInvalido &&
+                    !this.IsAuxiliarValido(paiPropriedade, valorPropriedade))
                 {
-                    case EnumOpcoesComparacaoAuxiliar.Igual:
+                    var valorPropriedadeAuxiliar = this.RetornarValorPropriedadeAuxilizar(paiPropriedade);
+                    var rotutloPropriedadeAuxiliar = ReflexaoUtil.RetornarRotulo(this.PropriedadeAuxiliar); 
+ 
+                    switch (opcao.Value)
+                    {
+                        case EnumOpcoesComparacaoAuxiliar.Igual:
 
-                        return $"O campo {rotulo} deve ser igual a '{valorPropriedadeAuxiliar}'.";
-                    case EnumOpcoesComparacaoAuxiliar.Diferente:
+                            return $"O campo {rotulo} deve ser igual a {rotutloPropriedadeAuxiliar}: '{valorPropriedadeAuxiliar}'.";
+                        case EnumOpcoesComparacaoAuxiliar.Diferente:
 
-                        return $"O campo {rotulo} deve ser diferente de '{valorPropriedadeAuxiliar}'.";
-                        
-                    case EnumOpcoesComparacaoAuxiliar.Maior:
+                            return $"O campo {rotulo} deve ser diferente de {rotutloPropriedadeAuxiliar}: '{valorPropriedadeAuxiliar}'.";
 
-                        return $"O campo {rotulo} deve ser maior que '{valorPropriedadeAuxiliar}'.";
-                        
-                    case EnumOpcoesComparacaoAuxiliar.Menor:
+                        case EnumOpcoesComparacaoAuxiliar.Maior:
 
-                        return $"O campo {rotulo} deve ser menor que '{valorPropriedadeAuxiliar}'.";
-                        
-                    case EnumOpcoesComparacaoAuxiliar.MaiorIgual:
+                            return $"O campo {rotulo} deve ser maior que {rotutloPropriedadeAuxiliar}: '{valorPropriedadeAuxiliar}'.";
 
-                        return $"O campo {rotulo} deve ser maior ou igual a '{valorPropriedadeAuxiliar}'.";
-                        
-                    case EnumOpcoesComparacaoAuxiliar.MenorIgual:
+                        case EnumOpcoesComparacaoAuxiliar.Menor:
 
-                        return $"O campo {rotulo} deve ser menor ou igual a '{valorPropriedadeAuxiliar}'.";
+                            return $"O campo {rotulo} deve ser menor que {rotutloPropriedadeAuxiliar}: {valorPropriedadeAuxiliar}'.";
 
-                    case EnumOpcoesComparacaoAuxiliar.True:
+                        case EnumOpcoesComparacaoAuxiliar.MaiorIgual:
 
-                        return $"O campo {this.NomePropridadeAuxiliar} deve ser verdadeiro.";
+                            return $"O campo {rotulo} deve ser maior ou igual a {rotutloPropriedadeAuxiliar}: '{valorPropriedadeAuxiliar}'.";
 
-                    case EnumOpcoesComparacaoAuxiliar.False:
+                        case EnumOpcoesComparacaoAuxiliar.MenorIgual:
 
-                        return $"O campo {this.NomePropridadeAuxiliar} deve ser falso.";
+                            return $"O campo {rotulo} deve ser menor ou igual a  {rotutloPropriedadeAuxiliar}: '{valorPropriedadeAuxiliar}'.";
+
+                        case EnumOpcoesComparacaoAuxiliar.True:
+
+                            return $"O campo {this.NomePropridadeAuxiliar} deve ser verdadeiro.";
+
+                        case EnumOpcoesComparacaoAuxiliar.False:
+
+                            return $"O campo {this.NomePropridadeAuxiliar} deve ser falso.";
+                    }
                 }
+
             }
             return String.Format(MensagemValidacao, rotulo);
         }
@@ -254,7 +261,7 @@ namespace Snebur.Dominio.Atributos
 
         private object RetornarValorPropriedadeAuxilizar(object paiPropriedade)
         {
-             
+
             var tipoPaiPropriedade = paiPropriedade.GetType();
             var propriedadeAuxiliar = this.PropriedadeAuxiliar;
             if (propriedadeAuxiliar.DeclaringType != tipoPaiPropriedade &&

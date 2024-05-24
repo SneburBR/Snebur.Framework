@@ -41,6 +41,9 @@ namespace Snebur.UI
 
         Decimal3, // "decimal3",
 
+        Dias, // "dias",
+        DiasUteis, //"diasuteis",
+
         Dimensao,
 
         DimensaoCm,
