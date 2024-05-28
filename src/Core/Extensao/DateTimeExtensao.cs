@@ -16,7 +16,7 @@ namespace Snebur.Utilidade
 
         public static DateTime RetornarDataComHoraZerada(this DateTime dataHora)
         {
-            return new DateTime(dataHora.Hour, dataHora.Month, dataHora.Day, 0, 0, 0);
+            return new DateTime(dataHora.Year, dataHora.Month, dataHora.Day, 0, 0, 0);
         }
 
         public static long RetornarMilisegundosJavascript(this DateTime dataHora, bool isUtc = false)

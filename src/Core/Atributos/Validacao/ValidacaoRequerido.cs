@@ -13,7 +13,7 @@ namespace Snebur.Dominio.Atributos
         public EnumOpcoesComparacaoAuxiliar? OpcoesComparacaoAuxiliar { get; set; } = null;
         public string NomePropridadeAuxiliar { get; set; }
 
-        public bool IsValidoSeAuxiliarInvalido { get; set; } = false;
+        public bool IsIgnorarValidacaoSeAuxiliarInvalido { get; set; } = false;
 
         /// <summary>
         /// Se valor comprar for diferente de null, o valor da propriedade auxiliar será comparado com este valor.
@@ -36,7 +36,7 @@ namespace Snebur.Dominio.Atributos
         /// <param name="nomePropridadeAuxiliar">
         /// Nome da propriedade auxiliar deve pertencer ao mesmo tipo do TipoEntidade, ambos propriedade devem ser declarada no mesmo tipo.
         /// </param>
-        /// <param name="isValidoSeAuxiliarInvalido">
+        /// <param name="isIgnorarValidacaoSeAuxiliarInvalido">
         /// Quando á comparação é verdadeira com propriedade auxiliar for falso, o valor da propriedade não será requerido
         /// </param>
         /// <param name="valorComparar">
@@ -46,12 +46,12 @@ namespace Snebur.Dominio.Atributos
         public ValidacaoRequeridoAttribute([IgnorarParametroTS] Type tipoEntidade,
                                            [ParametroOpcionalTS] EnumOpcoesComparacaoAuxiliar opcoesComparacaoAuxiliar,
                                            [ParametroOpcionalTS] string nomePropridadeAuxiliar,
-                                           [ParametroOpcionalTS] bool isValidoSeAuxiliarInvalido = false,
+                                           [ParametroOpcionalTS] bool isIgnorarValidacaoSeAuxiliarInvalido = false,
                                            [ParametroOpcionalTS] object valorComparar = null)
         {
             this.OpcoesComparacaoAuxiliar = opcoesComparacaoAuxiliar;
             this.NomePropridadeAuxiliar = nomePropridadeAuxiliar;
-            this.IsValidoSeAuxiliarInvalido = isValidoSeAuxiliarInvalido;
+            this.IsIgnorarValidacaoSeAuxiliarInvalido = isIgnorarValidacaoSeAuxiliarInvalido;
             this.ValorComparar = valorComparar;
 
             if (opcoesComparacaoAuxiliar != EnumOpcoesComparacaoAuxiliar.Nenhuma)
@@ -107,9 +107,9 @@ namespace Snebur.Dominio.Atributos
             var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
 
             var opcao = this.OpcoesComparacaoAuxiliar;
-            if (opcao.HasValue && !this.IsValidoSeAuxiliarInvalido && opcao != EnumOpcoesComparacaoAuxiliar.Nenhuma)
+            if (opcao.HasValue && !this.IsIgnorarValidacaoSeAuxiliarInvalido && opcao != EnumOpcoesComparacaoAuxiliar.Nenhuma)
             {
-                if (!this.IsValidoSeAuxiliarInvalido &&
+                if (!this.IsIgnorarValidacaoSeAuxiliarInvalido &&
                     !this.IsAuxiliarValido(paiPropriedade, valorPropriedade))
                 {
                     var valorPropriedadeAuxiliar = this.RetornarValorPropriedadeAuxilizar(paiPropriedade);
@@ -160,7 +160,7 @@ namespace Snebur.Dominio.Atributos
             {
                 return ValidacaoUtil.IsValidacaoRequerido(propriedade, valorPropriedade, paiPropriedade);
             }
-            return this.IsValidoSeAuxiliarInvalido;
+            return this.IsIgnorarValidacaoSeAuxiliarInvalido;
         }
 
         private bool IsAuxiliarValido(object paiPropriedade, object valorPropriedade)

@@ -33,8 +33,15 @@ namespace Snebur.Dominio.Atributos
             this.CaracteresExtra = caracteresExtra;
         }
 
-        public override bool IsValido(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
+        public override bool IsValido(PropertyInfo propriedade,
+                                      object paiPropriedade,
+                                      object valorPropriedade)
         {
+            if (!ValidacaoUtil.IsDefinido(valorPropriedade))
+            {
+                return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
+            }
+
             return Base36Util.IsBase36(valorPropriedade.ToString(), 
                                        this.IsPermitirEspaco,
                                        this.IsIgnorarCase,
