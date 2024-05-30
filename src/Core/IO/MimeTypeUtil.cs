@@ -1,7 +1,5 @@
 ﻿using Snebur.Dominio;
 using System;
-using System.Diagnostics;
-using System.Net;
 
 namespace Snebur.Utilidade
 {
