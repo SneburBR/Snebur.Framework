@@ -88,10 +88,11 @@ namespace Snebur.AcessoDados.Ajudantes
                 }
 
 
-                if (expressaoInterna.NodeType == ExpressionType.Convert &&
-                    expressao.ToString() == "Convert(x).Id")
+                if (expressaoInterna.NodeType == ExpressionType.Convert )
                 {
-                    return true;
+                    var expressaoString = expressao.ToString();
+                    return expressaoString == "Convert(x, IEntidade).Id" ||
+                           expressaoString == "Convert(x, System.Object).Id";
                 }
             }
 

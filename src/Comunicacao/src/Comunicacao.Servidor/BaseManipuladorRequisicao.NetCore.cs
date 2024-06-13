@@ -32,6 +32,12 @@ namespace Snebur.Comunicacao
                                                     bool isWebSocket) where T : BaseManipuladorRequisicao
         {
 
+            var diretorioBase = Directory.GetCurrentDirectory();
+            if (!Directory.Exists(diretorioBase))
+            {
+                throw new DirectoryNotFoundException(diretorioBase);
+            }
+
             var configBuilder = new ConfigurationBuilder()
                             .SetBasePath(Directory.GetCurrentDirectory())
                             .AddJsonFile("appsettings.json");
@@ -63,9 +69,12 @@ namespace Snebur.Comunicacao
             }
 
             var app = builder.Build();
+
             aplicacaoSnebur.Inicializar();
 
             Configure(app, app.Environment, isWebSocket);
+
+            //app.UseStaticFiles();
 
             app.Run(async context =>
             {
@@ -78,9 +87,7 @@ namespace Snebur.Comunicacao
             app.Run();
 
             return app;
-
-
-
+             
             //CreateHostBuilder(args).Build().Run();
         }
 
@@ -99,9 +106,17 @@ namespace Snebur.Comunicacao
 #if DEBUG
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
             }
 #endif
+            app.UseDeveloperExceptionPage();
+
+            if (env.IsProduction())
+            {
+                //app.UseExceptionHandler("/Error");
+                app.UseHsts();
+            }
+            
 
             if (AplicacaoSnebur.Atual is AplicacaoSneburAspNet aplicacao)
             {
@@ -113,36 +128,37 @@ namespace Snebur.Comunicacao
                 throw new Erro("A aplicação AplicacaoSneburAspNetCore não foi inicializada");
             }
 
-
-            var webSocketOptions = new WebSocketOptions
+            if (isWebSocket)
             {
-                KeepAliveInterval = TimeSpan.FromMinutes(2)
-            };
-            app.UseWebSockets(webSocketOptions);
-
-            app.Use(async (context, next) =>
-            {
-                if (context.Request.Path == "/ws")
+                var webSocketOptions = new WebSocketOptions
                 {
-                    if (context.WebSockets.IsWebSocketRequest)
+                    KeepAliveInterval = TimeSpan.FromMinutes(2)
+                };
+                app.UseWebSockets(webSocketOptions);
+
+                app.Use(async (context, next) =>
+                {
+                    if (context.Request.Path == "/ws")
                     {
-                        using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
+                        if (context.WebSockets.IsWebSocketRequest)
                         {
-                            //await Echo(webSocket);
-                            throw new NotImplementedException();
+                            using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
+                            {
+                                //await Echo(webSocket);
+                                throw new NotImplementedException();
+                            }
+                        }
+                        else
+                        {
+                            context.Response.StatusCode = StatusCodes.Status400BadRequest;
                         }
                     }
-                    else
-                    {
-                        context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                    }
-                }
-                 
-                await next.Invoke();
-            });
 
+                    await next.Invoke();
+                });
+            }
 
-
+            app.UseResponseCompression();
 
             //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             //loggerFactory.AddDebug();
@@ -151,10 +167,6 @@ namespace Snebur.Comunicacao
             //app.UseDefaultFiles();
             //app.UseStaticFiles();
             //app.UseResponseCompression();
-
-
-
-
 
         }
 
