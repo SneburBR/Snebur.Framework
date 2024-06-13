@@ -1,5 +1,5 @@
 ﻿
-#if NET7_0
+#if NET6_0_OR_GREATER
 
 using Microsoft.AspNetCore.Http;
 
@@ -67,14 +67,15 @@ namespace Snebur.Comunicacao
 
             Configure(app, app.Environment, isWebSocket);
 
-            //app.Run(async context =>
-            //{
-            //    using (var manipulador = Activator.CreateInstance<T>())
-            //    {
-            //        manipulador.AntesProcessarRequisicao(context);
-            //        await manipulador.ProcessarRequisicaoAsync(context);
-            //    }
-            //});
+            app.Run(async context =>
+            {
+                using (var manipulador = Activator.CreateInstance<T>())
+                {
+                    manipulador.AntesProcessarRequisicao(context);
+                    await manipulador.ProcessarRequisicaoAsync(context);
+                }
+            });
+            app.Run();
 
             return app;
 
@@ -101,14 +102,6 @@ namespace Snebur.Comunicacao
                 app.UseDeveloperExceptionPage();
             }
 #endif
-            if (isWebSocket)
-            {
-                var webSocketOptions = new WebSocketOptions
-                {
-                    KeepAliveInterval = TimeSpan.FromMinutes(2)
-                };
-                app.UseWebSockets(webSocketOptions);
-            }
 
             if (AplicacaoSnebur.Atual is AplicacaoSneburAspNet aplicacao)
             {
@@ -120,13 +113,12 @@ namespace Snebur.Comunicacao
                 throw new Erro("A aplicação AplicacaoSneburAspNetCore não foi inicializada");
             }
 
-            //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            //loggerFactory.AddDebug();
-            //app.UseRouting();
-            //app.UseMiddleware<Manipulador>();
-            //app.UseDefaultFiles();
-            //app.UseStaticFiles();
-            //app.UseResponseCompression();
+
+            var webSocketOptions = new WebSocketOptions
+            {
+                KeepAliveInterval = TimeSpan.FromMinutes(2)
+            };
+            app.UseWebSockets(webSocketOptions);
 
             app.Use(async (context, next) =>
             {
@@ -145,10 +137,23 @@ namespace Snebur.Comunicacao
                         context.Response.StatusCode = StatusCodes.Status400BadRequest;
                     }
                 }
-
-
+                 
                 await next.Invoke();
             });
+
+
+
+
+            //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            //loggerFactory.AddDebug();
+            //app.UseRouting();
+            //app.UseMiddleware<Manipulador>();
+            //app.UseDefaultFiles();
+            //app.UseStaticFiles();
+            //app.UseResponseCompression();
+
+
+
 
 
         }
@@ -231,7 +236,7 @@ namespace Snebur.Comunicacao
                 var identificadorProprietario = this.RetornarIdentificadorProprietario(request);
                 var nomeManipulador = request.Headers[ParametrosComunicacao.MANIPULADOR];
                 var tipoManipulador = this.RetornarTipoServico(nomeManipulador);
-                if(tipoManipulador== null)
+                if (tipoManipulador == null)
                 {
                     this.NotificarServicoNaoEncontado(httpContext, nomeManipulador);
                     return;
@@ -358,7 +363,6 @@ namespace Snebur.Comunicacao
         }
         private async Task ExecutarManipuladorGenericoAsync(HttpContext httpContext, string caminho)
         {
-
             var tipo = this.ManipuladoresGenericos[caminho].tipo;
             var manipualador = Activator.CreateInstance(tipo) as IHttpHandler;
             if (manipualador != null)
@@ -394,6 +398,43 @@ namespace Snebur.Comunicacao
         }
     }
 
+
+    public class AshxHandlerMiddleware
+    {
+        private readonly RequestDelegate _next;
+
+        public AshxHandlerMiddleware(RequestDelegate next)
+        {
+            _next = next;
+        }
+
+        public async Task Invoke(HttpContext context)
+        {
+            if (context.Request.Path.Value.EndsWith(".ashx"))
+            {
+                await HandleAshxRequest(context);
+            }
+            else
+            {
+                await _next(context);
+            }
+        }
+
+        private Task HandleAshxRequest(HttpContext context)
+        {
+            // Lógica do seu handler .ashx aqui
+            context.Response.ContentType = "text/plain";
+            return context.Response.WriteAsync("Hello from .ashx handler!");
+        }
+    }
+
+    public static class AshxHandlerMiddlewareExtensions
+    {
+        public static IApplicationBuilder UseAshxHandler(this IApplicationBuilder builder)
+        {
+            return builder.UseMiddleware<AshxHandlerMiddleware>();
+        }
+    }
 
 }
 

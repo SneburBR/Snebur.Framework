@@ -236,7 +236,7 @@ namespace Snebur.Utilidade
                                                                     x.SetMethod != null &&
                                                                     x.GetMethod.IsPublic &&
                                                                     !Attribute.IsDefined(x, typeof(JsonIgnoreAttribute)) &&
-#if NET7_0
+#if NET6_0_OR_GREATER
                                                                     !Attribute.IsDefined(x, typeof(System.Text.Json.Serialization.JsonIgnoreAttribute)) &&
 #endif
                                                                     !Attribute.IsDefined(x, typeof(XmlIgnoreAttribute)));

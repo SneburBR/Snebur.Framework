@@ -504,7 +504,7 @@ namespace Snebur
 
                 ServicePointManager.DefaultConnectionLimit = 256;
 
-#if NET7_0 == false
+#if NET6_0_OR_GREATER == false
 
                 var assemblyNet = Assembly.GetAssembly(typeof(System.Net.Configuration.SettingsSection));
                 if (assemblyNet != null)
@@ -786,7 +786,7 @@ namespace Snebur
             return null;
         }
 
-#if NET7_0 == false
+#if NET6_0_OR_GREATER == false
 
         protected virtual NameValueCollection RetornarAppSettings()
         {

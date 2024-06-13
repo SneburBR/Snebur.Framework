@@ -1,4 +1,4 @@
-﻿using Microsoft.WindowsAPICodePack.Shell;
+﻿
 using System;
 using System.IO;
 using System.Linq;
@@ -9,6 +9,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Snebur.Dominio;
 using Snebur.Imagens;
+
+#if NET48
+using Microsoft.WindowsAPICodePack.Shell;
+#endif
 
 namespace Snebur.Utilidade
 {
@@ -126,6 +130,8 @@ namespace Snebur.Utilidade
 
         public static BitmapSource RetornarMiniaturaPsd(string caminhoArquivo, double alturaMaxima)
         {
+#if NET6_0_OR_GREATER == false
+
             var shellFile = ShellFile.FromFilePath(caminhoArquivo);
             var entensao = Path.GetExtension(caminhoArquivo);
 
@@ -144,10 +150,11 @@ namespace Snebur.Utilidade
                     //não faz nada
                 }
             }
+#endif
             return null;
         }
 
-        #endregion
+#endregion
 
         #region Stream miniatura
 

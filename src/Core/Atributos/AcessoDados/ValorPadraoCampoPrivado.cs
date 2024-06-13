@@ -82,6 +82,7 @@ namespace Snebur.Dominio.Atributos
         {
             return this.ValorPadrao;
         }
+
         #region IValorPadrao 
 
         public bool TipoNullableRequerido { get { return false; } }

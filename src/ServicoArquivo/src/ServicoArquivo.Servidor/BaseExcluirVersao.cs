@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using System.Web;
 
-#if NET7_0
+#if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 #endif
@@ -16,7 +16,7 @@ namespace Snebur.ServicoArquivo
         public bool IsReusable => true;
 
 
-#if NET7_0
+#if NET6_0_OR_GREATER
         public Task ProcessRequestAsync(HttpContext context)
         {
             throw new NotImplementedException();
@@ -78,7 +78,7 @@ namespace Snebur.ServicoArquivo
 
         protected string RetornarValorParametro(string parametro, HttpContext httpContext)
         {
-#if NET7_0
+#if NET6_0_OR_GREATER
             throw new NotImplementedException();
 #else
             var parametroBase64 = Base64Util.Encode(parametro);

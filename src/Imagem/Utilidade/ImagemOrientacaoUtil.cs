@@ -174,7 +174,9 @@ namespace Snebur.Utilidade
 namespace SIGIFotografo
 {
     using System;
+    using System.Diagnostics;
     using System.Drawing;
+    using System.Runtime.InteropServices;
     using System.Windows.Media.Imaging;
 
     public static class BitmapFrameExtesao

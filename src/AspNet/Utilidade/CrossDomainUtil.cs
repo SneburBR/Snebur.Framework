@@ -2,7 +2,7 @@
 using System;
 using System.Web;
 
-#if NET7_0
+#if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Http;
 #else
 //using System.Web;
@@ -28,12 +28,13 @@ namespace Snebur.Utilidade
             var origens = requisicao.Headers.GetValues(ORIGIN);
             if (origens != null && origens.Length > 0)
             {
-                resposta.Headers.Add(ACCESS_CONTROL_ALLOW_ORIGIN, String.Join(", ", origens));
+                resposta.Headers.Append(ACCESS_CONTROL_ALLOW_ORIGIN, String.Join(", ", origens));
             }
             else
             {
-                resposta.Headers.Add(ACCESS_CONTROL_ALLOW_ORIGIN, "*");
+                resposta.Headers.Append(ACCESS_CONTROL_ALLOW_ORIGIN, "*");
             }
+
             var metodosRequisicao = requisicao.Headers.GetValues(ACCESS_CONTROL_REQUEST_METHOD);
             var cabecalhosRequisicao = requisicao.Headers.GetValues(ACCESS_CONTROL_REQUEST_HEADERS);
 
@@ -43,11 +44,11 @@ namespace Snebur.Utilidade
             }
             if (metodosRequisicao != null)
             {
-                resposta.Headers.Add(ACCESS_CONTROL_ALLOW_METHODS, String.Join(", ", metodosRequisicao));
+                resposta.Headers.Append(ACCESS_CONTROL_ALLOW_METHODS, String.Join(", ", metodosRequisicao));
             }
             if (cabecalhosRequisicao != null)
             {
-                resposta.Headers.Add(ACCESS_CONTROL_ALLOW_HEADERS, String.Join(", ", cabecalhosRequisicao));
+                resposta.Headers.Append(ACCESS_CONTROL_ALLOW_HEADERS, String.Join(", ", cabecalhosRequisicao));
             }
             return true;
         }

@@ -1,4 +1,4 @@
-﻿#if NET7_0 == false
+﻿#if NET6_0_OR_GREATER == false
 
 using NetFwTypeLib;
 using System;

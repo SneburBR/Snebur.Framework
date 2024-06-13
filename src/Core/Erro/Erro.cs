@@ -53,10 +53,13 @@ namespace System
         {
         }
 
-        protected Erro(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected Erro(SerializationInfo info, StreamingContext context)
+#if NET6_0
+            : base(info, context)
+#endif
         {
         }
-        #endregion
+#endregion
 
         protected virtual bool IsNotificar()
         {

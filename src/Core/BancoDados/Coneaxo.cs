@@ -7,8 +7,10 @@ using System.Linq;
 using System.Reflection;
 using Snebur.Utilidade;
 using Snebur.Dominio;
+using System.Data.Common;
 
-#if NET7_0
+
+#if NET6_0_OR_GREATER
 using Microsoft.Data.SqlClient;
 using Snebur;
 using Snebur.BancoDados;
@@ -26,15 +28,39 @@ namespace Snebur.BancoDados
         public Conexao(string nomeConnectionString)
         {
             this.NomeConnectionString = nomeConnectionString;
+            
             if (AplicacaoSnebur.Atual.ConnectionStrings[nomeConnectionString] != null)
             {
                 this.ConnectionString = AplicacaoSnebur.Atual.ConnectionStrings[nomeConnectionString];
             }
             else
             {
+               
                 this.ConnectionString = nomeConnectionString;
             }
+
+            if (!IsConnecionStringValida(this.ConnectionString))
+            {
+                throw new Exception($"A string de conexão '{this.ConnectionString}' não é válida");
+            }
         }
+
+        private bool IsConnecionStringValida(string connectionString)
+        {
+            try
+            {
+                var builder = new DbConnectionStringBuilder
+                {
+                    ConnectionString = connectionString
+                };
+                return true;
+            }
+            catch (ArgumentException)
+            {
+                return false;
+            }
+        }
+
         private DataTable RetornarDataTable(string sql,
                                           List<PropertyInfo> propriedadesChavePrimaria,
                                           SqlParameter[] parametros)

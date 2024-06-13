@@ -40,6 +40,6 @@ using System.Runtime.Versioning;
 [assembly: AssemblyFileVersion("1.0.0.1")]
 
 
-#if NET7_0
+#if NET6_0_OR_GREATER
 [assembly: SupportedOSPlatform("windows")]
 #endif

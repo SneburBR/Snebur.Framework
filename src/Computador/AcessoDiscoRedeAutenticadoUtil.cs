@@ -53,7 +53,7 @@ namespace Snebur.Computador
                 {
                     using (WindowsIdentity newId = new WindowsIdentity(safeTokenHandle.DangerousGetHandle()))
                     {
-#if NET7_0 == false
+#if NET6_0_OR_GREATER == false
                         using (WindowsImpersonationContext impersonatedUser = newId.Impersonate())
                         {
                             callbackSucesso.Invoke();

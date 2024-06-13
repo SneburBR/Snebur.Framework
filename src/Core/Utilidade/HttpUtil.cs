@@ -16,7 +16,7 @@ namespace Snebur.Utilidade
         public const int TIMEOUT_PADRAO = 15;
         private const int TAMANHO_BUFFER_PADRAO = 8 * 1024;
 
-#if NET7_0
+#if NET6_0_OR_GREATER
 
      
 #endif

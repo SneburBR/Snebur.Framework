@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-#if NET7_0
+#if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Net.Http.Headers;
@@ -15,7 +15,7 @@ namespace System.Web
     {
         public static Uri RetornarUrlRequisicao(this HttpRequest request)
         {
-#if NET7_0
+#if NET6_0_OR_GREATER
             return request.GetTypedHeaders()?.Referer ??
                    new Uri($"{request.Scheme}://{request.Host.Host}{request.GetEncodedPathAndQuery()}");
 #else
@@ -27,7 +27,7 @@ namespace System.Web
 
         public static string GetQueryStringValue(this HttpRequest request, string key)
         {
-#if NET7_0
+#if NET6_0_OR_GREATER
             if( request.Query.TryGetValue(key, out var value))
             {
                 if(value.Count == 1)
@@ -43,7 +43,7 @@ namespace System.Web
 #endif
         }
 
-#if NET7_0
+#if NET6_0_OR_GREATER
         public static Uri Url(this HttpRequest request)
         {
             var header = request.GetTypedHeaders();

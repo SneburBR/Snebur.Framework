@@ -2,7 +2,7 @@
 using System;
 using System.Configuration;
 
-#if NET7_0 == false
+#if NET6_0_OR_GREATER == false
 using Snebur.Computador;
 #endif
 
@@ -19,14 +19,14 @@ namespace Snebur.ServicoArquivo.Servidor
         private string Usuario => ConfiguracaoUtil.AppSettings[CHAVE_USUARIO];
         private string Senha => ConfiguracaoUtil.AppSettings[CHAVE_SENHA];
 
-#if NET7_0 == false
+#if NET6_0_OR_GREATER == false
         public AcessoCompartilhamentoRede AcessoCompartilhamentoRede { get; private set; }
 #endif
         public BaseAplicacaoServicoArquivo() : base()
         {
 
         }
-#if NET7_0 == false
+#if NET6_0_OR_GREATER == false
         public void AcessarRede()
         {
             if (this.IsAutenticarAcessoCompartilhado && this.AcessoCompartilhamentoRede == null)

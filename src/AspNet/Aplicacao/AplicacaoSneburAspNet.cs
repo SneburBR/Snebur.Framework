@@ -8,7 +8,7 @@ using System.ComponentModel;
 using System.Web;
 using Snebur.Linq;
 
-#if NET7_0
+#if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Http;
 #else
 //using System.Web;
@@ -21,7 +21,7 @@ namespace Snebur
         public const string PARAMETRO_IP_REQUISICAO = "IpRequisicao";
         public override EnumTipoAplicacao TipoAplicacao => EnumTipoAplicacao.DotNet_WebService;
 
-#if NET7_0  == false
+#if NET6_0_OR_GREATER  == false
         public virtual HttpContext HttpContext => HttpContext.Current;
 #endif
 
@@ -120,7 +120,7 @@ namespace Snebur
             }
         }
 
-#if NET7_0  == false
+#if NET6_0_OR_GREATER  == false
 
         public override string IP
         {
@@ -170,7 +170,7 @@ namespace Snebur
             throw new NotImplementedException();
         }
 
-#if NET7_0  == false
+#if NET6_0_OR_GREATER  == false
         [EditorBrowsable(EditorBrowsableState.Never)]
         public string UserAgent => this.HttpContext?.Request?.UserAgent;
 #else
@@ -209,7 +209,7 @@ namespace Snebur
 
         #endregion
 
-#if NET7_0
+#if NET6_0_OR_GREATER
 
         #region IAplicacaoSneburAspNetCore
 

@@ -16,7 +16,7 @@ using System.Web;
 using System.Threading.Tasks;
 using System.Net.Http;
 
-#if NET7_0
+#if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Http;
 #endif
 

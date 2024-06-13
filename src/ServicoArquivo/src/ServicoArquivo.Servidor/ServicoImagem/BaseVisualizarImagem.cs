@@ -7,7 +7,7 @@ using System.IO;
 using System.Web;
 using Zyoncore.Imagens;
 
-#if NET7_0
+#if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 #endif
@@ -20,7 +20,7 @@ namespace Snebur.ServicoArquivo
 
         public static HashSet<EnumTamanhoImagem> TamanhosSuportados = new HashSet<EnumTamanhoImagem>(new EnumTamanhoImagem[] { EnumTamanhoImagem.Miniatura,
                                                                                                                                EnumTamanhoImagem.Impressao });
-#if NET7_0
+#if NET6_0_OR_GREATER
 
         public async Task ProcessRequestAsync(HttpContext context)
         {
@@ -135,7 +135,7 @@ namespace Snebur.ServicoArquivo
         protected string RetornarValorParametro(string parametro, HttpContext zyonHttpContext)
         {
             var parametroBase64 = Base64Util.Encode(parametro);
-#if NET7_0
+#if NET6_0_OR_GREATER
             var valorParametro = String.Empty;
             throw new NotImplementedException();
             //var valorParametro = zyonHttpContext.Request.QueryString[parametroBase64];

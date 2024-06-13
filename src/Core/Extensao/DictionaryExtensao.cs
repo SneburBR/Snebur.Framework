@@ -19,7 +19,7 @@ namespace System
         //{
         //    return (dict as IEnumerable)?.SyncLock() ?? LinqExtensao.__lock;
         //}
-#if NET7_0 == false
+#if NET6_0_OR_GREATER == false
         public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dicionario, TKey key)
         {
             if (dicionario.TryGetValue(key, out TValue valor))

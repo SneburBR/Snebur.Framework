@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using Snebur.Utilidade;
 
-#if NET7_0
+#if NET6_0_OR_GREATER
 using Microsoft.Data.SqlClient;
 #else
 using System.Data.SqlClient;

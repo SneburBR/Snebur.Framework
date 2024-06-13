@@ -1,6 +1,6 @@
 ﻿using Snebur.Utilidade;
 using System;
-#if NET7_0
+#if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Http;
 #else
 using System.Web;

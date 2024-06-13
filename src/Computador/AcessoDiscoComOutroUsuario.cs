@@ -19,7 +19,7 @@ namespace Snebur.Computador
         private WindowsIdentity WindowsIdentity { get; set; }
         private SafeTokenHandle SafeTokenHandle { get; set; }
 
-#if NET7_0 == false
+#if NET6_0_OR_GREATER == false
         private WindowsImpersonationContext WindowsImpersonationContext { get; set; }
 #endif
 
@@ -66,7 +66,7 @@ namespace Snebur.Computador
                         {
                             this.WindowsIdentity = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
 
-#if NET7_0 == false
+#if NET6_0_OR_GREATER == false
                         this.WindowsImpersonationContext = this.WindowsIdentity.Impersonate();
 #endif
                         }
@@ -85,7 +85,7 @@ namespace Snebur.Computador
 
         public void Dispose()
         {
-#if NET7_0 == false
+#if NET6_0_OR_GREATER == false
             this.WindowsImpersonationContext?.Dispose();
 #endif
             this.WindowsIdentity?.Dispose();

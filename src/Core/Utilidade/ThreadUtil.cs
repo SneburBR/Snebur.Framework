@@ -299,7 +299,7 @@ namespace Snebur.Utilidade
         {
             if (Threads.TryRemove(identificador, out var thread))
             {
-#if NET7_0 == false
+#if NET6_0_OR_GREATER == false
                 try
                 {
                     thread.Abort();

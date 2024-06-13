@@ -2,7 +2,7 @@
 
 //namespace Snebur
 //{
-//#if NET7_0 == false
+//#if NET6_0_OR_GREATER == false
 //    internal class AplicacaoSneburInterna : AplicacaoSnebur
 //    {
 //        public string RetornarIpDaRequisicao()

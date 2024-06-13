@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using System.Web;
 
-#if NET7_0
+#if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 #endif
@@ -29,7 +29,7 @@ namespace Snebur.ServicoArquivo
 
         #region IHttpHandler
 
-#if NET7_0
+#if NET6_0_OR_GREATER
      
         public async Task ProcessRequestAsync(HttpContext context)
         {
@@ -225,7 +225,7 @@ namespace Snebur.ServicoArquivo
 
         #region Métodos privados
 
-#if NET7_0 == false
+#if NET6_0_OR_GREATER == false
         private MemoryStream RetornarInputStream(HttpContext httpContext)
         {
             var buffer = new byte[16 * 1024];
@@ -245,7 +245,7 @@ namespace Snebur.ServicoArquivo
         }
 #endif
 
-#if NET7_0
+#if NET6_0_OR_GREATER
         private async Task<MemoryStream> RetornarInputStreamAsync(HttpContext httpContext)
         {
             try

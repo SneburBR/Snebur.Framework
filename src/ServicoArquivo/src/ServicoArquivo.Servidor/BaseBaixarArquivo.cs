@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using System;
 
-#if NET7_0
+#if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Http;
 #else
 using System.Web;
@@ -29,7 +29,7 @@ namespace Snebur.ServicoArquivo
                 if (File.Exists(caminhoCompletoArquivo))
                 {
                     context.Response.ContentType = "application/octet-stream";
-#if NET7_0
+#if NET6_0_OR_GREATER
                     throw new NotImplementedException();
                     //using (var fs = StreamUtil.OpenRead(caminhoCompletoArquivo))
                     //{

@@ -1,49 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using Snebur.Utilidade;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using System.Windows.Media;
+//using System.Windows.Media.Imaging;
+//using Snebur.Utilidade;
 
-namespace Snebur.Imagem
-{
-    public partial class ConverterPerfil
-    {
-        public static EnumProvedorConvercao RetornarProvedorConversao(string caminhoArquivo, bool jpegUsuarMagick)
-        {
-            using (var fsOrigem = StreamUtil.OpenRead(caminhoArquivo))
-            {
-                //var decoder = BitmapDecoder.Create(fsOrigem, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
-                //var frame = decoder.Frames.First();
-                //var formato = frame.Format;
-                //var perfilOrigem = frame.RetornarPerfilNativo();
+//namespace Snebur.Imagem
+//{
+//    public partial class ConverterPerfil
+//    {
+//        public static EnumProvedorConvercao RetornarProvedorConversao(string caminhoArquivo, bool jpegUsuarMagick)
+//        {
+//            using (var fsOrigem = StreamUtil.OpenRead(caminhoArquivo))
+//            {
+//                //var decoder = BitmapDecoder.Create(fsOrigem, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
+//                //var frame = decoder.Frames.First();
+//                //var formato = frame.Format;
+//                //var perfilOrigem = frame.RetornarPerfilNativo();
 
-                var corFormato = CorFormatoUtil.RetornarFormatoCor(caminhoArquivo);
-                switch (corFormato)
-                {
-                    case (EnumFormatoCor.Cmyk):
+//                var corFormato = CorFormatoUtil.RetornarFormatoCor(caminhoArquivo);
+//                switch (corFormato)
+//                {
+//                    case (EnumFormatoCor.Cmyk):
 
-                        if (ImagemUtil.IsExtensaoJpeg(caminhoArquivo) && (jpegUsuarMagick))
-                        {
-                            return EnumProvedorConvercao.Magick;
-                        }
-                        return EnumProvedorConvercao.Nativo;
+//                        if (ImagemUtil.IsExtensaoJpeg(caminhoArquivo) && (jpegUsuarMagick))
+//                        {
+//                            return EnumProvedorConvercao.Magick;
+//                        }
+//                        return EnumProvedorConvercao.Nativo;
 
-                    case (EnumFormatoCor.Grayscale):
+//                    case (EnumFormatoCor.Grayscale):
 
-                        return EnumProvedorConvercao.Nativo;
+//                        return EnumProvedorConvercao.Nativo;
 
-                    default:
+//                    default:
 
-                        if (ImagemUtil.IsExtensaoJpeg(caminhoArquivo) && (jpegUsuarMagick))
-                        {
-                            return EnumProvedorConvercao.Magick;
-                        }
-                        return EnumProvedorConvercao.Nativo;
-                }
-            }
+//                        if (ImagemUtil.IsExtensaoJpeg(caminhoArquivo) && (jpegUsuarMagick))
+//                        {
+//                            return EnumProvedorConvercao.Magick;
+//                        }
+//                        return EnumProvedorConvercao.Nativo;
+//                }
+//            }
 
-        }
-    }
-}
+//        }
+//    }
+//}

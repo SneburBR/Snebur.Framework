@@ -12,7 +12,7 @@ using System.Xml.Serialization;
 using System.Text.Json.Serialization;
 using Snebur.Linq;
 
-#if NET7_0
+#if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Http;
 #endif
 
@@ -117,7 +117,7 @@ namespace Snebur.Comunicacao
         {
             try
             {
-#if NET7_0
+#if NET6_0_OR_GREATER
                 return context.Request.Body;
 #else
                 return StreamUtil.RetornarMemoryStreamBuferizada(context.Request.GetBufferedInputStream());

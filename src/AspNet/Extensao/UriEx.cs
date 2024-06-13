@@ -4,7 +4,7 @@ using System.Web;
 
 namespace Snebur
 {
-#if NET7_0 == false
+#if NET6_0_OR_GREATER == false
     public static class UriEx
     {
         public static Uri Combine(this Uri baseUri, string relativeUrl)
