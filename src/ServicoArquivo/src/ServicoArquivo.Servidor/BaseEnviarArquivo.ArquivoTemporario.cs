@@ -14,7 +14,9 @@ namespace Snebur.ServicoArquivo
     public abstract partial class BaseEnviarArquivo<TCabecalhoServicoArquivo, TInformacaoReposotiroArquivo> : BaseServicoArquivo<TCabecalhoServicoArquivo, TInformacaoReposotiroArquivo> where TCabecalhoServicoArquivo : CabecalhoServicoArquivo, TInformacaoReposotiroArquivo
                                                                                                                                                                                          where TInformacaoReposotiroArquivo : IInformacaoRepositorioArquivo
     {
-        private void SalvarArquivoTempoariario(HttpContext httpContext, long idArquivo, TCabecalhoServicoArquivo cabecalho, MemoryStream inputStream)
+        private void SalvarArquivoTempoariario(HttpContext httpContext,
+                                               long idArquivo, 
+                                               TCabecalhoServicoArquivo cabecalho, MemoryStream inputStream)
         {
             if (!(cabecalho.ParteAtual > 0))
             {

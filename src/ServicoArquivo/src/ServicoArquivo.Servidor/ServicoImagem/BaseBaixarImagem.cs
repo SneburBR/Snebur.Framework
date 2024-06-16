@@ -1,8 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
+
 #if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Http;
+using Snebur.Utilidade;
 #else
 using System.Web;
 #endif  
@@ -29,7 +32,9 @@ namespace Snebur.ServicoArquivo
                                                        this.NormalizarOrigem);
         }
 
-        protected override void BaixarArquivo(HttpContext httpContext, CabecalhoServicoImagem cabecalho)
+#if NET6_0_OR_GREATER
+
+        protected override async Task BaixarArquivoAsync(HttpContext httpContext, CabecalhoServicoImagem cabecalho)
         {
             if (cabecalho == null)
             {
@@ -53,17 +58,58 @@ namespace Snebur.ServicoArquivo
             }
             try
             {
-#if NET6_0_OR_GREATER
-                throw new NotImplementedException();
-                //using (var fs = StreamUtil.OpenRead(caminhoCompletoArquivo))
-                //{
-                //    await StreamUtil.SalvarStreamBufferizadaAsync(fs, context.Response.Body);
-                //}
+                 
+                var nomeArquivo = cabecalho.IdArquivo + ".png";
+                var response = httpContext.Response;
+                response.ContentType = "image/png";
+                response.Headers.Append("Content-Disposition", $"attachment; filename=\"{nomeArquivo}\"");
+
+                using (var fs = StreamUtil.OpenRead(caminhoCompletoArquivo))
+                {
+                    await StreamUtil.SalvarStreamBufferizadaAsync(fs, response.Body);
+                }
+                  
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao ler stream" + ex.Message);
+            }
+        }
 #else
+
+        protected override void BaixarArquivo(HttpContext httpContext, CabecalhoServicoImagem cabecalho)
+        {
+            if (cabecalho == null)
+            {
+                throw new ErroOperacaoInvalida(String.Format("O cabeçalho não foi definido."));
+            }
+
+            if (!(cabecalho.IdArquivo > 0))
+            {
+                throw new ErroOperacaoInvalida(String.Format("O idArquivo deve ser maior 0. '{0}", cabecalho.IdArquivo));
+            }
+
+            var IdBaseStream = cabecalho.IdArquivo;
+            var tamanhoImagem = (cabecalho as CabecalhoServicoImagem).TamanhoImagem;
+
+            if (!this.ServicoImagemCliente.ExisteImagem(IdBaseStream, tamanhoImagem))
+            {
+                throw new Exception(String.Format("A BaseStream com Id {0} não foi encontrada.", IdBaseStream));
+            }
+
+            string caminhoCompletoArquivo = this.RetornarCaminhoCompletoArquivo(cabecalho);
+            if (!File.Exists(caminhoCompletoArquivo))
+            {
+                throw new Exception(String.Format("A Arquivo '{0}' não foi encontrada. {1}. Camnho completo: {2}", Path.GetFileName(caminhoCompletoArquivo), IdBaseStream.ToString(), caminhoCompletoArquivo));
+            }
+
+            try
+            {
+ 
                 httpContext.Response.ContentType = "image/png";
                 httpContext.Response.ContentEncoding = Encoding.UTF8;
                 httpContext.Response.WriteFile(caminhoCompletoArquivo);
-#endif
+ 
 
 
                 //var bytesArquivo = File.ReadAllBytes(caminhoCompletoArquivo);
@@ -82,6 +128,8 @@ namespace Snebur.ServicoArquivo
                 throw new Exception("Erro ao ler stream" + ex.Message);
             }
         }
+
+#endif
 
         protected override string RetornarCaminhoCompletoArquivo(IInformacaoRepositorioImagem informacaoRepositorio)
         {

@@ -38,7 +38,6 @@ namespace Snebur
             }
 
             var colecao = new NameValueCollection();
-
             var paresChaveValor = AplicacaoSnebur.Configuration.AsEnumerable().ToList();
             foreach (var parChaveValor in paresChaveValor)
             {

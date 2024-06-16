@@ -4,21 +4,12 @@
 	<PropertyGroup>
 		<TargetFrameworks>net48;net6.0;net8.0</TargetFrameworks>
 		<RootNamespace>Snebur.ServicoArquivo</RootNamespace>
-		<Version>2.0.0</Version>
-		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<Nullable>disable</Nullable>
-		<AssemblyName>Snebur.ServicoArquivo.Comunicacao</AssemblyName>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<DefineConstants>NET50; DEBUG;TRACE</DefineConstants>
-		<WarningLevel>4</WarningLevel>
-		<NoWarn>1701;1702</NoWarn>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<DefineConstants>TRACE</DefineConstants>
-	</PropertyGroup>
+	 
 	<ItemGroup>
 		<Compile Remove="Bibliotecas\**" />
 		<Compile Remove="Properties\**" />
@@ -27,6 +18,7 @@
 		<None Remove="Bibliotecas\**" />
 		<None Remove="Properties\**" />
 	</ItemGroup>
+	
 	<ItemGroup>
 		<None Remove="Snebur.ServicoArquivo.Cliente.Net50.csproj.vspscc" />
 		<None Remove="Snebur.ServicoArquivo.Comunicacao.csproj.vspscc" />
@@ -48,16 +40,8 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net48' ">
-
 		<Reference Include="System.Web" />
 	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0' ">
-
-		<!--<ProjectReference Include="..\..\..\AspNetCore\Snebur.AspNetCore.csproj" />-->
-
-	</ItemGroup>
-
-
+ 
 
 </Project>

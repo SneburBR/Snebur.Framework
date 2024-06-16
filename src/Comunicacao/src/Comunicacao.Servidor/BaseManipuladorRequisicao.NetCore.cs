@@ -1,8 +1,6 @@
 ﻿
 #if NET6_0_OR_GREATER
 
-using Microsoft.AspNetCore.Http;
-
 namespace Snebur.Comunicacao
 {
     using Microsoft.AspNetCore.Builder;
@@ -28,8 +26,10 @@ namespace Snebur.Comunicacao
     public abstract partial class BaseManipuladorRequisicao : IHttpModule, IDisposable
     {
         public bool IsWebSocket { get; protected set; }
+
+        private static BaseManipuladorRequisicao _manipulador;
         public static WebApplication Inicializar<T>(AplicacaoSneburAspNet aplicacaoSnebur,
-                                                    bool isWebSocket) where T : BaseManipuladorRequisicao
+                                                    bool isWebSocket = false) where T : BaseManipuladorRequisicao
         {
 
             var diretorioBase = Directory.GetCurrentDirectory();
@@ -56,25 +56,28 @@ namespace Snebur.Comunicacao
 
             var builder = WebApplication.CreateBuilder();
             builder.Configuration.AddConfiguration(configuracao);
+            //builder.WebHost.ConfigureKestrel(serverOptions =>
+            //{
+            //    serverOptions.AllowSynchronousIO = true;
+            //});
 
-            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-            //builder.Services.AddTransient<IUserRepository, UserRepository>();
-            builder.Services.AddHttpContextAccessor();
-
-
+            ConfigureServicesInterno(builder.Services);
+ 
             if (isWebSocket)
             {
                 builder.Services.AddSignalR();
             }
 
             var app = builder.Build();
+            
 
             aplicacaoSnebur.Inicializar();
 
             Configure(app, app.Environment, isWebSocket);
 
             //app.UseStaticFiles();
+
+            _manipulador = Activator.CreateInstance<T>();
 
             app.Run(async context =>
             {
@@ -87,7 +90,7 @@ namespace Snebur.Comunicacao
             app.Run();
 
             return app;
-             
+
             //CreateHostBuilder(args).Build().Run();
         }
 
@@ -95,7 +98,26 @@ namespace Snebur.Comunicacao
 
         public void ConfigureServices(IServiceCollection services)
         {
+            BaseManipuladorRequisicao.ConfigureServicesInterno(services);
+        }
+
+        public static void ConfigureServicesInterno(IServiceCollection services)
+        {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddHttpContextAccessor();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CrossDomainAll",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                               .AllowAnyMethod()
+                               .AllowAnyHeader();
+                    });
+            });
+            //services.AddControllersWithViews();
+            //services.AddControllers();
         }
 
         public static void Configure(WebApplication app,
@@ -115,8 +137,10 @@ namespace Snebur.Comunicacao
             {
                 //app.UseExceptionHandler("/Error");
                 app.UseHsts();
+                //app.UseResponseCompression();
             }
-            
+
+            app.UseCors("CrossDomainAll");
 
             if (AplicacaoSnebur.Atual is AplicacaoSneburAspNet aplicacao)
             {
@@ -158,7 +182,7 @@ namespace Snebur.Comunicacao
                 });
             }
 
-            app.UseResponseCompression();
+
 
             //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             //loggerFactory.AddDebug();
@@ -306,6 +330,22 @@ namespace Snebur.Comunicacao
                 return false;
             }
 
+            var caminhoManipulador = Path.GetFileNameWithoutExtension(caminho);
+            if (this.ManipuladoresGenericos.ContainsKey(caminhoManipulador))
+            {
+                var isValidarToken = this.ManipuladoresGenericos[caminhoManipulador].isValidarToken;
+                if (isValidarToken && !this.IsRequicaoValida(request, false))
+                {
+                    response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    await httpContext.CompleteRequestAsync();
+                    return false;
+                }
+
+                await this.ExecutarManipuladorGenericoAsync(httpContext, caminhoManipulador);
+                await httpContext.CompleteRequestAsync();
+                return false;
+            }
+
             if (this.ArquivosAutorizados.ContainsKey(caminho))
             {
                 var isIgnorarValidacaoTokenAplicacao = this.ArquivosAutorizados[caminho];
@@ -321,25 +361,8 @@ namespace Snebur.Comunicacao
                 return false;
             }
 
-            var caminhoManipulador = Path.GetFileNameWithoutExtension(caminho);
-            if (this.ManipuladoresGenericos.ContainsKey(caminhoManipulador))
-            {
-                var isValidarToken = this.ManipuladoresGenericos[caminhoManipulador].isValidarToken;
-                if (isValidarToken && !this.IsRequicaoValida(request, false))
-                {
-
-                    response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                    await httpContext.CompleteRequestAsync();
-                    return false;
-                }
-
-                await this.ExecutarManipuladorGenericoAsync(httpContext, caminhoManipulador);
-                await httpContext.CompleteRequestAsync();
-                return false;
-            }
-
             if ((request.Headers.ContainsKey(ParametrosComunicacao.TOKEN) &&
-                        !request.Headers.ContainsKey("TOKEN")))
+                !request.Headers.ContainsKey("TOKEN")))
             {
                 throw new Exception("Invalida case insensitive");
                 //await httpContext.CompleteRequestAsync();

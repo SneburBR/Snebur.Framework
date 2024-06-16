@@ -18,7 +18,8 @@ namespace Snebur.Comunicacao
             this.NomeManipulador = requisicao.NomeManipulador;
         }
 
-        private static string RetornarMensagemErro(Exception erro, Requisicao requisicao)
+        private static string RetornarMensagemErro(Exception erro, 
+                                                   Requisicao requisicao)
         {
             return $"Manipulador {requisicao.NomeManipulador} \r\n " +
                    $"Operacao : {requisicao.Operacao} \r\n " +

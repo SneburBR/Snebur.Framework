@@ -16,8 +16,7 @@ namespace System.Web
         public static Uri RetornarUrlRequisicao(this HttpRequest request)
         {
 #if NET6_0_OR_GREATER
-            return request.GetTypedHeaders()?.Referer ??
-                   new Uri($"{request.Scheme}://{request.Host.Host}{request.GetEncodedPathAndQuery()}");
+            return new Uri($"{request.Scheme}://{request.Host.Host}{request.GetEncodedPathAndQuery()}");
 #else
             return request.Url ??
                    request.UrlReferrer;
@@ -25,12 +24,25 @@ namespace System.Web
 
         }
 
-        public static string GetQueryStringValue(this HttpRequest request, string key)
+        public static string GetValue(this HttpRequest request, string key)
         {
 #if NET6_0_OR_GREATER
-            if( request.Query.TryGetValue(key, out var value))
+
+            if (request.HasFormContentType)
             {
-                if(value.Count == 1)
+                if (request.Form.TryGetValue(key, out var formValue))
+                {
+                    if (formValue.Count == 1)
+                    {
+                        return formValue.Single();
+                    }
+                    return formValue.ToString();
+                }
+            }
+
+            if (request.Query.TryGetValue(key, out var value))
+            {
+                if (value.Count == 1)
                 {
                     return value.Single();
                 }

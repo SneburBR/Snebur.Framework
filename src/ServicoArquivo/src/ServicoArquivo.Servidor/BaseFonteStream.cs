@@ -3,6 +3,8 @@ using Snebur.Utilidade;
 using System;
 using System.IO;
 using System.Web;
+using System.Net.Http;
+
 
 #if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Http;
@@ -17,9 +19,28 @@ namespace Snebur.ServicoArquivo
 
 #if NET6_0_OR_GREATER
 
-        public Task  ProcessRequestAsync(HttpContext context)
+        public virtual async Task ProcessRequestAsync(HttpContext httpContext)
         {
-            throw new NotImplementedException();
+            var response = httpContext.Response;
+            var caminhoFonte = this.RetornarCaminhoArquivoFonte(httpContext);
+            if (!String.IsNullOrEmpty(caminhoFonte) && 
+                File.Exists(caminhoFonte))
+            {
+                var mineTypeFonte = this.RetornarMineTypeFonte(httpContext);
+                response.ContentType = mineTypeFonte;
+
+                var formatoFonte = (EnumFormatoArquivoFonte)Convert.ToInt32(this.RetornarValorParametro(ConstantesServicoFonte.NOME_FORMATO_FONTE, httpContext));
+                response.Headers.Append("Content-Disposition", $"attachment; filename=\"fonte.{formatoFonte}\"");
+
+                using (var fs = StreamUtil.OpenRead(caminhoFonte))
+                {
+                    await StreamUtil.SalvarStreamBufferizadaAsync(fs, response.Body);
+                }
+            }
+            else
+            {
+                response.StatusCode = 500;
+            }
         }
 
 #else

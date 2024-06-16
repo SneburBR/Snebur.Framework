@@ -1,7 +1,10 @@
 ﻿using Snebur.Utilidade;
 using System;
 using System.IO;
+
+
 #if NET6_0_OR_GREATER
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 #else
 using System.Web;
@@ -25,10 +28,21 @@ namespace Snebur.ServicoArquivo
 
         #region reescritos
 
+#if NET6_0_OR_GREATER
+
+        protected override Task IniciarAsync(HttpContext context, TCabecalhoServicoArquivo cabecalho, MemoryStream inputStream)
+        {
+            this.SalvarArquivo(context, cabecalho, inputStream);
+            return Task.CompletedTask;
+        }
+
+#else
         protected override void Iniciar(HttpContext context, TCabecalhoServicoArquivo cabecalho, MemoryStream inputStream)
         {
             this.SalvarArquivo(context, cabecalho, inputStream);
         }
+#endif
+
 
         protected override TCabecalhoServicoArquivo RetornarCabecalhoServicoArquivo(HttpContext httpContext)
         {

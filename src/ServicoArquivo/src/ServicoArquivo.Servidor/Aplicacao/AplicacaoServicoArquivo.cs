@@ -14,7 +14,7 @@ namespace Snebur.ServicoArquivo.Servidor
         private const string CHAVE_NOME_COMPUTADOR = "NomeComputadorAcesso";
         private const string CHAVE_USUARIO = "Usuario";
         private const string CHAVE_SENHA = "Senha";
-        public bool IsAutenticarAcessoCompartilhado => Convert.ToBoolean(ConfigurationManager.AppSettings[CHAVE_AUTENTICAR_ACESSO_COMPARTILHADO]);
+        public bool IsAutenticarAcessoCompartilhado => Convert.ToBoolean(ConfiguracaoUtil.AppSettings[CHAVE_AUTENTICAR_ACESSO_COMPARTILHADO]);
         private string NomeComputadorAcesso => ConfiguracaoUtil.AppSettings[CHAVE_NOME_COMPUTADOR];
         private string Usuario => ConfiguracaoUtil.AppSettings[CHAVE_USUARIO];
         private string Senha => ConfiguracaoUtil.AppSettings[CHAVE_SENHA];

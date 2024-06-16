@@ -12,7 +12,10 @@ using System.Xml.Serialization;
 using System.Text.Json.Serialization;
 using Snebur.Linq;
 
+
+
 #if NET6_0_OR_GREATER
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 #endif
 
@@ -55,7 +58,95 @@ namespace Snebur.Comunicacao
             this.CredencialServico = credencialServico;
             this.IdentificadorProprietario = identificadorProprietario;
             this.NomeManipulador = nomeManipulador;
-            this.DeserializarPacote(httpContext);
+            ;
+        }
+
+#if NET6_0_OR_GREATER
+        public async Task ProcessarAsync()
+        {
+            var httpContext = this.HttpContext;
+            using (var streamRequisicao = await this.RetornarInputStreamBufferizado(httpContext))
+            {
+                this.ProcessarInterno(streamRequisicao);
+            }
+
+        }
+
+        private async Task<MemoryStream> RetornarInputStreamBufferizado(HttpContext context)
+        {
+            try
+            {
+                var resultado = new MemoryStream();
+                var streamOrigem = context.Request.Body;
+                while (true)
+                {
+                    var buffer = new byte[1024];
+                    var bytesRead = await streamOrigem.ReadAsync(buffer, 0, buffer.Length);
+                    if (bytesRead == 0)
+                    {
+                        break;
+                    }
+                    await resultado.WriteAsync(buffer, 0, bytesRead);
+                }
+                resultado.Position = 0;
+                return resultado;
+                
+            }
+            catch
+            {
+                throw new ErroReceberStreamCliente("Erro ao receber a stream buffered, a conexão foi fechada pelo cliente");
+            }
+        }
+
+#else
+        public void Processar()
+        {
+            var httpContext = this.HttpContext;
+            using (var streamRequisicao = this.RetornarInputStreamBufferizado(httpContext))
+            {
+                this.ProcessarInterno(streamRequisicao);
+            }
+        }
+        private MemoryStream RetornarInputStreamBufferizado(HttpContext context)
+        {
+            try
+            {
+                return StreamUtil.RetornarMemoryStreamBuferizada(context.Request.GetBufferedInputStream());
+            }
+            catch
+            {
+                throw new ErroReceberStreamCliente("Erro ao receber a stream buffered, a conexão foi fechada pelo cliente");
+            }
+        }
+
+
+#endif
+
+        private void ProcessarInterno(MemoryStream streamRequisicao)
+        {
+            var json = PacoteUtil.DescompactarPacote(streamRequisicao);
+            if (DebugUtil.IsAttached)
+            {
+                this._jsonRequisacao = json;
+            }
+            this.ContratoChamada = JsonUtil.Deserializar<ContratoChamada>(json, EnumTipoSerializacao.DotNet);
+            this.Cabecalho = this.ContratoChamada.Cabecalho;
+            this.InformacaoSessaoUsuario = this.ContratoChamada.InformacaoSessaoUsuario;
+            this.CredencialUsuario = this.ContratoChamada.Cabecalho.CredencialUsuario;
+            this.CredencialAvalisata = this.ContratoChamada.Cabecalho.CredencialAvalista;
+            this.Operacao = this.ContratoChamada.Operacao;
+            this.DataHoraChamada = this.ContratoChamada.DataHora;
+            this.AdicionarItensrequisicaoAtual();
+
+            this.IsSerializarJavascript = (this.InformacaoSessaoUsuario.TipoAplicacao == EnumTipoAplicacao.Typescript);
+
+
+            foreach (var parametro in this.ContratoChamada.Parametros)
+            {
+                this.Parametros.Add(NormalizacaoUtil.NormalizarNomeParametro(parametro.Nome), this.RetornarValorParametroChamada(parametro));
+            }
+
+
         }
 
         #endregion
@@ -76,60 +167,9 @@ namespace Snebur.Comunicacao
 
         #region Métodos privados
 
-        private void DeserializarPacote(HttpContext context)
-        {
-
-            var streamBufferizada = this.RetornarInputStreamBufferizado(context);
-            using (var streamRequisicao = streamBufferizada)
-            {
-                try
-                {
-                    var json = PacoteUtil.DescompactarPacote(streamRequisicao);
-                    if (DebugUtil.IsAttached)
-                    {
-                        this._jsonRequisacao = json;
-                    }
-                    this.ContratoChamada = JsonUtil.Deserializar<ContratoChamada>(json, EnumTipoSerializacao.DotNet);
-                    this.Cabecalho = this.ContratoChamada.Cabecalho;
-                    this.InformacaoSessaoUsuario = this.ContratoChamada.InformacaoSessaoUsuario;
-                    this.CredencialUsuario = this.ContratoChamada.Cabecalho.CredencialUsuario;
-                    this.CredencialAvalisata = this.ContratoChamada.Cabecalho.CredencialAvalista;
-                    this.Operacao = this.ContratoChamada.Operacao;
-                    this.DataHoraChamada = this.ContratoChamada.DataHora;
-                    this.AdicionarItensrequisicaoAtual();
-
-                    this.IsSerializarJavascript = (this.InformacaoSessaoUsuario.TipoAplicacao == EnumTipoAplicacao.Typescript);
 
 
-                    foreach (var parametro in this.ContratoChamada.Parametros)
-                    {
-                        this.Parametros.Add(NormalizacaoUtil.NormalizarNomeParametro(parametro.Nome), this.RetornarValorParametroChamada(parametro));
-                    }
-                }
-                catch (Exception erro)
-                {
-                    throw new ErroContratoChamada(erro);
-                }
-            }
-        }
 
-        private Stream RetornarInputStreamBufferizado(HttpContext context)
-        {
-            try
-            {
-#if NET6_0_OR_GREATER
-                return context.Request.Body;
-#else
-                return StreamUtil.RetornarMemoryStreamBuferizada(context.Request.GetBufferedInputStream());
-                //return context.Request.InputStream;
-#endif
-
-            }
-            catch
-            {
-                throw new ErroReceberStreamCliente("Erro ao receber a stream buffered, a conexão foi fechada pelo cliente");
-            }
-        }
 
         private object RetornarValorParametroChamada(ParametroChamada parametro)
         {

@@ -1,8 +1,7 @@
-﻿
+﻿#if NET6_0_OR_GREATER == false
+
 namespace Snebur.Comunicacao
 {
-#if NET6_0_OR_GREATER == false
-
     using Snebur.Servicos;
     using Snebur.Utilidade;
     using System;
@@ -34,6 +33,8 @@ namespace Snebur.Comunicacao
                                                        this.IdentificadorProprietario,
                                                        this.GetType().Name))
                 {
+                    requisicao.Processar();
+
                     if (requisicao.CredencialServicoValida())
                     {
                         this.InformacaoSessaoUsuario = requisicao.InformacaoSessaoUsuario;
@@ -109,5 +110,6 @@ namespace Snebur.Comunicacao
 
     }
 
-#endif
+
 }
+#endif

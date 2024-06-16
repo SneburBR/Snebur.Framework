@@ -11,10 +11,14 @@
     <AssemblyName>Snebur.Comunicacao.WebSocket.Experimental</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>%24/Snebur.Framework/Snebur.Framework - Desenvolvimento - SigiX/Snebur.Comunicacao.WebSocket.Experimental</SccProjectName>
-    <SccLocalPath>.</SccLocalPath>
-    <SccAuxPath>http://177.128.0.249:8080/tfs/sneburcollection</SccAuxPath>
-    <SccProvider>{1905a60c-249f-4b2c-b12b-36074eb77fad}</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

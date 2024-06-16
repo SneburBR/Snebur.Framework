@@ -42,7 +42,7 @@ namespace Snebur.ServicoArquivo
                 {
                     this.ServicoArquivoCliente = this.RetornarServicoArquivoCliente(cabecalho);
                     var inputStream = await this.RetornarInputStreamAsync(context);
-                    this.Iniciar(context, cabecalho, inputStream);
+                    await this.IniciarAsync(context, cabecalho, inputStream);
                 }
             }
             catch (Exception ex)
@@ -98,7 +98,6 @@ namespace Snebur.ServicoArquivo
             {
                 erro = ex;
                 tipoErro = this.RetornarTipoErro(ex);
-
             }
             finally
             {
@@ -119,6 +118,7 @@ namespace Snebur.ServicoArquivo
                         resposta.MensagemErro = erro.Message;
                         resposta.TipoErroServicoArquivo = tipoErro;
                     }
+
                     //context.Response.AddHeader("Access-Control-Allow-Origin", "*.grafis.com.br, *.photosapp.com.br")
                     //context.Response.AddHeader("Access-Control-Allow-Origin", "*")
                     //context.Response.AddHeader("Access-Control-Allow-Methods", "POST")
@@ -212,8 +212,11 @@ namespace Snebur.ServicoArquivo
 
         #region Métodos abstratos
 
+#if NET6_0_OR_GREATER
+        protected abstract Task IniciarAsync(HttpContext context, TCabecalhoServicoArquivo cabecalho, MemoryStream inputStream);
+#else
         protected abstract void Iniciar(HttpContext context, TCabecalhoServicoArquivo cabecalho, MemoryStream inputStream);
-
+#endif
         protected abstract string RetornarRepositoArquivo(TInformacaoRepositorio informacaoRepositorio);
 
         protected abstract string RetornarUrlServicoArquivoCliente();
@@ -221,7 +224,7 @@ namespace Snebur.ServicoArquivo
         protected abstract string NormalizarOrigem(string origem);
 
 
-        #endregion
+#endregion
 
         #region Métodos privados
 
