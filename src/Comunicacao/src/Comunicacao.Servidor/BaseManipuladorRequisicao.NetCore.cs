@@ -11,6 +11,7 @@ namespace Snebur.Comunicacao
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
+    using Snebur.Comunicacao.Servidor;
     using Snebur.Utilidade;
     using System;
     using System.IO;
@@ -27,172 +28,17 @@ namespace Snebur.Comunicacao
     {
         public bool IsWebSocket { get; protected set; }
 
-        private static BaseManipuladorRequisicao _manipulador;
-        public static WebApplication Inicializar<T>(AplicacaoSneburAspNet aplicacaoSnebur,
-                                                    bool isWebSocket = false) where T : BaseManipuladorRequisicao
-        {
-
-            var diretorioBase = Directory.GetCurrentDirectory();
-            if (!Directory.Exists(diretorioBase))
-            {
-                throw new DirectoryNotFoundException(diretorioBase);
-            }
-
-            var configBuilder = new ConfigurationBuilder()
-                            .SetBasePath(Directory.GetCurrentDirectory())
-                            .AddJsonFile("appsettings.json");
-
-            var configuracao = configBuilder.Build();
-            aplicacaoSnebur.Configure(configuracao);
-
-            //
-            //var webHostBuilder = Host.CreateDefaultBuilder();
-            //webHostBuilder.ConfigureWebHostDefaults(webBuilder =>
-            //{
-            //    webBuilder.UseStartup<T>();
-            //});
-            //var servidorWeb = webHostBuilder.Build();
-            //servidorWeb.Run();
-
-            var builder = WebApplication.CreateBuilder();
-            builder.Configuration.AddConfiguration(configuracao);
-            //builder.WebHost.ConfigureKestrel(serverOptions =>
-            //{
-            //    serverOptions.AllowSynchronousIO = true;
-            //});
-
-            ConfigureServicesInterno(builder.Services);
- 
-            if (isWebSocket)
-            {
-                builder.Services.AddSignalR();
-            }
-
-            var app = builder.Build();
-            
-
-            aplicacaoSnebur.Inicializar();
-
-            Configure(app, app.Environment, isWebSocket);
-
-            //app.UseStaticFiles();
-
-            _manipulador = Activator.CreateInstance<T>();
-
-            app.Run(async context =>
-            {
-                using (var manipulador = Activator.CreateInstance<T>())
-                {
-                    manipulador.AntesProcessarRequisicao(context);
-                    await manipulador.ProcessarRequisicaoAsync(context);
-                }
-            });
-            app.Run();
-
-            return app;
-
-            //CreateHostBuilder(args).Build().Run();
-        }
+      
+      
 
         public IConfigurationRoot Configuration => throw new NotImplementedException();
 
         public void ConfigureServices(IServiceCollection services)
         {
-            BaseManipuladorRequisicao.ConfigureServicesInterno(services);
+            Startup.ConfigureServicesInterno(services);
         }
 
-        public static void ConfigureServicesInterno(IServiceCollection services)
-        {
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddHttpContextAccessor();
-
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CrossDomainAll",
-                    builder =>
-                    {
-                        builder.AllowAnyOrigin()
-                               .AllowAnyMethod()
-                               .AllowAnyHeader();
-                    });
-            });
-            //services.AddControllersWithViews();
-            //services.AddControllers();
-        }
-
-        public static void Configure(WebApplication app,
-                                    IWebHostEnvironment env,
-                                    bool isWebSocket)
-        {
-
-#if DEBUG
-            if (env.IsDevelopment())
-            {
-                //app.UseDeveloperExceptionPage();
-            }
-#endif
-            app.UseDeveloperExceptionPage();
-
-            if (env.IsProduction())
-            {
-                //app.UseExceptionHandler("/Error");
-                app.UseHsts();
-                //app.UseResponseCompression();
-            }
-
-            app.UseCors("CrossDomainAll");
-
-            if (AplicacaoSnebur.Atual is AplicacaoSneburAspNet aplicacao)
-            {
-                var httpContextAccessor = app.Services.GetRequiredService<IHttpContextAccessor>();
-                aplicacao.ConfigureHttpContextAccessor(httpContextAccessor);
-            }
-            else
-            {
-                throw new Erro("A aplicação AplicacaoSneburAspNetCore não foi inicializada");
-            }
-
-            if (isWebSocket)
-            {
-                var webSocketOptions = new WebSocketOptions
-                {
-                    KeepAliveInterval = TimeSpan.FromMinutes(2)
-                };
-                app.UseWebSockets(webSocketOptions);
-
-                app.Use(async (context, next) =>
-                {
-                    if (context.Request.Path == "/ws")
-                    {
-                        if (context.WebSockets.IsWebSocketRequest)
-                        {
-                            using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
-                            {
-                                //await Echo(webSocket);
-                                throw new NotImplementedException();
-                            }
-                        }
-                        else
-                        {
-                            context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                        }
-                    }
-
-                    await next.Invoke();
-                });
-            }
-
-
-
-            //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            //loggerFactory.AddDebug();
-            //app.UseRouting();
-            //app.UseMiddleware<Manipulador>();
-            //app.UseDefaultFiles();
-            //app.UseStaticFiles();
-            //app.UseResponseCompression();
-
-        }
+     
 
         public async Task ProcessarRequisicaoAsync(HttpContext context)
         {

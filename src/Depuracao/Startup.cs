@@ -8,6 +8,7 @@ using Microsoft.Extensions.FileProviders;
 using System;
 using System.IO;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,80 +24,72 @@ namespace Snebur
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            ConfigureServices(builder.Services);
 
             var app = builder.Build();
             var caminhoAplicacao = builder.Environment.ContentRootPath;
 
-            //var pathBuild = Path.Combine(caminhoAplicacao, "build");
-            //var pathApresentacao = Path.Combine(caminhoAplicacao, "apresentacao");
-
-            app.UseDeveloperExceptionPage();
-
-            //app.UseStaticFiles(new StaticFileOptions
-            //{
-            //    FileProvider = new PhysicalFileProvider(pathBuild),
-            //    RequestPath = "/build"
-            //});
-
-            //app.UseStaticFiles(new StaticFileOptions
-            //{
-            //    FileProvider = new PhysicalFileProvider(pathBuild),
-            //    RequestPath = "/apresentacao",
-            //    ContentTypeProvider = new FileExtensionContentTypeProvider
-            //    {
-            //        Mappings = { [".shtml"] = "text/html" }
-            //    }
-            //});
-
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                ContentTypeProvider = new FileExtensionContentTypeProvider
-                {
-                    Mappings = { [".shtml"] = "text/html" }
-                }
-            });
-
-            //var defaultFileOptions = new DefaultFilesOptions();
-            //defaultFileOptions.DefaultFileNames.Add("index.html");
-            //app.UseDefaultFiles(defaultFileOptions);
+            Configure(app, app.Environment);
 
             app.Run(async context =>
             {
-                var request = context.Request;
-                var path = request.Path.ToString().ToLower();
-
-                if (path == "/vs-porta-depuracao")
+                try
                 {
-                    var vsPort = GetPortaVsDepuracao(caminhoAplicacao);
-                    await context.Response.WriteAsync(vsPort.ToString());
-                    return;
+                    await TryProcessarAsync(context, caminhoAplicacao);
                 }
-
-                var response = context.Response;
-                var extensao = Path.GetExtension(path);
-
-                if (IsArquivoSistema(extensao))
-                {
-                    var fullPath = CombinePaths(caminhoAplicacao, path);
-                    var melhorMimeType = GetMimeType(extensao);
-                    await ReponderArquivoAsync(response,
-                                               fullPath,
-                                               melhorMimeType);
-                    return;
-                }
-
-                if (request.Method == "GET" && !IsFileName(path))
-                {
-                    var caminhoIndexHtml = Path.Combine(caminhoAplicacao, "wwwroot/index.html");
-                    if (caminhoIndexHtml != null && File.Exists(caminhoIndexHtml))
-                    {
-                        await ReponderArquivoHtmlAsync(response, caminhoIndexHtml);
-                    }
-                }
-
+                catch 
+                { }
             });
             app.Run();
         }
+
+        private static async Task TryProcessarAsync(HttpContext context, string caminhoAplicacao)
+        {
+            try
+            {
+                await ProcessarAsync(context, caminhoAplicacao);
+            }
+            catch (Exception ex)
+            {
+                await context.Response.WriteAsync(ex.Message);
+            }
+        }
+        private static async Task ProcessarAsync(HttpContext context, string caminhoAplicacao)
+        {
+            var request = context.Request;
+            var path = request.Path.ToString().ToLower();
+
+            if (path == "/vs-porta-depuracao")
+            {
+                var vsPort = GetPortaVsDepuracao(caminhoAplicacao);
+                await context.Response.WriteAsync(vsPort.ToString());
+                return;
+            }
+
+            var response = context.Response;
+            var extensao = Path.GetExtension(path);
+
+            if (IsArquivoSistema(extensao))
+            {
+                var fullPath = CombinePaths(caminhoAplicacao, path);
+                var melhorMimeType = GetMimeType(extensao);
+                await ReponderArquivoAsync(response,
+                                           fullPath,
+                                           melhorMimeType);
+                return;
+            }
+
+            if (request.Method == "GET" && !IsFileName(path))
+            {
+                var caminhoIndexHtml = Path.Combine(caminhoAplicacao, "wwwroot/index.html");
+                if (caminhoIndexHtml != null && File.Exists(caminhoIndexHtml))
+                {
+                    await ReponderArquivoHtmlAsync(response, caminhoIndexHtml);
+                }
+            }
+        }
+
+        
 
         static bool IsArquivoSistema(string extensao)
         {
@@ -199,6 +192,62 @@ namespace Snebur
                 path2 = path2.TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
             }
             return Path.Combine(path1, path2);
+        }
+
+        public static void ConfigureServices(IServiceCollection services)
+        {
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddHttpContextAccessor();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CrossDomainAll",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                               .AllowAnyMethod()
+                               .AllowAnyHeader();
+                    });
+            });
+            //services.AddControllersWithViews();
+            //services.AddControllers();
+        }
+
+        private static void Configure(WebApplication app, IWebHostEnvironment environment)
+        {
+            //var pathBuild = Path.Combine(caminhoAplicacao, "build");
+            //var pathApresentacao = Path.Combine(caminhoAplicacao, "apresentacao");
+
+            app.UseDeveloperExceptionPage();
+            app.UseCors("CrossDomainAll");
+
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
+            //    FileProvider = new PhysicalFileProvider(pathBuild),
+            //    RequestPath = "/build"
+            //});
+
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
+            //    FileProvider = new PhysicalFileProvider(pathBuild),
+            //    RequestPath = "/apresentacao",
+            //    ContentTypeProvider = new FileExtensionContentTypeProvider
+            //    {
+            //        Mappings = { [".shtml"] = "text/html" }
+            //    }
+            //});
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                ContentTypeProvider = new FileExtensionContentTypeProvider
+                {
+                    Mappings = { [".shtml"] = "text/html" }
+                }
+            });
+
+            //var defaultFileOptions = new DefaultFilesOptions();
+            //defaultFileOptions.DefaultFileNames.Add("index.html");
+            //app.UseDefaultFiles(defaultFileOptions);
         }
     }
 

@@ -33,6 +33,7 @@ namespace Snebur.Comunicacao
         public CredencialUsuario CredencialUsuario { get; private set; }
         public CredencialUsuario CredencialAvalisata { get; private set; }
         public InformacaoSessaoUsuario InformacaoSessaoUsuario { get; private set; }
+        public string CaminhoAplicacao { get; }
         public string IdentificadorProprietario { get; private set; }
         public string Operacao { get; private set; }
         public DateTime DataHoraChamada { get; private set; }
@@ -54,11 +55,17 @@ namespace Snebur.Comunicacao
                           string identificadorProprietario,
                           string nomeManipulador)
         {
+            this.CaminhoAplicacao = httpContext.Items[ConstantesItensRequsicao.CAMINHO_APLICACAO]?.ToString();
             this.HttpContext = httpContext;
             this.CredencialServico = credencialServico;
             this.IdentificadorProprietario = identificadorProprietario;
             this.NomeManipulador = nomeManipulador;
-            ;
+
+            if (!Directory.Exists(this.CaminhoAplicacao))
+            {
+                throw new DirectoryNotFoundException($"Caminho da aplicação não encontrado {this.CaminhoAplicacao}");
+            }
+            
         }
 
 #if NET6_0_OR_GREATER
@@ -90,7 +97,7 @@ namespace Snebur.Comunicacao
                 }
                 resultado.Position = 0;
                 return resultado;
-                
+
             }
             catch
             {

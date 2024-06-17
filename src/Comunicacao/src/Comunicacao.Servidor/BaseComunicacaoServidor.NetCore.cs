@@ -9,7 +9,6 @@ namespace Snebur.Comunicacao
     using System.Net;
     using System.Text;
     using System.Threading.Tasks;
-    using System.Web;
 
     public abstract partial class BaseComunicacaoServidor
     {
@@ -26,8 +25,8 @@ namespace Snebur.Comunicacao
                 response.Headers.Append("Cache-Control", "no-cache, no-store, must-revalidate");
                 response.Headers.Append("Pragma", "no-cache");
                 response.Headers.Append("Expires", "0");
-                 
 
+                
                 using (var requisicao = new Requisicao(httpContext,
                                                        this.CredencialServico,
                                                        this.IdentificadorProprietario,
@@ -57,9 +56,7 @@ namespace Snebur.Comunicacao
                                 var conteudo = PacoteUtil.CompactarPacote(resultadoSerializado);
                                 await response.Body.WriteAsync(conteudo);
                             }
-                       
                         }
-
                         catch (Exception ex)
                         {
                             throw new ErroRequisicao(ex, requisicao);

@@ -31,13 +31,17 @@ namespace Snebur.Comunicacao
         protected bool IsAutoRegistrarManipulador { get; set; } = true;
         private readonly object _bloqueio = new object();
 
-        public BaseManipuladorRequisicao()
+        public string CaminhoAplicacao { get; }
+
+
+
+        public BaseManipuladorRequisicao(string cmainhoAplicacao)  
         {
-            //this.AutorizarArquivo("clientaccesspolicy.xml");
-            //this.AutorizarArquivo("crossdomain.xml", true);
+            this.CaminhoAplicacao = cmainhoAplicacao;
             this.AutorizarArquivo("favicon.ico", true);
             this.InicializarManipuladores();
         }
+  
 
         public abstract void InicializarManipuladores();
 
@@ -136,7 +140,7 @@ namespace Snebur.Comunicacao
             return this.Manipuladores[nomeServico];
         }
 
-        public void NotificarServicoNaoEncontado(HttpContext httpContext, 
+        public void NotificarServicoNaoEncontado(HttpContext httpContext,
                                                  string nomeServico)
         {
             LogUtil.SegurancaAsync(nomeServico, EnumTipoLogSeguranca.ServicoNaoEncontrado);
@@ -229,7 +233,7 @@ namespace Snebur.Comunicacao
         #region Métodos virtuais
 
 
-        protected virtual void AntesProcessarRequisicao(HttpContext context)
+        public virtual void AntesProcessarRequisicao(HttpContext context)
         {
 
         }
@@ -273,5 +277,5 @@ namespace Snebur.Comunicacao
 
     }
 
-   
+
 }

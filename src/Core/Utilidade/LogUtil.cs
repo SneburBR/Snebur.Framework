@@ -325,7 +325,9 @@ namespace Snebur.Utilidade
             }
         }
 
-        private static void LogWindowsInterno(string fonte, string conteudo, EventLogEntryType tipo)
+        private static void LogWindowsInterno(string fonte,
+                                              string conteudo,
+                                              EventLogEntryType tipo)
         {
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -333,7 +335,7 @@ namespace Snebur.Utilidade
                 try
                 {
                     var nomeEspaco = RetornarNomeEspaco(fonte);
-                    using (EventLog eventLog = new EventLog(nomeEspaco))
+                    using (var eventLog = new EventLog(nomeEspaco))
                     {
                         eventLog.Source = nomeEspaco;
                         eventLog.WriteEntry(conteudo, tipo);
@@ -348,15 +350,16 @@ namespace Snebur.Utilidade
 
         private static string RetornarNomeEspaco(string nomeEspaco)
         {
-            try
-            {
-                CriarEspaco(nomeEspaco);
-                return nomeEspaco;
-            }
-            catch
-            {
-                return "Application";
-            }
+            return "Application";
+            //try
+            //{
+            //    CriarEspaco(nomeEspaco);
+            //    return nomeEspaco;
+            //}
+            //catch
+            //{
+            //    return "Application";
+            //}
         }
 
         private static void CriarEspaco(string nomeEspaco)

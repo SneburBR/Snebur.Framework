@@ -19,6 +19,7 @@ namespace Snebur.AcessoDados.Comunicacao
         public virtual bool IsPermitirIdentificadorProprietarioGlobal { get; protected set; } = false;
 
         protected List<Action> ExecutarDepoisCommit { get; } = new List<Action>();
+        public string CaminhoAplicacao { get; private set; }
 
         public bool IsServicoTransacionadoDB
         {
@@ -46,7 +47,7 @@ namespace Snebur.AcessoDados.Comunicacao
         {
 
         }
-
+         
         protected override void Inicializar(Requisicao requisicao)
         {
             try
@@ -63,6 +64,7 @@ namespace Snebur.AcessoDados.Comunicacao
                     throw new ErroSeguranca("Identificador global não autorizado",
                                             EnumTipoLogSeguranca.IdentificadorProprietarioGlobalNaoAutorizado);
                 }
+                this.CaminhoAplicacao = requisicao.CaminhoAplicacao;
 
             }
             catch (Exception ex)
