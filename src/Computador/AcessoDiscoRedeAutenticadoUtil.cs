@@ -10,7 +10,7 @@ namespace Snebur.Computador
 {
 
     /// <summary>
-    /// Acesso rede o disco local um autenticação do usuario existente no computador local
+    /// Acesso rede o disco local um autenticação do usuário existente no computador local
     /// </summary>
     public class AcessoDiscoRedeAutenticadoUtil
     {
@@ -31,8 +31,12 @@ namespace Snebur.Computador
             AcessoDiscoRedeAutenticadoUtil.Acessar(null, usuario, senha, callback, callbackErro);
         }
 
-        [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
-        public static void Acessar(string dominio, string usuario, string senha, Action callbackSucesso, Action<Exception> callbackErro)
+        //[PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
+        public static void Acessar(string dominio, 
+                                   string usuario,
+                                   string senha, 
+                                   Action callbackSucesso,
+                                   Action<Exception> callbackErro)
         {
             SafeTokenHandle safeTokenHandle;
             try
