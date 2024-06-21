@@ -42,14 +42,13 @@ namespace Snebur.Serializacao
             {
                 return JsonUtil.Serializar(tipoComplexto, EnumTipoSerializacao.Javascript);
             }
+
             var tipoP = ReflexaoUtil.RetornarTipoPrimarioEnum(valor.GetType());
             if (tipoP == Reflexao.EnumTipoPrimario.Desconhecido ||
-               tipoP == Reflexao.EnumTipoPrimario.Object)
+                tipoP == Reflexao.EnumTipoPrimario.Object)
             {
                 throw new Erro($"Tipo {tipoP} não suportado");
             }
-
-
 
             var tipo = ReflexaoUtil.RetornarTipoSemNullable(valor.GetType());
             if (tipo.IsEnum)
@@ -81,7 +80,7 @@ namespace Snebur.Serializacao
 
                 case DateTime valorTipado:
 
-                    return valorTipado.ToString(CultureInfo.InvariantCulture);
+                    return valorTipado.ToString(Snebur.AplicacaoSnebur.Atual.CulturaPadrao);
 
                 case int valorTipado:
 
