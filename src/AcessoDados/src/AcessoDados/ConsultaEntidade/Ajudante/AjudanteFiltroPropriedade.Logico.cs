@@ -87,11 +87,11 @@ namespace Snebur.AcessoDados.Ajudantes
                     return expressaoInterna.GetType().Name != "FieldExpression";
                 }
 
-
                 if (expressaoInterna.NodeType == ExpressionType.Convert )
                 {
                     var expressaoString = expressao.ToString();
-                    return expressaoString == "Convert(x, IEntidade).Id" ||
+                    return expressaoString == "Convert(x).Id" ||
+                           expressaoString == "Convert(x, IEntidade).Id" ||
                            expressaoString == "Convert(x, System.Object).Id";
                 }
             }
