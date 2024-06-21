@@ -22,30 +22,35 @@ namespace Snebur.Utilidade
 
         public static bool VerificarContratoCrossDomain(HttpContext context)
         {
-            var requisicao = context.Request;
             var resposta = context.Response;
-
-            var origens = requisicao.Headers.GetValues(ORIGIN);
-            if (origens != null && origens.Length > 0)
-            {
-                resposta.Headers.Append(ACCESS_CONTROL_ALLOW_ORIGIN, String.Join(", ", origens));
-            }
-            else
-            {
-                resposta.Headers.Append(ACCESS_CONTROL_ALLOW_ORIGIN, "*");
-            }
-
-            var metodosRequisicao = requisicao.Headers.GetValues(ACCESS_CONTROL_REQUEST_METHOD);
-            var cabecalhosRequisicao = requisicao.Headers.GetValues(ACCESS_CONTROL_REQUEST_HEADERS);
-
-            if (metodosRequisicao == null && cabecalhosRequisicao == null)
+            resposta.Headers.Append(ACCESS_CONTROL_ALLOW_ORIGIN, "*");
+            var requisicao = context.Request;
+            var method = requisicao.GetMethod();
+            if(method != "OPTIONS")
             {
                 return false;
             }
+
+            //var origens = requisicao.Headers.GetValues(ORIGIN);
+
+            //if (origens != null && origens.Length > 0)
+            //{
+            //    resposta.Headers.Append(ACCESS_CONTROL_ALLOW_ORIGIN, String.Join(", ", origens));
+            //}
+            //else
+            //{
+            //    resposta.Headers.Append(ACCESS_CONTROL_ALLOW_ORIGIN, "*");
+            //}
+         
+
+            var metodosRequisicao = requisicao.Headers.GetValues(ACCESS_CONTROL_REQUEST_METHOD);
+            var cabecalhosRequisicao = requisicao.Headers.GetValues(ACCESS_CONTROL_REQUEST_HEADERS);
+             
             if (metodosRequisicao != null)
             {
                 resposta.Headers.Append(ACCESS_CONTROL_ALLOW_METHODS, String.Join(", ", metodosRequisicao));
             }
+
             if (cabecalhosRequisicao != null)
             {
                 resposta.Headers.Append(ACCESS_CONTROL_ALLOW_HEADERS, String.Join(", ", cabecalhosRequisicao));
