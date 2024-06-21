@@ -202,7 +202,7 @@ namespace Snebur.AcessoDados.Mapeamento
                 else
                 {
 
-                    this.Parametros.Add(this.ConexaoDB.RetornarNovoParametro(estruturaCampoApelidoPropriedade.EstruturaCampo, nomeParametro, valorPropriedadeTipado));
+                    this.ParametrosInfo.Add(this.ConexaoDB.RetornarParametroInfo(estruturaCampoApelidoPropriedade.EstruturaCampo, nomeParametro, valorPropriedadeTipado));
 
                     var condicaoNot = filtroPropriedade.TipoPrimarioEnum == EnumTipoPrimario.String &&
                                       filtroPropriedade.Operador == EnumOperadorFiltro.Diferente ?
@@ -235,7 +235,7 @@ namespace Snebur.AcessoDados.Mapeamento
 
             var valor = filtroPropriedade.Valor as string ?? String.Empty;
             var valorPesquisa = this.RetornarValorPesquisaTextoCompleto(valor, filtroPropriedade.Operador);
-            this.Parametros.Add(this.ConexaoDB.RetornarNovoParametro(estruturasCampoApelidoPropriedade.First().EstruturaCampo, nomeParametro, valorPesquisa));
+            this.ParametrosInfo.Add(this.ConexaoDB.RetornarParametroInfo(estruturasCampoApelidoPropriedade.First().EstruturaCampo, nomeParametro, valorPesquisa));
             var prefixoNot = filtroPropriedade.Operador == EnumOperadorFiltro.Diferente ? " not " : "";
             var colunas = String.Join(", ", estruturasCampoApelidoPropriedade.Select(x => x.CaminhoBanco));
             return $" {prefixoNot} CONTAINS( ({colunas}), {nomeParametro} )   ";
@@ -247,7 +247,7 @@ namespace Snebur.AcessoDados.Mapeamento
         {
             var valor = filtroPropriedade.Valor as string ?? String.Empty;
             var valorPesquisa = this.RetornarValorPesquisaTextoCompleto(valor, filtroPropriedade.Operador);
-            this.Parametros.Add(this.ConexaoDB.RetornarNovoParametro(estruturaCampoApelidoPropriedade.EstruturaCampo, nomeParametro, valorPesquisa));
+            this.ParametrosInfo.Add(this.ConexaoDB.RetornarParametroInfo(estruturaCampoApelidoPropriedade.EstruturaCampo, nomeParametro, valorPesquisa));
             var prefixoNot = filtroPropriedade.Operador == EnumOperadorFiltro.Diferente ? " not " : "";
             return $" {prefixoNot} CONTAINS( ({estruturaCampoApelidoPropriedade.CaminhoBanco}), {nomeParametro} )   ";
         }

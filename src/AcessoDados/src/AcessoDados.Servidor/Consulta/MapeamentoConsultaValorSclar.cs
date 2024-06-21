@@ -1,4 +1,5 @@
 ﻿using Snebur.AcessoDados.Estrutura;
+using System.Linq;
 
 namespace Snebur.AcessoDados.Mapeamento
 {
@@ -25,9 +26,9 @@ namespace Snebur.AcessoDados.Mapeamento
                                                                       this.Contexto))
             {
                 mapeamento.EstruturaConsulta.Take = 1;
-
                 var sqlValorScalar = mapeamento.RetornarSql( new FiltroMapeamentoVazio(), isIncluirOrdenacaoPaginacao: false);
-                return this.ConexaoDB.RetornarValorScalar(sqlValorScalar, mapeamento.Parametros);
+                return this.ConexaoDB.RetornarValorScalar(sqlValorScalar,
+                                                          mapeamento.ParametrosInfo);
             }
         }
     }

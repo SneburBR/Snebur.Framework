@@ -10,7 +10,7 @@ namespace Snebur.AcessoDados.Mapeamento
     {
         #region Propriedades
 
-        internal List<DbParameter> Parametros { get; } = new List<DbParameter>();
+        internal List<ParametroInfo> ParametrosInfo { get; } = new List<ParametroInfo>();
 
         internal BaseMapeamentoConsulta MapeamentoConsulta { get; set; }
 

@@ -204,9 +204,9 @@ namespace Snebur.AcessoDados.Servidor.Salvar
         }
 
         internal int ExecutarCommando(DbConnection conexao, 
-                                     DbTransaction transacao, 
-                                     EntidadeAlterada entidadeAlterada, 
-                                     Comando comando)
+                                      DbTransaction transacao, 
+                                      EntidadeAlterada entidadeAlterada, 
+                                      Comando comando)
         {
             using (var cmd = this.Conexao.RetornarNovoComando(comando.SqlCommando, null, conexao, transacao))
             {
@@ -216,12 +216,16 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                     if (!parametro.EstruturaCampo.IsValorFuncaoServidor)
                     {
                         this.ContadorParametro = +1;
-                        var dbParametro = this.Conexao.RetornarNovoParametro(parametro.EstruturaCampo, parametro.Valor);
+                        var dbParametro = this.Conexao.RetornarNovoParametro(parametro.EstruturaCampo, 
+                                                                                    parametro.EstruturaCampo.NomeParametro, 
+                                                                                    parametro.Valor);
                         cmd.Parameters.Add(dbParametro);
                     }
                 }
 
-                DepuracaoUtil.EscreverSaida(this.Contexto, cmd.Parameters.OfType<DbParameter>().ToList(), cmd.CommandText);
+                DepuracaoUtil.EscreverSaida(this.Contexto, 
+                                            cmd.Parameters,
+                                            cmd.CommandText);
 
                 switch (comando)
                 {

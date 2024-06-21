@@ -496,7 +496,7 @@ namespace Snebur.AcessoDados
         }
 
         public List<TMapeamento> MapearSql<TMapeamento>(string sql, 
-                                                        List<DbParameter> parametros)
+                                                        List<ParametroInfo> parametros)
         {
             this.ValidarSessaoUsuario();
 

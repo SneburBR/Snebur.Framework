@@ -176,7 +176,7 @@ namespace Snebur.AcessoDados.Manutencao
             {
                 cmdCampo.ExecuteNonQuery();
 
-                var dataTable = this.Conexao.RetornarDataTable(SQL_MANUTENCOES_SNEBUR_PENDENTE, new List<DbParameter>());
+                var dataTable = this.Conexao.RetornarDataTable(SQL_MANUTENCOES_SNEBUR_PENDENTE, new List<ParametroInfo>());
                 var historicos = new List<HistoricoMigracao>();
                 foreach (DataRow row in dataTable.Rows)
                 {
@@ -191,10 +191,13 @@ namespace Snebur.AcessoDados.Manutencao
 
         private void NotificarManutecaoFinalizacao(DbConnection conexao, HistoricoMigracao historico)
         {
-            var parametros = new List<DbParameter>
+            var parametros = new List<ParametroInfo>
             {
-                new SqlParameter(NOME_PARAMETRO_MANUTENCAO_SNEBUR, SqlDbType.NVarChar, 255)
+                new ParametroInfo
                 {
+                    ParameterName = NOME_PARAMETRO_MANUTENCAO_SNEBUR,
+                    SqlDbType = SqlDbType.NVarChar,
+                    Size = 255,
                     Value = historico.MigrationId
                 }
             };

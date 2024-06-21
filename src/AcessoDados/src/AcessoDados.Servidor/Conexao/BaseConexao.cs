@@ -1,4 +1,5 @@
 ﻿using Snebur.AcessoDados.Estrutura;
+using Snebur.Utilidade;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -37,26 +38,44 @@ namespace Snebur.AcessoDados
 
         internal protected abstract DbConnection RetornarNovaConexao();
 
-        internal protected abstract DbCommand RetornarNovoComando(string sql, List<DbParameter> parametros, DbConnection conexao);
+        internal protected abstract DbCommand RetornarNovoComando(string sql, List<ParametroInfo> parametros, DbConnection conexao);
 
-        internal protected abstract DbCommand RetornarNovoComando(string sql, List<DbParameter> parametros, DbConnection conexao, DbTransaction transacao);
+        internal protected abstract DbCommand RetornarNovoComando(string sql,
+                                                                  List<ParametroInfo> parametros,
+                                                                  DbConnection conexao,
+                                                                  DbTransaction transacao);
 
         internal protected abstract DbDataAdapter RetornarNovoDataAdapter(DbCommand cmd);
 
-        internal protected abstract DbParameter RetornarNovoParametro(EstruturaCampo estruturaCampo, string nomeParametro, object valor);
+        internal protected abstract DbParameter RetornarNovoParametro(string nomeParametro,
+                                                                      SqlDbType sqlDbType,
+                                                                      int? size,
+                                                                      object valor);
+
+        internal protected abstract DbParameter RetornarNovoParametro(EstruturaCampo estruturaCampo,
+                                                                      string nomeParametro,
+                                                                      object valor);
 
         internal protected abstract DateTime RetornarDataHora(bool utc = true);
 
         internal BaseContextoDados ContextoDados { get; }
 
-        internal DbParameter RetornarNovoParametro(EstruturaCampo estruturaCampo, object valor)
+        internal ParametroInfo RetornarParametroInfo(EstruturaCampo estruturaCampo,
+                                                     string nomeParametro,
+                                                     object valor)
         {
-            return this.RetornarNovoParametro(estruturaCampo, estruturaCampo.NomeParametro, valor);
+            return new ParametroInfo(this)
+            {
+                EstruturaCampo = estruturaCampo,
+                ParameterName = nomeParametro ?? estruturaCampo.NomeParametro,
+                Value = valor
+            };
         }
 
         #region IConexaoBancoDados
 
-        internal DataTable RetornarDataTable(string sql, List<DbParameter> parametros)
+        internal DataTable RetornarDataTable(string sql,
+                                             List<ParametroInfo> parametros)
         {
             if (this.ContextoDados.IsExisteTransacao)
             {
@@ -68,7 +87,7 @@ namespace Snebur.AcessoDados
             }
         }
 
-        internal DataTable RetornarDataTableNormal(string sql, List<DbParameter> parametros)
+        internal DataTable RetornarDataTableNormal(string sql, List<ParametroInfo> parametros)
         {
             this.EscreverSaida(parametros, sql);
 
@@ -80,9 +99,9 @@ namespace Snebur.AcessoDados
                 {
                     using (var transacao = conexao.BeginTransaction(ConfiguracaoAcessoDados.IsolamentoLevelConsultaPadrao))
                     {
-                        using (var cmd = this.RetornarNovoComando(sql, 
+                        using (var cmd = this.RetornarNovoComando(sql,
                                                                   parametros,
-                                                                  conexao, 
+                                                                  conexao,
                                                                   transacao))
                         {
                             using (var ad = this.RetornarNovoDataAdapter(cmd))
@@ -92,7 +111,7 @@ namespace Snebur.AcessoDados
                         }
                     }
                 }
-                catch(Exception erroInterno)
+                catch (Exception erroInterno)
                 {
                     throw new ErroConsultaSql($"Erro ao preencher o dataTable DataAdpater: Sql {sql} ", erroInterno);
                 }
@@ -104,7 +123,7 @@ namespace Snebur.AcessoDados
             return dt;
         }
 
-        internal object RetornarValorScalar(string sql, List<DbParameter> parametros)
+        internal object RetornarValorScalar(string sql, List<ParametroInfo> parametros)
         {
             if (this.ContextoDados.IsExisteTransacao)
             {
@@ -116,7 +135,7 @@ namespace Snebur.AcessoDados
             }
         }
 
-        internal object RetornarValorScalarNormal(string sql, List<DbParameter> parametros)
+        internal object RetornarValorScalarNormal(string sql, List<ParametroInfo> parametros)
         {
             this.EscreverSaida(parametros, sql);
 
@@ -128,7 +147,10 @@ namespace Snebur.AcessoDados
                 {
                     using (var transacao = conexao.BeginTransaction(ConfiguracaoAcessoDados.IsolamentoLevelConsultaPadrao))
                     {
-                        using (var cmd = this.RetornarNovoComando(sql, parametros, conexao, transacao))
+                        using (var cmd = this.RetornarNovoComando(sql,
+                                                                  parametros,
+                                                                  conexao,
+                                                                  transacao))
                         {
                             valorEscalor = cmd.ExecuteScalar();
                         }
@@ -150,7 +172,7 @@ namespace Snebur.AcessoDados
             return valorEscalor;
         }
 
-        internal int ExecutarComando(string sql, List<DbParameter> parametros)
+        internal int ExecutarComando(string sql, List<ParametroInfo> parametros)
         {
             if (this.ContextoDados.IsExisteTransacao)
             {
@@ -162,7 +184,7 @@ namespace Snebur.AcessoDados
             }
         }
 
-        private int ExecutarComandoNormal(string sql, List<DbParameter> parametros)
+        private int ExecutarComandoNormal(string sql, List<ParametroInfo> parametros)
         {
             this.EscreverSaida(parametros, sql);
 
@@ -183,25 +205,25 @@ namespace Snebur.AcessoDados
             }
         }
 
-        private int ExecutarComandoTransacao(string sql, List<DbParameter> parametros)
+        private int ExecutarComandoTransacao(string sql, List<ParametroInfo> parametrosInfo)
         {
-            this.EscreverSaida(parametros, sql);
+            this.EscreverSaida(parametrosInfo, sql);
 
             var conexao = this.ContextoDados.ConexaoAtual;
             var transacao = this.ContextoDados.TransacaoAtual;
-            using (var cmd = this.RetornarNovoComando(sql, parametros, conexao, transacao))
+            using (var cmd = this.RetornarNovoComando(sql, parametrosInfo, conexao, transacao))
             {
                 return cmd.ExecuteNonQuery();
             }
         }
-        private void EscreverSaida(List<DbParameter> parametros, string sql)
+        private void EscreverSaida(List<ParametroInfo> parametros, string sql)
         {
             DepuracaoUtil.EscreverSaida(this.ContextoDados, parametros, sql);
         }
 
         #region Transação
 
-        private DataTable RetornarDataTransacao(string sql, List<DbParameter> parametros)
+        private DataTable RetornarDataTransacao(string sql, List<ParametroInfo> parametros)
         {
             this.EscreverSaida(parametros, sql);
 
@@ -219,7 +241,8 @@ namespace Snebur.AcessoDados
             }
         }
 
-        private object RetornarValorScalarTransacao(string sql, List<DbParameter> parametros)
+        private object RetornarValorScalarTransacao(string sql,
+                                                    List<ParametroInfo> parametros)
         {
             this.EscreverSaida(parametros, sql);
 
@@ -239,5 +262,117 @@ namespace Snebur.AcessoDados
         #endregion
 
         #endregion
+    }
+
+    public class ParametroInfo
+    {
+        private BaseConexao BaseConexao;
+        public string ParameterName { get; set; }
+        public SqlDbType? SqlDbType { get; set; }
+        public int? Size;
+        public object Value { get; set; }
+        internal EstruturaCampo EstruturaCampo { get; set; }
+
+        public ParametroInfo()
+        {
+        }
+
+        internal ParametroInfo(BaseConexao baseConexao)
+        {
+            this.BaseConexao = baseConexao;
+        }
+
+        public ParametroInfo(string nomeParametro, object value) : this(nomeParametro, GetBetterSqlDbType(value), value)
+        {
+
+        }
+        public ParametroInfo(string nomeParametro,
+                            SqlDbType sqlType,
+                            object value) : this(nomeParametro, sqlType, null, value)
+        {
+
+        }
+
+        public ParametroInfo(string nomeParametro,
+                             SqlDbType sqlType,
+                             int? size,
+                             object value)
+        {
+            this.ParameterName = nomeParametro;
+            this.Value = value;
+            this.SqlDbType = sqlType;
+            this.Size = size;
+        }
+         
+        internal DbParameter GetDbParameter()
+        {
+            if (this.SqlDbType.HasValue)
+            {
+                return this.BaseConexao.RetornarNovoParametro(this.ParameterName,
+                                                              this.SqlDbType.Value,
+                                                              this.Size,
+                                                              this.Value);
+            }
+
+            return this.BaseConexao.RetornarNovoParametro(this.EstruturaCampo,
+                                                           this.ParameterName,
+                                                           this.Value);
+
+        }
+
+        private static SqlDbType GetBetterSqlDbType(object value)
+        {
+            if (value == null)
+            {
+                return System.Data.SqlDbType.Variant;
+            }
+
+            var type = value.GetType();
+
+            if (ReflexaoUtil.IsTipoNullable(type))
+            {
+                type = ReflexaoUtil.RetornarTipoSemNullable(type);
+            }
+
+            switch (Type.GetTypeCode(type))
+            {
+                case TypeCode.String:
+                    return System.Data.SqlDbType.NVarChar;
+                case TypeCode.Int32:
+                    return System.Data.SqlDbType.Int;
+                case TypeCode.Int64:
+                    return System.Data.SqlDbType.BigInt;
+                case TypeCode.Double:
+                    return System.Data.SqlDbType.Float;
+                case TypeCode.Decimal:
+                    return System.Data.SqlDbType.Decimal;
+                case TypeCode.DateTime:
+                    return System.Data.SqlDbType.DateTime;
+                case TypeCode.Boolean:
+                    return System.Data.SqlDbType.Bit;
+                case TypeCode.Byte:
+                    return System.Data.SqlDbType.TinyInt;
+                case TypeCode.Char:
+                    return System.Data.SqlDbType.Char;
+                case TypeCode.Int16:
+                    return System.Data.SqlDbType.SmallInt;
+                case TypeCode.Single:
+                    return System.Data.SqlDbType.Real;
+                default:
+
+                    if (type == typeof(Guid))
+                    {
+                        return System.Data.SqlDbType.UniqueIdentifier;
+                    }
+
+                    if(type.IsEnum)
+                    {
+                        return System.Data.SqlDbType.Int;
+                    }
+
+                    throw new Exception($"The type {type.Name} is not supported");
+            }
+        }
+
     }
 }

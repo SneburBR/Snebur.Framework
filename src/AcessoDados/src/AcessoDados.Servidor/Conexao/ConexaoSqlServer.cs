@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using Snebur.AcessoDados.Estrutura;
+using System.Data;
+
 
 #if NET6_0_OR_GREATER
 using Microsoft.Data.SqlClient;
@@ -23,27 +25,32 @@ namespace Snebur.AcessoDados
             return new SqlConnection(this.ConnectionString);
         }
 
-        internal protected override DbCommand RetornarNovoComando(string sql, List<DbParameter> parametros, DbConnection conexao)
+        internal protected override DbCommand RetornarNovoComando(string sql, 
+                                                                  List<ParametroInfo> parametrosInfo,
+                                                                  DbConnection conexao)
         {
             var cmd = new SqlCommand(sql, (SqlConnection)conexao);
-            if (parametros != null)
+            if (parametrosInfo != null)
             {
-                foreach (var parametro in parametros)
+                foreach (var parametro in parametrosInfo)
                 {
-                    cmd.Parameters.Add(parametro);
+                    cmd.Parameters.Add(parametro.GetDbParameter());
                 }
             }
             return cmd;
         }
 
-        internal protected override DbCommand RetornarNovoComando(string sql, List<DbParameter> parametros, DbConnection conexao, DbTransaction transacao)
+        internal protected override DbCommand RetornarNovoComando(string sql, 
+                                                                 List<ParametroInfo> parametros, 
+                                                                 DbConnection conexao, 
+                                                                 DbTransaction transacao)
         {
             var cmd = new SqlCommand(sql, (SqlConnection)conexao, (SqlTransaction)transacao);
             if (parametros != null)
             {
                 foreach (var parametro in parametros)
                 {
-                    cmd.Parameters.Add(parametro);
+                    cmd.Parameters.Add(parametro.GetDbParameter());
                 }
             }
             return cmd;
@@ -90,6 +97,18 @@ namespace Snebur.AcessoDados
         {
             var funcaoDataHora = (utc) ? "GETUTCDATE()" : " GETDATE()";
             return Convert.ToDateTime(this.RetornarValorScalar(String.Format(" SELECT {0} ", funcaoDataHora), null));
+        }
+
+        protected internal override DbParameter RetornarNovoParametro(string nomeParametro, 
+                                                                      SqlDbType sqlDbType, 
+                                                                      int? size, 
+                                                                      object valor)
+        {
+            return new SqlParameter(nomeParametro, sqlDbType)
+            {
+                Value = valor ?? DBNull.Value,
+                Size = size ?? 0
+            };
         }
     }
 }

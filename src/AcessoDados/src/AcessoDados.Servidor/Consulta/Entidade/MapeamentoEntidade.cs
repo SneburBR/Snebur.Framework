@@ -32,7 +32,7 @@ namespace Snebur.AcessoDados.Mapeamento
             var sql = this.RetornarSql(filtro, isIncluirOrdenacaoPaginacao: true);
             try
             {
-                var dataTable = this.ConexaoDB.RetornarDataTable(sql, this.Parametros);
+                var dataTable = this.ConexaoDB.RetornarDataTable(sql, this.ParametrosInfo);
                 var entidades = AjudanteDataSetMapeamento.MapearDataTable(this.EstruturaConsulta, dataTable, this);
                 if (this.EstruturaEntidade.IsInterceptar && entidades.Count > 0)
                 {
@@ -67,7 +67,7 @@ namespace Snebur.AcessoDados.Mapeamento
         internal protected List<IdTipoEntidade> RetornarIdTipoEntidade(BaseFiltroMapeamento filtro)
         {
             var sql = this.RetornarSqlIdTipoEntidade(filtro);
-            var dataTable = this.ConexaoDB.RetornarDataTable(sql, this.Parametros);
+            var dataTable = this.ConexaoDB.RetornarDataTable(sql, this.ParametrosInfo);
             var idsTipoEntidade = AjudanteDataSetMapeamento.MapearIdTipoEntidade(dataTable);
             return idsTipoEntidade;
         }
@@ -75,7 +75,7 @@ namespace Snebur.AcessoDados.Mapeamento
         internal protected int RetornarContagem(BaseFiltroMapeamento filtro)
         {
             var sql = this.RetornarSqlContagem(filtro);
-            var contagem = Convert.ToInt32(this.ConexaoDB.RetornarValorScalar(sql, this.Parametros));
+            var contagem = Convert.ToInt32(this.ConexaoDB.RetornarValorScalar(sql, this.ParametrosInfo));
             return contagem;
         }
 

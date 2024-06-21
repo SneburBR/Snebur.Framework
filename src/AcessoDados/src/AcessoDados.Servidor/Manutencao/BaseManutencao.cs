@@ -27,19 +27,19 @@ namespace Snebur.AcessoDados.Manutencao
 
         protected void ExecutarSql(string sql)
         {
-            this.Conexao.ExecutarComando(sql, new List<DbParameter>());
+            this.Conexao.ExecutarComando(sql, new List<ParametroInfo>());
         }
 
-        protected void ExecutarSql(string sql, List<DbParameter> parametros)
+        protected void ExecutarSql(string sql, List<ParametroInfo> parametros)
         {
             this.Conexao.ExecutarComando(sql, parametros);
         }
         protected object RetornarValorScalar(string sql)
         {
-            return this.Conexao.RetornarValorScalar(sql, new List<DbParameter>());
+            return this.Conexao.RetornarValorScalar(sql, new List<ParametroInfo>());
         }
 
-        protected object RetornarValorScalar(string sql, List<DbParameter> parametros)
+        protected object RetornarValorScalar(string sql, List<ParametroInfo> parametros)
         {
             return this.Conexao.RetornarValorScalar(sql, parametros);
         }

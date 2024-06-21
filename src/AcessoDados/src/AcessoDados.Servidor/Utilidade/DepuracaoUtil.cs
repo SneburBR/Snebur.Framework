@@ -20,7 +20,28 @@ namespace Snebur.AcessoDados
     {
         internal const string CATEGORIA = "Commando sql";
 
-        internal static void EscreverSaida(BaseContextoDados contexto, List<DbParameter> parametros, string sql)
+        internal static void EscreverSaida(BaseContextoDados contexto,
+                                           DbParameterCollection collection,
+                                          string sql)
+        {
+            var parametros = new List<ParametroInfo>();
+
+            foreach (SqlParameter parametro in collection)
+            {
+                parametros.Add(new ParametroInfo
+                {
+                    SqlDbType = parametro.SqlDbType,
+                    ParameterName = parametro.ParameterName,
+                    Value = parametro.Value
+                });
+            }
+            EscreverSaida(contexto, parametros, sql);
+
+
+        }
+        internal static void EscreverSaida(BaseContextoDados contexto,
+                                           List<ParametroInfo> parametros,
+                                           string sql)
         {
             if (DebugUtil.IsAttached && false)
             {
@@ -33,7 +54,9 @@ namespace Snebur.AcessoDados
             }
 
         }
-        internal static void EscreverSaidaInterno(BaseContextoDados contexto, List<DbParameter> parametros, string sql)
+        internal static void EscreverSaidaInterno(BaseContextoDados contexto,
+                                                  List<ParametroInfo> parametros,
+                                                  string sql)
         {
             if (ConfiguracaoUtil.AmbienteServidor == EnumAmbienteServidor.Producao)
             {
@@ -43,13 +66,13 @@ namespace Snebur.AcessoDados
 #if DEBUG
             if (DebugUtil.IsAttached && false)
             {
-                lock ( contexto.Comandos.SyncLock())
+                lock (contexto.Comandos.SyncLock())
                 {
                     var comandos = contexto.Comandos;
                     if (parametros != null)
                     {
                         comandos.Add("SET DATEFORMAT 'dmy' ");
-                        foreach (var p in parametros.OfType<SqlParameter>())
+                        foreach (var p in parametros)
                         {
                             var declaracao = $"DECLARE  {p.ParameterName} AS {p.SqlDbType.ToString().ToUpper()}";
                             {

@@ -14,7 +14,7 @@ namespace Snebur.AcessoDados.Mapeamento
         private BaseConexao ConexaoDB => this.mapeamentoConsulta.ConexaoDB;
         private EstruturaConsulta EstruturaConsulta => this.mapeamentoConsulta.EstruturaConsulta;
         private EstruturaCampoApelido EstruturaCampoApelidoChavePrimaria => this.mapeamentoConsulta.EstruturaCampoApelidoChavePrimaria;
-        private List<DbParameter> Parametros => this.mapeamentoConsulta.Parametros;
+        private List<ParametroInfo> ParametrosInfo => this.mapeamentoConsulta.ParametrosInfo;
         private DicionarioEstrutura<EstruturaCampoApelido> TodasEstruturaCampoApelidoMapeado => this.mapeamentoConsulta.TodasEstruturaCampoApelidoMapeado;
 
         protected int Skip { get; private set; }
