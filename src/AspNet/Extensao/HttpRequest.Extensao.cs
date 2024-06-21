@@ -24,6 +24,16 @@ namespace System.Web
 
         }
 
+        public static string GetMethod(this HttpRequest request)
+        {
+#if NET6_0_OR_GREATER
+            return request.Method;
+#else
+            return request.HttpMethod;
+#endif
+        }
+
+
         public static string GetValue(this HttpRequest request, string key)
         {
 #if NET6_0_OR_GREATER
