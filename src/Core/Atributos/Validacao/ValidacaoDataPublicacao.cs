@@ -7,7 +7,7 @@ namespace Snebur.Dominio.Atributos
     public class ValidacaoDataPublicacaoAttribute : BaseAtributoValidacao, IAtributoValidacao
     {
         [MensagemValidacao]
-        public static string MensagemValidacao { get; set; } = "A '{0}' não pode ser anterior à data de hoje.";
+        public static string MensagemValidacao { get; set; } = "A '{0}' deve ser superior ou igual à data de hoje.";
 
         public ValidacaoDataPublicacaoAttribute()
         {
@@ -15,17 +15,26 @@ namespace Snebur.Dominio.Atributos
 
         public override bool IsValido(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
         {
-            if (valorPropriedade is DateTime dataPublicacao && paiPropriedade is Entidade entidadePai && entidadePai.Id == 0)
+            if (valorPropriedade is DateTime dataPublicacao && 
+                paiPropriedade is Entidade entidadePai &&
+                entidadePai.Id == 0)
             {
-                return dataPublicacao >= DateTime.Now.RetornarDataComHoraZerada();
+                return dataPublicacao.RetornarDataComHoraZerada() >= DateTime.Now.RetornarDataComHoraZerada();
             }
             return true;
         }
 
-        public override string RetornarMensagemValidacao(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
+        public override string RetornarMensagemValidacao(PropertyInfo propriedade, 
+                                                         object paiPropriedade,
+                                                         object valorPropriedade)
         {
             var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
-            return String.Format(MensagemValidacao, rotulo);
+            if (valorPropriedade is DateTime dataPublicacao)
+            {
+              return  $" A {rotulo}: {dataPublicacao.RetornarDataComHoraZerada():dd/MM/yyyy} deve ser superior à data de hoje:  {DateTime.Now.RetornarDataComHoraZerada():dd/MM/yyyy}";
+            }
+
+            return String.Format(MensagemValidacao, rotulo); ;
         }
     }
 }
