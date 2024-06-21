@@ -33,16 +33,13 @@ namespace Snebur.Comunicacao
 
         public string CaminhoAplicacao { get; }
 
-
-
         public BaseManipuladorRequisicao(string cmainhoAplicacao)  
         {
             this.CaminhoAplicacao = cmainhoAplicacao;
             this.AutorizarArquivo("favicon.ico", true);
             this.InicializarManipuladores();
         }
-  
-
+   
         public abstract void InicializarManipuladores();
 
 
@@ -234,6 +231,11 @@ namespace Snebur.Comunicacao
 
 
         public virtual void AntesProcessarRequisicao(HttpContext context)
+        {
+
+        }
+
+        public virtual void DepoisProcessarRequisicao(HttpContext context)
         {
 
         }

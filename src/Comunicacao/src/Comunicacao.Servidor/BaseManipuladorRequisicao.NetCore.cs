@@ -1,45 +1,33 @@
 ﻿
 #if NET6_0_OR_GREATER
 
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Snebur.Utilidade;
+using System;
+using System.IO;
+using System.Net;
+using System.Net.WebSockets;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web;
+
 namespace Snebur.Comunicacao
 {
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Hosting.Server;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
-    using Microsoft.Extensions.Logging;
-    using Snebur.Comunicacao.Servidor;
-    using Snebur.Utilidade;
-    using System;
-    using System.IO;
-    using System.Net;
-    using System.Net.WebSockets;
-    using System.Reflection;
-    using System.Reflection.PortableExecutable;
-    using System.Text;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using System.Web;
-
     public abstract partial class BaseManipuladorRequisicao : IHttpModule, IDisposable
     {
         public bool IsWebSocket { get; protected set; }
-
-      
-      
-
+         
         public IConfigurationRoot Configuration => throw new NotImplementedException();
 
         public void ConfigureServices(IServiceCollection services)
         {
             Startup.ConfigureServicesInterno(services);
         }
-
-     
-
+         
         public async Task ProcessarRequisicaoAsync(HttpContext context)
         {
             if (CrossDomainUtil.VerificarContratoCrossDomain(context))
@@ -130,9 +118,9 @@ namespace Snebur.Comunicacao
                         servico.IdentificadorProprietario = identificadorProprietario;
                         await servico.ProcessRequestAsync(httpContext);
                     }
-                    catch (ErroRequisicao ex)
+                    catch (ErroRequisicao)
                     {
-                        throw ex;
+                        throw;
                     }
                     catch (Exception ex)
                     {

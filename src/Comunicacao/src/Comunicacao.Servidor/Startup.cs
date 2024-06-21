@@ -8,8 +8,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 using Snebur.Dominio;
+using System.Net;
 
-namespace Snebur.Comunicacao.Servidor
+namespace Snebur.Comunicacao
 {
     public class Startup
     {
@@ -68,9 +69,23 @@ namespace Snebur.Comunicacao.Servidor
             {
                 //using (var manipulador = Activator.CreateInstance<T>())
                 //{
-                context.Items.Add(ConstantesItensRequsicao.CAMINHO_APLICACAO, caminhoAplicacao);
-                _manipulador.AntesProcessarRequisicao(context);
-                await _manipulador.ProcessarRequisicaoAsync(context);
+                try
+                {
+                    context.Items.Add(ConstantesItensRequsicao.CAMINHO_APLICACAO, caminhoAplicacao);
+                    _manipulador.AntesProcessarRequisicao(context);
+                    await _manipulador.ProcessarRequisicaoAsync(context);
+                }
+                catch(Exception ex)
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    context.Response.ContentType = "text/plain";
+                    await context.Response.WriteAsync("Erro interno: " + ex.Message);
+                }
+                finally
+                {
+                    _manipulador.DepoisProcessarRequisicao(context);
+                }
+                
                 //}
             });
             app.Run();
@@ -106,12 +121,18 @@ namespace Snebur.Comunicacao.Servidor
         {
 
 #if DEBUG
-            if (env.IsDevelopment())
+     
+            if (env.IsDevelopment() ||  env.IsStaging())
             {
-                //app.UseDeveloperExceptionPage();
+                app.UseDeveloperExceptionPage();
             }
 #endif
-            app.UseDeveloperExceptionPage();
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
+            }
+            //app.UseDeveloperExceptionPage();
 
             if (env.IsProduction())
             {

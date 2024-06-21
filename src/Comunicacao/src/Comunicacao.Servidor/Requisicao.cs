@@ -55,17 +55,23 @@ namespace Snebur.Comunicacao
                           string identificadorProprietario,
                           string nomeManipulador)
         {
+#if NET6_0_OR_GREATER
             this.CaminhoAplicacao = httpContext.Items[ConstantesItensRequsicao.CAMINHO_APLICACAO]?.ToString();
+#else
+            this.CaminhoAplicacao = httpContext.Server.MapPath("~");
+#endif
             this.HttpContext = httpContext;
             this.CredencialServico = credencialServico;
             this.IdentificadorProprietario = identificadorProprietario;
             this.NomeManipulador = nomeManipulador;
 
+
             if (!Directory.Exists(this.CaminhoAplicacao))
             {
                 throw new DirectoryNotFoundException($"Caminho da aplicação não encontrado {this.CaminhoAplicacao}");
             }
-            
+
+
         }
 
 #if NET6_0_OR_GREATER
