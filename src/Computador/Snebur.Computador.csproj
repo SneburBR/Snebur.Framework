@@ -2,7 +2,7 @@
 
 
 	<PropertyGroup>
-		<TargetFrameworks>net48;net6.0;net8.0</TargetFrameworks>
+		<TargetFrameworks>net8.0;net6.0;net48</TargetFrameworks>
 		<AssemblyName>Snebur.Computador</AssemblyName>
 		<RootNamespace>Snebur.Computador</RootNamespace>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -32,9 +32,9 @@
 	</ItemGroup>
 	  
 	<ItemGroup>
-	  <PackageReference Include="System.DirectoryServices" Version="7.0.1" />
-	  <PackageReference Include="System.DirectoryServices.AccountManagement" Version="7.0.0" />
-	  <PackageReference Include="System.Management" Version="7.0.0" />
+	  <PackageReference Include="System.DirectoryServices" Version="8.0.0" />
+	  <PackageReference Include="System.DirectoryServices.AccountManagement" Version="8.0.0" />
+	  <PackageReference Include="System.Management" Version="8.0.0" />
 	</ItemGroup>
 	  
 	<ItemGroup>
