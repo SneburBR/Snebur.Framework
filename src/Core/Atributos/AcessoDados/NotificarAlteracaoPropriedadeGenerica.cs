@@ -9,6 +9,7 @@ namespace Snebur.Dominio.Atributos
     public class NotificarAlteracaoPropriedadeGenericaAttribute : BaseAtributoDominio, INotificarAlteracaoPropriedade
     {
         public EnumOpcoesAlterarPropriedade Opcoes { get; }
+        public string FormatacaoPersonalizada { get; set; } 
         public string Formatacao { get; set; } = EnumFormatacao.Nenhuma.ToString().ToLower();
         public Type TipoPropriedadeRelacao { get; set; }
         public string CaminhoTipoPropriedadeRelacao { get; set; }
@@ -25,10 +26,14 @@ namespace Snebur.Dominio.Atributos
             this.Opcoes = opcoes;
         }
 
+        /// <summary>
+        /// Notifica a alteração de uma propriedade genérica
+        /// </summary>
+        /// <param name="formatacaoPersonalizada"> Formatação personalizada para valores da propriedade Ex: 'Total {0}' </param>
         [IgnorarConstrutorTS]
-        public NotificarAlteracaoPropriedadeGenericaAttribute()
+        public NotificarAlteracaoPropriedadeGenericaAttribute(string formatacaoPersonalizada = null)
         {
-
+            this.FormatacaoPersonalizada = formatacaoPersonalizada;
         }
 
         [IgnorarConstrutorTS]
