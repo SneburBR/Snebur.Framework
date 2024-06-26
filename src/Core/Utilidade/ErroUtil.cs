@@ -135,7 +135,6 @@ namespace Snebur.Utilidade
 
         public static bool IsErroSessaoInvalida(Exception ex)
         {
-            LogUtil.ErroAsync(ex);
             return ErroUtil.IsTipo<ErroSessaoUsuarioExpirada>(ex) ||
                    ErroUtil.IsTipo<ErroSessaoUsuarioInvalida>(ex);
         }
