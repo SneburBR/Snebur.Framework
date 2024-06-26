@@ -16,6 +16,8 @@ using Snebur.Linq;
 using System.Diagnostics;
 using System.Collections;
 using System.Data.Common;
+using Microsoft.IdentityModel.Abstractions;
+
 
 
 #if NET6_0_OR_GREATER
@@ -89,7 +91,7 @@ namespace Snebur.AcessoDados
             {
                 if (this.SqlSuporte.IsSessaoUsuario)
                 {
-                    return this.SessaoUsuarioLogado.Status == EnumStatusSessaoUsuario.Ativo  ;
+                    return this.SessaoUsuarioLogado.Status == EnumStatusSessaoUsuario.Ativo;
                 }
                 return true;
             }
@@ -495,8 +497,19 @@ namespace Snebur.AcessoDados
             }
         }
 
-        public List<TMapeamento> MapearSql<TMapeamento>(string sql, 
-                                                        List<ParametroInfo> parametros)
+        public int ExecutarSql(string sql, List<ParametroInfo> parametroInfos = null)
+        {
+            this.ValidarSessaoUsuario();
+            if (!Debugger.IsAttached)
+            {
+                LogUtil.ErroAsync(new ErroSeguranca( "Somente  é permitido executar SQL em modo de depuração", EnumTipoLogSeguranca.TentativaExecutarSql));
+                return -1;
+            }
+           return this.Conexao.ExecutarComando(sql, parametroInfos);
+        }
+
+        public List<TMapeamento> MapearSql<TMapeamento>(string sql,
+                                                    List<ParametroInfo> parametros)
         {
             this.ValidarSessaoUsuario();
 
@@ -504,6 +517,7 @@ namespace Snebur.AcessoDados
             var resultado = new List<TMapeamento>();
             var colunas = tabela.Columns;
             var tipoMapeamento = typeof(TMapeamento);
+
             foreach (DataRow linha in tabela.Rows)
             {
                 var intancia = Activator.CreateInstance<TMapeamento>();
@@ -588,7 +602,7 @@ namespace Snebur.AcessoDados
             {
                 ValidacaoUtil.ValidarReferenciaNula(this.CacheSessaoUsuario, nameof(this.CacheSessaoUsuario));
 
-                if (this.CacheSessaoUsuario.StatusSessaoUsuario != EnumStatusSessaoUsuario.Ativo  )
+                if (this.CacheSessaoUsuario.StatusSessaoUsuario != EnumStatusSessaoUsuario.Ativo)
                 {
                     if (DebugUtil.IsAttached)
                     {
