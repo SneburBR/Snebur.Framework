@@ -71,6 +71,7 @@ namespace Snebur
                                                   this.UrlServicoArquivo;
 
         public virtual bool IsSeperarAppDataPorIdentificadorPropretario { get; } = true;
+        public virtual bool IsAlicacaoCliente { get; } = false;
 
         public virtual string IdentificadorAplicacao
         {
