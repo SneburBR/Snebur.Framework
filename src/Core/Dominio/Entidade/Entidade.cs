@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -22,7 +23,7 @@ namespace Snebur.Dominio
 
         [OcultarColuna]
         public abstract long Id { get; set; }
-         
+
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Indexar]
@@ -169,17 +170,17 @@ namespace Snebur.Dominio
             return this.RetornarValorPropriedade(valor, nomePropriedade);
         }
 
-        
+
 
         internal protected virtual long? RetornarValorPropriedadeChaveEstrangeira(long? valor, Entidade relacao, [CallerMemberName] string nomePropriedade = "")
         {
             if (relacao != null)
             {
-                return (long ?)relacao.Id;
+                return (long?)relacao.Id;
             }
             return this.RetornarValorPropriedade(valor, nomePropriedade);
         }
-         
+
         internal protected override T RetornarValorPropriedade<T>(T valor, [CallerMemberName] string nomePropriedade = "")
         {
             if (this.__IsControladorPropriedadesAlteradaAtivo)
@@ -264,7 +265,7 @@ namespace Snebur.Dominio
 
         }
 
-        internal protected virtual void NotificarValorPropriedadeAlteradaChaveEstrangeiraAlterada<T> (
+        internal protected virtual void NotificarValorPropriedadeAlteradaChaveEstrangeiraAlterada<T>(
                                             T antigoValor,
                                             T novoValor,
                                             string nomePropriedadeRelacao,
@@ -285,14 +286,14 @@ namespace Snebur.Dominio
                             propriedadeRelacao.SetValue(this, null);
                         }
                     }
-                     
+
                 }
             }
         }
 
         //para server valor null na chave estrangeira de chaveEstrangeira_Id = null
-        internal protected virtual void NotificarValorPropriedadeAlteradaRelacao(object antigoValor, 
-                                                                                 object novoValor, 
+        internal protected virtual void NotificarValorPropriedadeAlteradaRelacao(object antigoValor,
+                                                                                 object novoValor,
                                                                                  [CallerMemberName] string nomePropriedade = "")
         {
             if (this.IsSerializando)
@@ -306,7 +307,7 @@ namespace Snebur.Dominio
                 {
                     var tipoEntidade = this.GetType();
                     var propriedade = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nomePropriedade);
-                    
+
 
                     if (novoValor is Entidade entidade)
                     {
@@ -319,8 +320,8 @@ namespace Snebur.Dominio
                             {
                                 propriedadeChaveEstrageira.SetValue(this, novoValorChaveEstrangeira);
                             }
-                            this.NotificarValorPropriedadeAlteradaChaveEstrangeira(antigoValorChaveEstrangeira, 
-                                                                                   novoValorChaveEstrangeira, 
+                            this.NotificarValorPropriedadeAlteradaChaveEstrangeira(antigoValorChaveEstrangeira,
+                                                                                   novoValorChaveEstrangeira,
                                                                                    propriedadeChaveEstrageira.Name);
                         }
                     }
@@ -328,8 +329,8 @@ namespace Snebur.Dominio
             }
         }
 
-        private void NotificarValorPropriedadeAlteradaChaveEstrangeira(long? antigoValorChaveEstrangeira, 
-                                                                       long? novoValorChaveEstrangeira, 
+        private void NotificarValorPropriedadeAlteradaChaveEstrangeira(long? antigoValorChaveEstrangeira,
+                                                                       long? novoValorChaveEstrangeira,
                                                                        string nomePropriedade)
         {
             if (this.IsSerializando)
@@ -345,7 +346,7 @@ namespace Snebur.Dominio
                     {
                         if (!this.__PropriedadesAlteradas.ContainsKey(nomePropriedade))
                         {
-                            var propriedadeAlterada = PropriedadeAlterada.Create(nomePropriedade, 
+                            var propriedadeAlterada = PropriedadeAlterada.Create(nomePropriedade,
                                                                                  antigoValorChaveEstrangeira,
                                                                                  novoValorChaveEstrangeira);
                             this.__PropriedadesAlteradas.Add(nomePropriedade, propriedadeAlterada);
@@ -394,7 +395,7 @@ namespace Snebur.Dominio
                 foreach (var expressaPropriedade in expressoesPropriedade)
                 {
                     var propriedade = ExpressaoUtil.RetornarPropriedade(expressaPropriedade);
-                    if (propriedade.DeclaringType != typeof(Entidade)  )
+                    if (propriedade.DeclaringType != typeof(Entidade))
                     {
                         propriedade.TrySetValue(entidadeClonada, propriedade.GetValue(this), true);
                     }
@@ -530,7 +531,7 @@ namespace Snebur.Dominio
         #endregion
 
         #region Métodos privados 
-         
+
         private bool RetornarIsExisteAlteracaoPropriedade()
         {
             if (this.Id == 0)
@@ -603,7 +604,7 @@ namespace Snebur.Dominio
             //}
             if (propriedadesAberta?.Count > 0)
             {
-                if(this is IDeletado && !propriedadesAberta.Contains(nameof(IDeletado.IsDeletado)))
+                if (this is IDeletado && !propriedadesAberta.Contains(nameof(IDeletado.IsDeletado)))
                 {
                     propriedadesAberta.Add(nameof(IDeletado.IsDeletado));
                 }
@@ -733,6 +734,22 @@ namespace Snebur.Dominio
                 return isAtivo && !endidadeDeletado.IsDeletado;
             }
             return isAtivo;
+        }
+
+        //Isso deve ser implementado apenas no domino do lado do cliente.
+        //deve IsAplicacaoCliente ser true
+
+        internal protected string RetornarDescricaoComDeletado(string descricao)
+        {
+            if (AplicacaoSnebur.Atual.IsAlicacaoCliente)
+            {
+                if (this is IDeletado deletado && deletado.IsDeletado &&
+                    !descricao.Contains("deletado", CompareOptions.IgnoreCase))
+                {
+                    return $"{descricao} (DELETADO)";
+                }
+            }
+            return descricao;
         }
 
         internal protected void NotificarValorPropriedadeAlteradaIsAtivo(bool antigoValor, bool novoValor, [CallerMemberName] string nomePropriedade = "")
