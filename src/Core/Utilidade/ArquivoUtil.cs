@@ -561,6 +561,17 @@ namespace Snebur.Utilidade
         {
             return extensoes.Select(x => ArquivoUtil.NormalizarExtensao(x)).ToList();
         }
+
+        public static string GetCurrentFilaName(this FileInfo fi)
+        {
+            var arquivos = Directory.GetFiles(fi.Directory.FullName, fi.Name);
+            if(arquivos.Length == 1)
+            {
+                return Path.GetFileName(arquivos[0]);
+            }
+            return fi.FullName;
+        }
+
         #endregion
     }
 }
