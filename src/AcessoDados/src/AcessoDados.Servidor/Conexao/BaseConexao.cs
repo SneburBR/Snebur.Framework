@@ -4,7 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+#if NET6_0_OR_GREATER
+using Microsoft.Data.SqlClient;
+#else
 using System.Data.SqlClient;
+#endif
 
 namespace Snebur.AcessoDados
 {
@@ -308,10 +312,16 @@ namespace Snebur.AcessoDados
         {
             if (this.SqlDbType.HasValue)
             {
-                return this.BaseConexao.RetornarNovoParametro(this.ParameterName,
-                                                              this.SqlDbType.Value,
-                                                              this.Size,
-                                                              this.Value);
+                return new SqlParameter(this.ParameterName, this.SqlDbType.Value)
+                {
+                    Value = this.Value ?? DBNull.Value,
+                    Size = this.Size ?? 0,
+                    IsNullable = this.Value == null
+                };
+                //return this.BaseConexao.RetornarNovoParametro(this.ParameterName,
+                //                                              this.SqlDbType.Value,
+                //                                              this.Size,
+                //                                              this.Value);
             }
 
             return this.BaseConexao.RetornarNovoParametro(this.EstruturaCampo,
