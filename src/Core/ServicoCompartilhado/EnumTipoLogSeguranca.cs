@@ -79,5 +79,8 @@ namespace Snebur.Servicos
         ArquivoVersaoPublicacaoNaoEncontrado = 26,
 
         ServicoNaoEncontrado = 27,
+
+        [Rotulo("Tentativa de executar sql")]
+        TentativaExecutarSql = 28,
     }
 }
