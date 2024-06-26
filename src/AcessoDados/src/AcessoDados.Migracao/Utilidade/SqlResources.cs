@@ -11,9 +11,7 @@ namespace Snebur.AcessoDados.Migracao
             get => SqlResources._entryAssembly ?? Assembly.GetEntryAssembly();
             set => SqlResources._entryAssembly = value;
         }
-
-        
-
+         
         public static string RetornarSqlResouurce(string nome)
         {
             var assembly = SqlResources.EntryAssembly;
@@ -21,8 +19,9 @@ namespace Snebur.AcessoDados.Migracao
             var resourceStream = assembly.GetManifestResourceStream(caminhoResource);
             if (resourceStream == null)
             {
-                throw new Exception("Não foi possível encontrar o arquivo de recurso.");
+                throw new Exception($"Não foi possível encontrar o arquivo de recurso. {nome}");
             }
+
             using (var streamReader = new System.IO.StreamReader(resourceStream))
             {
                 return streamReader.ReadToEnd();
