@@ -75,10 +75,13 @@ namespace Snebur.Comunicacao
                                                                         operacao,
                                                                         requisicao.TipoSerializacao);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 var resultadoErro = this.RetornarResultadoChamadaErroInterno(ex, operacao);
-                LogUtil.ErroAsync(new ErroComunicacao(resultadoErro.MensagemErro, ex));
+                if (!(ex is Erro))
+                {
+                    LogUtil.ErroAsync(new ErroComunicacao(resultadoErro.MensagemErro, ex));
+                }
                 return JsonUtil.Serializar(resultadoErro, requisicao.TipoSerializacao);
             }
         }
@@ -87,7 +90,7 @@ namespace Snebur.Comunicacao
         {
             if (ex is ErroSessaoUsuarioExpirada erroSessaoUsuarioExpirada)
             {
-                return new ResultadoSessaoUsuarioInvalida(erroSessaoUsuarioExpirada.StatusSessao, 
+                return new ResultadoSessaoUsuarioInvalida(erroSessaoUsuarioExpirada.StatusSessao,
                                                           this.IdentificadorSessaoUsuario,
                                                           "Sessão expirada");
             }
@@ -149,7 +152,7 @@ namespace Snebur.Comunicacao
             return BaseComunicacaoServidor.TEMPO_LIMITE_PADRAO_LOG_DESEMPEHO;
         }
 
-        private void NotificarLogLentidaoAsync(Requisicao requisicao, 
+        private void NotificarLogLentidaoAsync(Requisicao requisicao,
                                                Stopwatch tempo)
         {
             if (!DebugUtil.IsAttached)
@@ -281,13 +284,13 @@ namespace Snebur.Comunicacao
                                                           object[] parametros)
         {
             var metodoOperacao = this.RetornarMetodo(operacao);
-         
-           
-                var resultadoOperacao = this.RetornarResultadoOperacao(metodoOperacao, parametros);
-                resultadoOperacao = this.NormalizarResultadoOperacao(resultadoOperacao);
-  
-                return this.RetornarResultadoChamadaInterno(resultadoOperacao);
-           
+
+
+            var resultadoOperacao = this.RetornarResultadoOperacao(metodoOperacao, parametros);
+            resultadoOperacao = this.NormalizarResultadoOperacao(resultadoOperacao);
+
+            return this.RetornarResultadoChamadaInterno(resultadoOperacao);
+
         }
 
         private ResultadoChamada RetornarResultadoChamadaInterno(object resultado)
@@ -402,7 +405,7 @@ namespace Snebur.Comunicacao
             return metodos.Single();
         }
 
-        private object RetornarObjetoBloqueioThreadCache(Dictionary<string, object> parametros, 
+        private object RetornarObjetoBloqueioThreadCache(Dictionary<string, object> parametros,
                                                         string operacao,
                                                         EnumTipoSerializacao tipoSerializacao)
         {
@@ -436,7 +439,7 @@ namespace Snebur.Comunicacao
 
         public virtual void Dispose()
         {
-            
+
         }
 
         #endregion
