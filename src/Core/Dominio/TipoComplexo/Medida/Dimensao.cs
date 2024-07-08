@@ -1,6 +1,7 @@
 ﻿using Snebur.Dominio.Atributos;
 using Snebur.Utilidade;
 using System;
+using System.Text.RegularExpressions;
 
 namespace Snebur.Dominio
 {
@@ -102,6 +103,24 @@ namespace Snebur.Dominio
             };
         }
 
-   
+        public static Dimensao Parse(string str)
+        {
+            if(String.IsNullOrWhiteSpace(str))
+            {
+                return Dimensao.Empty;
+            }
+
+            var regex = new Regex(@"[Xx;|]");
+            var valores = regex.Split(str);
+            if (valores.Length == 2)
+            {
+                if (Double.TryParse(valores[0], out double largura) &&
+                    Double.TryParse(valores[1], out double altura))
+                {
+                    return new Dimensao(largura, altura);
+                }
+            }
+            throw new FormatException($"Formato {str} inválido para Dimensao");
+        }
     }
 }
