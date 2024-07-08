@@ -1,4 +1,5 @@
-﻿using Snebur.Reflexao;
+﻿using Snebur.Dominio;
+using Snebur.Reflexao;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -240,7 +241,7 @@ namespace Snebur.Utilidade
 
             return (T)ConverterTipoPrimario(valor, tipoPrimario);
         }
-         
+
         public static int ParaInt32(object valor, IFormatProvider provider = null)
         {
             if (valor is int)
@@ -316,10 +317,12 @@ namespace Snebur.Utilidade
             {
                 return d;
             }
+
             if (ConverterUtil.IsValorVazioOuNull(valor))
             {
                 return 0D;
             }
+
             if (valor is IConvertible convertible)
             {
                 return convertible.ToDouble(provider ?? CultureInfo.InvariantCulture);
@@ -526,6 +529,31 @@ namespace Snebur.Utilidade
         {
             var alphaDecimal = (alpha / (decimal)byte.MaxValue);
             return $"rgba({red},{green},{blue},{Math.Round(alphaDecimal, 2)})";
+        }
+
+        internal static Dimensao ParaDimensao(object valor)
+        {
+            if(valor== null)
+            {
+                return Dimensao.Empty;
+            }
+
+            if (valor is Dimensao dimensao)
+            {
+                return dimensao;
+            }
+
+            if (valor is IDimensao _dimensao)
+            {
+                return new Dimensao(_dimensao.Largura, _dimensao.Altura);
+            }
+
+            if(valor is string str)
+            {
+                return Dimensao.Parse(str);
+            }
+            
+            throw new ErroNaoSuportado($"Não foi possível converter o valor {valor} para Dimensão");
         }
     }
 }

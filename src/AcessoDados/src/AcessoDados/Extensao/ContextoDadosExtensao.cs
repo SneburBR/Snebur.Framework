@@ -32,8 +32,6 @@ namespace Snebur.AcessoDados
                                                                     TEntidade entidade,
                                                                     params Expression<Func<TEntidade, object>>[] expressoesPropriedade) where TEntidade : Entidade
         {
-            var coracao = "Sinalizaçao aasdasd as";
-
             if (entidade.__IsExisteAlteracao)
             {
                 var clone = entidade.CloneSomenteId<TEntidade>(null);

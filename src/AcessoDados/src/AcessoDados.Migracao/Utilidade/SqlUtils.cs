@@ -8,7 +8,6 @@ namespace Snebur.EntityFramework
 
     public class SqlUtils
     {
-
         public static string RetornarNomeTabela(Type tipo)
         {
             var atributoTabela = tipo.GetCustomAttributes<TableAttribute>().FirstOrDefault();
