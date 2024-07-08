@@ -19,10 +19,15 @@ namespace Snebur.Utilidade
             switch (formatar)
             {
                 case EnumFormatacao.Bytes:
-                    return FormatacaoUtil.FormatarBytes(Convert.ToInt64(valor));
+
+                    if (valor is long || valor is int)
+                    {
+                        return FormatacaoUtil.FormatarBytes((long)valor);
+                    }
+                    return FormatacaoUtil.FormatarBytes(valor.ToString());
 
                 case EnumFormatacao.Cep:
-                    return FormatacaoUtil.FormatarCep(Convert.ToInt64(valor));
+                    return FormatacaoUtil.FormatarCep(valor.ToString());
                 case EnumFormatacao.Cpf:
                 case EnumFormatacao.Cnpj:
 
@@ -30,7 +35,7 @@ namespace Snebur.Utilidade
                 case EnumFormatacao.Telefone:
                     return FormatacaoUtil.FormatarTelefone(valor.ToString());
                 case EnumFormatacao.Moeda:
-                    return FormatacaoUtil.FormatarMoeda(Convert.ToDecimal(valor));
+                    return FormatacaoUtil.FormatarMoeda(ConverterUtil.ParaDecimal(valor));
 
                 case EnumFormatacao.MoedaComSinal:
                 case EnumFormatacao.Inteiro:
@@ -38,21 +43,21 @@ namespace Snebur.Utilidade
 
                 case EnumFormatacao.Decimal:
 
-                    return FormatacaoUtil.FormatarDecimal(Convert.ToDecimal(valor));
+                    return FormatacaoUtil.FormatarDecimal(ConverterUtil.ParaDecimal(valor));
                 case EnumFormatacao.Decimal1:
-                    return FormatacaoUtil.FormatarDecimal(Convert.ToDecimal(valor), 1);
+                    return FormatacaoUtil.FormatarDecimal(ConverterUtil.ParaDecimal(valor), 1);
                 case EnumFormatacao.Decimal3:
-                    return FormatacaoUtil.FormatarDecimal(Convert.ToDecimal(valor), 3);
+                    return FormatacaoUtil.FormatarDecimal(ConverterUtil.ParaDecimal(valor), 3);
                 case EnumFormatacao.Data:
-                    return FormatacaoUtil.FormatarData( valor, 3);
+                    return FormatacaoUtil.FormatarData(valor, 3);
                 case EnumFormatacao.Hora:
-                    return FormatacaoUtil.FormatarHora( valor, 3);
+                    return FormatacaoUtil.FormatarHora(valor, 3);
                 case EnumFormatacao.Dimensao:
-                    return FormatacaoUtil.FormatarDimensao((Dimensao)valor);
+                    return FormatacaoUtil.FormatarDimensao(ConverterUtil.ParaDimensao(valor));
                 case EnumFormatacao.DimensaoCm:
-                    return FormatacaoUtil.FormatarDimensaoCm((Dimensao)valor);
+                    return FormatacaoUtil.FormatarDimensaoCm(ConverterUtil.ParaDimensao(valor));
                 case EnumFormatacao.DimensaoPixels:
-                    return FormatacaoUtil.FormatarDimensaoPixels((Dimensao)valor);
+                    return FormatacaoUtil.FormatarDimensaoPixels(ConverterUtil.ParaDimensao(valor));
                 case EnumFormatacao.DataHora:
 
                 case EnumFormatacao.HoraDescricao:
@@ -121,7 +126,7 @@ namespace Snebur.Utilidade
                     break;
                 case EnumFormatacao.Proteger:
                     return FormatacaoUtil.Proteger(valor.ToString());
-                    
+
                 default:
                     break;
             }
@@ -129,9 +134,11 @@ namespace Snebur.Utilidade
             throw new NotImplementedException();
         }
 
-        private static string FormatarCep(long v)
+        private static string FormatarCep(string cep)
         {
-            throw new NotImplementedException();
+            var cepNumeros = TextoUtil.RetornarSomenteNumeros(cep);
+            return String.Format("{0:00\\.000-000}", Convert.ToInt64(cepNumeros));
+
         }
 
         private static string FormatarData(object v1, int v2)
@@ -149,7 +156,15 @@ namespace Snebur.Utilidade
             throw new NotImplementedException();
         }
 
-       
+
+        public static string FormatarBytes(string totalBytes)
+        {
+            if (Int64.TryParse(totalBytes, out var bytes))
+            {
+                return FormatarByteUtil.Formatar(bytes);
+            }
+            return totalBytes;
+        }
 
         public static string FormatarBytes(long totalBytes)
         {
@@ -237,11 +252,11 @@ namespace Snebur.Utilidade
             {
                 return String.Format(@"{0:00\.000\.000/0000-00}", Convert.ToInt64(cpfCnpjNumeros));
             }
+
             if (isIgnoarErro)
             {
                 return cpfCnpjNumeros;
             }
-
             throw new Exception(String.Format("O valor {0} não está em um formato de CPF ou CNPJ válido.", cpfCnpj));
         }
 
@@ -263,7 +278,7 @@ namespace Snebur.Utilidade
         {
             var rota = TextoUtil.RetornarSomentesLetrasNumeros(nome.Trim(), true);
             rota = rota.Replace(" ", "-").ToLower();
-             
+
             while (rota.Contains("--"))
             {
                 rota = rota.Replace("--", "-");
@@ -283,7 +298,7 @@ namespace Snebur.Utilidade
 
         public static string Proteger(string valor)
         {
-            if(valor?.Length > 3)
+            if (valor?.Length > 3)
             {
                 return valor.Trim().Substring(0, 3) + "*****"; ;
             }
@@ -300,7 +315,7 @@ namespace Snebur.Utilidade
         }
     }
 
-  public  enum EnumDivisorDecimal
+    public enum EnumDivisorDecimal
     {
         CulturaAtual,
         Ponto,
