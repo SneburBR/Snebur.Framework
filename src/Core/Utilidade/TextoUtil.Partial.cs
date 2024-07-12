@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Snebur.Utilidade
 {
@@ -41,6 +42,12 @@ namespace Snebur.Utilidade
                 }
             }
             return true;
+        }
+
+        public static string RemoverEspacos(string text)
+        {
+            //replace all spaces
+            return new Regex("\\s+").Replace(text, "");
         }
 
         private class TextoUtilConstantes

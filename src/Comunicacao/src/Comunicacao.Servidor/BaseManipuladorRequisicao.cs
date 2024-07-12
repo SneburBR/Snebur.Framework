@@ -33,13 +33,24 @@ namespace Snebur.Comunicacao
 
         public string CaminhoAplicacao { get; }
 
-        public BaseManipuladorRequisicao(string cmainhoAplicacao)  
+#if NET5_0_OR_GREATER
+
+        public BaseManipuladorRequisicao(string caminhoAplicacao)
         {
-            this.CaminhoAplicacao = cmainhoAplicacao;
+            this.CaminhoAplicacao = caminhoAplicacao;
             this.AutorizarArquivo("favicon.ico", true);
             this.InicializarManipuladores();
         }
-   
+
+#else
+        public BaseManipuladorRequisicao()
+        {
+            this.AutorizarArquivo("favicon.ico", true);
+            this.InicializarManipuladores();
+        }
+#endif
+
+
         public abstract void InicializarManipuladores();
 
 

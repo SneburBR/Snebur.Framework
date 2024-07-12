@@ -134,7 +134,7 @@ namespace Snebur.Utilidade
             throw new NotImplementedException();
         }
 
-        private static string FormatarCep(string cep)
+        public static string FormatarCep(string cep)
         {
             var cepNumeros = TextoUtil.RetornarSomenteNumeros(cep);
             return String.Format("{0:00\\.000-000}", Convert.ToInt64(cepNumeros));
@@ -312,6 +312,11 @@ namespace Snebur.Utilidade
                 return valor.Trim().Substring(0, 3) + "*****" + valor.Substring(valor.IndexOf('@'));
             }
             return "*****";
+        }
+
+        internal static string FormatarPrimeiraLetraMaiuscula(string x)
+        {
+            throw new NotImplementedException();
         }
     }
 

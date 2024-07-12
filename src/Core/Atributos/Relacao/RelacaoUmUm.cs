@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace Snebur.Dominio.Atributos
 {
@@ -11,7 +12,7 @@ namespace Snebur.Dominio.Atributos
 
         public RelacaoUmUmAttribute()
         {
-            throw new ErroNaoImplementado("RelacaoUmUmAttribute");
+            Trace.TraceWarning("RelacaoUmUmAttribute is not implementada");
         }
     }
 }
