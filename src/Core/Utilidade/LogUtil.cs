@@ -38,26 +38,33 @@ namespace Snebur.Utilidade
                                     [CallerFilePath] string caminhoArquivo = "",
                                     [CallerLineNumber] int linhaDoErro = 0)
         {
-            if (DebugUtil.IsAttached && IsParaErroDepuracaoAtachada(ex))
+            try
             {
-                throw ex;
+                if (DebugUtil.IsAttached && IsParaErroDepuracaoAtachada(ex))
+                {
+                    throw ex;
+                }
+                if (ex is Erro erro && erro.NotificaoEnviada)
+                {
+                    return;
+                }
+                var stackTrace = ex.StackTrace;
+                if (String.IsNullOrEmpty(stackTrace))
+                {
+                    stackTrace = System.Environment.StackTrace;
+                }
+                stackTrace += "Nome thread :  '" + Thread.CurrentThread.Name + "' \n" + stackTrace;
+                var nivelErro = (ex is Erro) ? (ex as Erro).NivelErro : EnumNivelErro.Normal;
+                var informacaoAdicional = ServicoCompartilhadoUtil.RetornarInformacaoAdicionalServicoCompartilhado();
+                ThreadUtil.ExecutarAsync((Action)(() =>
+                {
+                    LogUtil.Erro(ex, stackTrace, nivelErro, informacaoAdicional, nomeMetodo, caminhoArquivo, linhaDoErro);
+                }), true);
             }
-            if (ex is Erro erro && erro.NotificaoEnviada)
+            catch
             {
-                return;
+
             }
-            var stackTrace = ex.StackTrace;
-            if (String.IsNullOrEmpty(stackTrace))
-            {
-                stackTrace = System.Environment.StackTrace;
-            }
-            stackTrace += "Nome thread :  '" + Thread.CurrentThread.Name + "' \n" + stackTrace;
-            var nivelErro = (ex is Erro) ? (ex as Erro).NivelErro : EnumNivelErro.Normal;
-            var informacaoAdicional = ServicoCompartilhadoUtil.RetornarInformacaoAdicionalServicoCompartilhado();
-            ThreadUtil.ExecutarAsync((Action)(() =>
-            {
-                LogUtil.Erro(ex, stackTrace, nivelErro, informacaoAdicional, nomeMetodo, caminhoArquivo, linhaDoErro);
-            }), true);
         }
 
         private static bool IsParaErroDepuracaoAtachada(Exception exception)
