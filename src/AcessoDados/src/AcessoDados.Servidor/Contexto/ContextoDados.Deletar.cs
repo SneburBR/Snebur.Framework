@@ -58,6 +58,9 @@ namespace Snebur.AcessoDados
             return this.Deletar(new List<IEntidade> { entidade }, relacoesEmCascata);
         }
 
+
+
+
         public ResultadoDeletar DeletarRegistro<TEntidade>(IEnumerable<TEntidade> entidades, params Expression<Func<TEntidade, object>>[] expressoesPropriedade) where TEntidade : Entidade
         {
             var relacoesEmCascata = Util.RetornarRelacoesAbertas(expressoesPropriedade);
@@ -107,9 +110,15 @@ namespace Snebur.AcessoDados
             var entidadesRecuperadas = new List<Entidade>();
 
             var relacoes = relacoesEmCascata?.Split(',').Select(x => x.Trim()).Where(x => !String.IsNullOrEmpty(x)).ToArray();
-            foreach (var entidade in entidades)
+            if (relacoes.Count() == 0)
             {
-                var consulta = this.RetornarConsulta<Entidade>(entidade.GetType());
+                return this.RetornarTodasEntidades(entidades.Cast<Entidade>()).ToList();
+            }
+
+            var gruposEntidades = entidades.GroupBy(x => x.GetType());
+            foreach (var grupo in gruposEntidades)
+            {
+                var consulta = this.RetornarConsulta<Entidade>(grupo.Key);
                 if (DebugUtil.IsAttached)
                 {
                     consulta.IncluirDeletados();
@@ -118,12 +127,35 @@ namespace Snebur.AcessoDados
                 {
                     consulta = consulta.AbrirRelacoes(relacoes);
                 }
-                var entidadeRecuperada = consulta.Where(x => x.Id == entidade.Id).SingleOrDefault();
-                if (entidadeRecuperada != null)
+                var ids = grupo.Select(x => x.Id).ToList();
+                var entidadesRecuperada = consulta.WhereIds(ids).ToList();
+                if (entidadesRecuperada?.Count > 0)
                 {
-                    entidadesRecuperadas.Add(entidadeRecuperada);
+                    entidadesRecuperadas.AddRange(entidadesRecuperada);
                 }
             }
+            return this.RetornarTodasEntidades(entidadesRecuperadas).ToList();
+
+            //foreach (var entidade in entidades)
+            //{
+            //    var consulta = this.RetornarConsulta<Entidade>(entidade.GetType());
+
+            //    //if (DebugUtil.IsAttached)
+            //    //{
+            //    //    consulta.IncluirDeletados();
+            //    //}
+
+            //    if (relacoes != null && relacoes.Count() > 0)
+            //    {
+
+            //        consulta = consulta.AbrirRelacoes(relacoes);
+            //    }
+            //    var entidadeRecuperada = consulta.Where(x => x.Id == entidade.Id).SingleOrDefault();
+            //    if (entidadeRecuperada != null)
+            //    {
+            //        entidadesRecuperadas.Add(entidadeRecuperada);
+            //    }
+            //}
 
             return this.RetornarTodasEntidades(entidadesRecuperadas).ToList();
         }

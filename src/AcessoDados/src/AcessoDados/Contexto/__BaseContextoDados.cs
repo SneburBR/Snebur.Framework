@@ -47,9 +47,9 @@ namespace Snebur.AcessoDados
             return new ConsultaEntidade<TEntidade>(this, typeof(TEntidade));
         }
 
-        public IConsultaEntidade<TEntidade> RetornarConsulta<TEntidade>(Type tipoConsulta) where TEntidade : IEntidade
+        public IConsultaEntidade<TEntidade> RetornarConsulta<TEntidade>(Type tipoEntidade) where TEntidade : IEntidade
         {
-            return new ConsultaEntidade<TEntidade>(this, tipoConsulta);
+            return new ConsultaEntidade<TEntidade>(this, tipoEntidade);
             //return new ConstrutorConsultaEntidade<TEntidade>(this, tipoConsulta);
         }
 

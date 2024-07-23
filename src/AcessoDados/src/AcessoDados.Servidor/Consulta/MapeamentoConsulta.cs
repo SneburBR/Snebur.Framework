@@ -107,6 +107,20 @@ namespace Snebur.AcessoDados.Mapeamento
                         var idsUnico = new SortedSet<long>(grupo.Select(x => x.Id));
                         grupos.Add(new GrupoIdTipoEntidade(idsUnico, nomeTipoEntidade));
                     }
+
+                    if (Debugger.IsAttached)
+                    {
+                        var nomesTipoEntidadesNaoEncontrados = grupos.Where(x => this.EstruturaBancoDados.RetornarEstruturaEntidade(x.NomeTipoEntidade, false) == null)
+                                                                     .Select(x => x.NomeTipoEntidade)
+                                                                     .ToList();
+
+                        if(nomesTipoEntidadesNaoEncontrados.Count > 0)
+                        {
+                            throw new Erro($"Não foi encontrada a entidade do tipo {String.Join(", ", nomesTipoEntidadesNaoEncontrados)} herdade de {this.EstruturaEntidade.TipoEntidade.Name}");
+                        }
+                    }
+
+
                     foreach (var grupo in grupos)
                     {
                         var estruturaTipoEntidade = this.EstruturaBancoDados.RetornarEstruturaEntidade(grupo.NomeTipoEntidade, false);

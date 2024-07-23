@@ -63,7 +63,7 @@ namespace Snebur.AcessoDados
 
         public ConsultaEntidade<TEntidade> WhereIn(Expression<Func<TEntidade, Enum>> expressaoPropriedade, IEnumerable<int> lista)
         {
-            return this.WhereInInterno(expressaoPropriedade, lista.Cast<string>().ToList());
+            return this.WhereInInterno(expressaoPropriedade, lista.Select(x=> x.ToString()).ToList());
         }
 
         private ConsultaEntidade<TEntidade> WhereInInterno(Expression expressaoPropriedade, List<string> lista)

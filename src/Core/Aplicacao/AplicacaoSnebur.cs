@@ -407,6 +407,7 @@ namespace Snebur
 
         public bool IsAplicacaoAspNet { get; }
         public IAplicacaoSneburAspNet AspNet { get; }
+
         #endregion
 
         #region Construtor

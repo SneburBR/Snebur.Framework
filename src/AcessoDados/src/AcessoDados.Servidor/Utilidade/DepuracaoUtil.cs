@@ -36,25 +36,25 @@ namespace Snebur.AcessoDados
                 });
             }
             EscreverSaida(contexto, parametros, sql);
-
-
         }
+
         internal static void EscreverSaida(BaseContextoDados contexto,
                                            List<ParametroInfo> parametros,
                                            string sql)
         {
-            if (DebugUtil.IsAttached && false)
+            if (DebugUtil.IsAttached && ConfiguracaoUtil.IsLogDebugOutputSql)
             {
-                Task.Factory.StartNew(() =>
+                Task.Run(() =>
                 {
-                    DepuracaoUtil.EscreverSaidaInterno(contexto,
-                                                       parametros,
-                                                        sql);
+                    EscreverSaidaInterno(contexto,
+                                         parametros,
+                                         sql);
                 });
             }
 
         }
-        internal static void EscreverSaidaInterno(BaseContextoDados contexto,
+
+        private static void EscreverSaidaInterno(BaseContextoDados contexto,
                                                   List<ParametroInfo> parametros,
                                                   string sql)
         {
@@ -64,7 +64,7 @@ namespace Snebur.AcessoDados
             }
 
 #if DEBUG
-            if (DebugUtil.IsAttached && false)
+            if (DebugUtil.IsAttached && ConfiguracaoUtil.IsLogDebugOutputSql)
             {
                 lock (contexto.Comandos.SyncLock())
                 {

@@ -35,7 +35,7 @@ namespace Snebur.AcessoDados
 
            
             this.IsSessaoUsuarioContextoAtual = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.SessaoUsuario) &&
-                                         this.IsSuporta(flags, EnumFlagBancoNaoSuportado.SessaoUsuarioHerdada);
+                                                this.IsSuporta(flags, EnumFlagBancoNaoSuportado.SessaoUsuarioHerdada);
             if (!this.IsSessaoUsuarioContextoAtual)
             {
                 this.IsSessaoUsuarioHerdada = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.SessaoUsuarioHerdada);

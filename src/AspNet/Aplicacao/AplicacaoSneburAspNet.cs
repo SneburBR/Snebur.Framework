@@ -7,9 +7,12 @@ using System.Collections;
 using System.ComponentModel;
 using System.Web;
 using Snebur.Linq;
+using System.Linq;
+
 
 #if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 #else
 //using System.Web;
 #endif 
@@ -175,7 +178,7 @@ namespace Snebur
         public string UserAgent => this.HttpContext?.Request?.UserAgent;
 #else
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string UserAgent => this.HttpContext.Request.UserAgent();
+        public string UserAgent => this.HttpContext?.Request?.UserAgent();
 #endif
         public T GetHttpContext<T>()
         {
@@ -213,25 +216,25 @@ namespace Snebur
 
         #region IAplicacaoSneburAspNetCore
 
-        //private static IServiceProvider ServiceProvider;
-        private static IHttpContextAccessor HttpContextAccessor;
+        private static IHttpContextAccessor _httpContextAccessor;
+        private static ILogger _logger;
 
-        public virtual HttpContext HttpContext
-        {
-            get
-            {
-                if (AplicacaoSneburAspNet.HttpContextAccessor == null)
-                {
-                    throw new Exception("O HttpContextAccessor não foi definido");
-                }
-                return AplicacaoSneburAspNet.HttpContextAccessor.HttpContext;
-            }
-        }
+        public virtual HttpContext HttpContext 
+            => this.HttpContextAccessor.HttpContext;
+        public virtual IHttpContextAccessor HttpContextAccessor
+            => AplicacaoSneburAspNet._httpContextAccessor ?? throw new Exception("O HttpContextAccessor não foi definido");
+        
+        public ILogger Logger 
+            => AplicacaoSneburAspNet._logger  ?? throw new Exception("O Logger não foi definido");
 
         public void ConfigureHttpContextAccessor(IHttpContextAccessor httpContextAccessor)
         {
-            AplicacaoSneburAspNet.HttpContextAccessor = httpContextAccessor;
-            //AplicacaoSneburAspNet.ServiceProvider = ServiceProvider;
+            AplicacaoSneburAspNet._httpContextAccessor = httpContextAccessor;
+        }
+
+        public void ConfigureLogger(ILogger logger)
+        {
+            AplicacaoSneburAspNet._logger = logger;
         }
 
         #endregion

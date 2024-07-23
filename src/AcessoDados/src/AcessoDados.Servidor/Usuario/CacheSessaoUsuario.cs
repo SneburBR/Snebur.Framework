@@ -123,14 +123,15 @@ namespace Snebur.AcessoDados
             this.Usuario = this.AjudanteSessaoUsuario.RetornarUsuario(this.Contexto, this.Credencial);
             if (this.Usuario == null)
             {
-                throw new ErroSessaoUsuarioInvalida($" O usuário em cache não foi encontrado: {this.Credencial.IdentificadorUsuario} -- {this.Credencial.Senha}. {this.Contexto.IdentificadorProprietario} {this.Contexto.Conexao.ConnectionString}");
+                throw new ErroSessaoUsuarioInvalida($" O usuário em cache não foi encontrado: {this.Credencial.IdentificadorUsuario} -- {this.Credencial.Senha}. {this.Contexto.IdentificadorProprietario}");
                 //this.Usuario = this.AjudanteSessaoUsuario.RetornarUsuario(CredencialAnonimo.Anonimo);
                 //throw new Erro($"Não foi possível retornar o usuário para a credencial  {this.Credencial.IdentificadorUsuario}");
             }
-            this.SessaoUsuario = this.AjudanteSessaoUsuario.RetornarSessaoUsuario(this.Contexto,
-                                                                                  this.Usuario, 
-                                                                                  this.IdentificadorSessaoUsuario, 
-                                                                                  this.InformacaoSessaoUsuario);
+            this.SessaoUsuario = this.AjudanteSessaoUsuario
+                                     .RetornarSessaoUsuario(this.Contexto,
+                                                            this.Usuario, 
+                                                            this.IdentificadorSessaoUsuario, 
+                                                            this.InformacaoSessaoUsuario);
 
             this.NotificarSessaoUsuarioAtivaInterno();
             if (this.TimerAtualizarStatus == null)

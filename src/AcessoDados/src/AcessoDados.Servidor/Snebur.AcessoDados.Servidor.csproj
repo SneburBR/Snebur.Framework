@@ -29,8 +29,12 @@
 	  <Compile Remove="Consulta\Entidade\BaseMapeamentoEntidade.SqlFiltros.cs" />
 	</ItemGroup>
 	<ItemGroup>
+		<None Remove="Recursos\SNAPSHOT.sql" />
 		<None Remove="Snebur.AcessoDados.Servidor.csproj.vspscc" />
 		<None Remove="Snebur.AcessoDados.Servidor.Net50.csproj.vspscc" />
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Include="Recursos\SNAPSHOT.sql" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Core\Snebur.csproj" />

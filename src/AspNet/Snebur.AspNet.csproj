@@ -27,22 +27,21 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\Core\Snebur.csproj" />
 	</ItemGroup>
-<ItemGroup Condition="'$(TargetFramework)' == 'net48' ">
+	
+	<ItemGroup Condition="'$(TargetFramework)' == 'net48' ">
 		<Reference Include="System.ServiceModel" />
 		<Reference Include="System.Web" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0' ">
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
 	</ItemGroup>
 	
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0' ">
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
 	</ItemGroup>
 	
-	
-	 
-
-
 
 </Project>

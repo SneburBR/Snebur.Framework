@@ -29,6 +29,8 @@ namespace Snebur
 
         InfoRequisicao RetornarInfoRequisicao();
 
+ 
+
         //string RetornarIpDaRequisicao();
     }
 }

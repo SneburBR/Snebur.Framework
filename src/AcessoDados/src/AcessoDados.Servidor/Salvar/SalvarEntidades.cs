@@ -1,5 +1,4 @@
-﻿using Snebur.AcessoDados.Estrutura;
-using Snebur.Dominio;
+﻿using Snebur.Dominio;
 using Snebur.Linq;
 using Snebur.Utilidade;
 using System;
@@ -419,7 +418,6 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                 }
             }
             return NormalizarEntidadeAlterada.RetornarEntidadesAlteradaNormalizada(this.Contexto, entidadesAlterada);
-
         }
 
         private HashSet<Entidade> RetornarEntidadesNormalizadas(HashSet<Entidade> entidades)

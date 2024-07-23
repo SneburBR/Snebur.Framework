@@ -48,7 +48,7 @@ namespace Snebur.AcessoDados.Estrutura
         internal Type TipoEntidade { get; }
         public BancoDadosSuporta SqlSuporte { get; }
         internal string Schema { get; }
-        internal string NomeTabela { get; set; }
+        internal string NomeTabela { get;  }
         internal string GrupoArquivoIndices { get; }
         internal bool IsChavePrimariaAutoIncrimento { get; }
         internal bool IsAbstrata { get; }
@@ -624,7 +624,7 @@ namespace Snebur.AcessoDados.Estrutura
             {
                 if (DebugUtil.IsAttached)
                 {
-                    System.Diagnostics.Trace.TraceWarning($"Testear relação filhos  {propriedade.DeclaringType.Name}{propriedade.Name} ");
+                    Trace.TraceWarning($"Tester relação filhos  {propriedade.DeclaringType.Name}{propriedade.Name} ");
                 }
                 return atributoRelacaoFilhos.NomePropriedadeChaveEstrangeira;
             }

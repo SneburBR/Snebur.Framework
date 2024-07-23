@@ -108,6 +108,10 @@ namespace Snebur.AcessoDados
                                                                   conexao,
                                                                   transacao))
                         {
+                            DepuracaoUtil.EscreverSaida(this.ContextoDados, 
+                                                        parametros,
+                                                        sql);
+
                             using (var ad = this.RetornarNovoDataAdapter(cmd))
                             {
                                 ad.Fill(dt);
@@ -237,6 +241,10 @@ namespace Snebur.AcessoDados
 
             using (var cmd = this.RetornarNovoComando(sql, parametros, conexao, transacao))
             {
+                DepuracaoUtil.EscreverSaida(this.ContextoDados,
+                                            parametros,
+                                            sql);
+
                 using (var ad = this.RetornarNovoDataAdapter(cmd))
                 {
                     ad.Fill(dt);

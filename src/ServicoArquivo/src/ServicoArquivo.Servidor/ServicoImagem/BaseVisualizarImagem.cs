@@ -22,7 +22,7 @@ namespace Snebur.ServicoArquivo
                                                                                                                                EnumTamanhoImagem.Impressao });
 #if NET6_0_OR_GREATER
 
-        public async Task ProcessRequestAsync(HttpContext context)
+        public Task ProcessRequestAsync(HttpContext context)
         {
             var caminhoImagem = this.RetornarCaminhoImagem(context);
             var response = context.Response;
@@ -41,6 +41,7 @@ namespace Snebur.ServicoArquivo
                 //response.SubStatusCode = 5;
                 response.StatusCode = 405;
             }
+            return Task.CompletedTask;
         }
 #else
 
@@ -141,14 +142,13 @@ namespace Snebur.ServicoArquivo
             //var valorParametro = zyonHttpContext.Request.QueryString[parametroBase64];
 #else
             var valorParametro = zyonHttpContext.Request.QueryString[parametroBase64];
-#endif
-
             if (!String.IsNullOrEmpty(valorParametro))
             {
                 return Base64Util.Decode(valorParametro);
             }
             throw new Exception($"Parâmetro '{parametro}' não foi definido.");
-            
+#endif
+
         }
         #endregion
 

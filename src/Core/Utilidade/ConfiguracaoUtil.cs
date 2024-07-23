@@ -18,6 +18,7 @@ namespace Snebur.Utilidade
         private static object _bloqueioCaminhoAppData = new object();
         private static object _bloqueio = new object();
         private static Guid? _chaveSeguranca;
+        private static bool? _isLogDebugOutputSql;
 
         private static string _caminhoAppDataAplicacao;
         private static string _caminhoAppDataAplicacaoLogs;
@@ -34,6 +35,8 @@ namespace Snebur.Utilidade
         public static string UrlServicoImagem => AplicacaoSnebur.Atual.UrlServicoImagem;
         public static Guid ChaveSeguranca => LazyUtil.RetornarValorLazyComBloqueio(ref _chaveSeguranca, RetornarChaveSeguranca);
 
+        public static bool IsLogDebugOutputSql=> LazyUtil.RetornarValorLazyComBloqueio(ref _isLogDebugOutputSql, RetornarIsLogDebugOutputSql);
+
         private static Guid RetornarChaveSeguranca()
         {
             if (Guid.TryParse(AplicacaoSnebur.Atual.AppSettings["ChaveSeguranca"], out var resultado))
@@ -41,6 +44,14 @@ namespace Snebur.Utilidade
                 return resultado;
             }
             return CHAVE_SEGURANCA_PADRAO;
+        }
+        private static bool RetornarIsLogDebugOutputSql()
+        {
+            if (Boolean.TryParse(AplicacaoSnebur.Atual.AppSettings["IsLogDebugOutputSql"], out var resultado))
+            {
+                return resultado;
+            }
+            return false;
         }
 
         public static bool IsAttachedLocalhost => AmbienteServidor == EnumAmbienteServidor.Localhost &&
