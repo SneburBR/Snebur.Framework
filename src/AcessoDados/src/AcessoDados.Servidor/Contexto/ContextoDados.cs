@@ -17,6 +17,8 @@ using System.Diagnostics;
 using System.Collections;
 using System.Data.Common;
 using Microsoft.IdentityModel.Abstractions;
+using System.Threading.Tasks;
+
 
 
 
@@ -107,6 +109,11 @@ namespace Snebur.AcessoDados
                 this.IsValidarUsuarioSessaoUsuario = false;
                 this.UsuarioAvalista = this.CacheSessaoUsuario.RetornarUsuarioAvalista(this._credencialAvalista);
                 this.IsValidarUsuarioSessaoUsuario = true;
+
+                if (this.ContextoSessaoUsuarioHerdada != null)
+                {
+                    this.ContextoSessaoUsuarioHerdada.CredencialAvalista = value;
+                }
             }
         }
 
@@ -125,7 +132,8 @@ namespace Snebur.AcessoDados
             ErroUtil.ValidarReferenciaNula(configuracaoAcessoDados, nameof(configuracaoAcessoDados));
 
             this.SqlSuporte = new BancoDadosSuporta(flagsNaoSuporta);
-            this.ConectionString = AplicacaoSnebur.Atual.ConnectionStrings[configuracaoAcessoDados] ?? throw new ErroNaoDefinido($"Não foi encontrada o String de conexão '{configuracaoAcessoDados}' no arquivo de configuração da aplicação ConnectionStrings App.Config ou Web.Config ");
+            this.ConectionString = AplicacaoSnebur.Atual.ConnectionStrings[configuracaoAcessoDados]
+                    ?? throw new ErroNaoDefinido($"Não foi encontrada o String de conexão '{configuracaoAcessoDados}' no arquivo de configuração da aplicação ConnectionStrings App.Config ou Web.Config ");
 
             if (String.IsNullOrWhiteSpace(identificadorProprietario))
             {
@@ -497,15 +505,19 @@ namespace Snebur.AcessoDados
             }
         }
 
+        public Task<int> ExecutarSqlAsync(string sql, List<ParametroInfo> parametroInfos = null)
+        {
+            return Task.Run(() => this.ExecutarSql(sql, parametroInfos));
+        }
         public int ExecutarSql(string sql, List<ParametroInfo> parametroInfos = null)
         {
             this.ValidarSessaoUsuario();
             if (!Debugger.IsAttached)
             {
-                LogUtil.ErroAsync(new ErroSeguranca( "Somente  é permitido executar SQL em modo de depuração", EnumTipoLogSeguranca.TentativaExecutarSql));
+                LogUtil.ErroAsync(new ErroSeguranca("Somente  é permitido executar SQL em modo de depuração", EnumTipoLogSeguranca.TentativaExecutarSql));
                 return -1;
             }
-           return this.Conexao.ExecutarComando(sql, parametroInfos);
+            return this.Conexao.ExecutarComando(sql, parametroInfos);
         }
 
         public List<TMapeamento> MapearSql<TMapeamento>(string sql,
@@ -576,7 +588,7 @@ namespace Snebur.AcessoDados
 
 
         public virtual void NotificarSessaoUsuarioAtiva(IUsuario usuario,
-                                                           ISessaoUsuario sessaoUsuario)
+                                                        ISessaoUsuario sessaoUsuario)
         {
             var nowUtc = DateTime.UtcNow;
             usuario.DataHoraUltimoAcesso = nowUtc;
@@ -665,51 +677,7 @@ namespace Snebur.AcessoDados
 
         #endregion
 
-        #region Popular Banco
 
-        private static bool? __isPopularBanco = null;
-        private static bool __isPopularBancoPendente = true;
-        private static object __bloqueioPoularBanco = new object();
-
-        private static bool IsPopularBanco
-        {
-            get
-            {
-                if (!BaseContextoDados.__isPopularBanco.HasValue)
-                {
-                    __isPopularBanco = ConverterUtil.ParaBoolean(AplicacaoSnebur.Atual.AppSettings["IsPopularBanco"]);
-                }
-                return BaseContextoDados.__isPopularBanco.Value;
-            }
-        }
-
-
-        private void PopularBancoInterno()
-        {
-            if (BaseContextoDados.__isPopularBancoPendente)
-            {
-                if (!BaseContextoDados.IsPopularBanco)
-                {
-                    BaseContextoDados.__isPopularBancoPendente = false;
-                    return;
-                }
-
-                lock (BaseContextoDados.__bloqueioPoularBanco)
-                {
-                    if (BaseContextoDados.__isPopularBancoPendente)
-                    {
-                        this.OnPopularBanco();
-                        BaseContextoDados.__isPopularBancoPendente = false;
-                    }
-                }
-            }
-        }
-
-        protected virtual void OnPopularBanco()
-        {
-
-        }
-        #endregion
 
         #region Transação
 
@@ -769,6 +737,7 @@ namespace Snebur.AcessoDados
 
         #endregion
 
+        public Type[] TiposEntidade => this.EstruturaBancoDados.TiposEntidade.Values.ToArray();
         public abstract bool UsuarioLogadoAutorizadoIdentificadorProprietarioGlobal();
 
         #region Somente Leitura
