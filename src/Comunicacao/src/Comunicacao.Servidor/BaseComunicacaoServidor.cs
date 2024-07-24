@@ -31,7 +31,7 @@ namespace Snebur.Comunicacao
         protected abstract CredencialServico CredencialServico { get; }
         public CredencialUsuario CredencialUsuario { get; private set; }
         public Guid IdentificadorSessaoUsuario { get; private set; }
-        public InformacaoSessaoUsuario InformacaoSessaoUsuario { get; private set; }
+        public InformacaoSessao InformacaoSessao { get; private set; }
         public string IdentificadorProprietario { get; protected internal set; }
         public bool IsBloqueiarThreadSessaoUsuario { get; protected internal set; }
 

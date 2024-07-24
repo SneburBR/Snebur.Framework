@@ -336,7 +336,7 @@ namespace Snebur
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual InformacaoSessaoUsuario InformacaoSessaoUsuario => this.RetornarInformacaoSessaoUsuario();
+        public virtual InformacaoSessao InformacaoSessao => this.RetornarInformacaoSessaoUsuario();
         public virtual string IP => this.RetornarIp();
 
         //[EditorBrowsable(EditorBrowsableState.Never)]
@@ -709,7 +709,7 @@ namespace Snebur
             return ConfiguracaoUtil.AmbienteServidor;
         }
 
-        public InformacaoSessaoUsuario RetornarInformacaoSessaoUsuario()
+        public InformacaoSessao RetornarInformacaoSessaoUsuario()
         {
             var tipoAplicacao = this.TipoAplicacao;
             var userAgent = this.AspNet?.UserAgent;
@@ -728,9 +728,9 @@ namespace Snebur
                 throw new ArgumentNullException(nameof(identificadorAplicacao));
             }
 
-            return new InformacaoSessaoUsuario
+            return new InformacaoSessao
             {
-                IdentificadorSessaoUsuario = identificadorSessaoUsuario,
+                //IdentificadorSessaoUsuario = identificadorSessaoUsuario,
                 //IdentificadorProprietario = identificadorProprietario,
                 IdentificadorAplicacao = identificadorAplicacao,
                 TipoAplicacao = tipoAplicacao,

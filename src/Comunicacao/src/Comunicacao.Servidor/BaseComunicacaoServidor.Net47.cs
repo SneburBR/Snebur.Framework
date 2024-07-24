@@ -37,9 +37,9 @@ namespace Snebur.Comunicacao
 
                     if (requisicao.CredencialServicoValida())
                     {
-                        this.InformacaoSessaoUsuario = requisicao.InformacaoSessaoUsuario;
+                        this.InformacaoSessao = requisicao.InformacaoSessaoUsuario;
                         this.CredencialUsuario = requisicao.CredencialUsuario;
-                        this.IdentificadorSessaoUsuario = requisicao.InformacaoSessaoUsuario.IdentificadorSessaoUsuario;
+                        this.IdentificadorSessaoUsuario = requisicao.IdentificadorSessaoUsuario;
                         this.Inicializar(requisicao);
 
                         try

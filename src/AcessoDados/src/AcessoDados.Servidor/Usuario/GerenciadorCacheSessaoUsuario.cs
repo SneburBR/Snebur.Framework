@@ -36,7 +36,7 @@ namespace Snebur.AcessoDados
         public CacheSessaoUsuario RetornarCacheSessaoUsuario(BaseContextoDados contexto,
                                                             Credencial credencial,
                                                             Guid identificadorSessaoUsuario,
-                                                            InformacaoSessaoUsuario informacaoSessaoUsuario)
+                                                            InformacaoSessao informacaoSessaoUsuario)
         {
             return this.RetornarCacheSessaoUsuarioInterno(contexto, credencial, identificadorSessaoUsuario, informacaoSessaoUsuario);
         }
@@ -68,7 +68,7 @@ namespace Snebur.AcessoDados
         private CacheSessaoUsuario RetornarCacheSessaoUsuarioInterno(BaseContextoDados contexto,
                                                                       Credencial credencial,
                                                                       Guid identificadorSessaoUsuario,
-                                                                      InformacaoSessaoUsuario informacaoSessaoUsuario)
+                                                                      InformacaoSessao informacaoSessaoUsuario)
         {
             lock (SessaoUsuarioExtensao.RetornarBloqueio(identificadorSessaoUsuario))
             {

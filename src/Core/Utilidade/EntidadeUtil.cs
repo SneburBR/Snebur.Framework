@@ -218,7 +218,9 @@ namespace Snebur.Utilidade
             return atributo.SingleOrDefault() as TInterfaceAtributo;
         }
 
-        public static List<PropertyInfo> RetornarPropriedadesCampos(Type tipoEntidade, EnumFiltroPropriedadeCampo filtro)
+        public static List<PropertyInfo> RetornarPropriedadesCampos(Type tipoEntidade,
+                                                                    EnumFiltroPropriedadeCampo filtro,
+                                                                    bool isIncluirTipoComplexos = false)
         {
             var filtros = EnumUtil.RetornarFlags<EnumFiltroPropriedadeCampo>(filtro).ToHashSet();
 
@@ -230,19 +232,21 @@ namespace Snebur.Utilidade
             return RetornarPropriedadesCampos(tipoEntidade, ignorarTipoBase: ignorarTipoBase,
                                                             ignorarChavePrimaria: ignorarChavePrimaria,
                                                             ignorarPropriedadeProtegida: ignorarPropriedadeProtegida,
-                                                            ignorarChaveEstrangeira: ignorarChaveEstrangeira);
+                                                            ignorarChaveEstrangeira: ignorarChaveEstrangeira,
+                                                            isIncluirTipoComplexos);
         }
         //public static List<PropertyInfo> RetornarPropriedadesCampos(Type tipoEntidade, bool ignorarTipoBase)
         //{
         //    return EntidadeUtil.RetornarPropriedadesCampos(tipoEntidade, ignorarTipoBase, false, false);
         //}
 
-        private static List<PropertyInfo> RetornarPropriedadesCampos(Type tipoEntidade,
+        public static List<PropertyInfo> RetornarPropriedadesCampos(Type tipoEntidade,
                                                                     bool ignorarTipoBase = false,
                                                                     bool ignorarChavePrimaria = false,
                                                                     bool ignorarPropriedadeProtegida = false,
                                                                     bool ignorarChaveEstrangeira = false,
-                                                                    bool ignorarSobreescritas = false)
+                                                                    bool ignorarSobreescritas = false,
+                                                                    bool isIncluirTipoComplexo = false)
         {
             var propriedades = ReflexaoUtil.RetornarPropriedades(tipoEntidade, ignorarTipoBase);
             if (tipoEntidade.BaseType == typeof(Entidade))
@@ -252,56 +256,74 @@ namespace Snebur.Utilidade
                     propriedades.Insert(0, EntidadeUtil.PropriedadeNomeTipoEntidade);
                 }
             }
-            HashSet<string> nomePrpriedadesChaveEstrangeiras = null;
 
+            HashSet<string> nomePrpriedadesChaveEstrangeiras = null;
             if (ignorarChaveEstrangeira)
             {
                 nomePrpriedadesChaveEstrangeiras = propriedades.Select(x => x.RetornarAtributoChaveEstrangeira()).
                                                                 Where(x => x != null).
                                                                 Select(x => x.NomePropriedade).ToHashSet();
             }
-            return propriedades.Where(x =>
+            return propriedades.Where(propriedade =>
                                     {
-                                        if (ReflexaoUtil.IsPropriedadeRetornaTipoPrimario(x, true) &&
-                                            x.GetGetMethod() != null && x.GetGetMethod().IsPublic &&
-                                            x.GetSetMethod() != null && x.GetSetMethod().IsPublic ||
-                                            x == EntidadeUtil.PropriedadeNomeTipoEntidade)
+                                        if (IsPropriedadeCampo(propriedade, isIncluirTipoComplexo))
                                         {
-                                            var atrituboNaoMapear = x.GetCustomAttribute<NaoMapearAttribute>();
-                                            var atrituboNaoMapearInterno = x.GetCustomAttribute<NaoMapearInternoAttribute>();
-                                            var atributoChavePrimaria = x.GetCustomAttribute<KeyAttribute>();
-                                            var atributoPropriedadeProtegida = x.GetCustomAttribute<PropriedadeProtegidaAttribute>();
-                                            var getMethod = x.GetGetMethod();
-                                            bool resultado = atrituboNaoMapear == null && atrituboNaoMapearInterno == null;
-                                            if (resultado)
+                                            var atributoChavePrimaria = propriedade.GetCustomAttribute<KeyAttribute>();
+                                            var atributoPropriedadeProtegida = propriedade.GetCustomAttribute<PropriedadeProtegidaAttribute>();
+                                            var getMethod = propriedade.GetGetMethod();
+                                            bool resultado = true;
+
+                                            // ignorar propriedades sobreescritas - override
+                                            if (atributoChavePrimaria == null)
                                             {
-                                                // ignorar propriedades sobreescritas - override
-                                                if (atributoChavePrimaria == null)
-                                                {
-                                                    resultado = resultado && getMethod.GetBaseDefinition().DeclaringType == getMethod.DeclaringType;
-                                                }
-                                                if (ignorarChavePrimaria)
-                                                {
-                                                    resultado = resultado && atributoChavePrimaria == null;
-                                                }
-                                                if (ignorarPropriedadeProtegida)
-                                                {
-                                                    resultado = resultado && atributoPropriedadeProtegida == null;
-                                                }
-                                                if (ignorarChaveEstrangeira)
-                                                {
-                                                    resultado = resultado && !nomePrpriedadesChaveEstrangeiras.Contains(x.Name);
-                                                }
-                                                if (ignorarSobreescritas)
-                                                {
-                                                    resultado = resultado && !nomePrpriedadesChaveEstrangeiras.Contains(x.Name);
-                                                }
+                                                resultado = resultado && getMethod.GetBaseDefinition().DeclaringType == getMethod.DeclaringType;
+                                            }
+                                            if (ignorarChavePrimaria)
+                                            {
+                                                resultado = resultado && atributoChavePrimaria == null;
+                                            }
+                                            if (ignorarPropriedadeProtegida)
+                                            {
+                                                resultado = resultado && atributoPropriedadeProtegida == null;
+                                            }
+                                            if (ignorarChaveEstrangeira)
+                                            {
+                                                resultado = resultado && !nomePrpriedadesChaveEstrangeiras.Contains(propriedade.Name);
+                                            }
+                                            if (ignorarSobreescritas)
+                                            {
+                                                resultado = resultado && !nomePrpriedadesChaveEstrangeiras.Contains(propriedade.Name);
                                             }
                                             return resultado;
                                         }
                                         return false;
 
                                     }).ToList();
+        }
+
+        private static bool IsPropriedadeCampo(PropertyInfo propriedade,
+                                               bool isIncluirTipoComplexo)
+        {
+            if (propriedade == EntidadeUtil.PropriedadeNomeTipoEntidade)
+            {
+                return true;
+            }
+
+            var atrituboNaoMapear = propriedade.GetCustomAttribute<NaoMapearAttribute>();
+            var atrituboNaoMapearInterno = propriedade.GetCustomAttribute<NaoMapearInternoAttribute>();
+            if (atrituboNaoMapear == null && atrituboNaoMapearInterno == null)
+            {
+                if (propriedade.GetGetMethod() != null && propriedade.GetGetMethod().IsPublic &&
+                    propriedade.GetSetMethod() != null && propriedade.GetSetMethod().IsPublic)
+                {
+                    if (propriedade.PropertyType.IsSubclassOf(typeof(BaseTipoComplexo)))
+                    {
+                        return isIncluirTipoComplexo;
+                    }
+                    return ReflexaoUtil.IsPropriedadeRetornaTipoPrimario(propriedade, true);
+                }
+            }
+            return false;
         }
 
         public static string RetornarNomeCampo(PropertyInfo propriedade)

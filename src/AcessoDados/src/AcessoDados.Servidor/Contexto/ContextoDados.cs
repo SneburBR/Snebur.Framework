@@ -173,7 +173,7 @@ namespace Snebur.AcessoDados
                                     string configuracaoAcessoDados,
                                     CredencialUsuario credencial,
                                     Guid identificadorSessaoUsario,
-                                    InformacaoSessaoUsuario informacaoSessaoUsuario,
+                                    InformacaoSessao informacaoSessaoUsuario,
                                     string identificadorProprietario,
                                     EnumFlagBancoNaoSuportado sqlNaoSuporta) : this(contextoSessaoUsuarioHerdada,
                                                                                    configuracaoAcessoDados,
@@ -190,7 +190,7 @@ namespace Snebur.AcessoDados
         protected BaseContextoDados(string configuracaoAcessoDados,
                                     CredencialUsuario credencial,
                                     Guid identificadorSessaoUsario,
-                                    InformacaoSessaoUsuario informacaoSessaoUsuario,
+                                    InformacaoSessao informacaoSessaoUsuario,
                                     string identificadorProprietario,
                                     EnumFlagBancoNaoSuportado sqlNaoSuporta) : this(null,
                                                                                     configuracaoAcessoDados,
@@ -207,7 +207,7 @@ namespace Snebur.AcessoDados
                                   string configuracaoAcessoDados,
                                   CredencialUsuario credencial,
                                   Guid identificadorSessaoUsario,
-                                  InformacaoSessaoUsuario informacaoSessaoUsuario,
+                                  InformacaoSessao informacaoSessaoUsuario,
                                   string identificadorProprietario,
                                   EnumFlagBancoNaoSuportado sqlNaoSuporta,
                                   bool isValidarUsuarioGlobal) : this(configuracaoAcessoDados,
@@ -262,7 +262,7 @@ namespace Snebur.AcessoDados
         protected BaseContextoDados(string configuracaoAcessoDados,
                              CredencialUsuario credencial,
                              Guid identificadorSessaoUsuario,
-                             InformacaoSessaoUsuario informacaoSessaoUsuario,
+                             InformacaoSessao informacaoSessaoUsuario,
                              string identificadorProprietario) :
                              this(configuracaoAcessoDados,
                                   credencial,
@@ -278,7 +278,7 @@ namespace Snebur.AcessoDados
                                     CredencialUsuario credencialUsuario,
                                     CredencialUsuario credencialAvalista,
                                     Guid identificadorSessaoUsuario,
-                                    InformacaoSessaoUsuario informacaoSessaoUsuario,
+                                    InformacaoSessao informacaoSessaoUsuario,
                                     string identificadorProprietario,
                                     EnumFlagBancoNaoSuportado sqlNaoSuporta = EnumFlagBancoNaoSuportado.SemRestricao) :
                                     this(null,
@@ -306,7 +306,7 @@ namespace Snebur.AcessoDados
         protected virtual CacheSessaoUsuario RetornarCacheSessaoUsuario(BaseContextoDados baseContextoDados,
                                                                         CredencialUsuario credencial,
                                                                         Guid identificadorSessaoUsario,
-                                                                        InformacaoSessaoUsuario informacaoSessaoUsuario)
+                                                                        InformacaoSessao informacaoSessaoUsuario)
         {
             if (this.SqlSuporte.IsSessaoUsuarioContextoAtual)
             {

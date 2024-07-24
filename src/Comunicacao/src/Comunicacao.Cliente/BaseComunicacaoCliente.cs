@@ -136,9 +136,9 @@ namespace Snebur.Comunicacao
 
         #region Métodos protegidos - virtual
 
-        protected virtual InformacaoSessaoUsuario RetornarInformacaoSessoUsuarioRequisicaoAtual()
+        protected virtual InformacaoSessao RetornarInformacaoSessoUsuarioRequisicaoAtual()
         {
-            return AplicacaoSnebur.Atual.InformacaoSessaoUsuario;
+            return AplicacaoSnebur.Atual.InformacaoSessao;
         }
 
         protected virtual string IdentificadorProprietarioRequisicaoAtual()
@@ -178,7 +178,7 @@ namespace Snebur.Comunicacao
             {
                 Async = isAsync,
                 Cabecalho = cabecalho,
-                InformacaoSessaoUsuario = informacaoSessaoUsuario,
+                InformacaoSessao = informacaoSessaoUsuario,
                 Operacao = operacao,
                 DataHora = DateTime.UtcNow,
             };

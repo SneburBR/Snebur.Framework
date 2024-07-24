@@ -31,7 +31,8 @@ namespace Snebur.Serializacao
             return propriedades;
         }
 
-        public static string SerializarTipoSimples(object valor)
+        public static string SerializarTipoSimples(object valor,
+                                                   bool isNotNumericWithinSingleQuotes = false)
         {
             if (valor == null)
             {
@@ -60,11 +61,15 @@ namespace Snebur.Serializacao
             {
                 case Guid valorTipado:
 
-                    return valorTipado.ToString();
+                    return isNotNumericWithinSingleQuotes
+                              ? $"\'{valorTipado}\'"
+                              : valorTipado.ToString();
 
                 case string valorTipado:
 
-                    return valorTipado;
+                    return isNotNumericWithinSingleQuotes
+                              ? $"\'{EscapeSingleQuote(valorTipado)}\'"
+                              : valorTipado;
 
                 case decimal valorTipado:
 
@@ -78,9 +83,19 @@ namespace Snebur.Serializacao
 
                     return valorTipado.ToString(CultureInfo.InvariantCulture);
 
+                case TimeSpan valorTipado:
+
+                    var valorTimeSpanFormatado = valorTipado.ToString(null, CultureInfo.InvariantCulture);
+                    return isNotNumericWithinSingleQuotes
+                            ? $"\'{valorTimeSpanFormatado}\'"
+                            : valorTimeSpanFormatado;
+
                 case DateTime valorTipado:
 
-                    return valorTipado.ToString(Snebur.AplicacaoSnebur.Atual.CulturaPadrao);
+                    var valorDateTimeFormatado = valorTipado.ToString(Snebur.AplicacaoSnebur.Atual.CulturaPadrao);
+                    return isNotNumericWithinSingleQuotes
+                            ? $"\'{valorDateTimeFormatado}\'"
+                            : valorDateTimeFormatado;
 
                 case int valorTipado:
 
@@ -100,11 +115,15 @@ namespace Snebur.Serializacao
                     {
                         throw new Erro("Tipo não suportado");
                     }
-                    return Convert.ToString(valor, CultureInfo.InvariantCulture);
+                    var valorString = Convert.ToString(valor, CultureInfo.InvariantCulture);
+                    return isNotNumericWithinSingleQuotes
+                            ? $"\'{EscapeSingleQuote(valorString)}\'"
+                            : valorString;
             }
         }
 
-        public static object DeserilizarTipoSimples(Type tipo, string valorSerializado)
+        public static object DeserilizarTipoSimples(Type tipo, string valorSerializado,
+                                                    bool isNotNumericRemoveSingleQuotes = false)
         {
             if (String.IsNullOrWhiteSpace(valorSerializado))
             {
@@ -126,11 +145,15 @@ namespace Snebur.Serializacao
             {
                 case nameof(String):
 
-                    return valorSerializado;
+                    return isNotNumericRemoveSingleQuotes
+                              ? RemoveSingleQuotes(valorSerializado)
+                              : valorSerializado;
 
                 case nameof(Guid):
 
-                    return Guid.Parse(valorSerializado);
+                    return isNotNumericRemoveSingleQuotes
+                             ? Guid.Parse(RemoveSingleQuotes(valorSerializado))
+                             : Guid.Parse(valorSerializado);
 
                 case nameof(Int32):
 
@@ -154,11 +177,15 @@ namespace Snebur.Serializacao
 
                 case nameof(DateTime):
 
-                    return DateTime.Parse(valorSerializado, CultureInfo.InvariantCulture);
+                    return isNotNumericRemoveSingleQuotes
+                            ? DateTime.Parse(RemoveSingleQuotes(valorSerializado), CultureInfo.InvariantCulture)
+                            : DateTime.Parse(valorSerializado, CultureInfo.InvariantCulture);
 
                 case nameof(TimeSpan):
 
-                    return TimeSpan.Parse(valorSerializado, CultureInfo.InvariantCulture);
+                    return isNotNumericRemoveSingleQuotes
+                            ? TimeSpan.Parse(RemoveSingleQuotes(valorSerializado), CultureInfo.InvariantCulture)
+                            : TimeSpan.Parse(valorSerializado, CultureInfo.InvariantCulture);
 
 
                 case nameof(Single):
@@ -174,8 +201,36 @@ namespace Snebur.Serializacao
                     {
                         throw new Erro("Tipo não suportado");
                     }
+
+                    if (isNotNumericRemoveSingleQuotes)
+                    {
+                        valorSerializado = RemoveSingleQuotes(valorSerializado);
+                    }
                     return Convert.ChangeType(valorSerializado, tipo, CultureInfo.InvariantCulture);
+ 
             }
+        }
+
+        private static string RemoveSingleQuotes(string valorString)
+        {
+            if (valorString[0] == '\'' && valorString[valorString.Length - 1] == '\'')
+            {
+                return valorString.Substring(1, valorString.Length - 2);
+            }
+            if (valorString[0] == '\'')
+            {
+                return valorString.Substring(1);
+            }
+            if (valorString[valorString.Length - 1] == '\'')
+            {
+                return valorString.Substring(0, valorString.Length - 1);
+            }
+            return valorString;
+        }
+
+        private static string EscapeSingleQuote(string valorString)
+        {
+            return valorString.Replace("\'", "\'\'");
         }
     }
 }

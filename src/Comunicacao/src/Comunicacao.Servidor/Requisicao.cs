@@ -32,7 +32,9 @@ namespace Snebur.Comunicacao
         public CredencialServico CredencialServico { get; private set; }
         public CredencialUsuario CredencialUsuario { get; private set; }
         public CredencialUsuario CredencialAvalisata { get; private set; }
-        public InformacaoSessaoUsuario InformacaoSessaoUsuario { get; private set; }
+        public InformacaoSessao InformacaoSessaoUsuario { get; private set; }
+
+        public Guid IdentificadorSessaoUsuario { get; set; }
         public string CaminhoAplicacao { get; }
         public string IdentificadorProprietario { get; private set; }
         public string Operacao { get; private set; }
@@ -144,7 +146,8 @@ namespace Snebur.Comunicacao
             }
             this.ContratoChamada = JsonUtil.Deserializar<ContratoChamada>(json, EnumTipoSerializacao.DotNet);
             this.Cabecalho = this.ContratoChamada.Cabecalho;
-            this.InformacaoSessaoUsuario = this.ContratoChamada.InformacaoSessaoUsuario;
+            this.InformacaoSessaoUsuario = this.ContratoChamada.InformacaoSessao;
+            this.IdentificadorSessaoUsuario = this.ContratoChamada.IdentificadorSessaoUsuario;
             this.CredencialUsuario = this.ContratoChamada.Cabecalho.CredencialUsuario;
             this.CredencialAvalisata = this.ContratoChamada.Cabecalho.CredencialAvalista;
             this.Operacao = this.ContratoChamada.Operacao;
@@ -159,7 +162,10 @@ namespace Snebur.Comunicacao
                 this.Parametros.Add(NormalizacaoUtil.NormalizarNomeParametro(parametro.Nome), this.RetornarValorParametroChamada(parametro));
             }
 
-
+            if(this.IdentificadorSessaoUsuario == Guid.Empty)
+            {
+                throw new Erro("Identificador da sessão do usuário não foi definido");
+            }
         }
 
         #endregion

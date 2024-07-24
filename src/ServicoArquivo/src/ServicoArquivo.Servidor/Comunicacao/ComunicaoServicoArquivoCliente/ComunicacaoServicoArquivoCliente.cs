@@ -112,9 +112,9 @@ namespace Snebur.ServicoArquivo
 
         #region Métodos protegidos
 
-        protected override InformacaoSessaoUsuario RetornarInformacaoSessoUsuarioRequisicaoAtual()
+        protected override InformacaoSessao RetornarInformacaoSessoUsuarioRequisicaoAtual()
         {
-            return AplicacaoSnebur.Atual.InformacaoSessaoUsuario;
+            return AplicacaoSnebur.Atual.InformacaoSessao;
 
             //return SessaoUtil.RetornarInformacaoSessaoUsuarioAplicacao();
             //return SessaoUtil.RetornarInformacaoSessaoUsuarioAplicacao();

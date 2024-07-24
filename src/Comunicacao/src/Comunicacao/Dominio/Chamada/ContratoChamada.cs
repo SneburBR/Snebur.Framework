@@ -18,7 +18,8 @@ namespace Snebur.Comunicacao
 
         public Cabecalho Cabecalho { get; set; }
 
-        public InformacaoSessaoUsuario InformacaoSessaoUsuario { get; set; }
+        public InformacaoSessao InformacaoSessao { get; set; }
+        public Guid IdentificadorSessaoUsuario { get; set; }
 
         public string Operacao { get => this.RetornarValorPropriedade(this._operacao); set => this.NotificarValorPropriedadeAlterada(this._operacao, this._operacao = value); }
 

@@ -42,7 +42,7 @@ namespace Snebur
 
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public override InformacaoSessaoUsuario InformacaoSessaoUsuario
+        public override InformacaoSessao InformacaoSessao
         {
             get
             {
@@ -54,11 +54,11 @@ namespace Snebur
 
                         if (httpContext.Items.ContainsKey(ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL))
                         {
-                            return (InformacaoSessaoUsuario)httpContext.Items[ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL];
+                            return (InformacaoSessao)httpContext.Items[ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL];
                         }
                     }
                 }
-                return base.InformacaoSessaoUsuario;
+                return base.InformacaoSessao;
             }
         }
 
@@ -92,9 +92,18 @@ namespace Snebur
                 {
                     lock (httpContext.Items.SyncLock())
                     {
-                        if (httpContext.Items.ContainsKey(ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL))
+                        if (httpContext.Items.ContainsKey(ConstantesItensRequsicao.CHAVE_IDENTIFICADOR_SESSAO_ATUAL))
                         {
-                            return (httpContext.Items[ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL] as InformacaoSessaoUsuario).IdentificadorSessaoUsuario;
+                            var identificadorSessaoUsuarioString = httpContext.Items[ConstantesItensRequsicao.CHAVE_IDENTIFICADOR_SESSAO_ATUAL]?.ToString();
+                            if (!String.IsNullOrEmpty(identificadorSessaoUsuarioString))
+                            {
+                                if (Guid.TryParse(identificadorSessaoUsuarioString,
+                                            out var identificadorSessaoUsuario))
+                                {
+                                    return identificadorSessaoUsuario;
+                                }
+                                throw new Exception($" Não foi possível converter o valor {identificadorSessaoUsuarioString} para Guid");
+                            }
                         }
                     }
                 }

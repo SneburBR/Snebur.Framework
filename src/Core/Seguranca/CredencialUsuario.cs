@@ -19,9 +19,20 @@ namespace Snebur.Seguranca
         [IgnorarConstrutorTS]
         public CredencialUsuario(string identificadorUsuario, string senha) : base(identificadorUsuario, senha)
         {
-
+            this.Nome = identificadorUsuario;
+            this.IdentificadorAmigavel = identificadorUsuario;
         }
-         
+
+        [IgnorarConstrutorTS]
+        public CredencialUsuario(string nome,
+                                 string identificadorUsuario,
+                                 string senha,
+                                 string identificadorAmigavel) : base(identificadorUsuario, senha)
+        {
+            this.Nome = nome;
+            this.IdentificadorAmigavel = identificadorAmigavel;
+        }
+
         public string RetornarIdentificadorEmail()
         {
             if (ValidacaoUtil.IsEmail(this.IdentificadorAmigavel))

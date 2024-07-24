@@ -151,7 +151,7 @@ namespace Snebur.AcessoDados
             internal ISessaoUsuario RetornarSessaoUsuario(BaseContextoDados contexto,
                                                           IUsuario usuario,
                                                           Guid identificadorSessaoUsuario,
-                                                          InformacaoSessaoUsuario informacaoSessaoUsuario)
+                                                          InformacaoSessao informacaoSessaoUsuario)
             {
                 if (Guid.Empty == identificadorSessaoUsuario)
                 {
@@ -185,7 +185,10 @@ namespace Snebur.AcessoDados
                         //throw new ErroNaoDefinido(String.Format("A informação da sessão do usuário é requerido para criar uma nova sessão"));
                     }
 
-                    sessaoUsuario = this.RetornarNovaSessaoUsuario(contexto, usuario, informacaoSessaoUsuario);
+                    sessaoUsuario = this.RetornarNovaSessaoUsuario(contexto, 
+                                                                   usuario,
+                                                                   identificadorSessaoUsuario, 
+                                                                   informacaoSessaoUsuario);
                 }
                 else
                 {
@@ -200,7 +203,7 @@ namespace Snebur.AcessoDados
                         ((IContextoDadosSemNotificar)contexto).SalvarInternoSemNotificacao(cloneSessao);
 
                         var mensagem = $"O usuário {usuario.Nome} ({usuario.Id}) não pertence da sessão do usuário do identificador" +
-                                       $" {informacaoSessaoUsuario.IdentificadorSessaoUsuario} ";
+                                       $" {identificadorSessaoUsuario} ";
 
                         LogUtil.SegurancaAsync(mensagem, EnumTipoLogSeguranca.UsuarioDiferenteSessao);
 
@@ -347,10 +350,11 @@ namespace Snebur.AcessoDados
 
             private ISessaoUsuario RetornarNovaSessaoUsuario(BaseContextoDados contexto,
                                                              IUsuario usuario,
-                                                             InformacaoSessaoUsuario informacaoSessaoUsuario)
+                                                             Guid identificadorSessaoUsuario,
+                                                             InformacaoSessao informacaoSessaoUsuario)
             {
                 var sessaoUsuario = (ISessaoUsuario)Activator.CreateInstance(this.TipoSessaoUsuario);
-                sessaoUsuario.IdentificadorSessaoUsuario = informacaoSessaoUsuario.IdentificadorSessaoUsuario;
+                sessaoUsuario.IdentificadorSessaoUsuario = identificadorSessaoUsuario;
                 sessaoUsuario.IdentificadorAplicacao = informacaoSessaoUsuario.IdentificadorAplicacao;
 
                 if (String.IsNullOrWhiteSpace(informacaoSessaoUsuario.IdentificadorAplicacao))

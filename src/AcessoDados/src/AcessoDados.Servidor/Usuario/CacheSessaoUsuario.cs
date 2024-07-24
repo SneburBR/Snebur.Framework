@@ -53,7 +53,7 @@ namespace Snebur.AcessoDados
         }
 
         private Credencial Credencial { get; }
-        private InformacaoSessaoUsuario InformacaoSessaoUsuario { get; }
+        private InformacaoSessao InformacaoSessaoUsuario { get; }
         private AjudanteSessaoUsuarioInterno AjudanteSessaoUsuario { get; }
         private BaseConexao AjudanteConexao { get; }
 
@@ -66,7 +66,7 @@ namespace Snebur.AcessoDados
         public CacheSessaoUsuario(BaseContextoDados contexto,
                                   Credencial credencial,
                                   Guid identificadorSessaoUsuario,
-                                  InformacaoSessaoUsuario informacaoSessaoUsuario)
+                                  InformacaoSessao informacaoSessaoUsuario)
         {
             this.IdentificadorSessaoUsuario = identificadorSessaoUsuario;
             this.Contexto = contexto;

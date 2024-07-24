@@ -19,13 +19,14 @@ namespace Snebur.Seguranca
         public Credencial()
         {
         }
+
         [IgnorarConstrutorTS]
         public Credencial(string identificadorUsuario, string senha)
         {
             this.IdentificadorUsuario = identificadorUsuario;
             this.Senha = senha;
         }
-
+ 
         public override bool Equals(object obj)
         {
             if (obj != null)

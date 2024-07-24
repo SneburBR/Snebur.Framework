@@ -48,4 +48,12 @@ namespace Snebur.Dominio
         //    }
         //}
     }
+
+    //public class InformacaoSessaoUsuario: InformacaoSessao 
+    //{
+    //    public Guid IdentificadorSessaoUsuario { get; set; }
+    //    public InformacaoSessaoUsuario()
+    //    {
+    //    }
+    //}
 }

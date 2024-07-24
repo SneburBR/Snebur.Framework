@@ -24,7 +24,7 @@ namespace Snebur.AcessoDados.Manutencao
 
         private const string SQL_CRIAR_CAMPO_MANUTENCAO_SNEBUR = "IF NOT EXISTS  (select * from sys.columns where object_id = OBJECT_ID(N'[dbo].[__MigrationHistory]')  and [name] ='ManutencaoSnebur')  ALTER TABLE [dbo].[__MigrationHistory] ADD [ManutencaoSnebur] [bit] NOT NULL DEFAULT 0";
         private const string SQL_NOTIFICAR_MANUTENCAO_SNEBUR_FINALIZADA = " UPDATE [dbo].[__MigrationHistory] SET " + NOME_CAMPO_MANUTENCAO_SNEBUR + " = 1 WHERE " + NOME_CAMPO_MANUTENCAO_SNEBUR + " = 0  AND  MigrationId = " + NOME_PARAMETRO_MANUTENCAO_SNEBUR;
-        private const string SQL_MANUTENCOES_SNEBUR_PENDENTE = "SELECT MigrationId from [dbo].[__MigrationHistory] WHERE  " + NOME_CAMPO_MANUTENCAO_SNEBUR + " = 0 order by MigrationId";
+        private const string SQL_MANUTENCOES_SNEBUR_PENDENTE = "SELECT Top 1 MigrationId from [dbo].[__MigrationHistory] WHERE  " + NOME_CAMPO_MANUTENCAO_SNEBUR + " = 0 order by MigrationId";
 
         private BaseContextoDados Contexto { get; }
         public BaseConexao Conexao { get; }

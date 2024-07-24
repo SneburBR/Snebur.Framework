@@ -71,7 +71,8 @@ namespace Snebur.ServicoArquivo.Cliente
                                                   Action<StreamProgressEventArgs> callbackPrgresso = null)
         {
             //var identificadorSessao = AplicacaoSnebur.Atual.IdentificadorSessaoUsuario;
-            var informacao = AplicacaoSnebur.Atual.InformacaoSessaoUsuario;
+            var informacao = AplicacaoSnebur.Atual.InformacaoSessao;
+            var identificadorSessaoUsuario = AplicacaoSnebur.Atual.IdentificadorSessaoUsuario;
             var identificadorProprietario = AplicacaoSnebur.Atual.IdentificadorProprietario;
             var credencialUsuario = AplicacaoSnebur.Atual.CredencialUsuario;
 
@@ -79,7 +80,7 @@ namespace Snebur.ServicoArquivo.Cliente
                                   idArquivo,
                                   nomeTipoArquivo,
                                   nomeTipoQualificado,
-                                  informacao.IdentificadorSessaoUsuario,
+                                  identificadorSessaoUsuario,
                                   identificadorProprietario,
                                   credencialUsuario,
                                   TIMEOUT_PADRAO, 
