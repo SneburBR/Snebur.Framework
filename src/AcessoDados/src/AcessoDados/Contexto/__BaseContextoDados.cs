@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Snebur.AcessoDados
 {
@@ -14,7 +15,7 @@ namespace Snebur.AcessoDados
 
         public bool IsValidarNomeTabelaEntidade { get; set; } = true;
 
-        public abstract IUsuario UsuarioLogado { get;}
+        public abstract IUsuario UsuarioLogado { get; }
 
         public bool IsDispensado { get; private set; }
 
@@ -42,6 +43,10 @@ namespace Snebur.AcessoDados
             return ConverterUtil.Converter<T>(valorScalar);
         }
 
+        public Task<IConsultaEntidade<TEntidade>> RetornarConsultaAsync<TEntidade>() where TEntidade : IEntidade
+        {
+            return Task.Run(() => this.RetornarConsulta<TEntidade>());
+        }
         public IConsultaEntidade<TEntidade> RetornarConsulta<TEntidade>() where TEntidade : IEntidade
         {
             return new ConsultaEntidade<TEntidade>(this, typeof(TEntidade));
@@ -162,5 +167,5 @@ namespace Snebur.AcessoDados
 
     }
 
- 
+
 }
