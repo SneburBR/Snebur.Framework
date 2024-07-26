@@ -20,9 +20,15 @@ namespace Snebur.ServicoArquivo
 
         public static HashSet<EnumTamanhoImagem> TamanhosSuportados = new HashSet<EnumTamanhoImagem>(new EnumTamanhoImagem[] { EnumTamanhoImagem.Miniatura,
                                                                                                                                EnumTamanhoImagem.Impressao });
+
+        protected BaseVisualizarImagem()
+        {
+            (AplicacaoSnebur.Atual as BaseAplicacaoServicoArquivo).AcessarRede();
+        }
+
 #if NET6_0_OR_GREATER
 
-        public Task ProcessRequestAsync(HttpContext context)
+        public async Task ProcessRequestAsync(HttpContext context)
         {
             var caminhoImagem = this.RetornarCaminhoImagem(context);
             var response = context.Response;
@@ -31,8 +37,7 @@ namespace Snebur.ServicoArquivo
             {
                 response.ContentType = "image/jpeg";
                 response.StatusCode = 200;
-
-                throw new NotImplementedException();
+                await response.SendFileAsync(caminhoImagem);
                 //await response.WriteFileAsync(caminhoImagem);
             }
             else
@@ -41,7 +46,6 @@ namespace Snebur.ServicoArquivo
                 //response.SubStatusCode = 5;
                 response.StatusCode = 405;
             }
-            return Task.CompletedTask;
         }
 #else
 
@@ -66,7 +70,7 @@ namespace Snebur.ServicoArquivo
             }
         }
 #endif
-         
+
         public virtual string RetornarCaminhoImagem(HttpContext zyonHttpContext)
         {
             var tamanhoImagem = this.RetornarTamanhoImagem(zyonHttpContext);
@@ -133,23 +137,19 @@ namespace Snebur.ServicoArquivo
             return tamanhoImagem;
         }
 
-        protected string RetornarValorParametro(string parametro, HttpContext zyonHttpContext)
+        protected string RetornarValorParametro(string parametro,
+                                                HttpContext zyonHttpContext)
         {
             var parametroBase64 = Base64Util.Encode(parametro);
-#if NET6_0_OR_GREATER
-            var valorParametro = String.Empty;
-            throw new NotImplementedException();
-            //var valorParametro = zyonHttpContext.Request.QueryString[parametroBase64];
-#else
-            var valorParametro = zyonHttpContext.Request.QueryString[parametroBase64];
+            var valorParametro = zyonHttpContext.Request.GetValue(parametroBase64);
+
             if (!String.IsNullOrEmpty(valorParametro))
             {
                 return Base64Util.Decode(valorParametro);
             }
             throw new Exception($"Parâmetro '{parametro}' não foi definido.");
-#endif
-
         }
+
         #endregion
 
         protected abstract string RetornarRepositorioImagem(IInformacaoRepositorioImagem informacaoRepositorio);

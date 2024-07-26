@@ -10,6 +10,7 @@ namespace Snebur.Comunicacao
     {
         #region Campos Privados
 
+        private Guid _identificadorSessaoUsuario;
         private string _operacao;
         private DateTime _dataHora;
         private bool _async;
@@ -19,7 +20,7 @@ namespace Snebur.Comunicacao
         public Cabecalho Cabecalho { get; set; }
 
         public InformacaoSessao InformacaoSessao { get; set; }
-        public Guid IdentificadorSessaoUsuario { get; set; }
+        public Guid IdentificadorSessaoUsuario { get => this.RetornarValorPropriedade(this._identificadorSessaoUsuario); set => this.NotificarValorPropriedadeAlterada(this._identificadorSessaoUsuario, this._identificadorSessaoUsuario = value); }
 
         public string Operacao { get => this.RetornarValorPropriedade(this._operacao); set => this.NotificarValorPropriedadeAlterada(this._operacao, this._operacao = value); }
 

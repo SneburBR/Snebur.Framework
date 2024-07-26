@@ -59,7 +59,7 @@ namespace Snebur.AcessoDados.Comunicacao
                 }
 
                 if (this.ContextoDados.IsIdentificadorProprietarioGlobal &&
-                  !this.IsPermitirIdentificadorProprietarioGlobal)
+                    !this.ContextoDados.IsUsuarioLogadoAutorizadoIdentificadorProprietarioGlobal())
                 {
                     throw new ErroSeguranca("Identificador global não autorizado",
                                             EnumTipoLogSeguranca.IdentificadorProprietarioGlobalNaoAutorizado);
@@ -72,7 +72,7 @@ namespace Snebur.AcessoDados.Comunicacao
                 this._erroInicializacao = ex;
             }
         }
-
+ 
         public void Inicializar(TContextoDados contexto)
         {
             this.ContextoDados = contexto;

@@ -77,12 +77,12 @@ namespace Snebur.Comunicacao
         }
 
 #if NET6_0_OR_GREATER
-        public async Task ProcessarAsync()
+        public async Task ExtrairDadosRequisicaoAsync()
         {
             var httpContext = this.HttpContext;
             using (var streamRequisicao = await this.RetornarInputStreamBufferizado(httpContext))
             {
-                this.ProcessarInterno(streamRequisicao);
+                this.ExtrairDadosRequisicao(streamRequisicao);
             }
 
         }
@@ -119,7 +119,7 @@ namespace Snebur.Comunicacao
             var httpContext = this.HttpContext;
             using (var streamRequisicao = this.RetornarInputStreamBufferizado(httpContext))
             {
-                this.ProcessarInterno(streamRequisicao);
+                this.ExtrairDadosRequisicao(streamRequisicao);
             }
         }
         private MemoryStream RetornarInputStreamBufferizado(HttpContext context)
@@ -137,7 +137,7 @@ namespace Snebur.Comunicacao
 
 #endif
 
-        private void ProcessarInterno(MemoryStream streamRequisicao)
+        private void ExtrairDadosRequisicao(MemoryStream streamRequisicao)
         {
             var json = PacoteUtil.DescompactarPacote(streamRequisicao);
             if (DebugUtil.IsAttached)

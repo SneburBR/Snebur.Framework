@@ -235,6 +235,7 @@ namespace Snebur.AcessoDados
                 {
                     throw new ErroSessaoUsuarioInvalida("A sessão do usuário não foi definido no cache da sessão o usuário");
                 }
+
                 this.IsValidarUsuarioSessaoUsuario = true;
                 this.IsAnonimo = CredencialUtil.ValidarCredencial(this.UsuarioLogado, CredencialAnonimo.Anonimo);
 
@@ -644,7 +645,7 @@ namespace Snebur.AcessoDados
         {
             if (this.IsIdentificadorProprietarioGlobal)
             {
-                if (!(this.UsuarioLogadoAutorizadoIdentificadorProprietarioGlobal()))
+                if (!(this.IsUsuarioLogadoAutorizadoIdentificadorProprietarioGlobal()))
                 {
                     throw new ErroSeguranca($" o usuário {this.UsuarioLogado.GetType().Name} identificador {this.UsuarioLogado.IdentificadorUsuario} não é autorizado acesso com Identificador da instancia global", EnumTipoLogSeguranca.IdentificadorProprietarioGlobalNaoAutorizado);
                 }
@@ -738,7 +739,7 @@ namespace Snebur.AcessoDados
         #endregion
 
         public Type[] TiposEntidade => this.EstruturaBancoDados.TiposEntidade.Values.ToArray();
-        public abstract bool UsuarioLogadoAutorizadoIdentificadorProprietarioGlobal();
+        public abstract bool IsUsuarioLogadoAutorizadoIdentificadorProprietarioGlobal();
 
         #region Somente Leitura
 

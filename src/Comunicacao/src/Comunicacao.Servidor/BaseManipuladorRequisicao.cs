@@ -92,14 +92,14 @@ namespace Snebur.Comunicacao
             var origem = request.Headers.GetValue(ConstantesCabecalho.ORIGIN) ?? "Origem não definida";
             var ambienteIIS = ConfiguracaoUtil.AmbienteServidor.ToString();
             var nomeAssembly = request.Headers.GetValue(ConstantesCabecalho.NOME_ASSEMBLY_APLICACAO);
-            var nomeAplicacaoWeb = request.Headers.GetValue(ParametrosComunicacao.NOME_APLICACAO_WEB);
+            var identificadorAplicacao = request.Headers.GetValue(ParametrosComunicacao.IDENTIFICADOR_APLICACAO);
 
             var mensagem = $"Host: '{host}'\r\n" +
                            $"Url: '{url}' \r\n" +
                            $"Cabeçalho {ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO}: '{identificadorPropriedadetarioNoCabecalho}'\r\n" +
                            $"Cabeçalho {ConstantesCabecalho.ORIGIN}: '{origem}'\r\n" +
                            $"Cabeçalho {ConstantesCabecalho.NOME_ASSEMBLY_APLICACAO}: '{nomeAssembly}'\r\n" +
-                           $"Cabeçalho {ParametrosComunicacao.NOME_APLICACAO_WEB}: '{nomeAplicacaoWeb}'\r\n" +
+                           $"Cabeçalho {ParametrosComunicacao.IDENTIFICADOR_APLICACAO}: '{identificadorAplicacao}'\r\n" +
                            $"Ambiente IIS : {ambienteIIS}\r\n";
 
 

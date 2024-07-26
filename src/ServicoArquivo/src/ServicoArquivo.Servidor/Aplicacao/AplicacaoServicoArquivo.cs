@@ -1,10 +1,8 @@
-﻿using Snebur.Utilidade;
+﻿using Snebur.Computador;
+using Snebur.Utilidade;
 using System;
 using System.Configuration;
-
-#if NET6_0_OR_GREATER == false
-using Snebur.Computador;
-#endif
+using System.Runtime.InteropServices;
 
 namespace Snebur.ServicoArquivo.Servidor
 {
@@ -19,22 +17,28 @@ namespace Snebur.ServicoArquivo.Servidor
         private string Usuario => ConfiguracaoUtil.AppSettings[CHAVE_USUARIO];
         private string Senha => ConfiguracaoUtil.AppSettings[CHAVE_SENHA];
 
-#if NET6_0_OR_GREATER == false
+
         public AcessoCompartilhamentoRede AcessoCompartilhamentoRede { get; private set; }
-#endif
+
         public BaseAplicacaoServicoArquivo() : base()
         {
 
         }
-#if NET6_0_OR_GREATER == false
+
         public void AcessarRede()
         {
-            if (this.IsAutenticarAcessoCompartilhado && this.AcessoCompartilhamentoRede == null)
+            if (this.IsAutenticarAcessoCompartilhado &&
+                this.AcessoCompartilhamentoRede == null)
             {
-                this.AcessoCompartilhamentoRede = new AcessoCompartilhamentoRede(this.NomeComputadorAcesso,
-                                                                                 this.Usuario,
-                                                                                 this.Senha);
 
+                if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    throw new InvalidOperationException("Sistema operacional não suportado para acesso a rede autenticado");
+                }
+
+                this.AcessoCompartilhamentoRede = new AcessoCompartilhamentoRede(this.NomeComputadorAcesso,
+                                                                                   this.Usuario,
+                                                                                   this.Senha);
 
             }
             AppDomain.CurrentDomain.ProcessExit += this.AppDomain_ProcessExit;
@@ -44,11 +48,5 @@ namespace Snebur.ServicoArquivo.Servidor
         {
             this.AcessoCompartilhamentoRede?.Dispose();
         }
-#else
-        public void AcessarRede()
-        {
-            throw new Exception("Não implementado para .net 7.0");
-        }
-#endif
-        }
     }
+}

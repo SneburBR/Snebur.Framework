@@ -32,7 +32,7 @@ namespace Snebur.Comunicacao
                                                        this.IdentificadorProprietario,
                                                        this.GetType().Name))
                 {
-                    await requisicao.ProcessarAsync();
+                    await requisicao.ExtrairDadosRequisicaoAsync();
 
                     if (requisicao.CredencialServicoValida())
                     {

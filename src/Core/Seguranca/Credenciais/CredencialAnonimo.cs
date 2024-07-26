@@ -9,6 +9,7 @@
             {
                 return new CredencialUsuario
                 {
+                    Nome= "Anônimo",
                     IdentificadorUsuario = CredencialAnonimo.IDENTIFICADOR_USUARIO,
                     Senha = CredencialAnonimo.SENHA
                 };

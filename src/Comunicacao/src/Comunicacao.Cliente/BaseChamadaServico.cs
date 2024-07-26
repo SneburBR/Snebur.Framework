@@ -105,6 +105,7 @@ namespace Snebur.Comunicacao
         private ResultadoChamada RetornarResultadoChamada(int tentativa = 0)
         {
             var nomeAssembly = AplicacaoSnebur.Atual.NomeAplicacao;
+            var identificadorAplicacao = AplicacaoSnebur.Atual.IdentificadorAplicacao;
             var conteudo = this.RetornarConteudoCompactado();
             var token = Token.RetornarNovoToken();
             var nomeArquivo = Md5Util.RetornarHash(token);
@@ -119,6 +120,7 @@ namespace Snebur.Comunicacao
             requisicaoHttp.Headers[ConstantesCabecalho.IDENTIFICADOR_USUARIO] = identificadorUsuario;
             requisicaoHttp.Headers[ConstantesCabecalho.SENHA] = CriptografiaUtil.Criptografar(token, this.ContratoChamada.Cabecalho.CredencialServico.Senha);
             requisicaoHttp.Headers[ConstantesCabecalho.NOME_ASSEMBLY_APLICACAO] = nomeAssembly;
+            requisicaoHttp.Headers[ConstantesCabecalho.IDENTIFICADOR_APLICACAO] = identificadorAplicacao;
 
             if (!String.IsNullOrEmpty(identifcadorProprietario))
             {
