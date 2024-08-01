@@ -9,6 +9,12 @@ namespace Snebur.Dominio.Atributos
     {
         [MensagemValidacao]
         public static string MensagemValidacao { get; set; } = "O {0} '{1}' já existe.";
+        public bool IsPermitirDuplicarNulo { get; set; }
+        public bool IsPermitirDuplicarZero { get; set; }
+        public Type TipoEntidade { get; }
+        public string NomePropriedadeFiltro { get; }
+        public object ValorPropriedadeFiltro { get; }
+        public EnumOperadorComparacao OperadorFiltro { get; }
 
         public bool IsAceitaNulo { get; set; }
 
