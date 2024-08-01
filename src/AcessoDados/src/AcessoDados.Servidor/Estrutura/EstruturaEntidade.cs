@@ -48,9 +48,10 @@ namespace Snebur.AcessoDados.Estrutura
         internal Type TipoEntidade { get; }
         public BancoDadosSuporta SqlSuporte { get; }
         internal string Schema { get; }
-        internal string NomeTabela { get;  }
+        internal string NomeTabela { get; }
         internal string GrupoArquivoIndices { get; }
         internal bool IsChavePrimariaAutoIncrimento { get; }
+        internal bool IsEntity { get; }
         internal bool IsAbstrata { get; }
         internal bool IsEntidadeRelacaoNn { get; }
         internal EnumInterfaceEntidade InterfacesImplementasEnum { get; }
@@ -152,6 +153,7 @@ namespace Snebur.AcessoDados.Estrutura
             this.NomeTipoEntidade = tipo.Name;
             this.SqlSuporte = sqlSuporte;
 
+
             this.IsAbstrata = tipo.IsAbstract || ReflexaoUtil.IsTipoPossuiAtributo(tipo, typeof(AbstratoAttribute));
             this.InterfacesImplementasEnum = this.RetornarInterfacesEntidade();
             //this.IsImplementaInterfaceIDeletado = ReflexaoUtil.TipoImplementaInterface(tipo, typeof(IDeletado), false);
@@ -181,7 +183,9 @@ namespace Snebur.AcessoDados.Estrutura
 
             this.IsEntidadeRelacaoNn = this.RetornarIsEntidadeRelacaoNn();
             this.EstruturaEntidadeBase = estruturaEntidadeBase;
+             
             this.IsChavePrimariaAutoIncrimento = this.RetornarIsChavePrimariaAutoIncrimento();
+            this.IsEntity = this.RetornarIsEntity();
 
             this.IsImplementaInterfaceIDeletado = this.InterfacesImplementasEnum.HasFlag(EnumInterfaceEntidade.IDeletado);
             this.IsImplementaInterfaceIAtivo = this.InterfacesImplementasEnum.HasFlag(EnumInterfaceEntidade.IAtivo);
@@ -575,7 +579,7 @@ namespace Snebur.AcessoDados.Estrutura
             this.EstruturasRelacoes.Add(propriedade.Name, new EstruturaRelacaoUmUm(propriedade, this, estruturaEntidadePai, estruturaCampoChaveEstrangeira));
         }
 
-        private void AdicionarEstruturaRelacaoUmUmReversa(PropertyInfo propriedade, 
+        private void AdicionarEstruturaRelacaoUmUmReversa(PropertyInfo propriedade,
                                                             DicionarioEstrutura<EstruturaEntidade> estruturasEntidade)
         {
             var atributoRelacaoUmUmReversa = propriedade.GetCustomAttribute<RelacaoUmUmReversaAttribute>();
@@ -670,17 +674,26 @@ namespace Snebur.AcessoDados.Estrutura
             this.EstruturasRelacoes.Add(propriedade.Name, estruturaRelacaoNn);
         }
 
+        private bool RetornarIsEntity()
+        {
+            return this.TipoEntidade.BaseType == typeof(Entidade)
+                    ? this.IsChavePrimariaAutoIncrimento
+                    : this.EstruturaEntidadeBase.IsEntity;
+        }
+
         private bool RetornarIsChavePrimariaAutoIncrimento()
         {
             if (this.TipoEntidade.BaseType == typeof(Entidade))
             {
-                var atributoDataBase = this.TipoEntidade.GetCustomAttribute<DatabaseGeneratedAttribute>();
-                if(atributoDataBase != null)
+                var propriedadeChavePrimaria = this.EstruturaCampoChavePrimaria.Propriedade;
+                var atributoDataBase = propriedadeChavePrimaria.GetCustomAttribute<DatabaseGeneratedAttribute>();
+                if (atributoDataBase != null)
                 {
                     return atributoDataBase.DatabaseGeneratedOption == DatabaseGeneratedOption.Identity;
                 }
                 return this.SqlSuporte.IsDatabaseGeneratedOptionIdentityPadrao;
             }
+
             if (AjudanteEstruturaBancoDados.TipoEntidadeBaseNaoMepeada(this.TipoEntidade.BaseType))
             {
                 return true;
