@@ -14,7 +14,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
         #region Propriedades
 
         internal Entidade Entidade { get; }
-        internal bool IsImplementaIDeletado { get; set; }
+        internal bool IsImplementaIDeletado { get; }
         internal EnumTipoAlteracao TipoAlteracao { get; }
         internal EstruturaEntidade EstruturaEntidade { get; }
         internal Dictionary<string, RelacaoChaveEstrageniraDependente> EntidadesRelacaoChaveEstrangeiraDepedente { get; set; }
@@ -39,53 +39,57 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             this.Contexto = contexto;
             this.Entidade = entidade;
             this.EstruturaEntidade = estruturaEntidade;
+            this.IsImplementaIDeletado = estruturaEntidade.IsImplementaInterfaceIDeletado && !estruturaEntidade.IsDeletarRegistro;
+            this.TipoAlteracao = this.AnalisarOpcaoSalvar(opcaoSalvar);
+        }
 
-            if (opcaoSalvar != EnumOpcaoSalvar.Salvar)
+        private EnumTipoAlteracao AnalisarOpcaoSalvar(EnumOpcaoSalvar opcaoSalvar)
+        {
+            var entidade = this.Entidade;
+            var estruturaEntidade = this.EstruturaEntidade;
+
+            if (opcaoSalvar == EnumOpcaoSalvar.Deletar ||
+                opcaoSalvar == EnumOpcaoSalvar.DeletarRegistro)
             {
-                if (!(entidade.Id > 0))
+
+                if (entidade.Id == 0)
                 {
                     throw new ErroOperacaoInvalida("Não é possível deletar uma entidade com id 0");
                 }
-
-                if (estruturaEntidade.IsImplementaInterfaceIDeletado &&  
-                    !estruturaEntidade.IsDeletarRegistro &&
-                    opcaoSalvar == EnumOpcaoSalvar.Deletar)
+                if (this.IsImplementaIDeletado &&
+                     opcaoSalvar == EnumOpcaoSalvar.Deletar)
                 {
-
-                    this.IsImplementaIDeletado = true;
-
-                    var entidadeDeletada = (IDeletado)entidade;
-
-                    entidadeDeletada.IsDeletado = true;
-                    entidadeDeletada.SessaoUsuarioDeletado_Id = this.Contexto.SessaoUsuarioLogado.Id;
-                    entidadeDeletada.SessaoUsuarioDeletado = this.Contexto.SessaoUsuarioLogado;
-                    entidadeDeletada.DataHoraDeletado = this.Contexto.SqlSuporte.IsDataHoraUtc ? DateTime.UtcNow : DateTime.Now;
-
                     if (estruturaEntidade.IsImplementaInterfaceIAtivo)
                     {
-                        var entidadeAtivo = (IAtivo)entidadeDeletada;
+                        var entidadeAtivo = (IAtivo)entidade;
                         entidadeAtivo.IsAtivo = false;
                     }
 
-                    //if (estruturaEntidade.IsImplementaInterfaceIOrdenacao)
-                    //{
-                    //    var entidadeOrdenada = entidade as IOrdenacao;
-                    //    entidadeOrdenada.Ordenacao = Double.MaxValue;
-                    //}
+                    var entidadeDeletada = (IDeletado)entidade;
+                    var contexto = this.Contexto;
+                    entidadeDeletada.IsDeletado = true;
+                    entidadeDeletada.SessaoUsuarioDeletado_Id = contexto.SessaoUsuarioLogado.Id;
+                    entidadeDeletada.SessaoUsuarioDeletado = contexto.SessaoUsuarioLogado;
+                    entidadeDeletada.DataHoraDeletado = contexto.SqlSuporte.IsDataHoraUtc ? DateTime.UtcNow : DateTime.Now;
                     this.AtualizarValorEntidadeDeletada();
 
-                    this.TipoAlteracao = EnumTipoAlteracao.Atualizar;
+                    return EnumTipoAlteracao.Update;
                 }
-                else
-                {
-                    this.TipoAlteracao = EnumTipoAlteracao.Deletar;
-                }
+                return EnumTipoAlteracao.Delete;
             }
-            else
+
+            if (entidade.Id == 0)
             {
-                this.TipoAlteracao = (entidade.Id == 0) ? EnumTipoAlteracao.Nova : EnumTipoAlteracao.Atualizar;
+                return EnumTipoAlteracao.Insert;
             }
+
+            if (!estruturaEntidade.IsEntity )
+            {
+                return EnumTipoAlteracao.InsertOrUpdate;
+            }
+            return (entidade.Id == 0) ? EnumTipoAlteracao.Insert : EnumTipoAlteracao.Update;
         }
+
 
         private void AtualizarValorEntidadeDeletada()
         {
@@ -108,7 +112,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                 var atributoDeletado = propriedade.GetCustomAttribute<ValorDeletadoAttribute>();
                 if (atributoDeletado != null)
                 {
-                    propriedade.SetValue(this.Entidade, atributoDeletado.Valor  );
+                    propriedade.SetValue(this.Entidade, atributoDeletado.Valor);
                 }
             }
         }
@@ -122,12 +126,13 @@ namespace Snebur.AcessoDados.Servidor.Salvar
         {
             switch (this.TipoAlteracao)
             {
-                case (EnumTipoAlteracao.Nova):
-                case (EnumTipoAlteracao.Atualizar):
+                case EnumTipoAlteracao.Insert:
+                case EnumTipoAlteracao.Update:
+                case EnumTipoAlteracao.InsertOrUpdate:
 
                     return this.RetornarComandosSalvar();
 
-                case (EnumTipoAlteracao.Deletar):
+                case (EnumTipoAlteracao.Delete):
 
                     return this.RetornarComandosDeletar();
 
@@ -147,7 +152,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             {
                 switch (this.TipoAlteracao)
                 {
-                    case EnumTipoAlteracao.Nova:
+                    case EnumTipoAlteracao.Insert:
 
                         comandos.Add(new ComandoInsert(this, estruturaEntidade, estruturaEntidade.IsChavePrimariaAutoIncrimento));
 
@@ -157,10 +162,20 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                         //}
                         break;
 
-                    case EnumTipoAlteracao.Atualizar:
+                    case EnumTipoAlteracao.InsertOrUpdate:
 
-                        
-                        var comandoUpdate = new ComandoUpdate(this,  estruturaEntidade);
+                        comandos.Add(new ComandoInsertOrUpdate(this, estruturaEntidade, estruturaEntidade.IsChavePrimariaAutoIncrimento));
+
+                        //if (estruturaEntidade.IsChavePrimariaAutoIncrimento)
+                        //{
+                        //    comandos.Add(new ComandoUltimoId(this, this.EstruturaEntidade));
+                        //}
+                        break;
+
+                    case EnumTipoAlteracao.Update:
+
+
+                        var comandoUpdate = new ComandoUpdate(this, estruturaEntidade);
                         if (comandoUpdate.ExisteAtualizacao)
                         {
                             comandos.Add(comandoUpdate);
@@ -168,7 +183,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                         }
                         break;
 
-                    case EnumTipoAlteracao.Deletar:
+                    case EnumTipoAlteracao.Delete:
 
                         throw new ErroOperacaoInvalida("Operação invalida");
 
@@ -176,7 +191,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 
                         throw new Erro("O tipo de alteração não é suportado");
                 }
-                if (this.TipoAlteracao == EnumTipoAlteracao.Nova)
+                if (this.TipoAlteracao == EnumTipoAlteracao.Insert)
                 {
                     foreach (var estruturaCampo in estruturaEntidade.EstruturasCamposComputadoBanco)
                     {

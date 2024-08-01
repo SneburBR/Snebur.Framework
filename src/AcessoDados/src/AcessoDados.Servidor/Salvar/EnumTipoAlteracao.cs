@@ -2,9 +2,10 @@
 {
     internal enum EnumTipoAlteracao
     {
-        Nova = 1,
-        Atualizar = 2,
-        Deletar = 3,
-        Nenhuma = 4
+        Insert = 1,
+        Update = 2,
+        Delete = 3,
+        InsertOrUpdate = 4,
+        Nenhuma = 5
     }
 }
