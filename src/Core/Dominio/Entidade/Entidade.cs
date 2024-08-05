@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
@@ -20,6 +21,8 @@ namespace Snebur.Dominio
     {
         private bool _isValidacaoPropriedadeAbertasDesativada = false;
         private bool __isExisteAlteracaoTipoCompleto;
+        private bool __isNewEntity__ = true;
+        private bool __isIdentity__;
 
         [OcultarColuna]
         public abstract long Id { get; set; }
@@ -78,6 +81,12 @@ namespace Snebur.Dominio
             }
         }
 
+        [NaoMapear]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [IgnorarPropriedadeTSReflexao]
+        public bool __IsNewEntity => this.Id == 0 || (!this.__isIdentity__  && this.__isNewEntity__);
+
+
         [EditorBrowsable(EditorBrowsableState.Never)]
         [NaoMapear]
         [IgnorarGlobalizacao]
@@ -85,8 +94,7 @@ namespace Snebur.Dominio
         [IgnorarPropriedadeTSReflexao]
         [PropriedadeProtegida]
         public virtual long IdEntidadeHistoricoGenerico => this.Id;
-
-
+         
         #region Construtor
 
         public Entidade() : base()
@@ -116,6 +124,8 @@ namespace Snebur.Dominio
                     }
                 }
             }
+            var atributo = this.__TipoEntidade.GetCustomAttribute<DatabaseGeneratedAttribute>(true);
+            this.__isIdentity__ = atributo == null || atributo.DatabaseGeneratedOption == DatabaseGeneratedOption.Identity;
         }
 
         private BaseTipoComplexo RetornarValorPropriedadeTipoComplexo(PropertyInfo propriedadeTipoComplexo)
@@ -522,7 +532,7 @@ namespace Snebur.Dominio
 
         public override bool Equals(object obj)
         {
-            if (obj != null && Object.ReferenceEquals(this.GetType(), obj.GetType()) && this.Id > 0 && this.Id == ((Entidade)obj).Id)
+            if (obj != null && this.GetType()== obj.GetType() && this.Id > 0 && this.Id == ((Entidade)obj).Id)
             {
                 return true;
             }
@@ -595,6 +605,11 @@ namespace Snebur.Dominio
 
         [PropriedadeProtegida]
         List<string> IEntidadeInterna.__PropriedadesAutorizadas { get => this.__propriedadesAutorizadas; }
+
+        void IEntidadeInterna.NotifyIsNotNewEntity()
+        {
+            this.__isNewEntity__ = false;
+        }   
 
         void IEntidadeInterna.AtribuirPropriedadesAbertas(List<string> propriedadesAberta)
         {

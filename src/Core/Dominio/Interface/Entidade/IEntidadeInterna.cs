@@ -21,5 +21,7 @@ namespace Snebur.Dominio
         void DesativarValidacaoProprieadesAbertas();
 
         void AtivarValidacaoProprieadesAbertas();
+
+        void NotifyIsNotNewEntity();
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Snebur.Dominio.Atributos;
-using Snebur.Dominio.Interface;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,6 +20,8 @@ namespace Snebur.Dominio
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         string __IdentificadorEntidade { get; }
+
+        bool __IsNewEntity { get; }
 
         Dictionary<string, PropriedadeAlterada> __PropriedadesAlteradas { get; }
         //IEntidade CloneSomenteId();
