@@ -10,6 +10,14 @@ namespace Snebur.Utilidade
 {
     public static partial class ReflexaoUtil
     {
+        public static object GetDefaultValue(Type type)
+        {
+            if (type.IsValueType)
+            {
+                return Activator.CreateInstance(type);
+            }
+            return null;
+        }
         public static EnumTipoPrimario RetornarTipoPrimarioEnum(Type tipo)
         {
 #if DEBUG

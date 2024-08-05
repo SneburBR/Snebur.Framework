@@ -13,13 +13,15 @@ namespace Snebur.Utilidade
 {
     public static partial class ValidacaoUtil
     {
-        private static readonly Regex RegexValidacaoEmail = new Regex(@"^[a-zA-Z0-9][a-zA-Z0-9\\._-]+@([a-zA-Z0-9\._-]+\.)[a-zA-Z-0-9]{2}");
-        private static readonly Regex RegexCorHexa = new Regex("^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3}|[a-fA-F0-9]{8})$");
-        private static readonly Regex RegexCorRgba = new Regex(@"^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*(\d+(?:\.\d+)?)\s*)?\)$");
+        private static readonly Regex RegexHasSpace = new Regex(@"\s", RegexOptions.Compiled);
+        private static readonly Regex RegexValidacaoEmail = new Regex(@"^[a-zA-Z0-9][a-zA-Z0-9\\._-]+@([a-zA-Z0-9\._-]+\.)[a-zA-Z-0-9]{2}", RegexOptions.Compiled);
+        private static readonly Regex RegexCorHexa = new Regex("^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3}|[a-fA-F0-9]{8})$", RegexOptions.Compiled);
+        private static readonly Regex RegexCorRgba = new Regex(@"^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*(\d+(?:\.\d+)?)\s*)?\)$", RegexOptions.Compiled);
         private static readonly Regex RegexMd5 = new Regex("^[a-f0-9]{32}$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static readonly Regex RegexSha1 = new Regex("^[a-f0-9]{40}$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static readonly Regex RegexSha256 = new Regex("^[a-f0-9]{64}$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static readonly Regex RegexGuid = new Regex("^[a-f0-9]{8}(-?[a-f0-9]{4}){3}-?[a-f0-9]{12}$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex RegexCep = new Regex(@"^\d{5}-?\d{3}$", RegexOptions.Compiled);
         public static List<ValidationResult> RetornarPendencias(object instancia)
         {
             var pendencias = new List<ValidationResult>();
@@ -44,6 +46,11 @@ namespace Snebur.Utilidade
 
         public static bool IsEmail(string email)
         {
+            if (RegexHasSpace.IsMatch(email))
+            {
+                return false;
+            }
+
             if (!String.IsNullOrEmpty(email))
             {
                 return RegexValidacaoEmail.IsMatch(email.Trim());
@@ -53,11 +60,15 @@ namespace Snebur.Utilidade
 
         public static bool IsCep(string cep)
         {
+            cep = cep?.Trim();
             if (!String.IsNullOrEmpty(cep))
             {
-                var letras = TextoUtil.RetornarSomenteLetras(cep);
+                if (RegexCep.IsMatch(cep))
+                {
+                    return true;
+                }
                 var numeros = TextoUtil.RetornarSomenteNumeros(cep);
-                return letras.Length == 0 && (numeros.Length == 5 || numeros.Length == 8);
+                return (numeros.Length == 5 || numeros.Length == 8);
             }
             return false;
         }

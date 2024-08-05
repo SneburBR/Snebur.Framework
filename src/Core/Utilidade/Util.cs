@@ -3,6 +3,7 @@ using Snebur.Dominio;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -138,6 +139,16 @@ namespace Snebur.Utilidade
                     }
                 }
             }
+        }
+
+        public static string GetDefaultIfNullOrEmpty(string text, string defaultValue)
+        {
+            if (String.IsNullOrWhiteSpace(text))
+            {
+                return defaultValue;
+            }
+            return text;
+            
         }
     }
 }

@@ -238,7 +238,7 @@ namespace Snebur.Utilidade
 
         private static bool IsDataValida(DateTime data)
         {
-            return data.Year > 1900 && data.Year < 2100;
+            return data.Year >= 1900 && data.Year < 2100;
         }
 
         private static bool IsValidacaoRequeridoTipoComplexo(BaseTipoComplexo valor)
