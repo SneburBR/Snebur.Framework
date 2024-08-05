@@ -10,15 +10,15 @@ namespace Snebur.Dominio.Atributos
         private EnumTipoValorPadrao _tipoValorPadrao = EnumTipoValorPadrao.Comum;
 
         public object ValorPadrao { get; set; }
-        public bool IsValorPadraoQuandoNull { get; set; }
+        public bool IsValorPadraoQuandoNullOrDefault { get; set; }
         public bool IsValorPadraoQuandoNullOrWhiteSpace { get; set; }
      
         public EnumTipoValorPadrao TipoValorPadrao
         {
             get 
             {
-             return  this.IsValorPadraoQuandoNull 
-                    ? EnumTipoValorPadrao.ValorPropriedadeNull 
+             return  this.IsValorPadraoQuandoNullOrDefault 
+                    ?  EnumTipoValorPadrao.ValorPropriedadeNullOrDefault 
                     :   this.IsValorPadraoQuandoNullOrWhiteSpace  ? EnumTipoValorPadrao.ValorPropriedadeNullOrWhiteSpace
                                                                   : this._tipoValorPadrao;
 
@@ -28,7 +28,7 @@ namespace Snebur.Dominio.Atributos
          
         public bool IsValorPadraoOnUpdate
         {
-            get => this.IsValorPadraoQuandoNull || this._isValorPadraoOnUpdate;
+            get => this.IsValorPadraoQuandoNullOrDefault || this._isValorPadraoOnUpdate;
             set => this._isValorPadraoOnUpdate = value;
         }
    
