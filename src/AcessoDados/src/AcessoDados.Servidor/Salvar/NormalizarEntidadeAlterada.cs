@@ -89,7 +89,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                         entidadeRelacaoNn = (Entidade)Activator.CreateInstance(estruturaRelacaoNn.EstruturaEntidadeRelacaoNn.TipoEntidade);
 
                         //Pai
-                        if (entidade.Id > 0)
+                        if (!entidade.__IsNewEntity)
                         {
                             estruturaRelacaoNn.EstruturaCampoChaveEstrangeiraPai.Propriedade.SetValue(entidadeRelacaoNn, entidade.Id);
                         }
@@ -98,7 +98,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                             estruturaRelacaoNn.EstruturaRelacaoPaiEntidadePai.Propriedade.SetValue(entidadeRelacaoNn, entidade);
                         }
                         //Filho
-                        if (entidadeFilhoNn.Id > 0)
+                        if (!entidadeFilhoNn.__IsNewEntity)
                         {
                             estruturaRelacaoNn.EstruturaCampoChaveEstrangeiraFilho.Propriedade.SetValue(entidadeRelacaoNn, entidadeFilhoNn.Id);
                         }

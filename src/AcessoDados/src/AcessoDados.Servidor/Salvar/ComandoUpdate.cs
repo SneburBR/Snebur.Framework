@@ -22,7 +22,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                                EstruturaEntidade estruturaEntidade ) : base(entidadeAlterada, estruturaEntidade)
         {
             
-            this.PropriedadesAlterada = this.RetornarPropriedadesAlterada();
+            this.PropriedadesAlterada = entidadeAlterada.RetornarPropriedadesAlteradas();
 
             this.EstruturasCampoParametro.AddRange(this.RetornarEstrutasCamposAlterados());
 
@@ -40,13 +40,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                 this.SqlCommando = this.RetornarSqlCommando();
             }
         }
-
-        private Dictionary<string, PropriedadeAlterada> RetornarPropriedadesAlterada()
-        {
-            return this.EntidadeAlterada.Entidade.RetornarPropriedadesAlteradas() ??
-                   new Dictionary<string, PropriedadeAlterada>();
-        }
-
+         
         private List<EstruturaCampo> RetornarEstrutasCamposAlterados()
         {
             if (this.Entidade.Id == 0)

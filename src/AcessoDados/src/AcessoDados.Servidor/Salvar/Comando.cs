@@ -15,7 +15,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
         internal DbCommand DbCommand { get; }
         internal Entidade Entidade { get; }
         internal string SqlCommando { get; set; }
-        internal List<EstruturaCampo> EstruturasCampoParametro { get; } = new List<EstruturaCampo>();
+        protected List<EstruturaCampo> EstruturasCampoParametro { get; } = new List<EstruturaCampo>();
 
         internal abstract bool IsAdiconarParametrosChavePrimaria { get; }
 

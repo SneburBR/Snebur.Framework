@@ -55,7 +55,11 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                     return this.RetornarResultadoSalvarErrosValidacao(errosValidacao);
                 }
             }
+            return this.SalvarInterno();
+        }
 
+        private Resultado SalvarInterno()
+        {
             if (this.Contexto.IsExisteTransacao)
             {
                 return this.SalvarTransacao();
@@ -69,7 +73,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
         private Resultado SalvarNormal()
         {
             var comandosExecutados = new List<string>();
-            var entidadesAltearas = new List<EntidadeAlterada>();
+            var entidadesAlteradas = new List<EntidadeAlterada>();
             var linhasAfetadas = 0;
             try
             {
@@ -114,7 +118,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                                             throw new Erro($"A entidade não foi salvar {entidadeAlterada.Entidade.__CaminhoTipo}");
                                         }
                                         entidadeAlterada.RetornarCommandos();
-                                        entidadesAltearas.Add(entidadeAlterada);
+                                        entidadesAlteradas.Add(entidadeAlterada);
                                     }
                                     transacao.Commit();
                                     //return this.RetornarResultado(entidadesAltearas);
@@ -137,7 +141,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                         }
                     }
                 }
-                return this.RetornarResultado(entidadesAltearas);
+                return this.RetornarResultado(entidadesAlteradas);
 
             }
             catch (Exception erro)
@@ -232,6 +236,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 
                         if (comandoInsert.IsRecuperarUltimoId)
                         {
+                            
                             var valorId = cmd.ExecuteScalar();
                             var id = Convert.ToInt64(valorId);
                             if (id == 0)
@@ -243,6 +248,11 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                             return 0;
                         }
                         return cmd.ExecuteNonQuery();
+
+                    case ComandoInsertOrUpdate comandoInsertOrUpdate:
+
+                        return cmd.ExecuteNonQuery();
+                        
 
                     case ComandoUpdate comandoUpdate:
                     case ComandoDelete comandoDelete:
@@ -316,6 +326,11 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                     Id = entidadeAlterada.Entidade.Id,
                     CaminhoTipoEntidadeSalva = entidadeAlterada.Entidade.__CaminhoTipo
                 };
+
+                if(entidadeAlterada.Entidade.__IsNewEntity)
+                {
+                    (entidadeAlterada.Entidade as IEntidadeInterna).NotifyIsNotNewEntity();
+                }
 
                 foreach (var campoComputado in entidadeAlterada.CamposComputado)
                 {

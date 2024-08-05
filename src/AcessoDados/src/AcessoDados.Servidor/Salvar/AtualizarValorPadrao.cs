@@ -70,13 +70,13 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                 {
                     var propriedade = estruturaCampo.Propriedade;
 
-                    if(entidade.Id > 0 && !entidade.__PropriedadesAlteradas.ContainsKey(propriedade.Name))
+                    if (!entidade.__IsNewEntity && !entidade.__PropriedadesAlteradas.ContainsKey(propriedade.Name))
                     {
                         continue;
                     }
 
                     var valorPropriedade = propriedade.GetValue(entidade);
-                    var valorPadrao = AtualizarValorPadrao.RetornarValorPropriedade(contexto,
+                    var valorPadrao = AtualizarValorPadrao.RetornarValorPadraoPropriedade(contexto,
                                                                                     estruturaCampo,
                                                                                     entidade,
                                                                                     propriedade,
@@ -107,31 +107,46 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             return null;
         }
 
-        private static object RetornarValorPropriedade(BaseContextoDados contexto,
-                                                       EstruturaCampo estruturaCampo,
-                                                       Entidade entidade,
-                                                       PropertyInfo propriedade,
-                                                       object valorPropriedade)
+        private static object RetornarValorPadraoPropriedade(BaseContextoDados contexto,
+                                                             EstruturaCampo estruturaCampo,
+                                                             Entidade entidade,
+                                                             PropertyInfo propriedade,
+                                                             object valorPropriedade)
         {
 
             var tipoValorPadrao = estruturaCampo.TipoValorPadrao;
             switch (tipoValorPadrao)
             {
-                
-                case EnumTipoValorPadrao.ValorPropriedadeNull:
-                    
-                        if(valorPropriedade != null)
+
+                case EnumTipoValorPadrao.ValorPropriedadeNullOrDefault:
+
+                    if (propriedade.PropertyType.IsValueType)
+                    {
+                        var valorDefault = ReflexaoUtil.GetDefaultValue(propriedade.PropertyType);
+                        var valorPropriedadeTipado = ConverterUtil.Converter(valorPropriedade, propriedade.PropertyType);
+
+                        if (!valorDefault.Equals(valorPropriedadeTipado))
                         {
                             return null;
                         }
                         break;
-                case EnumTipoValorPadrao.ValorPropriedadeNullOrWhiteSpace:
+                    }
 
-                    if(String.IsNullOrWhiteSpace(valorPropriedade?.ToString()))
+                    if (valorPropriedade != null)
                     {
                         return null;
                     }
                     break;
+
+                case EnumTipoValorPadrao.ValorPropriedadeNullOrWhiteSpace:
+
+                    if (!String.IsNullOrWhiteSpace(valorPropriedade?.ToString()))
+                    {
+                        return null;
+                    }
+                    break;
+
+
 
                 case EnumTipoValorPadrao.Comum:
                     break;
@@ -170,7 +185,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                     contexto.SqlSuporte.ValidarSuporteSessaoUsuario();
 
                     var atributoSessaoUsuario = estruturaCampo.RetornarAtributoValorPadrao<ValorPadraoIDSessaoUsuarioAttribute>();
-                    if (atributoSessaoUsuario.IsSomenteCadastro && entidade.Id > 0)
+                    if (atributoSessaoUsuario.IsSomenteCadastro && !entidade.__IsNewEntity)
                     {
                         return null;
                     }

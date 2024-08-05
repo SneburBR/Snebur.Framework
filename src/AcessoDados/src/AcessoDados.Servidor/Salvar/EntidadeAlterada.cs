@@ -56,6 +56,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                 {
                     throw new ErroOperacaoInvalida("Não é possível deletar uma entidade com id 0");
                 }
+
                 if (this.IsImplementaIDeletado &&
                      opcaoSalvar == EnumOpcaoSalvar.Deletar)
                 {
@@ -78,15 +79,17 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                 return EnumTipoAlteracao.Delete;
             }
 
-            if (entidade.Id == 0)
-            {
-                return EnumTipoAlteracao.Insert;
-            }
 
             if (!estruturaEntidade.IsEntity )
             {
+                if (entidade.Id == 0)
+                {
+                    throw new ErroOperacaoInvalida($"A entidade '{entidade.GetType().Name}' não possui chave primária de auto incremento, O Id é requerido"); 
+                }
                 return EnumTipoAlteracao.InsertOrUpdate;
             }
+
+            
             return (entidade.Id == 0) ? EnumTipoAlteracao.Insert : EnumTipoAlteracao.Update;
         }
 
@@ -154,22 +157,17 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                 {
                     case EnumTipoAlteracao.Insert:
 
-                        comandos.Add(new ComandoInsert(this, estruturaEntidade, estruturaEntidade.IsChavePrimariaAutoIncrimento));
-
-                        //if (estruturaEntidade.IsChavePrimariaAutoIncrimento)
-                        //{
-                        //    comandos.Add(new ComandoUltimoId(this, this.EstruturaEntidade));
-                        //}
+                        comandos.Add(new ComandoInsert(this, estruturaEntidade));
                         break;
 
                     case EnumTipoAlteracao.InsertOrUpdate:
 
-                        comandos.Add(new ComandoInsertOrUpdate(this, estruturaEntidade, estruturaEntidade.IsChavePrimariaAutoIncrimento));
+                        var comandoUnsertUpdate = new ComandoInsertOrUpdate(this, estruturaEntidade);
+                        
+                        comandos.Add(comandoUnsertUpdate);
 
-                        //if (estruturaEntidade.IsChavePrimariaAutoIncrimento)
-                        //{
-                        //    comandos.Add(new ComandoUltimoId(this, this.EstruturaEntidade));
-                        //}
+                        this.AnalisarCamposComputados(estruturaEntidade, comandoUnsertUpdate as IComandoUpdate);
+                        
                         break;
 
                     case EnumTipoAlteracao.Update:
@@ -179,7 +177,8 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                         if (comandoUpdate.ExisteAtualizacao)
                         {
                             comandos.Add(comandoUpdate);
-                            this.AnalisarCamposComputados(estruturaEntidade, comandoUpdate);
+
+                            this.AnalisarCamposComputados(estruturaEntidade, comandoUpdate as IComandoUpdate);
                         }
                         break;
 
@@ -202,7 +201,8 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             return comandos;
         }
 
-        private void AnalisarCamposComputados(EstruturaEntidade estruturaEntidade, ComandoUpdate comandoUpdate)
+        private void AnalisarCamposComputados(EstruturaEntidade estruturaEntidade,
+                                              IComandoUpdate comandoUpdate)
         {
             foreach (var estruturaCampo in estruturaEntidade.EstruturasCamposComputadoServico)
             {
@@ -301,6 +301,12 @@ namespace Snebur.AcessoDados.Servidor.Salvar
         internal void Rollback()
         {
             this.Entidade.Id = this._idRollback;
+        }
+
+        internal Dictionary<string, PropriedadeAlterada> RetornarPropriedadesAlteradas()
+        {
+            return this.Entidade.RetornarPropriedadesAlteradas() ??
+                        new Dictionary<string, PropriedadeAlterada>();
         }
         #endregion
     }

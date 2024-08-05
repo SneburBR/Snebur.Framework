@@ -7,11 +7,12 @@ namespace Snebur.AcessoDados.Servidor.Salvar
     internal class ComandoInsert : Comando
     {
         internal override bool IsAdiconarParametrosChavePrimaria => false;
-        internal bool IsRecuperarUltimoId { get; }
+        internal bool IsRecuperarUltimoId => this.EstruturaEntidade.IsChavePrimariaAutoIncrimento;
 
-        internal ComandoInsert(EntidadeAlterada entidadeAlterada, EstruturaEntidade estruturaEntidade, bool isRecuperarUltimoId) : base(entidadeAlterada, estruturaEntidade)
+        internal ComandoInsert(EntidadeAlterada entidadeAlterada, 
+                               EstruturaEntidade estruturaEntidade ) : base(entidadeAlterada, estruturaEntidade)
         {
-            this.IsRecuperarUltimoId = isRecuperarUltimoId;
+            
             this.SqlCommando = this.RetornarSqlCommando();
         }
 
@@ -47,5 +48,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             }
             return sb.ToString();
         }
+
+      
     }
 }
