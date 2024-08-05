@@ -81,7 +81,9 @@ namespace Snebur.Computador
         }
 
         [DllImport("kernel32.dll")]
+#pragma warning disable SYSLIB0004 // Type or member is obsolete
         [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
+#pragma warning restore SYSLIB0004 // Type or member is obsolete
         [SuppressUnmanagedCodeSecurity]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool CloseHandle(IntPtr handle);

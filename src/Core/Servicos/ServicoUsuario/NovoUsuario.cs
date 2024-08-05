@@ -26,6 +26,8 @@ namespace Snebur.Dominio
         [ValidacaoSenha]
         public string Senha { get; set; }
 
+        public bool IsMaster { get; set; }
+
         [IgnorarNormalizacao]
         [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
@@ -37,6 +39,7 @@ namespace Snebur.Dominio
                 {
                     return this.Email;
                 }
+
                 if (ValidacaoUtil.IsTelefone(this.Telefone))
                 {
                     return this.Telefone;

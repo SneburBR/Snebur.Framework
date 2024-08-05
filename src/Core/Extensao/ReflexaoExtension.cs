@@ -33,8 +33,9 @@ namespace System.Reflection
         }
 
         public static bool TrySetValue(this PropertyInfo propriedade,
-                                      object obj, object value,
-                                      bool isLogErro = false)
+                                       object obj,
+                                       object value,
+                                       bool isLogErro = false)
         {
             try
             {

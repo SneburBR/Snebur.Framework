@@ -24,11 +24,12 @@ namespace Snebur.Dominio.Atributos
             foreach (var _nomePropriedade in nomesPropriedade)
             {
                 var nomePropriedade = _nomePropriedade;
-                var aceitaNulo = nomePropriedade.EndsWith("?");
-                if (aceitaNulo)
+                var isPermitirDuplicarNulo = nomePropriedade.EndsWith("?");
+                if (isPermitirDuplicarNulo)
                 {
                     nomePropriedade = nomePropriedade.Substring(0, nomePropriedade.Length - 1);
                 }
+
                 var propriedade = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nomePropriedade, true);
                 if (propriedade == null)
                 {
@@ -39,7 +40,7 @@ namespace Snebur.Dominio.Atributos
                     var memsagem = $"ValidacaoUnicoCompostaAttribute(typeof({tipoEntidade.Name}), {String.Join(", ", nomesPropriedade.Select(x => $"\"{x}\""))} - A propriedade {nomePropriedade} não foi encontrada no tipo '{tipoEntidade.Name}'";
                     throw new Exception(memsagem);
                 }
-                this.Propriedades.Add(new PropriedadeIndexar(propriedade, aceitaNulo));
+                this.Propriedades.Add(new PropriedadeIndexar(propriedade, isPermitirDuplicarNulo, false));
             }
         }
     }

@@ -26,7 +26,7 @@ namespace Snebur.Dominio.Atributos
                                           Entidade entidadeCorrente, 
                                          object valorPropriedade)
         {
-            if(entidadeCorrente.Id > 0)
+            if(!entidadeCorrente.__IsNewEntity)
             {
                 return this.IsDataHoraUTC ? DateTime.UtcNow : DateTime.Now;
             }
