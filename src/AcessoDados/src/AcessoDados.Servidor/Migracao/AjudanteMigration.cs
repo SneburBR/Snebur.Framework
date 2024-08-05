@@ -194,7 +194,12 @@ namespace Snebur.AcessoDados
                 {
                     var propriedadesIndexar = new List<PropriedadeIndexar>();
                     var propriedadesFiltros = new List<FiltroPropriedadeIndexar>();
-                    propriedadesIndexar.Add(new PropriedadeIndexar(propriedade, !atributoValidacaoUnico.IsAceitaNulo));
+                    propriedadesFiltros.AddRange(atributoValidacaoUnico.Filtros);
+
+                    propriedadesIndexar.Add(new PropriedadeIndexar(propriedade, 
+                                                                   atributoValidacaoUnico.IsPermitirDuplicarNulo, 
+                                                                   atributoValidacaoUnico.IsPermitirDuplicarZero));
+
                     if (ReflexaoUtil.IsTipoImplementaInterface(tipoEntidade, typeof(IDeletado)))
                     {
                         var propriedadeIsDeletado = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nameof(IDeletado.IsDeletado), true);

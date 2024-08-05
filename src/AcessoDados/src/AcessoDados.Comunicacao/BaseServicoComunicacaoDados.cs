@@ -73,9 +73,10 @@ namespace Snebur.AcessoDados.Comunicacao
             }
         }
  
-        public void Inicializar(TContextoDados contexto)
+        public void Inicializar(TContextoDados contexto, bool isPodeDispensarServico)
         {
             this.ContextoDados = contexto;
+            this._isPodeDispensarServico = isPodeDispensarServico;
         }
 
         protected override object RetornarResultadoOperacao(MethodInfo metodoOperacao,

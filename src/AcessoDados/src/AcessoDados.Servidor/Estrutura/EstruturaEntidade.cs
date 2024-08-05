@@ -683,6 +683,11 @@ namespace Snebur.AcessoDados.Estrutura
 
         private bool RetornarIsChavePrimariaAutoIncrimento()
         {
+            if (this.TipoEntidade.Name == "Loja")
+            {
+                var a = 0;
+            }
+
             if (this.TipoEntidade.BaseType == typeof(Entidade))
             {
                 var propriedadeChavePrimaria = this.EstruturaCampoChavePrimaria.Propriedade;

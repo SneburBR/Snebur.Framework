@@ -38,7 +38,8 @@ namespace Snebur.AcessoDados.Mapeamento
             return resultado;
         }
 
-        internal static List<Entidade> MapearDataTable(IEstruturaConsultaSeguranca estruturaConsulta, DataTable dataTable, MapeamentoEntidade mapeamento)
+        internal static List<Entidade> MapearDataTable(IEstruturaConsultaSeguranca estruturaConsulta, 
+                                                      DataTable dataTable, MapeamentoEntidade mapeamento)
         {
             var entidades = new List<Entidade>();
             var estruturasColuna = new List<EstruturaColuna>();
@@ -68,6 +69,7 @@ namespace Snebur.AcessoDados.Mapeamento
                 var linha = dataTable.Rows[i];
 
                 var entidade = (IEntidadeInterna)Activator.CreateInstance(mapeamento.TipoEntidade);
+                entidade.NotifyIsNotNewEntity();
                 //Campos
 
                 for (var j = 0; j < lenColunas; j++)

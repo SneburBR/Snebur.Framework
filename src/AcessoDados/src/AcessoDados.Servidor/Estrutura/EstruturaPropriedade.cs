@@ -11,6 +11,7 @@ namespace Snebur.AcessoDados.Estrutura
         internal protected PropertyInfo Propriedade { get; protected set; }
         internal bool IsRequerido { get; set; }
         internal bool IsAceitaNulo { get;  set; }
+        internal bool IsAceitarZero { get;  set; }
         internal bool IsTipoNullable { get; }
 
         internal EstruturaEntidade EstruturaEntidade { get; }

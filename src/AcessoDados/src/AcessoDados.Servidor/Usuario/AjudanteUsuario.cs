@@ -76,10 +76,7 @@ namespace Snebur.AcessoDados
             }
 
             #endregion
-
-
-
-
+             
             #region Métodos públicos
 
             internal EnumStatusSessaoUsuario RetornarStatusSessaoUsuario(BaseContextoDados contexto,

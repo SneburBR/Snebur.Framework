@@ -181,7 +181,7 @@ namespace Snebur.AcessoDados
                 if (propriedade.PropertyType.IsSubclassOf(typeof(Entidade)))
                 {
                     var entidade = propriedade.GetValue(entidadeRecuperada);
-                    if (entidade is Entidade entidadeTipada && entidadeTipada.Id > 0)
+                    if (entidade is Entidade entidadeTipada && entidadeTipada.__IsNewEntity)
                     {
                         retorno.AddRange(this.RetornarTodasEntidades(entidadeTipada));
                     }

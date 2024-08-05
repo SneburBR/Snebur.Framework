@@ -126,7 +126,7 @@ namespace Snebur.AcessoDados.Seguranca
 
         internal EnumPermissao PermissaoAlterarUsuario(IUsuario usuarioLogado, IUsuario usuario)
         {
-            if (usuario != null && usuario.Id > 0)
+            if (usuario != null && !usuario.__IsNewEntity)
             {
                 if (usuarioLogado.Identificador == usuario.Identificador)
                 {
@@ -347,9 +347,11 @@ namespace Snebur.AcessoDados.Seguranca
                 {
                     return true;
                 }
-                else if (entidade.Id > 0)
+                else if (!entidade.__IsNewEntity)
                 {
-                    if (operacao == EnumOperacao.Atualizar || operacao == EnumOperacao.Deletar || operacao == EnumOperacao.Leitura)
+                    if (operacao == EnumOperacao.Atualizar || 
+                        operacao == EnumOperacao.Deletar || 
+                        operacao == EnumOperacao.Leitura)
                     {
                         return true;
                     }

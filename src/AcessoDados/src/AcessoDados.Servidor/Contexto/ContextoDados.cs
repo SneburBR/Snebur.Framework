@@ -422,6 +422,11 @@ namespace Snebur.AcessoDados
 
         #region Salvar
 
+        public Task<ResultadoSalvar> SalvarAsync(params IEntidade[] entidades)
+        {
+            return Task.Run(() => this.Salvar(entidades));
+        }
+
         public ResultadoSalvar Salvar(params IEntidade[] entidades)
         {
             return this.Salvar(entidades, false);
@@ -437,17 +442,18 @@ namespace Snebur.AcessoDados
             return this.Salvar(new List<IEntidade> { entidade }, false);
         }
 
-        public virtual ResultadoSalvar Salvar(IEnumerable<IEntidade> entidades, bool ignorarErro)
+        public virtual ResultadoSalvar Salvar(IEnumerable<IEntidade> entidades,
+                                              bool isIgnorarErro)
         {
             this.ValidarSessaoUsuario();
 
             if (DebugUtil.IsAttached)
             {
-                ignorarErro = false;
+                isIgnorarErro = false;
             }
 
             var resultado = this.SalvarPermissao(entidades);
-            if (resultado.Erro != null && (!ignorarErro))
+            if (resultado.Erro != null && (!isIgnorarErro))
             {
                 throw resultado.Erro;
             }
@@ -513,12 +519,24 @@ namespace Snebur.AcessoDados
         public int ExecutarSql(string sql, List<ParametroInfo> parametroInfos = null)
         {
             this.ValidarSessaoUsuario();
-            if (!Debugger.IsAttached)
-            {
-                LogUtil.ErroAsync(new ErroSeguranca("Somente  é permitido executar SQL em modo de depuração", EnumTipoLogSeguranca.TentativaExecutarSql));
-                return -1;
-            }
+            //if (!Debugger.IsAttached)
+            //{
+            //    LogUtil.ErroAsync(new ErroSeguranca("Somente  é permitido executar SQL em modo de depuração", EnumTipoLogSeguranca.TentativaExecutarSql));
+            //    return -1;
+            //}
             return this.Conexao.ExecutarComando(sql, parametroInfos);
+        }
+
+        public T ExecutarSqlScalar<T>(string sql, List<ParametroInfo> parametroInfos = null)
+        {
+            this.ValidarSessaoUsuario();
+            //if (!Debugger.IsAttached)
+            //{
+            //    LogUtil.ErroAsync(new ErroSeguranca("Somente é permitido executar SQL em modo de depuração", EnumTipoLogSeguranca.TentativaExecutarSql));
+            //    return -1;
+            //}
+
+            return this.Conexao.RetornarValorScalar<T>(sql, parametroInfos);
         }
 
         public List<TMapeamento> MapearSql<TMapeamento>(string sql,
@@ -833,7 +851,7 @@ namespace Snebur.AcessoDados
 
             base.DisposeInterno();
             (AplicacaoSnebur.Atual as IAplicacaoContextoDados)?.ConexaoDadosDispensado(this);
-            this.ContextoSessaoUsuarioHerdada?.Dispose();
+            //this.ContextoSessaoUsuarioHerdada?.Dispose();
         }
         #endregion
     }

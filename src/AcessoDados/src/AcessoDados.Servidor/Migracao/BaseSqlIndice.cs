@@ -47,15 +47,30 @@ namespace Snebur.AcessoDados
             //    });
             //}
 
-            foreach (var propriedadeIndexar in this.PropriedadesIndexar.Where(x => !x.IsPermitirNulo))
+            foreach (var propriedadeIndexar in this.PropriedadesIndexar)
             {
                 var estruturaCampo = this.RetornarEstruturaCampo(propriedadeIndexar.Propriedade);
-                if (estruturaCampo.IsAceitaNulo)
+                if (propriedadeIndexar.IsPermitirDuplicarNulo)
                 {
-                    var expressao = $" ( {estruturaCampo.NomeCampo} IS NOT NULL)";
-                    this.CamposFiltros.Add(new CampoFiltro { 
-                        Campo = estruturaCampo.NomeCampo, 
-                        Expressao = expressao 
+                    if (estruturaCampo.IsAceitaNulo)
+                    {
+                        var expressao = $" ( {estruturaCampo.NomeCampo} IS NOT NULL)";
+                        this.CamposFiltros.Add(new CampoFiltro
+                        {
+                            Campo = estruturaCampo.NomeCampo,
+                            Expressao = expressao
+                        });
+                    }
+                }
+              
+
+                if (propriedadeIndexar.IsPermitirDuplicarZero)
+                {
+                    var expressao = $" ( {estruturaCampo.NomeCampo} <> 0)";
+                    this.CamposFiltros.Add(new CampoFiltro
+                    {
+                        Campo = estruturaCampo.NomeCampo,
+                        Expressao = expressao
                     });
                 }
             }

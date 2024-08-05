@@ -108,7 +108,7 @@ namespace Snebur.AcessoDados
                                                                   conexao,
                                                                   transacao))
                         {
-                            DepuracaoUtil.EscreverSaida(this.ContextoDados, 
+                            DepuracaoUtil.EscreverSaida(this.ContextoDados,
                                                         parametros,
                                                         sql);
 
@@ -131,6 +131,12 @@ namespace Snebur.AcessoDados
             return dt;
         }
 
+        internal T RetornarValorScalar<T>(string sql, List<ParametroInfo> parametros)
+        {
+            var valorScalar = this.RetornarValorScalar(sql, parametros);
+            return ConverterUtil.Para<T>(valorScalar);
+
+        }
         internal object RetornarValorScalar(string sql, List<ParametroInfo> parametros)
         {
             if (this.ContextoDados.IsExisteTransacao)
@@ -294,13 +300,13 @@ namespace Snebur.AcessoDados
             this.BaseConexao = baseConexao;
         }
 
-        public ParametroInfo(string nomeParametro, object value) : this(nomeParametro, GetBetterSqlDbType(value), value)
+        public ParametroInfo(string nomeParametro, object value) : this(nomeParametro, SqlUtil.GetBetterSqlDbType(value), value)
         {
 
         }
         public ParametroInfo(string nomeParametro,
-                            SqlDbType sqlType,
-                            object value) : this(nomeParametro, sqlType, null, value)
+                             SqlDbType sqlType,
+                             object value) : this(nomeParametro, sqlType, null, value)
         {
 
         }
@@ -315,7 +321,7 @@ namespace Snebur.AcessoDados
             this.SqlDbType = sqlType;
             this.Size = size;
         }
-         
+
         internal DbParameter GetDbParameter()
         {
             if (this.SqlDbType.HasValue)
@@ -338,59 +344,7 @@ namespace Snebur.AcessoDados
 
         }
 
-        private static SqlDbType GetBetterSqlDbType(object value)
-        {
-            if (value == null)
-            {
-                return System.Data.SqlDbType.Variant;
-            }
 
-            var type = value.GetType();
-
-            if (ReflexaoUtil.IsTipoNullable(type))
-            {
-                type = ReflexaoUtil.RetornarTipoSemNullable(type);
-            }
-
-            switch (Type.GetTypeCode(type))
-            {
-                case TypeCode.String:
-                    return System.Data.SqlDbType.NVarChar;
-                case TypeCode.Int32:
-                    return System.Data.SqlDbType.Int;
-                case TypeCode.Int64:
-                    return System.Data.SqlDbType.BigInt;
-                case TypeCode.Double:
-                    return System.Data.SqlDbType.Float;
-                case TypeCode.Decimal:
-                    return System.Data.SqlDbType.Decimal;
-                case TypeCode.DateTime:
-                    return System.Data.SqlDbType.DateTime;
-                case TypeCode.Boolean:
-                    return System.Data.SqlDbType.Bit;
-                case TypeCode.Byte:
-                    return System.Data.SqlDbType.TinyInt;
-                case TypeCode.Char:
-                    return System.Data.SqlDbType.Char;
-                case TypeCode.Int16:
-                    return System.Data.SqlDbType.SmallInt;
-                case TypeCode.Single:
-                    return System.Data.SqlDbType.Real;
-                default:
-
-                    if (type == typeof(Guid))
-                    {
-                        return System.Data.SqlDbType.UniqueIdentifier;
-                    }
-
-                    if(type.IsEnum)
-                    {
-                        return System.Data.SqlDbType.Int;
-                    }
-
-                    throw new Exception($"The type {type.Name} is not supported");
-            }
-        }
 
     }
 }
