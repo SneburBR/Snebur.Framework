@@ -29,7 +29,8 @@ namespace Snebur.Dominio.Atributos
         [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
         public List<string> NomesPropriedade { get; } = new List<string>();
-        public string[] NomesPropriedadeOuFiltro { get; }
+
+        public string[] ExpressoesPropriedadeFiltro { get; }
 
         public bool IsCriarIndicesNomeBanco { get; set; } = true;
 
@@ -37,41 +38,24 @@ namespace Snebur.Dominio.Atributos
         public bool IsIgnorarMigracao { get; set; }
 
         public ValidacaoUnicoCompostaAttribute(Type tipoEntidade,
-                                               params string[] nomesPropriedadeOuFiltro)
+                                               params string[] expressoesPropriedadeFiltro)
         {
             this.TipoEntidade = tipoEntidade;
-            this.NomesPropriedadeOuFiltro = nomesPropriedadeOuFiltro;
+            this.ExpressoesPropriedadeFiltro = expressoesPropriedadeFiltro;
             //this.NomesPropriedade = nomesPropriedadeOuFiltro;
 
 #if EXTENSAO_VISUALSTUDIO
             return;
 #endif
 
-            foreach (var nomePropriedadeOuFiltro in nomesPropriedadeOuFiltro)
+            if (expressoesPropriedadeFiltro.Count() > 0)
             {
-                var reg = new Regex(@"\s+");
-                var partes = reg.Split(nomePropriedadeOuFiltro).Where(x => !String.IsNullOrWhiteSpace(x)).ToArray();
-                if (partes.Count() > 1)
+                foreach (var expressaoPropriedadeFiltro in expressoesPropriedadeFiltro)
                 {
-                    var propriedadeFiltro = this.RetornarPropriedadeFiltro(partes);
-                    if (propriedadeFiltro == null)
-                    {
-                        throw this.RetornarException(nomePropriedadeOuFiltro);
-                    }
-                    this.Filtros.Add(propriedadeFiltro);
-                }
-                else
-                {
-                    var nomePropriedade = partes.Single().Trim();
-                    var propriedadeIndexar = this.RetornarPropriedadeIndexar(nomePropriedade);
-                    if (propriedadeIndexar == null)
-                    {
-                        throw this.RetornarException(nomePropriedadeOuFiltro);
-                    }
-                    this.Propriedades.Add(propriedadeIndexar);
-                    this.NomesPropriedade.Add(nomePropriedade);
+                    this.AdicioanrFiltro(expressaoPropriedadeFiltro);
                 }
             }
+            
 
             if (ReflexaoUtil.IsTipoImplementaInterface(tipoEntidade, typeof(IDeletado)))
             {
@@ -99,7 +83,7 @@ namespace Snebur.Dominio.Atributos
                                                                                              Select(x => x.Propriedade);
                 if (propriedadesEmConclito.Count() > 0)
                 {
-                    throw new Erro($"Remover as propriedades  em conflitos {String.Join(",", propriedadesEmConclito.Select(x=> x.Name))}" +
+                    throw new Erro($"Remover as propriedades  em conflitos {String.Join(",", propriedadesEmConclito.Select(x => x.Name))}" +
                                    $" no  índice {nameof(ValidacaoUnicoCompostaAttribute)} em {tipoEntidade.Name} ");
                 }
 
@@ -112,59 +96,49 @@ namespace Snebur.Dominio.Atributos
             }
 
         }
+
+        private void AdicioanrFiltro(string nomePropriedadeOuFiltro)
+        {
+            var reg = new Regex(@"\s+");
+            var partes = reg.Split(nomePropriedadeOuFiltro).Where(x => !String.IsNullOrWhiteSpace(x)).ToArray();
+            if (partes.Count() > 1)
+            {
+                var propriedadeFiltro = FiltroPropriedadeIndexarUtil.RetornarPropriedadeFiltro(this.TipoEntidade, partes);
+                if (propriedadeFiltro == null)
+                {
+                    throw this.RetornarException(nomePropriedadeOuFiltro);
+                }
+                this.Filtros.Add(propriedadeFiltro);
+            }
+            else
+            {
+                var nomePropriedade = partes.Single().Trim();
+                var propriedadeIndexar = this.RetornarPropriedadeIndexar(nomePropriedade);
+                if (propriedadeIndexar == null)
+                {
+                    throw this.RetornarException(nomePropriedadeOuFiltro);
+                }
+                this.Propriedades.Add(propriedadeIndexar);
+                this.NomesPropriedade.Add(nomePropriedade);
+            }
+        }
+
         private PropriedadeIndexar RetornarPropriedadeIndexar(string nomePropriedade)
         {
             var tipoEntidade = this.TipoEntidade;
-            var isAceitaNulo = nomePropriedade.EndsWith("?");
-            if (isAceitaNulo)
+
+            var isPermitirDuplicarNulo = nomePropriedade.EndsWith("?");
+            if (isPermitirDuplicarNulo)
             {
                 nomePropriedade = nomePropriedade.Substring(0, nomePropriedade.Length - 1);
             }
+
             var propriedade = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nomePropriedade, true);
             if (propriedade != null)
             {
-                return new PropriedadeIndexar(propriedade, isAceitaNulo);
+                return new PropriedadeIndexar(propriedade, isPermitirDuplicarNulo, false);
             }
             return null;
-        }
-
-        private FiltroPropriedadeIndexar RetornarPropriedadeFiltro(string[] partes)
-        {
-            if (partes.Count() != 3)
-            {
-                return null;
-            }
-            var nomePropriedade = partes[0];
-            var operador = partes[1];
-            var valor = partes[2];
-            var propriedade = ReflexaoUtil.RetornarPropriedade(this.TipoEntidade, nomePropriedade, true);
-            if (propriedade == null)
-            {
-                return null;
-            }
-            var operadorEnum = this.RetornarOperador(operador, nomePropriedade);
-            return new FiltroPropriedadeIndexar(propriedade, operadorEnum, valor);
-        }
-
-        private EnumOperadorComparacao RetornarOperador(string operador, string nomePropriedade)
-        {
-            switch (operador.Trim())
-            {
-                case "=":
-                    return EnumOperadorComparacao.Igual;
-                case "<>":
-                    return EnumOperadorComparacao.Diferente;
-                case ">":
-                    return EnumOperadorComparacao.MaiorQue;
-                case ">=":
-                    return EnumOperadorComparacao.MaiorIgualA;
-                case "<":
-                    return EnumOperadorComparacao.MenorQue;
-                case "<=":
-                    return EnumOperadorComparacao.MenorIgualA;
-                default:
-                    throw this.RetornarException(nomePropriedade, "Operador não suportado");
-            }
         }
 
         private Exception RetornarException(string nomePropriedade, string mensagem = null)
@@ -174,6 +148,9 @@ namespace Snebur.Dominio.Atributos
             var memsagem = $"{mensagem} ValidacaoUnicoCompostaAttribute(typeof({tipoEntidade.Name}), {String.Join(", ", nomesPropriedade.Select(x => $"\"{x}\""))} - A propriedade ou {nomePropriedade} não foi encontrada  no tipo '{tipoEntidade.Name}'";
             return new Exception(memsagem);
         }
+
+         
+
         #region IAtributoValidacao
 
         public bool IsValido(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
@@ -190,58 +167,4 @@ namespace Snebur.Dominio.Atributos
         #endregion
     }
 
-    public class PropriedadeIndexar
-    {
-        public PropertyInfo Propriedade { get; }
-        public bool IsPermitirNulo { get; }
-
-        public PropriedadeIndexar(PropertyInfo propriedade) : this(propriedade, false)
-        {
-        }
-
-        public PropriedadeIndexar(PropertyInfo propriedade, bool aceitaNulo)
-        {
-            this.Propriedade = propriedade;
-            this.IsPermitirNulo = aceitaNulo;
-        }
-    }
-
-    public class FiltroPropriedadeIndexar
-    {
-        public PropertyInfo Propriedade { get; private set; }
-        public EnumOperadorComparacao Operador { get; }
-        public string Valor { get; }
-        public string OperadoprString
-        {
-            get
-            {
-                switch (this.Operador)
-                {
-                    case EnumOperadorComparacao.Igual:
-                        return " = ";
-                    case EnumOperadorComparacao.Diferente:
-                        return " <> ";
-                    case EnumOperadorComparacao.MaiorQue:
-                        return " > ";
-                    case EnumOperadorComparacao.MenorQue:
-                        return " < ";
-                    case EnumOperadorComparacao.MaiorIgualA:
-                        return " >= ";
-                    case EnumOperadorComparacao.MenorIgualA:
-                        return " <= ";
-                    default:
-                        throw new Exception("Operador não suportador");
-                }
-            }
-        }
-
-        public FiltroPropriedadeIndexar(PropertyInfo propriedade,
-                                        EnumOperadorComparacao operadopr,
-                                        string valor)
-        {
-            this.Propriedade = propriedade;
-            this.Operador = operadopr;
-            this.Valor = valor;
-        }
-    }
 }

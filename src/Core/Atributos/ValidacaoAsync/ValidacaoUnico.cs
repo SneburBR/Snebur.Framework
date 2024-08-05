@@ -1,5 +1,7 @@
-﻿using Snebur.Utilidade;
+﻿using Snebur.AcessoDados;
+using Snebur.Utilidade;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace Snebur.Dominio.Atributos
@@ -16,15 +18,51 @@ namespace Snebur.Dominio.Atributos
         public object ValorPropriedadeFiltro { get; }
         public EnumOperadorComparacao OperadorFiltro { get; }
 
-        public bool IsAceitaNulo { get; set; }
-
         [IgnorarPropriedade, IgnorarPropriedadeTSReflexao]
         public bool IsIgnorarMigracao { get; set; }
 
-        public ValidacaoUnicoAttribute(bool isAceitaNulo = true)
-        {
-            this.IsAceitaNulo = isAceitaNulo;
+        [IgnorarPropriedade]
+        [IgnorarPropriedadeTSReflexao]
+        public List<FiltroPropriedadeIndexar> Filtros { get; } = new List<FiltroPropriedadeIndexar>();
 
+        [IgnorarConstrutorTS]
+        public ValidacaoUnicoAttribute()
+        {
+
+        }
+
+        [IgnorarConstrutorTS]
+        public ValidacaoUnicoAttribute(Type tipoEntidade,
+                                       string nomePropriedadeFiltro,
+                                       object valorPropriedadeFiltro,
+                                       EnumOperadorComparacao operadorFiltro = EnumOperadorComparacao.Igual) : this(tipoEntidade, false, false, nomePropriedadeFiltro, valorPropriedadeFiltro, operadorFiltro)
+        {
+
+        }
+
+        public ValidacaoUnicoAttribute(Type tipoEntidade,
+                                       bool isPermitirDuplicarNulo,
+                                       bool isPermitirDuplicarZero,
+                                       string nomePropriedadeFiltro,
+                                       object valorPropriedadeFiltro,
+                                       EnumOperadorComparacao operadorFiltro)
+        {
+            this.TipoEntidade = tipoEntidade;
+            this.IsPermitirDuplicarNulo = isPermitirDuplicarNulo;
+            this.IsPermitirDuplicarZero = isPermitirDuplicarZero;
+            this.NomePropriedadeFiltro = nomePropriedadeFiltro;
+            this.ValorPropriedadeFiltro = valorPropriedadeFiltro;
+            this.OperadorFiltro = operadorFiltro;
+
+
+            var propriedade = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nomePropriedadeFiltro, true);
+            if (propriedade == null)
+            {
+                throw new ErroNaoImplementado($"ValidacaoUnicoAttribute -> Propriedade '{nomePropriedadeFiltro}' não encontrada na entidade '{tipoEntidade.Name}'");
+            }
+            var valorSqlString = SqlUtil.SqlValueString(valorPropriedadeFiltro);
+            var filtro = new FiltroPropriedadeIndexar(propriedade, operadorFiltro, valorSqlString);
+            this.Filtros.Add(filtro);
         }
 
         #region IAtributoValidacao
