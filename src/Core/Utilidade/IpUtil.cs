@@ -10,17 +10,9 @@ using System.Runtime.CompilerServices;
 
 namespace Snebur
 {
-    public static class ConstantesIP
-    {
-        public const string IP_VAZIO = "0.0.0.0";
-        public const string MASCARA_IP4 = "255.255.255";
-        public const string IP_LOCAL = "127.0.0.1";
-        public const string IP6_LOCAL = "::1";
-    }
-     
-
     public static class IpUtil
     {
+        private static string _ipPublico;
         /// <summary>
         /// retornar 0.0.0.0
         /// </summary>
@@ -43,8 +35,30 @@ namespace Snebur
             return RetornarIPInformacao(String.Empty);
         }
 
+        public static string RetornarIpPublico()
+        {
+            if (_ipPublico == null)
+            {
+                var ipString = HttpUtil.RetornarString("https://api.ipify.org", null, TimeSpan.FromSeconds(5), true);
+                if (ValidacaoUtil.IsIp(ipString))
+                {
+                    _ipPublico = ipString;
+                }
+                else
+                {
+                    _ipPublico = RetornarIPInformacao(String.Empty).IP;
+                }
+            }
+            return _ipPublico;
+
+        }
+
         public static DadosIPInformacao RetornarIPInformacao(string ip)
         {
+            if(String.IsNullOrEmpty(ip))
+            {
+                ip = RetornarIpPublico();
+            }   
 
             var url = (IpUtil.IsIpVazioOuLocal(ip)) ? "http://ipinfo.io/json" :
                                                        String.Format("http://ipinfo.io/{0}/json", ip);
