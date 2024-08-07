@@ -16,7 +16,6 @@ namespace Snebur.AcessoDados.Servidor.Salvar
         internal BaseConexao Conexao { get; set; }
         internal bool IsNotificarAlteracaoPropriedade { get; }
         internal EnumOpcaoSalvar OpcaoSalvar { get; }
-
         private int ContadorParametro;
 
         internal SalvarEntidades(BaseContextoDados contexto,

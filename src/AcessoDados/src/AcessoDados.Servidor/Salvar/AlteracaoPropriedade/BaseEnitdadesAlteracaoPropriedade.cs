@@ -133,8 +133,13 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                                                                                            IEstruturaAlteracaoPropriedade estruturaAlteracaoPropriedade,
                                                                                            PropriedadeAlterada propriedadeAlterada)
         {
-            if (estruturaAlteracaoPropriedade.IsVerificarAlteracaoBanco ||
-                propriedadeAlterada.AntigoValor == null)
+            if(propriedadeAlterada.AntigoValor == null &&
+               estruturaAlteracaoPropriedade.IsIgnorarValorAntigoNull)
+            {
+                return (false, null);
+            }
+
+            if (estruturaAlteracaoPropriedade.IsVerificarAlteracaoBanco)
             {
                 return this.IsExisteAlteracaoTipoPrimarioBanco(entidade,
                                                                estruturaAlteracaoPropriedade);

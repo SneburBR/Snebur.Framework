@@ -115,6 +115,8 @@ namespace Snebur.AcessoDados.Estrutura
         bool IsTipoComplexo { get; }
         bool IsNotificarNovoCadastro { get; }
         bool IsVerificarAlteracaoBanco { get; }
+        bool IsIgnorarZeroIgualNull { get; }
+        bool IsIgnorarValorAntigoNull { get; }
         bool IsSalvarDataHoraFimAlteracao { get; }
     }
 }

@@ -32,6 +32,11 @@ namespace Snebur.AcessoDados
                                                                     TEntidade entidade,
                                                                     params Expression<Func<TEntidade, object>>[] expressoesPropriedade) where TEntidade : Entidade
         {
+            if (!entidade.__IsIdentity)
+            {
+                throw new Exception(" SalvarPropriedades não é permitido para entidades que não possui chave primária (ID)  autoincremento)");
+            }
+
             if (entidade.__IsExisteAlteracao)
             {
                 var clone = entidade.CloneSomenteId<TEntidade>(null);

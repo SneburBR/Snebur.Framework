@@ -110,7 +110,7 @@ namespace Snebur.AcessoDados
             var entidadesRecuperadas = new List<Entidade>();
 
             var relacoes = relacoesEmCascata?.Split(',').Select(x => x.Trim()).Where(x => !String.IsNullOrEmpty(x)).ToArray();
-            if (relacoes.Count() == 0)
+            if (relacoes == null || relacoes.Count() == 0)
             {
                 return this.RetornarTodasEntidades(entidades.Cast<Entidade>()).ToList();
             }

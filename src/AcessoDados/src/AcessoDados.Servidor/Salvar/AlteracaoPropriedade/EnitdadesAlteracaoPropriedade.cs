@@ -40,8 +40,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                                 alteracoesPropriedade.Add((Entidade)ultimaAlteracao);
                             }
                         }
-
-
+                         
                         var novaAlteracao = (IAlteracaoPropriedade)Activator.CreateInstance(atributo.TipoEntidadeAlteracaoPropriedade);
                         novaAlteracao.ValorPropriedadeRelacao = entidade;
                         novaAlteracao.ValorPropriedadeAlterada = valorPropriedade;

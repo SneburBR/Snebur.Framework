@@ -24,18 +24,22 @@ namespace Snebur.AcessoDados
                                            DbParameterCollection collection,
                                           string sql)
         {
-            var parametros = new List<ParametroInfo>();
-
-            foreach (SqlParameter parametro in collection)
+            if(DebugUtil.IsAttached && ConfiguracaoUtil.IsLogDebugOutputSql)
             {
-                parametros.Add(new ParametroInfo
+                var parametros = new List<ParametroInfo>();
+
+                foreach (SqlParameter parametro in collection)
                 {
-                    SqlDbType = parametro.SqlDbType,
-                    ParameterName = parametro.ParameterName,
-                    Value = parametro.Value
-                });
+                    parametros.Add(new ParametroInfo
+                    {
+                        SqlDbType = parametro.SqlDbType,
+                        ParameterName = parametro.ParameterName,
+                        Value = parametro.Value
+                    });
+                }
+                EscreverSaida(contexto, parametros, sql);
             }
-            EscreverSaida(contexto, parametros, sql);
+            
         }
 
         internal static void EscreverSaida(BaseContextoDados contexto,
@@ -58,10 +62,7 @@ namespace Snebur.AcessoDados
                                                   List<ParametroInfo> parametros,
                                                   string sql)
         {
-            if (ConfiguracaoUtil.AmbienteServidor == EnumAmbienteServidor.Producao)
-            {
-                return;
-            }
+ 
 
 #if DEBUG
             if (DebugUtil.IsAttached && ConfiguracaoUtil.IsLogDebugOutputSql)

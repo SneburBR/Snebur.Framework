@@ -77,10 +77,10 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 
                     var valorPropriedade = propriedade.GetValue(entidade);
                     var valorPadrao = AtualizarValorPadrao.RetornarValorPadraoPropriedade(contexto,
-                                                                                    estruturaCampo,
-                                                                                    entidade,
-                                                                                    propriedade,
-                                                                                    valorPropriedade);
+                                                                                          estruturaCampo,
+                                                                                          entidade,
+                                                                                          propriedade,
+                                                                                          valorPropriedade);
                     if (valorPadrao != null && valorPadrao != valorPropriedade)
                     {
                         entidadeInterna.AdicionarProprieadeAberta(propriedade.Name);
