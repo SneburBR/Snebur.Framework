@@ -22,7 +22,6 @@ namespace Snebur.Dominio
         private bool _isValidacaoPropriedadeAbertasDesativada = false;
         private bool __isExisteAlteracaoTipoCompleto;
         private bool __isNewEntity__ = true;
-        private bool __isIdentity__;
 
         [OcultarColuna]
         public abstract long Id { get; set; }
@@ -84,8 +83,12 @@ namespace Snebur.Dominio
         [NaoMapear]
         [EditorBrowsable(EditorBrowsableState.Never)]
         [IgnorarPropriedadeTSReflexao]
-        public bool __IsNewEntity => this.Id == 0 || (!this.__isIdentity__  && this.__isNewEntity__);
+        public bool __IsNewEntity => this.Id == 0 || (!this.__IsIdentity  && this.__isNewEntity__);
 
+        [NaoMapear]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [IgnorarPropriedadeTSReflexao]
+        public bool __IsIdentity { get; private set; }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [NaoMapear]
@@ -125,7 +128,7 @@ namespace Snebur.Dominio
                 }
             }
             var atributo = this.__TipoEntidade.GetCustomAttribute<DatabaseGeneratedAttribute>(true);
-            this.__isIdentity__ = atributo == null || atributo.DatabaseGeneratedOption == DatabaseGeneratedOption.Identity;
+            this.__IsIdentity = atributo == null || atributo.DatabaseGeneratedOption == DatabaseGeneratedOption.Identity;
         }
 
         private BaseTipoComplexo RetornarValorPropriedadeTipoComplexo(PropertyInfo propriedadeTipoComplexo)
