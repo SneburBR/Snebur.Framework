@@ -5,7 +5,6 @@ using Snebur.Servicos;
 using Snebur.UI;
 using Snebur.Utilidade;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -38,6 +37,7 @@ namespace Snebur
         private Version _versaoAplicacao;
         private bool? _capturarPrimeiroErroAtivo;
         private CultureInfo _cultura;
+        private string _ipPublico;
 
         private IServicoLogErro _servicoLogErro;
         private IServicoLogSeguranca _servicoLogSeguranca;
@@ -337,7 +337,7 @@ namespace Snebur
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public virtual InformacaoSessao InformacaoSessao => this.RetornarInformacaoSessaoUsuario();
-        public virtual string IP => this.RetornarIp();
+        public virtual string IpPublico => this.RetornarIpPublico();
 
         //[EditorBrowsable(EditorBrowsableState.Never)]
         //public virtual InformacaoSessaoUsuario InformacaoSessaoUsuarioRequisicaoAtual => SessaoUtil.RetornarInformacaoSessaoUsuarioAplicacao();
@@ -770,9 +770,13 @@ namespace Snebur
             return this.UrlsServico[chaveConfiguracao];
         }
 
-        protected virtual string RetornarIp()
+        protected virtual string RetornarIpPublico()
         {
-            return IpUtil.RetornarIPInformacao(String.Empty).IP;
+            if(this._ipPublico == null)
+            {
+                this._ipPublico = IpUtil.RetornarIpPublico();
+            }
+            return this._ipPublico;
             //throw new NotImplementedException();
             //return IpUtil.RetornarIPInformacaoRequisicao(isRetornarNullNaoEncotnrado).IP;
         }

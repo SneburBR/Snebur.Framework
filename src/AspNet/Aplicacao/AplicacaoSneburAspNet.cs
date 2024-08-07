@@ -34,7 +34,7 @@ namespace Snebur
             {
                 if (this.IsPossuiRequisicaoAspNetAtiva)
                 {
-                    return this.IP;
+                    return this.IpPublico;
                 }
                 return null;
             }
@@ -134,7 +134,7 @@ namespace Snebur
 
 #if NET6_0_OR_GREATER  == false
 
-        public override string IP
+        public override string IpPublico
         {
             get
             {
@@ -164,7 +164,7 @@ namespace Snebur
                         return ip;
                     }
                 }
-                return base.IP;
+                return base.IpPublico;
             }
 
 
