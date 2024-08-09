@@ -23,8 +23,8 @@ namespace Snebur.AcessoDados
         private static readonly double TIMEOUT_REMOVER_CACHE = DebugUtil.IsAttached ? TimeSpan.FromMinutes(5).TotalMilliseconds :
                                                                                       TimeSpan.FromHours(2).TotalMilliseconds;
 
-        private static readonly double TIMEOUT_ATUALIZAR_STATUS_SESSAO = DebugUtil.IsAttached ? TimeSpan.FromMinutes(1).TotalMilliseconds :
-                                                                                                TimeSpan.FromMinutes(3).TotalMilliseconds;
+        private static readonly double TIMEOUT_ATUALIZAR_STATUS_SESSAO = DebugUtil.IsAttached ? TimeSpan.FromMinutes(10).TotalMilliseconds :
+                                                                                                TimeSpan.FromMinutes(5).TotalMilliseconds;
 
         public ISessaoUsuario SessaoUsuario { get; private set; }
         public IUsuario Usuario { get; private set; }

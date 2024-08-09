@@ -34,19 +34,19 @@ namespace Snebur.AcessoDados.Estrutura
 
         internal bool IsDateTimeUtc => this.DateTimeKindPadrao == DateTimeKind.Utc; 
 
-
+        internal int IdNamespace { get; }
 
         #region  Construtor 
 
-        internal EstruturaBancoDados(Type tipoContexto,
+        internal EstruturaBancoDados(BaseContextoDados contextoDados,
                                      BancoDadosSuporta sqlSuporte)
         {
-            this.TipoContexto = tipoContexto;
+            this.TipoContexto = contextoDados.GetType();
             this.PopularInterceptadores();
             this.MontarEstruturaBancoDados(this.TipoContexto, sqlSuporte);
             this.TipoEntidadeArquivo = this.RetornarTipoEntidadeArquivo();
             this.TipoEntidadeImagem = this.RetornarTipoEntidadeImagem();
-            this.TipoEntidadeNotificaoPropriedadeAlteradaGenerica = this.RetornarTipoEntidadeNotificaoPropriedadeAlteradaGenerica();
+            this.TipoEntidadeNotificaoPropriedadeAlteradaGenerica = this.RetornarTipoEntidadeNotificaoPropriedadeAlteradaGenerica(contextoDados);
             this.TipoHistoricoManutencao = this.RetornarTipoHistoricoManutenacao();
             this.TiposSeguranca = new TiposSeguranca(this);
 
@@ -57,6 +57,7 @@ namespace Snebur.AcessoDados.Estrutura
                 this.TipoIpInformacao = this.RetornarTipoIpInformacao();
             }
             this.DateTimeKindPadrao = sqlSuporte.IsDataHoraUtc ? DateTimeKind.Utc : DateTimeKind.Local;
+            this.IdNamespace = contextoDados.IdNamespace;
 
         }
         #endregion
@@ -367,9 +368,13 @@ namespace Snebur.AcessoDados.Estrutura
             return this.RetornarTipoConsultaImplementaInterface<IIPInformacaoEntidade>();
         }
 
-        private Type RetornarTipoEntidadeNotificaoPropriedadeAlteradaGenerica()
+        private Type RetornarTipoEntidadeNotificaoPropriedadeAlteradaGenerica(BaseContextoDados contextoDados)
         {
-            return this.RetornarTipoConsultaImplementaInterface<IAlteracaoPropriedadeGenerica>(true);
+            if(contextoDados.IsContextoSessaoUsuario)
+            {
+                return this.RetornarTipoConsultaImplementaInterface<IAlteracaoPropriedadeGenerica>(true);
+            }
+            return contextoDados.ContextoSessaoUsuario.EstruturaBancoDados.TipoEntidadeNotificaoPropriedadeAlteradaGenerica;
         }
 
         private Type RetornarTipoEntidadeArquivo()

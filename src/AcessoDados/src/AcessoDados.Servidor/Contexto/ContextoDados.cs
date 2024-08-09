@@ -65,7 +65,9 @@ namespace Snebur.AcessoDados
 
         internal BaseConexao Conexao { get; }
 
-        internal protected BaseContextoDados ContextoSessaoUsuarioHerdada { get; }
+        internal protected BaseContextoDados ContextoSessaoUsuario { get; }
+
+        public bool IsContextoSessaoUsuario => this.ContextoSessaoUsuario == this;
 
         public string IdentificadorProprietario { get; private set; }
 
@@ -110,9 +112,9 @@ namespace Snebur.AcessoDados
                 this.UsuarioAvalista = this.CacheSessaoUsuario.RetornarUsuarioAvalista(this._credencialAvalista);
                 this.IsValidarUsuarioSessaoUsuario = true;
 
-                if (this.ContextoSessaoUsuarioHerdada != null)
+                if (this.ContextoSessaoUsuario!= this)
                 {
-                    this.ContextoSessaoUsuarioHerdada.CredencialAvalista = value;
+                    this.ContextoSessaoUsuario.CredencialAvalista = value;
                 }
             }
         }
@@ -125,7 +127,8 @@ namespace Snebur.AcessoDados
 
         #region Construtor
 
-        private BaseContextoDados(string configuracaoAcessoDados,
+        private BaseContextoDados(BaseContextoDados contextoSessaoUsuario, 
+                                  string configuracaoAcessoDados,
                                   string identificadorProprietario,
                                   EnumFlagBancoNaoSuportado flagsNaoSuporta)
         {
@@ -144,8 +147,11 @@ namespace Snebur.AcessoDados
             this.IsIdentificadorProprietarioGlobal = Util.SaoIgual(this.IdentificadorProprietario.ToString(), ConfiguracaoAcessoDados.IdentificadorProprietarioGlobal);
             this.IsFiltrarIdentificadorProprietario = !this.IsIdentificadorProprietarioGlobal;
 
+            this.ContextoSessaoUsuario = contextoSessaoUsuario ?? this;
+            this.IsFiltrarIdentificadorProprietario = identificadorProprietario != null;
+
             this.Conexao = AjudanteConexaoDB.RetornarConexao(this, this.ConectionString);
-            this.EstruturaBancoDados = EstruturaBancoDados.RetornarEstruturaBancoDados(this.GetType(), this.SqlSuporte);
+            this.EstruturaBancoDados = EstruturaBancoDados.RetornarEstruturaBancoDados(this, this.SqlSuporte);
 
             if (this.SqlSuporte.IsMigracao)
             {
@@ -169,13 +175,13 @@ namespace Snebur.AcessoDados
 
         }
 
-        protected BaseContextoDados(BaseContextoDados contextoSessaoUsuarioHerdada,
+        protected BaseContextoDados(BaseContextoDados contextoSessaoUsuario,
                                     string configuracaoAcessoDados,
                                     CredencialUsuario credencial,
                                     Guid identificadorSessaoUsario,
                                     InformacaoSessao informacaoSessaoUsuario,
                                     string identificadorProprietario,
-                                    EnumFlagBancoNaoSuportado sqlNaoSuporta) : this(contextoSessaoUsuarioHerdada,
+                                    EnumFlagBancoNaoSuportado sqlNaoSuporta) : this(contextoSessaoUsuario,
                                                                                    configuracaoAcessoDados,
                                                                                    credencial,
                                                                                    identificadorSessaoUsario,
@@ -203,24 +209,24 @@ namespace Snebur.AcessoDados
         {
 
         }
-        private BaseContextoDados(BaseContextoDados contextoSessaoUsuarioHerdada,
+        private BaseContextoDados(BaseContextoDados contextoSessaoUsuario,
                                   string configuracaoAcessoDados,
                                   CredencialUsuario credencial,
                                   Guid identificadorSessaoUsario,
                                   InformacaoSessao informacaoSessaoUsuario,
                                   string identificadorProprietario,
                                   EnumFlagBancoNaoSuportado sqlNaoSuporta,
-                                  bool isValidarUsuarioGlobal) : this(configuracaoAcessoDados,
+                                  bool isValidarUsuarioGlobal) : this(contextoSessaoUsuario,
+                                                                      configuracaoAcessoDados,
                                                                       identificadorProprietario,
-                                                                       sqlNaoSuporta)
+                                                                      sqlNaoSuporta)
         {
             ErroUtil.ValidarReferenciaNula(credencial, nameof(credencial));
 
             //this.IsSalvarScopo = isSalvarScopo;
             //ContextoDados.InicializarScopo(this);
             //this.CredencialUsuario = credencial;
-            this.ContextoSessaoUsuarioHerdada = contextoSessaoUsuarioHerdada;
-            this.IsFiltrarIdentificadorProprietario = identificadorProprietario != null;
+       
 
             if (this.SqlSuporte.IsSessaoUsuario)
             {
@@ -247,17 +253,6 @@ namespace Snebur.AcessoDados
             }
 
             this.IsContextoInicializado = !isValidarUsuarioGlobal;
-            //this.ResultadoSessaoUsuario = this.CacheSessaoUsuario.RetornarResltadoSessaoUsuario(credencial, identificadorSessaoUsario, informacaoSessaoUsuario);
-            //this.UsuarioLogado = this.ResultadoSessaoUsuario.Usuario;
-            //this.SessaoUsuarioLogado = this.ResultadoSessaoUsuario.SessaoUsuario;
-
-
-            //this.UsuarioLogado = this.AjudanteSessaoUsuario.RetornarUsuario(credencial);
-            //this.SessaoUsuarioLogado = this.AjudanteSessaoUsuario.RetornarSessaoUsuario(this.UsuarioLogado, informacaoSessaoUsuario);
-
-            //this.SalvarInternoSemNotificacao((Entidade)this.SessaoUsuarioLogado, true);
-
-
         }
 
         protected BaseContextoDados(string configuracaoAcessoDados,
@@ -319,7 +314,7 @@ namespace Snebur.AcessoDados
 
             if (this.SqlSuporte.IsSessaoUsuarioHerdada)
             {
-                return this.ContextoSessaoUsuarioHerdada.CacheSessaoUsuario;
+                return this.ContextoSessaoUsuario.CacheSessaoUsuario;
             }
             throw new InvalidOperationException("O banco de dados não suporta sessão de usuário");
         }
@@ -693,6 +688,8 @@ namespace Snebur.AcessoDados
             }
             return new List<IUsuario>();
         }
+
+       internal protected abstract int IdNamespace { get; }
 
         #endregion
 
