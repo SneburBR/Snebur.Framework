@@ -5,15 +5,18 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Snebur.AcessoDados.Servidor.Salvar
 {
     internal partial class SalvarEntidades : IDisposable
     {
         internal List<EntidadeAlterada> EntidadesAlteradas { get; private set; }
-        internal Queue<EntidadeAlterada> Fila { get; private set; }
+        internal List<EntidadeAlterada> EntidadesAlteradasAlteracoesGenericas { get; private set; }
+        internal Queue<EntidadeAlterada> FilaEntidades { get; private set; }
+        internal Queue<EntidadeAlterada> FilaAlteracoesGenericas { get; private set; }
+
         internal BaseContextoDados Contexto { get; private set; }
-        internal BaseConexao Conexao { get; set; }
         internal bool IsNotificarAlteracaoPropriedade { get; }
         internal EnumOpcaoSalvar OpcaoSalvar { get; }
         private int ContadorParametro;
@@ -30,16 +33,20 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 
             this.OpcaoSalvar = opcaoDeletar;
             this.IsNotificarAlteracaoPropriedade = isNotificarAlteracaoPropriedade;
-            this.Fila = new Queue<EntidadeAlterada>();
+            this.FilaEntidades = new Queue<EntidadeAlterada>();
             this.Contexto = contexto;
-            this.Conexao = this.Contexto.Conexao;
-            this.EntidadesAlteradas = this.RetornarEntidadesAlteradas(entidades);
-            this.Fila = FilaEntidadeAlterada.RetornarFila(this.EntidadesAlteradas);
+
+            var entidadesNormalizada = this.RetornarEntidadesNormalizadas(entidades);
+            this.EntidadesAlteradas = this.RetornarEntidadesAlteradas(entidadesNormalizada);
+            this.EntidadesAlteradasAlteracoesGenericas = this.RetornarEntidadesAlteracoesPropriedadeGenericas(entidadesNormalizada);
+
+            this.FilaEntidades = FilaEntidadeAlterada.RetornarFila(this.EntidadesAlteradas);
+            this.FilaAlteracoesGenericas = FilaEntidadeAlterada.RetornarFila(this.EntidadesAlteradasAlteracoesGenericas);
 
             if (opcaoDeletar == EnumOpcaoSalvar.Deletar ||
                 opcaoDeletar == EnumOpcaoSalvar.DeletarRegistro)
             {
-                this.Fila = new Queue<EntidadeAlterada>(this.Fila.Reverse());
+                this.FilaEntidades = new Queue<EntidadeAlterada>(this.FilaEntidades.Reverse());
             }
         }
 
@@ -47,65 +54,92 @@ namespace Snebur.AcessoDados.Servidor.Salvar
         {
             if (this.OpcaoSalvar == EnumOpcaoSalvar.Salvar && !ignorarValidacao)
             {
-                var entidades = Enumerable.Reverse(this.Fila).Select(x => x.Entidade).ToList();
+                var entidades = Enumerable.Reverse(this.FilaEntidades).Select(x => x.Entidade).ToList();
                 var errosValidacao = ValidarEntidades.Validar(this.Contexto, entidades.ToList());
                 if (errosValidacao.Count > 0)
                 {
                     return this.RetornarResultadoSalvarErrosValidacao(errosValidacao);
                 }
             }
-            return this.SalvarInterno();
+
+            var conexao = this.Contexto.Conexao;
+            var fila = this.FilaEntidades;
+            var resultado = this.SalvarEntidadesInterno(conexao, fila);
+            if (resultado.IsSucesso && this.FilaAlteracoesGenericas.Count > 0)
+            {
+                this.SalvarAlteracoesGenericas();
+            }
+            return resultado;
         }
 
-        private Resultado SalvarInterno()
+        private Resultado SalvarEntidadesInterno(BaseConexao conexao,
+                                                  Queue<EntidadeAlterada> fila)
         {
             if (this.Contexto.IsExisteTransacao)
             {
-                return this.SalvarTransacao();
+                return this.SalvarTransacao(conexao, fila);
             }
             else
             {
-                return this.SalvarNormal();
+                return this.SalvarNormal(conexao, fila, false);
             }
         }
 
-        private Resultado SalvarNormal()
+        private void SalvarAlteracoesGenericas()
         {
+            var conexao = this.Contexto.ContextoSessaoUsuario.Conexao;
+            var fila = this.FilaAlteracoesGenericas;
+            this.SalvarNormal(conexao, fila, true);
+        }
+
+        private Resultado SalvarNormal(BaseConexao conexao,
+                                       Queue<EntidadeAlterada> fila,
+                                       bool isIgnorarErro = false)
+        {
+
+            var linhasAfetadas = 0;
             var comandosExecutados = new List<string>();
             var entidadesAlteradas = new List<EntidadeAlterada>();
-            var linhasAfetadas = 0;
+            var erros = new List<Exception>();
             try
             {
-                if (this.Fila.Count > 0)
+                if (fila.Count > 0)
                 {
                     //$######### TESTE
-                    foreach (var entidadeAlterada in this.Fila.ToList())
+                    foreach (var entidadeAlterada in fila.ToList())
                     {
                         entidadeAlterada.Comandos = entidadeAlterada.RetornarCommandos();
                     }
 
-                    using (var conexao = this.Conexao.RetornarNovaConexao())
+                    using (var dbConnection = conexao.RetornarNovaConexao())
                     {
-                        conexao.Open();
+                        dbConnection.Open();
                         try
                         {
-                            using (var transacao = conexao.BeginTransaction(ConfiguracaoAcessoDados.IsolamentoLevelSalvarPadrao))
+                            using (var transacao = dbConnection.BeginTransaction(ConfiguracaoAcessoDados.IsolamentoLevelSalvarPadrao))
                             {
                                 try
                                 {
-                                    while (this.Fila.Count > 0)
+                                    while (fila.Count > 0)
                                     {
-                                        var entidadeAlterada = this.Fila.Dequeue();
+                                        var entidadeAlterada = fila.Dequeue();
                                         //var comandos = entidadeAlterada.RetornarCommandos();
                                         foreach (var comando in entidadeAlterada.Comandos)
                                         {
                                             try
                                             {
-                                                linhasAfetadas += this.ExecutarCommando(conexao, transacao, entidadeAlterada, comando);
+                                                linhasAfetadas += this.ExecutarCommando(conexao,
+                                                                                        dbConnection,
+                                                                                        transacao,
+                                                                                        entidadeAlterada,
+                                                                                        comando);
                                             }
                                             catch (Exception erro)
                                             {
-                                                throw new ErroConsultaSql(comando.SqlCommando, erro);
+                                                if (!isIgnorarErro)
+                                                {
+                                                    throw new ErroConsultaSql(comando.SqlCommando, erro);
+                                                }
                                             }
                                             finally
                                             {
@@ -136,7 +170,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                         }
                         finally
                         {
-                            conexao.Close();
+                            dbConnection.Close();
                         }
                     }
                 }
@@ -154,33 +188,38 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             }
         }
 
-        private Resultado SalvarTransacao()
+        private Resultado SalvarTransacao(BaseConexao conexao,
+                                          Queue<EntidadeAlterada> fila)
         {
             var comandosExecutados = new List<string>();
             var entidadesAltearas = new List<EntidadeAlterada>();
             var linhasAfetadas = 0;
 
-            var conexao = this.Contexto.ConexaoAtual;
+            var dbConnection = this.Contexto.ConexaoAtual;
             var transacao = this.Contexto.TransacaoAtual;
 
-            if (this.Fila.Count > 0)
+            if (fila.Count > 0)
             {
                 //$######### TESTE
-                foreach (var entidadeAlterada in this.Fila.ToList())
+                foreach (var entidadeAlterada in fila.ToList())
                 {
                     entidadeAlterada.Comandos = entidadeAlterada.RetornarCommandos();
                 }
 
 
-                while (this.Fila.Count > 0)
+                while (fila.Count > 0)
                 {
-                    var entidadeAlterada = this.Fila.Dequeue();
+                    var entidadeAlterada = fila.Dequeue();
                     //var comandos = entidadeAlterada.RetornarCommandos();
                     foreach (var comando in entidadeAlterada.Comandos)
                     {
                         try
                         {
-                            linhasAfetadas += this.ExecutarCommando(conexao, transacao, entidadeAlterada, comando);
+                            linhasAfetadas += this.ExecutarCommando(conexao,
+                                                                    dbConnection,
+                                                                    transacao,
+                                                                    entidadeAlterada,
+                                                                    comando);
                         }
                         catch (Exception erro)
                         {
@@ -205,12 +244,13 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             return this.RetornarResultado(entidadesAltearas);
         }
 
-        internal int ExecutarCommando(DbConnection conexao, 
-                                      DbTransaction transacao, 
-                                      EntidadeAlterada entidadeAlterada, 
+        internal int ExecutarCommando(BaseConexao conexao,
+                                      DbConnection dbConnection,
+                                      DbTransaction transacao,
+                                      EntidadeAlterada entidadeAlterada,
                                       Comando comando)
         {
-            using (var cmd = this.Conexao.RetornarNovoComando(comando.SqlCommando, null, conexao, transacao))
+            using (var cmd = conexao.RetornarNovoComando(comando.SqlCommando, null, dbConnection, transacao))
             {
                 var parametros = comando.RetornarParametros();
                 foreach (var parametro in parametros)
@@ -218,14 +258,14 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                     if (!parametro.EstruturaCampo.IsValorFuncaoServidor)
                     {
                         this.ContadorParametro = +1;
-                        var dbParametro = this.Conexao.RetornarNovoParametro(parametro.EstruturaCampo, 
-                                                                                    parametro.EstruturaCampo.NomeParametro, 
-                                                                                    parametro.Valor);
+                        var dbParametro = conexao.RetornarNovoParametro(parametro.EstruturaCampo,
+                                                                        parametro.EstruturaCampo.NomeParametro,
+                                                                        parametro.Valor);
                         cmd.Parameters.Add(dbParametro);
                     }
                 }
 
-                DepuracaoUtil.EscreverSaida(this.Contexto, 
+                DepuracaoUtil.EscreverSaida(this.Contexto,
                                             cmd.Parameters,
                                             cmd.CommandText);
 
@@ -235,7 +275,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 
                         if (comandoInsert.IsRecuperarUltimoId)
                         {
-                            
+
                             var valorId = cmd.ExecuteScalar();
                             var id = Convert.ToInt64(valorId);
                             if (id == 0)
@@ -251,7 +291,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                     case ComandoInsertOrUpdate comandoInsertOrUpdate:
 
                         return cmd.ExecuteNonQuery();
-                        
+
 
                     case ComandoUpdate comandoUpdate:
                     case ComandoDelete comandoDelete:
@@ -272,8 +312,6 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                         entidadeAlterada.AtualizarPropriedadeCampoComputado(campoComputado);
                         entidadeAlterada.CamposComputado.Add(campoComputado);
                         return 0;
-
-
                     default:
 
                         throw new ErroNaoSuportado("Comando não suportado");
@@ -303,7 +341,6 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             else
             {
                 return this.RetornarResultadoErroDeletar(erro);
-
             }
         }
 
@@ -326,7 +363,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                     CaminhoTipoEntidadeSalva = entidadeAlterada.Entidade.__CaminhoTipo
                 };
 
-                if(entidadeAlterada.Entidade.__IsNewEntity)
+                if (entidadeAlterada.Entidade.__IsNewEntity)
                 {
                     (entidadeAlterada.Entidade as IEntidadeInterna).NotifyIsNotNewEntity();
                 }
@@ -417,21 +454,47 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 
         #region Métodos privados
 
-        private List<EntidadeAlterada> RetornarEntidadesAlteradas(HashSet<Entidade> entidades)
+        private List<EntidadeAlterada> RetornarEntidadesAlteradas(HashSet<Entidade> entidadesNormalizada)
         {
-            var entidadesNormalizada = this.RetornarEntidadesNormalizadas(entidades);
+
             var entidadesAlterada = new List<EntidadeAlterada>();
             foreach (var entidade in entidadesNormalizada)
             {
                 if (entidade != null)
                 {
                     var estruturaEntidade = this.Contexto.EstruturaBancoDados.EstruturasEntidade[entidade.GetType().Name];
-                    var entidadeAlterada = new EntidadeAlterada(this.Contexto, entidade, estruturaEntidade, this.OpcaoSalvar);
+                    var entidadeAlterada = new EntidadeAlterada(this.Contexto,
+                                                                entidade,
+                                                                estruturaEntidade,
+                                                                this.OpcaoSalvar);
                     entidadesAlterada.Add(entidadeAlterada);
                     AtualizarValorPadrao.Atualizar(entidadeAlterada, this.Contexto);
                 }
             }
             return NormalizarEntidadeAlterada.RetornarEntidadesAlteradaNormalizada(this.Contexto, entidadesAlterada);
+        }
+
+        private List<EntidadeAlterada> RetornarEntidadesAlteracoesPropriedadeGenericas(HashSet<Entidade> entidadesNormalizada)
+        {
+            var contextoSessaoUsuario = this.Contexto.ContextoSessaoUsuario;
+            var entidadesNotificacaoPropriedadeAlteradaGenerica = this.RetornarEntidadesAlteracaoPropriedadeGenericas(entidadesNormalizada);
+            entidadesNotificacaoPropriedadeAlteradaGenerica = NormalizarEntidade.RetornarEntidadesNormalizada(contextoSessaoUsuario, entidadesNotificacaoPropriedadeAlteradaGenerica);
+            var entidadesAlterada = new List<EntidadeAlterada>();
+
+            foreach (var entidade in entidadesNotificacaoPropriedadeAlteradaGenerica)
+            {
+                if (entidade != null)
+                {
+                    var estruturaEntidade = contextoSessaoUsuario.EstruturaBancoDados.EstruturasEntidade[entidade.GetType().Name];
+                    var entidadeAlterada = new EntidadeAlterada(contextoSessaoUsuario,
+                                                                entidade,
+                                                                estruturaEntidade,
+                                                                this.OpcaoSalvar);
+                    entidadesAlterada.Add(entidadeAlterada);
+                    AtualizarValorPadrao.Atualizar(entidadeAlterada, contextoSessaoUsuario);
+                }
+            }
+            return NormalizarEntidadeAlterada.RetornarEntidadesAlteradaNormalizada(contextoSessaoUsuario, entidadesAlterada);
         }
 
         private HashSet<Entidade> RetornarEntidadesNormalizadas(HashSet<Entidade> entidades)
@@ -446,22 +509,14 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                     var entidadesNotificacaoPropriedadeAlterada = this.RetornarEntidadesAlteracaoPropriedade(entidadesNormalizada);
                     entidadesNotificacaoPropriedadeAlterada = NormalizarEntidade.RetornarEntidadesNormalizada(this.Contexto, entidadesNotificacaoPropriedadeAlterada);
                     entidadesNormalizada.AddRange(entidadesNotificacaoPropriedadeAlterada);
-
-
-                    if (this.Contexto.EstruturaBancoDados.TipoEntidadeNotificaoPropriedadeAlteradaGenerica != null)
-                    {
-                        //Propriedade alteradas GENERICAS
-                        var entidadesNotificacaoPropriedadeAlteradaGenerica = this.RetornarEntidadesAlteracaoPropriedadeGenericas(entidadesNormalizada);
-                        entidadesNotificacaoPropriedadeAlteradaGenerica = NormalizarEntidade.RetornarEntidadesNormalizada(this.Contexto, entidadesNotificacaoPropriedadeAlteradaGenerica);
-                        entidadesNormalizada.AddRange(entidadesNotificacaoPropriedadeAlteradaGenerica);
-                    }
                 }
                 ///AtualizarValorPadrao.Atualizar(entidades, this.Contexto);
                 return entidadesNormalizada;
             }
             return entidades;
-
         }
+
+
 
         #endregion
 
@@ -469,13 +524,16 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 
         public void Dispose()
         {
-            this.Fila?.Clear();
+            this.FilaEntidades?.Clear();
+            this.FilaAlteracoesGenericas?.Clear();
             this.EntidadesAlteradas?.Clear();
+            this.EntidadesAlteradasAlteracoesGenericas?.Clear();
 
-            this.Fila = null;
+            this.FilaEntidades = null;
+            this.FilaAlteracoesGenericas = null;
             this.EntidadesAlteradas = null;
+            this.EntidadesAlteradasAlteracoesGenericas = null;
             this.Contexto = null;
-            this.Conexao = null;
         }
         #endregion
     }

@@ -73,6 +73,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 
                         }
 
+                        novaAlteracao.IdNamespace = estruturaEntidade.EstruturaBancoDados.IdNamespace;
                         novaAlteracao.NomeTipoEntidade = estruturaEntidade.NomeTipoEntidade;
                         novaAlteracao.NomePropriedade = estruturaAlteracaoPropriedade.Propriedade.Name;
                         novaAlteracao.TipoPrimario = estruturaAlteracaoPropriedade.EstruturaCampo?.TipoPrimarioEnum;
@@ -91,8 +92,9 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                                                                               EstruturaEntidade estruturaEntidade,
                                                                               EstruturaAlteracaoPropriedadeGenerica estruturaAlteracaoPropriedade)
         {
-            var tipoAlteracao = this.Contexto.EstruturaBancoDados.TipoEntidadeNotificaoPropriedadeAlteradaGenerica;
-            var consulta = this.Contexto.RetornarConsulta<IAlteracaoPropriedadeGenerica>(tipoAlteracao);
+            var contextoSessaoUsuario = this.Contexto.ContextoSessaoUsuario;
+            var tipoAlteracao = contextoSessaoUsuario.EstruturaBancoDados.TipoEntidadeNotificaoPropriedadeAlteradaGenerica;
+            var consulta = contextoSessaoUsuario.RetornarConsulta<IAlteracaoPropriedadeGenerica>(tipoAlteracao);
             consulta = consulta.Where(x => x.IdEntidade == entidade.Id &&
                                            x.NomeTipoEntidade == estruturaEntidade.NomeTipoEntidade &&
                                            x.NomePropriedade == estruturaAlteracaoPropriedade.Propriedade.Name).

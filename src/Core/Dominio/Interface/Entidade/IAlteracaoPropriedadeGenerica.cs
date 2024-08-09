@@ -11,6 +11,10 @@ namespace Snebur.Dominio
 
         [Indexar]
         [ValidacaoRequerido]
+        int IdNamespace { get; set; }
+
+        [Indexar]
+        [ValidacaoRequerido]
         [ValidacaoTextoTamanho(255)]
         string NomeTipoEntidade { get; set; }
 
@@ -30,9 +34,6 @@ namespace Snebur.Dominio
         string ValorPropriedadeAlterada { get; set; }
 
         DateTime? DataHoraFimAlteracao { get; set; }
-
-       
-
-
+ 
     }
 }

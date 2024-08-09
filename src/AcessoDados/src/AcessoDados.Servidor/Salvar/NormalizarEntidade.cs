@@ -11,8 +11,14 @@ namespace Snebur.AcessoDados.Servidor.Salvar
         internal BaseContextoDados Contexto { get; private set; }
         internal Dictionary<string, Entidade> EntidadesNormalizadas { get; private set; } = new Dictionary<string, Entidade>();
 
-        private NormalizarEntidade(BaseContextoDados contexto, HashSet<Entidade> entidades)
+        private NormalizarEntidade(BaseContextoDados contexto, 
+                                   HashSet<Entidade> entidades)
         {
+            if (contexto == null)
+            {
+                throw new ArgumentNullException(nameof(contexto));
+            }
+
             this.Contexto = contexto;
             this.Entidades = entidades;
         }
