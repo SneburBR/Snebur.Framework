@@ -141,6 +141,11 @@ namespace Snebur.Comunicacao
             return AplicacaoSnebur.Atual.InformacaoSessao;
         }
 
+        protected virtual Guid RetornarIdentificadorSessaoUsuario()
+        {
+            return AplicacaoSnebur.Atual.IdentificadorSessaoUsuario;
+        }
+
         protected virtual string IdentificadorProprietarioRequisicaoAtual()
         {
             return AplicacaoSnebur.Atual.IdentificadorProprietario;
@@ -162,6 +167,7 @@ namespace Snebur.Comunicacao
             informacaoSessaoUsuario.TipoAplicacao = AplicacaoSnebur.Atual.TipoAplicacao;
 
             var identificadorPropriedade = this.IdentificadorProprietarioRequisicaoAtual();
+            var identificadorSessaoUsuario = this.RetornarIdentificadorSessaoUsuario();
 
             var nomeMetodo = this.RetornarNomeMetodo(metodoChamada, isAsync);
             var operacao = nomeMetodo;
@@ -179,6 +185,7 @@ namespace Snebur.Comunicacao
                 Async = isAsync,
                 Cabecalho = cabecalho,
                 InformacaoSessao = informacaoSessaoUsuario,
+                IdentificadorSessaoUsuario = identificadorSessaoUsuario,
                 Operacao = operacao,
                 DataHora = DateTime.UtcNow,
             };

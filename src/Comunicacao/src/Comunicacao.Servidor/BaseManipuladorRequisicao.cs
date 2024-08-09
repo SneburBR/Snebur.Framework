@@ -40,6 +40,7 @@ namespace Snebur.Comunicacao
             this.CaminhoAplicacao = caminhoAplicacao;
             this.AutorizarArquivo("favicon.ico", true);
             this.InicializarManipuladores();
+            System.Convert.ToBoolean
         }
 
 #else
