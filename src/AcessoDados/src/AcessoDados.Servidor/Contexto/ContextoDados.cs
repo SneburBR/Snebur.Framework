@@ -112,7 +112,7 @@ namespace Snebur.AcessoDados
                 this.UsuarioAvalista = this.CacheSessaoUsuario.RetornarUsuarioAvalista(this._credencialAvalista);
                 this.IsValidarUsuarioSessaoUsuario = true;
 
-                if (this.ContextoSessaoUsuario!= this)
+                if (this.ContextoSessaoUsuario != this)
                 {
                     this.ContextoSessaoUsuario.CredencialAvalista = value;
                 }
@@ -127,7 +127,7 @@ namespace Snebur.AcessoDados
 
         #region Construtor
 
-        private BaseContextoDados(BaseContextoDados contextoSessaoUsuario, 
+        private BaseContextoDados(BaseContextoDados contextoSessaoUsuario,
                                   string configuracaoAcessoDados,
                                   string identificadorProprietario,
                                   EnumFlagBancoNaoSuportado flagsNaoSuporta)
@@ -226,7 +226,7 @@ namespace Snebur.AcessoDados
             //this.IsSalvarScopo = isSalvarScopo;
             //ContextoDados.InicializarScopo(this);
             //this.CredencialUsuario = credencial;
-       
+
 
             if (this.SqlSuporte.IsSessaoUsuario)
             {
@@ -534,8 +534,12 @@ namespace Snebur.AcessoDados
             return this.Conexao.RetornarValorScalar<T>(sql, parametroInfos);
         }
 
+        public List<TMapeamento> MapearSql<TMapeamento>(string sql)
+        {
+            return this.MapearSql<TMapeamento>(sql, new List<ParametroInfo>());
+        }
         public List<TMapeamento> MapearSql<TMapeamento>(string sql,
-                                                    List<ParametroInfo> parametros)
+                                                List<ParametroInfo> parametros)
         {
             this.ValidarSessaoUsuario();
 
@@ -689,7 +693,7 @@ namespace Snebur.AcessoDados
             return new List<IUsuario>();
         }
 
-       internal protected abstract int IdNamespace { get; }
+        internal protected abstract int IdNamespace { get; }
 
         #endregion
 

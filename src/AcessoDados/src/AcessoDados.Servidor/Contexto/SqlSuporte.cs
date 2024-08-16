@@ -1,11 +1,11 @@
-﻿#if NET6_0_OR_GREATER
-using Microsoft.Data.SqlClient;
-using System;
-#else
-#endif
-
-using System;
+﻿using System;
 using System.Runtime.CompilerServices;
+
+#if NET6_0_OR_GREATER
+using Microsoft.Data.SqlClient;
+#else
+using System.Data.SqlClient;
+#endif
 
 namespace Snebur.AcessoDados
 {

@@ -136,28 +136,6 @@ namespace Snebur.AcessoDados
             }
             return this.RetornarTodasEntidades(entidadesRecuperadas).ToList();
 
-            //foreach (var entidade in entidades)
-            //{
-            //    var consulta = this.RetornarConsulta<Entidade>(entidade.GetType());
-
-            //    //if (DebugUtil.IsAttached)
-            //    //{
-            //    //    consulta.IncluirDeletados();
-            //    //}
-
-            //    if (relacoes != null && relacoes.Count() > 0)
-            //    {
-
-            //        consulta = consulta.AbrirRelacoes(relacoes);
-            //    }
-            //    var entidadeRecuperada = consulta.Where(x => x.Id == entidade.Id).SingleOrDefault();
-            //    if (entidadeRecuperada != null)
-            //    {
-            //        entidadesRecuperadas.Add(entidadeRecuperada);
-            //    }
-            //}
-
-            return this.RetornarTodasEntidades(entidadesRecuperadas).ToList();
         }
 
         private HashSet<Entidade> RetornarTodasEntidades(IEnumerable<Entidade> entidadesRecuperada)
