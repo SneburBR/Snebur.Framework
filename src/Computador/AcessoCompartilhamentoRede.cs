@@ -222,7 +222,6 @@ namespace Snebur.Computador
                 {
                     throw new Win32Exception(resultado);
                 }
-
             }
         }
 

@@ -111,6 +111,7 @@ namespace Snebur.Comunicacao
                     this.NotificarServicoNaoEncontado(httpContext, nomeManipulador);
                     return;
                 }
+
                 using (var servico = (BaseComunicacaoServidor)Activator.CreateInstance(tipoManipulador))
                 {
                     try

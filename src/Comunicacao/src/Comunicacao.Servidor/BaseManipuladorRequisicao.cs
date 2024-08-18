@@ -21,7 +21,6 @@ namespace Snebur.Comunicacao
         private const int TEMPO_EXPIRAR_TOKEN = Token.TEMPO_EXPIRAR_TOKEN_PADRAO;
 
         private Dictionary<string, Type> _tiposManipuladore;
-
         private Dictionary<string, Type> Manipuladores { get; } = new Dictionary<string, Type>();
         private Dictionary<string, (Type tipo, bool isValidarToken)> ManipuladoresGenericos { get; } = new Dictionary<string, (Type, bool)>();
         private Dictionary<string, bool> ArquivosAutorizados { get; } = new Dictionary<string, bool>();
@@ -40,7 +39,6 @@ namespace Snebur.Comunicacao
             this.CaminhoAplicacao = caminhoAplicacao;
             this.AutorizarArquivo("favicon.ico", true);
             this.InicializarManipuladores();
-            System.Convert.ToBoolean
         }
 
 #else
