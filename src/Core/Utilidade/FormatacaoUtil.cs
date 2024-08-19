@@ -32,6 +32,7 @@ namespace Snebur.Utilidade
                 case EnumFormatacao.Cnpj:
 
                     return FormatacaoUtil.FormatarCpfCnpj(valor.ToString());
+
                 case EnumFormatacao.Telefone:
                     return FormatacaoUtil.FormatarTelefone(valor.ToString());
                 case EnumFormatacao.Moeda:
