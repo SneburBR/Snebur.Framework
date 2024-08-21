@@ -25,11 +25,13 @@ namespace Snebur.BancoDados
         public string NomeConnectionString;
         private string ConnectionString;
 
+        public int? CommandTimeout { get; set; }
+
         public Conexao(string nomeConnectionString)
         {
             this.NomeConnectionString = nomeConnectionString;
             
-            if (AplicacaoSnebur.Atual.ConnectionStrings[nomeConnectionString] != null)
+            if (AplicacaoSnebur.Atual?.ConnectionStrings[nomeConnectionString] != null)
             {
                 this.ConnectionString = AplicacaoSnebur.Atual.ConnectionStrings[nomeConnectionString];
             }
@@ -191,8 +193,8 @@ namespace Snebur.BancoDados
                 return false;
             }
         }
-        public void ExecutarComando(string sql,
-                                    params SqlParameter[] parametros)
+        public int ExecutarComando(string sql,
+                                   params SqlParameter[] parametros)
         {
             using (var conexao = new SqlConnection(this.ConnectionString))
             {
@@ -201,11 +203,15 @@ namespace Snebur.BancoDados
                 {
                     using (var cmd = new SqlCommand(sql, conexao))
                     {
+                        if(this.CommandTimeout.HasValue)
+                        {
+                            cmd.CommandTimeout = this.CommandTimeout.Value;
+                        }
                         foreach (var parametro in parametros)
                         {
                             cmd.Parameters.Add(parametro);
                         }
-                        cmd.ExecuteNonQuery();
+                       return cmd.ExecuteNonQuery();
                     }
                 }
                 catch (Exception)
