@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Net.Http.Headers;
+#else
+using System.Web;
 #endif
 
-namespace System.Web
+namespace Snebur
 {
     public static class HttpRequestExtensao
     {

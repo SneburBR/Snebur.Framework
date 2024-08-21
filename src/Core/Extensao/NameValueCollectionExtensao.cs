@@ -1,4 +1,6 @@
-﻿namespace System.Collections.Specialized
+﻿using System.Collections.Specialized;
+
+namespace System 
 {
     public static class NameValueCollectionExtensao
     {

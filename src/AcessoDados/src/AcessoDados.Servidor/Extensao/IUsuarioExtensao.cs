@@ -1,4 +1,5 @@
 ﻿using Snebur.Dominio;
+using Snebur.Seguranca;
 using System;
 using System.Collections.Generic;
 

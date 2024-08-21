@@ -21,11 +21,25 @@ namespace Snebur.Dominio
         public Dimensao()
         {
         }
+
         [IgnorarConstrutorTS]
         public Dimensao(double largura, double altura)
         {
             this._largura = largura;
             this._altura = altura;
+        }
+
+        [IgnorarConstrutorTS]
+        public Dimensao(int largura, int altura)
+        {
+            this._largura = (double)largura;
+            this._altura = (double)altura;
+        }
+        [IgnorarConstrutorTS]
+        public Dimensao(decimal largura, decimal altura)
+        {
+            this._largura = (double)largura;
+            this._altura = (double)altura;
         }
 
         [IgnorarConstrutorTS]
