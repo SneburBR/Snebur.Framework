@@ -4,7 +4,7 @@ using System;
 
 namespace Snebur.Dominio
 {
-    public class PrazoTempo : BaseTipoComplexo, IPrecoTempo
+    public class PrazoTempo : BaseTipoComplexo, IPrazoTempo
     {
         public static PrazoTempo Empty => new PrazoTempo(EnumTipoPrazo.DiasUteis, 0);
 

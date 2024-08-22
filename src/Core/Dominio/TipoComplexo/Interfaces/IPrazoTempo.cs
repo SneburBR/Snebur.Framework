@@ -1,6 +1,6 @@
 ﻿namespace Snebur.Dominio
 {
-    public interface IPrecoTempo
+    public interface IPrazoTempo
     {
         double Prazo { get; set; }
         EnumTipoPrazo TipoPrazo { get; set; }
