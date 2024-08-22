@@ -7,6 +7,8 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json.Serialization;
+using System.Xml.Serialization;
 
 namespace Snebur.Serializacao
 {
@@ -207,7 +209,7 @@ namespace Snebur.Serializacao
                         valorSerializado = RemoveSingleQuotes(valorSerializado);
                     }
                     return Convert.ChangeType(valorSerializado, tipo, CultureInfo.InvariantCulture);
- 
+
             }
         }
 
@@ -231,6 +233,33 @@ namespace Snebur.Serializacao
         private static string EscapeSingleQuote(string valorString)
         {
             return valorString.Replace("\'", "\'\'");
+        }
+
+        internal static bool IsPoderDerializarPropriedade(PropertyInfo propriedade,
+                                                          EnumTipoSerializacao tipoSerializacao)
+        {
+           
+
+            if (propriedade.GetMethod.IsPublic)
+            {
+                var atributopsIgnorar = new List<Type>
+                {
+                    typeof(XmlIgnoreAttribute),
+                    typeof(JsonIgnoreAttribute),
+                };
+
+                if (tipoSerializacao == EnumTipoSerializacao.Javascript)
+                {
+                    atributopsIgnorar.Add(typeof(IgnorarPropriedadeTSAttribute));
+                }
+                else if (tipoSerializacao == EnumTipoSerializacao.DotNet)
+                {
+                    atributopsIgnorar.Add(typeof(IgnorarPropriedadeDotNetAttribute));
+                }
+
+                return !atributopsIgnorar.Any(atributo => ReflexaoUtil.IsPropriedadePossuiAtributo(propriedade, atributo));
+            }
+            return false;
         }
     }
 }
