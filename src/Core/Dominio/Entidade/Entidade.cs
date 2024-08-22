@@ -35,6 +35,7 @@ namespace Snebur.Dominio
         [OcultarColuna]
         [SomenteLeitura]
         [PropriedadeProtegida]
+        [JsonIgnore]
         public string __NomeTipoEntidade { get; private set; }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

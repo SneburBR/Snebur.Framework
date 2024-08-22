@@ -99,6 +99,7 @@ namespace Snebur.Dominio
         [IgnorarPropriedade, IgnorarPropriedadeTSReflexao]
         [PropriedadeProtegida]
         [XmlIgnore]
+        [JsonIgnore]
         public virtual bool __IsExisteAlteracao
         {
             get
@@ -106,6 +107,7 @@ namespace Snebur.Dominio
                 return (this.__PropriedadesAlteradas?.Count ?? 0) > 0;
             }
         }
+
         [EditorBrowsable(EditorBrowsableState.Never)]
         [OcultarColuna]
         [IgnorarGlobalizacao]
@@ -117,11 +119,13 @@ namespace Snebur.Dominio
         [EditorBrowsable(EditorBrowsableState.Never)]
         [NaoMapear]
         [IgnorarPropriedade, IgnorarPropriedadeTSReflexao]
+        [JsonIgnore]
         public bool __IsControladorPropriedadesAlteradaAtivo { get; private set; } = false;
 
         [XmlIgnore]
         [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
+        [JsonIgnore]
         internal protected bool IsSerializando
         {
             get => this._isSerializando;
@@ -146,6 +150,7 @@ namespace Snebur.Dominio
         [EditorBrowsable(EditorBrowsableState.Never)]
         [XmlIgnore]
         [IgnorarPropriedade, IgnorarPropriedadeTSReflexao]
+        [JsonIgnore]
         internal protected bool __IsClonado { get; set; }
         #endregion
 
