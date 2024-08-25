@@ -4,9 +4,7 @@ using Snebur.Dominio;
 using Snebur.Dominio.Atributos;
 using Snebur.Serializacao;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -102,9 +100,9 @@ namespace Snebur.Utilidade
                                 CultureInfo.InvariantCulture);
         }
         public static object Deserializar(string json,
-                                      Type tipo,
-                                      EnumTipoSerializacao tipoSerializacao,
-                                      CultureInfo culture)
+                                          Type tipo,
+                                          EnumTipoSerializacao tipoSerializacao,
+                                          CultureInfo culture)
         {
             try
             {

@@ -18,11 +18,6 @@ namespace Snebur
 {
     public class Program
     {
-        //private static string[] ArquivosAutorizados = new string[] { "download",
-        //                                                             ".json",
-        //                                                             "login.html",
-        //                                                             "debug.aspx" };
-
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
