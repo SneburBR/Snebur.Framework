@@ -13,8 +13,6 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Web;
-using System.Threading.Tasks;
-using System.Net.Http;
 
 #if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Http;
@@ -280,8 +278,8 @@ namespace Snebur.Comunicacao
             return resultadoOperacao;
         }
 
-        private ResultadoChamada RetornarResultadoChamada(string operacao,
-                                                          object[] parametros)
+        protected virtual ResultadoChamada RetornarResultadoChamada(string operacao,
+                                                                    object[] parametros)
         {
             var metodoOperacao = this.RetornarMetodo(operacao);
 
