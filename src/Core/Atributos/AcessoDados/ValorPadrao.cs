@@ -10,7 +10,7 @@ namespace Snebur.Dominio.Atributos
         private EnumTipoValorPadrao _tipoValorPadrao = EnumTipoValorPadrao.Comum;
 
         public object ValorPadrao { get; set; }
-        public bool IsValorPadraoQuandoNullOrDefault { get; set; }
+        public bool IsValorPadraoQuandoNullOrDefault { get; set; } = true;
         public bool IsValorPadraoQuandoNullOrWhiteSpace { get; set; }
      
         public EnumTipoValorPadrao TipoValorPadrao
