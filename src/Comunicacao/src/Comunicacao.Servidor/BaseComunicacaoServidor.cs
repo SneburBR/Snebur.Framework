@@ -39,9 +39,9 @@ namespace Snebur.Comunicacao
 
         public BaseComunicacaoServidor()
         {
-
+            this.InicializarCache();
         }
-
+         
         #endregion
 
         #region  IHttpHandler - Construtor 
@@ -65,7 +65,7 @@ namespace Snebur.Comunicacao
 
             try
             {
-                if (this.IsManterCache && !this.OperacoesIgnorarCaches.Contains(requisicao.Operacao))
+                if (this.IsCacheAtivado(requisicao.Operacao))
                 {
                     return this.RetornarResultadoChamadaSerializadoCache(parametros, operacao, requisicao.TipoSerializacao);
                 }

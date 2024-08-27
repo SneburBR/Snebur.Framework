@@ -3,6 +3,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Snebur.Comunicacao
@@ -30,7 +31,8 @@ namespace Snebur.Comunicacao
 
         protected bool IsManterCache { get; set; }
 
-        protected List<string> OperacoesIgnorarCaches { get; } = new List<string>();
+        protected Dictionary<string, int> OperacoesAtivarCache { get; } = new Dictionary<string, int>();
+        protected HashSet<string> OperacoesIgnorarCaches { get; } = new HashSet<string>();
 
         /// <summary>
         /// Intervalo tempo para atualizar sem fazer o usuário esperar a atualização
@@ -40,7 +42,54 @@ namespace Snebur.Comunicacao
         /// <summary>
         /// Tempo máximo do cache, caso não tenha nenhum requisição nesse intervalo e esse tempo for atingindo o usuário deverá esperar atualização do cache
         /// </summary>
-        protected TimeSpan TempoCacheMaximo { get; set; } = TEMPO_CACHE_MAXIMO_PADRAO;
+        protected virtual TimeSpan RetornarTempoCacheMaximo(string operacao)
+        {
+            if (this.OperacoesAtivarCache.TryGetValue(operacao, out var tempo))
+            {
+                if (tempo > 0)
+                {
+                    return TimeSpan.FromMinutes(tempo);
+                }
+            }
+            return TEMPO_CACHE_MAXIMO_PADRAO;
+        }
+
+        protected virtual bool IsCacheAtivado(string operacao)
+        {
+            if (!this.IsManterCache)
+            {
+                return false;
+            }
+
+            if (this.OperacoesAtivarCache.Count > 0)
+            {
+                return this.OperacoesAtivarCache.ContainsKey(operacao);
+            }
+
+            return !this.OperacoesIgnorarCaches.Contains(operacao);
+        }
+
+        internal void InicializarCache()
+        {
+            var metodosComCacheAtribute = this.GetType().GetMethods()
+                                                        .Where(x => x.GetCustomAttribute<CacheAttribute>() != null)
+                                                        .Select(x => (x.Name, x.GetCustomAttribute<CacheAttribute>()));
+
+            var metodosComIgnorarCacheAtribute = this.GetType().GetMethods()
+                                                               .Where(x => x.GetCustomAttributes(typeof(IgnorarCacheAttribute), true).Length > 0)
+                                                               .Select(x => x.Name);
+
+            foreach (var (metodo, tempo) in metodosComCacheAtribute)
+            {
+                this.OperacoesAtivarCache.Add(metodo, tempo.ExpirarCacheEmMinutos);
+            }
+
+            foreach (var metodo in metodosComIgnorarCacheAtribute)
+            {
+                this.OperacoesIgnorarCaches.Add(metodo);
+            }
+            this.IsManterCache = this.OperacoesAtivarCache.Count > 0 || this.OperacoesIgnorarCaches.Count > 0;
+        }
 
 
         private string RetornarResultadoChamadaSerializadoCache(Dictionary<string, object> parametros,
@@ -111,8 +160,7 @@ namespace Snebur.Comunicacao
                                                     string operacao,
                                                     EnumTipoSerializacao tipoSerializacao)
         {
-            if (this.IsManterCache &&
-                !this.OperacoesIgnorarCaches.Contains(operacao))
+            if (this.IsCacheAtivado(operacao))
             {
                 var chave = this.RetornarChaveCache(parametros,
                                                     operacao,
@@ -120,7 +168,7 @@ namespace Snebur.Comunicacao
 
                 if (Caches.TryGetValue(chave, out var conteudo))
                 {
-                    if (conteudo.Tempo > this.TempoCacheMaximo)
+                    if (conteudo.Tempo > this.RetornarTempoCacheMaximo(operacao))
                     {
                         return null;
                     }
@@ -144,7 +192,7 @@ namespace Snebur.Comunicacao
                                 string conteudo,
                                 EnumTipoSerializacao tipoSerializacao)
         {
-            if (this.IsManterCache)
+            if (this.IsCacheAtivado(operacao))
             {
                 var chave = this.RetornarChaveCache(parametros, operacao, tipoSerializacao);
                 if (Caches.ContainsKey(chave))
@@ -173,6 +221,11 @@ namespace Snebur.Comunicacao
                     }
                 }
             }
+        }
+
+        private bool CheckManterCache()
+        {
+            throw new NotImplementedException();
         }
 
         private class ConteudoCache
