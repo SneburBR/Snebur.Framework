@@ -1,18 +1,7 @@
 ﻿#if NET6_0_OR_GREATER
 
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Connections.Features;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.StaticFiles;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
-using System;
-using System.IO;
-using System.Linq;
-using System.Net.WebSockets;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Snebur
 {
@@ -23,6 +12,20 @@ namespace Snebur
             var builder = WebApplication.CreateBuilder(args);
             ConfigureServices(builder.Services);
 
+            var pathCert = Path.GetFullPath(Path.Combine(builder.Environment.ContentRootPath, "../../../sigi.pfx"));
+            if (File.Exists(pathCert))
+            {
+                builder.WebHost.ConfigureKestrel(options =>
+                {
+
+                    options.ListenAnyIP(44380, listenOptions =>
+                    {
+                        listenOptions.UseHttps(pathCert, "zyon@3319");
+                    });
+                });
+            }
+
+           
             var app = builder.Build();
             var caminhoAplicacao = builder.Environment.ContentRootPath;
 
