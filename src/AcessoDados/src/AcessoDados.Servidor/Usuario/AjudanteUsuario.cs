@@ -76,15 +76,17 @@ namespace Snebur.AcessoDados
             }
 
             #endregion
-             
+
             #region Métodos públicos
 
             internal EnumStatusSessaoUsuario RetornarStatusSessaoUsuario(BaseContextoDados contexto,
                                                                          Guid identificadorSessaoUsuario)
             {
                 var consulta = contexto.RetornarConsulta<ISessaoUsuario>(this.TipoSessaoUsuario);
-                consulta.Where(x => x.IdentificadorSessaoUsuario == identificadorSessaoUsuario);
-                consulta.AbrirPropriedade(x => x.Status);
+                consulta.Where(x => x.IdentificadorSessaoUsuario == identificadorSessaoUsuario)
+                        .AbrirPropriedade(x => x.Status)
+                        .AbrirPropriedade(x => x.IdentificadorAplicacao);
+                                          
 
                 var sessaoUsuario = consulta.SingleOrDefault();
                 if (sessaoUsuario != null)
@@ -108,7 +110,7 @@ namespace Snebur.AcessoDados
                 return false;
             }
 
-            internal void NotificarSessaoUsuarioAtiva(BaseContextoDados contexto, 
+            internal void NotificarSessaoUsuarioAtiva(BaseContextoDados contexto,
                                                       IUsuario usuario,
                                                       ISessaoUsuario sessaoUsuario)
             {
@@ -161,6 +163,8 @@ namespace Snebur.AcessoDados
 
                 consulta.AbrirPropriedade(x => x.IdentificadorSessaoUsuario).
                          AbrirPropriedade(x => x.Status).
+                         AbrirPropriedade(x => x.IdentificadorProprietario).
+                         AbrirPropriedade(x => x.IdentificadorAplicacao).
                          AbrirPropriedade(x => x.StatusServicoArquivo).
                          AbrirPropriedade(x => x.Usuario_Id).
                          //AbrirPropriedade(x => x.DataHoraInicio).
@@ -182,9 +186,9 @@ namespace Snebur.AcessoDados
                         //throw new ErroNaoDefinido(String.Format("A informação da sessão do usuário é requerido para criar uma nova sessão"));
                     }
 
-                    sessaoUsuario = this.RetornarNovaSessaoUsuario(contexto, 
+                    sessaoUsuario = this.RetornarNovaSessaoUsuario(contexto,
                                                                    usuario,
-                                                                   identificadorSessaoUsuario, 
+                                                                   identificadorSessaoUsuario,
                                                                    informacaoSessaoUsuario);
                 }
                 else
