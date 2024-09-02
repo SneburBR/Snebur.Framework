@@ -154,7 +154,7 @@ namespace Snebur.Comunicacao
                                          EnumTipoSerializacao tipoSerializacao)
         {
             var chaveParametros = String.Join("--", parametros.Select(x => $"{x.Key}={x.Value?.GetHashCode().ToString() ?? "null"}"));
-            return $"{this.GetType().Name}--{operacao}.{chaveParametros}--{tipoSerializacao}";
+            return $"{this.IdentificadorProprietario}-{this.GetType().Name}--{operacao}.{chaveParametros}--{tipoSerializacao}";
         }
         private ConteudoCache RetornarConteudoCache(Dictionary<string, object> parametros,
                                                     string operacao,
