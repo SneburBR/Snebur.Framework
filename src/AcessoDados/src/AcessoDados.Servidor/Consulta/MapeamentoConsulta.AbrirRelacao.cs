@@ -28,6 +28,7 @@ namespace Snebur.AcessoDados.Mapeamento
                 }
             }
         }
+
         #region RetornarFiltroMapeamento
 
         private BaseFiltroMapeamento RetornarFiltroMapeamento(MapeamentoConsultaRelacaoAberta mapeamento)
@@ -107,7 +108,8 @@ namespace Snebur.AcessoDados.Mapeamento
                 //gambiarra
                 ids.Add(0);
             }
-            var nomeTipoEntidade = mapeamentoUmUm.PropriedadeRelacaoAberta.PropertyType.Name;
+
+            var nomeTipoEntidade = mapeamentoUmUm.RelacaoAberta.NomeTipoEntidade;
             return new FiltroMapeamentoIds(ids, nomeTipoEntidade);
         }
 
@@ -183,11 +185,14 @@ namespace Snebur.AcessoDados.Mapeamento
                     var idChaveEstrangeira = Convert.ToInt64(propriedadeChaveEstrangeira.GetValue(entidade));
                     if (idChaveEstrangeira > 0)
                     {
-                        if (!entidadesRelacaoPai.ContainsKey(idChaveEstrangeira))
+                        entidadesRelacaoPai.TryGetValue(idChaveEstrangeira, out var entidadeRelacaoPai);
+                        if (entidadeRelacaoPai == null)
                         {
-                            throw new Erro($"Não foi encontrado a chave estrangeira {mapeamentoPai.TipoEntidade.Name} ({idChaveEstrangeira} )");
+                            if (ValidacaoUtil.IsPropriedadeRequerida(propriedadeRelacaoPai))
+                            {
+                                  throw new Erro($"Não foi encontrado a chave estrangeira {mapeamentoPai.TipoEntidade.Name} ({idChaveEstrangeira} )");
+                            }
                         }
-                        var entidadeRelacaoPai = entidadesRelacaoPai[idChaveEstrangeira];
                         propriedadeRelacaoPai.SetValue(entidade, entidadeRelacaoPai);
                     }
                 }
@@ -204,11 +209,18 @@ namespace Snebur.AcessoDados.Mapeamento
                 var idChaveEstrangeira = Convert.ToInt64(propriedadeChaveEstrangeira.GetValue(entidade));
                 if (idChaveEstrangeira > 0)
                 {
-                    if (!entidadesRelacaoPai.ContainsKey(idChaveEstrangeira))
+                    if (entidadesRelacaoPai.ContainsKey(idChaveEstrangeira))
                     {
                         throw new Erro(String.Format("Não foi encontrado a chave estrangeira {0} ", idChaveEstrangeira));
                     }
-                    var entidadeRelacaoPai = entidadesRelacaoPai[idChaveEstrangeira];
+                    entidadesRelacaoPai.TryGetValue(idChaveEstrangeira, out var entidadeRelacaoPai);
+                    if (entidadeRelacaoPai == null)
+                    {
+                        if (ValidacaoUtil.IsPropriedadeRequerida(propriedadeRelacaoUmUm))
+                        {
+                            throw new Erro($"Não foi encontrado a chave estrangeira {mapeamentoUmUm.TipoEntidade.Name} ({idChaveEstrangeira} )");
+                        }
+                    }
                     propriedadeRelacaoUmUm.SetValue(entidade, entidadeRelacaoPai);
                 }
             }

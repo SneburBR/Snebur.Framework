@@ -8,9 +8,6 @@ namespace Snebur.AcessoDados.Mapeamento
         internal protected EstruturaRelacao EstruturaRelacao { get; set; }
         internal protected BaseRelacaoAberta RelacaoAberta { get; set; }
         internal protected MapeamentoConsulta MapeamentoConsultaPai { get; set; }
-        internal protected bool Aberta { get; set; }
-        internal protected bool Abastrata { get; set; }
-        internal PropertyInfo PropriedadeRelacaoAberta { get; }
 
         internal MapeamentoConsultaRelacaoAberta(EstruturaConsulta estruturaConsulta,
                                                  EstruturaBancoDados estruturaBancoDados,

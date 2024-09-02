@@ -27,7 +27,7 @@ namespace Snebur.AcessoDados.Mapeamento
                                                           estruturaRelacaoUmUm,
                                                           relacaoAberta,
                                                           contexto)
-        {
+        {           
         }
     }
 }
