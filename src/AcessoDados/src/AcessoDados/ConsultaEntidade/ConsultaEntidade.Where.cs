@@ -173,7 +173,8 @@ namespace Snebur.AcessoDados
 
                         //Esperamos uma expressão boolean
                         var expressaoMembro = (MemberExpression)(expressao);
-                        if (expressaoMembro.Type == typeof(Boolean))
+                        var type = ReflexaoUtil.RetornarTipoSemNullable(expressaoMembro.Type);
+                        if (type == typeof(Boolean))
                         {
                             var filtroVerdadeiro = Ajudantes.AjudanteFiltroPropriedade.RetornarFiltroPropriedadeVardadeiro(estruturaConsulta, expressaoMembro);
                             grupoFiltroAtual.Filtros.Add(filtroVerdadeiro);
@@ -218,16 +219,21 @@ namespace Snebur.AcessoDados
                     case ExpressionType.Not:
 
                         var expressaoNao = (UnaryExpression)expressao;
-
                         var filtroGroupoNao = new FiltroGrupoNAO();
                         grupoFiltroAtual.Filtros.Add(filtroGroupoNao);
-
                         var expressaoInterna = expressaoNao.Operand;
-
                         this.AdicionarFiltro(estruturaConsulta, expressaoInterna, filtroGroupoNao);
 
                         break;
 
+                    case ExpressionType.Convert:
+
+                        var expressaoConvert = (UnaryExpression)expressao;
+                        this.AdicionarFiltro(estruturaConsulta, 
+                                             expressaoConvert.Operand, 
+                                             grupoFiltroAtual);
+                        break;
+                         
                     default:
 
                         var msgExpressaoNaoSuportada = String.Format("A expressão não é suportado {0} ", EnumUtil.RetornarDescricao(expressao.NodeType));
