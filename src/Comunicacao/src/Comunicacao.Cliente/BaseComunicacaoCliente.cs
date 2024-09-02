@@ -189,14 +189,7 @@ namespace Snebur.Comunicacao
                 Operacao = operacao,
                 DataHora = DateTime.UtcNow,
             };
-
-            //if (informacaoSessaoUsuario.IdentificadorAplicacao == null)
-            //{
-            //    //throw new ArgumentNullException(nameof(informacaoSessaoUsuario.IdentificadorAplicacao));
-            //}
-
-
-
+             
             var parametrosChamada = this.RetornarParametrosChamada(metodoChamada, metodoParametros, isAsync, valoresParametro);
             contrato.Parametros.AddRange(parametrosChamada);
             return contrato;
@@ -248,20 +241,7 @@ namespace Snebur.Comunicacao
             }
             return parametrosChamada;
         }
-
-        //private Cabecalho RetornarCabecalho()
-        //{
-
-        //    var cabecalho = new Cabecalho();
-        //    cabecalho.CredencialServico = this.CredencialServico;
-        //    cabecalho.CredencialUsuario = CredencialAnonimo.Anonimo;
-
-        //    return cabecalho;
-        //}
-
-
-
-
+         
         #endregion
 
         #region IBaseServico
@@ -277,13 +257,7 @@ namespace Snebur.Comunicacao
             object[] parametros = { };
             return this.ChamarServico<DateTime>(MethodBase.GetCurrentMethod(), parametros);
         }
-
-        //public DateTime RetornarDataHora()
-        //{
-        //    object[] parametros = { };
-        //    return this.ChamarServico<DateTime>(MethodBase.GetCurrentMethod(), parametros);
-        //}
-
+         
         #endregion
 
     }
