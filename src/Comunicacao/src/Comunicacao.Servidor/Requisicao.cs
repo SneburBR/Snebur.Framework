@@ -185,11 +185,7 @@ namespace Snebur.Comunicacao
         #endregion
 
         #region Métodos privados
-
-
-
-
-
+         
         private object RetornarValorParametroChamada(ParametroChamada parametro)
         {
             switch (parametro)
@@ -219,7 +215,6 @@ namespace Snebur.Comunicacao
 
                     var basesDominio = parametroChamadaListaBaseDominio.BasesDominio;
 
-                    //var tipoBaseDominio = ReflexaoUtil.RetornarTipo(parametroListaBaseDominio.NomeNamespaceTipoBaseDominio, parametroListaBaseDominio.NomeTipoBaseDominio);
                     var tipoBaseDominio = Type.GetType(parametro.AssemblyQualifiedName);
                     var tipoLista = typeof(List<>).MakeGenericType(tipoBaseDominio);
 
@@ -278,10 +273,6 @@ namespace Snebur.Comunicacao
                 {
                     context.AdicionrItem(ConstantesItensRequsicao.CHAVE_CREDENCIAL_USUARIO_AVALISTA, this.CredencialUsuario);
                 }
-                //if (!context.Items.Contains(InformacaoSessaoUsuario.CHAVE_INFORMACAO_SESSAO_ATUAL))
-                //{
-                //    context.Items.Remove(informacaoSessaoUsuario);
-                //}
             }
         }
         private void RemoverItensRequisicaoAtual()
