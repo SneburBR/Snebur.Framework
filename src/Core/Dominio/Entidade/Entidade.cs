@@ -216,7 +216,7 @@ namespace Snebur.Dominio
                             return default;
                         }
 
-                        throw new Exception($"A propriedade {nomePropriedade} não foi aberta na entidade {entidade.GetType().Name}");
+                        throw new Exception($"A propriedade {nomePropriedade} não foi aberta na entidade na consulta de entidade {entidade.GetType().Name}");
                     }
                 }
                 var propriedadesAutorizadas = entidade.__PropriedadesAutorizadas;
