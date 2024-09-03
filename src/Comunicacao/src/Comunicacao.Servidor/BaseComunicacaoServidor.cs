@@ -268,18 +268,8 @@ namespace Snebur.Comunicacao
             return retorno.ToArray();
         }
 
-        protected virtual object[] NormalizarParametros(object[] parametros)
-        {
-            return parametros;
-        }
-
-        protected virtual object NormalizarResultadoOperacao(object resultadoOperacao)
-        {
-            return resultadoOperacao;
-        }
-
-        protected virtual ResultadoChamada RetornarResultadoChamada(string operacao,
-                                                                    object[] parametros)
+        private ResultadoChamada RetornarResultadoChamada(string operacao,
+                                                          object[] parametros)
         {
             var metodoOperacao = this.RetornarMetodo(operacao);
 
@@ -287,7 +277,9 @@ namespace Snebur.Comunicacao
             var resultadoOperacao = this.RetornarResultadoOperacao(metodoOperacao, parametros);
             resultadoOperacao = this.NormalizarResultadoOperacao(resultadoOperacao);
 
-            return this.RetornarResultadoChamadaInterno(resultadoOperacao);
+            var resultadoChamada =  this.RetornarResultadoChamadaInterno(resultadoOperacao);
+            this.NormalizarResultadoChamada(resultadoChamada);
+            return resultadoChamada;
 
         }
 
@@ -376,11 +368,28 @@ namespace Snebur.Comunicacao
         {
             get { return false; }
         }
+         
+        #endregion
 
-
+        #region Métodos virtuais
 
         protected virtual void AntesProcessRequest(HttpContext context)
         {
+        }
+
+        protected virtual object[] NormalizarParametros(object[] parametros)
+        {
+            return parametros;
+        }
+
+        protected virtual object NormalizarResultadoOperacao(object resultadoOperacao)
+        {
+            return resultadoOperacao;
+        }
+
+        protected virtual ResultadoChamada NormalizarResultadoChamada(ResultadoChamada resultadoChamada)
+        {
+            return resultadoChamada;
         }
 
         #endregion
