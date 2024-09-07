@@ -258,6 +258,11 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 
         private Dictionary<string, RelacaoChaveEstrageniraDependente> RetornarEntidadesRelacaoChaveEstrangeiraDepedente()
         {
+            if(this.TipoAlteracao == EnumTipoAlteracao.Delete)
+            {
+                return new Dictionary<string, RelacaoChaveEstrageniraDependente>();
+            }
+
             var relacoesDepedente = new Dictionary<string, RelacaoChaveEstrageniraDependente>();
             var estruturasRelacaoChaveEstrangeira = this.EstruturaEntidade.TodasRelacoesChaveEstrangeira();
 
