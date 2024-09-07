@@ -696,9 +696,7 @@ namespace Snebur.AcessoDados
         internal protected abstract int IdNamespace { get; }
 
         #endregion
-
-
-
+         
         #region Transação
 
         internal SqlTransaction TransacaoAtual { get; private set; }
@@ -856,8 +854,5 @@ namespace Snebur.AcessoDados
         }
         #endregion
     }
-
-
-
 
 }

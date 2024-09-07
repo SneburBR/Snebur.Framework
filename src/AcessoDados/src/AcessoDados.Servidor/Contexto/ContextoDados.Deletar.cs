@@ -57,10 +57,7 @@ namespace Snebur.AcessoDados
         {
             return this.Deletar(new List<IEntidade> { entidade }, relacoesEmCascata);
         }
-
-
-
-
+         
         public ResultadoDeletar DeletarRegistro<TEntidade>(IEnumerable<TEntidade> entidades, params Expression<Func<TEntidade, object>>[] expressoesPropriedade) where TEntidade : Entidade
         {
             var relacoesEmCascata = Util.RetornarRelacoesAbertas(expressoesPropriedade);

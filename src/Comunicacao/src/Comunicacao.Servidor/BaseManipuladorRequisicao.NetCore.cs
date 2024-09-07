@@ -40,10 +40,6 @@ namespace Snebur.Comunicacao
             var request = context.Request;
             var response = context.Response;
 
-            if (DebugUtil.IsAttached)
-            {
-                await this.TesteHttpRequestAsync(context);
-            }
 
             if (await this.IsExecutarServicoAsync(context))
             {
