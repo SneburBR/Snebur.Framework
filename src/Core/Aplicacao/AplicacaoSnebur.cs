@@ -59,7 +59,7 @@ namespace Snebur
         public IAlerta Alerta { get; set; }
 
         internal protected virtual dynamic DispatcherObject { get; } = null;
-        public virtual bool IsMainThread { get; } = false;
+        public virtual bool IsMainThread => Thread.CurrentThread.ManagedThreadId == _mainThreadId;
 
         protected virtual bool IsNotificarLogAplicacaoInicializada { get; } = true;
 
@@ -443,8 +443,7 @@ namespace Snebur
                 this.IsAplicacaoAspNet = true;
                 this.AspNet = aspNet;
             }
-
-            // ThreadUtil.ExecutarDepoisAsync(this.VerificarAplicacaoInicializada, this.TempoVerificarInicializacao);
+            _mainThreadId = Thread.CurrentThread.ManagedThreadId;
         }
 
         public virtual void InicializarAsync()

@@ -1,14 +1,12 @@
-﻿using Snebur.Utilidade;
-using System;
-using System.Linq;
-using System.Reflection;
+﻿using System;
+using System.Threading;
 
 namespace Snebur
 {
     public abstract partial class AplicacaoSnebur
     {
         private readonly static object _bloqueio = new object();
-
+        internal static int _mainThreadId;
         internal static AplicacaoSnebur _aplicacao;
         public static AplicacaoSnebur Atual
         {
@@ -37,7 +35,7 @@ namespace Snebur
             //return new AplicacaoSneburInterna();
         }
 
-
+       
     }
 
 
