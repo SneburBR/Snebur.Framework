@@ -135,19 +135,12 @@ namespace Snebur.Comunicacao
                                      IWebHostEnvironment env,
                                      bool isWebSocket)
         {
-
-#if DEBUG
-
+             
             if (env.IsDevelopment() || env.IsStaging())
             {
                 app.UseDeveloperExceptionPage();
             }
-#endif
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
-            }
+  
             //app.UseDeveloperExceptionPage();
 
             if (env.IsProduction())
