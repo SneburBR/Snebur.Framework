@@ -242,8 +242,12 @@ namespace Snebur.Utilidade
 
         public static string FormatarCpfCnpj(string cpfCnpj, bool isIgnoarErro = false)
         {
-            var cpfCnpjNumeros = TextoUtil.RetornarSomenteNumeros(cpfCnpj);
+            if (String.IsNullOrWhiteSpace(cpfCnpj))
+            {
+                return String.Empty;
+            }
 
+            var cpfCnpjNumeros = TextoUtil.RetornarSomenteNumeros(cpfCnpj);
             if (cpfCnpjNumeros.Length == 11)
             {
                 return String.Format(@"{0:000\.000\.000-00}", Convert.ToInt64(cpfCnpjNumeros));
