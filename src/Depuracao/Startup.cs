@@ -1,7 +1,7 @@
 ﻿#if NET6_0_OR_GREATER
 
 // Don't remove this using namespace declaration
- using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.StaticFiles;
