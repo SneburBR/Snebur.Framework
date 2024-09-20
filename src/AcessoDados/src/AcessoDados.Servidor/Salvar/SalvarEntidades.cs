@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Snebur.AcessoDados.Servidor.Salvar
 {
@@ -19,7 +18,6 @@ namespace Snebur.AcessoDados.Servidor.Salvar
         internal BaseContextoDados Contexto { get; private set; }
         internal bool IsNotificarAlteracaoPropriedade { get; }
         internal EnumOpcaoSalvar OpcaoSalvar { get; }
-        private int ContadorParametro;
 
         internal SalvarEntidades(BaseContextoDados contexto,
                                  HashSet<Entidade> entidades,
@@ -257,7 +255,6 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                 {
                     if (!parametro.EstruturaCampo.IsValorFuncaoServidor)
                     {
-                        this.ContadorParametro = +1;
                         var dbParametro = conexao.RetornarNovoParametro(parametro.EstruturaCampo,
                                                                         parametro.EstruturaCampo.NomeParametro,
                                                                         parametro.Valor);
