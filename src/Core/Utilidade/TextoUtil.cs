@@ -243,12 +243,7 @@ namespace Snebur.Utilidade
         {
             return TextoUtil.RetornarTextoCaracteresPermitido(texto, TextoUtil.Numeros, false);
         }
-
-        public static string RetornarSomenteNumeros(object cep)
-        {
-            throw new NotImplementedException();
-        }
-
+         
         public static string RetornarSomenteNumeros(string texto, bool isAceitarVirgual)
         {
             var caracterExtra = (isAceitarVirgual) ? "," : String.Empty;
@@ -719,7 +714,7 @@ namespace Snebur.Utilidade
         {
             if (String.IsNullOrEmpty(texto))
             {
-                return null;
+                return String.Empty;
             }
             ErroUtil.ValidarReferenciaNula(caracterPermitidos, nameof(caracterPermitidos));
 
