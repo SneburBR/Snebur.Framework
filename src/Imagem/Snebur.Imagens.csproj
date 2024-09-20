@@ -8,21 +8,25 @@
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<Nullable>disable</Nullable>
-		<UseWPF>true</UseWPF>
-		<PlatformTarget>x64</PlatformTarget>
+
 	</PropertyGroup>
+ 
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net48' ">
+		
 		<Reference Include="System.ServiceModel" />
 		<Reference Include="System.Web" />
+		<Reference Include="PresentationCore" />
 		<Reference Include="PresentationFramework" />
-
+		<Reference Include="WindowsBase" />
+		
 		<PackageReference Include="WindowsAPICodePack-Core" version="1.1.2" />
 		<PackageReference Include="WindowsAPICodePack-Shell" version="1.1.1" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0' ">
 		<!--<FrameworkReference Include="Microsoft.AspNetCore.App" />-->
+
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0' ">
@@ -30,24 +34,24 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Recursos\Icones\7z\7z.ico" />
-	  <None Remove="Recursos\Icones\7z\7z.png" />
+		<None Remove="Recursos\Icones\7z\7z.ico" />
+		<None Remove="Recursos\Icones\7z\7z.png" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Include="Recursos\Icones\7z\7z.ico" />
-	  <EmbeddedResource Include="Recursos\Icones\7z\7z.png" />
+		<EmbeddedResource Include="Recursos\Icones\7z\7z.ico" />
+		<EmbeddedResource Include="Recursos\Icones\7z\7z.png" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Magick.NET-Q8-x64" Version="13.10.0" />
-	  <PackageReference Include="Magick.NET.SystemDrawing" Version="7.3.0" />
-	  <PackageReference Include="Magick.NET.SystemWindowsMedia" Version="7.3.0" />
+		<PackageReference Include="Magick.NET-Q8-AnyCPU" Version="13.9.1" />
+		<PackageReference Include="Magick.NET.SystemDrawing" Version="7.3.0" />
+		<PackageReference Include="Magick.NET.SystemWindowsMedia" Version="7.3.0" />
 	</ItemGroup>
 
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Core\Snebur.csproj" />
+		<ProjectReference Include="..\Core\Snebur.csproj" />
 	</ItemGroup>
-	
+
 </Project>
