@@ -54,6 +54,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snebur.AcessoDados.Migracao
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snebur.Windows", "src\Windows\Snebur.Windows.csproj", "{D4B351A0-67EE-4751-A2C3-8619B69E9ADF}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snebur.Imagens", "src\Imagem\Snebur.Imagens.csproj", "{F30EF3D5-49C0-435B-A306-2F5BF56F54DE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -132,6 +134,10 @@ Global
 		{D4B351A0-67EE-4751-A2C3-8619B69E9ADF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4B351A0-67EE-4751-A2C3-8619B69E9ADF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4B351A0-67EE-4751-A2C3-8619B69E9ADF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F30EF3D5-49C0-435B-A306-2F5BF56F54DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F30EF3D5-49C0-435B-A306-2F5BF56F54DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F30EF3D5-49C0-435B-A306-2F5BF56F54DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F30EF3D5-49C0-435B-A306-2F5BF56F54DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -155,6 +161,7 @@ Global
 		{12834472-3559-44C0-8886-46CAF641D558} = {087A05A5-46BB-4F61-92A5-CF04B8E10D4B}
 		{1A16CB59-4367-4D29-9C29-3D935BB1E3F0} = {0E5860C4-E2FD-42D2-AEB0-01B369F45D8E}
 		{D4B351A0-67EE-4751-A2C3-8619B69E9ADF} = {087A05A5-46BB-4F61-92A5-CF04B8E10D4B}
+		{F30EF3D5-49C0-435B-A306-2F5BF56F54DE} = {087A05A5-46BB-4F61-92A5-CF04B8E10D4B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6FCEBA4F-D2F2-4F38-82C2-49139DA221C6}
