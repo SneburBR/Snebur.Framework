@@ -67,12 +67,26 @@ namespace Snebur
 #endif
         }
 
-#if NET6_0_OR_GREATER
-        public static Uri Url(this HttpRequest request)
+        public static Uri GetUrl(this HttpRequest request)
         {
-            var header = request.GetTypedHeaders();
-            return header.Referer;
+#if NET6_0_OR_GREATER
+            return new Uri($"{request.Scheme}://{request.Host.Host}{request.Path}");
+#else
+            return request.UrlReferrer ?? request.Url;
+#endif
         }
+
+        public static string GetHost(this HttpRequest request)
+        {
+#if NET6_0_OR_GREATER
+            return request.Host.Host;
+#else
+            return request.UrlReferrer?.Host ?? request.Url.Host;
+#endif
+        }
+
+#if NET6_0_OR_GREATER
+
 
         public static string UserAgent(this HttpRequest request)
         {
