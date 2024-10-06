@@ -114,7 +114,7 @@ namespace Snebur.Comunicacao
         }
 
 #else
-        public void Processar()
+        public void ExtrairDadosRequisicao()
         {
             var httpContext = this.HttpContext;
             using (var streamRequisicao = this.RetornarInputStreamBufferizado(httpContext))
@@ -122,6 +122,7 @@ namespace Snebur.Comunicacao
                 this.ExtrairDadosRequisicao(streamRequisicao);
             }
         }
+
         private MemoryStream RetornarInputStreamBufferizado(HttpContext context)
         {
             try
@@ -263,7 +264,7 @@ namespace Snebur.Comunicacao
         private void AdicionarItensrequisicaoAtual()
         {
             var context = this.HttpContext;
-            lock (context.Items.SyncLock())
+            lock (context?.Items.SyncLock())
             {
                 context.AdicionrItem(ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL, this.InformacaoSessaoUsuario);
                 context.AdicionrItem(ConstantesItensRequsicao.CHAVE_CREDENCIAL_USUARIO, this.CredencialUsuario);
@@ -275,10 +276,11 @@ namespace Snebur.Comunicacao
                 }
             }
         }
+
         private void RemoverItensRequisicaoAtual()
         {
             var context = this.HttpContext;
-            lock (context.Items.SyncLock())
+            lock (context?.Items.SyncLock())
             {
                 context.RemoverItem(ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL);
                 context.RemoverItem(ConstantesItensRequsicao.CHAVE_CREDENCIAL_USUARIO);
