@@ -28,6 +28,15 @@ namespace System.Web
             return null;
         }
 
+        public static void Add(this IHeaderDictionary cabecalho, string chave, long value)
+        {
+            cabecalho.Append(chave, value.ToString());
+        }
+        public static void Add(this IHeaderDictionary cabecalho, string chave, int value)
+        {
+            cabecalho.Append(chave, value.ToString());
+        }
+
         public static string[] GetValues(this IHeaderDictionary cabecalho, string chave)
         {
             if (cabecalho.TryGetValue(chave, out var item))
