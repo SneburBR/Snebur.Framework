@@ -19,6 +19,7 @@ namespace Snebur.AcessoDados.Comunicacao
         public virtual bool IsPermitirIdentificadorProprietarioGlobal { get; protected set; } = false;
 
         protected List<Action> ExecutarDepoisCommit { get; } = new List<Action>();
+      
         public string CaminhoAplicacao { get; private set; }
 
         public bool IsServicoTransacionadoDB
