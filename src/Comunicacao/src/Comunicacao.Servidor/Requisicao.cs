@@ -297,6 +297,11 @@ namespace Snebur.Comunicacao
             this.HttpContext = null;
         }
 
+        public void Processar()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 
