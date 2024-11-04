@@ -4,14 +4,8 @@ namespace Snebur.Utilidade
 {
     public static class DebugUtil
     {
-        public static bool IsAttached
-        {
-            get
-            {
-                return true;
-                //return Debugger.IsAttached;
-            }
-        }
-        
+        private static bool _isAttached = false;
+        public static bool IsAttached => Debugger.IsAttached && _isAttached;
+       
     }
 }
