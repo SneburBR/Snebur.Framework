@@ -17,19 +17,21 @@ namespace Snebur.Utilidade
             var dnsRecords = DnsUtil.GetDnsRecords(dominio, QueryType.MX);
             if (dnsRecords?.Length > 0)
             {
-                foreach (var record in dnsRecords.OrderBy(x => x.Preference))
-                {
-                    var isEmailValid = IsEmailAccountValid(email, record);
-                    if(isEmailValid)
-                    {
-                        return true;
-                    }
-                }
+                //foreach (var record in dnsRecords.OrderBy(x => x.Preference))
+                //{
+                //    var isEmailValid = IsEmailAccountValid(email, record);
+                //    if(isEmailValid)
+                //    {
+                //        return true;
+                //    }
+                //}
+                return true;
             }
             return false;
         }
 
-        private static bool IsEmailAccountValid(string email, DnsUtil.DnsRecord record)
+        private static bool IsEmailAccountValid(string email, 
+                                                DnsUtil.DnsRecord record)
         {
             var operetions = new Func<CancellationToken, bool>[ValidacaoEmailUtil.PortasSmtp.Length];
 
