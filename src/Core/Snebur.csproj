@@ -6,7 +6,7 @@
 		<RootNamespace>Snebur</RootNamespace>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-		<Configurations>Debug;Release;Compartilhado</Configurations>
+		<Configurations>Debug;Release</Configurations>
  
 	</PropertyGroup>
 
@@ -28,17 +28,28 @@
   
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net48' ">
+
+		<Reference Include="System.ServiceModel" />
 		<Reference Include="System.Configuration" />
-		<PackageReference Include="SevenZipSharp.Net45" Version="1.0.19" />
-		<PackageReference Include="Microsoft.Bcl.HashCode" version="1.1.1" />
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0' ">
-
-		<!--<PackageReference Include="SevenZipSharp.Net45" Version="1.0.19" />-->
+		<Reference Include="System.ComponentModel" />
+		<Reference Include="System.ComponentModel" />
+		<Reference Include="System.ComponentModel.DataAnnotations" />
+		<Reference Include="System.Net" />
+		<Reference Include="System.Net.Http" />
+		<Reference Include="System.IO.Compression" />
+		<Reference Include="System.IO.Compression" />
+		<Reference Include="Microsoft.CSharp" />
 		
+		<PackageReference Include="SevenZipSharp.Net45" Version="1.0.19" />
+		<PackageReference Include="Microsoft.Bcl.HashCode" version="6.0.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
-	<ItemGroup>
+
+ 
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0' Or '$(TargetFramework)' == 'net8.0'">
+
+		 
 		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.1" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -95,5 +106,6 @@
 	<ItemGroup>
 	  <Compile Include="Properties\AssemblyInfo.cs" />
 	</ItemGroup>
-
+ 
+	 
 </Project>
