@@ -148,7 +148,7 @@ namespace Snebur.AcessoDados
                     var atributo = propriedade.GetCustomAttribute<IndexarAttribute>();
                     if (!atributo.IsIgnorarMigracao)
                     {
-                        sqlsMigration.Add(new SqlIndexar(estruturaEntidade, new PropriedadeIndexar(propriedade)));
+                        sqlsMigration.Add(new SqlIndexar(estruturaEntidade, new PropriedadeIndexar(propriedade, atributo.NomeIndice)));
                     }
                 }
 
