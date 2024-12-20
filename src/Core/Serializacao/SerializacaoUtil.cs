@@ -1,13 +1,12 @@
-﻿using Snebur.Dominio;
+﻿using Newtonsoft.Json;
+using Snebur.Dominio;
 using Snebur.Dominio.Atributos;
 using Snebur.Utilidade;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
 namespace Snebur.Serializacao
