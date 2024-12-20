@@ -1,5 +1,4 @@
-﻿using Azure;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -116,7 +115,7 @@ namespace Snebur.Utilidade
         }
 
         public static void ExecutarStaAsync(Action acao, [CallerMemberName] string nomeMetodo = "",
-                                                           [CallerFilePath] string caminhoArquivo = "")
+                                                         [CallerFilePath] string caminhoArquivo = "")
         {
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
