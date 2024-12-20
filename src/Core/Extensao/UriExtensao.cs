@@ -119,7 +119,9 @@ namespace System
             {
                 try
                 {
-                    var request = (HttpWebRequest)WebRequest.CreateHttp(uriHttps);
+#pragma warning disable SYSLIB0014
+                    var request = (HttpWebRequest)WebRequest.Create(uriHttps);
+#pragma warning restore SYSLIB0014
                     request.Timeout = (int)TimeSpan.FromSeconds(15).TotalMilliseconds;
                     request.ServerCertificateValidationCallback += (object sender,
                                                                     X509Certificate certificate,
