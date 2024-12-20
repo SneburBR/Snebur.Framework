@@ -68,14 +68,37 @@ namespace Snebur.Utilidade
             }
             return Encoding.Default.GetString(bytes, 0, bytes.Length);
         }
-        //public static string Encode(byte[] bytes)
-        //{
-        //    if (!String.IsNullOrEmpty(texto))
-        //    {
-        //        var bytes = Encoding.UTF8.GetBytes(texto);
-        //        return System.Convert.ToBase64String(bytes);
-        //    }
-        //    return String.Empty;
-        //}
+
+        public static string UrlEncode(string text)
+        {
+            return UrlEncode(Encoding.UTF8.GetBytes(text));
+        }
+        public static string UrlEncode(byte[] data)
+        {
+            string base64 = Convert.ToBase64String(data);
+            return base64
+                .Replace("+", "-") // URL-safe character
+                .Replace("/", "_") // URL-safe character
+                .TrimEnd('=');     // Remove padding
+        }
+
+        public static string UrlDecodeToString(string base64Url)
+        {
+            return Encoding.UTF8.GetString(UrlDecode(base64Url));
+        }
+
+        public static byte[] UrlDecode(string base64Url)
+        {
+            string base64 = base64Url
+                .Replace("-", "+")
+                .Replace("_", "/");
+            // Add padding if necessary
+            switch (base64.Length % 4)
+            {
+                case 2: base64 += "=="; break;
+                case 3: base64 += "="; break;
+            }
+            return Convert.FromBase64String(base64);
+        }
     }
 }
