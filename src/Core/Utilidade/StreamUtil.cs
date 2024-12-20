@@ -9,6 +9,7 @@ namespace Snebur.Utilidade
     {
         //private const int TAMANHO_BUFFER = 5;
         private const int TAMANHO_BUFFER_PADRAO = 32 * 1024;
+        private const int TAMANHO_BUFFER_MINIMO = 1024;
 
         /// <summary>
         /// Ler as stream, buffer a buffer e retornar um MemoryStream, util,
@@ -56,16 +57,19 @@ namespace Snebur.Utilidade
                                                    Stream streamDestino,
                                                    int tamanhoBuffer,
                                                    Action<StreamProgressEventArgs> callbackProgresso = null,
-                                                   long contentLenght =0)
+                                                   long contentLenght = 0)
         {
             var totalBytesRecebitos = 0;
             var totalBytes = streamOrigem.CanSeek ? streamOrigem.Length : contentLenght;
-            
+
             if (streamOrigem.CanSeek)
             {
                 streamOrigem.Seek(0, SeekOrigin.Begin);
             }
-           
+
+            tamanhoBuffer = Math.Max(TAMANHO_BUFFER_MINIMO, TAMANHO_BUFFER_PADRAO);
+             
+
             while (true)
             {
                 var buffer = new byte[tamanhoBuffer];
@@ -156,11 +160,13 @@ namespace Snebur.Utilidade
         }
         public static FileStream CreateOrOpenWrite(string caminhoArquivo, bool isForcar = false)
         {
+            DiretorioUtil.CriarDiretorio(Path.GetDirectoryName(caminhoArquivo));
             var tentativa = 0;
             while (true)
             {
                 try
                 {
+                    
                     return new FileStream(caminhoArquivo, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write);
                 }
                 catch (IOException)
@@ -206,16 +212,37 @@ namespace Snebur.Utilidade
             }
         }
 
-        public static void CopiarArquivo(string caminhoOrigem, string caminhoDestinio)
+        public static void CopiarArquivo(string caminhoOrigem,
+                                         string caminhoDestinio)
+        {
+            StreamUtil.CopiarArquivo(caminhoOrigem, caminhoDestinio, TAMANHO_BUFFER_PADRAO);
+        }
+
+        public static void CopiarArquivo(string caminhoOrigem,
+                                         string caminhoDestinio,
+                                         Action<StreamProgressEventArgs> callbackProgresso = null)
+        {
+            StreamUtil.CopiarArquivo(caminhoOrigem, 
+                                     caminhoDestinio, 
+                                     TAMANHO_BUFFER_PADRAO, 
+                                     callbackProgresso);
+
+        }
+        public static void CopiarArquivo(string caminhoOrigem,
+                                         string caminhoDestinio,
+                                         int tamanhoBuffer = TAMANHO_BUFFER_PADRAO,
+                                         Action<StreamProgressEventArgs> callbackProgresso = null)
         {
             if (!File.Exists(caminhoOrigem))
             {
                 throw new FileNotFoundException(caminhoOrigem);
             }
-            using (var sr = StreamUtil.OpenRead(caminhoOrigem))
-            using (var sw = StreamUtil.CreateOrOpenWrite(caminhoDestinio))
+            using (var streamOrigem = StreamUtil.OpenRead(caminhoOrigem))
+            using (var streamDestino = StreamUtil.CreateWrite(caminhoDestinio))
             {
-                StreamUtil.SalvarStreamBufferizada(sr, sw);
+                StreamUtil.SalvarStreamBufferizada(streamOrigem, streamDestino,
+                                                  tamanhoBuffer,
+                                                  callbackProgresso);
             }
         }
     }
