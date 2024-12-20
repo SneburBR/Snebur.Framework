@@ -311,17 +311,20 @@ namespace Snebur.Utilidade
             using (var fs = StreamUtil.CreateWrite(caminhoDestino))
             using (var zip = new ZipArchive(fs, ZipArchiveMode.Create, true))
             {
-                var arquivos = di.GetFiles();
-                
-                foreach (var arquivo in arquivos)
+                //var arquivos = di.GetFiles();
+                var arquivos = Directory.EnumerateFiles(diretorioOrigem, "*", SearchOption.AllDirectories);
+
+                foreach (var arquivo in arquivos.Select(path=> new FileInfo(path)))
                 {
                     if (arquivo.Attributes == (arquivo.Attributes & FileAttributes.Hidden) ||
                         caminhoDestino.Equals(arquivo.FullName, StringComparison.InvariantCultureIgnoreCase))
                     {
                         continue;
                     }
-                      
-                    var entry = zip.CreateEntry(arquivo.Name);
+
+                    var relativePath = CaminhoUtil.RetornarCaminhoRelativo(arquivo.FullName, diretorioOrigem); 
+                     
+                    var entry = zip.CreateEntry(relativePath);
                     using (var sr = entry.Open())
                     {
                         using (var fsArquivo = StreamUtil.OpenRead(arquivo.FullName))
