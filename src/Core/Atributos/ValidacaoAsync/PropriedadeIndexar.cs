@@ -7,9 +7,11 @@ namespace Snebur.Dominio.Atributos
         public PropertyInfo Propriedade { get; }
         public bool IsPermitirDuplicarNulo { get; }
         public bool IsPermitirDuplicarZero { get; }
+        public string NomeIndice { get; }
 
-        public PropriedadeIndexar(PropertyInfo propriedade) : this(propriedade, false, false)
+        public PropriedadeIndexar(PropertyInfo propriedade, string nomeIndice) : this(propriedade, false, false)
         {
+            this.NomeIndice = nomeIndice;
         }
 
         public PropriedadeIndexar(PropertyInfo propriedade,
