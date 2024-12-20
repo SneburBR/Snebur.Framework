@@ -681,6 +681,32 @@ namespace Snebur.Utilidade
             return sb.ToString();
         }
 
+        public static List<string> DividirTextoEmLinhas(string descricaoAtributosCompleta,
+                                                               int maximoCaracterPorLinha)
+        {
+            var linhas = new List<string>();
+            var sb = new StringBuilder();
+            foreach (var ch in descricaoAtributosCompleta)
+            {
+                if(sb.Length == 0 && Char.IsWhiteSpace(ch))
+                {
+                    continue;
+                }
+
+                sb.Append(ch);
+                if (sb.Length >= maximoCaracterPorLinha)
+                {
+                    linhas.Add(sb.ToString());
+                    sb.Clear();
+                }
+            }
+            if (sb.Length > 0)
+            {
+                linhas.Add(sb.ToString());
+            }
+            return linhas;
+        }
+
         #region  CACHE FILTROS 
 
         private static object _bloqueio = new object();
