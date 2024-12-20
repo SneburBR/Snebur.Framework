@@ -144,7 +144,11 @@ namespace Snebur.Utilidade
             if (!Directory.Exists(caminho))
             {
                 // caso existe um arquivo sem extensão
-                ArquivoUtil.DeletarArquivo(caminho);
+                if (File.Exists(caminho))
+                {
+                    File.Move(caminho, caminho + $".file.{DateTime.Now:yyyy-MM-dd-HH-mm.ss.ffff}");
+                }
+                
                 try
                 {
                     Directory.CreateDirectory(caminho);
@@ -176,7 +180,7 @@ namespace Snebur.Utilidade
             DiretorioUtil.ExcluirDiretorioInterno(caminho, true, ignorarErro);
         }
 
-        private static void ExcluirDiretorioInterno(string caminho, bool recursivo, bool ignorarErro)
+        private static bool ExcluirDiretorioInterno(string caminho, bool recursivo, bool ignorarErro)
         {
             if (File.Exists(caminho))
             {
@@ -185,6 +189,7 @@ namespace Snebur.Utilidade
                     throw new Erro("Não é posssivel excluir o diretorio {0} por ele é um arquivo no disco");
                 }
             }
+
             if (Directory.Exists(caminho))
             {
                 try
@@ -192,15 +197,17 @@ namespace Snebur.Utilidade
                     var di = new DirectoryInfo(caminho);
                     di.Delete(recursivo);
                     //Directory.Delete(caminho);
+                    return true;
                 }
                 catch (Exception erro)
                 {
                     if (!ignorarErro)
                     {
-                        throw new Erro($"Não foi possivel criar a pasta {caminho}", erro);
+                        throw new Erro($"Não foi possível criar a pasta {caminho}", erro);
                     }
                 }
             }
+            return false;
         }
 
         public static bool IsDiretorioFilho(string diretorioPai, string diretorioFilho)
