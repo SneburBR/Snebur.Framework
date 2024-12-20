@@ -2,7 +2,7 @@
 {
     public static class ConcurrentQueueExtensao
     {
-        public static void Clear<T>(this System.Collections.Concurrent.ConcurrentQueue<T> origem)
+        public static void Clear<T>(this Concurrent.ConcurrentQueue<T> origem)
         {
             while (origem.Count > 0)
             {
