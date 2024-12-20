@@ -81,7 +81,7 @@ namespace Snebur.Utilidade
             return FileVersionInfo.GetVersionInfo(arquivo).FileVersion;
         }
 
-        private static bool DeletarArquivo(string caminho, bool ignorarErro, bool forcar, int tentativa)
+        private static bool DeletarArquivo(string caminho, bool ignorarErro, bool isForcar, int tentativa)
         {
             if (!File.Exists(caminho))
             {
@@ -95,10 +95,15 @@ namespace Snebur.Utilidade
             }
             catch (Exception erro)
             {
-                if (!(erro is UnauthorizedAccessException) && (forcar && tentativa < 20))
+                if (!(erro is UnauthorizedAccessException) && (isForcar && tentativa < 20))
                 {
+                    if (isForcar)
+                    {
+                        TryUnlockFile(caminho);
+                    }
+
                     System.Threading.Thread.Sleep(500 * tentativa);
-                    return ArquivoUtil.DeletarArquivo(caminho, ignorarErro, forcar, tentativa + 1);
+                    return ArquivoUtil.DeletarArquivo(caminho, ignorarErro, isForcar, tentativa + 1);
                 }
                 else
                 {
@@ -108,6 +113,25 @@ namespace Snebur.Utilidade
                     }
                     return false;
                 }
+            }
+        }
+
+        public static void TryUnlockFile(string caminho)
+        {
+            try
+            {
+                var fi = new FileInfo(caminho);
+                if (fi.Exists)
+                {
+                    using (FileStream fs = fi.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None))
+                    {
+                        fs.Close();
+                    }
+                }
+            }
+            catch
+            {
+
             }
         }
 
@@ -412,13 +436,13 @@ namespace Snebur.Utilidade
         {
             try
             {
-                return LerTexto(caminho, encoding );
+                return LerTexto(caminho, encoding);
             }
             catch
             {
                 return null;
             }
-        } 
+        }
 
         public static string LerTexto(string caminho, bool isUtf8)
         {
@@ -565,7 +589,7 @@ namespace Snebur.Utilidade
         public static string GetCurrentFilaName(this FileInfo fi)
         {
             var arquivos = Directory.GetFiles(fi.Directory.FullName, fi.Name);
-            if(arquivos.Length == 1)
+            if (arquivos.Length == 1)
             {
                 return Path.GetFileName(arquivos[0]);
             }
