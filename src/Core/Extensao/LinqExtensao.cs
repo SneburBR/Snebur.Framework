@@ -118,7 +118,7 @@ namespace Snebur.Linq
                     colecao.Add(item);
                 }
             }
-         }
+        }
 
         public static void AddRange<T>(this ICollection<T> colecao, IEnumerable<T> itens)
         {
@@ -135,7 +135,7 @@ namespace Snebur.Linq
 
         public static void AddRangeNotNull<T>(this ICollection<T> colecao, IEnumerable<T> itens)
         {
-            if(itens == null)
+            if (itens == null)
             {
                 return;
             }
@@ -526,6 +526,13 @@ namespace Snebur.Linq
             return false;
         }
 
-
+        public static T PeekOrDefault<T>(this Queue<T> queue)
+        {
+            if (queue.Count > 0)
+            {
+                return queue.Peek();
+            }
+            return default;
+        }
     }
 }
