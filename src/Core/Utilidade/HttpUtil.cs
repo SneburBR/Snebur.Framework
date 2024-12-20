@@ -123,7 +123,9 @@ namespace Snebur.Utilidade
         {
             try
             {
+#pragma warning disable SYSLIB0014
                 var requisicao = (HttpWebRequest)WebRequest.Create(uri);
+#pragma warning restore SYSLIB0014
                 if (cabecalho != null)
                 {
                     foreach (var item in cabecalho)
@@ -199,7 +201,9 @@ namespace Snebur.Utilidade
         {
             try
             {
+#pragma warning disable SYSLIB0014
                 var requisicao = (HttpWebRequest)WebRequest.Create(uri);
+#pragma warning restore SYSLIB0014
                 if (cabecalho != null)
                 {
                     foreach (var item in cabecalho)
