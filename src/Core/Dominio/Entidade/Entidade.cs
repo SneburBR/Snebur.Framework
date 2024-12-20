@@ -1,4 +1,5 @@
-﻿using Snebur.Dominio.Atributos;
+﻿using Newtonsoft.Json;
+using Snebur.Dominio.Atributos;
 using Snebur.Utilidade;
 using System;
 using System.Collections;
@@ -11,7 +12,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text.Json.Serialization;
 
 namespace Snebur.Dominio
 {
