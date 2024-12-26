@@ -90,17 +90,17 @@ namespace Snebur.Utilidade
 
         public static bool SaoIgual(DateTime dataHora1, DateTime dataHora2)
         {
-            return DataHoraUtil.SaoIgual(dataHora1, dataHora2, OpcoesCompararData.Data);
+            return SaoIgual(dataHora1, dataHora2, OpcoesCompararData.Data);
         }
 
         public static bool SaoIgual(DateTime dataHora1, DateTime dataHora2, OpcoesCompararData opcoesData)
         {
-            return DataHoraUtil.SaoIgual(dataHora1, dataHora2, opcoesData, OpcoesCompararHora.Padrao);
+            return SaoIgual(dataHora1, dataHora2, opcoesData, OpcoesCompararHora.Padrao);
         }
 
         public static bool SaoIgual(DateTime dataHora1, DateTime dataHora2, OpcoesCompararHora opcoesHora)
         {
-            return DataHoraUtil.SaoIgual(dataHora1, dataHora2, OpcoesCompararData.Data, opcoesHora);
+            return SaoIgual(dataHora1, dataHora2, OpcoesCompararData.Data, opcoesHora);
         }
 
         public static bool SaoIgual(DateTime dataHora1, DateTime dataHora2, OpcoesCompararData opcoesData, OpcoesCompararHora opcoesHora)

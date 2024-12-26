@@ -1,12 +1,8 @@
-﻿using Snebur.Dominio;
-using Snebur.UI;
-using System;
-using System.Globalization;
-using System.IO;
+﻿using System;
 
 namespace Snebur.Utilidade
 {
-	public static partial class FormatacaoUtil
+    public static partial class FormatacaoUtil
 	{
 
 		public static string FormatarDecimal(double? valor)

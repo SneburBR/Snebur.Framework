@@ -11,7 +11,7 @@ namespace Snebur.Utilidade
         private static Assembly _assemblyEntrada;
 
         public static Assembly AssemblyEntrada => LazyUtil.RetornarValorLazyComBloqueio(ref _assemblyEntrada,
-                                                                                      ReflexaoUtil.RetornarAssemblyEntradaInterno);
+                                                                                      RetornarAssemblyEntradaInterno);
 
         private static Assembly RetornarAssemblyEntradaInterno()
         {
@@ -48,7 +48,7 @@ namespace Snebur.Utilidade
 
         public static Version RetornarVersaoEntrada()
         {
-            var assemblyEntrada = ReflexaoUtil.AssemblyEntrada;
+            var assemblyEntrada = AssemblyEntrada;
             return RetornarVersaoAssembly(assemblyEntrada);
         }
 
@@ -82,13 +82,13 @@ namespace Snebur.Utilidade
 
         public static Tuple<string, Version> RetornarNomeVersaoAssemblyAplicacao()
         {
-            var assemblyEntrada = ReflexaoUtil.AssemblyEntrada;
-            return ReflexaoUtil.RetornarNomeVersaoAssembly(assemblyEntrada);
+            var assemblyEntrada = AssemblyEntrada;
+            return RetornarNomeVersaoAssembly(assemblyEntrada);
         }
 
         public static string RetornarNomeAplicacao()
         {
-            var assemblyEntrada = ReflexaoUtil.AssemblyEntrada;
+            var assemblyEntrada = AssemblyEntrada;
             var atributoTituloProduto = assemblyEntrada.GetCustomAttribute<AssemblyProductAttribute>();
 
             if (String.IsNullOrWhiteSpace(atributoTituloProduto?.Product))
@@ -100,7 +100,7 @@ namespace Snebur.Utilidade
 
         public static string RetornarNomeEmpresa()
         {
-            var assemblyEntrada = ReflexaoUtil.AssemblyEntrada;
+            var assemblyEntrada = AssemblyEntrada;
             var atributoNomeEmpresa = assemblyEntrada.GetCustomAttribute<AssemblyCompanyAttribute>();
 
             if (String.IsNullOrWhiteSpace(atributoNomeEmpresa?.Company))

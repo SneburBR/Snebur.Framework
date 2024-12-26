@@ -27,7 +27,7 @@ namespace Snebur.Utilidade
 
         public static bool DeletarArquivo(string caminho, bool ignorarErro = false, bool isForcar = false)
         {
-            return ArquivoUtil.DeletarArquivo(caminho, ignorarErro, isForcar, 0);
+            return DeletarArquivo(caminho, ignorarErro, isForcar, 0);
         }
 
         public static bool SalvarStream(Stream stream,
@@ -50,7 +50,7 @@ namespace Snebur.Utilidade
 
         public static bool CopiarParaDiretorio(string caminhoOrigem, string diretorioDestino)
         {
-            var caminhoDestino = Path.Combine(diretorioDestino, Path.GetFileName(caminhoOrigem));
+            var caminhoDestino = CaminhoUtil.Combine(diretorioDestino, Path.GetFileName(caminhoOrigem));
             return MoverArquivo(caminhoOrigem,
                                 caminhoDestino);
         }
@@ -62,9 +62,9 @@ namespace Snebur.Utilidade
         /// <returns></returns>
         public static string AlterarExtensaoNomeArquivo(string nomeArquivo, string extensao)
         {
-            var nomeArquivoExtensao = Path.GetFileNameWithoutExtension(nomeArquivo) + ArquivoUtil.NormalizarExtensao(extensao);
+            var nomeArquivoExtensao = Path.GetFileNameWithoutExtension(nomeArquivo) + NormalizarExtensao(extensao);
             var diretorio = Path.GetDirectoryName(nomeArquivo);
-            return Path.Combine(diretorio, nomeArquivoExtensao);
+            return CaminhoUtil.Combine(diretorio, nomeArquivoExtensao);
         }
 
         public static string NormalizarExtensao(string extensao)
@@ -89,7 +89,7 @@ namespace Snebur.Utilidade
             }
             try
             {
-                ArquivoUtil.RemovendoAtributosSomenteLeitura(caminho);
+                RemovendoAtributosSomenteLeitura(caminho);
                 File.Delete(caminho);
                 return true;
             }
@@ -103,7 +103,7 @@ namespace Snebur.Utilidade
                     }
 
                     System.Threading.Thread.Sleep(500 * tentativa);
-                    return ArquivoUtil.DeletarArquivo(caminho, ignorarErro, isForcar, tentativa + 1);
+                    return DeletarArquivo(caminho, ignorarErro, isForcar, tentativa + 1);
                 }
                 else
                 {
@@ -199,17 +199,17 @@ namespace Snebur.Utilidade
 
         public static void CopiarArquivo(string caminhoOrigem, string caminhoDestinio)
         {
-            ArquivoUtil.CopiarArquivo(caminhoOrigem, caminhoDestinio, true);
+            CopiarArquivo(caminhoOrigem, caminhoDestinio, true);
         }
 
         public static void CopiarArquivo(string caminhoOrigem, string caminhoDestinio, bool sobreEscrever)
         {
-            ArquivoUtil.CopiarArquivo(caminhoOrigem, caminhoDestinio, sobreEscrever, false, false);
+            CopiarArquivo(caminhoOrigem, caminhoDestinio, sobreEscrever, false, false);
         }
 
         public static void CopiarArquivo(string caminhoOrigem, string caminhoDestinio, bool sobreEscrever, bool ignorarErroSobreEscrever)
         {
-            ArquivoUtil.CopiarArquivo(caminhoOrigem, caminhoDestinio, sobreEscrever, ignorarErroSobreEscrever, false);
+            CopiarArquivo(caminhoOrigem, caminhoDestinio, sobreEscrever, ignorarErroSobreEscrever, false);
         }
 
         public static void CopiarArquivo(string caminhoOrigem,
@@ -226,7 +226,7 @@ namespace Snebur.Utilidade
                 }
                 return;
             }
-            if (ArquivoUtil.CaminhoIgual(caminhoOrigem, caminhoDestinio))
+            if (CaminhoIgual(caminhoOrigem, caminhoDestinio))
             {
                 if (!ignorarErroNaoExisteArquivoOrigem)
                 {
@@ -237,11 +237,11 @@ namespace Snebur.Utilidade
             var arquivoDestino = new FileInfo(caminhoDestinio);
             DiretorioUtil.CriarDiretorio(arquivoDestino.Directory.FullName);
 
-            if (arquivoDestino.Exists)
+            if (arquivoDestino.Exists || File.Exists(caminhoDestinio))
             {
                 if (sobreEscrever)
                 {
-                    ArquivoUtil.DeletarArquivo(arquivoDestino.FullName, ignorarErroSobreEscrever, true);
+                    DeletarArquivo(arquivoDestino.FullName, ignorarErroSobreEscrever, true);
                 }
                 else
                 {
@@ -252,6 +252,29 @@ namespace Snebur.Utilidade
                     return;
                 }
             }
+            try
+            {
+                if (Directory.Exists(caminhoDestinio))
+                {
+                    if (sobreEscrever)
+                    {
+                        DiretorioUtil.ExcluirDiretorio(caminhoDestinio, false, ignorarErroSobreEscrever);
+                    }
+                }
+                else
+                {
+                    if (!ignorarErroSobreEscrever)
+                    {
+                        throw new Erro(String.Format("O arquivo {0} de destino já existe {0}", caminhoDestinio));
+                    }
+                    return;
+                }
+            }
+            catch
+            {
+
+            }
+            
             try
             {
                 File.Copy(caminhoOrigem, caminhoDestinio);
@@ -287,7 +310,7 @@ namespace Snebur.Utilidade
             {
                 return nomeArquivo;
             }
-            extensao = ArquivoUtil.NormalizarExtensao(extensao);
+            extensao = NormalizarExtensao(extensao);
             return String.Format("{0}{1}", nomeArquivo, extensao);
         }
         #endregion
@@ -321,13 +344,13 @@ namespace Snebur.Utilidade
 
         public static string RetornarCaminhoArquivoCopia(string caminhoArquivo, int copia, bool incluirPalabraCopia = false)
         {
-            return ArquivoUtil.RetornarCaminhoArquivoCopia(new FileInfo(caminhoArquivo), copia, incluirPalabraCopia);
+            return RetornarCaminhoArquivoCopia(new FileInfo(caminhoArquivo), copia, incluirPalabraCopia);
         }
 
         public static string RetornarCaminhoArquivoCopia(FileInfo fi, int copia, bool incluirPalabraCopia = false)
         {
-            var nomeArquivo = ArquivoUtil.RetornarNomeArquivoCopia(fi.Name, copia, incluirPalabraCopia);
-            return System.IO.Path.Combine(fi.Directory.FullName, nomeArquivo);
+            var nomeArquivo = RetornarNomeArquivoCopia(fi.Name, copia, incluirPalabraCopia);
+            return CaminhoUtil.Combine(fi.Directory.FullName, nomeArquivo);
         }
 
         public static string RetornarCaminhoArquivoCopia(string caminhoArquivo, bool incluirPalabraCopia = false, bool incluirEspaco = true)
@@ -340,15 +363,15 @@ namespace Snebur.Utilidade
             DiretorioUtil.CriarDiretorio(fi.Directory.FullName);
 
             var contador = 1;
-            var nomeArquivo = ArquivoUtil.RetornarNomeArquivoCopia(fi.Name, contador, incluirPalabraCopia, incluirEspaco);
-            var caminhoCopia = System.IO.Path.Combine(fi.Directory.FullName, nomeArquivo);
+            var nomeArquivo = RetornarNomeArquivoCopia(fi.Name, contador, incluirPalabraCopia, incluirEspaco);
+            var caminhoCopia = CaminhoUtil.Combine(fi.Directory.FullName, nomeArquivo);
 
             while (File.Exists(caminhoCopia))
             {
                 contador++;
 
-                nomeArquivo = ArquivoUtil.RetornarNomeArquivoCopia(fi.Name, contador, incluirPalabraCopia, incluirEspaco);
-                caminhoCopia = System.IO.Path.Combine(fi.Directory.FullName, nomeArquivo);
+                nomeArquivo = RetornarNomeArquivoCopia(fi.Name, contador, incluirPalabraCopia, incluirEspaco);
+                caminhoCopia = CaminhoUtil.Combine(fi.Directory.FullName, nomeArquivo);
             }
             return caminhoCopia;
         }
@@ -373,7 +396,7 @@ namespace Snebur.Utilidade
             }
             if (isSobreEscrever)
             {
-                ArquivoUtil.DeletarArquivo(caminhoDestino, true, ignorarErro);
+                DeletarArquivo(caminhoDestino, true, ignorarErro);
             }
             try
             {
@@ -382,7 +405,7 @@ namespace Snebur.Utilidade
             }
             catch
             {
-                ArquivoUtil.DeletarArquivo(caminhoOrigem, ignorarErro, true);
+                DeletarArquivo(caminhoOrigem, ignorarErro, true);
                 File.Move(caminhoOrigem, caminhoDestino);
                 return true;
             }
@@ -489,7 +512,7 @@ namespace Snebur.Utilidade
         }
         public static void SalvarTexto(string caminho, string texto)
         {
-            ArquivoUtil.SalvarTexto(caminho, texto, System.Text.Encoding.UTF8);
+            SalvarTexto(caminho, texto, Encoding.UTF8);
         }
 
         public static void SalvarTexto(string caminho, string texto, Encoding encoding)
@@ -503,7 +526,7 @@ namespace Snebur.Utilidade
 
             if (infoArquivo.Exists)
             {
-                ArquivoUtil.DeletarArquivo(caminho);
+                DeletarArquivo(caminho);
             }
             try
             {
@@ -567,7 +590,7 @@ namespace Snebur.Utilidade
                                                                  new Random().Next(10000, 99000).ToString(),
                                                                  fi.Extension);
 
-                        caminhoArquivo = Path.Combine(fi.Directory.FullName, nomeArquivoTemporaio);
+                        caminhoArquivo = CaminhoUtil.Combine(fi.Directory.FullName, nomeArquivoTemporaio);
                     }
                 }
                 System.Threading.Thread.Sleep(1000);
@@ -583,7 +606,7 @@ namespace Snebur.Utilidade
 
         public static List<string> RetornarExtensoesNormalizadas(List<string> extensoes)
         {
-            return extensoes.Select(x => ArquivoUtil.NormalizarExtensao(x)).ToList();
+            return extensoes.Select(x => NormalizarExtensao(x)).ToList();
         }
 
         public static string GetCurrentFilaName(this FileInfo fi)

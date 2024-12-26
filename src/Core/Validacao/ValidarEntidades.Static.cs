@@ -15,7 +15,7 @@ namespace Snebur.Dominio
         public static List<ErroValidacao> Validar(object contextoDados, Entidade entidade)
         {
             var entidades = new List<Entidade> { entidade };
-            return ValidarEntidades.Validar(contextoDados, entidades);
+            return Validar(contextoDados, entidades);
         }
     }
 }

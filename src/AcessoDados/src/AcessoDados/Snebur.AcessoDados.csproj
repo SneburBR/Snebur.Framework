@@ -18,6 +18,24 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<DefineConstants> TRACE</DefineConstants>
 	</PropertyGroup>
+
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net48' ">
+
+		<Reference Include="System.ServiceModel" />
+		<Reference Include="System.Configuration" />
+		<Reference Include="System.ComponentModel" />
+		<Reference Include="System.ComponentModel" />
+		<Reference Include="System.ComponentModel.DataAnnotations" />
+	 
+		<Reference Include="Microsoft.CSharp" />
+ 
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\Core\Snebur.csproj" />
+	</ItemGroup>
+
 	<ItemGroup>
 		<Compile Remove="ConsultaEntidade\ConsultaEntidade.Colecao.cs" />
 		<Compile Remove="Contexto\BaseContextoDados.cs" />
@@ -28,10 +46,6 @@
 		<None Remove="Snebur.AcessoDados.Net40.csproj.vspscc" />
 		<None Remove="Snebur.AcessoDados.Net50.csproj.vspscc" />
 		<None Remove="Snebur.AcessoDados.snk" />
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <ProjectReference Include="..\..\..\Core\Snebur.csproj" />
 	</ItemGroup>
 
 

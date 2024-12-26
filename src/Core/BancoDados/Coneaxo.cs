@@ -41,7 +41,7 @@ namespace Snebur.BancoDados
                 this.ConnectionString = nomeConnectionString;
             }
 
-            if (!IsConnecionStringValida(this.ConnectionString))
+            if (!this.IsConnecionStringValida(this.ConnectionString))
             {
                 throw new Exception($"A string de conexão '{this.ConnectionString}' não é válida");
             }

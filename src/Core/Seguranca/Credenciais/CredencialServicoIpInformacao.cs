@@ -1,10 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
-using Snebur.Dominio;
-
-namespace Snebur.Seguranca
+﻿namespace Snebur.Seguranca
 {
     public class CredencialServicoIpInformacao
     {
@@ -15,8 +9,8 @@ namespace Snebur.Seguranca
             {
                 return new CredencialServico
                 {
-                    IdentificadorUsuario = CredencialServicoIpInformacao.IDENTIFICADOR_USUARIO,
-                    Senha = CredencialServicoIpInformacao.SENHA
+                    IdentificadorUsuario = IDENTIFICADOR_USUARIO,
+                    Senha = SENHA
                 };
             }
         }

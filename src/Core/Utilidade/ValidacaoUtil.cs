@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
@@ -41,7 +40,7 @@ namespace Snebur.Utilidade
 
         public static bool IsEmailOuTelefone(string emailOuTelefone)
         {
-            return ValidacaoUtil.IsEmail(emailOuTelefone) || ValidacaoUtil.IsTelefone(emailOuTelefone);
+            return IsEmail(emailOuTelefone) || IsTelefone(emailOuTelefone);
         }
 
         public static bool IsEmail(string email)
@@ -207,9 +206,9 @@ namespace Snebur.Utilidade
             var numeros = TextoUtil.RetornarSomenteNumeros(cpfOuCnpj);
             if (numeros.Count() == 11)
             {
-                return ValidacaoUtil.IsCpf(cpfOuCnpj);
+                return IsCpf(cpfOuCnpj);
             }
-            return ValidacaoUtil.IsCnpj(cpfOuCnpj);
+            return IsCnpj(cpfOuCnpj);
         }
 
         public static bool IsIp(string ip)
@@ -250,7 +249,7 @@ namespace Snebur.Utilidade
         /// <returns></returns>
         public static bool IsResolverDominioDns(string dominio, int tempoMaximo = 3000)
         {
-            if (ValidacaoUtil.IsDominioDns(dominio))
+            if (IsDominioDns(dominio))
             {
                 try
                 {
@@ -296,7 +295,7 @@ namespace Snebur.Utilidade
 
         public static void ValidarIntervalo(double opacidade, double inicio, double fim)
         {
-            if (!ValidacaoUtil.IsIntervaloValido(opacidade, inicio, fim))
+            if (!IsIntervaloValido(opacidade, inicio, fim))
             {
                 throw new Erro($"O valor {opacidade} está fora do intervalo {inicio}, {fim}");
             }

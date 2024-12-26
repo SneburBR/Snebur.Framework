@@ -17,8 +17,7 @@ namespace Snebur.Utilidade
         {
             //var valorString = Convert.ToString(valorPropriedade);
             //if (String.IsNullOrWhiteSpace(valorString))
-
-            if (!ValidacaoUtil.IsPropriedadeRequerida(propriedade))
+            if (!IsPropriedadeRequerida(propriedade))
             {
                 return true;
             }
@@ -71,9 +70,9 @@ namespace Snebur.Utilidade
             }
             if (valorPropriedade is BaseTipoComplexo)
             {
-                return ValidacaoUtil.IsValidacaoRequeridoTipoComplexo(valorPropriedade as BaseTipoComplexo);
+                return IsValidacaoRequeridoTipoComplexo(valorPropriedade as BaseTipoComplexo);
             }
-            return ValidacaoUtil.IsValorPropriedadeRequerido(propriedade, valorPropriedade);
+            return IsValorPropriedadeRequerido(propriedade, valorPropriedade);
         }
 
         public static bool IsJson(string json)
@@ -96,7 +95,7 @@ namespace Snebur.Utilidade
                 var reg = new Regex(@"\s+");
                 var partes = reg.Split(texto);
 
-                if (partes.Any(x => !ValidacaoUtil.ValidarTextoTamanho(x, tamanhoMinimo, tamanhoMaximo)))
+                if (partes.Any(x => !ValidarTextoTamanho(x, tamanhoMinimo, tamanhoMaximo)))
                 {
                     return false;
                 }
@@ -138,8 +137,8 @@ namespace Snebur.Utilidade
         }
         public static bool IsHostOuIp(string servidor)
         {
-            return ValidacaoUtil.IsDominioDns(servidor) ||
-                   ValidacaoUtil.IsIp(servidor);
+            return IsDominioDns(servidor) ||
+                   IsIp(servidor);
         }
 
         public static bool IsDefinido(object valorPropriedade)
@@ -217,7 +216,7 @@ namespace Snebur.Utilidade
                 case Guid guid:
                     return guid != Guid.Empty;
                 case DateTime data:
-                    return ValidacaoUtil.IsDataValida(data);
+                    return IsDataValida(data);
                 case TimeSpan _:
                     return true;
 
@@ -248,7 +247,7 @@ namespace Snebur.Utilidade
             foreach (var propriedade in propriedades)
             {
                 var valorPropriedade = propriedade.GetValue(valor);
-                if (!ValidacaoUtil.IsValorPropriedadeRequerido(propriedade, valorPropriedade))
+                if (!IsValorPropriedadeRequerido(propriedade, valorPropriedade))
                 {
                     return false;
                 }
@@ -273,7 +272,7 @@ namespace Snebur.Utilidade
 
         public static void ValidarProgresso(double progresso)
         {
-            if (!ValidacaoUtil.IsProgressoValido(progresso))
+            if (!IsProgressoValido(progresso))
             {
                 throw new Erro($"A valor progresso {progresso.ToString()} não é valido");
             }

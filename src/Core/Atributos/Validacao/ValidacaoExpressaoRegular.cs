@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using Snebur.Utilidade;
+﻿using Snebur.Utilidade;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

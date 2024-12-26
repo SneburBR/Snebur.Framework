@@ -166,7 +166,7 @@ namespace Snebur.Utilidade
                 {
                     using (var fsDestino = new FileStream(caminhoDestino, FileMode.Create, FileAccess.Write))
                     {
-                        ZipUtil.DescompactarArquivo(fsOrigemBuferizada, fsDestino);
+                        DescompactarArquivo(fsOrigemBuferizada, fsDestino);
                     }
                 }
             }
@@ -232,7 +232,7 @@ namespace Snebur.Utilidade
         {
             using (var fs = new FileStream(caminhoArquivo, FileMode.Open))
             {
-                return ZipUtil.DescompactarArquivos(fs, diretorioDestino, isSobreEscrever);
+                return DescompactarArquivos(fs, diretorioDestino, isSobreEscrever);
             }
         }
         public static List<string> Descompactar(string caminhoArquivo, 
@@ -241,13 +241,13 @@ namespace Snebur.Utilidade
         {
             using (var fs = new FileStream(caminhoArquivo, FileMode.Open))
             {
-                return ZipUtil.DescompactarArquivos(fs, diretorioDestino, isSobreEscrever);
+                return DescompactarArquivos(fs, diretorioDestino, isSobreEscrever);
             }
         }
 
         public static List<string> Descompactar(Stream stream, string diretorioDestino)
         {
-            return ZipUtil.DescompactarArquivos(stream, diretorioDestino, null);
+            return DescompactarArquivos(stream, diretorioDestino, null);
         }
 
         public static List<string> DescompactarArquivos(Stream stream, 
@@ -280,7 +280,7 @@ namespace Snebur.Utilidade
                             {
                                 using (var msArquivo = StreamUtil.RetornarMemoryStream(zipStream))
                                 {
-                                    var arquivoDestino = new FileInfo(Path.Combine(diretorioDestino, entry.Name));
+                                    var arquivoDestino = new FileInfo(CaminhoUtil.Combine(diretorioDestino, entry.Name));
                                     if (arquivoDestino.Exists)
                                     {
                                         if (!isSobreEscrever)

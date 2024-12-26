@@ -17,9 +17,9 @@ namespace Snebur.Utilidade
         {
             get
             {
-                if (EntidadeUtil._propriedadeNomeTipoEntidade == null)
+                if (_propriedadeNomeTipoEntidade == null)
                 {
-                    EntidadeUtil._propriedadeNomeTipoEntidade = ReflexaoUtil.RetornarPropriedade<Entidade>(x => x.__NomeTipoEntidade);
+                    _propriedadeNomeTipoEntidade = ReflexaoUtil.RetornarPropriedade<Entidade>(x => x.__NomeTipoEntidade);
                 }
                 return _propriedadeNomeTipoEntidade;
             }
@@ -29,11 +29,11 @@ namespace Snebur.Utilidade
         {
             get
             {
-                if (EntidadeUtil._tiposInterfacesEntidade == null)
+                if (_tiposInterfacesEntidade == null)
                 {
                     _tiposInterfacesEntidade = typeof(EntidadeUtil).Assembly.GetAccessibleTypes().Where(x => x.IsInterface && x.GetInterface(typeof(IEntidade).Name) != null).ToList();
                 }
-                return EntidadeUtil._tiposInterfacesEntidade;
+                return _tiposInterfacesEntidade;
             }
         }
 
@@ -154,7 +154,7 @@ namespace Snebur.Utilidade
         {
             if (isPreferirCampoPrivado)
             {
-                var campo = EntidadeUtil.RetornarCampoPrivadoChaveEstrangeira(entidade.GetType(), propriedade);
+                var campo = RetornarCampoPrivadoChaveEstrangeira(entidade.GetType(), propriedade);
                 if (campo != null)
                 {
                     return ConverterUtil.Para<long?>(campo.GetValue(entidade));
@@ -168,7 +168,7 @@ namespace Snebur.Utilidade
             }
             else
             {
-                var propriedadeChaveEstrangeira = EntidadeUtil.RetornarPropriedadeChaveEstrangeira(entidade.GetType(), propriedade, true);
+                var propriedadeChaveEstrangeira = RetornarPropriedadeChaveEstrangeira(entidade.GetType(), propriedade, true);
                 if (propriedadeChaveEstrangeira == null)
                 {
                     return null;
@@ -202,7 +202,7 @@ namespace Snebur.Utilidade
 
         public static List<PropertyInfo> RetornarPropriedadesCampos(Type tipoEntidade)
         {
-            return EntidadeUtil.RetornarPropriedadesCampos(tipoEntidade, EnumFiltroPropriedadeCampo.Todas);
+            return RetornarPropriedadesCampos(tipoEntidade, EnumFiltroPropriedadeCampo.Todas);
         }
 
 
@@ -253,7 +253,7 @@ namespace Snebur.Utilidade
             {
                 if (!ignorarPropriedadeProtegida)
                 {
-                    propriedades.Insert(0, EntidadeUtil.PropriedadeNomeTipoEntidade);
+                    propriedades.Insert(0, PropriedadeNomeTipoEntidade);
                 }
             }
 
@@ -304,7 +304,7 @@ namespace Snebur.Utilidade
         private static bool IsPropriedadeCampo(PropertyInfo propriedade,
                                                bool isIncluirTipoComplexo)
         {
-            if (propriedade == EntidadeUtil.PropriedadeNomeTipoEntidade)
+            if (propriedade == PropriedadeNomeTipoEntidade)
             {
                 return true;
             }
@@ -346,8 +346,8 @@ namespace Snebur.Utilidade
         public static Dictionary<string, PropertyInfo> RetornarDicionarioPropriedades(Type tipoEntidade)
         {
             var dicionario = new Dictionary<string, PropertyInfo>();
-            var propriedades = EntidadeUtil.RetornarPropriedadesCampos(tipoEntidade, EnumFiltroPropriedadeCampo.Todas);
-            var propriedadesRelacao = EntidadeUtil.RetornarPropriedadesRelacaoPai(tipoEntidade);
+            var propriedades = RetornarPropriedadesCampos(tipoEntidade, EnumFiltroPropriedadeCampo.Todas);
+            var propriedadesRelacao = RetornarPropriedadesRelacaoPai(tipoEntidade);
 
             foreach (var propriedade in propriedades)
             {
@@ -362,7 +362,7 @@ namespace Snebur.Utilidade
 
             foreach (var propriedade in propriedades)
             {
-                var nomeCampoPrivado = EntidadeUtil.RetornarNomeCampoPrivado(propriedade);
+                var nomeCampoPrivado = RetornarNomeCampoPrivado(propriedade);
                 var campo = tipoEntidade.GetField(nomeCampoPrivado);
                 if (campo == null)
                 {

@@ -18,9 +18,18 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<DefineConstants>TRACE</DefineConstants>
 	</PropertyGroup>
-	  
+ 
+
 	<ItemGroup Condition="'$(TargetFramework)' == 'net48' ">
+
+		<Reference Include="System.ServiceModel" />
+		<Reference Include="System.Configuration" />
+		<Reference Include="System.ComponentModel" />
+		<Reference Include="System.ComponentModel" />
+		<Reference Include="System.ComponentModel.DataAnnotations" />
 		<Reference Include="System.Data.Entity" />
+		<Reference Include="Microsoft.CSharp" />
+
 	</ItemGroup>
 	   
 	<ItemGroup>

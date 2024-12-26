@@ -361,38 +361,38 @@ namespace Snebur
         #endregion
 
         #region Propriedade funções
-        protected Func<CultureInfo> FuncaoRetornarCulturaPadrao { get; set; } = AplicacaoSnebur.RetornarCultauraPadrao;
+        protected Func<CultureInfo> FuncaoRetornarCulturaPadrao { get; set; } = RetornarCultauraPadrao;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        protected Func<string> FuncaoRetornarIdentificadorProprietario { get; set; } = AplicacaoSnebur.RetornarIdentificadorProprietario;
+        protected Func<string> FuncaoRetornarIdentificadorProprietario { get; set; } = RetornarIdentificadorProprietario;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        protected Func<string> FuncaoRetornarIdentificadorAplicacao { get; set; } = AplicacaoSnebur.RetornarIdentificadorAplicacao;
+        protected Func<string> FuncaoRetornarIdentificadorAplicacao { get; set; } = RetornarIdentificadorAplicacao;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         protected Func<Guid> FuncaoRetornarIdentificadorSessaoUsuario { get; set; } = SessaoUtil.RetornarIdentificadorSessaoUsuario;
 
         protected Func<CredencialUsuario> FuncaoRetornarCredencialUsuarioUsuario { get; set; } = SessaoUtil.RetornarCredencialUsuario;
 
-        protected Func<DateTime> FuncaoRetornarDataHoraUtcServidor { get; set; } = AplicacaoSnebur.RetornarDataHoraUtcServidor;
+        protected Func<DateTime> FuncaoRetornarDataHoraUtcServidor { get; set; } = RetornarDataHoraUtcServidor;
 
         //protected Func<IInformacaoSessao> FuncaoRetornarInformacaoSessaoUsuario { get; set; } = SessaoUtil.RetornarInformacaoSessaoUsuarioAtual;
 
         protected Action AcaoIniciarNovaSessaoUsuario { get; set; } = SessaoUtil.InicializarNovaSessaoUsuario;
 
-        protected Func<IServicoLogErro> FuncaoRetornarServicoLogErro { get; set; } = AplicacaoSnebur.RetornarServicoErro;
+        protected Func<IServicoLogErro> FuncaoRetornarServicoLogErro { get; set; } = RetornarServicoErro;
 
-        protected Func<IServicoLogSeguranca> FuncaoRetornarServicoLogSeguranca { get; set; } = AplicacaoSnebur.RetornarServicoLogSeguranca;
+        protected Func<IServicoLogSeguranca> FuncaoRetornarServicoLogSeguranca { get; set; } = RetornarServicoLogSeguranca;
 
-        protected Func<IServicoLogAplicacao> FuncaoRetornarServicoLogAplicacao { get; set; } = AplicacaoSnebur.RetornarServicoLogAplicacao;
+        protected Func<IServicoLogAplicacao> FuncaoRetornarServicoLogAplicacao { get; set; } = RetornarServicoLogAplicacao;
 
-        protected Func<IServicoLogDesempenho> FuncaoRetornarServicoLogDesempenho { get; set; } = AplicacaoSnebur.RetornarServicoLogDesempenho;
+        protected Func<IServicoLogDesempenho> FuncaoRetornarServicoLogDesempenho { get; set; } = RetornarServicoLogDesempenho;
 
         protected Func<IServicoUsuario> FuncaoRetornarServicoUsuario { get; set; } = null;
 
         public Func<BaseInformacaoAdicionalServicoCompartilhado> FuncaoRetornarInformacaoAdicionalServicoCompartilhado { get; set; } = null;
 
-        public Func<EnumAmbienteServidor> FuncaoRetornarAmbienteServidor { get; protected set; } = AplicacaoSnebur.RetornarAmbienteServidor;
+        public Func<EnumAmbienteServidor> FuncaoRetornarAmbienteServidor { get; protected set; } = RetornarAmbienteServidor;
 
         public bool IgnorarErros
         {
@@ -415,11 +415,11 @@ namespace Snebur
         {
             lock (_bloqueio)
             {
-                if (AplicacaoSnebur._aplicacao != null)
+                if (_aplicacao != null)
                 {
-                    throw new Exception($"Já existe uma aplicação inicializada: {AplicacaoSnebur._aplicacao?.GetType().Name}");
+                    throw new Exception($"Já existe uma aplicação inicializada: {_aplicacao?.GetType().Name}");
                 }
-                AplicacaoSnebur._aplicacao = this;
+                _aplicacao = this;
             }
 
             AppDomain.CurrentDomain.UnhandledException += this.Aplicacao_UnhandledException;
@@ -643,9 +643,9 @@ namespace Snebur
 
         private static string RetornarIdentificadorAplicacao()
         {
-            if (AplicacaoSnebur.Atual.AppSettings[SessaoUtil.IDENTIFICADOR_APLICACAO] != null)
+            if (Atual.AppSettings[SessaoUtil.IDENTIFICADOR_APLICACAO] != null)
             {
-                return AplicacaoSnebur.Atual.AppSettings[SessaoUtil.IDENTIFICADOR_APLICACAO];
+                return Atual.AppSettings[SessaoUtil.IDENTIFICADOR_APLICACAO];
             }
             var assemblyEntrada = ReflexaoUtil.AssemblyEntrada;
             if (assemblyEntrada != null)
@@ -666,9 +666,9 @@ namespace Snebur
 
         private static string RetornarIdentificadorProprietario()
         {
-            if (AplicacaoSnebur.Atual.AppSettings[ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO] != null)
+            if (Atual.AppSettings[ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO] != null)
             {
-                return AplicacaoSnebur.Atual.AppSettings[ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO];
+                return Atual.AppSettings[ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO];
             }
             return ConfiguracaoUtil.IDENTIFICADOR_PROPRIETARIO_GLOBAL;
         }

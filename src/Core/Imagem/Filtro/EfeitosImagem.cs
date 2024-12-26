@@ -8,28 +8,28 @@ namespace Snebur.UI
     {
         public static Dictionary<EnumEfeitoImagem, EfeitoImagem> Efeitos { get; } = new Dictionary<EnumEfeitoImagem, EfeitoImagem>
         {
-            {EnumEfeitoImagem.Nenhum, EfeitosImagem.Normal },
-            {EnumEfeitoImagem.PretoBranco, EfeitosImagem.PretoBranco },
-            {EnumEfeitoImagem.Sepia, EfeitosImagem.Sepia },
-            {EnumEfeitoImagem.Cancum, EfeitosImagem.Cancum },
-            {EnumEfeitoImagem.Moscou, EfeitosImagem.Moscou },
-            {EnumEfeitoImagem.Dubai, EfeitosImagem.Dubai },
-            {EnumEfeitoImagem.Paris, EfeitosImagem.Paris },
-            {EnumEfeitoImagem.Chicago, EfeitosImagem.Chicago },
-            {EnumEfeitoImagem.Veneza, EfeitosImagem.Veneza },
-            {EnumEfeitoImagem.Cairo, EfeitosImagem.Cairo },
-            {EnumEfeitoImagem.Acapulco, EfeitosImagem.Acapulco },
-            {EnumEfeitoImagem.Fortaleza, EfeitosImagem.Fortaleza },
-            {EnumEfeitoImagem.Pequim, EfeitosImagem.Pequim },
-            {EnumEfeitoImagem.Atenas, EfeitosImagem.Atenas },
-            {EnumEfeitoImagem.Manaus, EfeitosImagem.Dakar },
-            {EnumEfeitoImagem.Rio, EfeitosImagem.Rio },
-            {EnumEfeitoImagem.Sydney, EfeitosImagem.Sydney },
-            {EnumEfeitoImagem.Vancouver, EfeitosImagem.Vancouver },
-            {EnumEfeitoImagem.SaoPaulo, EfeitosImagem.SaoPaulo },
-            {EnumEfeitoImagem.Jaipur, EfeitosImagem.Jaipur },
-            {EnumEfeitoImagem.Medellin, EfeitosImagem.Medellin },
-            {EnumEfeitoImagem.Londres, EfeitosImagem.Londres }
+            {EnumEfeitoImagem.Nenhum, Normal },
+            {EnumEfeitoImagem.PretoBranco, PretoBranco },
+            {EnumEfeitoImagem.Sepia, Sepia },
+            {EnumEfeitoImagem.Cancum, Cancum },
+            {EnumEfeitoImagem.Moscou, Moscou },
+            {EnumEfeitoImagem.Dubai, Dubai },
+            {EnumEfeitoImagem.Paris, Paris },
+            {EnumEfeitoImagem.Chicago, Chicago },
+            {EnumEfeitoImagem.Veneza, Veneza },
+            {EnumEfeitoImagem.Cairo, Cairo },
+            {EnumEfeitoImagem.Acapulco, Acapulco },
+            {EnumEfeitoImagem.Fortaleza, Fortaleza },
+            {EnumEfeitoImagem.Pequim, Pequim },
+            {EnumEfeitoImagem.Atenas, Atenas },
+            {EnumEfeitoImagem.Manaus, Dakar },
+            {EnumEfeitoImagem.Rio, Rio },
+            {EnumEfeitoImagem.Sydney, Sydney },
+            {EnumEfeitoImagem.Vancouver, Vancouver },
+            {EnumEfeitoImagem.SaoPaulo, SaoPaulo },
+            {EnumEfeitoImagem.Jaipur, Jaipur },
+            {EnumEfeitoImagem.Medellin, Medellin },
+            {EnumEfeitoImagem.Londres, Londres }
         };
 
         private static EfeitoImagem _normal;
@@ -71,15 +71,15 @@ namespace Snebur.UI
         {
             get
             {
-                if (EfeitosImagem._pretoBranco == null)
+                if (_pretoBranco == null)
                 {
                     var filtro = new FiltroImagem
                     {
                         PretoBranco = 100
                     };
-                    EfeitosImagem._pretoBranco = new EfeitoImagem(EnumEfeitoImagem.PretoBranco, filtro);
+                    _pretoBranco = new EfeitoImagem(EnumEfeitoImagem.PretoBranco, filtro);
                 }
-                return EfeitosImagem._pretoBranco;
+                return _pretoBranco;
             }
         }
 
@@ -87,15 +87,15 @@ namespace Snebur.UI
         {
             get
             {
-                if (EfeitosImagem._sepia == null)
+                if (_sepia == null)
                 {
                     var filtro = new FiltroImagem
                     {
                         Sepia = 100
                     };
-                    EfeitosImagem._sepia = new EfeitoImagem(EnumEfeitoImagem.Sepia, filtro);
+                    _sepia = new EfeitoImagem(EnumEfeitoImagem.Sepia, filtro);
                 }
-                return EfeitosImagem._sepia;
+                return _sepia;
             }
         }
         //1977
@@ -103,7 +103,7 @@ namespace Snebur.UI
         {
             get
             {
-                if (EfeitosImagem._cancum == null)
+                if (_cancum == null)
                 {
                     var sobrePosicao = new SobrePosicaoSolida
                     {
@@ -118,9 +118,9 @@ namespace Snebur.UI
                         Saturacao = 130
                     };
 
-                    EfeitosImagem._cancum = new EfeitoImagem(EnumEfeitoImagem.Cancum, filtro, sobrePosicao);
+                    _cancum = new EfeitoImagem(EnumEfeitoImagem.Cancum, filtro, sobrePosicao);
                 }
-                return EfeitosImagem._cancum;
+                return _cancum;
             }
         }
         //Aden
@@ -128,7 +128,7 @@ namespace Snebur.UI
         {
             get
             {
-                if (EfeitosImagem._moscou == null)
+                if (_moscou == null)
                 {
                     var sobreposicao = new SobrePosicaoGradienteLinear
                     {
@@ -148,9 +148,9 @@ namespace Snebur.UI
                         Matriz = 20,
                     };
 
-                    EfeitosImagem._moscou = new EfeitoImagem(EnumEfeitoImagem.Moscou, filtro, sobreposicao);
+                    _moscou = new EfeitoImagem(EnumEfeitoImagem.Moscou, filtro, sobreposicao);
                 }
-                return EfeitosImagem._moscou;
+                return _moscou;
             }
         }
         //Amaro
@@ -158,7 +158,7 @@ namespace Snebur.UI
         {
             get
             {
-                if (EfeitosImagem._dubai == null)
+                if (_dubai == null)
                 {
                     var filtro = new FiltroImagem
                     {
@@ -167,9 +167,9 @@ namespace Snebur.UI
                         Saturacao = 150,
                         Matriz = 350
                     };
-                    EfeitosImagem._dubai = new EfeitoImagem(EnumEfeitoImagem.Dubai, filtro);
+                    _dubai = new EfeitoImagem(EnumEfeitoImagem.Dubai, filtro);
                 }
-                return EfeitosImagem._dubai;
+                return _dubai;
             }
         }
         //Brannan
@@ -177,7 +177,7 @@ namespace Snebur.UI
         {
             get
             {
-                if (EfeitosImagem._paris == null)
+                if (_paris == null)
                 {
                     var sobrePosicao = new SobrePosicaoSolida
                     {
@@ -190,9 +190,9 @@ namespace Snebur.UI
                         Contraste = 140,
                         Sepia = 50
                     };
-                    EfeitosImagem._paris = new EfeitoImagem(EnumEfeitoImagem.Paris, filtro, sobrePosicao);
+                    _paris = new EfeitoImagem(EnumEfeitoImagem.Paris, filtro, sobrePosicao);
                 }
-                return EfeitosImagem._paris;
+                return _paris;
             }
         }
         //Brooklyn
@@ -200,7 +200,7 @@ namespace Snebur.UI
         {
             get
             {
-                if (EfeitosImagem._chicago == null)
+                if (_chicago == null)
                 {
                     var sobrePosicao = new SobrePosicaoGradienteLinear
                     {
@@ -218,9 +218,9 @@ namespace Snebur.UI
                         Brilho = 110
                     };
 
-                    EfeitosImagem._chicago = new EfeitoImagem(EnumEfeitoImagem.Chicago, filtro, sobrePosicao);
+                    _chicago = new EfeitoImagem(EnumEfeitoImagem.Chicago, filtro, sobrePosicao);
                 }
-                return EfeitosImagem._chicago;
+                return _chicago;
             }
         }
         //Clarendon
@@ -228,7 +228,7 @@ namespace Snebur.UI
         {
             get
             {
-                if (EfeitosImagem._veneza == null)
+                if (_veneza == null)
                 {
                     var sobrePosicao = new SobrePosicaoSolida
                     {
@@ -242,9 +242,9 @@ namespace Snebur.UI
                         Saturacao = 125
                     };
 
-                    EfeitosImagem._veneza = new EfeitoImagem(EnumEfeitoImagem.Veneza, filtro, sobrePosicao);
+                    _veneza = new EfeitoImagem(EnumEfeitoImagem.Veneza, filtro, sobrePosicao);
                 }
-                return EfeitosImagem._veneza;
+                return _veneza;
             }
         }
         //Earlybird
@@ -252,7 +252,7 @@ namespace Snebur.UI
         {
             get
             {
-                if (EfeitosImagem._cairo == null)
+                if (_cairo == null)
                 {
                     var sobrePosicao = new SobrePosicaoGradienteLinear
                     {
@@ -270,9 +270,9 @@ namespace Snebur.UI
                         Sepia = 20
                     };
 
-                    EfeitosImagem._cairo = new EfeitoImagem(EnumEfeitoImagem.Cairo, filtro, sobrePosicao);
+                    _cairo = new EfeitoImagem(EnumEfeitoImagem.Cairo, filtro, sobrePosicao);
                 }
-                return EfeitosImagem._cairo;
+                return _cairo;
             }
         }
         //Gingham
@@ -280,7 +280,7 @@ namespace Snebur.UI
         {
             get
             {
-                if (EfeitosImagem._acapulco == null)
+                if (_acapulco == null)
                 {
                     var sobreposicao = new SobrePosicaoGradienteLinear
                     {
@@ -298,9 +298,9 @@ namespace Snebur.UI
                         Matriz = 350
                     };
 
-                    EfeitosImagem._acapulco = new EfeitoImagem(EnumEfeitoImagem.Acapulco, filtro, sobreposicao);
+                    _acapulco = new EfeitoImagem(EnumEfeitoImagem.Acapulco, filtro, sobreposicao);
                 }
-                return EfeitosImagem._acapulco;
+                return _acapulco;
             }
         }
         //Hudson
@@ -308,7 +308,7 @@ namespace Snebur.UI
         {
             get
             {
-                if (EfeitosImagem._fortaleza == null)
+                if (_fortaleza == null)
                 {
                     var sobrePosicao = new SobrePosicaoGradienteLinear
                     {
@@ -327,9 +327,9 @@ namespace Snebur.UI
                         Saturacao = 110
                     };
 
-                    EfeitosImagem._fortaleza = new EfeitoImagem(EnumEfeitoImagem.Fortaleza, filtro, sobrePosicao);
+                    _fortaleza = new EfeitoImagem(EnumEfeitoImagem.Fortaleza, filtro, sobrePosicao);
                 }
-                return EfeitosImagem._fortaleza;
+                return _fortaleza;
             }
         }
         //InkWell
@@ -337,7 +337,7 @@ namespace Snebur.UI
         {
             get
             {
-                if (EfeitosImagem._pequim == null)
+                if (_pequim == null)
                 {
                     var filtro = new FiltroImagem
                     {
@@ -346,9 +346,9 @@ namespace Snebur.UI
                         Sepia = 30
                     };
 
-                    EfeitosImagem._pequim = new EfeitoImagem(EnumEfeitoImagem.Pequim, filtro/*, sobrePosicao*/);
+                    _pequim = new EfeitoImagem(EnumEfeitoImagem.Pequim, filtro/*, sobrePosicao*/);
                 }
-                return EfeitosImagem._pequim;
+                return _pequim;
             }
         }
         //lofi
@@ -356,7 +356,7 @@ namespace Snebur.UI
         {
             get
             {
-                if (EfeitosImagem._atenas == null)
+                if (_atenas == null)
                 {
                     var sobrePosicao = new SobrePosicaoGradienteLinear
                     {
@@ -374,9 +374,9 @@ namespace Snebur.UI
                         Saturacao = 110
                     };
 
-                    EfeitosImagem._atenas = new EfeitoImagem(EnumEfeitoImagem.Atenas, filtro, sobrePosicao);
+                    _atenas = new EfeitoImagem(EnumEfeitoImagem.Atenas, filtro, sobrePosicao);
                 }
-                return EfeitosImagem._atenas;
+                return _atenas;
             }
         }
         //Maven
@@ -384,7 +384,7 @@ namespace Snebur.UI
         {
             get
             {
-                if (EfeitosImagem._dakar == null)
+                if (_dakar == null)
                 {
                     var sobrePosicao = new SobrePosicaoSolida
                     {
@@ -400,9 +400,9 @@ namespace Snebur.UI
                         Sepia = 25
                     };
 
-                    EfeitosImagem._dakar = new EfeitoImagem(EnumEfeitoImagem.Manaus, filtro, sobrePosicao);
+                    _dakar = new EfeitoImagem(EnumEfeitoImagem.Manaus, filtro, sobrePosicao);
                 }
-                return EfeitosImagem._dakar;
+                return _dakar;
             }
         }
         //Perpetua
@@ -410,7 +410,7 @@ namespace Snebur.UI
         {
             get
             {
-                if (EfeitosImagem._rio == null)
+                if (_rio == null)
                 {
                     var sobreposicao = new SobrePosicaoGradienteLinear
                     {
@@ -421,9 +421,9 @@ namespace Snebur.UI
                         Direcao = EnumDirecaoGradiente.ToBottom,
                         Mixagem = EnumMixagem.SoftLight
                     };
-                    EfeitosImagem._rio = new EfeitoImagem(EnumEfeitoImagem.Rio, FiltroImagem.Empty, sobreposicao);
+                    _rio = new EfeitoImagem(EnumEfeitoImagem.Rio, FiltroImagem.Empty, sobreposicao);
                 }
-                return EfeitosImagem._rio;
+                return _rio;
             }
         }
         //Reyes
@@ -431,7 +431,7 @@ namespace Snebur.UI
         {
             get
             {
-                if (EfeitosImagem._sydney == null)
+                if (_sydney == null)
                 {
                     var sobrePosicao = new SobrePosicaoSolida
                     {
@@ -447,9 +447,9 @@ namespace Snebur.UI
                         Sepia = 22
                     };
 
-                    EfeitosImagem._sydney = new EfeitoImagem(EnumEfeitoImagem.Sydney, filtro, sobrePosicao);
+                    _sydney = new EfeitoImagem(EnumEfeitoImagem.Sydney, filtro, sobrePosicao);
                 }
-                return EfeitosImagem._sydney;
+                return _sydney;
             }
         }
         //Stinson
@@ -457,7 +457,7 @@ namespace Snebur.UI
         {
             get
             {
-                if (EfeitosImagem._vancouver == null)
+                if (_vancouver == null)
                 {
                     var sobrePosicao = new SobrePosicaoSolida
                     {
@@ -472,9 +472,9 @@ namespace Snebur.UI
                         Saturacao = 85
                     };
 
-                    EfeitosImagem._vancouver = new EfeitoImagem(EnumEfeitoImagem.Vancouver, filtro, sobrePosicao);
+                    _vancouver = new EfeitoImagem(EnumEfeitoImagem.Vancouver, filtro, sobrePosicao);
                 }
-                return EfeitosImagem._vancouver;
+                return _vancouver;
             }
         }
         //Toaster
@@ -482,7 +482,7 @@ namespace Snebur.UI
         {
             get
             {
-                if (EfeitosImagem._saoPaulo == null)
+                if (_saoPaulo == null)
                 {
                     var sobreposicao = new SobrePosicaoGradienteLinear
                     {
@@ -500,9 +500,9 @@ namespace Snebur.UI
                         Brilho = 90
                     };
 
-                    EfeitosImagem._saoPaulo = new EfeitoImagem(EnumEfeitoImagem.SaoPaulo, filtro, sobreposicao);
+                    _saoPaulo = new EfeitoImagem(EnumEfeitoImagem.SaoPaulo, filtro, sobreposicao);
                 }
-                return EfeitosImagem._saoPaulo;
+                return _saoPaulo;
             }
         }
         //Walden
@@ -510,7 +510,7 @@ namespace Snebur.UI
         {
             get
             {
-                if (EfeitosImagem._jaipur == null)
+                if (_jaipur == null)
                 {
                     var sobrePosicao = new SobrePosicaoSolida
                     {
@@ -526,9 +526,9 @@ namespace Snebur.UI
                         Matriz = 350
                     };
 
-                    EfeitosImagem._jaipur = new EfeitoImagem(EnumEfeitoImagem.Jaipur, filtro, sobrePosicao);
+                    _jaipur = new EfeitoImagem(EnumEfeitoImagem.Jaipur, filtro, sobrePosicao);
                 }
-                return EfeitosImagem._jaipur;
+                return _jaipur;
             }
         }
         //Valencia
@@ -536,7 +536,7 @@ namespace Snebur.UI
         {
             get
             {
-                if (EfeitosImagem._medellin == null)
+                if (_medellin == null)
                 {
                     var sobrePosicao = new SobrePosicaoSolida
                     {
@@ -551,9 +551,9 @@ namespace Snebur.UI
                         Sepia = 8
                     };
 
-                    EfeitosImagem._medellin = new EfeitoImagem(EnumEfeitoImagem.Medellin, filtro, sobrePosicao);
+                    _medellin = new EfeitoImagem(EnumEfeitoImagem.Medellin, filtro, sobrePosicao);
                 }
-                return EfeitosImagem._medellin;
+                return _medellin;
             }
         }
         //XPro2
@@ -561,7 +561,7 @@ namespace Snebur.UI
         {
             get
             {
-                if (EfeitosImagem._londres == null)
+                if (_londres == null)
                 {
                     var sobreposicao = new SobrePosicaoGradienteLinear
                     {
@@ -578,9 +578,9 @@ namespace Snebur.UI
                         Sepia = 30
                     };
 
-                    EfeitosImagem._londres = new EfeitoImagem(EnumEfeitoImagem.Londres, filtro, sobreposicao);
+                    _londres = new EfeitoImagem(EnumEfeitoImagem.Londres, filtro, sobreposicao);
                 }
-                return EfeitosImagem._londres;
+                return _londres;
             }
         }
     }

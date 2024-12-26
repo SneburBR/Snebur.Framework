@@ -104,7 +104,7 @@ namespace Snebur.Tarefa
 
         public void FinalizarGerenciadorTarefa()
         {
-            base.FinalizarTarefa(this.RetornarErro());
+            FinalizarTarefa(this.RetornarErro());
         }
 
         private void ExecutarProximaTarefa()

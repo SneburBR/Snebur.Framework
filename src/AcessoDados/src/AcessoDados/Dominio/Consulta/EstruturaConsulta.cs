@@ -1,9 +1,8 @@
-﻿using Snebur.AcessoDados.Seguranca;
+﻿using Newtonsoft.Json;
+using Snebur.AcessoDados.Seguranca;
 using Snebur.Dominio.Atributos;
 using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
 
 namespace Snebur.AcessoDados
 {

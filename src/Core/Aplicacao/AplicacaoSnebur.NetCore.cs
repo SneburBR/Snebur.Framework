@@ -15,7 +15,7 @@ namespace Snebur
 
         public void Configure(IConfiguration configuration)
         {
-            AplicacaoSnebur.Configuration = configuration;
+            Configuration = configuration;
         }
 
         protected NameValueCollection RetornarAppSettings()
@@ -32,13 +32,13 @@ namespace Snebur
 
         private NameValueCollection RetornarConfiguracoes(string chaveConfiguracao)
         {
-            if (AplicacaoSnebur.Configuration == null)
+            if (Configuration == null)
             {
                 throw new Erro("A propriedade Configuration não foi definida");
             }
 
             var colecao = new NameValueCollection();
-            var paresChaveValor = AplicacaoSnebur.Configuration.AsEnumerable().ToList();
+            var paresChaveValor = Configuration.AsEnumerable().ToList();
             foreach (var parChaveValor in paresChaveValor)
             {
                 var chave = parChaveValor.Key;

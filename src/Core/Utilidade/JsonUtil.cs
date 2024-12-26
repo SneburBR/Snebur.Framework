@@ -41,7 +41,7 @@ namespace Snebur.Utilidade
             ContractResolver = new JsonPropertiesResolverDotNet(),
             ReferenceResolverProvider = () =>
             {
-                return JsonUtil.ReferenceResolver;
+                return ReferenceResolver;
             }
 
         };
@@ -59,7 +59,7 @@ namespace Snebur.Utilidade
             using (var sr = new StreamReader(fs, encoding))
             {
                 var json = sr.ReadToEnd();
-                return JsonUtil.Deserializar<T>(json, tipoSerializacao);
+                return Deserializar<T>(json, tipoSerializacao);
             }
         }
 
@@ -67,7 +67,7 @@ namespace Snebur.Utilidade
         {
             try
             {
-                return JsonUtil.Deserializar<T>(json, tipoSerializacao);
+                return Deserializar<T>(json, tipoSerializacao);
             }
             catch
             {
@@ -111,8 +111,8 @@ namespace Snebur.Utilidade
                     return null;
                 }
 
-                var configuracaoSerializacao = tipoSerializacao == EnumTipoSerializacao.Javascript ? JsonUtil.ConfiguracoesJavascript :
-                                                                                                     JsonUtil.ConfiguracoesDotNet;
+                var configuracaoSerializacao = tipoSerializacao == EnumTipoSerializacao.Javascript ? ConfiguracoesJavascript :
+                                                                                                     ConfiguracoesDotNet;
 
                 configuracaoSerializacao.Culture = culture ?? CultureInfo.InvariantCulture;
 
@@ -145,7 +145,7 @@ namespace Snebur.Utilidade
         public static string Serializar(object objeto,
                                         EnumTipoSerializacao tipoSerializacao)
         {
-            return JsonUtil.Serializar(objeto,
+            return Serializar(objeto,
                                        tipoSerializacao,
                                        cultureInfo: CultureInfo.InvariantCulture,
                                        isIdentar: DebugUtil.IsAttached,
@@ -168,8 +168,8 @@ namespace Snebur.Utilidade
                                                    Formatting.None;
 
                 var configuracaoSerializacao = tipoSerializacao == EnumTipoSerializacao.Javascript
-                                                    ? JsonUtil.ConfiguracoesJavascript
-                                                    : JsonUtil.ConfiguracoesDotNet;
+                                                    ? ConfiguracoesJavascript
+                                                    : ConfiguracoesDotNet;
 
                 configuracaoSerializacao.Culture = cultureInfo ?? CultureInfo.InvariantCulture;
 
@@ -216,7 +216,7 @@ namespace Snebur.Utilidade
                                              string caminhoDestino,
                                              bool isIdentar = true)
         {
-            var json = JsonUtil.Serializar(objecto,
+            var json = Serializar(objecto,
                                           tipoSerializacao,
                                           CultureInfo.InvariantCulture,
                                           isIdentar,
@@ -265,8 +265,8 @@ namespace Snebur.Utilidade
         {
             try
             {
-                var objeto = JsonUtil.Deserializar<object>(json, tipoSerializacao, culture);
-                return JsonUtil.Serializar(objeto,
+                var objeto = Deserializar<object>(json, tipoSerializacao, culture);
+                return Serializar(objeto,
                                           tipoSerializacao,
                                           culture,
                                           true,

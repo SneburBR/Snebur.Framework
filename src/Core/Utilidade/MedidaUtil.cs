@@ -2,7 +2,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Snebur.Utilidade
@@ -27,27 +26,27 @@ namespace Snebur.Utilidade
         public static readonly Func<double?, double> FUNCAO_DPI_VISAULIZACAO = (value) => MAXIMO_AREA_IMPRESSAO_SUPORTADA;
         public static double RetornarPixelsImpressao(double medidaEmCentimetros)
         {
-            return MedidaUtil.ParaPixels(medidaEmCentimetros, MedidaUtil.DPI_IMPRESSAO_PADRAO);
+            return ParaPixels(medidaEmCentimetros, DPI_IMPRESSAO_PADRAO);
         }
 
         public static int RetornarPixelsVisualizacao(double medidiaEmCentimetros, double dpiVisualizacao)
         {
-            return MedidaUtil.ParaPixels(medidiaEmCentimetros, dpiVisualizacao);
+            return ParaPixels(medidiaEmCentimetros, dpiVisualizacao);
         }
 
         public static int ParaPixels(double medidaEmCentimetos, double dpi)
         {
-            return Convert.ToInt32((medidaEmCentimetos / MedidaUtil.POLEGADA) * dpi);
+            return Convert.ToInt32((medidaEmCentimetos / POLEGADA) * dpi);
         }
 
         public static double ParaCentimentros(double mediaEmPixels, double dpi)
         {
-            return (mediaEmPixels / dpi) * MedidaUtil.POLEGADA;
+            return (mediaEmPixels / dpi) * POLEGADA;
         }
 
         public static double RetornarDpiVisualizacao(double medidaEmCentimetros, double medidaEmPixel)
         {
-            return (medidaEmPixel * 300) / MedidaUtil.RetornarPixelsImpressao(medidaEmCentimetros);
+            return (medidaEmPixel * 300) / RetornarPixelsImpressao(medidaEmCentimetros);
         }
 
         public static int CentimetrosParaDecimilimetros(double espessuraLaminasCm)
@@ -57,8 +56,8 @@ namespace Snebur.Utilidade
 
         public static int RetornarDpiVisualizacao(Dimensao dimensaoCentimetros, Dimensao dimensaoPixels, double tolerancia = 1)
         {
-            var dpiX = (int)Math.Round(MedidaUtil.RetornarDpiVisualizacao(dimensaoCentimetros.Largura, dimensaoPixels.Largura));
-            var dpiY = (int)Math.Round(MedidaUtil.RetornarDpiVisualizacao(dimensaoCentimetros.Altura, dimensaoPixels.Altura));
+            var dpiX = (int)Math.Round(RetornarDpiVisualizacao(dimensaoCentimetros.Largura, dimensaoPixels.Largura));
+            var dpiY = (int)Math.Round(RetornarDpiVisualizacao(dimensaoCentimetros.Altura, dimensaoPixels.Altura));
             if (Math.Abs(dpiX - dpiX) > tolerancia)
             {
                 throw new Erro($"DPI X '{dpiX}' e diferente do Y '{dpiY}', fora da margem tolerância: {tolerancia}");
@@ -68,7 +67,7 @@ namespace Snebur.Utilidade
 
         public static void DefinirDpiImpressao(object objeto)
         {
-            DefinirDpiVisualizacao(objeto, MedidaUtil.DPI_IMPRESSAO_PADRAO);
+            DefinirDpiVisualizacao(objeto, DPI_IMPRESSAO_PADRAO);
         }
 
         public static void DefinirDpiVisualizacao(object objeto, double dpi)
@@ -85,7 +84,7 @@ namespace Snebur.Utilidade
             if (objeto != null)
             {
                 var objetosAnalisados = new HashSet<object>();
-                MedidaUtil.DefinirDpiTipoComplexo(objeto, funcaoRetornarDpi, objetosAnalisados);
+                DefinirDpiTipoComplexo(objeto, funcaoRetornarDpi, objetosAnalisados);
             }
         }
 
@@ -96,7 +95,7 @@ namespace Snebur.Utilidade
             {
                 foreach (var item in (IEnumerable)objeto)
                 {
-                    MedidaUtil.DefinirDpiTipoComplexo(item, funcaoRetornarDpi, objetosAnalisados);
+                    DefinirDpiTipoComplexo(item, funcaoRetornarDpi, objetosAnalisados);
                 }
             }
             else
@@ -132,18 +131,18 @@ namespace Snebur.Utilidade
         }
         public static double RetornarDpiImpressao(IDimensao dimensao)
         {
-            var larguraPixels = MedidaUtil.RetornarPixelsImpressao(dimensao.Largura);
-            var alturaPixels = MedidaUtil.RetornarPixelsImpressao(dimensao.Largura);
+            var larguraPixels = RetornarPixelsImpressao(dimensao.Largura);
+            var alturaPixels = RetornarPixelsImpressao(dimensao.Largura);
             var escala = Math.Sqrt(MAXIMO_AREA_IMPRESSAO_SUPORTADA) / Math.Sqrt((larguraPixels * alturaPixels));
             if (escala > 1)
             {
-                return MedidaUtil.DPI_IMPRESSAO_PADRAO;
+                return DPI_IMPRESSAO_PADRAO;
             }
-            var dpi = MedidaUtil.DPI_IMPRESSAO_PADRAO * escala;
+            var dpi = DPI_IMPRESSAO_PADRAO * escala;
             if (DebugUtil.IsAttached)
             {
-                var larguraPixelsNormalizada = MedidaUtil.RetornarPixelsVisualizacao(dimensao.Largura, dpi);
-                var alturaPixelsNormalizada = MedidaUtil.RetornarPixelsVisualizacao(dimensao.Altura, dpi);
+                var larguraPixelsNormalizada = RetornarPixelsVisualizacao(dimensao.Largura, dpi);
+                var alturaPixelsNormalizada = RetornarPixelsVisualizacao(dimensao.Altura, dpi);
 
                 if (((larguraPixelsNormalizada * alturaPixelsNormalizada) * 0.95) > MAXIMO_AREA_IMPRESSAO_SUPORTADA)
                 {

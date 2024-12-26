@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace Snebur.Dominio.Atributos
+﻿namespace Snebur.Dominio.Atributos
 {
 
     public interface IBaseValorPadrao 

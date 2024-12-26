@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 
 namespace Snebur.Comparer
 {
-    public class StringLogicalComparer : IComparer<String>
+    public class StringLogicalComparer : IComparer<string>
     {
         private readonly NumberFormatInfo defaultNumberFormat = NumberFormatInfo.InvariantInfo;
-        private readonly String decimalSeparator = NumberFormatInfo.InvariantInfo.NumberDecimalSeparator;
+        private readonly string decimalSeparator = NumberFormatInfo.InvariantInfo.NumberDecimalSeparator;
 
         public StringLogicalComparer()
         {
@@ -25,18 +23,18 @@ namespace Snebur.Comparer
         public bool IgnoreCase { get; private set; }
         public bool FloatNumbers { get; private set; }
 
-        public int Compare(String x, String y)
+        public int Compare(string x, string y)
         {
             int count = Math.Min(x.Length, y.Length);
 
             for (int i = 0; i < count; i++)
             {
                 char xChar = x[i];
-                if (IgnoreCase)
+                if (this.IgnoreCase)
                     xChar = char.ToLower(xChar);
 
                 char yChar = y[i];
-                if (IgnoreCase)
+                if (this.IgnoreCase)
                     yChar = char.ToLower(yChar);
 
                 if (char.IsDigit(xChar) && char.IsDigit(yChar))
@@ -44,8 +42,8 @@ namespace Snebur.Comparer
                     String xsDigits = this.GetAllDigits(x, i);
                     String ysDigits = this.GetAllDigits(y, i);
 
-                    double xNumber = Convert.ToDouble(xsDigits, defaultNumberFormat);
-                    double yNumber = Convert.ToDouble(ysDigits, defaultNumberFormat);
+                    double xNumber = Convert.ToDouble(xsDigits, this.defaultNumberFormat);
+                    double yNumber = Convert.ToDouble(ysDigits, this.defaultNumberFormat);
 
                     int result = xNumber.CompareTo(yNumber);
                     if (result != 0)
@@ -73,14 +71,14 @@ namespace Snebur.Comparer
             {
                 if (!char.IsDigit(text[i]))
                 {
-                    if (!FloatNumbers || Convert.ToString(text[i]) != decimalSeparator)
+                    if (!this.FloatNumbers || Convert.ToString(text[i]) != this.decimalSeparator)
                     {
                         break;
                     }
                 }
                 result += text[i];
             }
-            if (result.EndsWith(decimalSeparator))
+            if (result.EndsWith(this.decimalSeparator))
             {
                 result = result.Substring(0, result.Length - 1);
             }

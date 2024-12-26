@@ -1,5 +1,4 @@
 ﻿using Snebur.Dominio.Atributos;
-using Snebur.Utilidade;
 using System;
 
 namespace Snebur.Utilidade

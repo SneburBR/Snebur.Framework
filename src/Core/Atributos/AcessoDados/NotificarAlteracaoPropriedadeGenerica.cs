@@ -1,6 +1,5 @@
 ﻿using Snebur.UI;
 using System;
-using System.Runtime;
 
 namespace Snebur.Dominio.Atributos
 {

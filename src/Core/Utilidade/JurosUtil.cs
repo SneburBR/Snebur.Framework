@@ -14,18 +14,18 @@ namespace Snebur.Utilidade
             {
                 case EnumTipoJuros.Simples:
 
-                    return JurosUtil.CalcularJurosSimples(valorCapital,
+                    return CalcularJurosSimples(valorCapital,
                                                           numeroParcelas,
                                                           jurosAoMes);
 
                 case EnumTipoJuros.Composto:
 
-                    return JurosUtil.CalcularJurosComposto(valorCapital,
+                    return CalcularJurosComposto(valorCapital,
                                                           numeroParcelas,
                                                           jurosAoMes);
                 case EnumTipoJuros.Amortizado:
 
-                    return JurosUtil.CalcularJurosAmortizado(valorCapital,
+                    return CalcularJurosAmortizado(valorCapital,
                                                              numeroParcelas,
                                                              jurosAoMes);
 

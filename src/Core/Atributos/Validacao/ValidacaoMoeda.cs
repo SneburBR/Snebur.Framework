@@ -80,7 +80,7 @@ namespace Snebur.Dominio.Atributos
         public override string RetornarMensagemValidacao(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
         {
             var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
-            return String.Format(ValidacaoMoedaAttribute.MensagemValidacaoPadrao, rotulo);
+            return String.Format(MensagemValidacaoPadrao, rotulo);
         }
         #endregion
     }

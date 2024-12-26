@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using Snebur.Dominio;
+﻿using Snebur.Dominio;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -80,7 +79,7 @@ namespace Snebur.Utilidade
             {
                 return false;
             }
-            return Object.Equals(objeto1, objeto2);
+            return Equals(objeto1, objeto2);
         }
 
         public static T RetornarSeVerdadeiro<T>(bool condicao, T valor)
@@ -96,7 +95,7 @@ namespace Snebur.Utilidade
         {
             var objetos = new HashSet<T>();
             var objetosAnalisados = new HashSet<object>();
-            Util.VarrerObjeto(objeto, objetos, objetosAnalisados);
+            VarrerObjeto(objeto, objetos, objetosAnalisados);
             return objetos.ToArray();
         }
 

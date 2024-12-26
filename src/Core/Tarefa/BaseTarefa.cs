@@ -69,7 +69,7 @@ namespace Snebur.Tarefa
 
         private Timer TimerAnalizarTimeout { get; set; }
 
-        private TimeSpan IntervalorAnalisarTimeout { get; set; } = BaseTarefa.TIMEOUT_PADRAO;
+        private TimeSpan IntervalorAnalisarTimeout { get; set; } = TIMEOUT_PADRAO;
 
         #region Construtor
 

@@ -31,7 +31,7 @@ namespace Snebur.Utilidade
 
         public static Dimensao RetornarDimencaoUniformeFora(Dimensao dimensao, Dimensao dimensaoRecipiente)
         {
-            return DimensaoUtil.RetornarDimencaoUniformeFora(dimensao.Largura, dimensao.Altura, dimensaoRecipiente.Largura, dimensaoRecipiente.Altura);
+            return RetornarDimencaoUniformeFora(dimensao.Largura, dimensao.Altura, dimensaoRecipiente.Largura, dimensaoRecipiente.Altura);
         }
 
         public static Dimensao RetornarDimencaoUniformeFora(double largura, double altura, double larguraRecipiente, double alturaRecipiente)
@@ -86,7 +86,7 @@ namespace Snebur.Utilidade
 
         public static Dimensao RetornarDimencaoUniformeDentro(Dimensao dimensao, Dimensao dimensaoRecipiente)
         {
-            return DimensaoUtil.RetornarDimencaoUniformeDentro(dimensao.Largura, dimensao.Altura, dimensaoRecipiente.Largura, dimensaoRecipiente.Altura);
+            return RetornarDimencaoUniformeDentro(dimensao.Largura, dimensao.Altura, dimensaoRecipiente.Largura, dimensaoRecipiente.Altura);
         }
 
         public static Dimensao RetornarDimencaoUniformeDentro(double larguraImagem, double alturaImagem, double larguraMaxima, double alturaMaxima)

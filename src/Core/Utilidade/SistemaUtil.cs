@@ -37,7 +37,7 @@ namespace Snebur.Utilidade
             get
             {
                 return LazyUtil.RetornarValorLazyComBloqueio(ref _sistemaOperacional,
-                                                            SistemaUtil.RetornarSistemaOperacional);
+                                                            RetornarSistemaOperacional);
 
             }
         }
@@ -47,7 +47,7 @@ namespace Snebur.Utilidade
             get
             {
                 return LazyUtil.RetornarValorLazyComBloqueio(ref _resolucao,
-                                                            SistemaUtil.RetornarResolucao);
+                                                            RetornarResolucao);
 
             }
         }
@@ -65,7 +65,7 @@ namespace Snebur.Utilidade
             }
         }
 
-        public static String VersaoAplicacaoString => LazyUtil.RetornarValorLazyComBloqueio(ref _versaoAplicacaoString,
+        public static string VersaoAplicacaoString => LazyUtil.RetornarValorLazyComBloqueio(ref _versaoAplicacaoString,
                                                                                       () => VersaoAplicacao.ToString());
         public static Version VersaoAplicacao => LazyUtil.RetornarValorLazyComBloqueio(ref _versaoAplicacao,
                                                                                  ReflexaoUtil.RetornarVersaoEntrada);
@@ -215,7 +215,7 @@ namespace Snebur.Utilidade
         {
             return new SistemaOperacional(EnumSistemaOperacional.Windows, "Windows",
                                           Environment.OSVersion.Version.ToString(),
-                                          SistemaUtil.RetornarCodinomeSistemaOperacional());
+                                          RetornarCodinomeSistemaOperacional());
         }
 
         private static Dimensao RetornarResolucao()

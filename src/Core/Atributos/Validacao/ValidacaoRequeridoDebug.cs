@@ -1,7 +1,6 @@
 ﻿using Snebur.Utilidade;
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 using System.Reflection;
 
 namespace Snebur.Dominio.Atributos

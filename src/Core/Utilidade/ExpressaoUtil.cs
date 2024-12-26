@@ -26,7 +26,7 @@ namespace Snebur.Utilidade
             {
                 while (true)
                 {
-                    var expressao = ExpressaoUtil.RetornarExpressaoAbreFecha(leitor,
+                    var expressao = RetornarExpressaoAbreFecha(leitor,
                                                                          isRemoverAbreFechaExtremidades,
                                                                          abre,
                                                                          fecha,
@@ -48,7 +48,7 @@ namespace Snebur.Utilidade
         }
         public static string RetornarExpressaoAbreFecha(string expressao, bool removerAbreFechaExtremidades = false, char abre = '(', char fecha = ')', bool ignorarErro = false)
         {
-            return ExpressaoUtil.RetornarExpressaoAbreFecha(new StringReader(expressao), removerAbreFechaExtremidades, abre, fecha, ignorarErro);
+            return RetornarExpressaoAbreFecha(new StringReader(expressao), removerAbreFechaExtremidades, abre, fecha, ignorarErro);
         }
         public static string RetornarExpressaoAbreFecha(TextReader leitor, bool removerAbreFecha = false, char abre = '(', char fecha = ')', bool ignorarErro = false)
         {
@@ -193,7 +193,7 @@ namespace Snebur.Utilidade
                 }
                 else
                 {
-                    expressao = ExpressaoUtil.RetornarExpressaoInterna(expressao, propriedades);
+                    expressao = RetornarExpressaoInterna(expressao, propriedades);
                 }
             }
             propriedades.Reverse();

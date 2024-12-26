@@ -75,22 +75,22 @@ namespace Snebur.Utilidade
 
             internal static HashSet<char> Numeros => LazyUtil.RetornarValorLazy(
                     ref _numeros,
-                    () => TextoUtilConstantes.NUMEROS.ToArray().ToHashSet());
+                    () => NUMEROS.ToArray().ToHashSet());
             internal static HashSet<char> PontosSinais => LazyUtil.RetornarValorLazy(
                     ref _pontosSinais,
-                    () => TextoUtilConstantes.PONTOS_SINAIS.ToArray().ToHashSet());
+                    () => PONTOS_SINAIS.ToArray().ToHashSet());
 
             internal static HashSet<char> NumerosPontosSinais => LazyUtil.RetornarValorLazy(
                     ref _numerosPontosSinais,
-                    () => (TextoUtilConstantes.NUMEROS + TextoUtilConstantes.PONTOS_SINAIS).ToArray().ToHashSet());
+                    () => (NUMEROS + PONTOS_SINAIS).ToArray().ToHashSet());
 
             internal static HashSet<char> NumerosPontosSinaisSimbolos => LazyUtil.RetornarValorLazy(
                     ref _numerosPontosSinais,
-                    () => (TextoUtilConstantes.NUMEROS + TextoUtilConstantes.PONTOS_SINAIS_SIMBOLOS).ToArray().ToHashSet());
+                    () => (NUMEROS + PONTOS_SINAIS_SIMBOLOS).ToArray().ToHashSet());
 
             internal static HashSet<char> Letras => LazyUtil.RetornarValorLazy(
                      ref _letras,
-                     () => TextoUtilConstantes.LETRAS.ToArray().ToHashSet());
+                     () => LETRAS.ToArray().ToHashSet());
 
             internal static HashSet<char> LetrasNumeros => LazyUtil.RetornarValorLazy(
                     ref _letrasNumeros,

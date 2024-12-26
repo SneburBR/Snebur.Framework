@@ -32,7 +32,7 @@ namespace Snebur.Utilidade
 
                 using (UdpClient udpClient = new UdpClient(DNS_SERVER, 53))
                 {
-                    byte[] request = CreateRequest();
+                    byte[] request = this.CreateRequest();
 
                     udpClient.Send(request, request.Length);
                     IPEndPoint endpoint = null;
@@ -92,7 +92,7 @@ namespace Snebur.Utilidade
                     {
                         int preference = this.Response[pos + 13];
                         pos += 14; //offset
-                        string record = ParseMXRecord(pos, out pos);
+                        string record = this.ParseMXRecord(pos, out pos);
                         if (!String.IsNullOrWhiteSpace(record))
                         {
                             dnsRecords.Add(new DnsRecord() { Preference = preference, Record = record });
@@ -108,7 +108,7 @@ namespace Snebur.Utilidade
                     while (nAnswers > 0)
                     {
                         pos += 11; //offset
-                        string record = ParseARecord(ref pos);
+                        string record = this.ParseARecord(ref pos);
                         dnsRecords.Add(new DnsRecord() { Record = record });
                         nAnswers--;
                     }
@@ -151,7 +151,7 @@ namespace Snebur.Utilidade
                     {
                         int newPos = this.Response[start + 1];
                         if (sb.Length > 0) sb.Append(".");
-                        sb.Append(ParseMXRecord(newPos, out newPos));
+                        sb.Append(this.ParseMXRecord(newPos, out newPos));
                         start++;
                         break;
                     }

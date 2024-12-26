@@ -19,7 +19,7 @@ namespace Snebur.Utilidade
         {
             var sb = new StringBuilder();
             sb.AppendLine(String.Format("Data hora: {0}", DateTime.Now.ToString()));
-            sb.AppendLine(ErroUtil.RetornarDescricaoDetalhadaErro(erro));
+            sb.AppendLine(RetornarDescricaoDetalhadaErro(erro));
 
             if (incluirReferencias)
             {
@@ -135,8 +135,8 @@ namespace Snebur.Utilidade
 
         public static bool IsErroSessaoInvalida(Exception ex)
         {
-            return ErroUtil.IsTipo<ErroSessaoUsuarioExpirada>(ex) ||
-                   ErroUtil.IsTipo<ErroSessaoUsuarioInvalida>(ex);
+            return IsTipo<ErroSessaoUsuarioExpirada>(ex) ||
+                   IsTipo<ErroSessaoUsuarioInvalida>(ex);
         }
     }
 }

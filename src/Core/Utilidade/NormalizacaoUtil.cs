@@ -1,6 +1,4 @@
-﻿using Snebur.Dne;
-
-namespace Snebur.Utilidade
+﻿namespace Snebur.Utilidade
 {
     public static class NormalizacaoUtil
     {

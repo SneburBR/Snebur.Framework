@@ -33,11 +33,11 @@ namespace Snebur.UI
             return retorno;
         }
 
-        private static Dictionary<EnumCor, string> DicionarioCoresSufixo { get; } = CorUtil.RetornarDicionarioCoresSufixo();
+        private static Dictionary<EnumCor, string> DicionarioCoresSufixo { get; } = RetornarDicionarioCoresSufixo();
 
         public static string RetornarNomeCor(EnumCor cor)
         {
-            return CorUtil.DicionarioCoresSufixo[cor];
+            return DicionarioCoresSufixo[cor];
         }
         //private static string RetornarNomeCor(EnumCor cor, EnumTonalidade tonalidade)
         //{

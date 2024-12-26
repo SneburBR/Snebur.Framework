@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Web;
 
 namespace Snebur.Utilidade
 {
@@ -26,7 +25,7 @@ namespace Snebur.Utilidade
 
         public static string CombinarCaminhos(string endereco1, string endereco2)
         {
-            return UriUtil.AjustarBarraFinal(endereco1) + UriUtil.RemoverBarraInicial(endereco2);
+            return AjustarBarraFinal(endereco1) + RemoverBarraInicial(endereco2);
         }
 
         public static string AjustarBarraInicialFinal(string endereco)
@@ -35,7 +34,7 @@ namespace Snebur.Utilidade
         }
         public static string AjustarBarraInicial(string endereco)
         {
-            endereco = UriUtil.InverterBarras(endereco);
+            endereco = InverterBarras(endereco);
             return "/" + RemoverBarraInicial(endereco);
         }
 
@@ -56,18 +55,18 @@ namespace Snebur.Utilidade
 
         public static string AjustarBarraFinal(string endereco)
         {
-            endereco = UriUtil.InverterBarras(endereco);
+            endereco = InverterBarras(endereco);
             return RemoverBarraFinal(endereco) + "/";
         }
 
         public static string RemoverBarrasFinalInicial(string endereco)
         {
-            return UriUtil.RemoverBarraInicial(RemoverBarraFinal(endereco));
+            return RemoverBarraInicial(RemoverBarraFinal(endereco));
         }
 
         public static string RemoverBarraInicial(string endereco)
         {
-            endereco = UriUtil.InverterBarras(endereco);
+            endereco = InverterBarras(endereco);
             while (endereco.StartsWith("/"))
             {
                 endereco = endereco.Remove(0, 1);
@@ -77,7 +76,7 @@ namespace Snebur.Utilidade
 
         public static string RemoverBarraFinal(string endereco)
         {
-            endereco = UriUtil.InverterBarras(endereco);
+            endereco = InverterBarras(endereco);
             while (endereco.EndsWith("/"))
             {
                 endereco = endereco.Remove(endereco.Length - 1, 1);

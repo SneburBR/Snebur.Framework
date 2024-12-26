@@ -10,7 +10,7 @@ namespace Snebur.Utilidade
     {
         public static string Criptografar(string chave, string conteudo)
         {
-            CriptografiaUtil.ValidarChave(chave);
+            ValidarChave(chave);
             chave = chave.Substring(0, 16);
 
             var senhaBytes = Encoding.UTF8.GetBytes(chave);
@@ -43,7 +43,7 @@ namespace Snebur.Utilidade
 
         public static string Descriptografar(string chave, string conteudo)
         {
-            CriptografiaUtil.ValidarChave(chave);
+            ValidarChave(chave);
             chave = chave.Substring(0, 16);
 
             var senhaBytes = Encoding.UTF8.GetBytes(chave);

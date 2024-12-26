@@ -121,7 +121,7 @@ namespace Snebur.Dominio
         {
             if(String.IsNullOrWhiteSpace(str))
             {
-                return Dimensao.Empty;
+                return Empty;
             }
 
             var regex = new Regex(@"[Xx;|]");

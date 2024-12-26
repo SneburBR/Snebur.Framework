@@ -24,7 +24,7 @@ namespace Snebur.Utilidade
             //    return true;
             //} 
 
-            if (!RedeUtil.RedeConectada())
+            if (!RedeConectada())
             {
                 return false;
             }
@@ -38,12 +38,12 @@ namespace Snebur.Utilidade
                     return ping;
                 }
             }
-            var pingGoogle = RedeUtil.Ping("www.google.com");
+            var pingGoogle = Ping("www.google.com");
             if (pingGoogle)
             {
                 return true;
             }
-            var pingFacebook = RedeUtil.Ping("www.facebook.com");
+            var pingFacebook = Ping("www.facebook.com");
 
             if (pingFacebook)
             {

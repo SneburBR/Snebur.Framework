@@ -22,7 +22,7 @@ namespace Snebur.Utilidade
         private static string RetornarCaminhoArquivoBackup(string caminhoArquivo, int contador = 0)
         {
             var fi = new FileInfo(caminhoArquivo);
-            var diretorio = Path.Combine(fi.Directory.FullName, "bkp");
+            var diretorio = CaminhoUtil.Combine(fi.Directory.FullName, "bkp");
             diretorio = diretorio.RetornarPrimeirosCaracteres(DiretorioUtil.LIMITE_MAXIMO_CARACTERES_CAMINHO_PASTA + 3);
             DiretorioUtil.CriarDiretorio(diretorio);
 
@@ -33,7 +33,7 @@ namespace Snebur.Utilidade
             }
             nomeArquivo += fi.Extension;
 
-            var caminho = CaminhoUtil.RetornarCaminhoArquivoSuportado(diretorio, nomeArquivo);
+            var caminho = RetornarCaminhoArquivoSuportado(diretorio, nomeArquivo);
             if (File.Exists(caminho))
             {
                 return RetornarCaminhoArquivoBackup(caminhoArquivo, contador + 1);
@@ -48,22 +48,22 @@ namespace Snebur.Utilidade
 
         public static string RetornarCaminhoArquivoTemporario(string diretorio, string extensao)
         {
-            var nomeArquivoTemporario = CaminhoUtil.RetornarNomeArquivoTemporario(extensao);
+            var nomeArquivoTemporario = RetornarNomeArquivoTemporario(extensao);
             //if (!String.IsNullOrEmpty(extensao))
             //{
             //    nomeArquivoTemporario += extensao;
             //}
-            var caminhoArquivoTemporario = Path.Combine(diretorio, nomeArquivoTemporario);
+            var caminhoArquivoTemporario = CaminhoUtil.Combine(diretorio, nomeArquivoTemporario);
             if (File.Exists(caminhoArquivoTemporario))
             {
-                return CaminhoUtil.RetornarCaminhoArquivoTemporario(diretorio, extensao);
+                return RetornarCaminhoArquivoTemporario(diretorio, extensao);
             }
             return caminhoArquivoTemporario;
         }
 
         public static string RetornarNomeArquivoTemporario()
         {
-            return CaminhoUtil.RetornarNomeArquivoTemporario(".tmp");
+            return RetornarNomeArquivoTemporario(".tmp");
         }
 
         public static string RetornarNomeArquivoTemporario(string extensao)
@@ -100,7 +100,7 @@ namespace Snebur.Utilidade
 
         public static string RetornarCaminhoAbsoluto(string caminhoRelativo, string caminhoBase)
         {
-            var caminho = Path.Combine(caminhoBase, caminhoRelativo);
+            var caminho = CaminhoUtil.Combine(caminhoBase, caminhoRelativo);
             return Path.GetFullPath(caminho);
         }
 
@@ -194,7 +194,7 @@ namespace Snebur.Utilidade
         {
             if (((diretorio.Length + nomeArquivo.Length) <= ArquivoUtil.TAMANHO_MAXIMO_CAMINHO_ARQUIVO))
             {
-                return Path.Combine(diretorio, nomeArquivo);
+                return CaminhoUtil.Combine(diretorio, nomeArquivo);
             }
             if (diretorio.Length > (DiretorioUtil.LIMITE_MAXIMO_CARACTERES_CAMINHO_PASTA + 3))
             {
@@ -212,7 +212,7 @@ namespace Snebur.Utilidade
             var divisao = (limiteSuportado / 2) - 1;
             var parteInicio = nomeArquivoSemExtensao.Substring(0, divisao);
             var parteFim = nomeArquivoSemExtensao.Substring(nomeArquivoSemExtensao.Length - divisao);
-            var parteRandom = Path.GetFileName(Path.GetFileNameWithoutExtension(CaminhoUtil.RetornarNomeArquivoTemporario())).RetornarUtlimosCaracteres(3);
+            var parteRandom = Path.GetFileName(Path.GetFileNameWithoutExtension(RetornarNomeArquivoTemporario())).RetornarUtlimosCaracteres(3);
 
             var nomeArquivoSuportado = String.Concat(parteInicio, "..", parteFim);
 
@@ -223,7 +223,7 @@ namespace Snebur.Utilidade
             nomeArquivoSuportado += parteRandom;
             nomeArquivoSuportado += extensao;
 
-            var caminhoArquivoSuportado = Path.Combine(diretorio, nomeArquivoSuportado);
+            var caminhoArquivoSuportado = CaminhoUtil.Combine(diretorio, nomeArquivoSuportado);
             if (File.Exists(caminhoArquivoSuportado))
             {
                 return RetornarCaminhoArquivoSuportado(diretorio, nomeArquivo);
@@ -237,7 +237,7 @@ namespace Snebur.Utilidade
             {
                 while (!arquivo.Exists)
                 {
-                    arquivo = new FileInfo(Path.Combine(arquivo.Directory.Parent.FullName, arquivo.Name));
+                    arquivo = new FileInfo(CaminhoUtil.Combine(arquivo.Directory.Parent.FullName, arquivo.Name));
                     if (arquivo.Directory.Parent == null)
                     {
                         return null;
@@ -252,6 +252,26 @@ namespace Snebur.Utilidade
             {
             }
             return null;
+        }
+
+        public static string Combine(string path1, string path2)
+        {
+            return Path.Combine(path1, path2);
+        }
+
+        public static string Combine(string path1, string path2, string path3)
+        {
+            return Path.Combine(path1, path2, path3);
+        }
+
+        public static string Combine(string path1, string path2, string path3, string path4)
+        {
+            return Path.Combine(path1, path2, path3, path4);
+        }
+
+        public static string Combine(params string[] paths)
+        {
+            return Path.Combine(paths);
         }
     }
 

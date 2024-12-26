@@ -153,7 +153,7 @@ namespace Snebur.Dominio
         {
             if (entidade != null)
             {
-                if (Object.ReferenceEquals(entidade.__TipoEntidade, this.__TipoEntidade))
+                if (ReferenceEquals(entidade.__TipoEntidade, this.__TipoEntidade))
                 {
                     return this.Id == entidade.Id;
                 }

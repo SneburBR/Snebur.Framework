@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 
 namespace Snebur
 {
@@ -10,7 +9,7 @@ namespace Snebur
         internal static AplicacaoSnebur _aplicacao;
         public static AplicacaoSnebur Atual
         {
-            get => AplicacaoSnebur._aplicacao;
+            get => _aplicacao;
         }
 
         public static T AtualTipada<T>() where T : AplicacaoSnebur

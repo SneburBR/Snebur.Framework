@@ -43,7 +43,7 @@ namespace Snebur.Utilidade
 
             DiretorioUtil.CriarDiretorio(diretorioDestino);
 
-            if (CompactacaoUtil.IsZip(caminhoArquivo))
+            if (IsZip(caminhoArquivo))
             {
                 return ZipUtil.Descompactar(caminhoArquivo, diretorioDestino);
             }
@@ -53,7 +53,7 @@ namespace Snebur.Utilidade
                 throw new NotSupportedException();
 #else
 
-                SevenZipCompressor.SetLibraryPath(CompactacaoUtil.CaminhoBilioteca7zip);
+                SevenZipBase.SetLibraryPath(CaminhoBilioteca7zip);
                 using (var sevenZip = new SevenZipExtractor(caminhoArquivo))
                 {
                     sevenZip.ExtractFiles(diretorioDestino, sevenZip.ArchiveFileNames.ToArray());
@@ -65,42 +65,42 @@ namespace Snebur.Utilidade
 
         public static bool IsArquiviCompactado(string caminhoArquivo)
         {
-            return CompactacaoUtil.IsArquiviCompactado(new FileInfo(caminhoArquivo));
+            return IsArquiviCompactado(new FileInfo(caminhoArquivo));
         }
 
         public static bool IsArquiviCompactado(FileInfo fi)
         {
-            return CompactacaoUtil.Extensoes.Contains(fi.Extension, new IgnorarCasoSensivel());
+            return Extensoes.Contains(fi.Extension, new IgnorarCasoSensivel());
         }
 
         public static bool IsZip(string caminhoArquivo)
         {
-            return CompactacaoUtil.IsZip(new FileInfo(caminhoArquivo));
+            return IsZip(new FileInfo(caminhoArquivo));
         }
 
         public static bool IsZip(FileInfo fi)
         {
-            return CompactacaoUtil.ExtensoesZip.Contains(fi.Extension, new IgnorarCasoSensivel());
+            return ExtensoesZip.Contains(fi.Extension, new IgnorarCasoSensivel());
         }
 
         public static bool IsRar(string caminhoArquivo)
         {
-            return CompactacaoUtil.IsRar(new FileInfo(caminhoArquivo));
+            return IsRar(new FileInfo(caminhoArquivo));
         }
 
         public static bool IsRar(FileInfo fi)
         {
-            return CompactacaoUtil.ExtensoesRar.Contains(fi.Extension, new IgnorarCasoSensivel());
+            return ExtensoesRar.Contains(fi.Extension, new IgnorarCasoSensivel());
         }
 
         public static bool IsZz(string caminhoArquivo)
         {
-            return CompactacaoUtil.IsZz(new FileInfo(caminhoArquivo));
+            return IsZz(new FileInfo(caminhoArquivo));
         }
 
         public static bool IsZz(FileInfo fi)
         {
-            return CompactacaoUtil.Extensoes7z.Contains(fi.Extension, new IgnorarCasoSensivel());
+            return Extensoes7z.Contains(fi.Extension, new IgnorarCasoSensivel());
         }
 
         private static string CaminhoBilioteca7zip
@@ -109,11 +109,11 @@ namespace Snebur.Utilidade
             {
                 if (SistemaUtil.IsAplicacao64Bits)
                 {
-                    return Path.Combine(AplicacaoSnebur.Atual.DiretorioAplicacao, "x64", "7z.dll");
+                    return CaminhoUtil.Combine(AplicacaoSnebur.Atual.DiretorioAplicacao, "x64", "7z.dll");
                 }
                 else
                 {
-                    return Path.Combine(AplicacaoSnebur.Atual.DiretorioAplicacao, "x86", "7z.dll");
+                    return CaminhoUtil.Combine(AplicacaoSnebur.Atual.DiretorioAplicacao, "x86", "7z.dll");
                 }
             }
         }

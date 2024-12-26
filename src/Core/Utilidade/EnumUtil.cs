@@ -23,7 +23,7 @@ namespace Snebur.Utilidade
 
         public static TEnum[] RetornarValoresEnum<TEnum>() where TEnum : System.Enum
         {
-            return EnumUtil.RetornarValoresEnum(typeof(TEnum)).Cast<TEnum>().ToArray();
+            return RetornarValoresEnum(typeof(TEnum)).Cast<TEnum>().ToArray();
         }
 
         public static TEnum[] RetornarFlags<TEnum>(Enum soma)
@@ -38,7 +38,7 @@ namespace Snebur.Utilidade
                 throw new Erro($"O tipo {tipoEnum.Name} não é um {nameof(Enum)}");
             }
             var enums = new List<Enum>();
-            var flags = EnumUtil.RetornarValoresEnum(tipoEnum);
+            var flags = RetornarValoresEnum(tipoEnum);
 
             foreach (var valorEnum in flags)
             {

@@ -16,7 +16,7 @@ namespace Snebur.Utilidade
         {
             using (var fs = StreamUtil.OpenRead(caminhoArquivo))
             {
-                return ChecksumUtil.RetornarChecksum(fs);
+                return RetornarChecksum(fs);
             }
         }
 
@@ -30,7 +30,7 @@ namespace Snebur.Utilidade
             using (var md5 = MD5.Create())
             {
                 var checksumHash = md5.ComputeHash(bufferStream);
-                return ChecksumUtil.FormatarChecksum(checksumHash);
+                return FormatarChecksum(checksumHash);
             }
         }
         /// <summary>
@@ -43,7 +43,7 @@ namespace Snebur.Utilidade
             using (var md5 = MD5.Create())
             {
                 var checksumHash = md5.ComputeHash(bytes);
-                return ChecksumUtil.FormatarChecksum(checksumHash);
+                return FormatarChecksum(checksumHash);
             }
         }
         /// <summary>
@@ -58,7 +58,7 @@ namespace Snebur.Utilidade
                 using (var sh256 = SHA256.Create())
                 {
                     var checksumHash = sh256.ComputeHash(stream);
-                    return ChecksumUtil.FormatarChecksum(checksumHash);
+                    return FormatarChecksum(checksumHash);
                 }
             }
         }
@@ -68,7 +68,7 @@ namespace Snebur.Utilidade
             using (var sh256 = SHA256.Create())
             {
                 var checksumHash = sh256.ComputeHash(bytes);
-                return ChecksumUtil.FormatarChecksum(checksumHash);
+                return FormatarChecksum(checksumHash);
             }
         }
 

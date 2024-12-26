@@ -12,7 +12,7 @@ namespace Snebur.Utilidade
 
         public static string Formatar(long totalBytes)
         {
-            return FormatarByteUtil.Formatar(totalBytes, 2);
+            return Formatar(totalBytes, 2);
         }
 
         public static string Formatar(long totalBytes, int casasDecimais)
@@ -38,12 +38,12 @@ namespace Snebur.Utilidade
             {
                 formato = EnumFormatacaoBytes.Terabytes;
             }
-            return FormatarByteUtil.Formatar(totalBytes, formato, casasDecimais);
+            return Formatar(totalBytes, formato, casasDecimais);
         }
 
         public static string Formatar(long totalBytes, EnumFormatacaoBytes formato)
         {
-            return FormatarByteUtil.Formatar(totalBytes, formato, 2);
+            return Formatar(totalBytes, formato, 2);
         }
 
         public static string Formatar(long totalBytes, EnumFormatacaoBytes formato, int casasDecimais)
@@ -53,13 +53,13 @@ namespace Snebur.Utilidade
                 case EnumFormatacaoBytes.Bytes:
                     return String.Format("{0} bytes", totalBytes);
                 case EnumFormatacaoBytes.Kilobytes:
-                    return String.Format("{0} Kb", FormatacaoUtil.FormatarDecimal(FormatarByteUtil.ConverterParaKB(totalBytes), casasDecimais));
+                    return String.Format("{0} Kb", FormatacaoUtil.FormatarDecimal(ConverterParaKB(totalBytes), casasDecimais));
                 case EnumFormatacaoBytes.Megabytes:
-                    return string.Format("{0} Mb", FormatacaoUtil.FormatarDecimal(FormatarByteUtil.ConverterParaMB(totalBytes), casasDecimais));
+                    return string.Format("{0} Mb", FormatacaoUtil.FormatarDecimal(ConverterParaMB(totalBytes), casasDecimais));
                 case EnumFormatacaoBytes.Gigabytes:
-                    return string.Format("{0} Gb", FormatacaoUtil.FormatarDecimal(FormatarByteUtil.ConverterParaGB(totalBytes), casasDecimais));
+                    return string.Format("{0} Gb", FormatacaoUtil.FormatarDecimal(ConverterParaGB(totalBytes), casasDecimais));
                 case EnumFormatacaoBytes.Terabytes:
-                    return string.Format("{0} Tb", FormatacaoUtil.FormatarDecimal(FormatarByteUtil.ConverterParaGB(totalBytes), casasDecimais));
+                    return string.Format("{0} Tb", FormatacaoUtil.FormatarDecimal(ConverterParaGB(totalBytes), casasDecimais));
                 default:
                     throw new NotSupportedException("Formato não suportado.");
             }

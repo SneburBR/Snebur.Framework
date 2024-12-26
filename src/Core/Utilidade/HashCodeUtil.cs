@@ -47,7 +47,7 @@ namespace Snebur.Utilidade
         public static int HashDataHora()
         {
             var d = DateTime.Now;
-            return HashCodeUtil.RetronarHashCode(d.Day, d.Month, d.Hour);
+            return RetronarHashCode(d.Day, d.Month, d.Hour);
         }
     }
 }

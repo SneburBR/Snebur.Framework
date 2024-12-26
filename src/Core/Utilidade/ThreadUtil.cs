@@ -49,13 +49,13 @@ namespace Snebur.Utilidade
             Task.Run(() =>
             {
                 Thread.Sleep((int)tempoExperar.TotalMilliseconds);
-                ThreadUtil.ExecutarAsync(acao, ignorarErro, nomeMetodo, caminhoArquivo);
+                ExecutarAsync(acao, ignorarErro, nomeMetodo, caminhoArquivo);
             });
         }
 
         public static Task EsperarAsync(TimeSpan tempo)
         {
-            return ThreadUtil.EsperarAsync((int)tempo.TotalMilliseconds);
+            return EsperarAsync((int)tempo.TotalMilliseconds);
         }
 
         public static Task EsperarAsync(int totalMilesegundos)
@@ -81,14 +81,14 @@ namespace Snebur.Utilidade
             if (ignorarErro.Value)
             {
                 var nomeClasse = System.IO.Path.GetFileNameWithoutExtension(caminhoArquivo);
-                var nomeThread = ThreadUtil.RetornarNomeThread(nomeClasse, nomeMetodo);
+                var nomeThread = RetornarNomeThread(nomeClasse, nomeMetodo);
 
                 var controleThead = new ThreadControleErro(acao, nomeThread);
                 controleThead.ExecutarAsync();
             }
             else
             {
-                ThreadUtil.ExecutarInternoAsync(acao, nomeMetodo, caminhoArquivo);
+                ExecutarInternoAsync(acao, nomeMetodo, caminhoArquivo);
             }
         }
 
@@ -101,7 +101,7 @@ namespace Snebur.Utilidade
             }
             else
             {
-                ThreadUtil.ExecutarStaAsync(acao, nomeMetodo, caminhoArquivo);
+                ExecutarStaAsync(acao, nomeMetodo, caminhoArquivo);
             }
         }
 
@@ -123,7 +123,7 @@ namespace Snebur.Utilidade
             }
 
             var nomeClasse = System.IO.Path.GetFileNameWithoutExtension(caminhoArquivo);
-            var nomeThread = ThreadUtil.RetornarNomeThread(nomeMetodo, nomeClasse);
+            var nomeThread = RetornarNomeThread(nomeMetodo, nomeClasse);
 
             var thread = new Thread(new ThreadStart(acao))
             {
@@ -141,8 +141,8 @@ namespace Snebur.Utilidade
                                                 [CallerFilePath] string caminhoArquivo = "")
         {
             var nomeClasse = System.IO.Path.GetFileNameWithoutExtension(caminhoArquivo);
-            var nomeThread = "W_" + ThreadUtil.RetornarNomeThread(nomeClasse, nomeMetodo);
-            ThreadUtil.ExecutarThread(acao, nomeThread);
+            var nomeThread = "W_" + RetornarNomeThread(nomeClasse, nomeMetodo);
+            ExecutarThread(acao, nomeThread);
         }
 
         internal static void ExecutarThread(Action acao, string nomeThread)
@@ -176,7 +176,7 @@ namespace Snebur.Utilidade
                                                       [CallerFilePath] string caminhoArquivo = "")
         {
             var nomeClasse = System.IO.Path.GetFileNameWithoutExtension(caminhoArquivo);
-            var nomeThread = "ACAO_" + ThreadUtil.RetornarNomeThread(nomeClasse, nomeMetodo);
+            var nomeThread = "ACAO_" + RetornarNomeThread(nomeClasse, nomeMetodo);
             var controleErro = new ThreadControleErro(acao, nomeThread);
             controleErro.Executar();
         }
@@ -198,8 +198,8 @@ namespace Snebur.Utilidade
         {
             lock (bloqueio)
             {
-                ThreadUtil.ContadorThread += 1;
-                return String.Format("{0}-{1}.{2}", ThreadUtil.ContadorThread, nomeClasse.RetornarPrimeirosCaracteres(20), nomeMetodo.RetornarPrimeirosCaracteres(20));
+                ContadorThread += 1;
+                return String.Format("{0}-{1}.{2}", ContadorThread, nomeClasse.RetornarPrimeirosCaracteres(20), nomeMetodo.RetornarPrimeirosCaracteres(20));
             }
         }
 #if NET45
@@ -230,7 +230,7 @@ namespace Snebur.Utilidade
             try
             {
                 var are = new AutoResetEvent(false);
-                ThreadUtil.ExecutarAsync(() =>
+                ExecutarAsync(() =>
                 {
                     try
                     {

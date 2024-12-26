@@ -20,7 +20,7 @@ namespace Snebur.Utilidade
             var retorno = new List<Feriado>();
             for (var ano = anoInicio; ano <= anoFim; ano++)
             {
-                var feriados = DataFeriadoUtil.RetornarFeriados(ano);
+                var feriados = RetornarFeriados(ano);
                 var filtro = feriados.Where(x => x.Data <= dataInicio && x.Data <= dataFim);
                 retorno.AddRange(filtro);
             }
@@ -29,7 +29,7 @@ namespace Snebur.Utilidade
         public static List<Feriado> RetornarFeriados(int ano)
         {
             var feriados = new List<Feriado>();
-            var pascoa = DataFeriadoUtil.RetornarDataPascoa(ano);
+            var pascoa = RetornarDataPascoa(ano);
 
             feriados.Add(new Feriado
             {

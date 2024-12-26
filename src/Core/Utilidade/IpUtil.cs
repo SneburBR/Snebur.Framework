@@ -1,12 +1,9 @@
 ﻿using Snebur.Dominio;
 using Snebur.Utilidade;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.CompilerServices;
 
 namespace Snebur
 {
@@ -60,7 +57,7 @@ namespace Snebur
                 ip = RetornarIpPublico();
             }   
 
-            var url = (IpUtil.IsIpVazioOuLocal(ip)) ? "http://ipinfo.io/json" :
+            var url = (IsIpVazioOuLocal(ip)) ? "http://ipinfo.io/json" :
                                                        String.Format("http://ipinfo.io/{0}/json", ip);
 
             //var cabecalho = RetornarCabecalhoUrlIpInfo();
@@ -69,7 +66,7 @@ namespace Snebur
             {
                 var ipInfo = JsonUtil.Deserializar<ipinfo>(json, EnumTipoSerializacao.Javascript);
                 var localizacao = Localizacao.Parse(ipInfo.loc);
-                var mascaraIp = IpUtil.RetornarMascaraIp4(ipInfo.ip);
+                var mascaraIp = RetornarMascaraIp4(ipInfo.ip);
 
                 return new DadosIPInformacao
                 {
@@ -81,7 +78,7 @@ namespace Snebur
                     Regiao = ipInfo.region,
                     Pais = ipInfo.country,
                     ProvedorInternet = ipInfo.org,
-                    MascaraIp4 = IpUtil.RetornarMascaraIp4(ipInfo.ip)
+                    MascaraIp4 = RetornarMascaraIp4(ipInfo.ip)
                 };
             }
             return DadosIPInformacao.Vazio;
@@ -113,7 +110,7 @@ namespace Snebur
             IPAddress ipaddress;
             if (IPAddress.TryParse(ip, out ipaddress))
             {
-                if (ipaddress.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                if (ipaddress.AddressFamily == AddressFamily.InterNetwork)
                 {
                     var partes = ipaddress.ToString().Split('.');
                     if (byte.TryParse(partes[0], out byte parte1) &&

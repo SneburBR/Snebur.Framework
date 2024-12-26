@@ -15,9 +15,9 @@ namespace Snebur.Linq
         {
             if (IsConcurrentCollection(enumerable))
             {
-                return LinqExtensao.__lock;
+                return __lock;
             }
-            return (enumerable as ICollection)?.SyncRoot ?? LinqExtensao.__lock;
+            return (enumerable as ICollection)?.SyncRoot ?? __lock;
         }
 
         public static T TryGet<T>(this IList<T> colecao, int index)

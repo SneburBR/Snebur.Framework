@@ -36,7 +36,7 @@ namespace Snebur.Dominio
 
         public static Localizacao Parse(string localicacaoString)
         {
-            return Localizacao.Parse(localicacaoString, ',');
+            return Parse(localicacaoString, ',');
         }
 
         public static Localizacao Parse(string localicacaoString, char divisor)
@@ -55,7 +55,7 @@ namespace Snebur.Dominio
                     return new Localizacao(latitude, longitude);
                 }
             }
-            return Localizacao.Empty;
+            return Empty;
         }
 
         //public override Localizacao Clone()

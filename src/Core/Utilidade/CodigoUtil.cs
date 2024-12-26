@@ -18,7 +18,7 @@ namespace Snebur.Utilidade
                 throw new Exception("O nome da variável não pode conter espaços");
             }
 
-            var partes = CodigoUtil.RetornarPartes(nome.Trim(), formatacaoOrigem)
+            var partes = RetornarPartes(nome.Trim(), formatacaoOrigem)
                                     .Where(x => !String.IsNullOrWhiteSpace(x))
                                     .ToArray();
             switch (formatacaoDestino)

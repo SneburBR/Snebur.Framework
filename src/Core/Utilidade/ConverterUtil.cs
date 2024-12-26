@@ -14,7 +14,7 @@ namespace Snebur.Utilidade
 
         public static T Converter<T>(object valor)
         {
-            return (T)ConverterUtil.Converter(valor, typeof(T));
+            return (T)Converter(valor, typeof(T));
         }
 
         public static object Converter(object valor, Type tipo)
@@ -28,7 +28,7 @@ namespace Snebur.Utilidade
                     {
                         return null;
                     }
-                    return ConverterUtil.RetornarValorNuloPadrao(ReflexaoUtil.RetornarTipoPrimarioEnum(tipo));
+                    return RetornarValorNuloPadrao(ReflexaoUtil.RetornarTipoPrimarioEnum(tipo));
                 }
                 return null;
             }
@@ -44,13 +44,13 @@ namespace Snebur.Utilidade
             }
 
 
-            if (tipo.IsValueType || tipo == typeof(String))
+            if (tipo.IsValueType || tipo == typeof(string))
             {
                 if (tipo.IsEnum)
                 {
                     return Enum.ToObject(tipo, Convert.ToInt32(valor));
                 }
-                return ConverterUtil.ConverterTipoPrimario(valor, ReflexaoUtil.RetornarTipoPrimarioEnum(tipo));
+                return ConverterTipoPrimario(valor, ReflexaoUtil.RetornarTipoPrimarioEnum(tipo));
             }
 
             if (tipo.IsInterface)
@@ -67,9 +67,9 @@ namespace Snebur.Utilidade
         public static object ConverterTipoPrimario(object valor,
                                                   EnumTipoPrimario tipoPrimarioEnum)
         {
-            if (ConverterUtil.IsValorVazioOuNull(valor))
+            if (IsValorVazioOuNull(valor))
             {
-                return ConverterUtil.RetornarValorNuloPadrao(tipoPrimarioEnum);
+                return RetornarValorNuloPadrao(tipoPrimarioEnum);
             }
             else
             {
@@ -77,31 +77,31 @@ namespace Snebur.Utilidade
                 {
                     case EnumTipoPrimario.String:
 
-                        return ConverterUtil.ParaString(valor);
+                        return ParaString(valor);
 
                     case EnumTipoPrimario.Boolean:
 
-                        return ConverterUtil.ParaBoolean(valor);
+                        return ParaBoolean(valor);
 
                     case EnumTipoPrimario.Integer:
 
-                        return ConverterUtil.ParaInt32(valor);
+                        return ParaInt32(valor);
 
                     case EnumTipoPrimario.Long:
 
-                        return ConverterUtil.ParaInt64(valor);
+                        return ParaInt64(valor);
 
                     case EnumTipoPrimario.Decimal:
 
-                        return ConverterUtil.ParaDecimal(valor);
+                        return ParaDecimal(valor);
 
                     case EnumTipoPrimario.Double:
 
-                        return ConverterUtil.ParaDouble(valor);
+                        return ParaDouble(valor);
 
                     case EnumTipoPrimario.Guid:
 
-                        return ConverterUtil.ParaGuid(valor);
+                        return ParaGuid(valor);
 
                     case EnumTipoPrimario.TimeSpan:
 
@@ -109,11 +109,11 @@ namespace Snebur.Utilidade
 
                     case EnumTipoPrimario.DateTime:
 
-                        return ConverterUtil.ParaDateTime(valor);
+                        return ParaDateTime(valor);
 
                     case EnumTipoPrimario.Single:
 
-                        return ConverterUtil.ParaSingle(valor);
+                        return ParaSingle(valor);
 
                     //case EnumTipoPrimario.Uri:
 
@@ -248,7 +248,7 @@ namespace Snebur.Utilidade
             {
                 return (int)valor;
             }
-            if (ConverterUtil.IsValorVazioOuNull(valor))
+            if (IsValorVazioOuNull(valor))
             {
                 return 0;
             }
@@ -266,7 +266,7 @@ namespace Snebur.Utilidade
             {
                 return lvalor;
             }
-            if (ConverterUtil.IsValorVazioOuNull(valor))
+            if (IsValorVazioOuNull(valor))
             {
                 return 0L;
             }
@@ -283,7 +283,7 @@ namespace Snebur.Utilidade
             {
                 return d;
             }
-            if (ConverterUtil.IsValorVazioOuNull(valor))
+            if (IsValorVazioOuNull(valor))
             {
                 return 0M;
             }
@@ -300,7 +300,7 @@ namespace Snebur.Utilidade
             {
                 return d;
             }
-            if (ConverterUtil.IsValorVazioOuNull(valor))
+            if (IsValorVazioOuNull(valor))
             {
                 return 0D;
             }
@@ -318,7 +318,7 @@ namespace Snebur.Utilidade
                 return d;
             }
 
-            if (ConverterUtil.IsValorVazioOuNull(valor))
+            if (IsValorVazioOuNull(valor))
             {
                 return 0D;
             }
@@ -338,7 +338,7 @@ namespace Snebur.Utilidade
                 return d;
             }
 
-            if (ConverterUtil.IsValorVazioOuNull(valor))
+            if (IsValorVazioOuNull(valor))
             {
                 return DateTime.Now;
             }
@@ -506,7 +506,7 @@ namespace Snebur.Utilidade
                 var r = (byte)Convert.ToInt32(corHexa.Substring(0, 1), 16);
                 var g = (byte)Convert.ToInt32(corHexa.Substring(1, 1), 16);
                 var b = (byte)Convert.ToInt32(corHexa.Substring(2, 1), 16);
-                return ConverterUtil.RetornarRgbaCorInterno(r, g, b, 255);
+                return RetornarRgbaCorInterno(r, g, b, 255);
             }
             else
             {
@@ -521,7 +521,7 @@ namespace Snebur.Utilidade
                 var b = (byte)Convert.ToInt32(strB, 16);
                 var a = (byte)Convert.ToInt32(strA, 16);
 
-                return ConverterUtil.RetornarRgbaCorInterno(r, g, b, a);
+                return RetornarRgbaCorInterno(r, g, b, a);
             }
             //return null;
         }

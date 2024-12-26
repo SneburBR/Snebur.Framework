@@ -23,7 +23,7 @@ namespace Snebur.Utilidade
 #if DEBUG
             ErroUtil.ValidarReferenciaNula(tipo, nameof(tipo));
 #endif
-            tipo = ReflexaoUtil.RetornarTipoSemNullable(tipo);
+            tipo = RetornarTipoSemNullable(tipo);
 
             if (tipo.IsEnum)
             {
@@ -176,9 +176,9 @@ namespace Snebur.Utilidade
 #endif
             if (removerNullable)
             {
-                tipo = ReflexaoUtil.RetornarTipoSemNullable(tipo);
+                tipo = RetornarTipoSemNullable(tipo);
             }
-            var tipoPrimarioEnum = ReflexaoUtil.RetornarTipoPrimarioEnum(tipo);
+            var tipoPrimarioEnum = RetornarTipoPrimarioEnum(tipo);
             return (tipoPrimarioEnum != EnumTipoPrimario.Desconhecido);
         }
 
@@ -187,7 +187,7 @@ namespace Snebur.Utilidade
 #if DEBUG
             ErroUtil.ValidarReferenciaNula(tipo, nameof(tipo));
 #endif
-            if (ReflexaoUtil.IsTipoNullable(tipo))
+            if (IsTipoNullable(tipo))
             {
                 return tipo.GetGenericArguments().Single();
             }
@@ -230,7 +230,7 @@ namespace Snebur.Utilidade
 
         public static bool IsTipoRetornaColecaoEntidade(Type tipo)
         {
-            if (ReflexaoUtil.IsTipoRetornaColecao(tipo))
+            if (IsTipoRetornaColecao(tipo))
             {
                 if (tipo.IsGenericType &&
                     tipo.GetGenericArguments().Count() == 1)
@@ -248,7 +248,7 @@ namespace Snebur.Utilidade
             ErroUtil.ValidarReferenciaNula(tipoEntidade, nameof(tipoEntidade));
 #endif
             if (tipoEntidade.IsSubclassOf(typeof(Entidade)) ||
-                ReflexaoUtil.IsTipoImplementaInterface(tipoEntidade, typeof(IEntidade)))
+                IsTipoImplementaInterface(tipoEntidade, typeof(IEntidade)))
             {
                 return true;
             }
@@ -385,7 +385,7 @@ namespace Snebur.Utilidade
 
         public static bool IsTipoNumerico(Type tipo)
         {
-            tipo = ReflexaoUtil.RetornarTipoSemNullable(tipo);
+            tipo = RetornarTipoSemNullable(tipo);
             switch (Type.GetTypeCode(tipo))
             {
                 case TypeCode.Byte:

@@ -1,7 +1,6 @@
 ﻿using Snebur.Dominio;
 using System;
 using System.Collections.Specialized;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Xml;
@@ -64,14 +63,14 @@ namespace Snebur.Utilidade
         {
             get
             {
-                if (ConfiguracaoUtil._caminhoAppDataAplicacao == null || ConfiguracaoUtil.IsAtualizarCaminhoAppData(_caminhoAppDataAplicacao, true))
+                if (_caminhoAppDataAplicacao == null || IsAtualizarCaminhoAppData(_caminhoAppDataAplicacao, true))
                 {
                     lock (_bloqueioCaminhoAppData)
                     {
-                        if (_caminhoAppDataAplicacao == null || ConfiguracaoUtil.IsAtualizarCaminhoAppData(_caminhoAppDataAplicacao, true))
+                        if (_caminhoAppDataAplicacao == null || IsAtualizarCaminhoAppData(_caminhoAppDataAplicacao, true))
                         {
-                            var caminhoAppData = ConfiguracaoUtil.CaminhoAppDataAplicacaoSemVersao;
-                            _caminhoAppDataAplicacao = Path.Combine(caminhoAppData, AplicacaoSnebur.Atual.VersaoAplicao.ToString());
+                            var caminhoAppData = CaminhoAppDataAplicacaoSemVersao;
+                            _caminhoAppDataAplicacao = CaminhoUtil.Combine(caminhoAppData, AplicacaoSnebur.Atual.VersaoAplicao.ToString());
                             DiretorioUtil.CriarDiretorio(_caminhoAppDataAplicacao);
                         }
                     }
@@ -102,51 +101,51 @@ namespace Snebur.Utilidade
         {
             get
             {
-                if (ConfiguracaoUtil._caminhoAppDataAplicacaoLogs == null)
+                if (_caminhoAppDataAplicacaoLogs == null)
                 {
-                    var caminhoApp = ConfiguracaoUtil._caminhoAppDataAplicacao;
+                    var caminhoApp = _caminhoAppDataAplicacao;
                     lock (_bloqueioCaminhoAppData)
                     {
-                        if (ConfiguracaoUtil._caminhoAppDataAplicacaoLogs == null)
+                        if (_caminhoAppDataAplicacaoLogs == null)
                         {
-                            _caminhoAppDataAplicacaoLogs = Path.Combine(caminhoApp, "Logs");
+                            _caminhoAppDataAplicacaoLogs = CaminhoUtil.Combine(caminhoApp, "Logs");
                             DiretorioUtil.CriarDiretorio(_caminhoAppDataAplicacaoLogs);
                         }
                     }
                 }
-                return ConfiguracaoUtil._caminhoAppDataAplicacaoLogs;
+                return _caminhoAppDataAplicacaoLogs;
             }
         }
 
         public static string RetornarCaminhoArquivoApplicationSettingsPadrao()
         {
-            return Path.Combine(ConfiguracaoUtil.CaminhoAppDataAplicacaoSemVersao, NOME_PADRAO_ARQUIVO_APPLICATIIONS_SETTING);
+            return CaminhoUtil.Combine(CaminhoAppDataAplicacaoSemVersao, NOME_PADRAO_ARQUIVO_APPLICATIIONS_SETTING);
         }
 
         public static string CaminhoAppDataAplicacaoSemVersao
         {
             get
             {
-                if (ConfiguracaoUtil._caminhoAppDataAplicacaoSemVersao == null ||
-                    ConfiguracaoUtil.IsAtualizarCaminhoAppData(_caminhoAppDataAplicacaoSemVersao, true))
+                if (_caminhoAppDataAplicacaoSemVersao == null ||
+                    IsAtualizarCaminhoAppData(_caminhoAppDataAplicacaoSemVersao, true))
                 {
                     lock (_bloqueioCaminhoAppData)
                     {
-                        if (_caminhoAppDataAplicacaoSemVersao == null || ConfiguracaoUtil.IsAtualizarCaminhoAppData(_caminhoAppDataAplicacaoSemVersao, true))
+                        if (_caminhoAppDataAplicacaoSemVersao == null || IsAtualizarCaminhoAppData(_caminhoAppDataAplicacaoSemVersao, true))
                         {
-                            var caminhoAppData = ConfiguracaoUtil.RetornarCaminhoLocalAppData();
+                            var caminhoAppData = RetornarCaminhoLocalAppData();
 
-                            _caminhoAppDataAplicacaoSemVersao = Path.Combine(caminhoAppData, AplicacaoSnebur.Atual.NomeEmpresa);
+                            _caminhoAppDataAplicacaoSemVersao = CaminhoUtil.Combine(caminhoAppData, AplicacaoSnebur.Atual.NomeEmpresa);
 
-                            if (ConfiguracaoUtil.AmbienteServidor != EnumAmbienteServidor.Producao)
+                            if (AmbienteServidor != EnumAmbienteServidor.Producao)
                             {
-                                _caminhoAppDataAplicacaoSemVersao = Path.Combine(_caminhoAppDataAplicacaoSemVersao, ConfiguracaoUtil.AmbienteServidor.ToString());
+                                _caminhoAppDataAplicacaoSemVersao = CaminhoUtil.Combine(_caminhoAppDataAplicacaoSemVersao, AmbienteServidor.ToString());
                             }
-                            _caminhoAppDataAplicacaoSemVersao = Path.Combine(_caminhoAppDataAplicacaoSemVersao, AplicacaoSnebur.Atual.IdentificadorAplicacao);
+                            _caminhoAppDataAplicacaoSemVersao = CaminhoUtil.Combine(_caminhoAppDataAplicacaoSemVersao, AplicacaoSnebur.Atual.IdentificadorAplicacao);
 
                             if (AplicacaoSnebur.Atual.IsSeperarAppDataPorIdentificadorPropretario)
                             {
-                                _caminhoAppDataAplicacaoSemVersao = Path.Combine(_caminhoAppDataAplicacaoSemVersao, AplicacaoSnebur.Atual.IdentificadorProprietario);
+                                _caminhoAppDataAplicacaoSemVersao = CaminhoUtil.Combine(_caminhoAppDataAplicacaoSemVersao, AplicacaoSnebur.Atual.IdentificadorProprietario);
                             }
                             DiretorioUtil.CriarDiretorio(_caminhoAppDataAplicacaoSemVersao);
                         }
@@ -160,22 +159,22 @@ namespace Snebur.Utilidade
         {
             get
             {
-                if (ConfiguracaoUtil._caminhoAppDataAplicacaoSemIdentificadorPropretario == null ||
-                    ConfiguracaoUtil.IsAtualizarCaminhoAppData(_caminhoAppDataAplicacaoSemVersao, true))
+                if (_caminhoAppDataAplicacaoSemIdentificadorPropretario == null ||
+                    IsAtualizarCaminhoAppData(_caminhoAppDataAplicacaoSemVersao, true))
                 {
                     lock (_bloqueioCaminhoAppData)
                     {
                         if (_caminhoAppDataAplicacaoSemIdentificadorPropretario == null ||
-                            ConfiguracaoUtil.IsAtualizarCaminhoAppData(_caminhoAppDataAplicacaoSemIdentificadorPropretario, true))
+                            IsAtualizarCaminhoAppData(_caminhoAppDataAplicacaoSemIdentificadorPropretario, true))
                         {
-                            var caminhoAppData = ConfiguracaoUtil.RetornarCaminhoLocalAppData();
+                            var caminhoAppData = RetornarCaminhoLocalAppData();
 
-                            _caminhoAppDataAplicacaoSemIdentificadorPropretario = Path.Combine(caminhoAppData, AplicacaoSnebur.Atual.NomeEmpresa);
-                            if (ConfiguracaoUtil.AmbienteServidor != EnumAmbienteServidor.Producao)
+                            _caminhoAppDataAplicacaoSemIdentificadorPropretario = CaminhoUtil.Combine(caminhoAppData, AplicacaoSnebur.Atual.NomeEmpresa);
+                            if (AmbienteServidor != EnumAmbienteServidor.Producao)
                             {
-                                _caminhoAppDataAplicacaoSemIdentificadorPropretario = Path.Combine(_caminhoAppDataAplicacaoSemIdentificadorPropretario, ConfiguracaoUtil.AmbienteServidor.ToString());
+                                _caminhoAppDataAplicacaoSemIdentificadorPropretario = CaminhoUtil.Combine(_caminhoAppDataAplicacaoSemIdentificadorPropretario, AmbienteServidor.ToString());
                             }
-                            _caminhoAppDataAplicacaoSemIdentificadorPropretario = Path.Combine(_caminhoAppDataAplicacaoSemIdentificadorPropretario,
+                            _caminhoAppDataAplicacaoSemIdentificadorPropretario = CaminhoUtil.Combine(_caminhoAppDataAplicacaoSemIdentificadorPropretario,
                                                                                                 AplicacaoSnebur.Atual.NomeAplicacao);
 
                             DiretorioUtil.CriarDiretorio(_caminhoAppDataAplicacaoSemIdentificadorPropretario);
@@ -210,7 +209,7 @@ namespace Snebur.Utilidade
 
         public static string CaminhoAppDataAplicacaoTemporario()
         {
-            var diretorioTemporario = Path.Combine(ConfiguracaoUtil.CaminhoAppDataAplicacaoSemVersao, "Temp");
+            var diretorioTemporario = CaminhoUtil.Combine(CaminhoAppDataAplicacaoSemVersao, "Temp");
             DiretorioUtil.CriarDiretorio(diretorioTemporario);
             return diretorioTemporario;
         }

@@ -53,7 +53,7 @@ namespace Snebur.Utilidade
         {
             if (value == null)
             {
-                return System.Data.SqlDbType.Variant;
+                return SqlDbType.Variant;
             }
 
             var type = value.GetType();
@@ -66,35 +66,35 @@ namespace Snebur.Utilidade
             switch (Type.GetTypeCode(type))
             {
                 case TypeCode.String:
-                    return System.Data.SqlDbType.NVarChar;
+                    return SqlDbType.NVarChar;
                 case TypeCode.Int32:
-                    return System.Data.SqlDbType.Int;
+                    return SqlDbType.Int;
                 case TypeCode.Int64:
-                    return System.Data.SqlDbType.BigInt;
+                    return SqlDbType.BigInt;
                 case TypeCode.Double:
-                    return System.Data.SqlDbType.Float;
+                    return SqlDbType.Float;
                 case TypeCode.Decimal:
-                    return System.Data.SqlDbType.Decimal;
+                    return SqlDbType.Decimal;
                 case TypeCode.DateTime:
-                    return System.Data.SqlDbType.DateTime;
+                    return SqlDbType.DateTime;
                 case TypeCode.Boolean:
-                    return System.Data.SqlDbType.Bit;
+                    return SqlDbType.Bit;
                 case TypeCode.Byte:
-                    return System.Data.SqlDbType.TinyInt;
+                    return SqlDbType.TinyInt;
                 case TypeCode.Char:
-                    return System.Data.SqlDbType.Char;
+                    return SqlDbType.Char;
                 case TypeCode.Int16:
-                    return System.Data.SqlDbType.SmallInt;
+                    return SqlDbType.SmallInt;
                 case TypeCode.Single:
-                    return System.Data.SqlDbType.Real;
+                    return SqlDbType.Real;
                 default:
                     if (type == typeof(Guid))
                     {
-                        return System.Data.SqlDbType.UniqueIdentifier;
+                        return SqlDbType.UniqueIdentifier;
                     }
                     if (type.IsEnum)
                     {
-                        return System.Data.SqlDbType.Int;
+                        return SqlDbType.Int;
                     }
                     throw new Exception($"The type {type.Name} is not supported");
             }

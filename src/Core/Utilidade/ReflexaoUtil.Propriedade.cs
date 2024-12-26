@@ -15,20 +15,20 @@ namespace Snebur.Utilidade
             var caminhos = new List<string>();
             foreach (var expressao in expressoesCaminhoPropriedade)
             {
-                caminhos.Add(ReflexaoUtil.RetornarCaminhoPropriedade(expressao));
+                caminhos.Add(RetornarCaminhoPropriedade(expressao));
             }
             return caminhos;
         }
 
         public static List<string> RetornarNomesPropriedade<T>(params Expression<Func<T, object>>[] expressoesPropriedade)
         {
-            var propriedades = ReflexaoUtil.RetornarPropriedades(expressoesPropriedade);
+            var propriedades = RetornarPropriedades(expressoesPropriedade);
             return propriedades.Select(x => x.Name).ToList();
         }
 
         public static string RetornarNomePropriedade<T>(Expression<Func<T, object>> expressaoPropriedade)
         {
-            return ReflexaoUtil.RetornarPropriedade<T>(expressaoPropriedade).Name;
+            return RetornarPropriedade(expressaoPropriedade).Name;
         }
 
         public static string RetornarCaminhoPropriedade<T>(Expression<Func<T, object>> expressaoCaminhoPropriedade)
@@ -51,7 +51,7 @@ namespace Snebur.Utilidade
 
         public static List<PropertyInfo> RetornarPropriedades<T>()
         {
-            return ReflexaoUtil.RetornarPropriedades(typeof(T));
+            return RetornarPropriedades(typeof(T));
         }
         /// <summary>
         /// 
@@ -64,7 +64,7 @@ namespace Snebur.Utilidade
                                                              bool ignorarPropriedadesTipoBase = false, 
                                                              bool publica = true)
         {
-            var propriedades = tipo.GetProperties(ReflexaoUtil.BindingFlags).AsEnumerable();
+            var propriedades = tipo.GetProperties(BindingFlags).AsEnumerable();
             if (ignorarPropriedadesTipoBase && tipo.BaseType != null)
             {
                 propriedades = propriedades.Where(x => x.DeclaringType == tipo);
@@ -79,7 +79,7 @@ namespace Snebur.Utilidade
 
         public static List<PropertyInfo> RetornarPropriedadePossuiAtributo<TAttribute>(Type tipoEntidade) where TAttribute : Attribute
         {
-            var propriedades = ReflexaoUtil.RetornarPropriedades(tipoEntidade);
+            var propriedades = RetornarPropriedades(tipoEntidade);
             return propriedades.Where(x => x.GetCustomAttribute<TAttribute>() != null).ToList();
         }
 
@@ -94,7 +94,7 @@ namespace Snebur.Utilidade
             var propriedades = new List<PropertyInfo>();
             foreach (var expressao in expressoesCaminhoPropriedade)
             {
-                propriedades.Add(ReflexaoUtil.RetornarPropriedade<T>(expressao));
+                propriedades.Add(RetornarPropriedade(expressao));
             }
             return propriedades;
         }
@@ -111,10 +111,10 @@ namespace Snebur.Utilidade
                 bindingFlags = bindingFlags | BindingFlags.DeclaredOnly;
             }
 
-            var propriedades = ReflexaoUtil.RetornarPropriedades(tipo, bindingFlags);
+            var propriedades = RetornarPropriedades(tipo, bindingFlags);
             if (ignorarPropriedadesTipoBase && tipo.BaseType != null)
             {
-                return propriedades.Where(x => Object.ReferenceEquals(x.DeclaringType, tipo)).ToList();
+                return propriedades.Where(x => ReferenceEquals(x.DeclaringType, tipo)).ToList();
             }
             else
             {
@@ -156,7 +156,7 @@ namespace Snebur.Utilidade
                     tipoAtual = propriedade.PropertyType;
                     propriedades.Add(propriedade);
 
-                    if (propriedade.PropertyType.IsGenericType && ReflexaoUtil.IsTipoRetornaColecaoEntidade(propriedade.PropertyType))
+                    if (propriedade.PropertyType.IsGenericType && IsTipoRetornaColecaoEntidade(propriedade.PropertyType))
                     {
                         tipoAtual = tipoAtual.GetGenericArguments().First();
                     }
@@ -169,7 +169,7 @@ namespace Snebur.Utilidade
                                                              string nomePropriedade,
                                                              Func<Type, string, PropertyInfo> resolverPropriedadeNaoEncontrada)
         {
-            var propriedade = tipoAtual.GetProperties(ReflexaoUtil.BindingFlags).Where(x => x.Name == nomePropriedade).SingleOrDefault();
+            var propriedade = tipoAtual.GetProperties(BindingFlags).Where(x => x.Name == nomePropriedade).SingleOrDefault();
             if (propriedade == null)
             {
                 return resolverPropriedadeNaoEncontrada?.Invoke(tipoAtual, nomePropriedade);
@@ -201,7 +201,7 @@ namespace Snebur.Utilidade
 
         public static PropertyInfo RetornarPropriedade(Type tipo, string nomePropriedade)
         {
-            return ReflexaoUtil.RetornarPropriedade(tipo, nomePropriedade, false);
+            return RetornarPropriedade(tipo, nomePropriedade, false);
         }
 
         public static PropertyInfo RetornarPropriedade(Type tipo, 
@@ -212,9 +212,9 @@ namespace Snebur.Utilidade
 
             PropertyInfo pi = default(PropertyInfo);
 
-            while (!Object.ReferenceEquals(tipoAtual, typeof(object)))
+            while (!ReferenceEquals(tipoAtual, typeof(object)))
             {
-                pi = tipoAtual.GetProperty(nomePropriedade, ReflexaoUtil.BindingFlags);
+                pi = tipoAtual.GetProperty(nomePropriedade, BindingFlags);
                 pi = tipoAtual.GetProperty(nomePropriedade);
                 if (pi != null)
                 {
@@ -237,7 +237,7 @@ namespace Snebur.Utilidade
         //Métodos para centralizar o retorno dos valores das propriedades
         public static object RetornarValorPropriedade(object objeto, string nomePropriedade)
         {
-            var pi = ReflexaoUtil.RetornarPropriedade(objeto.GetType(),
+            var pi = RetornarPropriedade(objeto.GetType(),
                                                       nomePropriedade, false);
 
             var valorPropriedade = pi.GetValue(objeto, null);
@@ -258,7 +258,7 @@ namespace Snebur.Utilidade
 
         public static void AtribuirValorPropriedade(object objeto, PropertyInfo pi, object valor)
         {
-            pi.SetValue(objeto, valor, ReflexaoUtil.BindingFlags, null, null, null);
+            pi.SetValue(objeto, valor, BindingFlags, null, null, null);
         }
 
         public static bool IsPropriedadeRetornaColecao(PropertyInfo pi)
@@ -273,7 +273,7 @@ namespace Snebur.Utilidade
 
         public static bool IsPropriedadeRetornaTipoPrimario(PropertyInfo propriedade, bool removerNullable = false)
         {
-            return ReflexaoUtil.TipoRetornaTipoPrimario(propriedade.PropertyType, removerNullable);
+            return TipoRetornaTipoPrimario(propriedade.PropertyType, removerNullable);
         }
 
         public static bool IsPropriedadeRetornaTipoComplexo(PropertyInfo propriedade, bool removerNullable = false)
@@ -289,11 +289,11 @@ namespace Snebur.Utilidade
         /// <returns>Retornar PropertyInfo </returns>
         public static PropertyInfo RetornarPropriedade(Type tipo, string nomePropriedade, Type tipoAtributo)
         {
-            var propriedades = ReflexaoUtil.RetornarPropriedades(tipo);
+            var propriedades = RetornarPropriedades(tipo);
             var propriedadesEncontrada = propriedades.Where(x => x.Name == nomePropriedade).ToList();
             if (propriedadesEncontrada.Count == 0)
             {
-                propriedadesEncontrada = propriedades.Where(x => ReflexaoUtil.IsPropriedadePossuiAtributo(x, tipoAtributo)).ToList();
+                propriedadesEncontrada = propriedades.Where(x => IsPropriedadePossuiAtributo(x, tipoAtributo)).ToList();
             }
             if (propriedadesEncontrada.Count == 0)
             {

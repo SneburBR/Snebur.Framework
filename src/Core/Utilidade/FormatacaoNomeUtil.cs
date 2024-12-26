@@ -16,13 +16,13 @@ namespace Snebur.Utilidade
 
         public static string FormatarNome(string nome)
         {
-            var partes = FormatacaoNomeUtil.RetornarPartes(nome);
+            var partes = RetornarPartes(nome);
             return String.Join(" ", partes);
         }
 
         public static (string, string) FormatarNomeSobrenome(string nomeCompleto)
         {
-            var partesNomeCompleto = FormatacaoNomeUtil.RetornarPartes(nomeCompleto);
+            var partesNomeCompleto = RetornarPartes(nomeCompleto);
 
             var partesNome = new List<string>();
             var partesSobrenome = partesNomeCompleto.ToList();
@@ -43,7 +43,7 @@ namespace Snebur.Utilidade
 
         public static string FormatarNomeUltimoSobrenome(string nomeCompleto)
         {
-            var partesNomeCompleto = FormatacaoNomeUtil.RetornarPartes(nomeCompleto);
+            var partesNomeCompleto = RetornarPartes(nomeCompleto);
             //var nome = partesNomeCompleto.First();
             var partesNome = new List<string>();
             var partesSobrenome = partesNomeCompleto.ToList();
@@ -65,8 +65,8 @@ namespace Snebur.Utilidade
         public static string FormatarNomeCompleto(string nome, string sobrenome)
         {
             var nomeCompleto = $"{nome} {sobrenome}";
-            var partes = FormatacaoNomeUtil.RetornarPartes(nomeCompleto);
-            return FormatacaoNomeUtil.UnirPartes(partes);
+            var partes = RetornarPartes(nomeCompleto);
+            return UnirPartes(partes);
         }
         private static List<string> RetornarPartes(string nome)
         {
@@ -85,10 +85,10 @@ namespace Snebur.Utilidade
             {
                 return String.Join(" ", partes.Distinct());
             }
-            var partesUnicas = new List<String>();
+            var partesUnicas = new List<string>();
             foreach (var parte in partes)
             {
-                if (FormatacaoNomeUtil.IsAbreviacao(parte) ||
+                if (IsAbreviacao(parte) ||
                     partesUnicas.Contains(parte))
                 {
                     partesUnicas.Add(parte);

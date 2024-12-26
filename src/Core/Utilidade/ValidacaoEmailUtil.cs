@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -33,14 +32,14 @@ namespace Snebur.Utilidade
         private static bool IsEmailAccountValid(string email, 
                                                 DnsUtil.DnsRecord record)
         {
-            var operetions = new Func<CancellationToken, bool>[ValidacaoEmailUtil.PortasSmtp.Length];
+            var operetions = new Func<CancellationToken, bool>[PortasSmtp.Length];
 
-            for (var i = 0; i < ValidacaoEmailUtil.PortasSmtp.Length; i++)
+            for (var i = 0; i < PortasSmtp.Length; i++)
             {
-                var porta = ValidacaoEmailUtil.PortasSmtp[i];
+                var porta = PortasSmtp[i];
                 operetions[i] = token =>
                 {
-                    return ValidacaoEmailUtil.IsEmailAccountValid(record.Record,
+                    return IsEmailAccountValid(record.Record,
                                                                     email,
                                                                     porta);
                 };

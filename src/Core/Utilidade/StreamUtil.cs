@@ -8,8 +8,9 @@ namespace Snebur.Utilidade
     public static class StreamUtil
     {
         //private const int TAMANHO_BUFFER = 5;
-        private const int TAMANHO_BUFFER_PADRAO = 32 * 1024;
-        private const int TAMANHO_BUFFER_MINIMO = 1024;
+        private const int TAMANHO_BUFFER_MAXIMO = 1024 * 1024;
+        private const int TAMANHO_BUFFER_PADRAO = 256 * 1024;
+        private const int TAMANHO_BUFFER_MINIMO = 32 * 1024;
 
         /// <summary>
         /// Ler as stream, buffer a buffer e retornar um MemoryStream, util,
@@ -21,7 +22,7 @@ namespace Snebur.Utilidade
         public static MemoryStream RetornarMemoryStream(Stream stream,
                                                         Action<StreamProgressEventArgs> callbackProgresso = null)
         {
-            return StreamUtil.RetornarMemoryStreamBuferizada(stream,
+            return RetornarMemoryStreamBuferizada(stream,
                                                              TAMANHO_BUFFER_PADRAO,
                                                              callbackProgresso);
         }
@@ -29,7 +30,7 @@ namespace Snebur.Utilidade
                                                                   Action<StreamProgressEventArgs> callbackProgresso = null,
                                                                   long contentLenght = 0)
         {
-            return StreamUtil.RetornarMemoryStreamBuferizada(stream,
+            return RetornarMemoryStreamBuferizada(stream,
                                                              TAMANHO_BUFFER_PADRAO,
                                                              callbackProgresso,
                                                              contentLenght);
@@ -45,12 +46,12 @@ namespace Snebur.Utilidade
                 streamOrigem.Seek(0, SeekOrigin.Begin);
             }
             var ms = new MemoryStream();
-            StreamUtil.SalvarStreamBufferizada(streamOrigem, ms, tamanhoBuffer, callbackProgresso, contentLenght);
+            SalvarStreamBufferizada(streamOrigem, ms, tamanhoBuffer, callbackProgresso, contentLenght);
             return ms;
         }
         public static void SalvarStreamBufferizada(Stream streamOrigem, Stream streamDestino)
         {
-            StreamUtil.SalvarStreamBufferizada(streamOrigem, streamDestino, TAMANHO_BUFFER_PADRAO);
+            SalvarStreamBufferizada(streamOrigem, streamDestino, TAMANHO_BUFFER_PADRAO);
         }
 
         public static void SalvarStreamBufferizada(Stream streamOrigem,
@@ -61,19 +62,18 @@ namespace Snebur.Utilidade
         {
             var totalBytesRecebitos = 0;
             var totalBytes = streamOrigem.CanSeek ? streamOrigem.Length : contentLenght;
-
+       
             if (streamOrigem.CanSeek)
             {
                 streamOrigem.Seek(0, SeekOrigin.Begin);
             }
 
-            tamanhoBuffer = Math.Max(TAMANHO_BUFFER_MINIMO, TAMANHO_BUFFER_PADRAO);
-             
+            tamanhoBuffer = Math.Min(Math.Max(TAMANHO_BUFFER_MINIMO, tamanhoBuffer), TAMANHO_BUFFER_MAXIMO);
 
-            while (true)
+            byte[] buffer = new byte[tamanhoBuffer];
+            int bytesRecebido;
+            while ((bytesRecebido = streamOrigem.Read(buffer, 0, buffer.Length)) != 0)
             {
-                var buffer = new byte[tamanhoBuffer];
-                var bytesRecebido = streamOrigem.Read(buffer, 0, tamanhoBuffer);
                 streamDestino.Write(buffer, 0, bytesRecebido);
                 totalBytesRecebitos += bytesRecebido;
 
@@ -81,13 +81,9 @@ namespace Snebur.Utilidade
                 {
                     callbackProgresso(new StreamProgressEventArgs(totalBytesRecebitos, totalBytes));
                 }
-
-                if (bytesRecebido == 0)
-                {
-                    break;
-                }
-                streamDestino.Flush();
+                 //streamDestino.Flush();
             }
+            
             if (streamDestino.CanSeek)
             {
                 streamDestino.Seek(0, SeekOrigin.Begin);
@@ -124,13 +120,13 @@ namespace Snebur.Utilidade
         {
             if (stream is MemoryStream)
             {
-                StreamUtil.SalvarMemoryStream(caminhoArquivo, (MemoryStream)stream);
+                SalvarMemoryStream(caminhoArquivo, (MemoryStream)stream);
             }
             else
             {
-                using (var ms = StreamUtil.RetornarMemoryStream(stream))
+                using (var ms = RetornarMemoryStream(stream))
                 {
-                    StreamUtil.SalvarMemoryStream(caminhoArquivo, ms);
+                    SalvarMemoryStream(caminhoArquivo, ms);
                 }
             }
         }
@@ -140,23 +136,28 @@ namespace Snebur.Utilidade
             File.WriteAllBytes(caminhoArquivo, stream.ToArray());
         }
 
-        public static FileStream OpenRead(string caminhoArquivo)
+        public static FileStream OpenRead(string caminhoArquivo, int bufferSize = TAMANHO_BUFFER_PADRAO)
         {
             if (!File.Exists(caminhoArquivo))
             {
                 throw new ErroArquivoNaoEncontrado(caminhoArquivo);
             }
-            return new FileStream(caminhoArquivo, FileMode.Open, FileAccess.Read, FileShare.Read);
+            return new FileStream(caminhoArquivo,
+                                  FileMode.Open,
+                                  FileAccess.Read,
+                                  FileShare.Read,
+                                  bufferSize);
         }
 
-        public static FileStream CreateWrite(string caminhoArquivo)
+        public static FileStream CreateWrite(string caminhoArquivo, 
+                                             int bufferSize = TAMANHO_BUFFER_PADRAO)
         {
             if (File.Exists(caminhoArquivo))
             {
                 ArquivoUtil.DeletarArquivo(caminhoArquivo, false, true);
             }
             DiretorioUtil.CriarDiretorio(Path.GetDirectoryName(caminhoArquivo));
-            return new FileStream(caminhoArquivo, FileMode.Create, FileAccess.Write, FileShare.Write);
+            return new FileStream(caminhoArquivo, FileMode.Create, FileAccess.Write, FileShare.Write, bufferSize);
         }
         public static FileStream CreateOrOpenWrite(string caminhoArquivo, bool isForcar = false)
         {
@@ -166,7 +167,7 @@ namespace Snebur.Utilidade
             {
                 try
                 {
-                    
+
                     return new FileStream(caminhoArquivo, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write);
                 }
                 catch (IOException)
@@ -187,7 +188,7 @@ namespace Snebur.Utilidade
 
         public static byte[] RetornarTodosBytes(string caminhoParte)
         {
-            using (var fs = StreamUtil.OpenRead(caminhoParte))
+            using (var fs = OpenRead(caminhoParte))
             {
                 using (var ms = RetornarMemoryStreamBuferizada(fs))
                 {
@@ -215,16 +216,16 @@ namespace Snebur.Utilidade
         public static void CopiarArquivo(string caminhoOrigem,
                                          string caminhoDestinio)
         {
-            StreamUtil.CopiarArquivo(caminhoOrigem, caminhoDestinio, TAMANHO_BUFFER_PADRAO);
+            CopiarArquivo(caminhoOrigem, caminhoDestinio, TAMANHO_BUFFER_PADRAO);
         }
 
         public static void CopiarArquivo(string caminhoOrigem,
                                          string caminhoDestinio,
                                          Action<StreamProgressEventArgs> callbackProgresso = null)
         {
-            StreamUtil.CopiarArquivo(caminhoOrigem, 
-                                     caminhoDestinio, 
-                                     TAMANHO_BUFFER_PADRAO, 
+            CopiarArquivo(caminhoOrigem,
+                                     caminhoDestinio,
+                                     TAMANHO_BUFFER_PADRAO,
                                      callbackProgresso);
 
         }
@@ -237,10 +238,11 @@ namespace Snebur.Utilidade
             {
                 throw new FileNotFoundException(caminhoOrigem);
             }
-            using (var streamOrigem = StreamUtil.OpenRead(caminhoOrigem))
-            using (var streamDestino = StreamUtil.CreateWrite(caminhoDestinio))
+
+            using (var streamOrigem = OpenRead(caminhoOrigem, tamanhoBuffer))
+            using (var streamDestino = CreateWrite(caminhoDestinio, tamanhoBuffer))
             {
-                StreamUtil.SalvarStreamBufferizada(streamOrigem, streamDestino,
+                SalvarStreamBufferizada(streamOrigem, streamDestino,
                                                   tamanhoBuffer,
                                                   callbackProgresso);
             }

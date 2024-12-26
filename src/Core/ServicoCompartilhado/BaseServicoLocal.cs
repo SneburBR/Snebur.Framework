@@ -16,7 +16,7 @@ namespace Snebur.Servicos
             {
                 if (this._retornarRepositorioLogs == null)
                 {
-                    this._retornarRepositorioLogs = Path.Combine(ConfiguracaoUtil.CaminhoAppDataAplicacao, "Logs", this.RetornarPastaLog());
+                    this._retornarRepositorioLogs = CaminhoUtil.Combine(ConfiguracaoUtil.CaminhoAppDataAplicacao, "Logs", this.RetornarPastaLog());
                     DiretorioUtil.CriarDiretorio(this._retornarRepositorioLogs);
                 }
                 return this._retornarRepositorioLogs;
@@ -60,7 +60,7 @@ namespace Snebur.Servicos
             try
             {
                 var nomeArquivo = String.Format("{0}.log", DateTime.Now.ToString("yyyy-MMMM-dd"));
-                var caminhoArquivo = Path.Combine(this.RetornarRepositorioLogs, nomeArquivo);
+                var caminhoArquivo = CaminhoUtil.Combine(this.RetornarRepositorioLogs, nomeArquivo);
 
                 lock (Bloqueio)
                 {

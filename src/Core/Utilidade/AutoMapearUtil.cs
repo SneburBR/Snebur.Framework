@@ -16,17 +16,17 @@ namespace Snebur.Utilidade
     {
         public static void Mapear(object origem, object destino)
         {
-            AutoMapearUtil.Mapear(origem, destino, false);
+            Mapear(origem, destino, false);
         }
 
         public static void Mapear(object origem, object destino, bool ignorarErro, Func<(PropertyInfo PropriedadeOrigem, PropertyInfo PropriedadeDestino), bool> manipuladorIsMapearPropriedade)
         {
-            AutoMapearUtil.Mapear(origem, destino, ignorarErro, null, manipuladorIsMapearPropriedade);
+            Mapear(origem, destino, ignorarErro, null, manipuladorIsMapearPropriedade);
         }
 
         public static void Mapear(object origem, object destino, bool ignorarErro)
         {
-            AutoMapearUtil.Mapear(origem, destino, ignorarErro, new List<string>());
+            Mapear(origem, destino, ignorarErro, new List<string>());
         }
 
         public static void Mapear<TOrigem>(TOrigem origem, object destino, bool ignorarErro, params Expression<Func<TOrigem, object>>[] propriedadesIgnoraOrigem)
@@ -36,12 +36,12 @@ namespace Snebur.Utilidade
             {
                 propriedades.AddRange(ExpressaoUtil.RetornarPropriedades(expressao));
             }
-            AutoMapearUtil.Mapear<TOrigem>(origem, destino, ignorarErro, propriedades);
+            Mapear(origem, destino, ignorarErro, propriedades);
         }
 
         public static void Mapear<TOrigem>(TOrigem origem, object destino, bool ignorarErro, List<PropertyInfo> propriedades)
         {
-            AutoMapearUtil.Mapear(origem, destino, ignorarErro, propriedades.Select(x => x.Name).ToList());
+            Mapear(origem, destino, ignorarErro, propriedades.Select(x => x.Name).ToList());
         }
 
         public static void Mapear(object origem, object destino, bool ignorarErro, List<string> propriedadesIgnroar, Func<(PropertyInfo PropriedadeOrigem, PropertyInfo PropriedadeDestino), bool> manipuladorIsMapearPropriedade = null)
@@ -57,7 +57,7 @@ namespace Snebur.Utilidade
 
             if (destino is Entidade entidade)
             {
-                var propriedadeIngorar = AutoMapearUtil.RetornarPropriedadesIngorarAutoMapear(entidade.GetType());
+                var propriedadeIngorar = RetornarPropriedadesIngorarAutoMapear(entidade.GetType());
                 propriedadesDestino.RemoveRange(propriedadeIngorar);
                 //propriedadesDestino.Remove(EntidadeUtil.RetornarPropriedad(entidade.GetType()));
             }

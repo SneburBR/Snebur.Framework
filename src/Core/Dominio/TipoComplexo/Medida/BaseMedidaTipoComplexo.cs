@@ -1,7 +1,6 @@
 ﻿using Snebur.Dominio.Atributos;
 using Snebur.Utilidade;
 using System;
-using System.Diagnostics;
 
 namespace Snebur.Dominio
 {

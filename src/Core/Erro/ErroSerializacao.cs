@@ -11,7 +11,7 @@ namespace System
                               [CallerMemberName] string nomeMetodo = "",
                               [CallerFilePath] string caminhoArquivo = "",
                               [CallerLineNumber] int linhaDoErro = 0) :
-                              base(ErroSerializacao.RetornarMensagem(conteudo, erroInterno), erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
+                              base(RetornarMensagem(conteudo, erroInterno), erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
         {
         }
 
@@ -20,7 +20,7 @@ namespace System
                                 [CallerMemberName] string nomeMetodo = "",
                                 [CallerFilePath] string caminhoArquivo = "",
                                 [CallerLineNumber] int linhaDoErro = 0) :
-                                base(ErroSerializacao.RetornarMensagem(objeto, erroInterno), erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
+                                base(RetornarMensagem(objeto, erroInterno), erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
         {
         }
         //public ErroSerializacao(string mensagem = "",

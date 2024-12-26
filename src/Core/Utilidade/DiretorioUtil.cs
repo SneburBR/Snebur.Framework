@@ -33,13 +33,13 @@ namespace Snebur.Utilidade
                                                bool isRemoverAcento = false)
         {
             string retorno;
-            if (DiretorioUtil.IsDireotrioRaiz(caminho))
+            if (IsDireotrioRaiz(caminho))
             {
                 retorno = TextoUtil.RemoverCaracteres(caminho, Path.GetInvalidPathChars());
             }
             else
             {
-                retorno = TextoUtil.RemoverCaracteres(caminho, DiretorioUtil.CaracteresInvalidos);
+                retorno = TextoUtil.RemoverCaracteres(caminho, CaracteresInvalidos);
             }
             if (isRemoverCaracterEspecial)
             {
@@ -71,7 +71,7 @@ namespace Snebur.Utilidade
         {
             try
             {
-                return Path.Combine(caminhos);
+                return CaminhoUtil.Combine(caminhos);
             }
             catch (Exception ex)
             {
@@ -82,8 +82,21 @@ namespace Snebur.Utilidade
 
         public static string ComibarFormatado(params string[] caminhos)
         {
-            var caminhosFormatado = caminhos.Select(x => DiretorioUtil.FormatarNomePasta(x)).ToArray();
-            return Path.Combine(caminhosFormatado);
+            var caminhosFormatado = caminhos.Select(x => FormatarNomePasta(x)).ToArray();
+            return CaminhoUtil.Combine(caminhosFormatado);
+        }
+
+        public static void CopiarDiretorio(string caminhoOrigem,
+                                           string caminhoDestino,
+                                           bool copiarSubDiretorios,
+                                           Func<FileInfo, bool> funcaoIsCopiar)
+        {
+            CopiarDiretorio(caminhoOrigem,
+                                          caminhoDestino,
+                                          copiarSubDiretorios,
+                                          null,
+                                          funcaoIsCopiar);
+
         }
         /// <summary>
         /// Testar codigo de https://msdn.microsoft.com/en-us/library/bb762914(v=vs.110).aspx
@@ -104,14 +117,14 @@ namespace Snebur.Utilidade
             {
                 throw new Erro($"O caminho do origem não existe {caminhoOrigem}");
             }
-            DiretorioUtil.CriarDiretorio(caminhoDestino);
+            CriarDiretorio(caminhoDestino);
             var arquivos = String.IsNullOrWhiteSpace(searchPattern) ? diretorio.GetFiles() :
-                                                                        diretorio.GetFiles(searchPattern);
+                                                                     diretorio.GetFiles(searchPattern);
             foreach (var arquivo in arquivos)
             {
                 if (funcaoIsCopiar == null || funcaoIsCopiar.Invoke(arquivo))
                 {
-                    var caminhoArquivoDestino = Path.Combine(caminhoDestino, arquivo.Name);
+                    var caminhoArquivoDestino = CaminhoUtil.Combine(caminhoDestino, arquivo.Name);
                     arquivo.CopyTo(caminhoArquivoDestino, true);
                 }
             }
@@ -120,7 +133,7 @@ namespace Snebur.Utilidade
                 var subDiretorios = diretorio.GetDirectories();
                 foreach (DirectoryInfo subDiretorio in subDiretorios)
                 {
-                    var caminhoArquivoDestino = Path.Combine(caminhoDestino, subDiretorio.Name);
+                    var caminhoArquivoDestino = CaminhoUtil.Combine(caminhoDestino, subDiretorio.Name);
                     CopiarDiretorio(subDiretorio.FullName, caminhoArquivoDestino, copiarSubDiretorios, searchPattern, funcaoIsCopiar);
                 }
             }
@@ -129,11 +142,11 @@ namespace Snebur.Utilidade
         public static void CopiarTodosArquivo(string diretorioOrigem, string diretorioDestino, bool ignorarErro = false, bool forcar = false)
         {
             var arquivos = Directory.GetFiles(diretorioOrigem);
-            DiretorioUtil.CriarDiretorio(diretorioDestino);
+            CriarDiretorio(diretorioDestino);
             foreach (var arquivo in arquivos)
             {
                 var caminhoRelativo = arquivo.Substring(diretorioOrigem.Length + 1);
-                var caminhoDestino = Path.Combine(diretorioDestino, caminhoRelativo);
+                var caminhoDestino = CaminhoUtil.Combine(diretorioDestino, caminhoRelativo);
                 ArquivoUtil.DeletarArquivo(caminhoDestino, ignorarErro, forcar);
                 ArquivoUtil.CopiarArquivo(arquivo, caminhoDestino, true);
             }
@@ -148,7 +161,7 @@ namespace Snebur.Utilidade
                 {
                     File.Move(caminho, caminho + $".file.{DateTime.Now:yyyy-MM-dd-HH-mm.ss.ffff}");
                 }
-                
+
                 try
                 {
                     Directory.CreateDirectory(caminho);
@@ -162,7 +175,7 @@ namespace Snebur.Utilidade
 
         public static void ExcluirDiretorio(string caminho)
         {
-            DiretorioUtil.ExcluirDiretorio(caminho, true, false);
+            ExcluirDiretorio(caminho, true, false);
         }
 
         public static void ExcluirDiretorio(string caminho,
@@ -172,12 +185,12 @@ namespace Snebur.Utilidade
         {
             if (isExcluirTodosArquivos)
             {
-                DiretorioUtil.ExcluirTodosArquivo(caminho,
+                ExcluirTodosArquivo(caminho,
                                                   true,
                                                   ignorarErro,
                                                   isForcar);
             }
-            DiretorioUtil.ExcluirDiretorioInterno(caminho, true, ignorarErro);
+            ExcluirDiretorioInterno(caminho, true, ignorarErro);
         }
 
         private static bool ExcluirDiretorioInterno(string caminho, bool recursivo, bool ignorarErro)
@@ -222,18 +235,18 @@ namespace Snebur.Utilidade
         {
             try
             {
-                DiretorioUtil.CriarDiretorio(Path.GetDirectoryName(diretorioDestino));
+                CriarDiretorio(Path.GetDirectoryName(diretorioDestino));
                 if (isSobreEscrever)
                 {
-                    DiretorioUtil.ExcluirDiretorio(diretorioDestino, true, true);
+                    ExcluirDiretorio(diretorioDestino, true, true);
                 }
                 if (Directory.Exists(diretorioDestino))
                 {
-                    DiretorioUtil.CopiarTodosArquivo(diretorioOrigem,
+                    CopiarTodosArquivo(diretorioOrigem,
                                                      diretorioDestino,
                                                      false,
                                                      true);
-                    DiretorioUtil.ExcluirDiretorio(diretorioDestino,
+                    ExcluirDiretorio(diretorioDestino,
                                                    true,
                                                    true,
                                                    true);
@@ -270,13 +283,13 @@ namespace Snebur.Utilidade
 
         public static void ExcluirTodosArquivo(string caminhoDiretorio)
         {
-            DiretorioUtil.ExcluirTodosArquivo(caminhoDiretorio, false);
+            ExcluirTodosArquivo(caminhoDiretorio, false);
         }
 
         public static void ExcluirTodosArquivo(string caminhoDiretorio,
                                                bool incluirSubDiretorios)
         {
-            DiretorioUtil.ExcluirTodosArquivo(caminhoDiretorio,
+            ExcluirTodosArquivo(caminhoDiretorio,
                                               incluirSubDiretorios,
                                               false,
                                               false);
@@ -286,14 +299,14 @@ namespace Snebur.Utilidade
                                                bool isIncluirSubDiretorios,
                                                bool isIgnorarErro,
                                                bool isForcar = false,
-                                               string[] ignorarArquvos = null )
+                                               string[] ignorarArquvos = null)
         {
             if (Directory.Exists(caminhoDiretorio))
             {
                 var arquivos = Directory.GetFiles(caminhoDiretorio).ToList();
                 foreach (var arquivo in arquivos)
                 {
-                    if(ignorarArquvos?.Contains(Path.GetFileName(arquivo), StringComparison.InvariantCultureIgnoreCase) == true)
+                    if (ignorarArquvos?.Contains(Path.GetFileName(arquivo), StringComparison.InvariantCultureIgnoreCase) == true)
                     {
                         continue;
                     }
@@ -306,8 +319,8 @@ namespace Snebur.Utilidade
                     var subsDiretorio = Directory.GetDirectories(caminhoDiretorio);
                     foreach (var subDiretorio in subsDiretorio)
                     {
-                        DiretorioUtil.ExcluirTodosArquivo(subDiretorio, isIncluirSubDiretorios, isIgnorarErro);
-                        DiretorioUtil.ExcluirDiretorio(subDiretorio);
+                        ExcluirTodosArquivo(subDiretorio, isIncluirSubDiretorios, isIgnorarErro);
+                        ExcluirDiretorio(subDiretorio);
                     }
                 }
             }
@@ -353,14 +366,14 @@ namespace Snebur.Utilidade
 
         public static bool PossuiPermissaoGravao(string caminhoDiretorio)
         {
-            var isRede = DiretorioUtil.IsRede(caminhoDiretorio);
+            var isRede = IsRede(caminhoDiretorio);
             if (isRede)
             {
-                return DiretorioUtil.TestarPermissaoGravao(caminhoDiretorio);
+                return TestarPermissaoGravao(caminhoDiretorio);
             }
             else
             {
-                return DiretorioUtil.DiretorioPossuiPermissaoGravao(caminhoDiretorio);
+                return DiretorioPossuiPermissaoGravao(caminhoDiretorio);
             }
         }
         /// <summary>
@@ -378,7 +391,7 @@ namespace Snebur.Utilidade
             {
                 return true;
             }
-            if (DiretorioUtil.IsDireotrioRaiz(caminhoDiretorio))
+            if (IsDireotrioRaiz(caminhoDiretorio))
             {
                 var raiz = new DirectoryInfo(caminhoDiretorio);
                 var disco = new DriveInfo(raiz.Root.FullName);
@@ -436,23 +449,23 @@ namespace Snebur.Utilidade
                     return isPermiteGravacao && !isGravacaoNegada;
                 }
 
-                return DiretorioUtil.TestarPermissaoGravao(caminhoDiretorio);
+                return TestarPermissaoGravao(caminhoDiretorio);
             }
             catch
             {
-                return DiretorioUtil.TestarPermissaoGravao(caminhoDiretorio);
+                return TestarPermissaoGravao(caminhoDiretorio);
             }
         }
 
         public static DirectoryInfo RetornarDiretorioPaiExisteArquivo(string caminho, string nomeArquivo)
         {
-            return DiretorioUtil.RetornarDiretorioPai(caminho, (x) => x.GetFiles().Any(f => f.Name.Equals(nomeArquivo, StringComparison.InvariantCultureIgnoreCase)));
+            return RetornarDiretorioPai(caminho, (x) => x.GetFiles().Any(f => f.Name.Equals(nomeArquivo, StringComparison.InvariantCultureIgnoreCase)));
         }
 
         public static DirectoryInfo RetornarDiretorioPai(string caminho, Func<DirectoryInfo, bool> funcaoCondicao, bool ignorarErro = true)
         {
             var diretorio = new DirectoryInfo(caminho);
-            return DiretorioUtil.RetornarDiretorioPai(diretorio, funcaoCondicao, ignorarErro);
+            return RetornarDiretorioPai(diretorio, funcaoCondicao, ignorarErro);
         }
 
         public static DirectoryInfo RetornarDiretorioPai(DirectoryInfo diretorio, Func<DirectoryInfo, bool> condicao, bool ignorarErro = true)
@@ -476,9 +489,9 @@ namespace Snebur.Utilidade
         {
             try
             {
-                var caminhoTemp = Path.Combine(caminhoDiretorio);
-                DiretorioUtil.CriarDiretorio(caminhoTemp);
-                var caminhoArquivoTemp = Path.Combine(caminhoTemp, $"{Guid.NewGuid()}.txt");
+                var caminhoTemp = CaminhoUtil.Combine(caminhoDiretorio);
+                CriarDiretorio(caminhoTemp);
+                var caminhoArquivoTemp = CaminhoUtil.Combine(caminhoTemp, $"{Guid.NewGuid()}.txt");
                 File.WriteAllText(caminhoArquivoTemp, Guid.NewGuid().ToString(), Encoding.UTF8);
                 var atributos = File.GetAttributes(caminhoArquivoTemp) | FileAttributes.Hidden;
                 File.SetAttributes(caminhoArquivoTemp, atributos);
@@ -509,5 +522,31 @@ namespace Snebur.Utilidade
         {
             return caminho.Replace("/", "\\");
         }
+
+        public static string RetornarDiretorioPai(IEnumerable<string> caminhos,
+                                                  bool ignorarErro = false)
+        {
+            //find the common prefix
+            caminhos = caminhos.Select(path => NormalizarCaminho(path)).ToArray();
+            string prefix = caminhos.First();
+            foreach (string path in caminhos.Skip(1))
+            {
+                while (!path.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+                {
+                    prefix = prefix.Substring(0, prefix.Length - 1);
+                }
+            }
+
+            if (String.IsNullOrEmpty(prefix))
+            {
+                if (ignorarErro)
+                {
+                    return prefix;
+                }
+                throw new Erro("Não foi possivel encontrar o diretorio pai");
+            }
+            return prefix;
+        }
+ 
     }
 }

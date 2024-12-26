@@ -10,8 +10,8 @@
                 return new CredencialUsuario
                 {
                     Nome= "Anônimo",
-                    IdentificadorUsuario = CredencialAnonimo.IDENTIFICADOR_USUARIO,
-                    Senha = CredencialAnonimo.SENHA
+                    IdentificadorUsuario = IDENTIFICADOR_USUARIO,
+                    Senha = SENHA
                 };
             }
         }
@@ -29,8 +29,8 @@
             {
                 return new CredencialServico
                 {
-                    IdentificadorUsuario = CredencialServicoAnonimo.IDENTIFICADOR_USUARIO,
-                    Senha = CredencialServicoAnonimo.SENHA
+                    IdentificadorUsuario = IDENTIFICADOR_USUARIO,
+                    Senha = SENHA
                 };
             }
         }

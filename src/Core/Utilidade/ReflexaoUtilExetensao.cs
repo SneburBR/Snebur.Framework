@@ -10,7 +10,7 @@ namespace Snebur.Utilidade
     {
         public static object RetornarValorPadraoPropriedade(PropertyInfo propriedade)
         {
-            var aceitaNulo = !propriedade.PropertyType.IsValueType || ReflexaoUtil.IsTipoNullable(propriedade.PropertyType);
+            var aceitaNulo = !propriedade.PropertyType.IsValueType || IsTipoNullable(propriedade.PropertyType);
 
             var atributoValorPadrao = propriedade.GetCustomAttribute<ValorPadraoAttribute>();
             if (atributoValorPadrao != null)
@@ -23,7 +23,7 @@ namespace Snebur.Utilidade
             }
             else
             {
-                var tipoPrimarioEnum = ReflexaoUtil.RetornarTipoPrimarioEnum(propriedade.PropertyType);
+                var tipoPrimarioEnum = RetornarTipoPrimarioEnum(propriedade.PropertyType);
                 return ConverterUtil.RetornarValorNuloPadrao(tipoPrimarioEnum);
             }
         }
@@ -68,10 +68,10 @@ namespace Snebur.Utilidade
 
         public static List<PropertyInfo> RetornarPropriedadesEntidade(Type tipo)
         {
-            return ReflexaoUtil.RetornarPropriedades(tipo, true).
+            return RetornarPropriedades(tipo, true).
                                     Where(x =>
                                     {
-                                        if (ReflexaoUtil.IsPropriedadeRetornaTipoPrimario(x, true) &&
+                                        if (IsPropriedadeRetornaTipoPrimario(x, true) &&
                                             x.GetGetMethod() != null && x.GetGetMethod().IsPublic &&
                                             x.GetSetMethod() != null && x.GetSetMethod().IsPublic)
                                         {

@@ -22,21 +22,21 @@ namespace Snebur.Utilidade
 
                     if (valor is long || valor is int)
                     {
-                        return FormatacaoUtil.FormatarBytes((long)valor);
+                        return FormatarBytes((long)valor);
                     }
-                    return FormatacaoUtil.FormatarBytes(valor.ToString());
+                    return FormatarBytes(valor.ToString());
 
                 case EnumFormatacao.Cep:
-                    return FormatacaoUtil.FormatarCep(valor.ToString());
+                    return FormatarCep(valor.ToString());
                 case EnumFormatacao.Cpf:
                 case EnumFormatacao.Cnpj:
 
-                    return FormatacaoUtil.FormatarCpfCnpj(valor.ToString());
+                    return FormatarCpfCnpj(valor.ToString());
 
                 case EnumFormatacao.Telefone:
-                    return FormatacaoUtil.FormatarTelefone(valor.ToString());
+                    return FormatarTelefone(valor.ToString());
                 case EnumFormatacao.Moeda:
-                    return FormatacaoUtil.FormatarMoeda(ConverterUtil.ParaDecimal(valor));
+                    return FormatarMoeda(ConverterUtil.ParaDecimal(valor));
 
                 case EnumFormatacao.MoedaComSinal:
                 case EnumFormatacao.Inteiro:
@@ -44,21 +44,21 @@ namespace Snebur.Utilidade
 
                 case EnumFormatacao.Decimal:
 
-                    return FormatacaoUtil.FormatarDecimal(ConverterUtil.ParaDecimal(valor));
+                    return FormatarDecimal(ConverterUtil.ParaDecimal(valor));
                 case EnumFormatacao.Decimal1:
-                    return FormatacaoUtil.FormatarDecimal(ConverterUtil.ParaDecimal(valor), 1);
+                    return FormatarDecimal(ConverterUtil.ParaDecimal(valor), 1);
                 case EnumFormatacao.Decimal3:
-                    return FormatacaoUtil.FormatarDecimal(ConverterUtil.ParaDecimal(valor), 3);
+                    return FormatarDecimal(ConverterUtil.ParaDecimal(valor), 3);
                 case EnumFormatacao.Data:
-                    return FormatacaoUtil.FormatarData(valor, 3);
+                    return FormatarData(valor, 3);
                 case EnumFormatacao.Hora:
-                    return FormatacaoUtil.FormatarHora(valor, 3);
+                    return FormatarHora(valor, 3);
                 case EnumFormatacao.Dimensao:
-                    return FormatacaoUtil.FormatarDimensao(ConverterUtil.ParaDimensao(valor));
+                    return FormatarDimensao(ConverterUtil.ParaDimensao(valor));
                 case EnumFormatacao.DimensaoCm:
-                    return FormatacaoUtil.FormatarDimensaoCm(ConverterUtil.ParaDimensao(valor));
+                    return FormatarDimensaoCm(ConverterUtil.ParaDimensao(valor));
                 case EnumFormatacao.DimensaoPixels:
-                    return FormatacaoUtil.FormatarDimensaoPixels(ConverterUtil.ParaDimensao(valor));
+                    return FormatarDimensaoPixels(ConverterUtil.ParaDimensao(valor));
                 case EnumFormatacao.DataHora:
 
                 case EnumFormatacao.HoraDescricao:
@@ -126,7 +126,7 @@ namespace Snebur.Utilidade
                 case EnumFormatacao.Prazo:
                     break;
                 case EnumFormatacao.Proteger:
-                    return FormatacaoUtil.Proteger(valor.ToString());
+                    return Proteger(valor.ToString());
 
                 default:
                     break;

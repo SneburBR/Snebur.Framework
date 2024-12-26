@@ -20,10 +20,10 @@ namespace Snebur.Utilidade
             {
                 while (!RedeUtil.InternetConectada())
                 {
-                    InternetUtil.MostrarMensagemSemInternet();
-                    System.Threading.Thread.Sleep((int)TimeSpan.FromSeconds(TEMPO_ESPERAR).TotalMilliseconds);
+                    MostrarMensagemSemInternet();
+                    Thread.Sleep((int)TimeSpan.FromSeconds(TEMPO_ESPERAR).TotalMilliseconds);
                 }
-                InternetUtil.FecharMensagemSemInternet();
+                FecharMensagemSemInternet();
             }
         }
 
@@ -31,17 +31,17 @@ namespace Snebur.Utilidade
         {
             if (AplicacaoSnebur.Atual.Alerta != null)
             {
-                if (InternetUtil.IsMostrarMensagem())
+                if (IsMostrarMensagem())
                 {
                     //InternetUtil._dataHoraUltimaVisualizacao = DateTime.Now;
 
-                    if (!InternetUtil._mensagemAtiva)
+                    if (!_mensagemAtiva)
                     {
                         lock (_bloqueio)
                         {
-                            if (!InternetUtil._mensagemAtiva)
+                            if (!_mensagemAtiva)
                             {
-                                InternetUtil._mensagemAtiva = true;
+                                _mensagemAtiva = true;
 
                                 ThreadUtil.ExecutarMainThread(() =>
                                 {
@@ -49,15 +49,15 @@ namespace Snebur.Utilidade
                                     var nomeProduto = AplicacaoSnebur.Atual.NomeAplicacao;
                                     var conteudo = String.Format("Não foi possível conectar o {0} com a internet.\nPor gentileza, verifique sua conexão.\nApós reestabelecer a conexão o sistema voltará automaticamente.", nomeProduto);
 
-                                    InternetUtil.Alerta = AplicacaoSnebur.Atual.Alerta.Mostrar(conteudo,
+                                    Alerta = AplicacaoSnebur.Atual.Alerta.Mostrar(conteudo,
                                                                                                  titulo,
                                                                                                  EnumTipoAlerta.Atencao,
                                                                                                  EnumBotoesAlerta.Nenhum, (resultado) =>
                                                                                                  {
                                                                                                      //InternetUtil._dataHoraUltimaVisualizacao = DateTime.Now;
                                                                                                      Thread.Sleep(100);
-                                                                                                     InternetUtil._mensagemAtiva = false;
-                                                                                                     InternetUtil.Alerta = null;
+                                                                                                     _mensagemAtiva = false;
+                                                                                                     Alerta = null;
                                                                                                  });
                                 });
                             }
@@ -72,7 +72,7 @@ namespace Snebur.Utilidade
         {
             lock (_bloqueio)
             {
-                if (InternetUtil._mensagemAtiva)
+                if (_mensagemAtiva)
                 {
                     return false;
                 }
@@ -94,12 +94,12 @@ namespace Snebur.Utilidade
         {
             lock (_bloqueio)
             {
-                if (_mensagemAtiva && InternetUtil.Alerta != null)
+                if (_mensagemAtiva && Alerta != null)
                 {
 
                     ThreadUtil.ExecutarMainThread(() =>
                     {
-                        InternetUtil.Alerta.Fechar();
+                        Alerta.Fechar();
                     });
                 }
             }

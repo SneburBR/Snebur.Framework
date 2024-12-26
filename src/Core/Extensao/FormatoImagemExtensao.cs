@@ -1,6 +1,5 @@
 ﻿using Snebur.Dominio;
 using Snebur.Utilidade;
-using System;
 using System.IO;
 using System.Threading.Tasks;
 

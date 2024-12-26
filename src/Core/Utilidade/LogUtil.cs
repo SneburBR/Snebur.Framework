@@ -3,7 +3,6 @@ using Snebur.Servicos;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -25,11 +24,11 @@ namespace Snebur.Utilidade
                 var stackTrace = ex.StackTrace;
                 if (String.IsNullOrEmpty(stackTrace))
                 {
-                    stackTrace = System.Environment.StackTrace;
+                    stackTrace = Environment.StackTrace;
                 }
                 var nivelErro = (ex is Erro) ? (ex as Erro).NivelErro : EnumNivelErro.Normal;
                 var informacaoAdicional = ServicoCompartilhadoUtil.RetornarInformacaoAdicionalServicoCompartilhado();
-                LogUtil.Erro(ex, stackTrace, nivelErro, informacaoAdicional, nomeMetodo, caminhoArquivo, linhaDoErro);
+                Erro(ex, stackTrace, nivelErro, informacaoAdicional, nomeMetodo, caminhoArquivo, linhaDoErro);
             }
         }
 
@@ -51,14 +50,14 @@ namespace Snebur.Utilidade
                 var stackTrace = ex.StackTrace;
                 if (String.IsNullOrEmpty(stackTrace))
                 {
-                    stackTrace = System.Environment.StackTrace;
+                    stackTrace = Environment.StackTrace;
                 }
                 stackTrace += "Nome thread :  '" + Thread.CurrentThread.Name + "' \n" + stackTrace;
                 var nivelErro = (ex is Erro) ? (ex as Erro).NivelErro : EnumNivelErro.Normal;
                 var informacaoAdicional = ServicoCompartilhadoUtil.RetornarInformacaoAdicionalServicoCompartilhado();
                 ThreadUtil.ExecutarAsync((Action)(() =>
                 {
-                    LogUtil.Erro(ex, stackTrace, nivelErro, informacaoAdicional, nomeMetodo, caminhoArquivo, linhaDoErro);
+                    Erro(ex, stackTrace, nivelErro, informacaoAdicional, nomeMetodo, caminhoArquivo, linhaDoErro);
                 }), true);
             }
             catch
@@ -91,7 +90,7 @@ namespace Snebur.Utilidade
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                LogUtil.LogWindows(descricaoCompleta, stackTrace, EventLogEntryType.Error);
+                LogWindows(descricaoCompleta, stackTrace, EventLogEntryType.Error);
             }
 
 
@@ -137,13 +136,13 @@ namespace Snebur.Utilidade
                     }
                     throw new Exception(mensagem);
                 }
-                LogUtil.ErroAsync(new Erro(mensagem));
+                ErroAsync(new Erro(mensagem));
             }
 
             ThreadUtil.ExecutarAsync(() =>
             {
                 var informacaoAdicional = ServicoCompartilhadoUtil.RetornarInformacaoAdicionalServicoCompartilhado();
-                LogUtil.Seguranca(mensagem,
+                Seguranca(mensagem,
                                   infoRequisicao,
                                   tipo,
                                   informacaoAdicional);
@@ -180,7 +179,7 @@ namespace Snebur.Utilidade
             var informacaoAdicional = ServicoCompartilhadoUtil.RetornarInformacaoAdicionalServicoCompartilhado();
             ThreadUtil.ExecutarAsync((Action)(() =>
             {
-                LogUtil.Log(mensagem, informacaoAdicional, AplicacaoSnebur.Atual.AtivarLogServicoOnline);
+                Log(mensagem, informacaoAdicional, AplicacaoSnebur.Atual.AtivarLogServicoOnline);
             }), true);
         }
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -203,7 +202,7 @@ namespace Snebur.Utilidade
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                LogUtil.LogWindows(mensagem, String.Empty, EventLogEntryType.Information);
+                LogWindows(mensagem, String.Empty, EventLogEntryType.Information);
             }
             try
             {
@@ -235,7 +234,7 @@ namespace Snebur.Utilidade
             }
             ThreadUtil.ExecutarAsync((Action)(() =>
             {
-                var identificadorLog = LogUtil.Desempenho(mensagem, tipo, informacaoAdicional);
+                var identificadorLog = Desempenho(mensagem, tipo, informacaoAdicional);
                 callback?.Invoke(identificadorLog);
             }), true);
         }
@@ -246,7 +245,7 @@ namespace Snebur.Utilidade
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                LogUtil.LogWindows(mensagem, stackTrace, EventLogEntryType.Warning);
+                LogWindows(mensagem, stackTrace, EventLogEntryType.Warning);
             }
             try
             {
@@ -281,7 +280,7 @@ namespace Snebur.Utilidade
         {
             ThreadUtil.ExecutarAsync((Action)(() =>
             {
-                LogUtil.AtivarLogServicoOnline(callback);
+                AtivarLogServicoOnline(callback);
             }), true);
         }
 

@@ -57,7 +57,7 @@ namespace Snebur.Utilidade
 
         public static string RemoverAcentosECaracteresEspecial(string texto)
         {
-            return TextoUtil.RemoverAcentos(TextoUtil.RemoverCaracteresEspecial(texto));
+            return RemoverAcentos(RemoverCaracteresEspecial(texto));
         }
 
         public static List<string> RetornarIntervaloLinhas(List<string> linhas, string contemInicio, string contemFim)
@@ -179,22 +179,22 @@ namespace Snebur.Utilidade
             {
                 return texto;
             }
-            return TextoUtil.RetornarTextoCaracteresPermitido(texto, TextoUtil.CaracteresPadrao, true, substituirPor);
+            return RetornarTextoCaracteresPermitido(texto, CaracteresPadrao, true, substituirPor);
         }
 
         public static string RemoverCaracteres(string texto, string caracteresRemover)
         {
-            return TextoUtil.RemoverCaracteres(texto, caracteresRemover.ToArray().ToHashSet());
+            return RemoverCaracteres(texto, caracteresRemover.ToArray().ToHashSet());
         }
 
         public static string RemoverCaracteres(string texto, char[] caracteresRemover)
         {
-            return TextoUtil.RemoverCaracteres(texto, caracteresRemover.ToHashSet());
+            return RemoverCaracteres(texto, caracteresRemover.ToHashSet());
         }
 
         public static string RemoverCaracteres(string texto, HashSet<char> caracteresRemover)
         {
-            return TextoUtil.RemoverCarecteres(texto, caracteresRemover, null);
+            return RemoverCarecteres(texto, caracteresRemover, null);
         }
 
         public static string RemoverCarecteres(string texto, HashSet<char> caracteresRemover, char? substituirPor = null)
@@ -226,33 +226,33 @@ namespace Snebur.Utilidade
         {
             if (extra.Count() > 0)
             {
-                var filtro = RetoranrFiltroCache(TextoUtil.Letras, extra);
+                var filtro = RetoranrFiltroCache(Letras, extra);
                 var isContemEspaco = extra.Contains(' ');
-                return TextoUtil.RetornarTextoCaracteresPermitido(texto, filtro, isContemEspaco);
+                return RetornarTextoCaracteresPermitido(texto, filtro, isContemEspaco);
             }
-            return TextoUtil.RetornarTextoCaracteresPermitido(texto, TextoUtil.Letras, false);
+            return RetornarTextoCaracteresPermitido(texto, Letras, false);
 
         }
 
         public static string RetornarSomenteLetras(string texto)
         {
-            return TextoUtil.RetornarTextoCaracteresPermitido(texto, TextoUtil.Letras, false);
+            return RetornarTextoCaracteresPermitido(texto, Letras, false);
         }
 
         public static string RetornarSomenteNumeros(string texto)
         {
-            return TextoUtil.RetornarTextoCaracteresPermitido(texto, TextoUtil.Numeros, false);
+            return RetornarTextoCaracteresPermitido(texto, Numeros, false);
         }
          
         public static string RetornarSomenteNumeros(string texto, bool isAceitarVirgual)
         {
             var caracterExtra = (isAceitarVirgual) ? "," : String.Empty;
-            return TextoUtil.RetornarSomenteNumeros(texto, caracterExtra);
+            return RetornarSomenteNumeros(texto, caracterExtra);
         }
 
         public static string RetornarSomenteNumeros(string texto, char caracterExtra)
         {
-            return TextoUtil.RetornarSomenteNumeros(texto, new char[] { caracterExtra });
+            return RetornarSomenteNumeros(texto, new char[] { caracterExtra });
         }
 
         public static string RemoverCaracteresInicial(string texto, string caracter)
@@ -266,18 +266,18 @@ namespace Snebur.Utilidade
 
         public static string RetornarSomenteNumeros(string texto, string caracteresExtra)
         {
-            return TextoUtil.RetornarSomenteNumeros(texto, caracteresExtra.ToCharArray());
+            return RetornarSomenteNumeros(texto, caracteresExtra.ToCharArray());
         }
 
         public static string RetornarSomenteNumeros(string texto, IEnumerable<char> caractesExtras, bool isPermitirEspacoBranco = false)
         {
             if (caractesExtras?.Count() > 0)
             {
-                var filtro = RetoranrFiltroCache(TextoUtil.Numeros, caractesExtras);
+                var filtro = RetoranrFiltroCache(Numeros, caractesExtras);
                 var isContemEspaco = caractesExtras.Contains(' ');
-                return TextoUtil.RetornarTextoCaracteresPermitido(texto, filtro, isContemEspaco || isPermitirEspacoBranco);
+                return RetornarTextoCaracteresPermitido(texto, filtro, isContemEspaco || isPermitirEspacoBranco);
             }
-            return TextoUtil.RetornarTextoCaracteresPermitido(texto, TextoUtil.Numeros, isPermitirEspacoBranco);
+            return RetornarTextoCaracteresPermitido(texto, Numeros, isPermitirEspacoBranco);
         }
 
         public static string RetornarSomentesLetrasNumeros(string texto,
@@ -286,11 +286,11 @@ namespace Snebur.Utilidade
         {
             if (caractesExtras?.Count() > 0)
             {
-                var filtro = RetoranrFiltroCache(TextoUtil.LetrasNumeros, caractesExtras);
+                var filtro = RetoranrFiltroCache(LetrasNumeros, caractesExtras);
                 var isContemEspaco = caractesExtras.Contains(' ');
-                return TextoUtil.RetornarTextoCaracteresPermitido(texto, filtro, isContemEspaco || isPermitirEspacoBranco);
+                return RetornarTextoCaracteresPermitido(texto, filtro, isContemEspaco || isPermitirEspacoBranco);
             }
-            return TextoUtil.RetornarTextoCaracteresPermitido(texto, TextoUtil.LetrasNumeros, isPermitirEspacoBranco);
+            return RetornarTextoCaracteresPermitido(texto, LetrasNumeros, isPermitirEspacoBranco);
         }
         public static int RetornarOcorrenciasParteTexto(string texto, string letra)
         {
@@ -486,10 +486,10 @@ namespace Snebur.Utilidade
 
         public static string RetornarPrimeirosCaracteres(string texto, int numeroCaracteres, bool removerLinhasTabulacoes)
         {
-            var resultado = TextoUtil.RetornarPrimeirosCaracteres(texto, numeroCaracteres);
+            var resultado = RetornarPrimeirosCaracteres(texto, numeroCaracteres);
             if (removerLinhasTabulacoes)
             {
-                return TextoUtil.RemoverLinhasTabulacoes(resultado);
+                return RemoverLinhasTabulacoes(resultado);
             }
             return resultado;
         }
@@ -531,18 +531,18 @@ namespace Snebur.Utilidade
 
         public static string RemoverLinhas(string texto)
         {
-            return TextoUtil.RemoverLinhas(texto, null);
+            return RemoverLinhas(texto, null);
         }
 
         public static string RemoverLinhas(string texto, char? caracterSeparador)
         {
             var sepearador = (caracterSeparador.HasValue) ? caracterSeparador.Value.ToString() : String.Empty;
-            return String.Join(sepearador, TextoUtil.RetornarLinhas(texto));
+            return String.Join(sepearador, RetornarLinhas(texto));
         }
 
         public static string RemoverLinhasTabulacoes(string texto)
         {
-            return TextoUtil.RemoverCaracteres(texto, LinhasTabulacoes);
+            return RemoverCaracteres(texto, LinhasTabulacoes);
         }
 
         public static string RemoverQuebraLinhas(string str, bool removerEspacosDuplo)
@@ -559,7 +559,7 @@ namespace Snebur.Utilidade
                     }
                     if (removerEspacosDuplo)
                     {
-                        linha = TextoUtil.RemoverEspacoDuplo(linha);
+                        linha = RemoverEspacoDuplo(linha);
                     }
                     if (linha.Length > 0 && !Char.IsWhiteSpace(linha.Last()))
                     {
@@ -573,12 +573,12 @@ namespace Snebur.Utilidade
         }
         public static bool IsNumero(char caracter)
         {
-            return TextoUtil.Numeros.Contains(caracter);
+            return Numeros.Contains(caracter);
         }
 
         public static bool IsLetra(char caracter)
         {
-            return TextoUtil.Numeros.Contains(caracter);
+            return Numeros.Contains(caracter);
         }
 
         public static bool IsEspacoBranco(char caracter)
@@ -588,23 +588,23 @@ namespace Snebur.Utilidade
 
         public static bool IsLetraOuNumero(char caracter)
         {
-            return TextoUtil.LetrasNumeros.Contains(caracter);
+            return LetrasNumeros.Contains(caracter);
         }
 
         public static bool IsSomenteNumeros(string texto)
         {
-            return TextoUtil.IsTextoValidoInterno(texto, TextoUtilConstantes.Numeros);
+            return IsTextoValidoInterno(texto, TextoUtilConstantes.Numeros);
         }
 
         public static bool IsSomenteNumerosPontosSinais(string texto)
         {
-            return TextoUtil.IsTextoValidoInterno(texto,
+            return IsTextoValidoInterno(texto,
               TextoUtilConstantes.NumerosPontosSinais);
         }
 
         public static bool IsSomenteNumerosPontosSinaisSimbolos(string texto)
         {
-            return TextoUtil.IsTextoValidoInterno(texto,
+            return IsTextoValidoInterno(texto,
               TextoUtilConstantes.NumerosPontosSinaisSimbolos);
         }
 
@@ -669,7 +669,7 @@ namespace Snebur.Utilidade
 
         public static string Repeat(char c, int quantidade)
         {
-            return new String(c, quantidade);
+            return new string(c, quantidade);
         }
         public static string Repeat(string texto, int quantidade)
         {

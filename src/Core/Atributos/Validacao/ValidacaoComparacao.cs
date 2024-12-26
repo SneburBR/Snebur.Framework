@@ -62,7 +62,7 @@ namespace Snebur.Dominio.Atributos
         {
             var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
             var descricaoOperador = EnumUtil.RetornarDescricao(this.Operador);
-            return String.Format(ValidacaoComparacaoAttribute.MensagemValidacao, rotulo, descricaoOperador, String.Concat(this.Valor, ""));
+            return String.Format(MensagemValidacao, rotulo, descricaoOperador, String.Concat(this.Valor, ""));
         }
         #endregion
 

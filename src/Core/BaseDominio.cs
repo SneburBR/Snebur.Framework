@@ -1,10 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Snebur.Dominio.Atributos;
-using Snebur.Dominio.Interface;
 using Snebur.Serializacao;
 using Snebur.Utilidade;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;

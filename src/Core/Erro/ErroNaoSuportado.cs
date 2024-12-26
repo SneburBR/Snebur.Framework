@@ -11,7 +11,7 @@ namespace System
                               [CallerMemberName] string nomeMetodo = "",
                               [CallerFilePath] string caminhoArquivo = "",
                               [CallerLineNumber] int linhaDoErro = 0) :
-                              base(ErroNaoSuportado.RetornarMensagem(tipo), erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
+                              base(RetornarMensagem(tipo), erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
         {
         }
 
@@ -20,7 +20,7 @@ namespace System
                                 [CallerMemberName] string nomeMetodo = "",
                                 [CallerFilePath] string caminhoArquivo = "",
                                 [CallerLineNumber] int linhaDoErro = 0) :
-                                base(ErroNaoSuportado.RetornarMensagem(objeto?.GetType() ?? null), erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
+                                base(RetornarMensagem(objeto?.GetType() ?? null), erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
         {
         }
 

@@ -93,7 +93,7 @@ namespace Snebur.Serializacao
 
                 case DateTime valorTipado:
 
-                    var valorDateTimeFormatado = valorTipado.ToString(Snebur.AplicacaoSnebur.Atual.CulturaPadrao);
+                    var valorDateTimeFormatado = valorTipado.ToString(AplicacaoSnebur.Atual.CulturaPadrao);
                     return isNotNumericWithinSingleQuotes
                             ? $"\'{valorDateTimeFormatado}\'"
                             : valorDateTimeFormatado;

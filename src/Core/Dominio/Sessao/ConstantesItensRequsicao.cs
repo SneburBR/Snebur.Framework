@@ -1,9 +1,6 @@
-﻿using Snebur.Dominio.Atributos;
-using System;
-
-namespace Snebur.Dominio
+﻿namespace Snebur.Dominio
 {
-   
+
     public static class ConstantesItensRequsicao
     {
         public const string CAMINHO_APLICACAO = "CaminhoAplicacao";

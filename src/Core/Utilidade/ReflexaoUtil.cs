@@ -28,7 +28,7 @@ namespace Snebur.Utilidade
 
         public static List<MethodInfo> RetornarMetodos(Type tipo, bool ignorarMetodosTipoBase = false, bool ignorarMetodosGetSet = true)
         {
-            var metodos = ReflexaoUtil.RetornarMetodos(tipo, ReflexaoUtil.BindingFlags, ignorarMetodosTipoBase);
+            var metodos = RetornarMetodos(tipo, BindingFlags, ignorarMetodosTipoBase);
             if (ignorarMetodosGetSet)
             {
                 metodos = metodos.Where(x => !x.Name.StartsWith("get_") && !x.Name.StartsWith("set_")).ToList();
@@ -38,10 +38,10 @@ namespace Snebur.Utilidade
 
         public static List<MethodInfo> RetornarMetodos(Type tipo, BindingFlags bindingFlags, bool ignorarPropriedadesTipoBase = false)
         {
-            var metodos = ReflexaoUtil.RetornarMetodos(tipo, bindingFlags);
+            var metodos = RetornarMetodos(tipo, bindingFlags);
             if (ignorarPropriedadesTipoBase && tipo.BaseType != null)
             {
-                return metodos.Where(x => Object.ReferenceEquals(x.DeclaringType, tipo)).ToList();
+                return metodos.Where(x => ReferenceEquals(x.DeclaringType, tipo)).ToList();
             }
             else
             {
