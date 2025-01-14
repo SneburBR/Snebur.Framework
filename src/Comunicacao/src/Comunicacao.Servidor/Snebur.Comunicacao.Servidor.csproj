@@ -36,29 +36,41 @@
 		<None Remove="Snebur.Comunicacao.Servidor.Net50.csproj.vspscc" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net48' ">
-		<!--
-		<Reference Include="System.Configuration" />
-		<PackageReference Include="SevenZipSharp.Net45" Version="1.0.19" />
-		<PackageReference Include="Microsoft.Bcl.HashCode" version="1.1.1" />-->
+
 		<Reference Include="System.ServiceModel" />
+		<Reference Include="System.Configuration" />
+		<Reference Include="System.ComponentModel" />
+		<Reference Include="System.ComponentModel" />
+		<Reference Include="System.ComponentModel.DataAnnotations" />
+		<Reference Include="System.Net" />
 		<Reference Include="System.Web" />
-	
+		<Reference Include="System.Net.Http" />
+		<Reference Include="System.IO.Compression" />
+		<Reference Include="System.IO.Compression" />
+		<Reference Include="Microsoft.CSharp" />
+
+		<PackageReference Include="SevenZipSharp.Net45"
+						  Version="1.0.19" />
+
+		<PackageReference Include="Microsoft.Bcl.HashCode"
+						  version="6.0.0" />
+
+		<PackageReference Include="Newtonsoft.Json"
+						  Version="13.0.3" />
 	</ItemGroup>
 	
-	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0' ">
-		
-		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-	</ItemGroup>
-	
+	 
+
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Core\Snebur.csproj" />
 		<ProjectReference Include="..\..\..\AspNet\Snebur.AspNet.csproj" />
 		<ProjectReference Include="..\..\..\Seguranca\Snebur.Seguranca.csproj" />
 		<ProjectReference Include="..\Comunicacao\Snebur.Comunicacao.csproj" />
 	</ItemGroup>
-	
-	 
+
+
 
 
 
 </Project>
+
