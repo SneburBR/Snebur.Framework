@@ -7,16 +7,16 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Web;
 using System.Xml.Serialization;
-using System.Text.Json.Serialization;
 using Snebur.Linq;
-
-
+using Newtonsoft.Json;
+ 
 
 #if NET6_0_OR_GREATER
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+#else
+using System.Web;
 #endif
 
 namespace Snebur.Comunicacao

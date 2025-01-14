@@ -3,8 +3,6 @@ using Snebur.Utilidade;
 using System;
 using System.IO;
 using System.Web;
-using System.Net.Http;
-
 
 #if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Http;

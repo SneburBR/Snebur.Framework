@@ -13,15 +13,8 @@ using Snebur.Seguranca;
 using Snebur.Servicos;
 using Snebur.Utilidade;
 using Snebur.Linq;
-using System.Diagnostics;
-using System.Collections;
-using System.Data.Common;
-using Microsoft.IdentityModel.Abstractions;
 using System.Threading.Tasks;
-
-
-
-
+ 
 #if NET6_0_OR_GREATER
 using Microsoft.Data.SqlClient;
 #else
