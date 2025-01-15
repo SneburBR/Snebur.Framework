@@ -4,6 +4,7 @@ using Snebur.Utilidade;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 
@@ -19,7 +20,7 @@ namespace Snebur.AcessoDados.Comunicacao
         public virtual bool IsPermitirIdentificadorProprietarioGlobal { get; protected set; } = false;
 
         protected List<Action> ExecutarDepoisCommit { get; } = new List<Action>();
-      
+
         public string CaminhoAplicacao { get; private set; }
 
         public bool IsServicoTransacionadoDB
@@ -29,7 +30,12 @@ namespace Snebur.AcessoDados.Comunicacao
             {
                 if (this.IsManterCache && value)
                 {
-                    throw new Erro("Não é possível ativar IsServicoTransacionadoDB quando IsManterCache está ativado");
+                    var erro = new Erro("Não é possível ativar IsServicoTransacionadoDB quando IsManterCache está ativado");
+                    if (Debugger.IsAttached)
+                    {
+                        throw erro;
+                    }
+                    LogUtil.ErroAsync(erro);
                 }
                 this._isServicoTransacionadoDB = value;
             }
@@ -48,7 +54,7 @@ namespace Snebur.AcessoDados.Comunicacao
         {
 
         }
-         
+
         protected override void Inicializar(Requisicao requisicao)
         {
             try
@@ -73,7 +79,7 @@ namespace Snebur.AcessoDados.Comunicacao
                 this._erroInicializacao = ex;
             }
         }
- 
+
         public void Inicializar(TContextoDados contexto, bool isPodeDispensarServico)
         {
             this.ContextoDados = contexto;
@@ -92,7 +98,7 @@ namespace Snebur.AcessoDados.Comunicacao
                     {
                         this.ContextoDados.Commit();
                     }
-                    this.ExecutarDepoisCommit.ForEach(acao => acao());  
+                    this.ExecutarDepoisCommit.ForEach(acao => acao());
                     return resultado;
                 }
 
