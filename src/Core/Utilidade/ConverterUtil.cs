@@ -323,6 +323,23 @@ namespace Snebur.Utilidade
                 return 0D;
             }
 
+            if(valor is String str)
+            {
+                if(provider== null)
+                {
+                    var indexLastVirgual = str.LastIndexOf(',');
+                    var indexLastPonto = str.LastIndexOf('.');
+                    if (indexLastVirgual > indexLastPonto)
+                    {
+                        provider = new CultureInfo("pt-BR");
+                    }
+                    else
+                    {
+                        provider = CultureInfo.InvariantCulture;
+                    }
+                }
+            }
+
             if (valor is IConvertible convertible)
             {
                 return convertible.ToDouble(provider ?? CultureInfo.InvariantCulture);
