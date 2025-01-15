@@ -45,13 +45,12 @@ namespace Snebur.Utilidade
 
         public static bool IsEmail(string email)
         {
-            if (RegexHasSpace.IsMatch(email))
-            {
-                return false;
-            }
-
             if (!String.IsNullOrEmpty(email))
             {
+                if (RegexHasSpace.IsMatch(email))
+                {
+                    return false;
+                }
                 return RegexValidacaoEmail.IsMatch(email.Trim());
             }
             return false;
