@@ -117,7 +117,8 @@ namespace Snebur.AcessoDados.Comunicacao
                 if (!this.IsErroSessaoInvalida(ex))
                 {
                     var detalhesParametros = this.RetornarDetalhesParametros(metodoOperacao, parametros);
-                    var mensagemErro = $"Erro ao executar método {metodoOperacao.Name} no serviço {this.GetType().Name}\r\n{detalhesParametros}";
+                    var mensagemErro = $"Erro ao executar método {metodoOperacao.Name} no serviço {this.GetType().Name} \r\n{detalhesParametros}";
+
                     throw new ErroComunicacao(mensagemErro, ex);
                 }
             }
