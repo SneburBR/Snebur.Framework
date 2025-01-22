@@ -713,6 +713,13 @@ namespace Snebur.AcessoDados
             this.ConexaoAtual.Open();
             this.TransacaoAtual = this.ConexaoAtual.BeginTransaction(isolamento);
         }
+        public void TalvezCommit()
+        {
+            if (this.TransacaoAtual != null)
+            {
+                this.Commit();
+            }
+        }
 
         public void Commit()
         {
