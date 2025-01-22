@@ -159,9 +159,10 @@ namespace Snebur.AcessoDados
                                                         params Expression<Func<TEntidade, object>>[] expressoesPropriedade) where TEntidade : Entidade
         {
             var ids = entidades.Select(x => x.Id).ToList();
-            var entidadesRecuperada = contexto.RetornarConsulta<TEntidade>(typeof(TEntidade)).
-                                              WhereIds(ids).
-                                              AbrirPropriedades(expressoesPropriedade).ToList();
+            var entidadesRecuperada = contexto.RetornarConsulta<TEntidade>(typeof(TEntidade))
+                .WhereIds(ids)
+                .AbrirPropriedades(expressoesPropriedade)
+                .ToList();
 
             foreach (var expressao in expressoesPropriedade)
             {

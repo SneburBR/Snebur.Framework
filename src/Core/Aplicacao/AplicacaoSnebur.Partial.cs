@@ -8,9 +8,7 @@ namespace Snebur
         internal static int _mainThreadId;
         internal static AplicacaoSnebur _aplicacao;
         public static AplicacaoSnebur Atual
-        {
-            get => _aplicacao;
-        }
+            => _aplicacao;
 
         public static T AtualTipada<T>() where T : AplicacaoSnebur
         {
