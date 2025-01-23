@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
-namespace System.Web
+namespace Microsoft.AspNetCore.Http
 {
    
     public interface IHttpHandler
@@ -12,4 +12,5 @@ namespace System.Web
         Task ProcessRequestAsync(HttpContext context);
     }
 }
+
 #endif

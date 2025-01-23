@@ -35,6 +35,17 @@ namespace Snebur
 #endif
         }
 
+#if NET6_0_OR_GREATER
+        public static IFormFileCollection GetFiles(this HttpRequest request)
+        {
+            return request.Form.Files;
+        }
+#else
+        public static HttpFileCollection GetFiles(this HttpRequest request)
+        {
+            return request.Files;
+        }
+#endif
 
         public static string GetValue(this HttpRequest request, string key)
         {
