@@ -10,8 +10,8 @@ namespace Snebur.Dominio.Atributos
     {
         [MensagemValidacao]
         public static string MensagemValidacao { get; set; } = "O {0} '{1}' já existe.";
-        public bool IsPermitirDuplicarNulo { get; set; }
-        public bool IsPermitirDuplicarZero { get; set; }
+        public bool IsIgnorarNulo { get; set; } = true;
+        public bool IsIgnorarZero { get; set; }
         public Type TipoEntidade { get; }
         public string NomePropriedadeFiltro { get; }
         public object ValorPropriedadeFiltro { get; }
@@ -40,25 +40,25 @@ namespace Snebur.Dominio.Atributos
         }
 
         public ValidacaoUnicoAttribute(Type tipoEntidade,
-                                       bool isPermitirDuplicarNulo,
-                                       bool isPermitirDuplicarZero,
+                                       bool isIgnorarNulo,
+                                       bool isIgnorarZero,
                                        string nomePropriedadeFiltro,
                                        object valorPropriedadeFiltro,
                                        EnumOperadorComparacao operadorFiltro)
         {
             this.TipoEntidade = tipoEntidade;
-            this.IsPermitirDuplicarNulo = isPermitirDuplicarNulo;
-            this.IsPermitirDuplicarZero = isPermitirDuplicarZero;
+            this.IsIgnorarNulo = isIgnorarNulo;
+            this.IsIgnorarZero = isIgnorarZero;
             this.NomePropriedadeFiltro = nomePropriedadeFiltro;
             this.ValorPropriedadeFiltro = valorPropriedadeFiltro;
             this.OperadorFiltro = operadorFiltro;
-
-
+             
             var propriedade = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nomePropriedadeFiltro, true);
             if (propriedade == null)
             {
                 throw new ErroNaoImplementado($"ValidacaoUnicoAttribute -> Propriedade '{nomePropriedadeFiltro}' não encontrada na entidade '{tipoEntidade.Name}'");
             }
+
             var valorSqlString = SqlUtil.SqlValueString(valorPropriedadeFiltro);
             var filtro = new FiltroPropriedadeIndexar(propriedade, operadorFiltro, valorSqlString);
             this.Filtros.Add(filtro);

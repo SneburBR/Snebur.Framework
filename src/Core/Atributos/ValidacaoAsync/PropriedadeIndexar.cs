@@ -5,8 +5,8 @@ namespace Snebur.Dominio.Atributos
     public class PropriedadeIndexar
     {
         public PropertyInfo Propriedade { get; }
-        public bool IsPermitirDuplicarNulo { get; }
-        public bool IsPermitirDuplicarZero { get; }
+        public bool IsIgnorarNulo { get; }
+        public bool IsIgrnorarZero { get; }
         public string NomeIndice { get; }
 
         public PropriedadeIndexar(PropertyInfo propriedade, string nomeIndice) : this(propriedade, false, false)
@@ -15,13 +15,13 @@ namespace Snebur.Dominio.Atributos
         }
 
         public PropriedadeIndexar(PropertyInfo propriedade,
-                                  bool isPermitirDuplicarNulo,
-                                  bool isPermitirDuplicarZero)
+                                  bool isIgnorarNulo,
+                                  bool isIgnorarZero)
         {
             this.Propriedade = propriedade;
 
-            this.IsPermitirDuplicarNulo = isPermitirDuplicarNulo;
-            this.IsPermitirDuplicarZero = isPermitirDuplicarZero;
+            this.IsIgnorarNulo = isIgnorarNulo;
+            this.IsIgrnorarZero = isIgnorarZero;
         }
 
         public PropriedadeIndexar(PropertyInfo propriedade,

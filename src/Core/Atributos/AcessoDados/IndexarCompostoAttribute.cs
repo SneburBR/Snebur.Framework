@@ -24,8 +24,8 @@ namespace Snebur.Dominio.Atributos
             foreach (var _nomePropriedade in nomesPropriedade)
             {
                 var nomePropriedade = _nomePropriedade;
-                var isPermitirDuplicarNulo = nomePropriedade.EndsWith("?");
-                if (isPermitirDuplicarNulo)
+                var isIgnorarNulo = nomePropriedade.EndsWith("?");
+                if (isIgnorarNulo)
                 {
                     nomePropriedade = nomePropriedade.Substring(0, nomePropriedade.Length - 1);
                 }
@@ -40,7 +40,7 @@ namespace Snebur.Dominio.Atributos
                     var memsagem = $"ValidacaoUnicoCompostaAttribute(typeof({tipoEntidade.Name}), {String.Join(", ", nomesPropriedade.Select(x => $"\"{x}\""))} - A propriedade {nomePropriedade} não foi encontrada no tipo '{tipoEntidade.Name}'";
                     throw new Exception(memsagem);
                 }
-                this.Propriedades.Add(new PropriedadeIndexar(propriedade, isPermitirDuplicarNulo, false));
+                this.Propriedades.Add(new PropriedadeIndexar(propriedade, isIgnorarNulo, false));
             }
         }
     }

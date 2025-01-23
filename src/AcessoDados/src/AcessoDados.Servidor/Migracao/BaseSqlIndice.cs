@@ -50,7 +50,7 @@ namespace Snebur.AcessoDados
             foreach (var propriedadeIndexar in this.PropriedadesIndexar)
             {
                 var estruturaCampo = this.RetornarEstruturaCampo(propriedadeIndexar.Propriedade);
-                if (propriedadeIndexar.IsPermitirDuplicarNulo)
+                if (propriedadeIndexar.IsIgnorarNulo)
                 {
                     if (estruturaCampo.IsAceitaNulo)
                     {
@@ -64,7 +64,7 @@ namespace Snebur.AcessoDados
                 }
               
 
-                if (propriedadeIndexar.IsPermitirDuplicarZero)
+                if (propriedadeIndexar.IsIgrnorarZero)
                 {
                     var expressao = $" ( {estruturaCampo.NomeCampo} <> 0)";
                     this.CamposFiltros.Add(new CampoFiltro

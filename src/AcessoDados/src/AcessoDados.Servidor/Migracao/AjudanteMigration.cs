@@ -197,8 +197,8 @@ namespace Snebur.AcessoDados
                     propriedadesFiltros.AddRange(atributoValidacaoUnico.Filtros);
 
                     propriedadesIndexar.Add(new PropriedadeIndexar(propriedade, 
-                                                                   atributoValidacaoUnico.IsPermitirDuplicarNulo, 
-                                                                   atributoValidacaoUnico.IsPermitirDuplicarZero));
+                                                                   atributoValidacaoUnico.IsIgnorarNulo, 
+                                                                   atributoValidacaoUnico.IsIgnorarZero));
 
                     if (ReflexaoUtil.IsTipoImplementaInterface(tipoEntidade, typeof(IDeletado)))
                     {
