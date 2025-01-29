@@ -10,7 +10,6 @@ using System.IO;
 using System.Xml.Serialization;
 using Snebur.Linq;
 using Newtonsoft.Json;
- 
 
 #if NET6_0_OR_GREATER
 using System.Threading.Tasks;
@@ -282,10 +281,10 @@ namespace Snebur.Comunicacao
             var context = this.HttpContext;
             lock (context?.Items.SyncLock())
             {
-                context.RemoverItem(ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL);
-                context.RemoverItem(ConstantesItensRequsicao.CHAVE_CREDENCIAL_USUARIO);
-                context.RemoverItem(ConstantesItensRequsicao.CHAVE_CREDENCIAL_USUARIO_AVALISTA);
-                context.RemoverItem(ConstantesItensRequsicao.CHAVE_IDENTIFICADOR_PROPRIETARIO);
+                context.RemoverItem(Dominio.ConstantesItensRequsicao.CHAVE_INFORMACAO_SESSAO_ATUAL);
+                context.RemoverItem(Dominio.ConstantesItensRequsicao.CHAVE_CREDENCIAL_USUARIO);
+                context.RemoverItem(Dominio.ConstantesItensRequsicao.CHAVE_CREDENCIAL_USUARIO_AVALISTA);
+                context.RemoverItem(Dominio.ConstantesItensRequsicao.CHAVE_IDENTIFICADOR_PROPRIETARIO);
             }
         }
 

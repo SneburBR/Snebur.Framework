@@ -1,15 +1,15 @@
 ﻿#if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System.IO;
-using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Snebur.Dominio;
-using System.Net;
 using Microsoft.Extensions.Logging;
+using Snebur.Dominio;
+using System;
+using System.IO;
+using System.Net;
 
 namespace Snebur.Comunicacao
 {
@@ -21,8 +21,7 @@ namespace Snebur.Comunicacao
 
         public static event ConfigureHandler ConfigureHandler;
 
-        public static WebApplication Inicializar<T>(AplicacaoSneburAspNet aplicacaoSnebur,
-                                                    bool isWebSocket = false) where T : BaseManipuladorRequisicao
+        public static WebApplication Inicializar<T>(AplicacaoSneburAspNet aplicacaoSnebur) where T : BaseManipuladorRequisicao
         {
 
             var diretorioBase = Directory.GetCurrentDirectory();
@@ -36,53 +35,42 @@ namespace Snebur.Comunicacao
                             .AddJsonFile("appsettings.json");
 
             var configuracao = configBuilder.Build();
-            aplicacaoSnebur.Configure(configuracao);
-
-            //
-            //var webHostBuilder = Host.CreateDefaultBuilder();
-            //webHostBuilder.ConfigureWebHostDefaults(webBuilder =>
-            //{
-            //    webBuilder.UseStartup<T>();
-            //});
-            //var servidorWeb = webHostBuilder.Build();
-            //servidorWeb.Run();
+            aplicacaoSnebur.SetConfigure(configuracao);
 
             var builder = WebApplication.CreateBuilder();
+             
             builder.Configuration.AddConfiguration(configuracao);
-            builder.Services.AddTransient<ILogger>(provider =>
-            {
-                return provider.GetRequiredService<ILoggerFactory>()
-                                    .CreateLogger("Logs");
-            });
-            //builder.WebHost.ConfigureKestrel(serverOptions =>
-            //{
-            //    serverOptions.AllowSynchronousIO = true;
-            //});
-#if DEBUG
-            builder.Logging.ClearProviders();
-            builder.Logging.AddConsole();
+
+#if NET8_0_OR_GREATER
+            aplicacaoSnebur.AddServices(builder, builder.WebHost, configuracao);
 #endif
 
-            ConfigureServicesInterno(builder.Services);
-
-            if (isWebSocket)
+            builder.Services.AddLogging(logging =>
             {
-                builder.Services.AddSignalR();
-            }
+                logging.AddConsole()
+                       .AddDebug()
+                       .AddEventSourceLogger();
+            });
+
+            ConfigureServicesInterno(builder.Services);
 
             var app = builder.Build();
 
             var caminhoAplicacao = builder.Environment.ContentRootPath;
             aplicacaoSnebur.Inicializar();
 
-            Configure(app, app.Environment, isWebSocket);
+            Configure(app, app.Environment);
+
+            aplicacaoSnebur.Configure(app, app.Environment);
 
             Startup.ConfigureHandler?.Invoke(app, app.Environment);
 
             _manipulador = Activator.CreateInstance(typeof(T), new object[] { caminhoAplicacao }) as BaseManipuladorRequisicao;
 
-            app.Run(async context =>
+            app.Use(async (context, next) =>
             {
+                var logger = context.RequestServices.GetRequiredService<ILogger<Startup>>();
+                logger.LogInformation("Handling request: {Path}", context.Request.Path);
                 //using (var manipulador = Activator.CreateInstance<T>())
                 //{
                 try
@@ -93,14 +81,18 @@ namespace Snebur.Comunicacao
                 }
                 catch (Exception ex)
                 {
+                    logger.LogError(ex, "Erro interno: {Message}", ex.Message);
+
                     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     context.Response.ContentType = "text/plain";
-                    await context.Response.WriteAsync("Erro interno: " + ex.Message);
+
+                    await context.Response.WriteAsync($"Erro interno: {ex.Message}");
                 }
                 finally
                 {
                     _manipulador.DepoisProcessarRequisicao(context);
                 }
+                await next();
 
                 //}
             });
@@ -110,7 +102,7 @@ namespace Snebur.Comunicacao
 
             //CreateHostBuilder(args).Build().Run();
         }
-
+         
         public static void ConfigureServicesInterno(IServiceCollection services)
         {
             services.AddHttpContextAccessor();
@@ -127,20 +119,16 @@ namespace Snebur.Comunicacao
                                .AllowAnyHeader();
                     });
             });
-            //services.AddControllersWithViews();
-            //services.AddControllers();
         }
 
         public static void Configure(IApplicationBuilder app,
-                                     IWebHostEnvironment env,
-                                     bool isWebSocket)
+                                     IWebHostEnvironment env)
         {
-             
             if (env.IsDevelopment() || env.IsStaging())
             {
                 app.UseDeveloperExceptionPage();
             }
-  
+
             //app.UseDeveloperExceptionPage();
 
             if (env.IsProduction())
@@ -154,64 +142,19 @@ namespace Snebur.Comunicacao
 
             if (AplicacaoSnebur.Atual is AplicacaoSneburAspNet aplicacao)
             {
-                var httpContextAccessor = app.ApplicationServices.GetRequiredService<IHttpContextAccessor>() 
+                var httpContextAccessor = app.ApplicationServices.GetRequiredService<IHttpContextAccessor>()
                     ?? throw new Erro("HttpContextAccessor não foi configurado"); ;
-                
-                var logger = app.ApplicationServices.GetRequiredService<ILogger>() 
-                    ?? throw new Erro("Logger não foi configurado"); 
 
                 aplicacao.ConfigureHttpContextAccessor(httpContextAccessor);
-                aplicacao.ConfigureLogger(logger);
             }
             else
             {
                 throw new Erro("A aplicação AplicacaoSneburAspNetCore não foi inicializada");
             }
-
-            if (isWebSocket)
-            {
-                var webSocketOptions = new WebSocketOptions
-                {
-                    KeepAliveInterval = TimeSpan.FromMinutes(2)
-                };
-                app.UseWebSockets(webSocketOptions);
-
-                app.Use(async (context, next) =>
-                {
-                    if (context.Request.Path == "/ws")
-                    {
-                        if (context.WebSockets.IsWebSocketRequest)
-                        {
-                            using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
-                            {
-                                //await Echo(webSocket);
-                                throw new NotImplementedException();
-                            }
-                        }
-                        else
-                        {
-                            context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                        }
-                    }
-
-                    await next.Invoke();
-                });
-            }
-
-
-
-            //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            //loggerFactory.AddDebug();
-            //app.UseRouting();
-            //app.UseMiddleware<Manipulador>();
-            //app.UseDefaultFiles();
-            //app.UseStaticFiles();
-            //app.UseResponseCompression();
-
         }
+
+     
     }
-
 }
-
 
 #endif

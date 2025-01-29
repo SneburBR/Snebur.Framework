@@ -49,14 +49,11 @@
 		<Reference Include="System.IO.Compression" />
 		<Reference Include="Microsoft.CSharp" />
 
-		<PackageReference Include="SevenZipSharp.Net45"
-						  Version="1.0.19" />
+		<PackageReference Include="SevenZipSharp.Net45" Version="1.0.19" />
 
-		<PackageReference Include="Microsoft.Bcl.HashCode"
-						  version="6.0.0" />
+		<PackageReference Include="Microsoft.Bcl.HashCode" version="6.0.0" />
 
-		<PackageReference Include="Newtonsoft.Json"
-						  Version="13.0.3" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
 	
 	 

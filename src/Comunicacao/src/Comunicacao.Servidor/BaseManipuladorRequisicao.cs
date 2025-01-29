@@ -115,18 +115,6 @@ namespace Snebur.Comunicacao
                 LogUtil.SegurancaAsync(mensagem, tipoLogSeguranca);
                 return false;
             }
-
-            if (isValidarUrlMd5)
-            {
-                var arquivo = Path.GetFileNameWithoutExtension(UriUtil.RemoverBarraInicial(request.RetornarUrlRequisicao().LocalPath).ToLower());
-                var tokenMd5 = Md5Util.RetornarHash(token);
-                if (arquivo != tokenMd5)
-                {
-                    var mensagem = String.Format("Token: {0} - Url requisição inválida {1}", token, request.RetornarUrlRequisicao()?.AbsoluteUri);
-                    LogUtil.SegurancaAsync(mensagem, Servicos.EnumTipoLogSeguranca.UrlNaoAutorizada);
-                    return false;
-                }
-            }
             return true;
         }
 
