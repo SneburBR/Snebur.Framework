@@ -127,8 +127,8 @@ namespace Snebur.Dominio.Atributos
         {
             var tipoEntidade = this.TipoEntidade;
 
-            var isPermitirDuplicarNulo = nomePropriedade.EndsWith("?");
-            if (isPermitirDuplicarNulo)
+            var isIgnorarZero = nomePropriedade.EndsWith("?");
+            if (isIgnorarZero)
             {
                 nomePropriedade = nomePropriedade.Substring(0, nomePropriedade.Length - 1);
             }
@@ -136,7 +136,7 @@ namespace Snebur.Dominio.Atributos
             var propriedade = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nomePropriedade, true);
             if (propriedade != null)
             {
-                return new PropriedadeIndexar(propriedade, isPermitirDuplicarNulo, false);
+                return new PropriedadeIndexar(propriedade, isIgnorarZero, false);
             }
             return null;
         }

@@ -13,7 +13,7 @@ namespace Snebur
     {
         public static IConfiguration Configuration { get; set; }
 
-        public void Configure(IConfiguration configuration)
+        public void SetConfigure(IConfiguration configuration)
         {
             Configuration = configuration;
         }

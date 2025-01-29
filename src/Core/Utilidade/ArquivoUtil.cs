@@ -214,13 +214,13 @@ namespace Snebur.Utilidade
 
         public static void CopiarArquivo(string caminhoOrigem,
                                          string caminhoDestinio,
-                                         bool sobreEscrever,
-                                         bool ignorarErroSobreEscrever,
-                                         bool ignorarErroNaoExisteArquivoOrigem)
+                                         bool isSobreEscrever,
+                                         bool isIgnorarErroSobreEscrever,
+                                         bool isIgnorarErroNaoExisteArquivoOrigem)
         {
             if (!File.Exists(caminhoOrigem))
             {
-                if (!ignorarErroNaoExisteArquivoOrigem)
+                if (!isIgnorarErroNaoExisteArquivoOrigem)
                 {
                     throw new Erro(String.Format("O caminho do origem não foi encontrado {0} ", caminhoOrigem));
                 }
@@ -228,7 +228,7 @@ namespace Snebur.Utilidade
             }
             if (CaminhoIgual(caminhoOrigem, caminhoDestinio))
             {
-                if (!ignorarErroNaoExisteArquivoOrigem)
+                if (!isIgnorarErroNaoExisteArquivoOrigem)
                 {
                     throw new Erro($"O caminho arquivo de origem: '{caminhoOrigem}' é mesmo de destino: {caminhoDestinio}");
                 }
@@ -239,42 +239,39 @@ namespace Snebur.Utilidade
 
             if (arquivoDestino.Exists || File.Exists(caminhoDestinio))
             {
-                if (sobreEscrever)
+                if (isSobreEscrever)
                 {
-                    DeletarArquivo(arquivoDestino.FullName, ignorarErroSobreEscrever, true);
+                    DeletarArquivo(arquivoDestino.FullName, isIgnorarErroSobreEscrever, true);
                 }
-                else
+
+                if (!isIgnorarErroSobreEscrever)
                 {
-                    if (!ignorarErroSobreEscrever)
-                    {
-                        throw new Erro(String.Format("O arquivo {0} de destino já existe {0}", caminhoDestinio));
-                    }
-                    return;
+                    throw new Erro(String.Format("O arquivo {0} de destino já existe {0}", caminhoDestinio));
                 }
+                return;
+
             }
             try
             {
                 if (Directory.Exists(caminhoDestinio))
                 {
-                    if (sobreEscrever)
+                    if (isSobreEscrever)
                     {
-                        DiretorioUtil.ExcluirDiretorio(caminhoDestinio, false, ignorarErroSobreEscrever);
+                        DiretorioUtil.ExcluirDiretorio(caminhoDestinio, false, isIgnorarErroSobreEscrever);
                     }
-                }
-                else
-                {
-                    if (!ignorarErroSobreEscrever)
+
+                    if (!isIgnorarErroSobreEscrever)
                     {
                         throw new Erro(String.Format("O arquivo {0} de destino já existe {0}", caminhoDestinio));
                     }
-                    return;
                 }
+
             }
             catch
             {
 
             }
-            
+
             try
             {
                 File.Copy(caminhoOrigem, caminhoDestinio);
