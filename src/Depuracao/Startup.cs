@@ -19,36 +19,79 @@ namespace Snebur
         {
             var builder = WebApplication.CreateBuilder(args);
             ConfigureServices(builder.Services);
+            var pathRoot = builder.Environment.ContentRootPath;
 
-            var pathCert = Path.GetFullPath(Path.Combine(builder.Environment.ContentRootPath, "../../../sigi.pfx"));
+
+            var pathCert = Path.GetFullPath(Path.Combine(builder.Environment.ContentRootPath, "../../../cert/sigi.pfx"));
             if (File.Exists(pathCert))
             {
+                var port = GetPortApplicationUrl(pathRoot);
                 builder.WebHost.ConfigureKestrel(options =>
                 {
-
-                    options.ListenAnyIP(44380, listenOptions =>
+                    options.ListenAnyIP(port, listenOptions =>
                     {
                         listenOptions.UseHttps(pathCert, "zyon@3319");
                     });
                 });
             }
 
-           
+
             var app = builder.Build();
             var caminhoAplicacao = builder.Environment.ContentRootPath;
 
             Configure(app, app.Environment);
 
-            app.Run(async context =>
+            app.Use(async (context, next) =>
             {
                 try
                 {
                     await TryProcessarAsync(context, caminhoAplicacao);
                 }
-                catch 
-                { }
+                catch (Exception ex)
+                {
+                    await context.Response.WriteAsync(ex.Message);
+                }
+                await next();
             });
             app.Run();
+        }
+
+        private static int GetPortApplicationUrl(string path)
+        {
+            var lanchSettings = Path.Combine(path, "Properties/launchSettings.json");
+            if (File.Exists(lanchSettings))
+            {
+                var conteudo = File.ReadAllText(lanchSettings);
+                var index = conteudo.IndexOf("applicationUrl");
+                if (index > 0)
+                {
+                    conteudo = conteudo.Substring(index);
+
+                    var serach = "https://";
+                    index = conteudo.IndexOf(serach);
+                    conteudo = conteudo.Substring(index + serach.Length);
+                    index = conteudo.IndexOf(':');
+                    conteudo = conteudo.Substring(index + 1);
+
+                    index = Math.Min(conteudo.IndexOf(';'), conteudo.IndexOf('"'));
+
+                    int indexSemicolon = conteudo.IndexOf(';');
+                    int indexQuote = conteudo.IndexOf('"');
+
+                    // Handle cases where IndexOf returns -1
+                    if (indexSemicolon == -1) indexSemicolon = int.MaxValue;
+                    if (indexQuote == -1) indexQuote = int.MaxValue;
+
+                    index = Math.Min(indexSemicolon, indexQuote);
+
+                    var port = conteudo.Substring(0, index);
+                    if (Int32.TryParse(port, out int porta))
+                    {
+                        return porta;
+                    }
+                }
+            }
+            return 5001;
         }
 
         private static async Task TryProcessarAsync(HttpContext context, string caminhoAplicacao)
@@ -97,7 +140,7 @@ namespace Snebur
             }
         }
 
-        
+
 
         static bool IsArquivoSistema(string extensao)
         {
