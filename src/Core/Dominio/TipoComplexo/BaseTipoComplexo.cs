@@ -49,10 +49,10 @@ namespace Snebur.Dominio
             var tipo = this.GetType();
 
             this.PropriedadesMapeadas = tipo.GetProperties().Where(x => x.DeclaringType == tipo &&
-                                        x.GetMethod != null &&
-                                        x.SetMethod != null &&
-                                        x.SetMethod.IsPublic &&
-                                        x.GetMethod.IsPublic &&
+                                        x.GetGetMethod() != null &&
+                                        x.GetSetMethod() != null &&
+                                        x.GetSetMethod().IsPublic &&
+                                        x.GetGetMethod().IsPublic &&
                                         x.GetCustomAttribute<NaoMapearAttribute>() == null).ToList();
         }
 

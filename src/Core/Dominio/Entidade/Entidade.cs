@@ -128,6 +128,7 @@ namespace Snebur.Dominio
                     }
                 }
             }
+
             var atributo = this.__TipoEntidade.GetCustomAttribute<DatabaseGeneratedAttribute>(true);
             this.__IsIdentity = atributo == null || atributo.DatabaseGeneratedOption == DatabaseGeneratedOption.Identity;
         }
