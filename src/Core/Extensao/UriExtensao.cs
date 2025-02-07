@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using Snebur.Utilidade;
+using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
@@ -115,7 +116,7 @@ namespace System
             var uriHttps = uri.UriSchemeHttps();
             var promise = new TaskCompletionSource<bool>();
 
-            Task.Run(() =>
+            TaskUtil.Run(() =>
             {
                 try
                 {
@@ -123,6 +124,8 @@ namespace System
                     var request = (HttpWebRequest)WebRequest.Create(uriHttps);
 #pragma warning restore SYSLIB0014
                     request.Timeout = (int)TimeSpan.FromSeconds(15).TotalMilliseconds;
+
+#if NET40 == false
                     request.ServerCertificateValidationCallback += (object sender,
                                                                     X509Certificate certificate,
                                                                     X509Chain chain,
@@ -139,6 +142,8 @@ namespace System
                             return false;
                         }
                     };
+#endif
+
                     request.GetResponse();
                     promise.TrySetResult(true);
                 }

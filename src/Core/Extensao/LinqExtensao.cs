@@ -534,5 +534,12 @@ namespace Snebur.Linq
             }
             return default;
         }
+
+#if NET45 || NET40
+        public static HashSet<T> ToHashSet<T>(this IEnumerable<T> colecao)
+        {
+            return new HashSet<T>(colecao);
+        }
+#endif
     }
 }

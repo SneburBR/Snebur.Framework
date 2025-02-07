@@ -11,8 +11,13 @@ namespace System.Reflection
         {
             try
             {
-                //return assembly.GetTypes();
+                //
+#if NET40
+                return assembly.GetTypes();
+#else
                 return assembly.DefinedTypes.Select(t => t.AsType());
+#endif
+
             }
             catch (ReflectionTypeLoadException ex)
             {

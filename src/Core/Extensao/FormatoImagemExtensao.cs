@@ -9,7 +9,7 @@ namespace Zyoncore.Imagens
     {
         public static Task<string> RetornarMimeTypeAsync(this FileInfo fileInfo)
         {
-            return Task.Run(() =>
+            return TaskUtil.Run(() =>
             {
                 return RetornarMimeType(fileInfo);
             });
@@ -27,7 +27,7 @@ namespace Zyoncore.Imagens
 
         public static Task<EnumMimeType> RetornarMimeTypeEnumAsync(this FileInfo fileInfo)
         {
-            return Task.Run(() =>
+            return TaskUtil.Run(() =>
             {
                 return RetornarMimeTypeEnum(fileInfo);
             });
@@ -35,7 +35,7 @@ namespace Zyoncore.Imagens
 
         public static Task<EnumMimeType> RetornarMimeTypeEnumAsync(this Stream stream)
         {
-            return Task.Run(() =>
+            return TaskUtil.Run(() =>
             {
                 return RetornarMimeTypeEnum(stream);
             });
@@ -121,7 +121,7 @@ namespace Zyoncore.Imagens
 
         public static Task<EnumFormatoImagem> RetornarFormatoImagemAsync(this FileInfo fileInfo)
         {
-            return Task.Run(() =>
+            return TaskUtil.Run(() =>
             {
                 return RetornarFormatoImagem(fileInfo);
             });
@@ -129,7 +129,7 @@ namespace Zyoncore.Imagens
 
         public static Task<EnumFormatoImagem> RetornarFormatoImagemAsync(this Stream stream)
         {
-            return Task.Run(() =>
+            return TaskUtil.Run(() =>
             {
                 return RetornarFormatoImagem(stream);
             });
