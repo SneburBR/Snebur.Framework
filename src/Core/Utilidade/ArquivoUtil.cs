@@ -202,7 +202,9 @@ namespace Snebur.Utilidade
             CopiarArquivo(caminhoOrigem, caminhoDestinio, true);
         }
 
-        public static void CopiarArquivo(string caminhoOrigem, string caminhoDestinio, bool sobreEscrever)
+        public static void CopiarArquivo(string caminhoOrigem,
+            string caminhoDestinio,
+            bool sobreEscrever)
         {
             CopiarArquivo(caminhoOrigem, caminhoDestinio, sobreEscrever, false, false);
         }
@@ -244,12 +246,14 @@ namespace Snebur.Utilidade
                     DeletarArquivo(arquivoDestino.FullName, isIgnorarErroSobreEscrever, true);
                 }
 
-                if (!isIgnorarErroSobreEscrever)
+                if (File.Exists(caminhoDestinio))
                 {
-                    throw new Erro(String.Format("O arquivo {0} de destino já existe {0}", caminhoDestinio));
+                    if (!isIgnorarErroSobreEscrever)
+                    {
+                        throw new Erro(String.Format("O arquivo {0} de destino já existe {0}", caminhoDestinio));
+                    }
+                    return;
                 }
-                return;
-
             }
             try
             {
@@ -539,7 +543,7 @@ namespace Snebur.Utilidade
                                                    string texto,
                                                    Encoding encoding = null)
         {
-            return Task.Run(() => SalvarArquivoTexto(caminhoArquivo, texto, encoding));
+            return TaskUtil.Run(() => SalvarArquivoTexto(caminhoArquivo, texto, encoding));
         }
 
         public static void SalvarArquivoTexto(string caminhoArquivo, string texto)

@@ -62,7 +62,7 @@ namespace Snebur.Utilidade
         {
             var totalBytesRecebitos = 0;
             var totalBytes = streamOrigem.CanSeek ? streamOrigem.Length : contentLenght;
-       
+
             if (streamOrigem.CanSeek)
             {
                 streamOrigem.Seek(0, SeekOrigin.Begin);
@@ -81,19 +81,21 @@ namespace Snebur.Utilidade
                 {
                     callbackProgresso(new StreamProgressEventArgs(totalBytesRecebitos, totalBytes));
                 }
-                 //streamDestino.Flush();
+                //streamDestino.Flush();
             }
-            
+
             if (streamDestino.CanSeek)
             {
                 streamDestino.Seek(0, SeekOrigin.Begin);
             }
         }
+ 
 
         public static async Task SalvarStreamBufferizadaAsync(Stream streamOrigem,
-                                                            Stream streamDestino,
-                                                             int tamanhoBuffer = TAMANHO_BUFFER_PADRAO)
+                                                              Stream streamDestino,
+                                                              int tamanhoBuffer = TAMANHO_BUFFER_PADRAO)
         {
+
             if (streamOrigem.CanSeek)
             {
                 streamOrigem.Seek(0, SeekOrigin.Begin);
@@ -102,13 +104,22 @@ namespace Snebur.Utilidade
             {
                 var buffer = new byte[tamanhoBuffer];
                 var bytesRecebido = streamOrigem.Read(buffer, 0, tamanhoBuffer);
+#if NET40
+                streamDestino.Write(buffer, 0, bytesRecebido);
+                await TaskUtil.Delay(0);
+#else
                 await streamDestino.WriteAsync(buffer, 0, bytesRecebido);
-
+#endif
                 if (bytesRecebido == 0)
                 {
                     break;
                 }
+#if NET40
+                streamDestino.Flush();
+#else
                 await streamDestino.FlushAsync();
+#endif
+
             }
             if (streamDestino.CanSeek)
             {
@@ -149,7 +160,7 @@ namespace Snebur.Utilidade
                                   bufferSize);
         }
 
-        public static FileStream CreateWrite(string caminhoArquivo, 
+        public static FileStream CreateWrite(string caminhoArquivo,
                                              int bufferSize = TAMANHO_BUFFER_PADRAO)
         {
             if (File.Exists(caminhoArquivo))

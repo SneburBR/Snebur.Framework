@@ -112,7 +112,7 @@ namespace Snebur.Utilidade
                 }
                 if (!tipo.IsValueType && tipo != typeof(string) && !tipo.IsSubclassOf(typeof(BaseTipoComplexo)))
                 {
-                    var propriedades = objeto.GetType().GetProperties().Where(x => x.SetMethod != null && x.SetMethod.IsPublic);
+                    var propriedades = objeto.GetType().GetProperties().Where(x => x.GetSetMethod() != null && x.GetSetMethod().IsPublic);
                     foreach (var p in propriedades)
                     {
                         var objetoFilho = p.GetValue(objeto);

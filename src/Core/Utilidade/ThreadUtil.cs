@@ -46,7 +46,7 @@ namespace Snebur.Utilidade
 
         public static void ExecutarDepoisAsync(Action acao, TimeSpan tempoExperar, bool ignorarErro = true, [CallerMemberName] string nomeMetodo = "", [CallerFilePath] string caminhoArquivo = "")
         {
-            Task.Run(() =>
+            TaskUtil.Run(() =>
             {
                 Thread.Sleep((int)tempoExperar.TotalMilliseconds);
                 ExecutarAsync(acao, ignorarErro, nomeMetodo, caminhoArquivo);
@@ -60,7 +60,7 @@ namespace Snebur.Utilidade
 
         public static Task EsperarAsync(int totalMilesegundos)
         {
-            return Task.Run(() =>
+            return TaskUtil.Run(() =>
             {
                 Thread.Sleep(totalMilesegundos);
             });
@@ -286,7 +286,7 @@ namespace Snebur.Utilidade
                 if (Threads.ContainsKey(identificador))
                 {
                     Threads.TryRemove(identificador, out var _);
-                    Task.Run(action);
+                    TaskUtil.Run(action);
                 }
             }));
             Threads.TryAdd(identificador, thread);

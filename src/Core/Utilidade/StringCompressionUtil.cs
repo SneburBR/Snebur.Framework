@@ -15,7 +15,15 @@ namespace Snebur.Utilidade
             {
                 using (var compressedStream = new MemoryStream())
                 {
-                    using (var compressorStream = new DeflateStream(compressedStream, CompressionLevel.Optimal, true))
+                    
+                    using (var compressorStream = new DeflateStream(
+                        compressedStream,
+#if NET40
+                        CompressionMode.Compress,
+#else
+                        CompressionLevel.Optimal, 
+#endif
+                        true))
                     {
                         uncompressedStream.CopyTo(compressorStream);
                     }

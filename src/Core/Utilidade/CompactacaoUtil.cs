@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-#if NET6_0_OR_GREATER == false
+#if NET40 == false && NET6_0_OR_GREATER == false
 using SevenZip;
 #endif
-
 
 namespace Snebur.Utilidade
 {
@@ -49,7 +48,7 @@ namespace Snebur.Utilidade
             }
             else
             {
-#if NET6_0_OR_GREATER
+#if NET6_0_OR_GREATER || NET40
                 throw new NotSupportedException();
 #else
 

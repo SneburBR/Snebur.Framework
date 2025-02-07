@@ -222,8 +222,9 @@ namespace Snebur.Utilidade
                                                                     EnumFiltroPropriedadeCampo filtro,
                                                                     bool isIncluirTipoComplexos = false)
         {
-            var filtros = EnumUtil.RetornarFlags<EnumFiltroPropriedadeCampo>(filtro).ToHashSet();
-
+            var filtros = EnumUtil.RetornarFlags<EnumFiltroPropriedadeCampo>(filtro)
+                .ToHashSet();
+            
             var ignorarTipoBase = filtros.Contains(EnumFiltroPropriedadeCampo.IgnorarTipoBase);
             var ignorarChavePrimaria = filtros.Contains(EnumFiltroPropriedadeCampo.IgnorarChavePrimaria);
             var ignorarPropriedadeProtegida = filtros.Contains(EnumFiltroPropriedadeCampo.IgnorarPropriedadeProtegida);

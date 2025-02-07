@@ -197,6 +197,7 @@ namespace Snebur.Utilidade
         {
             return Log(mensagem, informacaoAdicional, AplicacaoSnebur.Atual.AtivarLogServicoOnline);
         }
+      
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static Guid Log(string mensagem, BaseInformacaoAdicionalServicoCompartilhado informacaoAdicional, bool salvarLogLocal)
         {

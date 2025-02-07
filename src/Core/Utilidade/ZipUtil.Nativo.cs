@@ -134,7 +134,7 @@ namespace Snebur.Utilidade
 
                     ms.Seek(0, SeekOrigin.Begin);
 
-                    using (var zip = new ZipArchive(stream))
+                    using (var zip = new ZipArchive(stream, ZipArchiveMode.Read))
                     {
                         if (!String.IsNullOrEmpty(senha))
 
@@ -190,7 +190,7 @@ namespace Snebur.Utilidade
 
                     ms.Seek(0, SeekOrigin.Begin);
 
-                    using (var zip = new ZipArchive(ms))
+                    using (var zip = new ZipArchive(ms, ZipArchiveMode.Read))
                     {
                         if (zip.Entries.Count != 1)
                         {
@@ -210,7 +210,7 @@ namespace Snebur.Utilidade
 
         public static void DescompactarArquivo(Stream streamOrigem, Stream streamDestino)
         {
-            using (var zip = new ZipArchive(streamOrigem))
+            using (var zip = new ZipArchive(streamOrigem, ZipArchiveMode.Read))
             {
                 if (zip.Entries.Count != 1)
                 {
@@ -267,7 +267,7 @@ namespace Snebur.Utilidade
             {
                 using (var ms = StreamUtil.RetornarMemoryStream(stream))
                 {
-                    using (var zip = new ZipArchive(ms))
+                    using (var zip = new ZipArchive(ms, ZipArchiveMode.Read))
                     {
                         foreach (var entry in zip.Entries)
                         {

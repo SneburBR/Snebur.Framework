@@ -230,9 +230,9 @@ namespace Snebur.Utilidade
                                                                         bool isCamposBaseDominio,
                                                                         EnumTipoSerializacao tipoSerializacao)
         {
-            var memberInfosQuery = objectType.GetProperties().Where(x => x.GetMethod != null &&
-                                                                    x.SetMethod != null &&
-                                                                    x.GetMethod.IsPublic &&
+            var memberInfosQuery = objectType.GetProperties().Where(x => x.GetGetMethod() != null &&
+                                                                    x.GetSetMethod() != null &&
+                                                                    x.GetGetMethod().IsPublic &&
                                                                     !Attribute.IsDefined(x, typeof(JsonIgnoreAttribute)) &&
 #if NET6_0_OR_GREATER
                                                                     !Attribute.IsDefined(x, typeof(System.Text.Json.Serialization.JsonIgnoreAttribute)) &&

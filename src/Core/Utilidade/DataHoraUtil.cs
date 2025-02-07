@@ -286,8 +286,9 @@ namespace Snebur.Utilidade
 
         public int GetHashCode(DateTime obj)
         {
-            return HashCode.Combine(obj.Day,
+             return HashCode.Combine(obj.Day,
                                     obj.Month);
+ 
         }
     }
 

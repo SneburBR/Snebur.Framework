@@ -56,7 +56,7 @@ namespace Snebur.Utilidade
                 this.ObjetosAnalisados.Add(objeto);
 
                 var type = objeto.GetType();
-                var properties = type.GetProperties().Where(x => x.GetMethod.IsPublic && x.SetMethod != null && x.SetMethod.IsPublic).ToList();
+                var properties = type.GetProperties().Where(x => x.GetGetMethod().IsPublic && x.GetSetMethod() != null && x.GetSetMethod().IsPublic).ToList();
                 if (properties.Count > 0)
                 {
                     foreach (var propertyInfo in properties)
