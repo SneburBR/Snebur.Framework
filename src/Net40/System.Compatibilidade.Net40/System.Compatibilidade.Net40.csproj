@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net40</TargetFrameworks>
+		<AssemblyName>System.Compartibildiade.Net40</AssemblyName>
+		<RootNamespace>System</RootNamespace>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<Configurations>Debug;Release</Configurations>
+
+	</PropertyGroup>
+	 
+
+	<ItemGroup>
+
+		<Reference Include="Microsoft.CSharp" />
+		<Reference Include="System.Configuration" />
+		<Reference Include="System.ComponentModel.DataAnnotations" />
+		<Reference Include="System.Web" />
+		<Reference Include="System.Web.Extensions" />
+		<Reference Include="System.Management" />
+		<Reference Include="Microsoft.CSharp" />
+		<Reference Include="System.Workflow.Runtime" />
+
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+
+		<PackageReference Include="System.ValueTuple" version="4.5.0" />
+		<PackageReference Include="Microsoft.Bcl" version="1.1.10" />
+		<PackageReference Include="Microsoft.Bcl.Async" version="1.0.168" />
+		<PackageReference Include="Microsoft.Bcl.Build" version="1.0.21" />
+		<PackageReference Include="Microsoft.Net.Http" version="2.2.29" />
+		
+	</ItemGroup>
+	<ItemGroup>
+		<Reference Include="DotNetZip">
+			<HintPath>lib\DotNetZip.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Tasks\" />
+	  <Folder Include="Reflection\" />
+	</ItemGroup>
+  
+</Project>
