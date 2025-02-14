@@ -1,1 +1,0 @@
-﻿Esse atributo  não funciona no .NET 40, foi adiciona da classe para compatibilidade dos NET 4.0 com NET 4.5
