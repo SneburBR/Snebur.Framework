@@ -444,7 +444,8 @@ namespace Snebur.Linq
 
         #region String
 
-        public static bool Contains(this List<string> source, string value, StringComparison stringComparison)
+        public static bool Contains(this List<string> source, 
+            string value, StringComparison stringComparison)
         {
             return source.IndexOf(value, stringComparison) >= 0;
         }

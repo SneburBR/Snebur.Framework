@@ -247,7 +247,9 @@ namespace Snebur.Utilidade
         {
             if (!File.Exists(caminhoOrigem))
             {
-                throw new FileNotFoundException(caminhoOrigem);
+                throw new FileNotFoundException(
+                    message: caminhoOrigem,
+                    fileName: caminhoOrigem);
             }
 
             using (var streamOrigem = OpenRead(caminhoOrigem, tamanhoBuffer))

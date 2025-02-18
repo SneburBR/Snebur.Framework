@@ -25,6 +25,7 @@ namespace Snebur.Dominio
         [NaoMapear]
         [IgnorarPropriedadeTSReflexao]
         [PropriedadeProtegida]
+        //[JsonProperty]
         public string __CaminhoTipo { get; internal protected set; }
 
         //[EditorBrowsable(EditorBrowsableState.Never)]

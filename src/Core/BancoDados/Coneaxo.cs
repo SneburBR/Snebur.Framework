@@ -113,7 +113,7 @@ namespace Snebur.BancoDados
             var tipo = typeof(T);
             var propriedades = tipo.GetProperties(BindingFlags.Public | BindingFlags.Instance).
                                     Where(x => x.DeclaringType != typeof(BaseDominio) &&
-                                               x.GetMethod.IsPublic && (x.SetMethod?.IsPublic ?? false));
+                                               x.GetGetMethod().IsPublic && (x.GetSetMethod()?.IsPublic ?? false));
             
             var propriedadesChavePrimaria = tipo.GetProperties().
                                                  Where(x => x.GetCustomAttribute<KeyAttribute>() != null  ).

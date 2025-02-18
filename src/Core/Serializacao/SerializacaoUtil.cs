@@ -21,7 +21,7 @@ namespace Snebur.Serializacao
                                                    x.GetSetMethod() != null && x.GetSetMethod().IsPublic).
                                         Where(x =>
             {
-                if (x.GetMethod.GetParameters().Length > 0)
+                if (x.GetGetMethod().GetParameters().Length > 0)
                 {
                     return false;
                 }
@@ -239,7 +239,7 @@ namespace Snebur.Serializacao
         {
            
 
-            if (propriedade.GetMethod.IsPublic)
+            if (propriedade.GetGetMethod().IsPublic)
             {
                 var atributopsIgnorar = new List<Type>
                 {

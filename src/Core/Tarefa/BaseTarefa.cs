@@ -127,7 +127,7 @@ namespace Snebur.Tarefa
             if (this.ProgressoAlterado != null)
             {
                 var progressoEventArgs = new ProgressoAlteradoEventArgs(this, progresso);
-                Task.Run(() =>
+                TaskUtil.Run(() =>
                 {
                     this.ProgressoAlterado(this, progressoEventArgs);
                 });
@@ -162,7 +162,7 @@ namespace Snebur.Tarefa
 
             if (this.ProgressoAlterado != null)
             {
-                Task.Run(() =>
+                TaskUtil.Run(() =>
                 {
                     try { this.ProgressoAlterado(this, progressoEventArgs); } catch { };
                 });
@@ -210,7 +210,7 @@ namespace Snebur.Tarefa
         public void CancelarAsync(Action callbackConcluido)
         {
             this.IniciarCancelamento();
-            Task.Run(() =>
+            TaskUtil.Run(() =>
             {
                 this.Cancelar(() =>
                 {
@@ -223,7 +223,7 @@ namespace Snebur.Tarefa
         public void ContinuarAsync()
         {
             this.IniciarContinuar();
-            Task.Run(this.Continuar);
+            TaskUtil.Run(this.Continuar);
         }
 
         protected abstract void Pausar(Action callbackConcluido);
