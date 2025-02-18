@@ -1,4 +1,7 @@
-﻿using System.Runtime.CompilerServices;
+﻿#if NET40
+extern alias MicrosoftBcl;
+#endif
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
 namespace System

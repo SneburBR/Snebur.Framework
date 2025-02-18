@@ -478,11 +478,19 @@ namespace Snebur
 
         private void InicializarComunicacao()
         {
+#if NET40
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
+#else
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11 |
-                                                   SecurityProtocolType.Tls12 |
-                                                   SecurityProtocolType.Tls13;
+                                                   SecurityProtocolType.Tls12
+#if NET45 == false
+                                                   | SecurityProtocolType.Tls13;
+#else
+                                                   ;
+#endif
+#endif
 
-            //Ignorar eerros da certificados Https, isso pode ocorres caso da DataHora do computador cliente do usuario esteja mais 12 horas de diferença com servidor
+            //Ignorar erros da certificados https, isso pode ocorres caso da DataHora do computador cliente do usuario esteja mais 12 horas de diferença com servidor
             ServicePointManager.ServerCertificateValidationCallback = delegate (object obj,
                                                                                           System.Security.Cryptography.X509Certificates.X509Certificate X509certificate,
                                                                                           System.Security.Cryptography.X509Certificates.X509Chain chain,
@@ -499,9 +507,22 @@ namespace Snebur
             try
             {
                 ServicePointManager.Expect100Continue = true;
+#if NET40
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
+#endif
+
+#if NET45
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 |
                                                        SecurityProtocolType.Tls11 |
+                                                       SecurityProtocolType.Tls ;
+#endif
+
+#if NET48_OR_GREATER || NET6_0_OR_GREATER
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls13 |
+                                                       SecurityProtocolType.Tls12 |
+                                                       SecurityProtocolType.Tls11 |
                                                        SecurityProtocolType.Tls;
+#endif
 
                 ServicePointManager.DefaultConnectionLimit = 256;
 
@@ -534,7 +555,7 @@ namespace Snebur
             {
             }
         }
-        #endregion
+#endregion
 
         #region ServicoUsuario
 

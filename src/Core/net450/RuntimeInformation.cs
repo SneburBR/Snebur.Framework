@@ -1,5 +1,5 @@
-﻿#if NET462
-
+﻿#if NET45 || NET40
+ 
 namespace System.Runtime.InteropServices
 {
     public class RuntimeInformation

@@ -226,13 +226,13 @@ namespace Snebur.Utilidade
             ArquivoUtil.SalvarArquivoTexto(caminhoDestino, json);
         }
 
-        public static List<MemberInfo> RetornarPropriedadesSerializavel(Type objectType, 
+        public static List<MemberInfo> RetornarPropriedadesSerializavel(Type objectType,
                                                                         bool isCamposBaseDominio,
                                                                         EnumTipoSerializacao tipoSerializacao)
         {
-            var memberInfosQuery = objectType.GetProperties().Where(x => x.GetGetMethod() != null &&
-                                                                    x.GetSetMethod() != null &&
-                                                                    x.GetGetMethod().IsPublic &&
+            var memberInfosQuery = objectType.GetProperties().Where(x => x.GetMethod != null &&
+                                                                    x.SetMethod != null &&
+                                                                    x.GetMethod.IsPublic &&
                                                                     !Attribute.IsDefined(x, typeof(JsonIgnoreAttribute)) &&
 #if NET6_0_OR_GREATER
                                                                     !Attribute.IsDefined(x, typeof(System.Text.Json.Serialization.JsonIgnoreAttribute)) &&
@@ -278,7 +278,7 @@ namespace Snebur.Utilidade
             }
         }
     }
-     
+
     internal class ResolverReferencia : IReferenceResolver
     {
         public object ResolveReference(object context, string reference)

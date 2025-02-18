@@ -68,11 +68,12 @@ namespace Snebur.Utilidade
 
         private static bool IsParaErroDepuracaoAtachada(Exception exception)
         {
-            if (exception is Erro erro)
-            {
-                return erro.IsParaDepuracaoAtachada;
-            }
-            return true;
+            //if (exception is Erro erro)
+            //{
+            //    return erro.IsParaDepuracaoAtachada;
+            //}
+            //return true;
+            return false;
         }
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static Guid Erro(Exception ex,
