@@ -276,7 +276,7 @@ namespace Snebur.Imagens
 
         private static MemoryStream RetornarStreamPerfil(string nomeArquivoEmbutido)
         {
-            var caminhoRecurso = String.Format("Snebur.Imagem.Recursos.PerfilIcc.{0}", nomeArquivoEmbutido);
+            var caminhoRecurso = String.Format("Snebur.Imagens.Recursos.PerfilIcc.{0}", nomeArquivoEmbutido);
             using (var stream = typeof(PerfilIccUtil).Assembly.GetManifestResourceStream(caminhoRecurso))
             {
                 if (stream == null)

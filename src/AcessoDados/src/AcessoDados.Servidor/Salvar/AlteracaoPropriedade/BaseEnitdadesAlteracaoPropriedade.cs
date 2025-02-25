@@ -34,23 +34,18 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                 if (estruturaAlteracaoPropriedade.IsTipoComplexo)
                 {
                     //var campos = estruturaAlteracaoPropriedade.EstruturaTipoComplexo.EstruturasCampo.Values.Select(x => x.NomeCampo);
-
-
                     var tupleEstruturaPropriedadeAlterada = estruturaAlteracaoPropriedade.EstruturaTipoComplexo.
                                                                          EstruturasCampo.Values.
                                                                          Where(x => propriedadesAlteradas.ContainsKey(x.NomeCampo)).
                                                                          Select(x => (x, propriedadesAlteradas[x.NomeCampo])).
                                                                          ToList();
 
-
                     if (tupleEstruturaPropriedadeAlterada.Count > 0)
                     {
                         return this.IsExisteAlteracaoTipoComplexo(entidade,
                                                                   estruturaAlteracaoPropriedade,
                                                                   tupleEstruturaPropriedadeAlterada);
-
                     }
-
                 }
                 else
                 {

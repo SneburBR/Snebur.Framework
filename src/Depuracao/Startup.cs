@@ -22,18 +22,18 @@ namespace Snebur
             var pathRoot = builder.Environment.ContentRootPath;
 
 
-            var pathCert = Path.GetFullPath(Path.Combine(builder.Environment.ContentRootPath, "../../../cert/sigi.pfx"));
-            if (File.Exists(pathCert))
-            {
-                var port = GetPortApplicationUrl(pathRoot);
-                builder.WebHost.ConfigureKestrel(options =>
-                {
-                    options.ListenAnyIP(port, listenOptions =>
-                    {
-                        listenOptions.UseHttps(pathCert, "zyon@3319");
-                    });
-                });
-            }
+            //var pathCert = Path.GetFullPath(Path.Combine(builder.Environment.ContentRootPath, "../../../cert/sigi.pfx"));
+            //if (File.Exists(pathCert))
+            //{
+            //    var port = GetPortApplicationUrl(pathRoot);
+            //    builder.WebHost.ConfigureKestrel(options =>
+            //    {
+            //        options.ListenAnyIP(port, listenOptions =>
+            //        {
+            //            listenOptions.UseHttps(pathCert, "zyon@3319");
+            //        });
+            //    });
+            //}
 
 
             var app = builder.Build();

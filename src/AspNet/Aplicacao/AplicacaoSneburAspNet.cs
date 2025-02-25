@@ -1,22 +1,26 @@
 ﻿using Snebur.Comunicacao;
 using Snebur.Dominio;
 using Snebur.Seguranca;
-using Snebur.Utilidade;
+
 using System;
-using System.Collections;
 using System.ComponentModel;
-using System.Web;
 using Snebur.Linq;
-using System.Linq;
-
-
+  
 #if NET6_0_OR_GREATER
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-#else
-//using System.Web;
-#endif 
 
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+
+#else
+using Snebur.Utilidade;
+using System.Web;
+#endif 
+#if NET8_0_OR_GREATER
+
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
+#endif
 namespace Snebur
 {
     public class AplicacaoSneburAspNet : AplicacaoSnebur, IAplicacaoSneburAspNet
@@ -226,27 +230,34 @@ namespace Snebur
         #region IAplicacaoSneburAspNetCore
 
         private static IHttpContextAccessor _httpContextAccessor;
-        private static ILogger _logger;
 
-        public virtual HttpContext HttpContext 
+        public virtual HttpContext HttpContext
             => this.HttpContextAccessor.HttpContext;
         public virtual IHttpContextAccessor HttpContextAccessor
             => AplicacaoSneburAspNet._httpContextAccessor ?? throw new Exception("O HttpContextAccessor não foi definido");
-        
-        public ILogger Logger 
-            => AplicacaoSneburAspNet._logger  ?? throw new Exception("O Logger não foi definido");
 
         public void ConfigureHttpContextAccessor(IHttpContextAccessor httpContextAccessor)
         {
             AplicacaoSneburAspNet._httpContextAccessor = httpContextAccessor;
         }
 
-        public void ConfigureLogger(ILogger logger)
-        {
-            AplicacaoSneburAspNet._logger = logger;
-        }
 
+        public virtual void Configure(WebApplication app,
+                                     IWebHostEnvironment env)
+        {
+        }
+ 
         #endregion
+#endif
+
+#if NET8_0_OR_GREATER
+        public virtual void AddServices(
+            IHostApplicationBuilder app,
+            IWebHostBuilder webHost,
+            IConfigurationRoot configuracao)
+        {
+           
+        }
 #endif
     }
 }

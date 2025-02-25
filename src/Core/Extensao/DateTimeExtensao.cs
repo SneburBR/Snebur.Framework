@@ -77,7 +77,7 @@ namespace Snebur.Utilidade
             return new DateTime(data.Year, data.Month, data.Day, 23, 59, 59, kind);
         }
 
-        public static string ToDirectoryName(this DateTime dateTime, 
+        public static string ToDirectoryName(this DateTime dateTime,
                                              OptionsDateTimeDiretoryName options = OptionsDateTimeDiretoryName.YYYY_MM_DD)
         {
             switch (options)
@@ -94,7 +94,7 @@ namespace Snebur.Utilidade
                     return dateTime.ToString("yyyy-MM-dd HH-mm-ss-ffffff");
                 default:
                     throw new Exception($"Options {options} não suportado");
-                    
+
             }
         }
     }
