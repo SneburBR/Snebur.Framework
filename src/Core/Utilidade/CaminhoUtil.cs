@@ -22,7 +22,7 @@ namespace Snebur.Utilidade
         private static string RetornarCaminhoArquivoBackup(string caminhoArquivo, int contador = 0)
         {
             var fi = new FileInfo(caminhoArquivo);
-            var diretorio = CaminhoUtil.Combine(fi.Directory.FullName, "bkp");
+            var diretorio = Combine(fi.Directory.FullName, "bkp");
             diretorio = diretorio.RetornarPrimeirosCaracteres(DiretorioUtil.LIMITE_MAXIMO_CARACTERES_CAMINHO_PASTA + 3);
             DiretorioUtil.CriarDiretorio(diretorio);
 
@@ -53,7 +53,7 @@ namespace Snebur.Utilidade
             //{
             //    nomeArquivoTemporario += extensao;
             //}
-            var caminhoArquivoTemporario = CaminhoUtil.Combine(diretorio, nomeArquivoTemporario);
+            var caminhoArquivoTemporario = Combine(diretorio, nomeArquivoTemporario);
             if (File.Exists(caminhoArquivoTemporario))
             {
                 return RetornarCaminhoArquivoTemporario(diretorio, extensao);
@@ -100,12 +100,19 @@ namespace Snebur.Utilidade
 
         public static string RetornarCaminhoAbsoluto(string caminhoRelativo, string caminhoBase)
         {
-            var caminho = CaminhoUtil.Combine(caminhoBase, caminhoRelativo);
+            var caminho = Combine(caminhoBase, caminhoRelativo);
             return Path.GetFullPath(caminho);
         }
 
-        public static string RetornarCaminhoRelativo(string caminhoAbsoluto, string caminhoDiretorioReferencia)
+        public static string RetornarCaminhoRelativo(
+            string caminhoAbsoluto,
+            string caminhoDiretorioReferencia)
         {
+            if (!Path.IsPathRooted(caminhoAbsoluto))
+            {
+                return caminhoAbsoluto;
+            }
+
             var fileSystem = RetornarFileSystemInfo(caminhoAbsoluto);
             return RetornarCaminhoRelativo(fileSystem, new DirectoryInfo(caminhoDiretorioReferencia));
         }
@@ -144,7 +151,9 @@ namespace Snebur.Utilidade
             return caminhoRelativo;
         }
 
-        private static FileSystemInfo RetornarFileSystemInfo(string caminho, bool ignorarErro = false)
+        private static FileSystemInfo RetornarFileSystemInfo(
+            string caminho,
+            bool ignorarErro = false)
         {
             if (File.Exists(caminho))
             {
@@ -194,7 +203,7 @@ namespace Snebur.Utilidade
         {
             if (((diretorio.Length + nomeArquivo.Length) <= ArquivoUtil.TAMANHO_MAXIMO_CAMINHO_ARQUIVO))
             {
-                return CaminhoUtil.Combine(diretorio, nomeArquivo);
+                return Combine(diretorio, nomeArquivo);
             }
             if (diretorio.Length > (DiretorioUtil.LIMITE_MAXIMO_CARACTERES_CAMINHO_PASTA + 3))
             {
@@ -223,7 +232,7 @@ namespace Snebur.Utilidade
             nomeArquivoSuportado += parteRandom;
             nomeArquivoSuportado += extensao;
 
-            var caminhoArquivoSuportado = CaminhoUtil.Combine(diretorio, nomeArquivoSuportado);
+            var caminhoArquivoSuportado = Combine(diretorio, nomeArquivoSuportado);
             if (File.Exists(caminhoArquivoSuportado))
             {
                 return RetornarCaminhoArquivoSuportado(diretorio, nomeArquivo);
@@ -237,7 +246,7 @@ namespace Snebur.Utilidade
             {
                 while (!arquivo.Exists)
                 {
-                    arquivo = new FileInfo(CaminhoUtil.Combine(arquivo.Directory.Parent.FullName, arquivo.Name));
+                    arquivo = new FileInfo(Combine(arquivo.Directory.Parent.FullName, arquivo.Name));
                     if (arquivo.Directory.Parent == null)
                     {
                         return null;

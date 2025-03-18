@@ -87,7 +87,8 @@ namespace System.Reflection
             }
         }
          
-        public static string GetResourceAsString(this Assembly assembly, string resource, Encoding encoding = null)
+        public static string GetResourceAsString(
+            this Assembly assembly, string resource, Encoding encoding = null)
         {
             encoding = encoding ?? Encoding.UTF8;
             using (var ms = new MemoryStream())

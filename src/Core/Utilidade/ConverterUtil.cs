@@ -323,7 +323,7 @@ namespace Snebur.Utilidade
                 return 0D;
             }
 
-            if(valor is String str)
+            if(valor is string str)
             {
                 if(provider== null)
                 {

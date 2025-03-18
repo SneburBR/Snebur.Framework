@@ -444,7 +444,7 @@ namespace Snebur.Linq
 
         #region String
 
-        public static bool Contains(this List<string> source, 
+        public static bool Contains(this List<string> source,
             string value, StringComparison stringComparison)
         {
             return source.IndexOf(value, stringComparison) >= 0;
@@ -536,7 +536,17 @@ namespace Snebur.Linq
             return default;
         }
 
+
 #if NET45 || NET40
+        public static IEnumerable<T> Prepend<T>(this IEnumerable<T> source, T item)
+        {
+            yield return item;
+            foreach (var element in source)
+            {
+                yield return element;
+            }
+        }
+
         public static HashSet<T> ToHashSet<T>(this IEnumerable<T> colecao)
         {
             return new HashSet<T>(colecao);

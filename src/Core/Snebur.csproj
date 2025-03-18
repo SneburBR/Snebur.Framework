@@ -1,14 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks> net45;net48;net6.0;net8.0</TargetFrameworks>
-		<!--<TargetFrameworks>net40; net45;net48;net6.0;net8.0 </TargetFrameworks>-->
+		<TargetFrameworks> net45; net48;net6.0;net8.0</TargetFrameworks>
 		<AssemblyName>Snebur</AssemblyName>
 		<RootNamespace>Snebur</RootNamespace>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<Configurations>Debug;Release</Configurations>
-
+		<SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
 	</PropertyGroup>
  
 
