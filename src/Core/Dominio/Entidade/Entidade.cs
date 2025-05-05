@@ -242,7 +242,7 @@ namespace Snebur.Dominio
         }
         internal protected virtual T Get<T>(T valor, [CallerMemberName] string nomePropriedade = "")
         {
-            return this.RetornarValorPropriedade<T>(valor, nomePropriedade);
+            return this.RetornarValorPropriedade(valor, nomePropriedade);
         }
 
         #endregion

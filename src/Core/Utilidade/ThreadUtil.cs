@@ -214,10 +214,10 @@ namespace Snebur.Utilidade
 
 
         [Obsolete("Use " + nameof(LazyUtil) + "." + nameof(LazyUtil.RetornarValorLazyComBloqueio))]
-        public static T RetornarValorComBloqueio<T>(ref T? valor, Func<T> retornarValor) where T : struct => LazyUtil.RetornarValorLazyComBloqueio<T>(ref valor, retornarValor);
+        public static T RetornarValorComBloqueio<T>(ref T? valor, Func<T> retornarValor) where T : struct => LazyUtil.RetornarValorLazyComBloqueio(ref valor, retornarValor);
 
         [Obsolete("Use " + nameof(LazyUtil) + "." + nameof(LazyUtil.RetornarValorLazyComBloqueio))]
-        public static T RetornarValorComBloqueio<T>(ref T valor, Func<T> retornarValor) where T : class => LazyUtil.RetornarValorLazyComBloqueio<T>(ref valor, retornarValor);
+        public static T RetornarValorComBloqueio<T>(ref T valor, Func<T> retornarValor) where T : class => LazyUtil.RetornarValorLazyComBloqueio(ref valor, retornarValor);
 
 
         /// <summary>

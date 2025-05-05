@@ -3,7 +3,7 @@
 namespace Snebur.Dominio
 {
     [IgnorarTSReflexao]
-    [IgnorarClasseTSAttribute]
+    [IgnorarClasseTS]
     public class EntidadeViewModel : BaseViewModel
     {
         public Entidade Entidade { get; set; }

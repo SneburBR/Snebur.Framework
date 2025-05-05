@@ -44,12 +44,12 @@ namespace Snebur.Utilidade
 
         public static string RetornarRelacoesAbertas<T>(Expression<Func<T, object>> expressao)
         {
-            return ReflexaoUtil.RetornarCaminhoPropriedade<T>(expressao);
+            return ReflexaoUtil.RetornarCaminhoPropriedade(expressao);
         }
 
         public static string RetornarRelacoesAbertas<T>(params Expression<Func<T, object>>[] expressoes)
         {
-            return String.Join(", ", expressoes.Select(x => ReflexaoUtil.RetornarCaminhoPropriedade<T>(x)));
+            return String.Join(", ", expressoes.Select(x => ReflexaoUtil.RetornarCaminhoPropriedade(x)));
         }
 
         public static bool SaoIgual<T>(T valor1, T valor2)

@@ -45,7 +45,7 @@ namespace Snebur.Utilidade
 
         public static PropertyInfo RetornarPropriedade<T>(Expression<Func<T, object>> expressaoCaminhoPropriedade, Type tipo)
         {
-            var nomePropriedade = RetornarNomePropriedade<T>(expressaoCaminhoPropriedade);
+            var nomePropriedade = RetornarNomePropriedade(expressaoCaminhoPropriedade);
             return tipo.GetProperty(nomePropriedade);
         }
 
@@ -246,7 +246,7 @@ namespace Snebur.Utilidade
 
         public static object RetornarValorPropriedade<T>(Expression<Func<T, object>> expressaoPropriedade, object objeto)
         {
-            var propriedade = RetornarPropriedade<T>(expressaoPropriedade, objeto.GetType());
+            var propriedade = RetornarPropriedade(expressaoPropriedade, objeto.GetType());
             return propriedade.GetValue(objeto);
         }
 

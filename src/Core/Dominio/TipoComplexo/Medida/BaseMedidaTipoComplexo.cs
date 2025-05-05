@@ -11,7 +11,7 @@ namespace Snebur.Dominio
         protected Func<double?, double> FuncaoNormalizarDpiVisualizacao;
 
         [NaoMapear]
-        [IgnorarPropriedadeAttribute]
+        [IgnorarPropriedade]
         Func<double?, double> IDpiVisualizacao.FuncaoNormamlizarDpiVisualizacao
         {
             get => this.FuncaoNormalizarDpiVisualizacao;

@@ -2,7 +2,7 @@
 
 namespace Snebur.Imagens
 {
-    [ConstantesTSAttribute]
+    [ConstantesTS]
     public class ConstantesImagemApresentacao
     {
         public const int LARGURA_ICONE = 178;

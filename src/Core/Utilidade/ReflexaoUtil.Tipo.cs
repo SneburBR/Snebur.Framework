@@ -116,7 +116,7 @@ namespace Snebur.Utilidade
 
                 case EnumTipoPrimario.EnumValor:
 
-                    return typeof(System.Enum);
+                    return typeof(Enum);
 
                 case EnumTipoPrimario.Integer:
 

@@ -200,7 +200,7 @@ namespace Snebur.Utilidade
             return propriedades;
         }
 
-        public static Expression RetornarExpressaoInterna(System.Linq.Expressions.Expression expressao, List<PropertyInfo> propriedades, bool permitirMetodos = true)
+        public static Expression RetornarExpressaoInterna(Expression expressao, List<PropertyInfo> propriedades, bool permitirMetodos = true)
         {
             if (expressao is UnaryExpression)
             {

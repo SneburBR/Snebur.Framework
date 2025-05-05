@@ -12,7 +12,7 @@ namespace Snebur.Utilidade
 
         public static Task<T> Run<T>(Func<T> action)
         {
-            return Task.Run<T>(action);
+            return Task.Run(action);
         }
 
         internal static Task Delay(int delay)

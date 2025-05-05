@@ -16,17 +16,17 @@ namespace System.Collections.Concurrent
 
         public static ConcurrentDictionary<TKey, TSource> ToConcurrentDictionary<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
         {
-            return ToConcurrentDictionary<TSource, TKey, TSource>(source, keySelector, IdentityFunction<TSource>.Instance, null);
+            return ToConcurrentDictionary(source, keySelector, IdentityFunction<TSource>.Instance, null);
         }
 
         public static ConcurrentDictionary<TKey, TSource> ToConcurrentDictionary<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
         {
-            return ToConcurrentDictionary<TSource, TKey, TSource>(source, keySelector, IdentityFunction<TSource>.Instance, comparer);
+            return ToConcurrentDictionary(source, keySelector, IdentityFunction<TSource>.Instance, comparer);
         }
 
         public static ConcurrentDictionary<TKey, TElement> ToConcurrentDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector)
         {
-            return ToConcurrentDictionary<TSource, TKey, TElement>(source, keySelector, elementSelector, null);
+            return ToConcurrentDictionary(source, keySelector, elementSelector, null);
         }
 
         internal class IdentityFunction<TElement>

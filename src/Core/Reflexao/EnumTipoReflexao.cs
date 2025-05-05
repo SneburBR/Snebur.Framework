@@ -2,7 +2,7 @@
 
 namespace Snebur.Reflexao
 {
-    [IgnorarEnumTSAttribute]
+    [IgnorarEnumTS]
     public enum EnumTipoReflexao
     {
         TipoPrimario = 1,

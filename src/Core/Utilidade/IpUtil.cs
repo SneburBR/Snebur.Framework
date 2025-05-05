@@ -64,7 +64,7 @@ namespace Snebur
             var json = HttpUtil.RetornarString(url, null, TimeSpan.FromSeconds(5), true);
             if (!String.IsNullOrWhiteSpace(json))
             {
-                var ipInfo = JsonUtil.Deserializar<ipinfo>(json, EnumTipoSerializacao.Javascript);
+                var ipInfo = JsonUtil.Deserializar<IpInfo>(json, EnumTipoSerializacao.Javascript);
                 var localizacao = Localizacao.Parse(ipInfo.loc);
                 var mascaraIp = RetornarMascaraIp4(ipInfo.ip);
 
@@ -236,7 +236,7 @@ namespace Snebur.Dominio
         }
     }
 
-    public class ipinfo
+    public class IpInfo
     {
         public string ip { get; set; }
         public string hostname { get; set; }

@@ -21,7 +21,7 @@ namespace Snebur.Utilidade
                    flags.All(x => Enum.IsDefined(tipoEnum, x));
         }
 
-        public static TEnum[] RetornarValoresEnum<TEnum>() where TEnum : System.Enum
+        public static TEnum[] RetornarValoresEnum<TEnum>() where TEnum : Enum
         {
             return RetornarValoresEnum(typeof(TEnum)).Cast<TEnum>().ToArray();
         }
@@ -172,7 +172,7 @@ namespace Snebur.Utilidade
             return Enum.GetNames(tipoEnum).ToList();
         }
 
-        public static bool PossuiFlag<TEnum>(Enum attributes, TEnum flag) where TEnum : System.Enum
+        public static bool PossuiFlag<TEnum>(Enum attributes, TEnum flag) where TEnum : Enum
         {
             var flags = RetornarFlags<TEnum>((Enum)attributes);
             return flags.Contains(flag);
