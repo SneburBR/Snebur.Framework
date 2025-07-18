@@ -41,7 +41,6 @@ namespace Snebur.Computador
 
         public string Senha { get; set; }
 
-
         #region Contantes
 
         private const int RESOURCE_CONNECTED = 0x00000001;
@@ -61,7 +60,6 @@ namespace Snebur.Computador
 
         private const int RESOURCEUSAGE_CONNECTABLE = 0x00000001;
         private const int RESOURCEUSAGE_CONTAINER = 0x00000002;
-
 
         private const int CONNECT_INTERACTIVE = 0x00000008;
         private const int CONNECT_PROMPT = 0x00000010;
@@ -143,7 +141,6 @@ namespace Snebur.Computador
         {
             return new AcessoCompartilhamentoRede(remoteComputerName);
         }
-
 
         public static AcessoCompartilhamentoRede Acessar(string nomeComputador,
                                                          string nomeDominio,

@@ -54,7 +54,6 @@ namespace Snebur.Computador
                     userSecurityDescriptor["ControlFlags"] = 4; //SE_DACL_PRESENT 
                     userSecurityDescriptor["DACL"] = new object[] { userACE };
 
-
                     //var mc = new ManagementClass("Win32_Share");
                     var share = new ManagementObject(mc.Path + ".Name='" + nomeCompartilhamento + "'");
                     share.InvokeMethod("SetShareInfo", new object[] { Int32.MaxValue, nomeCompartilhamento, userSecurityDescriptor });

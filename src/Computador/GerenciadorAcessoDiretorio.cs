@@ -11,7 +11,6 @@ namespace Snebur.Computador
 
         public AcessoCompartilhamentoRede AcessoCompartilhamentoRede { get; }
 
-
         public GerenciadorAcessoDiretorio(IAcessoDiretorio acessoDiretorio)
         {
             this.AcessoDiretorio = acessoDiretorio;
@@ -27,7 +26,6 @@ namespace Snebur.Computador
                 }
             }
         }
-
 
         //public bool ExisteDiretorio(string caminho)
         //{

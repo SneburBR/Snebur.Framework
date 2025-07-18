@@ -28,8 +28,6 @@ namespace Snebur.Computador
 
         }
 
-
-
         public AcessoDiscoComOutroUsuario(string dominio,
                                           string usuario,
                                           string senha) :
@@ -80,8 +78,6 @@ namespace Snebur.Computador
                 }
             }
         }
-
-
 
         public void Dispose()
         {
