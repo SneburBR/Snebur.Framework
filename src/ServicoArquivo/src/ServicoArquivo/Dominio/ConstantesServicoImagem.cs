@@ -25,8 +25,6 @@ namespace Snebur.ServicoArquivo
 
         //public const string NOME_TIPO_IMAGEM = "NomeTipoImagem";
 
-
-
         #endregion
     }
 }

@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Http;
 using System.Web;
 #endif  
 
-
 namespace Snebur.ServicoArquivo
 {
 
@@ -63,8 +62,6 @@ namespace Snebur.ServicoArquivo
                 }
             }
         }
-
-
 
         private void DeletarArquivoTempoarario(string caminhoTemporario)
         {

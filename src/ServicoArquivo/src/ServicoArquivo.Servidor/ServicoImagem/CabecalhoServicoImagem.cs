@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using System.Web;
 #endif  
 
-
 namespace Snebur.ServicoArquivo
 {
     public class CabecalhoServicoImagem : CabecalhoServicoArquivo, IInformacaoRepositorioImagem
@@ -20,13 +19,11 @@ namespace Snebur.ServicoArquivo
             this.TamanhoImagem = (EnumTamanhoImagem)this.RetornarInteger(ConstantesServicoImagem.TAMANHO_IMAGEM);
             this.Formato = (EnumFormatoImagem)this.RetornarInteger(ConstantesServicoImagem.FORMATO_IMAGEM);
 
-
             if (!Enum.IsDefined(typeof(EnumFormatoImagem), this.Formato))
             {
                 this.Formato = EnumFormatoImagem.JPEG;
             }
         }
-
 
         //#region IInformacaoRepositorioImagem
 

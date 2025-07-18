@@ -17,8 +17,6 @@ namespace System
         }
         #region Serializacao 
 
-
-
         public ErroChecksumPacote()
         {
 

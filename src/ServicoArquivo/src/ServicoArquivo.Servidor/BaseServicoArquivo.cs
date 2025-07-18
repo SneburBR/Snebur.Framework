@@ -223,7 +223,6 @@ namespace Snebur.ServicoArquivo
 
         protected abstract string NormalizarOrigem(string origem);
 
-
 #endregion
 
         #region Métodos privados
@@ -269,7 +268,6 @@ namespace Snebur.ServicoArquivo
                 }
                 return ms;
 
-
             }
             catch
             {
@@ -277,7 +275,6 @@ namespace Snebur.ServicoArquivo
             }
         }
 #endif
-
 
         #endregion
 

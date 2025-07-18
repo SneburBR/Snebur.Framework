@@ -28,5 +28,4 @@ namespace Snebur.ServicoArquivo
         #endregion
     }
 
-
 }

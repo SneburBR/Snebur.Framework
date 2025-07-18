@@ -2,14 +2,12 @@
 using System;
 using System.IO;
 
-
 #if NET6_0_OR_GREATER
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 #else
 using System.Web;
 #endif  
-
 
 namespace Snebur.ServicoArquivo
 {
@@ -42,7 +40,6 @@ namespace Snebur.ServicoArquivo
             this.SalvarArquivo(context, cabecalho, inputStream);
         }
 #endif
-
 
         protected override TCabecalhoServicoArquivo RetornarCabecalhoServicoArquivo(HttpContext httpContext)
         {

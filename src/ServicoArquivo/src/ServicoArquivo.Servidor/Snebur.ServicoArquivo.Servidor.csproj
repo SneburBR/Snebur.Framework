@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0;net6.0;net48</TargetFrameworks>
+		<TargetFrameworks>net9.0</TargetFrameworks>
 		<Nullable>disable</Nullable>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
@@ -18,34 +18,13 @@
 		<ProjectReference Include="..\..\..\Computador\Snebur.Computador.csproj" />
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'net48' ">
-		<!--
-		<Reference Include="System.Configuration" />
-		<PackageReference Include="SevenZipSharp.Net45" Version="1.0.19" />
-		<PackageReference Include="Microsoft.Bcl.HashCode" version="1.1.1" />-->
-		<Reference Include="System.ServiceModel" />
-		<Reference Include="System.Web" />
-		
-		
-	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0' ">
+	 
+	<!--<ItemGroup Condition="'$(TargetFramework)' == 'net9.0' ">
 
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-		<!--<ProjectReference Include="..\..\..\AspNetCore\Snebur.AspNetCore.csproj" />-->
-	</ItemGroup>
+	</ItemGroup>-->
 
-
-	<ItemGroup>
-		<Compile Remove="Bibliotecas\**" />
-		<EmbeddedResource Remove="Bibliotecas\**" />
-		<None Remove="Bibliotecas\**" />
-	</ItemGroup>
-	<ItemGroup>
-		<None Remove="Snebur.ServicoArquivo.Cliente.Net50.csproj.vspscc" />
-		<None Remove="Snebur.ServicoArquivo.csproj.vspscc" />
-		<None Remove="Snebur.ServicoArquivo.Servidor.csproj.vspscc" />
-		<None Remove="Snebur.ServicoArquivo.Servidor.Net50.csproj.vspscc" />
-	</ItemGroup>
+  
 	<ItemGroup>
 	  <Compile Include="..\ServicoArquivo.Comunicacao\Seguranca\CredencialComunicacaoServicoArquivo.cs" Link="Comunicacao\Seguranca\CredencialComunicacaoServicoArquivo.cs" />
 	  <Compile Include="..\ServicoArquivo.Comunicacao\Seguranca\CredencialUsuarioComunicacaoServicoArquivo.cs" Link="Comunicacao\Seguranca\CredencialUsuarioComunicacaoServicoArquivo.cs" />

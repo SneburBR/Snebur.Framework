@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Http;
 using System.Web;
 #endif  
 
-
 namespace Snebur.ServicoArquivo
 {
 

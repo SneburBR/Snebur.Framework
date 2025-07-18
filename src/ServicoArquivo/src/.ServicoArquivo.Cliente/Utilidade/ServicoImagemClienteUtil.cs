@@ -51,7 +51,5 @@ namespace Snebur.ServicoArquivo
             return $"{url}&{EnumUtil.RetornarDescricao(tamanhoImagem)}";
         }
 
-
-
     }
 }

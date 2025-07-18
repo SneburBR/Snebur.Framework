@@ -10,7 +10,6 @@ using Snebur.Utilidade;
 using System.Web;
 #endif  
 
-
 namespace Snebur.ServicoArquivo
 {
 
@@ -162,7 +161,6 @@ namespace Snebur.ServicoArquivo
             return ServicoArquivoUtil.RetornarCaminhoDiretorioArquivo(this.RetornarRepositorioImagem(informacaoRepositorioImagem), informacaoRepositorioImagem.IdArquivo);
         }
         #endregion
-
 
         protected abstract string RetornarRepositorioImagem(IInformacaoRepositorioImagem informacaoRepositorio);
     }

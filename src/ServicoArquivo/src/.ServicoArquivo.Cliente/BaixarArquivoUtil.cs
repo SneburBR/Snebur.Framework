@@ -13,7 +13,6 @@ namespace Snebur.ServicoArquivo.Cliente
     {
         public static TimeSpan TIMEOUT_PADRAO { get; } = TimeSpan.FromMinutes(5);
 
-
         public static MemoryStream RetornarStream(string urlServico,
                                                   IArquivo arquivo,
                                                   Guid identificadorSessao,

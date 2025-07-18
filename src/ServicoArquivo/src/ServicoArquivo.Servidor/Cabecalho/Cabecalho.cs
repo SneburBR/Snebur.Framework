@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using System.Web;
 #endif  
 
-
 namespace Snebur.ServicoArquivo
 {
     public class Cabecalho
@@ -21,7 +20,6 @@ namespace Snebur.ServicoArquivo
                 throw new ErroNaoDefinido(" ZyoncHttpContext.Current não foi definido");
             }
         }
-
 
         protected string RetornarString(string chave)
         {

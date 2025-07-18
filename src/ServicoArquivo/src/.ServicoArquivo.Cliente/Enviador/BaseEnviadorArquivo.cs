@@ -5,6 +5,7 @@ using Snebur.Utilidade;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -168,7 +169,6 @@ namespace Snebur.ServicoArquivo.Cliente
 
             ServicePointManager.DefaultConnectionLimit = 256;
 
-
             foreach (var item in parametros)
             {
                 requisicao.Headers.Add(item.Key, Base64Util.Encode(item.Value));
@@ -210,7 +210,11 @@ namespace Snebur.ServicoArquivo.Cliente
             this.StreamArquivo.Seek(posicao, SeekOrigin.Begin);
             var pacote = new byte[tamanhoPacote];
             var tamanhoPacoteAtual = this.RetornarTamanhoPacote(posicao);
-            this.StreamArquivo.Read(pacote, 0, tamanhoPacoteAtual);
+            var lidos = this.StreamArquivo.Read(pacote, 0, tamanhoPacoteAtual);
+            if(lidos < tamanhoPacoteAtual)
+            {
+                return [.. pacote.Take(lidos)];
+            }
             return pacote;
         }
 
@@ -281,7 +285,6 @@ namespace Snebur.ServicoArquivo.Cliente
                     throw new Erro($"Erro desconhecido ao enviar imagem:" +
                                    $"\r\n{resultado.MensagemErro}" +
                                    $"\r\n{this.UrlServicoArquivo}");
-
 
                 default:
 
@@ -375,7 +378,6 @@ namespace Snebur.ServicoArquivo.Cliente
         #endregion
 
         protected abstract Stream RetornarStreamArquivo();
-
 
         public void Dispose()
         {

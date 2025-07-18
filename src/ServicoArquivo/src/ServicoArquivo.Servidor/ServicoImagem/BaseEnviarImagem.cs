@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Http;
 using System.Web;
 #endif  
 
-
 namespace Snebur.ServicoArquivo
 {
 
@@ -94,9 +93,6 @@ namespace Snebur.ServicoArquivo
         protected abstract string RetornarRepositorioImagem(IInformacaoRepositorioImagem informacaoRepositorio);
 
         #endregion
-
-
-
 
     }
 }

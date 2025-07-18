@@ -141,8 +141,6 @@ namespace Snebur.ServicoArquivo
 
         protected abstract string RetornarRepositoArquivos(IInformacaoRepositorioArquivo informacaoRepositorio);
 
-
     }
-
 
 }

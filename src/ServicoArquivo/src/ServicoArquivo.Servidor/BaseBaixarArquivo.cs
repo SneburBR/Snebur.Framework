@@ -4,7 +4,6 @@ using System.Text;
 using System;
 using System.Threading.Tasks;
 
-
 #if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Http;
 #else
@@ -81,7 +80,6 @@ namespace Snebur.ServicoArquivo
         }
 
 #endif
-
 
     }
 

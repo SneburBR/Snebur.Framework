@@ -97,7 +97,6 @@ namespace Snebur.ServicoArquivo
             //return caminhoImagem;
         }
 
-
         public string RetornarDiretorioImagem(long idArquivo, string nomeTipoImagem, EnumTamanhoImagem tamanhoImagem)
         {
             var info = new InformacaoRepositorioImagem(idArquivo, nomeTipoImagem, tamanhoImagem);
@@ -125,7 +124,6 @@ namespace Snebur.ServicoArquivo
             }
             return nomeTipoArquivo;
         }
-
 
         protected virtual EnumTamanhoImagem RetornarTamanhoImagem(HttpContext zyonHttpContext)
         {

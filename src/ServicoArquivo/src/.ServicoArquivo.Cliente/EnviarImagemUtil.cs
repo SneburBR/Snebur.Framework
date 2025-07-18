@@ -72,7 +72,6 @@ namespace Snebur.ServicoArquivo.Cliente
                                                             string identificadorProprietario)
         {
 
-
             using (var enviadorImagemn = new EnviadorImagem(urlServico, imagem, tamanhoImagem, stream,
                                                             credencialUsuario, identificadorSessaoUsuario, identificadorProprietario))
             {
@@ -177,10 +176,8 @@ namespace Snebur.ServicoArquivo.Cliente
         //    parametros.Add(ConstantesServicoImagem.TAMANHO_IMAGEM, ((int)tamanhoImagem).ToString());
         //    parametros.Add(ConstantesServicoImagem.FORMATO_IMAGEM, ((int)imagem.FormatoImagem).ToString());
 
-
         //    return parametros;
         //}
-
 
     }
 }

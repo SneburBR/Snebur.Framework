@@ -5,7 +5,6 @@ namespace Snebur.ServicoArquivo
     public class ImagemUtil
     {
 
-
         public static Dimensao RetornaDimencaoMaximaProporcional(int larguraImagem, int alturaImagem, int larguraMaxima, int alturaMaxima)
         {
             int novaLargura = 0;
@@ -51,7 +50,6 @@ namespace Snebur.ServicoArquivo
             }
             return new Dimensao(novaLargura, novaAltura);
         }
-
 
     }
 }

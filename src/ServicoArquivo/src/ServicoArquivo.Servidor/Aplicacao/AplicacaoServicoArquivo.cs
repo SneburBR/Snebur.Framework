@@ -17,7 +17,6 @@ namespace Snebur.ServicoArquivo.Servidor
         private string Usuario => ConfiguracaoUtil.AppSettings[CHAVE_USUARIO];
         private string Senha => ConfiguracaoUtil.AppSettings[CHAVE_SENHA];
 
-
         public AcessoCompartilhamentoRede AcessoCompartilhamentoRede { get; private set; }
 
         public BaseAplicacaoServicoArquivo() : base()
@@ -46,7 +45,10 @@ namespace Snebur.ServicoArquivo.Servidor
 
         private void AppDomain_ProcessExit(object sender, EventArgs e)
         {
-            this.AcessoCompartilhamentoRede?.Dispose();
+            if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                this.AcessoCompartilhamentoRede?.Dispose();
+            }
         }
     }
 }

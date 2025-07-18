@@ -15,7 +15,6 @@ namespace Snebur.ServicoArquivo
     {
         public bool IsReusable => true;
 
-
 #if NET6_0_OR_GREATER
         public Task ProcessRequestAsync(HttpContext context)
         {
@@ -42,10 +41,6 @@ namespace Snebur.ServicoArquivo
         }
 
 #endif
-
-
-
-
 
         public virtual string RetornarCaminhoImagem(HttpContext zyonHttpContext)
         {
@@ -75,7 +70,6 @@ namespace Snebur.ServicoArquivo
             return idImagem;
         }
 
-
         protected string RetornarValorParametro(string parametro, HttpContext httpContext)
         {
 #if NET6_0_OR_GREATER
@@ -91,8 +85,6 @@ namespace Snebur.ServicoArquivo
 
         protected abstract string RetornarRepositorioArquivo(IInformacaoRepositorioArquivo informacaoRepositorio);
 
-
     }
-
 
 }
