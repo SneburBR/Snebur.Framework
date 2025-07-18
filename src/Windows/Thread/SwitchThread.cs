@@ -54,7 +54,6 @@ namespace Snebur.Windows
             this._dispatcher = dispatcher;
         }
 
-
         public SwitchToWorkThreadAwaitable GetAwaiter()
         {
             return this;

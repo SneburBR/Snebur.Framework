@@ -20,6 +20,5 @@ namespace Snebur.Windows
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nomePropriedade));
         }
 
-
     }
 }

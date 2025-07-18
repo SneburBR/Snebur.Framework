@@ -1,5 +1,4 @@
 ﻿
-
 namespace Snebur 
 {
     using System.Windows.Media;

@@ -24,7 +24,6 @@ namespace Snebur.Windows
         protected override void OnStartup(StartupEventArgs e)
         {
 
-
         }
 
         protected override void OnLoadCompleted(NavigationEventArgs e)
@@ -37,7 +36,6 @@ namespace Snebur.Windows
         }
 
         protected abstract AplicacaoSnebur RetornarAplicacaoSnebur();
-
 
     }
 }

@@ -28,7 +28,6 @@ namespace Snebur.Windows
                 GC.SuppressFinalize(dispatcher);
             }
 
-
             GC.WaitForPendingFinalizers();
         }
     }

@@ -53,7 +53,6 @@ namespace Snebur.Windows
                     this.btnNao.Visibility = Visibility.Visible;
                     break;
 
-
                 case EnumBotoesAlerta.Fechar:
 
                     this.btnFechar.Visibility = Visibility.Visible;

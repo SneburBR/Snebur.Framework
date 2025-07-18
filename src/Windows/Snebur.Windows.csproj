@@ -2,7 +2,7 @@
 
 
 	<PropertyGroup>
-		<TargetFrameworks>net48;net6.0-windows;net8.0-windows</TargetFrameworks>
+		<TargetFrameworks>net9.0-windows</TargetFrameworks>
 		<AssemblyName>Snebur.Computador</AssemblyName>
 		<RootNamespace>Snebur.Computador</RootNamespace>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -24,16 +24,7 @@
 		<PackageReference Include="WindowsAPICodePack-Core" version="1.1.2" />
 		<PackageReference Include="WindowsAPICodePack-Shell" version="1.1.1" />
 	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0' ">
-		<!--<FrameworkReference Include="Microsoft.AspNetCore.App" />-->
-
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0' ">
-		<!--<FrameworkReference Include="Microsoft.AspNetCore.App" />-->
-	</ItemGroup>
-
+ 
 	<ItemGroup>
 	  <Compile Remove="Converters\UrlImagemConverter.cs" />
 	  <Compile Remove="Extensoes\IImagemExtensao.cs" />
