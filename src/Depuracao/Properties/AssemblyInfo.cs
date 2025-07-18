@@ -12,8 +12,8 @@ using System.Runtime.Versioning;
 [assembly: ComVisible(false)]
 [assembly: Guid("538e7ecc-f8fc-49fe-9a6a-b5e704af096c")]
 
-[assembly: AssemblyVersion("1.0.0.2")]
-[assembly: AssemblyFileVersion("1.0.0.2")]
+[assembly: AssemblyVersion("25.7.15.3")]
+[assembly: AssemblyFileVersion("25.7.15.3")]
 
 #if NET50
 [assembly: AssemblyDescription("Snebur.Depuracao Net 5.0")]
