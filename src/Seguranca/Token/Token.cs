@@ -64,7 +64,6 @@ namespace Snebur.Seguranca
             return Token.RetornarToken(p1, p2, p3, p4, p5);
         }
 
-
         public static string RetornarToken(params object[] valores)
         {
             var agoraUtc = DateTime.UtcNow.Add(AplicacaoSnebur.Atual.DiferencaDataHoraUtcServidor);
