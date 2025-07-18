@@ -98,7 +98,6 @@ namespace Snebur
 
 #if NET6_0_OR_GREATER
 
-
         public static string UserAgent(this HttpRequest request)
         {
             return request.Headers[HeaderNames.UserAgent].ToString();

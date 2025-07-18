@@ -44,7 +44,6 @@ namespace Snebur
             }
         }
 
-
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override InformacaoSessao InformacaoSessao
         {
@@ -240,7 +239,6 @@ namespace Snebur
         {
             AplicacaoSneburAspNet._httpContextAccessor = httpContextAccessor;
         }
-
 
         public virtual void Configure(WebApplication app,
                                      IWebHostEnvironment env)

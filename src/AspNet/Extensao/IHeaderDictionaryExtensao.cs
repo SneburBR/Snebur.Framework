@@ -6,8 +6,6 @@ using Microsoft.Net.Http.Headers;
 using System.Collections.Specialized;
 #endif
 
-
-
 namespace System.Web
 {
     public static class IHeaderDictionaryExtensao
