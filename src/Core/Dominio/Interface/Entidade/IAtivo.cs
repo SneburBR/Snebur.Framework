@@ -8,5 +8,4 @@ namespace Snebur.Dominio
         bool IsAtivo { get; set; }
     }
 
-
 }

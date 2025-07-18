@@ -47,8 +47,6 @@ namespace Snebur
             return assemblyQualifiedName;
         }
 
-
-
         public static string RetornarAssemblyQualifiedNameListInterno(Type tipo)
         {
             var tipoList = typeof(List<>);

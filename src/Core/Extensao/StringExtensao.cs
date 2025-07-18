@@ -49,7 +49,6 @@ namespace System
         //    return TextoUtil.RetornarPrimeirosCaracteres(str, numeroCaracteres);
         //}
 
-
         public static string RetornarPrimeirosCaracteres(this string str, int numeroCaracteres, bool removerLinhasTabulacoes)
         {
             return TextoUtil.RetornarPrimeirosCaracteres(str, numeroCaracteres, removerLinhasTabulacoes);

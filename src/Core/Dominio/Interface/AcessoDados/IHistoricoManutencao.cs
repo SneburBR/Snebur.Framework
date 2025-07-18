@@ -20,6 +20,5 @@ namespace Snebur.Dominio
 
         int NumeroTentativa { get; set; }
 
-
     }
 }

@@ -9,7 +9,6 @@ namespace Snebur.Serializacao
     internal abstract class Referencia
     {
 
-
     }
     internal class ReferenciaRaiz : Referencia
     {

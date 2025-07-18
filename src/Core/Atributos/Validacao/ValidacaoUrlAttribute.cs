@@ -11,7 +11,6 @@ namespace Snebur.Dominio.Atributos
         [MensagemValidacao]
         public static string MensagemValidacao { get; set; } = "A url {0} é invalido.";
 
-
         #region "Construtor"
 
         public ValidacaoUrlAttribute() : base()

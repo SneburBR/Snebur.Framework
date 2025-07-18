@@ -19,7 +19,6 @@ namespace System
             this.TipoLogSeguranca = tipo;
 #if !EXTENSAO_VISUALSTUDIO
 
-
             LogUtil.SegurancaAsync(mensagem, tipo, false);
 
 #endif

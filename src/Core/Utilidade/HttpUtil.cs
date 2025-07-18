@@ -56,7 +56,6 @@ namespace Snebur.Utilidade
 
         }
 
-
         public static Tuple<string, WebHeaderCollection> RetornarStringCabecalhoResposta(string url,
                                                                                          Dictionary<string, string> cabecalho,
                                                                                          TimeSpan timeout,

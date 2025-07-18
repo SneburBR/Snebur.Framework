@@ -4,7 +4,6 @@
     public interface IInformacaoSessao : IIdentificadorAplicacao
     {
 
-
         string Cultura { get; set; }
 
         string Idioma { get; set; }

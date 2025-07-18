@@ -9,7 +9,6 @@ using Snebur.Utilidade;
 using Snebur.Dominio;
 using System.Data.Common;
 
-
 #if NET6_0_OR_GREATER
 using Microsoft.Data.SqlClient;
 using Snebur;

@@ -26,6 +26,5 @@ namespace Snebur.Dominio
 
         double VelocidadeEnvio { get; set; }
 
-
     }
 }

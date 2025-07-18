@@ -12,7 +12,6 @@ namespace Snebur.Dominio.Atributos
         [MensagemValidacao]
         public static string MensagemValidacao { get; set; } = "A campo {0} é invalido (somente números).";
 
-
         #region "Construtor"
 
         public ValidacaoTextoSomentoNumerosAttribute( 

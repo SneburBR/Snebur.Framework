@@ -39,6 +39,5 @@ namespace Snebur.Dominio
         [Description("Desconhecido")]
         Desconhecido = 99,
 
-
     }
 }

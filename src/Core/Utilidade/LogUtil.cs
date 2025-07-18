@@ -94,7 +94,6 @@ namespace Snebur.Utilidade
                 LogWindows(descricaoCompleta, stackTrace, EventLogEntryType.Error);
             }
 
-
             if (String.IsNullOrEmpty(mensagem))
             {
                 mensagem = descricaoCompleta.RetornarPrimeirosCaracteres(100);
@@ -384,7 +383,4 @@ namespace Snebur.Utilidade
         }
     }
 }
-
-
-
 

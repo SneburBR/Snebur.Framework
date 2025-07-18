@@ -9,7 +9,6 @@ namespace Snebur.UI
 
         #region Pixels
 
-
         [RotuloVSIntelliSense("Auto")]
         Auto = BaseEnumComprimento.Auto,
 
@@ -81,7 +80,6 @@ namespace Snebur.UI
 
         //[RotuloVSIntelliSense("512px")]
         //_512px = BaseEnumComprimento._512px
-
 
         #endregion
     }

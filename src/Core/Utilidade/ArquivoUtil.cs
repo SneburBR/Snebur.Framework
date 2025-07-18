@@ -479,7 +479,6 @@ namespace Snebur.Utilidade
             return File.ReadAllText(caminho, encoding ?? Encoding.UTF8);
         }
 
-
         public static void CriarArquivoTexto(string caminho,
                                              string contudo = null,
                                              bool isIgnorarEro = false)

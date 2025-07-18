@@ -16,7 +16,6 @@ namespace Snebur.Dominio.Atributos
         public bool IsUltimaHoraDoDia { get; set; }
         public bool IsHoraFimD { get; set; }
 
-
         [IgnorarConstrutorTS]
         public ValidacaoDataAttribute() : this(EnumTipoData.Normal, null, null)
         {

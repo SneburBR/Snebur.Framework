@@ -29,8 +29,6 @@ namespace Snebur.UI
 
         Tab = 11,
 
-
     }
-
 
 }

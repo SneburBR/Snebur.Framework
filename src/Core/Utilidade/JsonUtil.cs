@@ -173,7 +173,6 @@ namespace Snebur.Utilidade
 
                 configuracaoSerializacao.Culture = cultureInfo ?? CultureInfo.InvariantCulture;
 
-
                 if (!isPrepararSerializacao)
                 {
                     return JsonConvert.SerializeObject(objeto,

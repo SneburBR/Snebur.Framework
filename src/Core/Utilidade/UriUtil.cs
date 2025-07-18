@@ -22,7 +22,6 @@ namespace Snebur.Utilidade
             return uriBuilder.Uri;
         }
 
-
         public static string CombinarCaminhos(string endereco1, string endereco2)
         {
             return AjustarBarraFinal(endereco1) + RemoverBarraInicial(endereco2);

@@ -11,7 +11,6 @@ namespace Snebur.Dominio.Atributos
         [MensagemValidacao]
         public static string MensagemValidacao { get; set; } = "Informe seu nome completo";
 
-
         #region IAtributoValidacao
 
         public override bool IsValido(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)

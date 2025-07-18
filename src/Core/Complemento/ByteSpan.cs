@@ -7,7 +7,6 @@
         public const long TOTAL_BYTES_GB = TOTAL_BYTES_MB * 1024;
         public const long TOTAL_BYTES_TB = TOTAL_BYTES_GB * 1024;
 
-
         public long TotalBytes { get; private set; }
 
         public double TotalMegaBytes

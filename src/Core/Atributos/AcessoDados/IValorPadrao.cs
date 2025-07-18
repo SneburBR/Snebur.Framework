@@ -5,7 +5,6 @@
     {
         bool IsTipoNullableRequerido { get; }
         bool IsValorPadraoOnUpdate { get; }
-   
     }
 
     [IgnorarInterfaceTS]
@@ -15,7 +14,6 @@
                                    Entidade entidadeCorrente,
                                    object valorPropriedade);
     }
-
 
     [IgnorarInterfaceTS]
     public interface IValorPadrao : IConverterValorPadrao, IBaseValorPadrao

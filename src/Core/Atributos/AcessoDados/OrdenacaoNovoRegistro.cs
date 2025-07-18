@@ -23,7 +23,6 @@ namespace Snebur.Dominio.Atributos
             this.OrdenacaoNovoRegistro = ordenacaoNovoRegistro;
         }
 
-
     }
     [IgnorarGlobalizacao]
     public enum EnumOrdenacaoNovoRegistro

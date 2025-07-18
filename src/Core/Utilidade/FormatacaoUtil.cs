@@ -157,7 +157,6 @@ namespace Snebur.Utilidade
             throw new NotImplementedException();
         }
 
-
         public static string FormatarBytes(string totalBytes)
         {
             if (Int64.TryParse(totalBytes, out var bytes))

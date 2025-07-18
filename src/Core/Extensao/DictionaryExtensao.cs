@@ -109,7 +109,6 @@ namespace System
                                               funcaoRetornarValor);
         }
 
-
         private static TValue GetOrAddWithLockKeyInterno<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> dicionario,
                                                          TKey chave,
                                                          object userState,

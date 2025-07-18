@@ -1,18 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks> net45; net48;net6.0;net8.0</TargetFrameworks>
+		<TargetFrameworks>net9.0;net48</TargetFrameworks>
 		<AssemblyName>Snebur</AssemblyName>
 		<RootNamespace>Snebur</RootNamespace>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<Configurations>Debug;Release</Configurations>
 		<Nullable>disable</Nullable>
-		<SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
 	</PropertyGroup>
  
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'net48' Or '$(TargetFramework)' == 'net45' Or '$(TargetFramework)' == 'net40'">
+	<ItemGroup Condition="'$(TargetFramework)' == 'net48'">
 
 		<Reference Include="System.ServiceModel" />
 		<Reference Include="System.Configuration" />
@@ -23,14 +22,7 @@
 
 		<Reference Include="Microsoft.CSharp" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net48'">
 		<PackageReference Include="Microsoft.Bcl.HashCode" version="6.0.0" />
-	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFramework)' == 'net48' Or '$(TargetFramework)' == 'net45'">
-
 		<Reference Include="System.ComponentModel" />
 		<Reference Include="System.IO.Compression" />
 		<Reference Include="System.Net.Http" />
@@ -40,41 +32,17 @@
 
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'net40' Or '$(TargetFramework)' == 'net45'">
-		<PackageReference Include="System.ValueTuple" version="4.5.0" />
-	</ItemGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'net40'">
-
-		<Reference Include="Microsoft.CSharp" />
-		<Reference Include="System.Configuration" />
-		<Reference Include="System.ComponentModel.DataAnnotations" />
-		<Reference Include="System.Web" />
-		<Reference Include="System.Web.Extensions" />
-		<Reference Include="System.Management" />
-		<Reference Include="Microsoft.CSharp" />
-
-		<Reference Include="System.Runtime" aliases="MicrosoftBcl" />
-
-		<PackageReference Include="Microsoft.Bcl" version="1.1.10" />
-		<PackageReference Include="Microsoft.Bcl.Async" version="1.0.168" />
-		<PackageReference Include="Microsoft.Bcl.Build" version="1.0.21" />
-		<PackageReference Include="Microsoft.Net.Http" version="2.2.29" />
-
-		<ProjectReference Include="..\Net40\System.Compatibilidade.Net40\System.Compatibilidade.Net40.csproj" />
-	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
 
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0' Or '$(TargetFramework)' == 'net8.0'">
-
-
-		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.1" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.7" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-		<PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
-		<PackageReference Include="System.Diagnostics.EventLog" Version="8.0.0" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.7" />
+		<PackageReference Include="System.Diagnostics.EventLog" Version="9.0.7" />
 		<PackageReference Include="System.IO.Compression" Version="4.3.0" />
 		<PackageReference Include="System.IO.FileSystem.AccessControl" Version="5.0.0">
 

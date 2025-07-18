@@ -46,7 +46,6 @@ namespace Snebur.Utilidade
 
             }
 
-
             if (ReflexaoUtil.IsTipoIgualOuHerda(propriedade.PropertyType, typeof(Entidade)))
             {
                 if (valorPropriedade is Entidade)
@@ -284,7 +283,6 @@ namespace Snebur.Utilidade
                     progresso >= 0 &&
                     progresso <= 100;
         }
-
 
     }
 }

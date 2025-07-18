@@ -54,7 +54,10 @@ namespace Snebur.Utilidade
             return Convert.ToInt32(Math.Round(espessuraLaminasCm * 10 * 10));
         }
 
-        public static int RetornarDpiVisualizacao(Dimensao dimensaoCentimetros, Dimensao dimensaoPixels, double tolerancia = 1)
+        public static int RetornarDpiVisualizacao(
+            Dimensao dimensaoCentimetros, 
+            Dimensao dimensaoPixels,
+            double tolerancia = 1)
         {
             var dpiX = (int)Math.Round(RetornarDpiVisualizacao(dimensaoCentimetros.Largura, dimensaoPixels.Largura));
             var dpiY = (int)Math.Round(RetornarDpiVisualizacao(dimensaoCentimetros.Altura, dimensaoPixels.Altura));

@@ -72,6 +72,7 @@ namespace Snebur.Utilidade
                 {
                     return rotuloAtributo.Rotulo;
                 }
+
                 var atributoDescricao = fi.GetCustomAttribute<DescriptionAttribute>(true);
                 if (atributoDescricao != null)
                 {

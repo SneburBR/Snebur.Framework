@@ -10,8 +10,5 @@ namespace Snebur.Dominio.Atributos
         public bool IsIgnorarMigracao { get; set; }
 
         public string NomeIndice { get; set; }
-
-
     }
-
 }

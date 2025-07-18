@@ -23,7 +23,7 @@ namespace Snebur.Utilidade
             {
                 return null;
             }
-        
+
             var sb = new StringBuilder();
             var acentosMapeado = TextoUtilConstantes.AcentosMapeado;
 
@@ -243,7 +243,7 @@ namespace Snebur.Utilidade
         {
             return RetornarTextoCaracteresPermitido(texto, Numeros, false);
         }
-         
+
         public static string RetornarSomenteNumeros(string texto, bool isAceitarVirgual)
         {
             var caracterExtra = (isAceitarVirgual) ? "," : String.Empty;
@@ -641,7 +641,8 @@ namespace Snebur.Utilidade
                 Buffer.BlockCopy(compressedData, 0, gZipBuffer, 4, compressedData.Length);
                 Buffer.BlockCopy(BitConverter.GetBytes(buffer.Length), 0, gZipBuffer, 0, 4);
                 return Convert.ToBase64String(gZipBuffer);
-            };
+            }
+            ;
         }
 
         public static string DescomprimirTexto(string textoComprimdo)
@@ -656,7 +657,11 @@ namespace Snebur.Utilidade
                 memoryStream.Position = 0;
                 using (var gZipStream = new GZipStream(memoryStream, CompressionMode.Decompress))
                 {
-                    gZipStream.Read(buffer, 0, buffer.Length);
+                    var lidos = gZipStream.Read(buffer, 0, buffer.Length);
+                    if(lidos < dataLength)
+                    {
+                        Array.Resize(ref buffer, lidos);
+                    }
                 }
                 return Encoding.UTF8.GetString(buffer);
             }
@@ -688,7 +693,7 @@ namespace Snebur.Utilidade
             var sb = new StringBuilder();
             foreach (var ch in descricaoAtributosCompleta)
             {
-                if(sb.Length == 0 && Char.IsWhiteSpace(ch))
+                if (sb.Length == 0 && Char.IsWhiteSpace(ch))
                 {
                     continue;
                 }

@@ -9,7 +9,6 @@ namespace Snebur.Dominio
         private double _largura;
         private double _altura;
 
-
         public double X { get => this._x; set => this.NotificarValorPropriedadeAlterada(this._x, this._x = value); }
 
         public double Y { get => this._y; set => this.NotificarValorPropriedadeAlterada(this._y, this._y = value); }

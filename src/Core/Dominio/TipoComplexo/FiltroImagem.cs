@@ -69,7 +69,6 @@ namespace Snebur.Dominio
         [ValidacaoIntervalo(0, 10)]
         public double? Desfoque { get => this._desfoque; set => this.NotificarValorPropriedadeAlterada(this._desfoque, this._desfoque = (value == DESFOQUE_PADRAO) ? null : value); }
 
-
         public static FiltroImagem Empty
         {
             get

@@ -101,6 +101,5 @@ namespace Snebur.Dominio
         //    return default(TEntidade);
         //}
 
-
     }
 }

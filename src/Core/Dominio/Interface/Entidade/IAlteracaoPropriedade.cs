@@ -23,5 +23,4 @@ namespace Snebur.Dominio
         DateTime? DataHoraFimAlteracao { get; set; }
     }
 
-
 }

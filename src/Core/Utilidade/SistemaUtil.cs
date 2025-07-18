@@ -192,10 +192,8 @@ namespace Snebur.Utilidade
                         throw new ErroNaoSuportado("Major  não suportado " + versao.Major);
                 }
             }
-            throw new ErroNaoSuportado("Platforma não suportado  " + sistemaOperacional.Platform.ToString());
+            throw new ErroNaoSuportado("Plataforma não suportado  " + sistemaOperacional.Platform.ToString());
         }
-
-
 
         public static bool IsPossuiPermisaoAdministrador()
         {

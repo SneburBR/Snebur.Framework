@@ -82,7 +82,6 @@ namespace Snebur.Dominio
             ValidacaoUtil.ValidarReferenciaNula(nomePropriedadeEntidade, nameof(nomePropriedadeEntidade));
             ValidacaoUtil.ValidarReferenciaNula(propriedadeAlteradaTipoComplexo, nameof(propriedadeAlteradaTipoComplexo));
 
-
             this.NomePropriedadeEntidade = nomePropriedadeEntidade;
             this.NomePropriedadeTipoComplexo = propriedadeAlteradaTipoComplexo;
         }

@@ -1,16 +1,20 @@
 ﻿using Snebur.Utilidade;
 using System;
 using System.IO;
+using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Snebur.Servicos
 {
     public abstract class BaseServicoLocal
     {
-        private static object Bloqueio = new object();
+        private static readonly object _lock = new object();
+        private const int LIMITE_DIAS_LOGS = 30; // dias
+
         protected bool IsDebugAttachDispararErro { get; set; }
         private string _retornarRepositorioLogs;
-        private string RetornarRepositorioLogs
+        private string CaminhoRetornarRepositorioLogs
         {
             get
             {
@@ -22,6 +26,39 @@ namespace Snebur.Servicos
                 return this._retornarRepositorioLogs;
             }
         }
+
+        protected BaseServicoLocal()
+        {
+            Task.Run(this.ManutencaoAsync);
+        }
+
+        private void ManutencaoAsync()
+        {
+            var dirtorio = this.CaminhoRetornarRepositorioLogs;
+            if (!Directory.Exists(dirtorio))
+            {
+                return;
+            }
+
+            foreach (var arquivoLog in Directory.EnumerateDirectories(dirtorio, "*.log", SearchOption.TopDirectoryOnly))
+            {
+                try
+                {
+                    var dataUltimaModificacao = File.GetLastWriteTime(arquivoLog);
+                    var dias = (DateTime.Now - dataUltimaModificacao).TotalDays;
+
+                    if (dias > LIMITE_DIAS_LOGS)
+                    {
+                        ArquivoUtil.DeletarArquivo(arquivoLog, ignorarErro: true, isForcar: true);
+                    }
+                }
+                catch
+                {
+
+                }
+            }
+        }
+        
 
         private string RetornarPastaLog()
         {
@@ -60,9 +97,9 @@ namespace Snebur.Servicos
             try
             {
                 var nomeArquivo = String.Format("{0}.log", DateTime.Now.ToString("yyyy-MMMM-dd"));
-                var caminhoArquivo = CaminhoUtil.Combine(this.RetornarRepositorioLogs, nomeArquivo);
+                var caminhoArquivo = CaminhoUtil.Combine(this.CaminhoRetornarRepositorioLogs, nomeArquivo);
 
-                lock (Bloqueio)
+                lock (_lock)
                 {
                     using (var sw = new StreamWriter(caminhoArquivo, true, Encoding.UTF8))
                     {

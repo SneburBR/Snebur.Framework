@@ -27,7 +27,6 @@ namespace Snebur.Dominio
 
         public int Arredondamento { get => this._arredondamento; set => this.NotificarValorPropriedadeAlterada(this._arredondamento, this._arredondamento = value); }
 
-
         public Borda()
         {
         }

@@ -536,7 +536,6 @@ namespace Snebur.Linq
             return default;
         }
 
-
 #if NET45 || NET40
         public static IEnumerable<T> Prepend<T>(this IEnumerable<T> source, T item)
         {

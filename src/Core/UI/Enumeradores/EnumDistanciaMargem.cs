@@ -163,7 +163,6 @@ namespace Snebur.UI
         [RotuloVSIntelliSense("512px")]
         _512px = BaseEnumComprimento._512px
 
-
         #endregion
     }
 }

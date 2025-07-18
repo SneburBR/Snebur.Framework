@@ -1,5 +1,4 @@
 ﻿
-
 namespace Snebur
 {
 #if NET6_0_OR_GREATER

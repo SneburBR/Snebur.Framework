@@ -24,9 +24,7 @@ namespace Snebur.Utilidade
         private static string _caminhoAppDataAplicacaoSemVersao;
         private static string _caminhoAppDataAplicacaoSemIdentificadorPropretario;
 
-        private const string NOME_ARQUIVO_APP_SETTINGS = "appSettings.config";
-        private const string NOME_ARQUIVO_CONNECTION_STRINGS = "connectionStrings.config";
-        internal const string NOME_PADRAO_ARQUIVO_APPLICATIIONS_SETTING = "configuracao.xml";
+ 
 
         public static string UrlWebService => AplicacaoSnebur.Atual.UrlWebService;
         public static string UrlServicoArquivo => AplicacaoSnebur.Atual.UrlServicoArquivo;
@@ -116,11 +114,7 @@ namespace Snebur.Utilidade
                 return _caminhoAppDataAplicacaoLogs;
             }
         }
-
-        public static string RetornarCaminhoArquivoApplicationSettingsPadrao()
-        {
-            return CaminhoUtil.Combine(CaminhoAppDataAplicacaoSemVersao, NOME_PADRAO_ARQUIVO_APPLICATIIONS_SETTING);
-        }
+         
 
         public static string CaminhoAppDataAplicacaoSemVersao
         {

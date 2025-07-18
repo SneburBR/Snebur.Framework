@@ -58,7 +58,6 @@ namespace Snebur.Utilidade
                     //return nome.Split(new[] { char.IsUpper }, StringSplitOptions.RemoveEmptyEntries);
                     return Regex.Split(nome, @"(?=[A-Z0-9])", RegexOptions.IgnorePatternWhitespace);
 
-
                 case EnumFormatacaoCodigo.SnakeCase:
                 case EnumFormatacaoCodigo.UpperCase:
                     return nome.Split('_');
@@ -80,9 +79,6 @@ namespace Snebur.Utilidade
         UpperCase,
         KebabCase
     }
-
-
-
 
 }
 

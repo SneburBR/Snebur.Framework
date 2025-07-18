@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-
 namespace Snebur.Utilidade
 {
     public static class SessaoUtil

@@ -41,7 +41,6 @@ namespace Snebur.Utilidade
                     }
                 }
 
-
             }
 
             return expressoes;

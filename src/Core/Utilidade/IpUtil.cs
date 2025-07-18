@@ -26,7 +26,6 @@ namespace Snebur
         public static DadosIPInformacao IPInformacao =>
             LazyUtil.RetornarValorLazyComBloqueio(ref _ipDadosInformacao, RetornarIPInformacaoInterno);
 
-
         private static DadosIPInformacao RetornarIPInformacaoInterno()
         {
             return RetornarIPInformacao(String.Empty);
@@ -103,8 +102,6 @@ namespace Snebur
         //    return null;
         //}
 
-
-
         public static string RetornarMascaraIp4(string ip)
         {
             IPAddress ipaddress;
@@ -161,7 +158,6 @@ namespace Snebur
             return new Localizacao(0, 0);
         }
 
-
         public static string RetornarIpLocal(bool isIgnorarErro = false)
         {
             var host = Dns.GetHostEntry(Dns.GetHostName());
@@ -178,7 +174,6 @@ namespace Snebur
             }
             throw new Exception("O rede local não existe ou está desativada  ");
         }
-
 
     }
 }

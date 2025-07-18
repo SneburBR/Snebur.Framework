@@ -20,5 +20,4 @@ namespace Snebur.Dominio
         bool IsAnonimo { get; }
     }
 
-
 }

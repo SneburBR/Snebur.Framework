@@ -188,7 +188,6 @@ namespace Snebur.Serializacao
                             ? TimeSpan.Parse(RemoveSingleQuotes(valorSerializado), CultureInfo.InvariantCulture)
                             : TimeSpan.Parse(valorSerializado, CultureInfo.InvariantCulture);
 
-
                 case nameof(Single):
 
                     return Single.Parse(valorSerializado, CultureInfo.InvariantCulture);

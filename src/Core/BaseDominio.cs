@@ -226,7 +226,6 @@ namespace Snebur.Dominio
                                                                                          nomePropriedadeEntidade,
                                                                                          nomePropriedadeTipoComplexo);
 
-
                                 this.__PropriedadesAlteradas.Add(nomePropriedade, novaPropriedadeAlterada);
                             }
                         }
@@ -325,7 +324,6 @@ namespace Snebur.Dominio
         //}
 
         #endregion
-
 
         internal protected virtual void SetValue(object olbValue, object newValue, [CallerMemberName] string nomePropriedade = "")
         {

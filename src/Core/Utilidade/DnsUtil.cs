@@ -83,7 +83,6 @@ namespace Snebur.Utilidade
                 int nAnswers = this.Response[7];
                 if (nAnswers == 0) return null;
 
-
                 int pos = this.Domain.Length + 18;
                 if (this.queryType == QueryType.MX)
                 {

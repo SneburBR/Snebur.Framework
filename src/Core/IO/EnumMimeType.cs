@@ -1,6 +1,5 @@
 ﻿using Snebur.Dominio.Atributos;
 
-
 namespace Snebur.Dominio
 {
     public enum EnumMimeType

@@ -43,7 +43,6 @@ namespace Snebur.Utilidade
                 return valor;
             }
 
-
             if (tipo.IsValueType || tipo == typeof(string))
             {
                 if (tipo.IsEnum)
@@ -347,7 +346,6 @@ namespace Snebur.Utilidade
             return 0d;
         }
 
-
         public static DateTime ParaDateTime(object valor, IFormatProvider provider = null)
         {
             if (valor is DateTime d)
@@ -411,7 +409,6 @@ namespace Snebur.Utilidade
                     }
                 }
             }
-
 
             if (valor is IConvertible convertible)
             {
@@ -531,7 +528,6 @@ namespace Snebur.Utilidade
                 var strG = corHexa.Substring(2, 2) ?? "00";
                 var strB = corHexa.Substring(4, 2) ?? "00";
                 var strA = corHexa.Length == 8 ? corHexa.Substring(6, 8) : "FF";
-
 
                 var r = (byte)Convert.ToInt32(strR, 16);
                 var g = (byte)Convert.ToInt32(strG, 16);

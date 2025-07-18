@@ -59,7 +59,6 @@ namespace Snebur.Dominio.Atributos
             }
         }
 
-
         #region IAtributoValidacao
 
         public override bool IsValido(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)

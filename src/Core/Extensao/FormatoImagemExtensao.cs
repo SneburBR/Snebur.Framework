@@ -1,6 +1,7 @@
 ﻿using Snebur.Dominio;
 using Snebur.Utilidade;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Zyoncore.Imagens
@@ -152,7 +153,12 @@ namespace Zyoncore.Imagens
         {
             stream.Seek(0, SeekOrigin.Begin);
             byte[] buffer = new byte[16];
-            stream.Read(buffer, 0, buffer.Length);
+            var lidos = stream.Read(buffer, 0, buffer.Length);
+            if(lidos < buffer.Length)
+            {
+                return EnumFormatoImagem.Desconhecido;
+            }
+
             stream.Seek(0, SeekOrigin.Begin);
 
             if (IsJpeg(buffer))
@@ -621,4 +627,4 @@ namespace Zyoncore.Imagens
             return (buffer[0] == 0x25 && buffer[1] == 0x21 && buffer[2] == 0x50 && buffer[3] == 0x53);
         }
     }
- }
+}

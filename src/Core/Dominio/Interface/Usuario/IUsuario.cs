@@ -18,6 +18,5 @@ namespace Snebur.Dominio
 
         EnumStatusUsuario Status { get; }
 
-
     }
 }

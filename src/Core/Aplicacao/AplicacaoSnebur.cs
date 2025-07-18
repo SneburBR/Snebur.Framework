@@ -8,13 +8,17 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Configuration;
+
 using System.Globalization;
 using System.Net;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Timers;
+
+#if NET48
+using System.Configuration;
+#endif
 
 namespace Snebur
 {
@@ -217,6 +221,7 @@ namespace Snebur
                 if (this._servicoLogErro == null && this.FuncaoRetornarServicoLogErro != null)
                 {
                     this._servicoLogErro = this.FuncaoRetornarServicoLogErro.Invoke();
+
                 }
                 return this._servicoLogErro;
             }
@@ -342,13 +347,11 @@ namespace Snebur
         //[EditorBrowsable(EditorBrowsableState.Never)]
         //public virtual InformacaoSessaoUsuario InformacaoSessaoUsuarioRequisicaoAtual => SessaoUtil.RetornarInformacaoSessaoUsuarioAplicacao();
 
-
         //[EditorBrowsable(EditorBrowsableState.Never)]
         //public virtual Guid IdentificadorSessaoUsuarioRequisicaoAtual => this.IdentificadorSessaoUsuario;
 
         //[EditorBrowsable(EditorBrowsableState.Never)]
         //public virtual CredencialUsuario CredencialUsuarioRequisicaoAtual => this.CredencialUsuario;
-
 
         //[EditorBrowsable(EditorBrowsableState.Never)]
         //public virtual string IdentificadorProprietarioRequisicaoAtual => this.IdentificadorProprietario;
@@ -478,83 +481,86 @@ namespace Snebur
 
         private void InicializarComunicacao()
         {
-#if NET40
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
-#else
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11 |
-                                                   SecurityProtocolType.Tls12
-#if NET45 == false
-                                                   | SecurityProtocolType.Tls13;
-#else
-                                                   ;
-#endif
-#endif
 
-            //Ignorar erros da certificados https, isso pode ocorres caso da DataHora do computador cliente do usuario esteja mais 12 horas de diferença com servidor
-            ServicePointManager.ServerCertificateValidationCallback = delegate (object obj,
-                                                                                          System.Security.Cryptography.X509Certificates.X509Certificate X509certificate,
-                                                                                          System.Security.Cryptography.X509Certificates.X509Chain chain,
-                                                                                          System.Net.Security.SslPolicyErrors errors)
-            {
-                return true;
-            };
 
-            this.DefinirConfiguracoesHttps();
+
+//#if NET40
+//            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
+//#else
+//            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11 |
+//                                                   SecurityProtocolType.Tls12
+//#if NET45 == false
+//                                                   | SecurityProtocolType.Tls13;
+//#else
+//                                                   ;
+//#endif
+//#endif
+
+//            //Ignorar erros da certificados https, isso pode ocorres caso da DataHora do computador cliente do usuario esteja mais 12 horas de diferença com servidor
+//            ServicePointManager.ServerCertificateValidationCallback = delegate (object obj,
+//                                                                                          System.Security.Cryptography.X509Certificates.X509Certificate X509certificate,
+//                                                                                          System.Security.Cryptography.X509Certificates.X509Chain chain,
+//                                                                                          System.Net.Security.SslPolicyErrors errors)
+//            {
+//                return true;
+//            };
+
+            //this.DefinirConfiguracoesHttps();
         }
         //Conexões https
-        private void DefinirConfiguracoesHttps()
-        {
-            try
-            {
-                ServicePointManager.Expect100Continue = true;
-#if NET40
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
-#endif
+//        private void DefinirConfiguracoesHttps()
+//        {
+//            try
+//            {
+//                ServicePointManager.Expect100Continue = true;
+//#if NET40
+//                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
+//#endif
 
-#if NET45
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 |
-                                                       SecurityProtocolType.Tls11 |
-                                                       SecurityProtocolType.Tls ;
-#endif
+//#if NET45
+//                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 |
+//                                                       SecurityProtocolType.Tls11 |
+//                                                       SecurityProtocolType.Tls ;   
+//#endif
 
-#if NET48_OR_GREATER || NET6_0_OR_GREATER
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls13 |
-                                                       SecurityProtocolType.Tls12 |
-                                                       SecurityProtocolType.Tls11 |
-                                                       SecurityProtocolType.Tls;
-#endif
+//#if NET48_OR_GREATER || NET6_0_OR_GREATER
+//                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls13 |
+//                                                       SecurityProtocolType.Tls12 |
+//                                                       SecurityProtocolType.Tls11 |
+//                                                       SecurityProtocolType.Tls;
+//#endif
 
-                ServicePointManager.DefaultConnectionLimit = 256;
+//                ServicePointManager.DefaultConnectionLimit = 256;
 
-#if NET6_0_OR_GREATER == false
+//#if NET6_0_OR_GREATER == false
 
-                var assemblyNet = Assembly.GetAssembly(typeof(System.Net.Configuration.SettingsSection));
-                if (assemblyNet != null)
-                {
-                    var aSettingsType = assemblyNet.GetType("System.Net.Configuration.SettingsSectionInternal");
-                    if (aSettingsType != null)
-                    {
-                        object anInstance = aSettingsType.InvokeMember("Section",
-                          BindingFlags.Static |
-                          BindingFlags.GetProperty |
-                          BindingFlags.NonPublic, null, null, new object[] { });
+//                var assemblyNet = Assembly.GetAssembly(typeof(System.Net.Configuration.SettingsSection));
+//                if (assemblyNet != null)
+//                {
+//                    var aSettingsType = assemblyNet.GetType("System.Net.Configuration.SettingsSectionInternal");
+//                    if (aSettingsType != null)
+//                    {
+//                        object anInstance = aSettingsType.InvokeMember("Section",
+//                          BindingFlags.Static |
+//                          BindingFlags.GetProperty |
+//                          BindingFlags.NonPublic, null, null, new object[] { });
 
-                        if (anInstance != null)
-                        {
-                            FieldInfo aUseUnsafeHeaderParsing = aSettingsType.GetField("useUnsafeHeaderParsing", BindingFlags.NonPublic | BindingFlags.Instance);
-                            if (aUseUnsafeHeaderParsing != null)
-                            {
-                                aUseUnsafeHeaderParsing.SetValue(anInstance, true);
-                            }
-                        }
-                    }
-                }
-#endif
-            }
-            catch
-            {
-            }
-        }
+//                        if (anInstance != null)
+//                        {
+//                            FieldInfo aUseUnsafeHeaderParsing = aSettingsType.GetField("useUnsafeHeaderParsing", BindingFlags.NonPublic | BindingFlags.Instance);
+//                            if (aUseUnsafeHeaderParsing != null)
+//                            {
+//                                aUseUnsafeHeaderParsing.SetValue(anInstance, true);
+//                            }
+//                        }
+//                    }
+//                }
+//#endif
+//            }
+//            catch
+//            {
+//            }
+//        }
 #endregion
 
         #region ServicoUsuario
@@ -585,7 +591,6 @@ namespace Snebur
         {
             this.CredencialAlterada?.Invoke(this, EventArgs.Empty);
         }
-
 
         #endregion
 
@@ -812,7 +817,7 @@ namespace Snebur
             return null;
         }
 
-#if NET6_0_OR_GREATER == false
+#if NET48
 
         protected virtual NameValueCollection RetornarAppSettings()
         {

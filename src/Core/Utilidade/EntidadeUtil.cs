@@ -205,7 +205,6 @@ namespace Snebur.Utilidade
             return RetornarPropriedadesCampos(tipoEntidade, EnumFiltroPropriedadeCampo.Todas);
         }
 
-
         public static TInterfaceAtributo RetornarAtributoImplementaInterface<TInterfaceAtributo>(PropertyInfo propriedade) where TInterfaceAtributo : class
         {
             var atributos = propriedade.GetCustomAttributes();
@@ -384,7 +383,6 @@ namespace Snebur.Utilidade
             var nomeCampo = "_" + nomePropriedade;
             return nomeCampo;
         }
-
 
     }
 

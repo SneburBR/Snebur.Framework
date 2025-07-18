@@ -26,7 +26,6 @@ namespace Snebur.Dominio
         [OcultarColuna]
         public abstract long Id { get; set; }
 
-
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Indexar]
         [NaoMapearPostgreeSql]
@@ -185,8 +184,6 @@ namespace Snebur.Dominio
             return this.RetornarValorPropriedade(valor, nomePropriedade);
         }
 
-
-
         internal protected virtual long? RetornarValorPropriedadeChaveEstrangeira(long? valor, Entidade relacao, [CallerMemberName] string nomePropriedade = "")
         {
             if (relacao != null)
@@ -248,7 +245,6 @@ namespace Snebur.Dominio
         #endregion
 
         #region Notificar Set
-
 
         internal protected override void NotificarValorPropriedadeAlteradaTipoCompleto(BaseTipoComplexo antigoValor,
                                                                                        BaseTipoComplexo novoValor,
@@ -323,7 +319,6 @@ namespace Snebur.Dominio
                     var tipoEntidade = this.GetType();
                     var propriedade = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nomePropriedade);
 
-
                     if (novoValor is Entidade entidade)
                     {
                         var antigoValorChaveEstrangeira = EntidadeUtil.RetornarValorIdChaveEstrangeira(this, propriedade, true);
@@ -373,14 +368,12 @@ namespace Snebur.Dominio
             this.NotificarPropriedadeAlterada(nomePropriedade);
         }
 
-
         internal protected virtual void Set(object antigoValor, object novoValor, [CallerMemberName] string nomePropriedade = "")
         {
             base.NotificarValorPropriedadeAlterada(antigoValor, novoValor, nomePropriedade);
         }
 
         #endregion
-
 
         #endregion
 
@@ -420,7 +413,6 @@ namespace Snebur.Dominio
             return entidadeClonada;
         }
 
-
         public TEntidade CloneSomenteId<TEntidade>(bool incluirTiposPrimariosETipoCompleto = true) where TEntidade : Entidade, IEntidade
         {
             var entidadeClonada = (TEntidade)Activator.CreateInstance(this.__TipoEntidade);
@@ -442,7 +434,6 @@ namespace Snebur.Dominio
                     }
                 }
             }
-
 
             entidadeClonada.Id = this.Id;
             entidadeClonada.__NomeTipoEntidade = this.__NomeTipoEntidade;

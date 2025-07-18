@@ -7,6 +7,5 @@ namespace Snebur.Dominio.Atributos
     public class AutorizarAlteracaoPropriedadeAttribute : Attribute
     {
 
-
     }
 }
