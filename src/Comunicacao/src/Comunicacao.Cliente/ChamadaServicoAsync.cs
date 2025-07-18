@@ -27,7 +27,6 @@ namespace Snebur.Comunicacao
             Task.Factory.StartNew(this.ExecutarChamada);
         }
 
-
         private void ExecutarChamada()
         {
             object resultado = null;
@@ -51,8 +50,6 @@ namespace Snebur.Comunicacao
             }
         }
 
-
     }
-
 
 }

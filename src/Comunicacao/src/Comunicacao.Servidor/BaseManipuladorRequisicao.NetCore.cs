@@ -40,7 +40,6 @@ namespace Snebur.Comunicacao
             var request = context.Request;
             var response = context.Response;
 
-
             if (await this.IsExecutarServicoAsync(context))
             {
                 response.StatusCode = 0;
@@ -244,7 +243,6 @@ namespace Snebur.Comunicacao
             var receiveResult = await webSocket.ReceiveAsync(
                 new ArraySegment<byte>(buffer), CancellationToken.None);
 
-
             while (!receiveResult.CloseStatus.HasValue)
             {
                 await webSocket.SendAsync(
@@ -263,7 +261,6 @@ namespace Snebur.Comunicacao
                 CancellationToken.None);
         }
     }
-
 
     public class AshxHandlerMiddleware
     {
@@ -303,6 +300,5 @@ namespace Snebur.Comunicacao
     }
 
 }
-
 
 #endif

@@ -21,6 +21,5 @@ namespace Snebur.Comunicacao
 
         public string UrlOrigem { get => this.RetornarValorPropriedade(this._urlOrigem); set => this.NotificarValorPropriedadeAlterada(this._urlOrigem, this._urlOrigem = value); }
 
-
     }
 }

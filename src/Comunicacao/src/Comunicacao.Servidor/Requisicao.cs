@@ -66,12 +66,10 @@ namespace Snebur.Comunicacao
             this.IdentificadorProprietario = identificadorProprietario;
             this.NomeManipulador = nomeManipulador;
 
-
             if (!Directory.Exists(this.CaminhoAplicacao))
             {
                 throw new DirectoryNotFoundException($"Caminho da aplicação não encontrado {this.CaminhoAplicacao}");
             }
-
 
         }
 
@@ -156,7 +154,6 @@ namespace Snebur.Comunicacao
 
             this.IsSerializarJavascript = (this.InformacaoSessaoUsuario.TipoAplicacao == EnumTipoAplicacao.Typescript);
 
-
             foreach (var parametro in this.ContratoChamada.Parametros)
             {
                 this.Parametros.Add(NormalizacaoUtil.NormalizarNomeParametro(parametro.Nome), this.RetornarValorParametroChamada(parametro));
@@ -179,8 +176,6 @@ namespace Snebur.Comunicacao
             return (this.CredencialServico.IdentificadorUsuario == credencialServicoRequesicao.IdentificadorUsuario &&
                     this.CredencialServico.Senha == credencialServicoRequesicao.Senha);
         }
-
-
 
         #endregion
 
@@ -303,6 +298,5 @@ namespace Snebur.Comunicacao
 
         #endregion
     }
-
 
 }

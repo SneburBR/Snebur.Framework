@@ -25,8 +25,6 @@ namespace Snebur.AcessoDados.Utilidade
             }
         }
 
-
-
     }
 }
 

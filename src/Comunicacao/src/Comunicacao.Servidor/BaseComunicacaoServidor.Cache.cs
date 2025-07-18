@@ -91,7 +91,6 @@ namespace Snebur.Comunicacao
             this.IsManterCache = this.OperacoesAtivarCache.Count > 0 || this.OperacoesIgnorarCaches.Count > 0;
         }
 
-
         private string RetornarResultadoChamadaSerializadoCache(Dictionary<string, object> parametros,
                                                                 string operacao,
                                                                 EnumTipoSerializacao tipoSerializacao)

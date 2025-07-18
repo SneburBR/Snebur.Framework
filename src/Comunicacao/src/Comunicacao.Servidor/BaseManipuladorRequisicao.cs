@@ -49,13 +49,9 @@ namespace Snebur.Comunicacao
         }
 #endif
 
-
         public abstract void InicializarManipuladores();
 
-
         #region Métodos privados
-
-
 
         private bool IsRequicaoValida(HttpRequest request, bool isValidarUrlMd5)
         {
@@ -100,7 +96,6 @@ namespace Snebur.Comunicacao
                            $"Cabeçalho {ConstantesCabecalho.NOME_ASSEMBLY_APLICACAO}: '{nomeAssembly}'\r\n" +
                            $"Cabeçalho {ParametrosComunicacao.IDENTIFICADOR_APLICACAO}: '{identificadorAplicacao}'\r\n" +
                            $"Ambiente IIS : {ambienteIIS}\r\n";
-
 
             LogUtil.SegurancaAsync(mensagem, tipoLogSeguranca);
         }
@@ -159,8 +154,6 @@ namespace Snebur.Comunicacao
                 }
             }
         }
-
-
 
         #endregion
 
@@ -227,7 +220,6 @@ namespace Snebur.Comunicacao
 
         #region Métodos virtuais
 
-
         public virtual void AntesProcessarRequisicao(HttpContext context)
         {
 
@@ -237,7 +229,6 @@ namespace Snebur.Comunicacao
         {
 
         }
-
 
         #endregion
 
@@ -276,6 +267,5 @@ namespace Snebur.Comunicacao
         }
 
     }
-
 
 }

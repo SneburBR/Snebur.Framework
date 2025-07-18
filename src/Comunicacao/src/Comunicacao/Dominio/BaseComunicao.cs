@@ -10,7 +10,6 @@ namespace Snebur.Comunicacao
 
 		#region Campos Privados
 
-
 		#endregion
 
       

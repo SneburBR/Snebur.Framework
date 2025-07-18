@@ -179,8 +179,6 @@ namespace Snebur.Comunicacao.Cliente
             return Task.Factory.StartNew(() => this.AtualizarInformacaoIp(ipInformacao));
         }
 
-
-
         #endregion
     }
 }

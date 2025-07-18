@@ -230,7 +230,6 @@ namespace Snebur.Comunicacao
                         throw new ErroSeguranca("A valor do parâmetro não retorna lista como esperado no tipo do parâmetro do método", EnumTipoLogSeguranca.ParametrosComunicacaoInvalidos);
                     }
 
-
                     var tipoItemColecao = parametroMetodo.ParameterType.GetGenericArguments().Single();
                     if (!(tipoItemColecao.IsSubclassOf(typeof(BaseDominio)) ||
                           typeof(IEntidade).IsAssignableFrom(tipoItemColecao) ||
@@ -272,7 +271,6 @@ namespace Snebur.Comunicacao
                                                           object[] parametros)
         {
             var metodoOperacao = this.RetornarMetodo(operacao);
-
 
             var resultadoOperacao = this.RetornarResultadoOperacao(metodoOperacao, parametros);
             resultadoOperacao = this.NormalizarResultadoOperacao(resultadoOperacao);

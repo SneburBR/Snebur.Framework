@@ -7,9 +7,7 @@ namespace Snebur.Comunicacao.Mensageiro
 
         #region Campos Privados
 
-
         #endregion
-
 
         private IUsuario Usuario { get; set; }
     }

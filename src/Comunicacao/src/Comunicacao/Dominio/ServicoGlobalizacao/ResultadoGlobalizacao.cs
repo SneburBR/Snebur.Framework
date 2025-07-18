@@ -22,6 +22,4 @@ namespace Snebur.Comunicacao
         public List<TelaGlobalizacao> Telas { get; set; }
     }
 
-
-
 }

@@ -85,7 +85,6 @@ namespace Snebur.Comunicacao
             return (T)resultado;
         }
 
-
         protected void ChamarServicoAsync<T>(MethodBase metodo, Action<T> callback, params object[] valoresParametro)
         {
             this.ChamarServicoAsync<T>(metodo, metodo, callback, valoresParametro);

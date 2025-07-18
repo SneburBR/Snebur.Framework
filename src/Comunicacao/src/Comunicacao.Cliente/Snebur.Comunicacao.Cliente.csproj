@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0;net6.0;net48</TargetFrameworks>
+		<TargetFrameworks>net9.0</TargetFrameworks>
 		<RootNamespace>Snebur.Comunicacao</RootNamespace>
 		<Version>2.0.0</Version>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
@@ -9,25 +9,11 @@
 		<AssemblyName>Snebur.Comunicacao.Cliente</AssemblyName>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<DefineConstants> DEBUG;TRACE</DefineConstants>
-		<WarningLevel>4</WarningLevel>
-		<NoWarn>1701;1702</NoWarn>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<DefineConstants> TRACE</DefineConstants>
-	</PropertyGroup>
-	<ItemGroup>
-		<None Remove="Snebur.Comunicacao.Cliente.csproj.vspscc" />
-		<None Remove="Snebur.Comunicacao.Cliente.Net40.csproj.vspscc" />
-		<None Remove="Snebur.Comunicacao.Cliente.Net50.csproj.vspscc" />
-	</ItemGroup>
+ 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\Core\Snebur.csproj" />
 	  <ProjectReference Include="..\..\..\Seguranca\Snebur.Seguranca.csproj" />
 	  <ProjectReference Include="..\Comunicacao\Snebur.Comunicacao.csproj" />
 	</ItemGroup>
  
-
 </Project>
