@@ -66,7 +66,6 @@ namespace Snebur.Imagens
         //public BitmapSource Redimensionar(BitmapSource imagem, int largura, int altura, bool uniforme, int dpi)
         //{
 
-
         //    var bitmapSourceRedimensionado = this.RedimensionarInterno(imagem, largura, altura, uniforme, dpi);
         //    if (imagem.IsBgraFormatoSuprotado())
         //    {
@@ -99,7 +98,6 @@ namespace Snebur.Imagens
         //        var imagemSrgb = converterSrgb.RetornarBitmapSourceConvertido(frame);
         //        var imagemRedimensionada = this.RedimensionarInterno(imagemSrgb, largura, altura, uniforme, dpi);
 
-
         //        using (var converterOriginal = new ConverterPerfilNativo(perfilOrigem))
         //        {
         //            return converterOriginal.RetornarBitmapSourceConvertido(imagemRedimensionada, perfilsRGB);
@@ -126,7 +124,6 @@ namespace Snebur.Imagens
         //    return imagemReduzida;
 
         //}
-
 
     }
 

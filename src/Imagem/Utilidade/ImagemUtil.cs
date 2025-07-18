@@ -19,7 +19,6 @@ namespace Snebur.Utilidade
     public partial class ImagemUtil
     {
 
-
         public static EnumTamanhoImagem[] TamanhosApresentacao => new EnumTamanhoImagem[] { EnumTamanhoImagem.Miniatura, EnumTamanhoImagem.Pequena, EnumTamanhoImagem.Media, EnumTamanhoImagem.Grande };
 
         #region Miniatura
@@ -35,7 +34,6 @@ namespace Snebur.Utilidade
         }
 
 #endif
-
 
         public static BitmapSource RetornarMiniatura(string caminhoArquivo, double alturaMaxima = ConstantesImagemApresentacao.ALTURA_IMAGEM_MINIATURA, bool erroRetornarNull = false)
         {
@@ -61,7 +59,7 @@ namespace Snebur.Utilidade
             }
             catch (UnauthorizedAccessException)
             {
-                throw ;
+                throw;
             }
             catch (Exception)
             {
@@ -154,7 +152,7 @@ namespace Snebur.Utilidade
             return null;
         }
 
-#endregion
+        #endregion
 
         #region Stream miniatura
 
@@ -315,64 +313,54 @@ namespace Snebur.Utilidade
             return null;
         }
 
-        public static MemoryStream RetornarStreamResizeImageVisualizacao(Stream stream, 
-                                                                         double alturaMaxima, 
-                                                                         bool usarImagemBitmap = true, 
+        public static MemoryStream RetornarStreamResizeImageVisualizacao(Stream stream,
+                                                                         double alturaMaxima,
+                                                                         bool usarImagemBitmap = true,
                                                                          bool permitirJpeg = false)
         {
+
             try
             {
-                try
+                Stream streamImagem = stream;
+                if (!PngResolver.UsarPng && permitirJpeg)
                 {
-                    Stream streamImagem = stream;
-                    if (!PngResolver.UsarPng && permitirJpeg)
-                    {
-                        streamImagem = PngResolver.RetornarStreamComoJpeg(stream);
-                    }
-
-                    if (stream.CanSeek)
-                    {
-                        streamImagem.Seek(0, SeekOrigin.Begin);
-                    }
-
-                    var imagem = ImagemUtil.RetornarImagemVisualizacao(streamImagem, alturaMaxima, usarImagemBitmap);
-
-                    BitmapEncoder encoder;
-                    if (PngResolver.UsarPng && permitirJpeg)
-                    {
-                        encoder = new PngBitmapEncoder();
-                        encoder.Frames.Add(BitmapFrame.Create(imagem));
-                    }
-                    else
-                    {
-                        encoder = new JpegBitmapEncoder();
-                        encoder.Frames.Add(BitmapFrame.Create(imagem));
-                    }
-
-                    var msRetorno = new MemoryStream();
-                    encoder.Save(msRetorno);
-                    msRetorno.Seek(0, SeekOrigin.Begin);
-                    return msRetorno;
-
+                    streamImagem = PngResolver.RetornarStreamComoJpeg(stream);
                 }
-                catch (Exception ex)
+
+                if (stream.CanSeek)
                 {
-                    LogUtil.ErroAsync(ex);
-                    if (!PngResolver.UsarPng || !permitirJpeg)
-                    {
-                        throw;
-                    }
-                    PngResolver.UsarPng = false;
-                    return ImagemUtil.RetornarStreamResizeImageVisualizacao(stream, alturaMaxima, usarImagemBitmap, permitirJpeg);
+                    streamImagem.Seek(0, SeekOrigin.Begin);
                 }
+
+                var imagem = ImagemUtil.RetornarImagemVisualizacao(streamImagem, alturaMaxima, usarImagemBitmap);
+
+                BitmapEncoder encoder;
+                if (PngResolver.UsarPng && permitirJpeg)
+                {
+                    encoder = new PngBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(imagem));
+                }
+                else
+                {
+                    encoder = new JpegBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(imagem));
+                }
+
+                var msRetorno = new MemoryStream();
+                encoder.Save(msRetorno);
+                msRetorno.Seek(0, SeekOrigin.Begin);
+                return msRetorno;
+
             }
-            catch (ErroImagemCorrompida)
+            catch (Exception ex)
             {
-                throw;
-            }
-            catch (Exception erro)
-            {
-                throw erro;
+                LogUtil.ErroAsync(ex);
+                if (!PngResolver.UsarPng || !permitirJpeg)
+                {
+                    throw;
+                }
+                PngResolver.UsarPng = false;
+                return ImagemUtil.RetornarStreamResizeImageVisualizacao(stream, alturaMaxima, usarImagemBitmap, permitirJpeg);
             }
         }
 
@@ -473,7 +461,6 @@ namespace Snebur.Utilidade
             {
                 return ImagemUtil.RetornarImagemVisualizacao(fsOrigem, tamanho, opcaoRedimensionar, angulo);
             }
-
         }
 
         public static BitmapSource RetornarImagemVisualizacao(Stream stream, Size tamanho, EnumOpcaoRedimensionar opcaoRedimensionar, double angulo = 0)
@@ -484,7 +471,6 @@ namespace Snebur.Utilidade
                 return imagemVisualziacao.RetornarImagemVisualizacao();
             }
         }
-
 
         public static BitmapSource RedimensionarImagemUniforme(BitmapSource imagem, double alturaMaxima, bool aumentar = true, bool carregar = true)
         {
@@ -533,9 +519,6 @@ namespace Snebur.Utilidade
             }
             return new WriteableBitmap(imagem);
         }
-
-
-
 
         #endregion
 
@@ -606,7 +589,6 @@ namespace Snebur.Utilidade
         {
             return RetornarTamanhoUniformeParaPreencher(tamanhoImagem.Width, tamanhoImagem.Height, tamanhoDestino.Width, tamanhoDestino.Height);
         }
-
 
         public static Size RetornarTamanhoUniformeParaPreencher(double larguraImagem, double alturaImagem, double largura, double altura)
         {
@@ -691,7 +673,6 @@ namespace Snebur.Utilidade
             }
         }
 
-
         /// <summary>
         /// Salvar a imagem no formato JPEG
         /// </summary>
@@ -767,7 +748,6 @@ namespace Snebur.Utilidade
         {
             return DimensaoImagemUtil.RetornarDimensaoImagem(caminhoArquivo);
         }
-
 
         #region Extensoes
 
@@ -853,7 +833,6 @@ namespace Snebur.Utilidade
                 {
                     AjustarDpiInterno(caminhoArquivo, dpi, forcar, ignorarErro, true);
                 }
-
 
             }
             finally
@@ -972,7 +951,6 @@ namespace Snebur.Utilidade
         //    return false;
         //}
 
-
         public static EnumTamanhoImagem RetornarTamanhoImagem(IImagem imagem, Dimensao dimensaoRecipiente)
         {
 
@@ -1011,7 +989,5 @@ namespace Snebur.Utilidade
 
             return EnumTamanhoImagem.Impressao;
         }
-
     }
-
 }

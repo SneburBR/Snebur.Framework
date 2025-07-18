@@ -64,7 +64,6 @@ namespace Snebur.Imagens
         //    return new ConverterPerfilVinta(caminhoOrigem, perfilDestinoNativo, qualidade, dpi, alterarDpi);
         //}
 
-
         //public static ConverterPerfil ConverterPerfilVinta(string caminhoOrigem, ColorContext perfilDestinoNativo, int qualidade, int dpi, bool alterarDpi)
         //{
 
@@ -113,7 +112,6 @@ namespace Snebur.Imagens
         //                    }
         //                }
         //                return new ConverterPerfilNativo(caminhoOrigem, perfilDestinoNativo, qualidade, dpi, alterarDpi);
-
 
         //            case (EnumFormatoCor.Grayscale):
 

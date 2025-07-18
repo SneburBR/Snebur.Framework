@@ -1,7 +1,6 @@
 ﻿
 namespace Snebur.Utilidade
 {
-    using SIGIFotografo;
     using System;
     using System.IO;
     using System.Linq;
@@ -15,7 +14,6 @@ namespace Snebur.Utilidade
         {
             return RetornarImagemInterno(caminhoArquivo, 0, 0, true);
         }
-
 
         public static BitmapSource RetornarImagemLarguraMaxima(string caminhoArquivo, double larguraMaxima)
         {
@@ -71,7 +69,6 @@ namespace Snebur.Utilidade
                 cache.Freeze();
                 return cache;
             }
-
 
         }
 
@@ -171,109 +168,9 @@ namespace Snebur.Utilidade
     }
 }
 
-namespace SIGIFotografo
+namespace Snebur.Imagens
 {
-    using System;
     using System.Diagnostics;
-    using System.Drawing;
     using System.Runtime.InteropServices;
-    using System.Windows.Media.Imaging;
-
-    public static class BitmapFrameExtesao
-    {
-
-        public static RotateFlipType RetornarRotateFlipType(this BitmapFrame frame)
-        {
-            if (frame.Metadata is BitmapMetadata metadata)
-            {
-                var orientacaoString = metadata.GetQuery("/app1/ifd/{ushort=274}")?.ToString();
-                if (!String.IsNullOrEmpty(orientacaoString) && Int32.TryParse(orientacaoString, out var orientacao) && orientacao > 0)
-                {
-                    switch (orientacao)
-                    {
-                        case 1:
-                            return RotateFlipType.RotateNoneFlipNone;
-                        case 2:
-                            return RotateFlipType.RotateNoneFlipX;
-                        case 3:
-                            return RotateFlipType.Rotate180FlipNone;
-                        case 4:
-                            return RotateFlipType.Rotate180FlipX;
-                        case 5:
-                            return RotateFlipType.Rotate90FlipX;
-                        case 6:
-                            return RotateFlipType.Rotate90FlipNone;
-                        case 7:
-                            return RotateFlipType.Rotate270FlipX;
-                        case 8:
-                            return RotateFlipType.Rotate270FlipNone;
-                        default:
-                            return RotateFlipType.RotateNoneFlipNone;
-                    }
-                }
-            }
-            return RotateFlipType.RotateNoneFlipNone;
-        }
-
-        public static int RetornarRotacao(this BitmapFrame frame)
-        {
-            if (frame.Metadata is BitmapMetadata metadata)
-            {
-                var orientacaoString = metadata.GetQuery("/app1/ifd/{ushort=274}")?.ToString();
-                if (!String.IsNullOrEmpty(orientacaoString) && Int32.TryParse(orientacaoString, out var orientacao) && orientacao > 0)
-                {
-                    switch (orientacao)
-                    {
-                        case 1:
-                            return 0;
-                        case 2:
-                            //return RotateFlipType.RotateNoneFlipX;
-                            return 0;
-                        case 3:
-                            //return RotateFlipType.Rotate180FlipNone;
-                            return 180;
-                        case 4:
-                            //return RotateFlipType.Rotate180FlipX;
-                            return 180;
-                        case 5:
-                            //return RotateFlipType.Rotate90FlipX;
-                            return 90;
-                        case 6:
-                            //return RotateFlipType.Rotate90FlipNone;
-                            return 90;
-                        case 7:
-                            //return RotateFlipType.Rotate270FlipX;
-                            return 270;
-                        case 8:
-
-                            //return RotateFlipType.Rotate270FlipNone;
-                            return 270;
-
-                        default:
-
-                            return 0;
-                    }
-
-                }
-
-            }
-            return 0;
-        }
-
-        public static bool IsGirarFlipX(this BitmapFrame frame)
-        {
-            var rotateFlipType = frame.RetornarRotateFlipType();
-            switch (rotateFlipType)
-            {
-                case RotateFlipType.RotateNoneFlipX:
-                case RotateFlipType.Rotate180FlipX:
-                case RotateFlipType.Rotate90FlipX:
-                case RotateFlipType.Rotate270FlipX:
-                    return true;
-                default:
-                    return false;
-            }
-        }
-    }
 
 }

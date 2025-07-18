@@ -1,9 +1,10 @@
-﻿namespace Snebur
-{
-    using System.Drawing;
-    using System.Drawing.Drawing2D;
-    using Snebur.Dominio;
+﻿
+using Snebur.Dominio;
+using System.Drawing;
+using System.Runtime.Versioning;
 
+namespace Snebur.Imagens
+{
     public static class CorDrawingExtensao
     {
         public static Color RetornarCorDrawing(this Cor cor)
@@ -18,9 +19,4 @@
         }
     }
 }
-
-
-
-
-
 

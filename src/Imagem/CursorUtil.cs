@@ -32,7 +32,6 @@ namespace Snebur.Imagens
 
                 dc.DrawEllipse(Brushes.Transparent, canetaPontilhada, new Point(raio + 1, raio + 1), raio, raio);
 
-
                 // var cinza = new SolidColorBrush(Color.FromArgb(50, 50, 50, 50));
 
                 var caneta = new Pen(Brushes.Black, 1);
@@ -41,12 +40,10 @@ namespace Snebur.Imagens
                 dc.DrawLine(caneta, new Point(raio, 0), new Point(raio, 2 * raio));
                 dc.DrawLine(caneta, new Point(0, raio), new Point(2 * raio, raio));
 
-
                 // dc.DrawRectangle(,, new Rect(0, 0, raio, raio));
                 //dc.DrawRectangle(Brushes.Gold, new Pen(Brushes.Black, 0.1), new Rect(0, 0, 50, 50));
                 dc.Close();
             }
-
 
             var rtb = new RenderTargetBitmap(64, 64, 96, 96, PixelFormats.Pbgra32);
             rtb.Render(vis);

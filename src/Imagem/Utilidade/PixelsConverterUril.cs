@@ -55,6 +55,5 @@ namespace Snebur.Imagens
             return pixelsDestinoRgba;
         }
 
-
     }
 }

@@ -63,7 +63,6 @@ namespace Snebur.Imagens
             ArquivoUtil.DeletarArquivo(caminhoDestino);
             var streamDestino = new FileStream(caminhoDestino, FileMode.Create, FileAccess.Write, FileShare.Write);
 
-
             this.SalvarPartes(bitmapSource, streamDestino, 10);
 
             streamDestino.Dispose();
@@ -97,12 +96,9 @@ namespace Snebur.Imagens
                 var len = bytesPorLinha * alturaParte;
                 var pixelsParte = pixels.Skip(offset).Take(len).ToArray();
 
-
                 this.SalvarPixels(writerDestino, largura, altura, pixelsParte, alturaParte, parteAtual, totalPartes);
                 //break;
             }
-
-
 
         }
         //public void Salvar(BitmapSource bitmapSource, Stream streamDestino)
@@ -116,21 +112,15 @@ namespace Snebur.Imagens
         //    var parteAtual = 1;
         //    var totalPartes = 1;
 
-
         //    this.Salvar(streamDestino, largura, altura, pixelsParte, alturaParte, parteAtual, totalPartes);
         //}
-
 
         //private void Salvar(BinaryWriter streamDestino, int largura, int altura, byte[] pixelsParte, int alturaParte, int parteAtual, int totalPartes)
         //{
 
-
         //    var writerDestino = new BinaryWriter(streamDestino);
         //    this.SalvarPixels(writerDestino, pixelsParte, alturaParte, parteAtual, totalPartes);
         //}
-
-
-
 
         public void SalvarPixels(BinaryWriter writerDestino, int largura, int altura, byte[] pixelsParte, int alturaParte, int parteAtual, int totalPartes)
         {
@@ -149,7 +139,6 @@ namespace Snebur.Imagens
             var linhaOrigem = 0;
 
             //for (var linha = this.Height - 1; linha >= 0; linha--)
-
 
             var tamanhoBuffer = alturaParte * bytesLinhaDestino;
             var bufferParte = new byte[tamanhoBuffer];
@@ -178,8 +167,6 @@ namespace Snebur.Imagens
                     bufferParte[posicaoDestino] = blue;
                     bufferParte[posicaoDestino + 1] = green;
                     bufferParte[posicaoDestino + 2] = red;
-
-
 
                     //if (this.BufferAlpha)
                     //{
@@ -433,7 +420,6 @@ namespace Snebur.Imagens
 
 }
 
-
 //private void SalvarInterno()
 //{
 //    this.pos = 0;
@@ -494,6 +480,5 @@ namespace Snebur.Imagens
 //            tempBuffer.fill(0, fillOffset, fillOffset + this.extraBytes);
 //        }
 //    }
-
 
 //}

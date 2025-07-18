@@ -51,7 +51,6 @@ namespace Snebur.Utilidade
 
         public static List<string> ExtensoesJpeg = new List<string> { ".jpg", ".jpeg", "Jfif", "jif", "jpe" };
 
-
         public static EnumFormatoImagem RetornarFormatoArquivo(string caminhoArquivo)
         {
             using (var fs = StreamUtil.OpenRead(caminhoArquivo))

@@ -1,9 +1,8 @@
 ﻿using System.Drawing;
-using System.Drawing.Imaging;
-using System.Windows.Media.Imaging;
-using System.IO;
 using System.Drawing.Drawing2D;
-using System;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Windows.Media.Imaging;
 
 namespace Snebur.Imagens
 {
@@ -58,7 +57,6 @@ namespace Snebur.Imagens
             var myEncoderParameters = new EncoderParameters(1);
             var myEncoderParameter = new EncoderParameter(myEncoder, 100L);
             myEncoderParameters.Param[0] = myEncoderParameter;
-
 
             var ms = new MemoryStream();
             bitmap.Save(ms, jpgEncoder, myEncoderParameters);

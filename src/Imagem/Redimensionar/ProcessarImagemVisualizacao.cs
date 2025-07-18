@@ -78,9 +78,6 @@ namespace Snebur.Imagens
             }
         }
 
-
     }
-
-
 
 }

@@ -8,7 +8,6 @@ namespace Snebur.Imagens
     public partial class PerfilIccUtil
     {
 
-
         public const int TAMANHO_PERFIL_SRGB = 3144;
 
         //total de bytes do perfil -
@@ -25,9 +24,6 @@ namespace Snebur.Imagens
 
         internal const string CHECKSUM_ADOBE_RGB_500 = "7231731d-eba6-4d73-b912-f8534f6229e9";
 
-
-
-
         internal static HashSet<string> ChecksumAdobeRGB { get; } =
                         new HashSet<string>(new string[] {CHECKSUM_ADOBE_RGB_560,
                                                           "f37206ef-b757-446b-8643-d116754ca556", //560,
@@ -42,7 +38,6 @@ namespace Snebur.Imagens
 
         private static ColorContext _sRGB;
         private static ReadOnlyCollection<ColorContext> _sRGBColorContexts;
-
 
         public static ColorContext sRGB
         {

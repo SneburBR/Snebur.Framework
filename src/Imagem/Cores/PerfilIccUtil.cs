@@ -242,7 +242,6 @@ namespace Snebur.Imagens
 
                     return PerfilIccUtil.RetornarStreamPerfil("AppleRGB.icc");
 
-
                 case (EnumPerfilIcc.ColorMatchRGB):
 
                     return PerfilIccUtil.RetornarStreamPerfil("ColorMatchRGB.icc");
@@ -339,7 +338,6 @@ namespace Snebur.Imagens
         //            var perfil = new ColorProfile(PerfilIccUtil.RetornarCaminhoPerfil_sGray());
         //            return perfil;
 
-
         //        case (ColorSpace.RGB):
         //        case (ColorSpace.sRGB):
 
@@ -385,10 +383,6 @@ namespace Snebur.Imagens
             }
 
         }
-
-
-
-
 
         private static EnumPerfilIcc RetornarPerfilIccConhecido(string nomePerfil)
         {

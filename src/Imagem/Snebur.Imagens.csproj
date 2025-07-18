@@ -2,12 +2,13 @@
 
 
 	<PropertyGroup>
-		<TargetFrameworks>net48;net6.0-windows;net8.0-windows</TargetFrameworks>
+		<TargetFrameworks>net9.0-windows</TargetFrameworks>
 		<AssemblyName>Snebur.Imagens</AssemblyName>
 		<RootNamespace>Snebur.Imagens</RootNamespace>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<Nullable>disable</Nullable>
+	
 
 	</PropertyGroup>
  
@@ -23,17 +24,7 @@
 		<PackageReference Include="WindowsAPICodePack-Core" version="1.1.2" />
 		<PackageReference Include="WindowsAPICodePack-Shell" version="1.1.1" />
 	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0' ">
-		
-		<!--<FrameworkReference Include="Microsoft.AspNetCore.App" />-->
-
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0' ">
-		
-		<!--<FrameworkReference Include="Microsoft.AspNetCore.App" />-->
-	</ItemGroup>
+ 
 
 	<ItemGroup>
 		<None Remove="Recursos\Icones\7z\7z.ico" />
@@ -60,9 +51,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-      <PackageReference Include="Magick.NET-Q8-AnyCPU" Version="13.9.0" />
-      <PackageReference Include="Magick.NET.SystemDrawing" Version="7.2.5" />
-      <PackageReference Include="Magick.NET.SystemWindowsMedia" Version="7.2.5" />
+      <PackageReference Include="Magick.NET-Q8-AnyCPU" Version="14.7.0" />
+      <PackageReference Include="Magick.NET.SystemDrawing" Version="8.0.7" />
+      <PackageReference Include="Magick.NET.SystemWindowsMedia" Version="8.0.7" />
 	</ItemGroup>
 
 

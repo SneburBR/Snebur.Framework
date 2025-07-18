@@ -210,7 +210,6 @@
 //                        ConverterPerfilIUtil.ConverterMagickImage(msDestino_sRGB, streamDestino, perfilDestino);
 //                    }
 
-
 //                }
 //            }
 //        }
@@ -396,7 +395,6 @@
 //                default:
 //                    throw new Exception($"Cor formato não suportado {EnumUtil.RetornarDescricao(corFormato) } ");
 
-
 //            }
 
 //        }
@@ -410,7 +408,6 @@
 ////.NET NATIVO
 ////public static BitmapSource ConverterPerfil(BitmapSource imagem, ColorContext perfilOrigem, ColorContext perfilConverter)
 ////{
-
 
 ////    return bitmapConverter;
 ////}

@@ -26,7 +26,6 @@ namespace System.Windows.Media.Imaging
             var stride = imagem.PixelWidth * 4;
             var len = stride * imagem.PixelHeight;
 
-
             BitmapSource imagemBgra32;
 
             if (!imagem.IsBgraFormatoSuprotado())
@@ -66,7 +65,6 @@ namespace System.Windows.Media.Imaging
 
         //public static void Dispose(this BitmapSource source)
         //{
-
 
         //}
 

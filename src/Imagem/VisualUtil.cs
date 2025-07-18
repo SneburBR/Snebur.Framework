@@ -12,7 +12,6 @@ namespace Snebur.Imagens
         public const double POLEGADA = 2.54;
         public const int DPI_RENDERIZACAO = 96;
 
-
         public static void SalvarImagemImpressao(string caminhoOrigem,
                                                  string caminhoDestino,
                                                  UIElement elementoRenderizar,
@@ -35,7 +34,6 @@ namespace Snebur.Imagens
 
                 ArquivoUtil.DeletarArquivo(caminhoDestino);
 
-
                 using (var fsDestino = StreamUtil.CreateWrite(caminhoDestino))
                 {
                     //ColorContext perfilDestino;
@@ -54,19 +52,16 @@ namespace Snebur.Imagens
                         //var qualidade = (perfilDestino.IsPerfilsRGB())  ? ConverterPerfilNativo.QUALIDADE_PADRAO : 100;
                         //qualidade = (SistemaUtil.IsWindowsXp) ? 100 : qualidade;
 
-
                         var imagemRenderizada = new RenderTargetBitmap(Convert.ToInt32(tamanhoRenderizacao.Width),
                                                                        Convert.ToInt32(tamanhoRenderizacao.Height), 96, 96, PixelFormats.Pbgra32);
                         RenderOptions.SetBitmapScalingMode(imagemRenderizada, BitmapScalingMode.NearestNeighbor);
                         imagemRenderizada.Render(elementoRenderizar);
-
 
                         if (ConfiguracaoTeste.SalvarImagemTemporaria)
                         {
                             var caminho = $@"c:\temp\ImagemRenderizada_SemPerfil_Antes__SetBitmapScalingMode___{Guid.NewGuid().ToString()}.jpg";
                             ImagemUtil.SalvarImagem(imagemRenderizada, caminho);
                         }
-
 
                         BitmapSource imagemFinal;
                         if (scalarRedimensionarImpressaoX > 0 &&
@@ -115,7 +110,6 @@ namespace Snebur.Imagens
 
                    
                     elementoRenderizar.Clear();
-
 
                 }
             }

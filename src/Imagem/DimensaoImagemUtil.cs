@@ -1,13 +1,12 @@
-﻿using System;
+﻿using Snebur.Dominio;
+using Snebur.Utilidade;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.Versioning;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using Snebur.Dominio;
-using Snebur.Utilidade;
 
 namespace Snebur.Imagens
 {
@@ -289,7 +288,5 @@ namespace Snebur.Imagens
             }
             return EnumOrientacao.Quadrado;
         }
-
     }
- 
 }

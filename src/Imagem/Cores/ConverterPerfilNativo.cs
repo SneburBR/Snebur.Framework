@@ -103,7 +103,6 @@ namespace Snebur.Imagens
             }
         }
 
-
         public override void Salvar(string caminhoDestino)
         {
             ArquivoUtil.DeletarArquivo(caminhoDestino, true);
@@ -156,7 +155,6 @@ namespace Snebur.Imagens
                 SalvarInterno(streamDestino, true);
             }
         }
-
 
         private MemoryStream RetornarMemoryStreamConvertido(bool clonarMetadata)
         {

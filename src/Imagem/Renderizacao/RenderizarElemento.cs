@@ -101,7 +101,6 @@ namespace Snebur.Imagens.Renderizacao
             var tamanhoParte = new Size(this.TamanhoRenderizacao.Width, alturaParte);
             var posicaoY = ((this.ParteAtual - 1) * alturaParte * -1);
 
-
             elemento.Margin = new Thickness(0, posicaoY, 0, 0);
             elemento.Measure(this.TamanhoRenderizacao);
             elemento.Arrange(new Rect(new Point(0, 0), this.TamanhoRenderizacao));

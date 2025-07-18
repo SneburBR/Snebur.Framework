@@ -106,12 +106,10 @@ namespace Snebur.Imagens
 
                 var source = frame as BitmapSource;
 
-
                 if (ConfiguracaoTeste.SalvarImagemTemporaria)
                 {
                     ImagemUtil.SalvarImagem(frame, $@"c:\temp\frame sRGB -{frame.PixelWidth} - {frame.PixelHeight} - {Guid.NewGuid()}.jpg");
                 }
-
 
                 this.PerfilDestino = PerfilIccUtil.RetornarPerfilNativo(EnumPerfilIcc.sRGB);
                 var bitmapSourceMiniatura = frame as BitmapSource;
@@ -170,7 +168,6 @@ namespace Snebur.Imagens
                 this.Largura = (int)(this.LarguraImagemOriginal * scalarX);
                 this.Altura = (int)(this.AlturaImagemOriginal * scalarY);
 
-
                 //var transformedSource = new TransformedBitmap(sourcesRGB, new ScaleTransform(scalarX, scalarY));
 
                 //transformedSource.BeginInit();
@@ -197,19 +194,16 @@ namespace Snebur.Imagens
                 transformedSource.Transform = transformGroup;
                 transformedSource.EndInit();
 
-
                 if (ConfiguracaoTeste.SalvarImagemTemporaria)
                 {
                     ImagemUtil.SalvarImagem(transformedSource, $@"c:\temp\transformedSource sRGB -{transformedSource.PixelWidth} - {transformedSource.PixelHeight} - {Guid.NewGuid()}.jpg");
                 }
-
 
                 BitmapSource imagemRedimensionada = transformedSource;
                 var cache = (carregaImagemResutladoMemoria) ? BitmapCacheOption.OnLoad : BitmapCacheOption.None;
                 this.TamanhoRedimensionado = new Size(imagemRedimensionada.PixelWidth, imagemRedimensionada.PixelHeight);
                 if (!this.ConverterPerfilOrigem || this.PerfilOrigem.IsPerfilsRGB() || SistemaUtil.IsWindowsXp)
                 {
-
 
                     var imagemFinal = new CachedBitmap(transformedSource, BitmapCreateOptions.PreservePixelFormat |
                                                                           BitmapCreateOptions.IgnoreColorProfile,
@@ -238,7 +232,6 @@ namespace Snebur.Imagens
                                                             BitmapCreateOptions.PreservePixelFormat |
                                                             BitmapCreateOptions.IgnoreColorProfile, cacheOption);
 
-
                 return this.RetornarBitmapSourceFinal(imagemFinalCorOrigem);
 
             }
@@ -258,8 +251,6 @@ namespace Snebur.Imagens
                 return this.RetornarImagemErro(ex);
             }
         }
-
-
 
         private BitmapSource RetornarBitmapSourceFinal(BitmapSource bimtapSource)
         {
@@ -391,8 +382,6 @@ namespace Snebur.Imagens
 
         #endregion
 
-
-
         #region Salvar
 
         public void Salvar(string caminhoArquivoDestino)
@@ -459,8 +448,6 @@ namespace Snebur.Imagens
             }
             return this.PerfilOrigem;
         }
-
-
 
         #endregion
 

@@ -1,10 +1,10 @@
 ﻿
-
-namespace SIGIFotografo
+namespace Snebur.Imagens
 {
     using System;
     using System.Drawing;
     using System.Drawing.Imaging;
+    using System.Runtime.Versioning;
 
     public static class BitmapExtesao
     {
@@ -14,7 +14,7 @@ namespace SIGIFotografo
             EncoderParameters myEncoderParameters = null;
             if (formato == ImageFormat.Jpeg)
             {
-                var myEncoder = System.Drawing.Imaging.Encoder.Quality;
+                var myEncoder = Encoder.Quality;
                 myEncoderParameters = new EncoderParameters(1);
                 var myEncoderParameter = new EncoderParameter(myEncoder, Convert.ToInt64(qualidade));
                 myEncoderParameters.Param[0] = myEncoderParameter;
@@ -34,7 +34,7 @@ namespace SIGIFotografo
                     return codec;
                 }
             }
-            throw new Erro($"Não foi possivel encotrar um encoder para o formato {formato.ToString()}");
+            throw new Erro($"Não foi possível encontrar um encoder para o formato {formato.ToString()}");
         }
     }
 

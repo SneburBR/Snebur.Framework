@@ -12,7 +12,6 @@ namespace Snebur.Imagens
             return AjustarDpi(origem, origem.Format, dpi);
         }
 
-
         public static BitmapSource AjustarDpi(BitmapSource origem, PixelFormat formato, double dpi)
         {
             //var stride = origem.PixelWidth * 4;

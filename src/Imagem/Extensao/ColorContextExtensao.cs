@@ -12,7 +12,6 @@ namespace System.Windows.Media
     public static class ColorContextExtensao
     {
 
-
         public static int RetornarTamanhoPerfil(this ColorContext colorContext)
         {
             var profileHeader = (object)typeof(ColorContext).GetField("_profileHeader", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(colorContext);
@@ -138,7 +137,6 @@ namespace System.Windows.Media
             return perfil;
         }
 
-
         public static ColorContext RetornarPerfilOrigem(this BitmapFrame frame)
         {
             if (frame.Format == PixelFormats.Cmyk32)
@@ -218,9 +216,6 @@ namespace System.Windows.Media
                 return new byte[0];
             }
         }
-
-
-
 
         public static bool Igual(this ColorContext colorContext, ColorContext colorContextComparar)
         {

@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Snebur.Utilidade;
+using System;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Runtime.Versioning;
 using System.Windows.Media.Imaging;
-using Snebur.Utilidade;
 
 namespace Snebur.Imagens
 {
@@ -86,7 +87,6 @@ namespace Snebur.Imagens
                 return bitmap;
             }
         }
-
 
         public static Stream RetornarStreamComoJpeg(Stream stream)
         {

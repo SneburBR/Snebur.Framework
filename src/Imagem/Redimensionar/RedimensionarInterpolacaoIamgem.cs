@@ -159,7 +159,6 @@ namespace Snebur.Imagens
                 arrayPIndex[i] = new pIndexIntancia();
             }
 
-
             //resultadoImagem = larguraRedimensionar;
 
             var array32Horizontal1 = this.RetornarArrayInt32(largura);
@@ -205,8 +204,6 @@ namespace Snebur.Imagens
 
             larguraOriginal = 0;
             coficienteInterpolacao = alturaNova;
-
-
 
             for (i = 0; i < coficienteInterpolacao && i < alturaOriginal; i++)
             {
@@ -352,7 +349,6 @@ namespace Snebur.Imagens
                 arrayPIndex[i] = new pIndexIntancia();
             }
 
-
             //resultadoImagem = larguraRedimensionar;
 
             var array32Horizontal1 = this.RetornarArrayInt32(largura);
@@ -420,7 +416,6 @@ namespace Snebur.Imagens
             //y && 
             larguraOrigem = array32Vertical_3[0];
 
-
             for (i = larguraRedimensionada_3x = alturaOrigem = 0; i < altura; i++)
             {
                 alturaNova = array32Vertical_3[(int)larguraRedimensionada_3x];
@@ -465,7 +460,6 @@ namespace Snebur.Imagens
             }
 
             //this.ColorVerticalInterpolate8(array3x, arrayPIndex, arrayFinal, array32Vertical_1, array32Vertical_2, array32_duplo_vertical, alturaOriginal, alturaRedimensionar, larguraRedimensionar, 3);
-
 
             return resultado;
         }
@@ -534,14 +528,12 @@ namespace Snebur.Imagens
                     s += 2;
                 }
 
-
                 bytes_2[q + 2] = this.ParseByte(Math.Max(0, Math.Min(255, n / fg)));
                 bytes_2[q + 1] = this.ParseByte(Math.Max(0, Math.Min(255, l / fg)));
                 bytes_2[q] = this.ParseByte(Math.Max(0, Math.Min(255, o / fg)));
                 q += coficiente;
             }
         }
-
 
         private void SetPixelsData(double a, int c, int b, int d, bool f, double e, EnumTipoInterpolacao tipoInterpolacao, double coficienteInterpolacao,
             int[] j, int[] k, int[] m, int[] n, int l)
@@ -565,7 +557,6 @@ namespace Snebur.Imagens
 
             r = a / d;
             t = 1 <= r ? coficienteInterpolacao : coficienteInterpolacao / r; coficienteInterpolacao = 0;
-
 
             switch (tipoInterpolacao)
             {
@@ -684,7 +675,6 @@ namespace Snebur.Imagens
                 y++;
             }
         }
-
 
         private double TriangleWeight(double a)
         {
@@ -862,7 +852,6 @@ namespace Snebur.Imagens
                     d += 3;
                 }
             }
-
 
             else if ("LEFT_TOP" == _perspective)
             {

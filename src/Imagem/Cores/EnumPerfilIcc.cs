@@ -7,7 +7,6 @@ using System.Text;
 namespace Snebur.Imagens
 {
 
-
     public enum EnumPerfilIcc
     {
         [Description("sRGB")]
