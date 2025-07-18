@@ -28,7 +28,6 @@ namespace Snebur.AcessoDados
 
         ResultadoDeletar Deletar(IEnumerable<IEntidade> entidades);
 
-
         //ResultadoSalvar Salvar(params IEntidade[] entidades);
 
         //ResultadoSalvar Salvar(params Entidade[] entidades);

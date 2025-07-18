@@ -10,7 +10,6 @@ namespace Snebur.AcessoDados
         private string _caminhoPropriedade;
         private EnumSentidoOrdenacao _sentidoOrdenacaoEnum;
 
-
         #endregion
 
         public string CaminhoPropriedade { get => this.RetornarValorPropriedade(this._caminhoPropriedade); set => this.NotificarValorPropriedadeAlterada(this._caminhoPropriedade, this._caminhoPropriedade = value); }

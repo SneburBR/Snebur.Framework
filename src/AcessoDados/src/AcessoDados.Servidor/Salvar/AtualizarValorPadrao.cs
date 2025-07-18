@@ -146,8 +146,6 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                     }
                     break;
 
-
-
                 case EnumTipoValorPadrao.Comum:
                     break;
                 case EnumTipoValorPadrao.IndentificadorProprietario:
@@ -179,7 +177,6 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                         throw new Erro($"Não é possível converter  identificador do proprietário {identificadorProprietario} para {propriedade.PropertyType.Name}", ex);
                     }
 
-
                 case EnumTipoValorPadrao.SessaoUsuario_Id:
 
                     contexto.SqlSuporte.ValidarSuporteSessaoUsuario();
@@ -203,7 +200,6 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                         }
                     }
                     return contexto.UsuarioLogado.Id;
-
 
                 case EnumTipoValorPadrao.Nenhum:
 

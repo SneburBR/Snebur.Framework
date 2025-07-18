@@ -92,7 +92,6 @@ namespace Snebur.AcessoDados
                     }
                     comandos.Add(sql.RemoverQuebraLinhas(true));
 
-
                     Trace.WriteLine("--  INICIO COMANDOS: " + DateTime.Now);
                     foreach (var comando in comandos.ToList())
                     {
@@ -100,7 +99,6 @@ namespace Snebur.AcessoDados
                         Trace.WriteLine(comandoFormatado);
                     }
                     Trace.WriteLine("-- FIM");
-
 
                 }
             }

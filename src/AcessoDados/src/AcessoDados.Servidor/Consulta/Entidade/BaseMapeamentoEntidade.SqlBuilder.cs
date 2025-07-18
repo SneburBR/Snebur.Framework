@@ -9,7 +9,6 @@ namespace Snebur.AcessoDados.Mapeamento
     internal abstract partial class BaseMapeamentoEntidade : IDisposable
     {
 
-
         protected string MontarSql(BaseFiltroMapeamento filtroMapeamento,
                                    string sqlCampos,
                                    bool isIncluirOrdenacaoPaginacao)

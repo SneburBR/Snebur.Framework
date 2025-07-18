@@ -62,7 +62,6 @@ namespace Snebur.AcessoDados.Estrutura
         }
         #endregion
 
-
         internal Type RetornarTipoConsultaImplementaInterface<TIInterface>(bool ignorarNaoEncontrado = false)
         {
             var tipoInterface = typeof(TIInterface);
@@ -97,7 +96,6 @@ namespace Snebur.AcessoDados.Estrutura
             }
             return tiposInterface.Single();
         }
-
 
         #region Métodos internos
 
@@ -142,7 +140,6 @@ namespace Snebur.AcessoDados.Estrutura
 
                 this.MontarEstuturasEntidades(tipoContexto, sqlSuporte);
                 this.AssociarEstruturasEntidades();
-
 
                 if (DebugUtil.IsAttached)
                 {

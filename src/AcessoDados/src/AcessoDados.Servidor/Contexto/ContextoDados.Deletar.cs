@@ -144,7 +144,6 @@ namespace Snebur.AcessoDados
             }
             return retorno;
 
-
         }
         private HashSet<Entidade> RetornarTodasEntidades(Entidade entidadeRecuperada)
         {
@@ -173,7 +172,6 @@ namespace Snebur.AcessoDados
             }
             return retorno;
         }
-
 
         //private List<Entidade> RetornarEntidadesDeletarEmCascataObsoleto(IEnumerable<Entidade> entidades, string relacoesEmCascata)
         //{
@@ -230,7 +228,6 @@ namespace Snebur.AcessoDados
 
         //                        }
         //                    }
-
 
         //                }
 
@@ -304,7 +301,6 @@ namespace Snebur.AcessoDados
         //    }
 
         //}
-
 
     }
 }

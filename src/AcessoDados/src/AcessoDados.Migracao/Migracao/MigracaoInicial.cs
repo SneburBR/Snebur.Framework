@@ -1,14 +1,20 @@
-﻿using global::Snebur.Dominio;
+﻿using Snebur.Dominio;
 using Snebur.BancoDados;
 using Snebur.Dominio.Atributos;
 using Snebur.Utilidade;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data.SqlClient;
+
 using System.IO;
 using System.Linq;
 using System.Reflection;
 
+#if NET9_0_OR_GREATER
+using Microsoft.Data.SqlClient;
+#endif
+#if NET48
+using System.Data.SqlClient;
+#endif
 
 namespace Snebur.Migracao
 {
@@ -19,7 +25,6 @@ namespace Snebur.Migracao
 
         //public const string CAMINHO_BANCO_DADOS = @"C:\Program Files\Microsoft SQL Server\MSSQL13.SQLEXPRESS\MSSQL\DATA\";
         //public const string CAMINHO_BANCO_DADOS = @"C:\Program Files\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\DATA\";
-
 
         public static List<string> RetonarSqls(Assembly assemblyEntidades, string nomeFonteDados)
         {
@@ -37,6 +42,7 @@ namespace Snebur.Migracao
             gruposArquivos.AddRange(gruosArquivoDados);
             gruposArquivos.AddRange(gruosArquivoIndioces);
 
+          
 
             var construtor = new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings[nomeFonteDados].ConnectionString);
             var nomeBancoDados = construtor.InitialCatalog;
@@ -46,7 +52,6 @@ namespace Snebur.Migracao
                 sqls.AddRange(MigracaoInicial.RetornarSqlsAdicioanarFileGroup(nomeFonteDados, nomeBancoDados, nomeGrupoArquivo));
             }
             return sqls;
-
 
         }
         private static List<string> RetornarSqlsAdicioanarFileGroup(string nomeFonteDados, string nomeBancoDados, string nomeGrupoArquivo)
@@ -88,7 +93,6 @@ namespace Snebur.Migracao
             var nomeBancoDados = construtor.InitialCatalog;
             construtor.InitialCatalog = "master";
             var conectionStringMaster = construtor.ToString();
-
 
             var sql = $"SELECT TOP 1 DB.name As NomeBancoDados, F.physical_name  As CaminhoBanco FROM sys.databases DB JOIN sys.master_files F ON DB.database_id=F.database_id WHERE DB.name = '{nomeBancoDados}' OR DB.name = 'master' ";
             var conexao = new Conexao(conectionStringMaster);

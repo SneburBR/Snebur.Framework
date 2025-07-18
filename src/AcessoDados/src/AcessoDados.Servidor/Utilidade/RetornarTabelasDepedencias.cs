@@ -21,7 +21,6 @@
 //            this.TodasEstruturasEntidade = EstruturaBancoDados.Atual.EstruturasEntidade.Values.ToHashSet();
 //        }
 
-
 //        private List<Type> RetornarDepedenciasOrdernadasInterno()
 //        {
 //            while (this.TodasEstruturasEntidade.Count > 0)
@@ -49,7 +48,6 @@
 //        {
 //            var estruturaRelacoes = estruturaEntidade.EstruturasRelacoes.Values.OfType<EstruturaRelacaoChaveEstrangeira>().ToList();
 //            estruturaRelacoes.Except(estruturaRelacoes.Where(x => x.Propriedade.GetCustomAttribute<ChaveEstrangeiraRelacaoUmUmAttribute>() != null)).ToList();
-
 
 //            var estruturaChaveEstrangeirasDepedente = estruturaRelacoes.Where(x => !this.EstruturasEncontradas.Contains(x.EstruturaEntidadeChaveEstrangeiraDeclarada)).ToList();
 //            var isRelacaoDepedenteChaveEstrangeira = (estruturaRelacoes.Count > 0 && estruturaChaveEstrangeirasDepedente.Count > 0);

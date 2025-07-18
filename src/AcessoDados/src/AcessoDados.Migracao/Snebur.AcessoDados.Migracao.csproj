@@ -1,24 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net48</TargetFrameworks>
+		<TargetFrameworks>net9.0; net48</TargetFrameworks>
 		<RootNamespace>Snebur.AcessoDados.Migracao</RootNamespace>
-		<Version>2.0.0</Version>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<Nullable>disable</Nullable>
 		<AssemblyName>Snebur.AcessoDados.Migracao</AssemblyName>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<DefineConstants>DEBUG;TRACE</DefineConstants>
-		<WarningLevel>4</WarningLevel>
-		<NoWarn>1701;1702</NoWarn>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<DefineConstants>TRACE</DefineConstants>
-	</PropertyGroup>
- 
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net48' ">
 
@@ -29,20 +18,17 @@
 		<Reference Include="System.ComponentModel.DataAnnotations" />
 		<Reference Include="System.Data.Entity" />
 		<Reference Include="Microsoft.CSharp" />
+		
+		<PackageReference Include="EntityFramework" Version="6.4.4" />
+	</ItemGroup>
+	 
+	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.7" />
+	</ItemGroup>
 
-	</ItemGroup>
-	   
 	<ItemGroup>
-	  <None Remove="packages.config" />
-	  <None Remove="Snebur.AcessoDados.Migracao.csproj.vspscc" />
+		<ProjectReference Include="..\..\..\Core\Snebur.csproj" />
 	</ItemGroup>
-	  
-	<ItemGroup>
-	  <PackageReference Include="EntityFramework" Version="6.4.4" />
-	</ItemGroup>
-	  
-	<ItemGroup>
-	  <ProjectReference Include="..\..\..\Core\Snebur.csproj" />
-	</ItemGroup>
-	  
+
 </Project>

@@ -17,7 +17,6 @@
 //            SalvarPropriedades(contexto, entidade, expressaoPropriedad);
 //        }
 
-
 //        public static void SalvarPropriedades<TEntidade>(this IContextoDados contexto,
 //                                                          TEntidade entidade,
 //                                                          params Expression<Func<TEntidade, object>>[] expressoesPropriedade) where TEntidade : Entidade
@@ -40,8 +39,6 @@
 //            contexto.Salvar(clone);
 //        }
 
-
-
 //        public static void RecuperarPropriedade<TEntidade>(this IContextoDados contexto,
 //                                                          TEntidade entidade,
 //                                                          Expression<Func<TEntidade, object>> expressaoPropriedade) where TEntidade : Entidade
@@ -59,8 +56,6 @@
 //                                  entidades,
 //                                  expressaoPropriedade);
 //        }
-
-
 
 //        public static void RecuperarPropriedades<TEntidade>(this IContextoDados contexto,
 //                                                            TEntidade entidade,

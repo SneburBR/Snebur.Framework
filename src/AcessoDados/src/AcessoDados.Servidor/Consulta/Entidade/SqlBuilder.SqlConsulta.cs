@@ -72,7 +72,6 @@ namespace Snebur.AcessoDados.Mapeamento
                 }
             }
 
-
             if (!(filtroMapeamento is FiltroMapeamentoIds) || isRelacaoFilhos)
             {
                 if (!this.EstruturaConsulta.IsIncluirDeletados &&
@@ -269,7 +268,6 @@ namespace Snebur.AcessoDados.Mapeamento
             return String.Empty;
 
         }
-
 
     }
 }

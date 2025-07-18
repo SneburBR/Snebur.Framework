@@ -78,8 +78,6 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                                                             Where(x => propriedadesAlterada.Keys.Contains(x.Key)).
                                                             Select(x => x.Value).ToList();
 
-
-
             var estruturasCamposSomenteLeitura = estruturasCamposAlterados.Where(x => x.OpcoesSomenteLeitura.IsSomenteLeitura).ToList();
 
             if (estruturasCamposSomenteLeitura.Count > 0)

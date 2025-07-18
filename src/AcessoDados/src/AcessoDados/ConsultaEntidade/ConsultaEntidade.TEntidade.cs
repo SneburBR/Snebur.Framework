@@ -64,7 +64,6 @@ namespace Snebur.AcessoDados
             return lista;
         }
 
-
         public TEntidade Single()
         {
             this.EstruturaConsulta.Take = 2;
@@ -116,7 +115,6 @@ namespace Snebur.AcessoDados
             return this;
         }
          
-
 
         //public TEntidade RetornarPorId(long id)
         //{

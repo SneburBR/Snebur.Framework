@@ -74,7 +74,6 @@ namespace Snebur.AcessoDados
 
         bool IContextoDadosSeguranca.IsContextoInicializado { get => this.IsContextoInicializado; }
 
-
         #endregion
     }
 }

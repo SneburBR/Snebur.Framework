@@ -79,7 +79,6 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                 return EnumTipoAlteracao.Delete;
             }
 
-
             if (!estruturaEntidade.IsEntity )
             {
                 if (entidade.Id == 0)
@@ -92,7 +91,6 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             
             return (entidade.Id == 0) ? EnumTipoAlteracao.Insert : EnumTipoAlteracao.Update;
         }
-
 
         private void AtualizarValorEntidadeDeletada()
         {
@@ -171,7 +169,6 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                         break;
 
                     case EnumTipoAlteracao.Update:
-
 
                         var comandoUpdate = new ComandoUpdate(this, estruturaEntidade);
                         if (comandoUpdate.ExisteAtualizacao)
@@ -297,7 +294,6 @@ namespace Snebur.AcessoDados.Servidor.Salvar
         {
             return String.Format("{0} - {1}", base.ToString(), this.Entidade.ToString());
         }
-
 
         internal void SetId(long id)
         {

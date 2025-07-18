@@ -119,7 +119,6 @@ namespace Snebur.AcessoDados.Mapeamento
                 filtro.Lista.Add(this.RetornarValorPadraoListaVazia(tipoPrimarioEnum));
             }
 
-
             var listaString = String.Join(", ", this.RetornarValoresFiltroIn(tipoPrimarioEnum, filtro.Lista));
             return $" {caminhoCampoFiltro} IN ( {listaString} ) ";
         }
@@ -164,8 +163,6 @@ namespace Snebur.AcessoDados.Mapeamento
             var estruturaCampo = estruturaCampoApelidoPropriedade.EstruturaCampo;
             var operadorFiltroPropriedade = this.RetornarOperadorFiltroPropriedade(filtroPropriedade);
 
-
-
             if (filtroPropriedade.Valor == null)
             {
                 var valorPropriedade = this.RetornarValorPropriedadeFiltro(filtroPropriedade);
@@ -177,12 +174,9 @@ namespace Snebur.AcessoDados.Mapeamento
             else
             {
 
-
                 this.ContadorParametro += 1;
                 var nomeParametro = $"{estruturaCampo.NomeParametro}{this.ContadorParametro}";
                 var valorPropriedadeTipado = this.RetornarValorPropriedadeTipado(filtroPropriedade, estruturaCampo);
-
-
 
                 if (estruturaCampo.IsPossuiIndiceTextoCompleto &&
                     this.IsOperadorTextoPesquisa(filtroPropriedade.Operador))
@@ -312,7 +306,6 @@ namespace Snebur.AcessoDados.Mapeamento
 
                 }
 
-
             }
             switch (filtroPropriedade.TipoPrimarioEnum)
             {
@@ -360,7 +353,6 @@ namespace Snebur.AcessoDados.Mapeamento
             }
         }
 
-
         private object RetornarValorPropriedadeTipado(FiltroPropriedade filtroPropriedade, Estrutura.EstruturaCampo estruturaCampo)
         {
             if (filtroPropriedade.TipoPrimarioEnum == EnumTipoPrimario.String && filtroPropriedade.Valor != null)
@@ -378,7 +370,6 @@ namespace Snebur.AcessoDados.Mapeamento
             }
 
         }
-
 
         private string RetornarValorPropriedadeFiltro(FiltroPropriedade filtroPropriedade)
         {
@@ -460,7 +451,6 @@ namespace Snebur.AcessoDados.Mapeamento
                     throw new ErroNaoSuportado("Operador para string não é suportado");
             }
         }
-
 
         private string RetornarValorPropriedaeFiltroString(FiltroPropriedade filtroPropriedade)
         {

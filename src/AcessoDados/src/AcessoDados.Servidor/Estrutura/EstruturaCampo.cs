@@ -25,7 +25,6 @@ namespace Snebur.AcessoDados.Estrutura
             }
         }
 
-
         internal EnumTipoPrimario TipoPrimarioEnum { get; }
         internal DateTimeKind? DateTimeKind { get; set; }
         internal SqlDbType TipoSql { get; }
@@ -62,7 +61,6 @@ namespace Snebur.AcessoDados.Estrutura
 
             this.NomeParametro = String.Format("@{0}", this.NomeCampo);
             //this.NomeParametroValor = String.Format("@{0}", this.NomeCampo);
-
 
             this.NomeCampoSensivel = this.RetornarNomeCampoSensivel();
         }

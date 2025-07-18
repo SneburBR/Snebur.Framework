@@ -1,20 +1,20 @@
-﻿using System.Data.Entity.Migrations;
+﻿//using System.Data.Entity.Migrations;
 
-namespace Snebur.AcessoDados.Migracao
-{
-    public class MigrationsConfiguration<TContexto> : DbMigrationsConfiguration<TContexto>
-        where TContexto : BaseContextoEntity
-    {
+//namespace Snebur.AcessoDados.Migracao
+//{
+//    public class MigrationsConfiguration<TContexto> : DbMigrationsConfiguration<TContexto>
+//        where TContexto : BaseContextoEntity
+//    {
 
-        public MigrationsConfiguration() : base()
-        {
-            this.AutomaticMigrationsEnabled = false;
-            this.AutomaticMigrationsEnabled = false;
-        }
+//        public MigrationsConfiguration() : base()
+//        {
+//            this.AutomaticMigrationsEnabled = false;
+//            this.AutomaticMigrationsEnabled = false;
+//        }
 
-        protected override void Seed(TContexto contexto)
-        {
-            base.Seed(contexto);
-        }
-    }
-}
+//        protected override void Seed(TContexto contexto)
+//        {
+//            base.Seed(contexto);
+//        }
+//    }
+//}

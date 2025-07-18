@@ -94,7 +94,6 @@ namespace Snebur.AcessoDados
             }
         }
 
-
         public CredencialUsuario CredencialAvalista
         {
             get => this._credencialAvalista;
@@ -116,7 +115,6 @@ namespace Snebur.AcessoDados
         internal bool IsInterceptar { get; set; } = true;
 
         #endregion
-
 
         #region Construtor
 
@@ -220,7 +218,6 @@ namespace Snebur.AcessoDados
             //ContextoDados.InicializarScopo(this);
             //this.CredencialUsuario = credencial;
 
-
             if (this.SqlSuporte.IsSessaoUsuario)
             {
                 this.CacheSessaoUsuario = this.RetornarCacheSessaoUsuario(this, credencial, identificadorSessaoUsario, informacaoSessaoUsuario);
@@ -312,7 +309,6 @@ namespace Snebur.AcessoDados
             throw new InvalidOperationException("O banco de dados não suporta sessão de usuário");
         }
 
-
         #endregion
 
         #region BaseServico 
@@ -349,7 +345,6 @@ namespace Snebur.AcessoDados
                 return mapeamento.RetornarValorScalar();
             }
         }
-
 
         #region Consulta
 
@@ -484,7 +479,6 @@ namespace Snebur.AcessoDados
 
         #region Públicos
 
-
         public string RetornarSql(IConsultaEntidade consulta)
         {
             return this.RetornarSql(consulta.RetornarEstruturaConsulta());
@@ -596,7 +590,6 @@ namespace Snebur.AcessoDados
                 return resultado as ResultadoSalvar;
             }
         }
-
 
         public virtual void NotificarSessaoUsuarioAtiva(IUsuario usuario,
                                                         ISessaoUsuario sessaoUsuario)
@@ -831,7 +824,6 @@ namespace Snebur.AcessoDados
         }
 
         #region
-
 
         #endregion
 

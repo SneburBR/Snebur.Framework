@@ -204,7 +204,6 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                     entidadeAlterada.Comandos = entidadeAlterada.RetornarCommandos();
                 }
 
-
                 while (fila.Count > 0)
                 {
                     var entidadeAlterada = fila.Dequeue();
@@ -288,7 +287,6 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                     case ComandoInsertOrUpdate comandoInsertOrUpdate:
 
                         return cmd.ExecuteNonQuery();
-
 
                     case ComandoUpdate comandoUpdate:
                     case ComandoDelete comandoDelete:
@@ -512,8 +510,6 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             }
             return entidades;
         }
-
-
 
         #endregion
 

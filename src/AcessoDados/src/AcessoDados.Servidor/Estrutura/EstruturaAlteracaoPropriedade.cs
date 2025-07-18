@@ -62,7 +62,6 @@ namespace Snebur.AcessoDados.Estrutura
                                                    atributo)
         {
 
-
         }
 
         internal EstruturaAlteracaoPropriedade(PropertyInfo propriedade,
@@ -88,7 +87,6 @@ namespace Snebur.AcessoDados.Estrutura
                                                           estruturaCampo,
                                                           atributo)
         {
-
 
         }
 

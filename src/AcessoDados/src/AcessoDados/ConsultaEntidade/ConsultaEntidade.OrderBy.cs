@@ -16,7 +16,6 @@ namespace Snebur.AcessoDados
             return this.Ordernar(this.EstruturaConsulta, expressaoCaminhoPropriedade, EnumSentidoOrdenacao.Crescente);
         }
 
-
         public ConsultaEntidade<TEntidade> OrderByDescending(Expression<Func<TEntidade, object>> expressaoCaminhoPropriedade)
         {
             return this.Ordernar(this.EstruturaConsulta, expressaoCaminhoPropriedade, EnumSentidoOrdenacao.Decrescente);

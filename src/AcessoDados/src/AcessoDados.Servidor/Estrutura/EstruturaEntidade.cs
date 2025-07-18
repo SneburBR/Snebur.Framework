@@ -153,7 +153,6 @@ namespace Snebur.AcessoDados.Estrutura
             this.NomeTipoEntidade = tipo.Name;
             this.SqlSuporte = sqlSuporte;
 
-
             this.IsAbstrata = tipo.IsAbstract || ReflexaoUtil.IsTipoPossuiAtributo(tipo, typeof(AbstratoAttribute));
             this.InterfacesImplementasEnum = this.RetornarInterfacesEntidade();
             //this.IsImplementaInterfaceIDeletado = ReflexaoUtil.TipoImplementaInterface(tipo, typeof(IDeletado), false);
@@ -315,7 +314,6 @@ namespace Snebur.AcessoDados.Estrutura
                                          Func<EstruturaEntidade, T> funcRetornarEstruturaCampo) where T : class
         {
 
-
             return LazyUtil.RetornarValorLazy(ref _valor,
                 () =>
                 {
@@ -362,7 +360,6 @@ namespace Snebur.AcessoDados.Estrutura
                     return valores.ToArray();
                 });
         }
-
 
         private TEstruturaRelacao[] RetornarTodasEstruturasRelacaoRecursiva<TEstruturaRelacao>(ref TEstruturaRelacao[] valor)
         {
@@ -727,7 +724,6 @@ namespace Snebur.AcessoDados.Estrutura
             return this.EstruturasCampos.Values.Where(x => ReflexaoUtil.IsPropriedadePossuiAtributo(x.Propriedade, typeof(ValorPadraoIDUsuarioLogadoAttribute))).SingleOrDefault();
         }
 
-
         /// <summary>
         /// Campos computado, são campos se terão alterações quando uma nova entidade for salvar, essa computação será realizada pelo banco de dados
         /// Ex, ValorPadraoDataHoraServidor, IOrdenacao
@@ -740,7 +736,6 @@ namespace Snebur.AcessoDados.Estrutura
 
             var entiadeImplementaOrdenacao = ReflexaoUtil.IsTipoImplementaInterface(this.TipoEntidade, tipoIOrdenacao, true);
             var nomeProprieadeOrdenacao = ReflexaoUtil.RetornarNomePropriedade<IOrdenacao>(x => x.Ordenacao);
-
 
             foreach (var estruturaCampo in this.EstruturasCampos.Values)
             {
@@ -943,6 +938,5 @@ namespace Snebur.AcessoDados.Estrutura
             return Math.Min(take, this.MaximoRegistroPorConsulta);
         }
     }
-
 
 }

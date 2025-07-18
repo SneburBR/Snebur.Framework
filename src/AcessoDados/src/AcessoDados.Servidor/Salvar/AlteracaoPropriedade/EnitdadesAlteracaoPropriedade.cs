@@ -68,8 +68,5 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             return ultimaAlteracao;
         }
 
-
-
-
     }
 }

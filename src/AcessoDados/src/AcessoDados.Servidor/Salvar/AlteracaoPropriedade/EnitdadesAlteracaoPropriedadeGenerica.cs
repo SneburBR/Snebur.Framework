@@ -116,7 +116,6 @@ namespace Snebur.AcessoDados.Servidor.Salvar
         //        entidade.__PropriedadesAlteradas.Count > 0)
         //    {
 
-
         //        if (estruturaAlteracaoPropriedadeGenerica.IsTipoComplexo)
         //        {
 

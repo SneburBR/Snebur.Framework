@@ -1,5 +1,4 @@
 ﻿
-
 namespace Snebur.AcessoDados
 {
     //public interface IAplicacaoContextoDados

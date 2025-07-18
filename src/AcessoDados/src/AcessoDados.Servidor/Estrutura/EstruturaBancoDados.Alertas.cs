@@ -231,7 +231,6 @@ namespace Snebur.AcessoDados.Estrutura
             }
         }
 
-
         private void AnalisarNotificacaoPropriedadesAlteradas()
         {
             foreach (var estruturaEntidade in this.EstruturasEntidade.Values)

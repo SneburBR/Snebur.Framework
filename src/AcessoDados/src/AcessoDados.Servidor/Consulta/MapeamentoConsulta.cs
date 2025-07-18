@@ -120,7 +120,6 @@ namespace Snebur.AcessoDados.Mapeamento
                         }
                     }
 
-
                     foreach (var grupo in grupos)
                     {
                         var estruturaTipoEntidade = this.EstruturaBancoDados.RetornarEstruturaEntidade(grupo.NomeTipoEntidade, false);

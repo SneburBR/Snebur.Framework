@@ -104,7 +104,6 @@ namespace Snebur.AcessoDados.Mapeamento
             return entidades;
         }
 
-
         internal static object RetornarValorConvertido(object valorDB,
                                                        EstruturaColuna estruturaColuna)
         {

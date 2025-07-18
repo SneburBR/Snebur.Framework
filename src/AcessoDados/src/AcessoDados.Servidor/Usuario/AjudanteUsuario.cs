@@ -48,7 +48,6 @@ namespace Snebur.AcessoDados
 
             private Type TipoIpInformacao { get; set; }
 
-
             private List<IUsuario> Usuarios { get; set; }
             internal IUsuario UsuarioAnonimo { get; }
 
@@ -120,7 +119,6 @@ namespace Snebur.AcessoDados
 
             }
 
-
             internal IUsuario RetornarUsuario(BaseContextoDados contexto,
                                               Credencial credencial)
             {
@@ -169,7 +167,6 @@ namespace Snebur.AcessoDados
                          AbrirPropriedade(x => x.Usuario_Id).
                          //AbrirPropriedade(x => x.DataHoraInicio).
                          AbrirPropriedade(x => x.DataHoraUltimoAcesso);
-
 
                 //consulta.AbrirRelacao(x => x.Usuario);
                 //var consulta = this.Contexto.RetornarEstruturaConsulta(this.TipoSessaoUsuario);
@@ -234,7 +231,6 @@ namespace Snebur.AcessoDados
                         return false;
                     }
 
-
                     var usuarioSessao = contexto.RetornarConsulta<IUsuario>(this.TipoUsuario).
                                                  Where(x => x.Id == sessaoUsuario.Usuario_Id).
                                                  AbrirPropriedade(x => x.Nome).
@@ -249,7 +245,6 @@ namespace Snebur.AcessoDados
                     return true;
                 }
                 return false;
-
 
             }
 
@@ -366,7 +361,6 @@ namespace Snebur.AcessoDados
                         $"e não possui informações suficiente para inicializar uma nova sessão ");
                 }
 
-
                 var ipInformacao = this.RetornarIpInformacao(contexto);
 
                 sessaoUsuario.Usuario = usuario;
@@ -376,7 +370,6 @@ namespace Snebur.AcessoDados
                 sessaoUsuario.IdentificadorProprietario = contexto.IdentificadorProprietario;
                 sessaoUsuario.IPInformacao = ipInformacao;
                 sessaoUsuario.IP = ipInformacao.IP;
-
 
                 (contexto as IContextoDadosSemNotificar).SalvarInternoSemNotificacao((Entidade)sessaoUsuario);
                 return sessaoUsuario;

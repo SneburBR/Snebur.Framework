@@ -13,7 +13,6 @@ namespace Snebur.AcessoDados.Manutencao
         protected BaseContextoDados Contexto { get; }
         private BaseConexao Conexao { get; }
 
-
         internal protected virtual int Prioridade { get; } = 0;
         internal protected HistoricoMigracao HistoricoMigracao { get; internal set; }
 
@@ -91,8 +90,6 @@ namespace Snebur.AcessoDados.Manutencao
         {
             this.Contexto = contexto;
         }
-
-
 
     }
 

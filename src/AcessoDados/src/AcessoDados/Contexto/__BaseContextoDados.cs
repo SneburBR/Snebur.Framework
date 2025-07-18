@@ -109,7 +109,6 @@ namespace Snebur.AcessoDados
 
         public abstract ResultadoConsulta RetornarResultadoConsulta(EstruturaConsulta estruturaConsulta);
 
-
         #endregion
 
         #region IContextoDados
@@ -157,7 +156,6 @@ namespace Snebur.AcessoDados
 
         }
 
-
         #endregion
 
         public override string ToString()
@@ -166,6 +164,5 @@ namespace Snebur.AcessoDados
         }
 
     }
-
 
 }

@@ -49,8 +49,6 @@ namespace Snebur.AcessoDados
             return this;
         }
 
-
-
         public ConsultaEntidade<TEntidade> AbrirRelacoes(params string[] caminhosPropriedade)
         {
             foreach (var caminhoPropriedade in caminhosPropriedade)
@@ -86,8 +84,6 @@ namespace Snebur.AcessoDados
             var propriedades = ReflexaoUtil.RetornarPropriedadesCaminho(tipoEntidadeConsulta, caminhoPropriedade);
             return this.AbrirRelacao(estruturaConsulta, propriedades, filtro);
         }
-
-
 
         private ConsultaEntidade<TEntidade> AbrirRelacao(EstruturaConsulta estruturaConsulta,
                                                          List<PropertyInfo> propriedades,
@@ -248,7 +244,6 @@ namespace Snebur.AcessoDados
             {
                 var tipos = new Type[] { propriedade .DeclaringType,
                                          mapemaneto.Propriedade.DeclaringType };
-
 
                 var mensagem = $"Ambiguidade no caminho '{caminhoPropriedadeCompleto}' para abrir relação.\r\n" +
                                $"Tipos  {String.Join(", ", tipos.Select(x => x.Name))} com mesmo caminho.\r\n" +

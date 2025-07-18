@@ -43,7 +43,6 @@ namespace Snebur.AcessoDados
             }
         }
 
-
         private void PopularBancoInterno()
         {
             lock (BaseContextoDados.__bloqueioPoularBanco)

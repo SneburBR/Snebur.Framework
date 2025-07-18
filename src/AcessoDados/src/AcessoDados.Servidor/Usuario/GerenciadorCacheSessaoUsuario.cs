@@ -63,8 +63,6 @@ namespace Snebur.AcessoDados
             throw new Erro($"O identificador sessão do usuário não foi encontrado{identificadorSessaoUsuario} em {nameof(CacheSessaoUsuario)}");
         }
 
-
-
         private CacheSessaoUsuario RetornarCacheSessaoUsuarioInterno(BaseContextoDados contexto,
                                                                       Credencial credencial,
                                                                       Guid identificadorSessaoUsuario,

@@ -80,12 +80,10 @@ namespace Snebur.AcessoDados
             return resultadoSalvar;
         }
 
-
         public override ResultadoDeletar Deletar(IEntidade entidade)
         {
             return this.Deletar(new List<IEntidade> { entidade });
         }
-
 
         public override ResultadoDeletar Deletar(IEnumerable<IEntidade> entidades)
         {
@@ -97,12 +95,10 @@ namespace Snebur.AcessoDados
             return this.Deletar(new List<IEntidade> { entidade }, String.Empty);
         }
 
-
         public override ResultadoDeletar Deletar(IEnumerable<IEntidade> entidades, string relacoesEmCascata)
         {
             return this.ServicoDados.Deletar(entidades, relacoesEmCascata);
         }
-
 
         #endregion
 

@@ -27,7 +27,6 @@ namespace Snebur.AcessoDados
                 return _ajudanteSessaoUsuario;
             }
 
-
         }
 
         public static void FinalizarSessaoUsuario(Guid identificadorSessaoUsuario)

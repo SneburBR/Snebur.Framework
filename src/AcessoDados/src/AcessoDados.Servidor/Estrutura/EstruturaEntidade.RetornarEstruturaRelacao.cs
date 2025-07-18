@@ -8,7 +8,6 @@ namespace Snebur.AcessoDados.Estrutura
     internal partial class EstruturaEntidade
     {
 
-
         internal EstruturaRelacao RetornarEstruturaRelacao(string chave,
                                                            bool incluirEstruuraBase = true,
                                                            bool ignorarErro = false)
@@ -98,8 +97,6 @@ namespace Snebur.AcessoDados.Estrutura
                     }
                     if (estruturasRelacaoEncontradas.Count > 1)
                     {
-
-
 
                         throw new Erro(String.Format("Foram encotrados {0}  relações '{1}' nas classes especializadas de  {1}", estruturasRelacaoEncontradas.Count,
                                                                                                                                                         chave, this.TipoEntidade.Name));

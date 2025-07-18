@@ -27,7 +27,6 @@ namespace Snebur.AcessoDados
             return SalvarPropriedades(contexto, entidades, expressaoProprieda);
         }
 
-
         public static ResultadoSalvar SalvarPropriedades<TEntidade>(this IContextoDados contexto,
                                                                     TEntidade entidade,
                                                                     params Expression<Func<TEntidade, object>>[] expressoesPropriedade) where TEntidade : Entidade
@@ -111,7 +110,6 @@ namespace Snebur.AcessoDados
                 }
             }
 
-
             var resultado = contexto.Salvar(entidadesSalvar);
             if (resultado.IsSucesso)
             {
@@ -124,7 +122,6 @@ namespace Snebur.AcessoDados
         }
 
         
-
 
         public static void RecuperarPropriedade<TEntidade>(this IContextoDados contexto,
                                                           TEntidade entidade,
@@ -143,8 +140,6 @@ namespace Snebur.AcessoDados
                                   entidades,
                                   expressaoPropriedade);
         }
-
-
 
         public static void RecuperarPropriedades<TEntidade>(this IContextoDados contexto,
                                                             TEntidade entidade,
@@ -217,7 +212,6 @@ namespace Snebur.AcessoDados
                 entidade.__PropriedadesAbertas.Add(nomePropriedade);
             }
         }
-
 
         public static void AbrirRelacoes<TEntidade, TRelacao>(this IContextoDados contexto,
                                                              IEnumerable<TEntidade> entidades,

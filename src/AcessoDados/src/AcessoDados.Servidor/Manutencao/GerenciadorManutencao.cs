@@ -149,8 +149,6 @@ namespace Snebur.AcessoDados.Manutencao
                                            x.Prioridade == manutencao.Prioridade).SingleOrDefault();
         }
 
-
-
         private List<BaseManutencao> RetornarManutencoes(HistoricoMigracao historico)
         {
             var manutencoes = new List<BaseManutencao>();
@@ -201,7 +199,6 @@ namespace Snebur.AcessoDados.Manutencao
                     Value = historico.MigrationId
                 }
             };
-
 
             using (var cmdCampo = this.Conexao.RetornarNovoComando(SQL_NOTIFICAR_MANUTENCAO_SNEBUR_FINALIZADA, parametros, conexao))
             {

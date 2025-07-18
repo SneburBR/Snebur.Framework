@@ -72,7 +72,6 @@ namespace Snebur.AcessoDados.Ajudantes
             return AjudanteConsultaEntidade.RetornarTipoListaEntidade(propriedade.PropertyType);
         }
 
-
         #endregion
 
         #region Metodos Privados

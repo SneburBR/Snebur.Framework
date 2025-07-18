@@ -40,7 +40,6 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             sb.Append(" VALUES ");
             sb.AppendLine($"( {String.Join(",", camposParametros)} ); ");
 
-
             if (this.IsRecuperarUltimoId)
             {
                 sb.Append("SELECT  SCOPE_IDENTITY();");

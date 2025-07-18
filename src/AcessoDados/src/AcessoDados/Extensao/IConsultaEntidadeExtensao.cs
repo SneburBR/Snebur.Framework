@@ -147,7 +147,6 @@ namespace Snebur.AcessoDados
 
         #region Min
 
-
         public static Task<int> Min<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, int>> propriedade) where TEntidade : IEntidade
         {
             return Task.Factory.StartNew<int>(() =>

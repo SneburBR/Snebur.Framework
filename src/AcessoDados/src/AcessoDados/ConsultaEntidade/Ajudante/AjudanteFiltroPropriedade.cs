@@ -61,7 +61,6 @@ namespace Snebur.AcessoDados.Ajudantes
             }
             //propriedade = AjudanteFiltroPropriedade.NormalizarPropriedadeEspecializada(propriedade);
 
-
             if (propriedade.PropertyType.IsSubclassOf(typeof(Entidade)))
             {
                 if (valorPropriedade is Entidade && !valorPropriedade.GetType().IsTipoIguaOuHerda(propriedade.PropertyType))
@@ -103,7 +102,6 @@ namespace Snebur.AcessoDados.Ajudantes
         //    }
         //    return propriedade;
         //}
-
 
         private static EnumTipoPrimario RetornarTipoPropriedade(Type tipo)
         {
