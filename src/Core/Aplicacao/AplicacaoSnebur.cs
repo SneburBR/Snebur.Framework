@@ -10,7 +10,6 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 
 using System.Globalization;
-using System.Net;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Threading;

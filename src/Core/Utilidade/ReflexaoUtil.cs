@@ -75,6 +75,24 @@ namespace Snebur.Utilidade
             }
             return constantes;
         }
+
+        public static Type RetornarTipoItemColecao(Type tipo)
+        {
+            if (tipo.IsArray)
+            {
+                return tipo.GetElementType();
+            }
+            var tipoIEnumerableGenerico = tipo.GetInterfaces()
+                    .FirstOrDefault(i =>
+                    i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>));
+
+            if (tipoIEnumerableGenerico != null)
+            {
+                return tipoIEnumerableGenerico.GetGenericArguments()[0];
+            }
+
+            throw new ArgumentException($"O tipo {tipo.Name} não é uma coleção suportada.");
+        }
         #endregion
     }
 }

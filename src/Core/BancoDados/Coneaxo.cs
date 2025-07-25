@@ -8,6 +8,8 @@ using System.Reflection;
 using Snebur.Utilidade;
 using Snebur.Dominio;
 using System.Data.Common;
+using System.ComponentModel.DataAnnotations.Schema;
+
 
 #if NET6_0_OR_GREATER
 using Microsoft.Data.SqlClient;
@@ -112,6 +114,7 @@ namespace Snebur.BancoDados
             var tipo = typeof(T);
             var propriedades = tipo.GetProperties(BindingFlags.Public | BindingFlags.Instance).
                                     Where(x => x.DeclaringType != typeof(BaseDominio) &&
+                                               x.GetCustomAttribute<NotMappedAttribute>(true) == null &&
                                                x.GetGetMethod().IsPublic && (x.GetSetMethod()?.IsPublic ?? false));
             
             var propriedadesChavePrimaria = tipo.GetProperties().

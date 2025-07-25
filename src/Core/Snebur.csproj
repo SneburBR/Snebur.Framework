@@ -7,9 +7,15 @@
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<Configurations>Debug;Release</Configurations>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(TargetFramework)' == 'net48'">
 		<Nullable>disable</Nullable>
 	</PropertyGroup>
- 
+	<PropertyGroup Condition="'$(TargetFramework)' == 'net9.0'">
+		<Nullable>disable</Nullable>
+	</PropertyGroup>
+
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net48'">
 
@@ -18,7 +24,6 @@
 
 		<Reference Include="System.ComponentModel.DataAnnotations" />
 		<Reference Include="System.Net" />
-
 
 		<Reference Include="Microsoft.CSharp" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -96,5 +101,5 @@
 		<Compile Include="Net40\HashCode.cs" />
 		<Compile Include="Properties\AssemblyInfo.cs" />
 	</ItemGroup>
- 
+
 </Project>

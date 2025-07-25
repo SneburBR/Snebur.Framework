@@ -7,7 +7,7 @@ namespace Snebur.Dominio.Atributos
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Class)]
     public class NaoMapearAttribute :
 #if NET6_0_OR_GREATER
-        Attribute
+        NotMappedAttribute
 #else
         NotMappedAttribute
 #endif

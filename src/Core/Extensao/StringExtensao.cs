@@ -136,6 +136,17 @@ namespace System
             return TextoUtil.Repeat(srt, numeroRepeticoes);
         }
 
+        public static string TrimEnd(
+            this string str,
+            string ending, 
+            StringComparison comparison = StringComparison.OrdinalIgnoreCase)
+        {
+            if (str.EndsWith(ending, comparison))
+            {
+                return str.Substring(0, str.Length - ending.Length);
+            }
+            return str;
+        }
     }
 
     public static class EncodingUtil

@@ -1,7 +1,6 @@
 ﻿using Snebur.Dominio;
 using Snebur.Utilidade;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Zyoncore.Imagens
