@@ -4,9 +4,9 @@ namespace Snebur.Utilidade
 {
     public static class AmbienteServidorUtil
     {
-        public static string NormalizarUrl(string url)
+        public static string NormalizarUrl(string? url)
         {
-            return url;
+            return url ?? String.Empty;
 
             //if (String.IsNullOrEmpty(url))
             //{

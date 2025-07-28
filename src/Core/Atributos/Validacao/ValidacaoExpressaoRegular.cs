@@ -23,11 +23,17 @@ namespace Snebur.Dominio.Atributos
         }
         #endregion
 
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult? IsValid(
+            object? value,
+            ValidationContext validationContext)
         {
-            var propriedade = validationContext.ObjectType.GetProperty(validationContext.MemberName);
+            Guard.NotNull(validationContext.MemberName);
+
+            var propriedade = validationContext.GetRequiredProperty();
+          
             var paiPropriedade = validationContext.ObjectInstance;
             var valorPropriedade = value;
+           
             if (this.IsValido(propriedade, paiPropriedade, valorPropriedade))
             {
                 return ValidationResult.Success;
@@ -43,6 +49,7 @@ namespace Snebur.Dominio.Atributos
 
         public bool IsValido(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
         {
+           
             var valorPropriedadeString = valorPropriedade?.ToString();
             if (!ValidacaoUtil.IsDefinido(valorPropriedadeString))
             {

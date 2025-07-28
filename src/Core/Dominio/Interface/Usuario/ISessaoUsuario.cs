@@ -4,13 +4,13 @@ namespace Snebur.Dominio
 {
     public interface ISessaoUsuario : IEntidade, IInformacaoSessao, IIdentificadorSessaoUsuario, IIdentificadorProprietario
     {
-        IUsuario Usuario { get; set; }
+        IUsuario? Usuario { get; set; }
 
         long Usuario_Id { get; set; }
 
         string IP { get; set; }
 
-        IIPInformacao IPInformacao { get; set; }
+        IIPInformacao? IPInformacao { get; set; }
 
         EnumStatusSessaoUsuario Status { get; set; }
 

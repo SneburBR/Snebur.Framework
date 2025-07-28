@@ -6,6 +6,6 @@ namespace Snebur.Dominio
     public interface IRestricaoEntidade : IEntidadeSeguranca
     {
         [RelacaoPai]
-        IPermissaoEntidade PermissaoEntidade { get; set; }
+        IPermissaoEntidade? PermissaoEntidade { get; set; }
     }
 }

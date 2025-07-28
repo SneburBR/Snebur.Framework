@@ -1,5 +1,6 @@
 ﻿using Snebur.Dominio;
 using System;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 
@@ -9,16 +10,21 @@ namespace Snebur.Utilidade
     {
         private const string NOME_QUALIFICADO_TIPO_TESTCLASSATTRIBUTE = "Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute, Microsoft.VisualStudio.TestPlatform.TestFramework";
 
-        private static Version _versaoAplicacao;
-        private static string _versaoAplicacaoString;
-        private static Dimensao _resolucao;
-        private static SistemaOperacional _sistemaOperacional;
+        private static Version? _versaoAplicacao;
+        private static string? _versaoAplicacaoString;
+        private static Dimensao? _resolucao;
+        private static SistemaOperacional? _sistemaOperacional;
 
         public static string CaminhoAplicacao
         {
             get
             {
-                return System.Reflection.Assembly.GetEntryAssembly().Location;
+                var entAssembly = Assembly.GetEntryAssembly() ?? AplicacaoSnebur.Atual.GetType().Assembly;
+                if (entAssembly == null)
+                {
+                    throw new InvalidOperationException("Não foi possível determinar o caminho da aplicação. A Assembly de entrada é nula.");
+                }
+                return entAssembly.Location;
             }
         }
 
@@ -218,8 +224,8 @@ namespace Snebur.Utilidade
 
         private static Dimensao RetornarResolucao()
         {
-
-            if (System.Reflection.Assembly.GetEntryAssembly() != null)
+            var entryAssembly = Assembly.GetEntryAssembly();
+            if (entryAssembly is not null)
             {
                 var nomeTipoSystemParameters = "System.Windows.SystemParameters, PresentationFramework";
                 var tipoSystemaParameters = Type.GetType(nomeTipoSystemParameters);
@@ -228,10 +234,16 @@ namespace Snebur.Utilidade
                     var propreidadeLargura = tipoSystemaParameters.GetProperty("PrimaryScreenWidth");
                     var propreidadeAltura = tipoSystemaParameters.GetProperty("PrimaryScreenHeight");
 
-                    var largura = ConverterUtil.Converter<int>(propreidadeLargura.GetValue(null));
-                    var altura = ConverterUtil.Converter<int>(propreidadeAltura.GetValue(null));
+                    if(propreidadeLargura is not null && 
+                        propreidadeAltura is not null)
+                    {
+                        var largura = ConverterUtil.Converter<int>(propreidadeLargura.GetValue(null));
+                        var altura = ConverterUtil.Converter<int>(propreidadeAltura.GetValue(null));
 
-                    _resolucao = new Dimensao((int)largura, (int)altura);
+                        _resolucao = new Dimensao((int)largura, (int)altura);
+                    }
+
+                  
                 }
             }
             return new Dimensao(0, 0);

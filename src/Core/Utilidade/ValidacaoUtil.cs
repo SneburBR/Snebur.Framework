@@ -56,7 +56,7 @@ namespace Snebur.Utilidade
             return false;
         }
 
-        public static bool IsCep(string cep)
+        public static bool IsCep(string? cep)
         {
             cep = cep?.Trim();
             if (!String.IsNullOrEmpty(cep))
@@ -71,7 +71,7 @@ namespace Snebur.Utilidade
             return false;
         }
 
-        public static bool IsCnpj(string cnpj)
+        public static bool IsCnpj(string? cnpj)
         {
             if (!String.IsNullOrWhiteSpace(cnpj))
             {

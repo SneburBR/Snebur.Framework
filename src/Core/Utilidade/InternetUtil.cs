@@ -10,7 +10,7 @@ namespace Snebur.Utilidade
         private static bool _mensagemAtiva = false;
         private static object _bloqueio = new object();
         //private static DateTime? _dataHoraUltimaVisualizacao;
-        private static IJanelaAlerta Alerta;
+        private static IJanelaAlerta? Alerta;
 
         private const int TEMPO_ESPERAR = 10;
 
@@ -63,7 +63,6 @@ namespace Snebur.Utilidade
                             }
                         }
                     }
-
                 }
             }
         }

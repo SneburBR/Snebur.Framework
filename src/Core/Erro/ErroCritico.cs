@@ -7,7 +7,7 @@ namespace System
     {
         //public EnumTipoErroCritico TipoErroCritico { get; }
         public ErroCritico(string mensagem,
-                           Exception erroInterno = null,
+                           Exception? erroInterno = null,
                            [CallerMemberName] string nomeMetodo = "",
                            [CallerFilePath] string caminhoArquivo = "",
                            [CallerLineNumber] int linhaDoErro = 0) :
@@ -20,10 +20,7 @@ namespace System
         public ErroCritico()
         {
         }
-
-        protected ErroCritico(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+         
         #endregion
     }
 }

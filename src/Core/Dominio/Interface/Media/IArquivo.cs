@@ -31,7 +31,7 @@ namespace Snebur.Dominio
 
         double Progresso { get; set; }
 
-        ISessaoUsuario SessaoUsuario { get; set; }
+        ISessaoUsuario? SessaoUsuario { get; set; }
 
         EnumMimeType MimeType { get; set; }
     }

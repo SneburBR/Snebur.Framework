@@ -29,14 +29,15 @@ namespace Snebur.Dominio.Atributos
         }
         #endregion
 
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
             var resultado = base.IsValid(value, validationContext);
             if (resultado != null)
             {
-                var propriedade = validationContext.ObjectType.GetProperty(validationContext.MemberName);
+                var propriedade = validationContext.GetRequiredProperty();
                 var paiPropriedade = validationContext.ObjectInstance;
                 var valorPropriedade = value;
+
                 if (this.IsValido(propriedade, paiPropriedade, valorPropriedade))
                 {
                     return ValidationResult.Success;
@@ -44,14 +45,14 @@ namespace Snebur.Dominio.Atributos
                 else
                 {
                     this.ErrorMessage = this.RetornarMensagemValidacao(propriedade, paiPropriedade, valorPropriedade);
-                    return new ValidationResult(this.ErrorMessage, new List<string>() { validationContext.MemberName });
+                    return new ValidationResult(this.ErrorMessage, new List<string>() { validationContext.MemberName! });
                 }
             }
             return resultado;
         }
         #region IAtributoValidacao
 
-        public bool IsValido(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
+        public bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
         {
             if (!ValidacaoUtil.IsDefinido(valorPropriedade))
             {
@@ -76,7 +77,7 @@ namespace Snebur.Dominio.Atributos
             return false;
         }
 
-        public string RetornarMensagemValidacao(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
+        public string RetornarMensagemValidacao(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
         {
             var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
             return String.Format(MensagemValidacao, rotulo, this.Minimum.ToString(), this.Maximum.ToString());

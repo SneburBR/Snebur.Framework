@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-
+using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
@@ -23,6 +23,8 @@ namespace Snebur
 {
     public abstract partial class AplicacaoSnebur
     {
+        private static readonly object _bloqueioInicializar = new object();
+
         #region Constantes
 
         private const int INTERVALO_NOTIFICAR_APLICACAO_ATIVA = 10;
@@ -34,36 +36,32 @@ namespace Snebur
         #region Propriedades 
 
         protected Dictionary<string, string> UrlsServico { get; } = new Dictionary<string, string>();
-        private string _identificadorAplicacao;
-        private string _nomeAplicacao;
-        private string _nomeEmpresa;
-        private Version _versaoAplicacao;
+        private string? _identificadorAplicacao;
+        private string? _nomeAplicacao;
+        private string? _nomeEmpresa;
+        private Version? _versaoAplicacao;
         private bool? _capturarPrimeiroErroAtivo;
-        private CultureInfo _cultura;
-        private string _ipPublico;
+        private CultureInfo? _cultura;
+        private string? _ipPublico;
 
-        private IServicoLogErro _servicoLogErro;
-        private IServicoLogSeguranca _servicoLogSeguranca;
-        private IServicoLogAplicacao _servicoLogAplicacao;
-        private IServicoLogDesempenho _servicoLogDesempenho;
-        private IServicoUsuario _servicoUsuario;
-        private object _bloqueioInicializar = new object();
+        private IServicoLogErro? _servicoLogErro;
+        private IServicoLogSeguranca? _servicoLogSeguranca;
+        private IServicoLogAplicacao? _servicoLogAplicacao;
+        private IServicoLogDesempenho? _servicoLogDesempenho;
+        private IServicoUsuario? _servicoUsuario;
 
         private readonly System.Timers.Timer TimerAplicacaoAtiva;
 
         private TimeSpan? _diferencaDataHoraServidor;
-        private NameValueCollection _appSettings;
-        private NameValueCollection _connectionStrings;
+        private NameValueCollection? _appSettings;
+        private NameValueCollection? _connectionStrings;
 
-        private bool IsAplicaoAspNet { get; }
+        public virtual string? UrlPingInternetConectada { get; set; }
 
-        public virtual string UrlPingInternetConectada { get; set; }
+        public IAlerta? Alerta { get; set; }
 
-        public IAlerta Alerta { get; set; }
-
-        internal protected virtual dynamic DispatcherObject { get; } = null;
+        internal protected virtual dynamic? DispatcherObject { get; } = null;
         public virtual bool IsMainThread => Thread.CurrentThread.ManagedThreadId == _mainThreadId;
-
         protected virtual bool IsNotificarLogAplicacaoInicializada { get; } = true;
 
         public virtual string UrlWebService => this.RetornarUrlServico("UrlWebService");
@@ -167,7 +165,7 @@ namespace Snebur
         {
             get
             {
-                return System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+                return Process.GetCurrentProcess().MainModule?.FileName! ?? SistemaUtil.CaminhoAplicacao;
             }
         }
 
@@ -220,9 +218,8 @@ namespace Snebur
                 if (this._servicoLogErro == null && this.FuncaoRetornarServicoLogErro != null)
                 {
                     this._servicoLogErro = this.FuncaoRetornarServicoLogErro.Invoke();
-
                 }
-                return this._servicoLogErro;
+                return this._servicoLogErro!;
             }
         }
 
@@ -234,7 +231,7 @@ namespace Snebur
                 {
                     this._servicoLogSeguranca = this.FuncaoRetornarServicoLogSeguranca.Invoke();
                 }
-                return this._servicoLogSeguranca;
+                return this._servicoLogSeguranca!;
             }
         }
 
@@ -246,7 +243,7 @@ namespace Snebur
                 {
                     this._servicoLogAplicacao = this.FuncaoRetornarServicoLogAplicacao.Invoke();
                 }
-                return this._servicoLogAplicacao;
+                return this._servicoLogAplicacao!;
             }
         }
 
@@ -258,7 +255,7 @@ namespace Snebur
                 {
                     this._servicoLogDesempenho = this.FuncaoRetornarServicoLogDesempenho.Invoke();
                 }
-                return this._servicoLogDesempenho;
+                return this._servicoLogDesempenho!;
             }
         }
 
@@ -270,7 +267,7 @@ namespace Snebur
                 {
                     this._servicoUsuario = this.FuncaoRetornarServicoUsuario.Invoke();
                 }
-                return this._servicoUsuario;
+                return this._servicoUsuario!;
             }
         }
 
@@ -390,9 +387,9 @@ namespace Snebur
 
         protected Func<IServicoLogDesempenho> FuncaoRetornarServicoLogDesempenho { get; set; } = RetornarServicoLogDesempenho;
 
-        protected Func<IServicoUsuario> FuncaoRetornarServicoUsuario { get; set; } = null;
+        protected Func<IServicoUsuario>? FuncaoRetornarServicoUsuario { get; set; } = null;
 
-        public Func<BaseInformacaoAdicionalServicoCompartilhado> FuncaoRetornarInformacaoAdicionalServicoCompartilhado { get; set; } = null;
+        public Func<BaseInformacaoAdicionalServicoCompartilhado>? FuncaoRetornarInformacaoAdicionalServicoCompartilhado { get; set; } = null;
 
         public Func<EnumAmbienteServidor> FuncaoRetornarAmbienteServidor { get; protected set; } = RetornarAmbienteServidor;
 
@@ -404,11 +401,11 @@ namespace Snebur
             }
         }
 
-        public event EventHandler NovaSessaoUsuarioInicializada;
-        public event EventHandler CredencialAlterada;
+        public event EventHandler? NovaSessaoUsuarioInicializada;
+        public event EventHandler? CredencialAlterada;
 
         public bool IsAplicacaoAspNet { get; }
-        public IAplicacaoSneburAspNet AspNet { get; }
+        public IAplicacaoSneburAspNet? AspNet { get; }
 
         #endregion
 
@@ -457,7 +454,7 @@ namespace Snebur
         {
             if (!this.Inicializada)
             {
-                lock (this._bloqueioInicializar)
+                lock (_bloqueioInicializar)
                 {
                     if (!this.Inicializada)
                     {
@@ -480,87 +477,84 @@ namespace Snebur
 
         private void InicializarComunicacao()
         {
+            //#if NET40
+            //            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
+            //#else
+            //            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11 |
+            //                                                   SecurityProtocolType.Tls12
+            //#if NET45 == false
+            //                                                   | SecurityProtocolType.Tls13;
+            //#else
+            //                                                   ;
+            //#endif
+            //#endif
 
-
-
-//#if NET40
-//            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
-//#else
-//            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11 |
-//                                                   SecurityProtocolType.Tls12
-//#if NET45 == false
-//                                                   | SecurityProtocolType.Tls13;
-//#else
-//                                                   ;
-//#endif
-//#endif
-
-//            //Ignorar erros da certificados https, isso pode ocorres caso da DataHora do computador cliente do usuario esteja mais 12 horas de diferença com servidor
-//            ServicePointManager.ServerCertificateValidationCallback = delegate (object obj,
-//                                                                                          System.Security.Cryptography.X509Certificates.X509Certificate X509certificate,
-//                                                                                          System.Security.Cryptography.X509Certificates.X509Chain chain,
-//                                                                                          System.Net.Security.SslPolicyErrors errors)
-//            {
-//                return true;
-//            };
+            //            //Ignorar erros da certificados https, isso pode ocorres caso da DataHora do computador cliente do usuario esteja mais 12 horas de diferença com servidor
+            //            ServicePointManager.ServerCertificateValidationCallback = delegate (object obj,
+            //                                                                                          System.Security.Cryptography.X509Certificates.X509Certificate X509certificate,
+            //                                                                                          System.Security.Cryptography.X509Certificates.X509Chain chain,
+            //                                                                                          System.Net.Security.SslPolicyErrors errors)
+            //            {
+            //                return true;
+            //            };
 
             //this.DefinirConfiguracoesHttps();
         }
         //Conexões https
-//        private void DefinirConfiguracoesHttps()
-//        {
-//            try
-//            {
-//                ServicePointManager.Expect100Continue = true;
-//#if NET40
-//                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
-//#endif
+        //        private void DefinirConfiguracoesHttps()
+        //        {
+        //            try
+        //            {
+        //                ServicePointManager.Expect100Continue = true;
+        //#if NET40
+        //                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
+        //#endif
 
-//#if NET45
-//                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 |
-//                                                       SecurityProtocolType.Tls11 |
-//                                                       SecurityProtocolType.Tls ;   
-//#endif
+        //#if NET45
+        //                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 |
+        //                                                       SecurityProtocolType.Tls11 |
+        //                                                       SecurityProtocolType.Tls ;   
+        //#endif
 
-//#if NET48_OR_GREATER || NET6_0_OR_GREATER
-//                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls13 |
-//                                                       SecurityProtocolType.Tls12 |
-//                                                       SecurityProtocolType.Tls11 |
-//                                                       SecurityProtocolType.Tls;
-//#endif
+        //#if NET48_OR_GREATER || NET6_0_OR_GREATER
+        //                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls13 |
+        //                                                       SecurityProtocolType.Tls12 |
+        //                                                       SecurityProtocolType.Tls11 |
+        //                                                       SecurityProtocolType.Tls;
+        //#endif
 
-//                ServicePointManager.DefaultConnectionLimit = 256;
+        //                ServicePointManager.DefaultConnectionLimit = 256;
 
-//#if NET6_0_OR_GREATER == false
+        //#if NET6_0_OR_GREATER == false
 
-//                var assemblyNet = Assembly.GetAssembly(typeof(System.Net.Configuration.SettingsSection));
-//                if (assemblyNet != null)
-//                {
-//                    var aSettingsType = assemblyNet.GetType("System.Net.Configuration.SettingsSectionInternal");
-//                    if (aSettingsType != null)
-//                    {
-//                        object anInstance = aSettingsType.InvokeMember("Section",
-//                          BindingFlags.Static |
-//                          BindingFlags.GetProperty |
-//                          BindingFlags.NonPublic, null, null, new object[] { });
+        //                var assemblyNet = Assembly.GetAssembly(typeof(System.Net.Configuration.SettingsSection));
+        //                if (assemblyNet != null)
+        //                {
+        //                    var aSettingsType = assemblyNet.GetType("System.Net.Configuration.SettingsSectionInternal");
+        //                    if (aSettingsType != null)
+        //                    {
+        //                        object anInstance = aSettingsType.InvokeMember("Section",
+        //                          BindingFlags.Static |
+        //                          BindingFlags.GetProperty |
+        //                          BindingFlags.NonPublic, null, null, new object[] { });
 
-//                        if (anInstance != null)
-//                        {
-//                            FieldInfo aUseUnsafeHeaderParsing = aSettingsType.GetField("useUnsafeHeaderParsing", BindingFlags.NonPublic | BindingFlags.Instance);
-//                            if (aUseUnsafeHeaderParsing != null)
-//                            {
-//                                aUseUnsafeHeaderParsing.SetValue(anInstance, true);
-//                            }
-//                        }
-//                    }
-//                }
-//#endif
-//            }
-//            catch
-//            {
-//            }
-//        }
-#endregion
+        //                        if (anInstance != null)
+        //                        {
+        //                            FieldInfo aUseUnsafeHeaderParsing = aSettingsType.GetField("useUnsafeHeaderParsing", BindingFlags.NonPublic | BindingFlags.Instance);
+        //                            if (aUseUnsafeHeaderParsing != null)
+        //                            {
+        //                                aUseUnsafeHeaderParsing.SetValue(anInstance, true);
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //#endif
+        //            }
+        //            catch
+        //            {
+        //            }
+        //        }
+        #endregion
 
         #region ServicoUsuario
 
@@ -626,7 +620,7 @@ namespace Snebur
             }
         }
 
-        private void Aplicacao_ProcessExit(object sender, EventArgs e)
+        private void Aplicacao_ProcessExit(object? sender, EventArgs e)
         {
             if (this.Inicializada)
             {
@@ -635,18 +629,18 @@ namespace Snebur
             }
         }
 
-        private void Aplicacao_NotificarAplicacaoAtiva(object sender, ElapsedEventArgs e)
+        private void Aplicacao_NotificarAplicacaoAtiva(object? sender, ElapsedEventArgs e)
         {
             LogUtil.LogAplicacaoAtivaAsync();
         }
 
         private void Aplicacao_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            if (e.ExceptionObject is Exception)
+            if (e.ExceptionObject is Exception exception)
             {
                 try
                 {
-                    LogUtil.ErroGlobal(e.ExceptionObject as Exception);
+                    LogUtil.ErroGlobal(exception);
                 }
                 catch
                 {
@@ -670,21 +664,23 @@ namespace Snebur
         {
             if (Atual.AppSettings[SessaoUtil.IDENTIFICADOR_APLICACAO] != null)
             {
-                return Atual.AppSettings[SessaoUtil.IDENTIFICADOR_APLICACAO];
+                var identificadorAplicacao = Atual.AppSettings[SessaoUtil.IDENTIFICADOR_APLICACAO];
+                if (!string.IsNullOrWhiteSpace(identificadorAplicacao))
+                {
+                    return identificadorAplicacao;
+                }
             }
+
             var assemblyEntrada = ReflexaoUtil.AssemblyEntrada;
-            if (assemblyEntrada != null)
+            if (assemblyEntrada is not null)
             {
-                var assemblyName = new AssemblyName(assemblyEntrada.FullName);
+                var assemblyName = new AssemblyName(assemblyEntrada.FullName!);
                 var identificadorAplicacao = assemblyName.Name;
 
-                const string NET50 = ".Net50";
-                if (identificadorAplicacao.EndsWith(NET50))
+                if (!string.IsNullOrWhiteSpace(identificadorAplicacao))
                 {
-                    throw new Exception("Renomear o nome do assembly" + identificadorAplicacao);
+                    return identificadorAplicacao;
                 }
-
-                return identificadorAplicacao;
             }
             throw new Erro("Não foi possível retornar o identificador da aplicação");
         }
@@ -693,7 +689,8 @@ namespace Snebur
         {
             if (Atual.AppSettings[ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO] != null)
             {
-                return Atual.AppSettings[ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO];
+                return Atual.AppSettings[ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO] ??
+                    ConfiguracaoUtil.IDENTIFICADOR_PROPRIETARIO_GLOBAL;
             }
             return ConfiguracaoUtil.IDENTIFICADOR_PROPRIETARIO_GLOBAL;
         }
@@ -778,16 +775,16 @@ namespace Snebur
         {
             if (!this.UrlsServico.ContainsKey(chaveConfiguracao))
             {
-                lock ( this.UrlsServico.SyncLock())
+                lock (this.UrlsServico.SyncLock())
                 {
                     if (!this.UrlsServico.ContainsKey(chaveConfiguracao))
                     {
                         var urlServico = this.AppSettings[chaveConfiguracao];
                         if (!String.IsNullOrWhiteSpace(urlServico))
                         {
-                            urlServico = AmbienteServidorUtil.NormalizarUrl(this.AppSettings[chaveConfiguracao]);
+                            urlServico = AmbienteServidorUtil.NormalizarUrl(urlServico);
                         }
-                        this.UrlsServico.Add(chaveConfiguracao, urlServico);
+                        this.UrlsServico.Add(chaveConfiguracao, urlServico!);
                     }
                 }
             }
@@ -796,7 +793,7 @@ namespace Snebur
 
         protected virtual string RetornarIpPublico()
         {
-            if(this._ipPublico == null)
+            if (this._ipPublico == null)
             {
                 this._ipPublico = IpUtil.RetornarIpPublico();
             }
@@ -810,8 +807,8 @@ namespace Snebur
             return false;
         }
 
-        public virtual IUsuario RetornarUsuario(object contextoDados,
-                                                   CredencialUsuario credencial)
+        public virtual IUsuario? RetornarUsuario(object contextoDados,
+                                                 CredencialUsuario credencial)
         {
             return null;
         }

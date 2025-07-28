@@ -11,7 +11,7 @@ namespace Snebur.Utilidade
 {
     public static class CompactacaoUtil
     {
-        private static string[] _extensoes;
+        private static string[]? _extensoes;
 
         public static string[] ExtensoesZip = { ".zip" };
 
@@ -38,7 +38,7 @@ namespace Snebur.Utilidade
 
         public static List<string> Descompactar(string caminhoArquivo, string diretorioDestino)
         {
-            ValidacaoUtil.ValidarReferenciaNula(diretorioDestino, nameof(diretorioDestino));
+            Guard.NotNull(diretorioDestino);
 
             DiretorioUtil.CriarDiretorio(diretorioDestino);
 

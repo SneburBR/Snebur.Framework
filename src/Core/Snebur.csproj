@@ -1,21 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net9.0;net48</TargetFrameworks>
+		<TargetFrameworks>net9.0</TargetFrameworks>
 		<AssemblyName>Snebur</AssemblyName>
 		<RootNamespace>Snebur</RootNamespace>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<Configurations>Debug;Release</Configurations>
+		<Nullable>enable</Nullable>
+		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(TargetFramework)' == 'net48'">
-		<Nullable>disable</Nullable>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(TargetFramework)' == 'net9.0'">
-		<Nullable>disable</Nullable>
-	</PropertyGroup>
-
+ 
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net48'">
 

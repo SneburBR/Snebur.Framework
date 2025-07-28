@@ -19,27 +19,30 @@ namespace Snebur.Utilidade
         /// </summary>
         /// <param name="stream"></param>
         /// <returns></returns>
-        public static MemoryStream RetornarMemoryStream(Stream stream,
-                                                        Action<StreamProgressEventArgs> callbackProgresso = null)
+        public static MemoryStream RetornarMemoryStream(
+            Stream stream,
+            Action<StreamProgressEventArgs>? callbackProgresso = null)
         {
             return RetornarMemoryStreamBuferizada(stream,
-                                                             TAMANHO_BUFFER_PADRAO,
-                                                             callbackProgresso);
+                    TAMANHO_BUFFER_PADRAO,
+                    callbackProgresso);
         }
-        public static MemoryStream RetornarMemoryStreamBuferizada(Stream stream,
-                                                                  Action<StreamProgressEventArgs> callbackProgresso = null,
-                                                                  long contentLenght = 0)
+        public static MemoryStream RetornarMemoryStreamBuferizada(
+            Stream stream,
+            Action<StreamProgressEventArgs>? callbackProgresso = null,
+            long contentLenght = 0)
         {
             return RetornarMemoryStreamBuferizada(stream,
-                                                             TAMANHO_BUFFER_PADRAO,
-                                                             callbackProgresso,
-                                                             contentLenght);
+                TAMANHO_BUFFER_PADRAO,
+                 callbackProgresso,
+                 contentLenght);
         }
 
-        public static MemoryStream RetornarMemoryStreamBuferizada(Stream streamOrigem,
-                                                                  int tamanhoBuffer,
-                                                                  Action<StreamProgressEventArgs> callbackProgresso = null,
-                                                                  long contentLenght = 0)
+        public static MemoryStream RetornarMemoryStreamBuferizada(
+            Stream streamOrigem,
+            int tamanhoBuffer,
+            Action<StreamProgressEventArgs>? callbackProgresso = null,
+            long contentLenght = 0)
         {
             if (streamOrigem.CanSeek)
             {
@@ -54,11 +57,12 @@ namespace Snebur.Utilidade
             SalvarStreamBufferizada(streamOrigem, streamDestino, TAMANHO_BUFFER_PADRAO);
         }
 
-        public static void SalvarStreamBufferizada(Stream streamOrigem,
-                                                   Stream streamDestino,
-                                                   int tamanhoBuffer,
-                                                   Action<StreamProgressEventArgs> callbackProgresso = null,
-                                                   long contentLenght = 0)
+        public static void SalvarStreamBufferizada(
+            Stream streamOrigem,
+            Stream streamDestino,
+            int tamanhoBuffer,
+            Action<StreamProgressEventArgs>? callbackProgresso = null,
+            long contentLenght = 0)
         {
             var totalBytesRecebitos = 0;
             var totalBytes = streamOrigem.CanSeek ? streamOrigem.Length : contentLenght;
@@ -230,20 +234,22 @@ namespace Snebur.Utilidade
             CopiarArquivo(caminhoOrigem, caminhoDestinio, TAMANHO_BUFFER_PADRAO);
         }
 
-        public static void CopiarArquivo(string caminhoOrigem,
-                                         string caminhoDestinio,
-                                         Action<StreamProgressEventArgs> callbackProgresso = null)
+        public static void CopiarArquivo(
+            string caminhoOrigem,
+            string caminhoDestinio,
+            Action<StreamProgressEventArgs>? callbackProgresso = null)
         {
             CopiarArquivo(caminhoOrigem,
-                                     caminhoDestinio,
-                                     TAMANHO_BUFFER_PADRAO,
-                                     callbackProgresso);
+                caminhoDestinio,
+                TAMANHO_BUFFER_PADRAO,
+                callbackProgresso);
 
         }
-        public static void CopiarArquivo(string caminhoOrigem,
-                                         string caminhoDestinio,
-                                         int tamanhoBuffer = TAMANHO_BUFFER_PADRAO,
-                                         Action<StreamProgressEventArgs> callbackProgresso = null)
+        public static void CopiarArquivo(
+            string caminhoOrigem,
+            string caminhoDestinio,
+            int tamanhoBuffer = TAMANHO_BUFFER_PADRAO,
+            Action<StreamProgressEventArgs>? callbackProgresso = null)
         {
             if (!File.Exists(caminhoOrigem))
             {

@@ -13,16 +13,14 @@ namespace Snebur.Utilidade
     {
         public const int LIMITE_MAXIMO_CARACTERES_CAMINHO_PASTA = 239;
 
-        private static HashSet<char> _caracteresInvalidos;
+        private static HashSet<char>? _caracteresInvalidos;
         public static HashSet<char> CaracteresInvalidos
         {
             get
             {
                 if (_caracteresInvalidos == null)
                 {
-                    _caracteresInvalidos = new HashSet<char>();
-                    _caracteresInvalidos.AddRange(Path.GetInvalidPathChars());
-                    _caracteresInvalidos.AddRange(Path.GetInvalidFileNameChars());
+                    _caracteresInvalidos = [.. Path.GetInvalidPathChars(), .. Path.GetInvalidFileNameChars()];
                 }
                 return _caracteresInvalidos;
             }
@@ -108,8 +106,8 @@ namespace Snebur.Utilidade
         public static void CopiarDiretorio(string caminhoOrigem,
                                             string caminhoDestino,
                                             bool copiarSubDiretorios,
-                                            string searchPattern = null,
-                                            Func<FileInfo, bool> funcaoIsCopiar = null)
+                                            string? searchPattern = null,
+                                            Func<FileInfo, bool>? funcaoIsCopiar = null)
         {
             var diretorio = new DirectoryInfo(caminhoOrigem);
 
@@ -152,8 +150,10 @@ namespace Snebur.Utilidade
             }
         }
 
-        public static void CriarDiretorio(string caminho)
+        public static void CriarDiretorio(string? caminho)
         {
+            Guard.NotNullOrWhiteSpace(caminho);
+
             if (!Directory.Exists(caminho))
             {
                 // caso existe um arquivo sem extensão
@@ -236,6 +236,7 @@ namespace Snebur.Utilidade
             try
             {
                 CriarDiretorio(Path.GetDirectoryName(diretorioDestino));
+
                 if (isSobreEscrever)
                 {
                     ExcluirDiretorio(diretorioDestino, true, true);
@@ -299,7 +300,7 @@ namespace Snebur.Utilidade
                                                bool isIncluirSubDiretorios,
                                                bool isIgnorarErro,
                                                bool isForcar = false,
-                                               string[] ignorarArquvos = null)
+                                               string[]? ignorarArquvos = null)
         {
             if (Directory.Exists(caminhoDiretorio))
             {
@@ -457,22 +458,28 @@ namespace Snebur.Utilidade
             }
         }
 
-        public static DirectoryInfo RetornarDiretorioPaiExisteArquivo(string caminho, string nomeArquivo)
+        public static DirectoryInfo? RetornarDiretorioPaiExisteArquivo(string caminho, string nomeArquivo)
         {
             return RetornarDiretorioPai(caminho, (x) => x.GetFiles().Any(f => f.Name.Equals(nomeArquivo, StringComparison.InvariantCultureIgnoreCase)));
         }
 
-        public static DirectoryInfo RetornarDiretorioPai(string caminho, Func<DirectoryInfo, bool> funcaoCondicao, bool ignorarErro = true)
+        public static DirectoryInfo? RetornarDiretorioPai(
+            string caminho,
+            Func<DirectoryInfo, bool>? funcaoCondicao,
+            bool ignorarErro = true)
         {
             var diretorio = new DirectoryInfo(caminho);
             return RetornarDiretorioPai(diretorio, funcaoCondicao, ignorarErro);
         }
 
-        public static DirectoryInfo RetornarDiretorioPai(DirectoryInfo diretorio, Func<DirectoryInfo, bool> condicao, bool ignorarErro = true)
+        public static DirectoryInfo? RetornarDiretorioPai(
+            DirectoryInfo diretorio,
+            Func<DirectoryInfo, bool>? condicao,
+            bool ignorarErro = true)
         {
             while (diretorio.Parent != null && diretorio.Exists)
             {
-                if (condicao.Invoke(diretorio))
+                if (condicao?.Invoke(diretorio) == true)
                 {
                     return diretorio;
                 }
@@ -547,6 +554,6 @@ namespace Snebur.Utilidade
             }
             return prefix;
         }
- 
+
     }
 }

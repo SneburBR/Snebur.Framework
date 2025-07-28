@@ -178,7 +178,7 @@ namespace Snebur.BancoDados
             }
             if (valorEscalor == DBNull.Value)
             {
-                valorEscalor = null;
+                return default;
             }
             return ConverterUtil.Para<T>(valorEscalor);
         }

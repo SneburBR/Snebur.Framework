@@ -4,10 +4,10 @@ namespace System
 {
     public class GerenciadorErros
     {
-        private static GerenciadorErros _instancia;
+        private static GerenciadorErros? _instancia;
 
-        public static GerenciadorErros Instancia =>
-            LazyUtil.RetornarValorLazyComBloqueio(ref _instancia, () => new GerenciadorErros());
+        public static GerenciadorErros Instancia
+            => LazyUtil.RetornarValorLazyComBloqueio(ref _instancia, () => new GerenciadorErros());
 
         private GerenciadorErros()
         {

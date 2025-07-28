@@ -14,7 +14,9 @@ namespace Snebur.Comparer
             this.IgnoreCase = false;
         }
 
-        public StringLogicalComparer(bool ignoreCase, bool floatNumbers)
+        public StringLogicalComparer(
+            bool ignoreCase, 
+            bool floatNumbers)
         {
             this.IgnoreCase = ignoreCase;
             this.FloatNumbers = floatNumbers;

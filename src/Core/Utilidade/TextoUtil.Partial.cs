@@ -64,14 +64,15 @@ namespace Snebur.Utilidade
             private const string PONTOS_SINAIS = "+-.,()";
             private const string PONTOS_SINAIS_SIMBOLOS = ",.;:?!|+-_.,@~^`´&$#*/\\§%|(){}[]<>";
 
-            private static HashSet<char> _numeros;
-            private static HashSet<char> _letras;
-            private static HashSet<char> _letrasNumeros;
-            private static HashSet<char> _caracteresPadrao;
-            private static HashSet<char> _linhasTabulacoes;
-            private static HashSet<char> _pontosSinais;
-            private static HashSet<char> _numerosPontosSinais;
-            private static Dictionary<char, char> _acentosMapeado;
+            
+            private static HashSet<char>? _numeros;
+            private static HashSet<char>?_letras;
+            private static HashSet<char>? _letrasNumeros;
+            private static HashSet<char>? _caracteresPadrao;
+            private static HashSet<char>? _linhasTabulacoes;
+            private static HashSet<char>? _pontosSinais;
+            private static HashSet<char>? _numerosPontosSinais;
+            private static Dictionary<char, char>? _acentosMapeado;
 
             internal static HashSet<char> Numeros => LazyUtil.RetornarValorLazy(
                     ref _numeros,

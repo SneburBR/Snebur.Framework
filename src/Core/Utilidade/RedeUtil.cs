@@ -68,7 +68,7 @@ namespace Snebur.Utilidade
 
         public static string RetornarNomeComputador(string caminhoRede)
         {
-            ValidacaoUtil.ValidarReferenciaNula(caminhoRede, nameof(caminhoRede));
+            Guard.NotNull(caminhoRede);
 
             string nomeComputador = "";
             if (caminhoRede.StartsWith(@"\\"))

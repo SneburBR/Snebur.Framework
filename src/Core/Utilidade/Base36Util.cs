@@ -8,10 +8,10 @@ namespace Snebur.Utilidade
         private const int Base = 36;
         private const string Chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-        public static bool IsBase36(string valor, 
+        public static bool IsBase36(string? valor, 
                                     bool isPermitirEspaco, 
                                     bool isIgnorarCase,
-                                    string caracteresExtra = null)
+                                    string? caracteresExtra = null)
         {
             if (String.IsNullOrWhiteSpace(valor))
             {

@@ -83,7 +83,7 @@ namespace Snebur.Dominio
         [NaoMapear]
         [EditorBrowsable(EditorBrowsableState.Never)]
         [IgnorarPropriedadeTSReflexao]
-        public bool __IsNewEntity => this.Id == 0 || (!this.__IsIdentity  && this.__isNewEntity__);
+        public bool __IsNewEntity => this.Id == 0 || (!this.__IsIdentity && this.__isNewEntity__);
 
         [NaoMapear]
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -97,7 +97,7 @@ namespace Snebur.Dominio
         [IgnorarPropriedadeTSReflexao]
         [PropriedadeProtegida]
         public virtual long IdEntidadeHistoricoGenerico => this.Id;
-         
+
         #region Construtor
 
         public Entidade() : base()
@@ -136,12 +136,14 @@ namespace Snebur.Dominio
         {
             try
             {
-                return (BaseTipoComplexo)propriedadeTipoComplexo.GetValue(this);
+                var valor = propriedadeTipoComplexo.GetValue(this);
+                Guard.NotNull(valor);
+                return (BaseTipoComplexo)valor;
             }
             catch (Exception ex)
             {
                 throw new Exception($"A propriedade {propriedadeTipoComplexo.Name} do tipo complexo {propriedadeTipoComplexo.PropertyType.Name} " +
-                                    $" não foi possível retornar o valor, na entidade '{propriedadeTipoComplexo.DeclaringType.Name}'. " +
+                                    $" não foi possível retornar o valor, na entidade '{propriedadeTipoComplexo.DeclaringType?.Name}'. " +
                                     $"Analise e mensagem de erro interna", ex);
             }
         }
@@ -149,9 +151,9 @@ namespace Snebur.Dominio
 
         #region  IEquatable 
 
-        public bool Equals(Entidade entidade)
+        public bool Equals(Entidade? entidade)
         {
-            if (entidade != null)
+            if (entidade is not null)
             {
                 if (ReferenceEquals(entidade.__TipoEntidade, this.__TipoEntidade))
                 {
@@ -160,6 +162,7 @@ namespace Snebur.Dominio
             }
             return false;
         }
+
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override int GetHashCode()
         {
@@ -175,25 +178,29 @@ namespace Snebur.Dominio
         #region Atribuir valor na propriedade
 
         #region Retornar Get
-        internal protected virtual long RetornarValorPropriedadeChaveEstrangeira(long valor, Entidade relacao, [CallerMemberName] string nomePropriedade = "")
+        internal protected virtual long RetornarValorPropriedadeChaveEstrangeira(long valor, Entidade? relacao, [CallerMemberName] string nomePropriedade = "")
         {
-            if (relacao != null)
+            if (relacao is not null)
             {
                 return relacao.Id;
             }
             return this.RetornarValorPropriedade(valor, nomePropriedade);
         }
 
-        internal protected virtual long? RetornarValorPropriedadeChaveEstrangeira(long? valor, Entidade relacao, [CallerMemberName] string nomePropriedade = "")
+        internal protected virtual long? RetornarValorPropriedadeChaveEstrangeira(
+            long? valor,
+            Entidade? relacao, [CallerMemberName] string nomePropriedade = "")
         {
-            if (relacao != null)
+            if (relacao is not null)
             {
                 return (long?)relacao.Id;
             }
             return this.RetornarValorPropriedade(valor, nomePropriedade);
         }
 
-        internal protected override T RetornarValorPropriedade<T>(T valor, [CallerMemberName] string nomePropriedade = "")
+        internal protected override T RetornarValorPropriedade<T>(
+            T valor, 
+            [CallerMemberName] string nomePropriedade = "")
         {
             if (this.__IsControladorPropriedadesAlteradaAtivo)
             {
@@ -205,13 +212,13 @@ namespace Snebur.Dominio
                     {
                         if (this.IsSerializando || this._isValidacaoPropriedadeAbertasDesativada)
                         {
-                            return default;
+                            return default!;
                         }
 
                         var propriedade = this.__TipoEntidade.GetProperty(nomePropriedade);
-                        if (propriedade.PropertyType.IsSubclassOf(typeof(Entidade)))
+                        if (propriedade?.PropertyType.IsSubclassOf(typeof(Entidade)) == true)
                         {
-                            return default;
+                            return default!;
                         }
 
                         throw new Exception($"A propriedade {nomePropriedade} não foi aberta na entidade na consulta de entidade {entidade.GetType().Name}");
@@ -246,9 +253,10 @@ namespace Snebur.Dominio
 
         #region Notificar Set
 
-        internal protected override void NotificarValorPropriedadeAlteradaTipoCompleto(BaseTipoComplexo antigoValor,
-                                                                                       BaseTipoComplexo novoValor,
-                                                                                       [CallerMemberName] string nomePropriedade = "")
+        internal protected override void NotificarValorPropriedadeAlteradaTipoCompleto(
+            BaseTipoComplexo antigoValor,
+            BaseTipoComplexo novoValor,
+            [CallerMemberName] string nomePropriedade = "")
         {
             if (antigoValor != null)
             {
@@ -280,7 +288,7 @@ namespace Snebur.Dominio
                                             T antigoValor,
                                             T novoValor,
                                             string nomePropriedadeRelacao,
-                                            Entidade entidadeRelacao,
+                                            Entidade? entidadeRelacao,
                                             [CallerMemberName] string nomePropriedade = "")
         {
             this.NotificarValorPropriedadeAlterada(antigoValor, novoValor, nomePropriedade);
@@ -289,7 +297,7 @@ namespace Snebur.Dominio
             {
                 if (!Util.SaoIgual(antigoValor, novoValor))
                 {
-                    if (entidadeRelacao != null)
+                    if (entidadeRelacao is not null)
                     {
                         if (!entidadeRelacao.Id.Equals(novoValor))
                         {
@@ -303,8 +311,8 @@ namespace Snebur.Dominio
         }
 
         //para server valor null na chave estrangeira de chaveEstrangeira_Id = null
-        internal protected virtual void NotificarValorPropriedadeAlteradaRelacao(object antigoValor,
-                                                                                 object novoValor,
+        internal protected virtual void NotificarValorPropriedadeAlteradaRelacao(object? antigoValor,
+                                                                                 object? novoValor,
                                                                                  [CallerMemberName] string nomePropriedade = "")
         {
             if (this.IsSerializando)
@@ -528,7 +536,7 @@ namespace Snebur.Dominio
 
         public override bool Equals(object obj)
         {
-            if (obj != null && this.GetType()== obj.GetType() && this.Id > 0 && this.Id == ((Entidade)obj).Id)
+            if (obj != null && this.GetType() == obj.GetType() && this.Id > 0 && this.Id == ((Entidade)obj).Id)
             {
                 return true;
             }
@@ -593,19 +601,19 @@ namespace Snebur.Dominio
 
         #region IEntidadeInterna 
 
-        private List<string> __propriedadesAbertas;
-        private List<string> __propriedadesAutorizadas;
+        private List<string>? __propriedadesAbertas;
+        private List<string>? __propriedadesAutorizadas;
 
         [PropriedadeProtegida]
-        List<string> IEntidadeInterna.__PropriedadesAbertas { get => this.__propriedadesAbertas; }
+        List<string>? IEntidadeInterna.__PropriedadesAbertas { get => this.__propriedadesAbertas; }
 
         [PropriedadeProtegida]
-        List<string> IEntidadeInterna.__PropriedadesAutorizadas { get => this.__propriedadesAutorizadas; }
+        List<string>? IEntidadeInterna.__PropriedadesAutorizadas { get => this.__propriedadesAutorizadas; }
 
         void IEntidadeInterna.NotifyIsNotNewEntity()
         {
             this.__isNewEntity__ = false;
-        }   
+        }
 
         void IEntidadeInterna.AtribuirPropriedadesAbertas(List<string> propriedadesAberta)
         {

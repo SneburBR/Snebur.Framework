@@ -21,10 +21,7 @@ namespace Snebur
         public ErroExcluirArquivo()
         {
         }
-
-        protected ErroExcluirArquivo(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+         
         #endregion
     }
 }

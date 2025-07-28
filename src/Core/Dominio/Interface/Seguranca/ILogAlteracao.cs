@@ -5,7 +5,7 @@ namespace Snebur.Dominio
     [IgnorarInterfaceTS]
     public interface ILogAlteracao : IEntidadeSeguranca
     {
-        IUsuario UsuarioAvalista { get; set; }
+        IUsuario? UsuarioAvalista { get; set; }
 
         string NomeTipoEntidadeAlterada { get; set; }
 

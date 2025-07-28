@@ -16,7 +16,7 @@ namespace Snebur.Tarefa
 
         DateTime DataHoraUltimaAtividade { get; set; }
 
-        Exception Erro { get; set; }
+        Exception? Erro { get; set; }
 
         void IniciarAsync(Action<ResultadoTarefaFinalizadaEventArgs> callbackConcluido);
 

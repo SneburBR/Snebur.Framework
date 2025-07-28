@@ -14,7 +14,7 @@
 
         Dimensao Resolucao { get; set; }
 
-        string UserAgent { get; set; }
+        string? UserAgent { get; set; }
 
         Navegador Navegador { get; set; }
 

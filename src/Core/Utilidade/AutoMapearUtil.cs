@@ -46,8 +46,8 @@ namespace Snebur.Utilidade
 
         public static void Mapear(object origem, object destino, bool ignorarErro, List<string> propriedadesIgnroar, Func<(PropertyInfo PropriedadeOrigem, PropertyInfo PropriedadeDestino), bool> manipuladorIsMapearPropriedade = null)
         {
-            ValidacaoUtil.ValidarReferenciaNula(origem, nameof(origem));
-            ValidacaoUtil.ValidarReferenciaNula(destino, nameof(destino));
+            Guard.NotNull(origem);
+            Guard.NotNull(destino);
 
             var propriedadesOrigem = ReflexaoUtil.RetornarPropriedades(origem.GetType(), false);
             var propriedadesDestino = ReflexaoUtil.RetornarPropriedades(destino.GetType(), false);

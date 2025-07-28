@@ -19,13 +19,11 @@ namespace Snebur.Utilidade
         private static Guid? _chaveSeguranca;
         private static bool? _isLogDebugOutputSql;
 
-        private static string _caminhoAppDataAplicacao;
-        private static string _caminhoAppDataAplicacaoLogs;
-        private static string _caminhoAppDataAplicacaoSemVersao;
-        private static string _caminhoAppDataAplicacaoSemIdentificadorPropretario;
-
- 
-
+        private static string? _caminhoAppDataAplicacao;
+        private static string? _caminhoAppDataAplicacaoLogs;
+        private static string? _caminhoAppDataAplicacaoSemVersao;
+        private static string? _caminhoAppDataAplicacaoSemIdentificadorPropretario;
+         
         public static string UrlWebService => AplicacaoSnebur.Atual.UrlWebService;
         public static string UrlServicoArquivo => AplicacaoSnebur.Atual.UrlServicoArquivo;
         public static string UrlServicoDados => AplicacaoSnebur.Atual.UrlServicoDados;

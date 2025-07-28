@@ -8,15 +8,15 @@ namespace Snebur.Dominio
 
         public Guid IdentificadorAplicacaoGuid { get; set; }
 
-        public string IdentificadorAplicacao { get; set; }
+        public required string IdentificadorAplicacao { get; set; }
 
         //public DadosIPInformacao IPInformacao { get; set; }
 
         //public string Local { get; set; }
 
-        public string Cultura { get; set; }
+        public required string Cultura { get; set; }
 
-        public string Idioma { get; set; }
+        public required string Idioma { get; set; }
 
         public EnumPlataforma Plataforma { get; set; }
 
@@ -24,15 +24,15 @@ namespace Snebur.Dominio
 
         public Dimensao Resolucao { get; set; } = new Dimensao();
 
-        public string UserAgent { get; set; }
+        public string? UserAgent { get; set; }
 
         public Navegador Navegador { get; set; } = new Navegador();
 
-        public SistemaOperacional SistemaOperacional { get; set; }
+        public required SistemaOperacional SistemaOperacional { get; set; }
 
-        public string VersaoAplicacao { get; set; }
+        public required string VersaoAplicacao { get; set; }
 
-        public string NomeComputador { get; set; }
+        public required string NomeComputador { get; set; }
 
         //public string IP { get; set; }
 

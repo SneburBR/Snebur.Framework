@@ -6,9 +6,9 @@ namespace Snebur.Dominio
     public class SistemaOperacional : BaseTipoComplexo
     {
         private EnumSistemaOperacional _sistemaOperacionalEnum;
-        private string _nome;
-        private string _codenome;
-        private string _versao;
+        private string _nome = "";
+        private string _codenome = "";
+        private string _versao = "";
 
         public EnumSistemaOperacional SistemaOperacionalEnum { get => this._sistemaOperacionalEnum; set => this.NotificarValorPropriedadeAlterada(this._sistemaOperacionalEnum, this._sistemaOperacionalEnum = value); }
 
@@ -25,6 +25,7 @@ namespace Snebur.Dominio
         {
 
         }
+
         public SistemaOperacional(EnumSistemaOperacional sistemaOperacionalEnum, string nome, string codenome, string versao) : base()
         {
             this._sistemaOperacionalEnum = sistemaOperacionalEnum;

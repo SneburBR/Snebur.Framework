@@ -8,10 +8,10 @@ namespace Snebur.Dominio.Atributos
     public class NotificarAlteracaoPropriedadeGenericaAttribute : BaseAtributoDominio, INotificarAlteracaoPropriedade
     {
         public EnumOpcoesAlterarPropriedade Opcoes { get; }
-        public string FormatacaoPersonalizada { get; set; } 
+        public string? FormatacaoPersonalizada { get; set; } 
         public string Formatacao { get; set; } = EnumFormatacao.Nenhuma.ToString().ToLower();
-        public Type TipoPropriedadeRelacao { get; set; }
-        public string CaminhoTipoPropriedadeRelacao { get; set; }
+        public Type? TipoPropriedadeRelacao { get; set; }
+        public string? CaminhoTipoPropriedadeRelacao { get; set; }
         public bool IsEnum { get; set; }
         
         public NotificarAlteracaoPropriedadeGenericaAttribute([TipoTS("string")] EnumFormatacao formatacao,
@@ -30,7 +30,7 @@ namespace Snebur.Dominio.Atributos
         /// </summary>
         /// <param name="formatacaoPersonalizada"> Formatação personalizada para valores da propriedade Ex: 'Total {0}' </param>
         [IgnorarConstrutorTS]
-        public NotificarAlteracaoPropriedadeGenericaAttribute(string formatacaoPersonalizada = null)
+        public NotificarAlteracaoPropriedadeGenericaAttribute(string? formatacaoPersonalizada = null)
         {
             this.FormatacaoPersonalizada = formatacaoPersonalizada;
         }

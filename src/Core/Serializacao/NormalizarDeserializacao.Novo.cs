@@ -13,7 +13,7 @@ namespace Snebur.Serializacao
         private int Contador = 1;
 
         private string Json;
-        public object Objeto;
+        public object? Objeto;
 
         private HashSet<Guid> ObjetosBaseDominioAnalisados = new HashSet<Guid>();
         private HashSet<int> ObjetosAnalisados = new HashSet<int>();
@@ -22,8 +22,8 @@ namespace Snebur.Serializacao
         private List<BaseDominioRefenciada> BasesDominioReferenciadas = new List<BaseDominioRefenciada>();
 
         private EnumTipoSerializacao TipoSerializacao;
-        public NormalizarDeserializacao(string json, 
-                                        object objeto,
+        public NormalizarDeserializacao(string json,
+                                        object? objeto,
                                         EnumTipoSerializacao tipoSerializacao)
         {
             this.Json = json;
@@ -33,6 +33,10 @@ namespace Snebur.Serializacao
 
         internal void Normalizar()
         {
+            if (this.Objeto is null)
+            {
+                return;
+            }
             this.PopularReferencias();
             foreach (var baseNegocioRefernciada in this.BasesDominioReferenciadas)
             {
@@ -89,6 +93,11 @@ namespace Snebur.Serializacao
 
         private void PopularReferencias()
         {
+            if (this.Objeto is null)
+            {
+                return;
+            }
+
             if (this.Objeto is BaseDominio baseDominio)
             {
                 this.AdicioanrReferenciaRaiz(baseDominio);
@@ -130,7 +139,10 @@ namespace Snebur.Serializacao
                         {
                             this.AdicioanrReferenciaColecao(baseDominio, colecao, posicao);
                         }
-                        this.VarrerObjeto(item);
+                        if (item is not null)
+                        {
+                            this.VarrerObjeto(item);
+                        }
                     }
                 }
             }
@@ -200,7 +212,8 @@ namespace Snebur.Serializacao
         private void AdicioanrReferencia(IBaseDominioReferencia baseDominio,
                                          Referencia referencia)
         {
-            if (baseDominio.__IsBaseDominioReferencia.GetValueOrDefault())
+            if (baseDominio.__IsBaseDominioReferencia.GetValueOrDefault() &&
+                baseDominio.__IdentificadorReferencia.HasValue)
             {
                 this.BasesDominioReferenciadas.Add(new BaseDominioRefenciada
                 {
@@ -241,12 +254,7 @@ namespace Snebur.Serializacao
             this.ObjetosAnalisados.Clear();
             this.BasesDominioOrigem.Clear();
             this.BasesDominioReferenciadas.Clear();
-
             this.Objeto = null;
-            this.Json = null;
-            this.ObjetosAnalisados = null;
-            this.BasesDominioOrigem = null;
-            this.BasesDominioReferenciadas = null;
         }
     }
 }

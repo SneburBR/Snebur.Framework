@@ -4,7 +4,11 @@ namespace System.Collections.Concurrent
 {
     public static class ConcurrentDictionaryExtensao
     {
-        public static ConcurrentDictionary<TKey, TElement> ToConcurrentDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer)
+        public static ConcurrentDictionary<TKey, TElement> ToConcurrentDictionary<TSource, TKey, TElement>(
+            this IEnumerable<TSource> source, Func<TSource, TKey> keySelector,
+            Func<TSource, TElement> elementSelector, 
+            IEqualityComparer<TKey>? comparer)
+            where TKey : notnull
         {
             var d = new ConcurrentDictionary<TKey, TElement>(comparer);
             foreach (TSource element in source)
@@ -14,17 +18,25 @@ namespace System.Collections.Concurrent
             return d;
         }
 
-        public static ConcurrentDictionary<TKey, TSource> ToConcurrentDictionary<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+        public static ConcurrentDictionary<TKey, TSource> ToConcurrentDictionary<TSource, TKey>(
+            this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+            where TKey : notnull
         {
             return ToConcurrentDictionary(source, keySelector, IdentityFunction<TSource>.Instance, null);
         }
 
-        public static ConcurrentDictionary<TKey, TSource> ToConcurrentDictionary<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
+        public static ConcurrentDictionary<TKey, TSource> ToConcurrentDictionary<TSource, TKey>(
+            this IEnumerable<TSource> source, Func<TSource, TKey> keySelector,
+            IEqualityComparer<TKey>? comparer)
+            where TKey : notnull
         {
             return ToConcurrentDictionary(source, keySelector, IdentityFunction<TSource>.Instance, comparer);
         }
 
-        public static ConcurrentDictionary<TKey, TElement> ToConcurrentDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector)
+        public static ConcurrentDictionary<TKey, TElement> ToConcurrentDictionary<TSource, TKey, TElement>(
+            this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, 
+            Func<TSource, TElement> elementSelector)
+            where TKey : notnull
         {
             return ToConcurrentDictionary(source, keySelector, elementSelector, null);
         }

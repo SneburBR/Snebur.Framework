@@ -2,6 +2,7 @@
 {
     public enum EnumStatusCodigoRecuperarSenha
     {
+        Desconhecido = -1,
         Nenhum = 0,
         Novo = 1,
         TentativaInvalida = 2,

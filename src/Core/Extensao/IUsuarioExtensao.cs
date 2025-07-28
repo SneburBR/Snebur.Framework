@@ -8,7 +8,7 @@ namespace Snebur
     {
         public static CredencialUsuario RetornarCredencial(this IUsuario usuario)
         {
-            ValidacaoUtil.ValidarReferenciaNula(usuario, nameof(usuario));
+            Guard.NotNull(usuario);
             return new CredencialUsuario
             {
                 IdentificadorUsuario = usuario.IdentificadorUsuario,

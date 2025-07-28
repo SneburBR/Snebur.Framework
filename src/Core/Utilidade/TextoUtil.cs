@@ -1,6 +1,7 @@
 ﻿using Snebur.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -17,11 +18,11 @@ namespace Snebur.Utilidade
         public static HashSet<char> LinhasTabulacoes => TextoUtilConstantes.LinhasTabulacoes;
         public static HashSet<char> PontosSinais => TextoUtilConstantes.PontosSinais;
 
-        public static string RemoverAcentos(string texto)
+        public static string RemoverAcentos(string? texto)
         {
             if (texto == null)
             {
-                return null;
+                return String.Empty;
             }
 
             var sb = new StringBuilder();
@@ -280,9 +281,10 @@ namespace Snebur.Utilidade
             return RetornarTextoCaracteresPermitido(texto, Numeros, isPermitirEspacoBranco);
         }
 
-        public static string RetornarSomentesLetrasNumeros(string texto,
-                                                           bool isPermitirEspacoBranco = true,
-                                                           IEnumerable<char> caractesExtras = null)
+        public static string RetornarSomentesLetrasNumeros(
+            string texto,
+            bool isPermitirEspacoBranco = true,
+            IEnumerable<char>? caractesExtras = null)
         {
             if (caractesExtras?.Count() > 0)
             {
@@ -396,17 +398,18 @@ namespace Snebur.Utilidade
             {
                 return Char.ToUpper(texto[0]) + texto.Substring(1);
             }
-            return texto;
+            return texto ?? String.Empty;
         }
-
-        public static string RetornarPrimeiraLetraMinusculo(string texto)
+         
+        public static string? RetornarPrimeiraLetraMinusculo(
+            [NotNullIfNotNull(nameof(texto))]
+            this string? texto)
         {
             if (texto?.Length > 0 && Char.IsUpper(texto[0]))
             {
                 return Char.ToLower(texto[0]) + texto.Substring(1);
             }
             return texto;
-
         }
 
         public static string RetornarInicioMinusculo(string texto, int quantidadeCaracteres)
@@ -464,13 +467,13 @@ namespace Snebur.Utilidade
             return resultado.Trim();
         }
 
-        public static string RetornarPrimeirosCaracteres(string texto,
+        public static string RetornarPrimeirosCaracteres(string? texto,
                                                          int numeroCaracteres,
-                                                         string textoFinal = null)
+                                                         string? textoFinal = null)
         {
-            if (texto == null)
+            if (texto is null)
             {
-                return texto;
+                return texto ?? String.Empty;
             }
 
             if (texto.Length <= numeroCaracteres)
@@ -507,7 +510,7 @@ namespace Snebur.Utilidade
         {
             if (texto == null)
             {
-                return null;
+                return new List<string>();
             }
             var linhas = new List<string>();
             using (var sr = new StringReader(texto))
@@ -658,7 +661,7 @@ namespace Snebur.Utilidade
                 using (var gZipStream = new GZipStream(memoryStream, CompressionMode.Decompress))
                 {
                     var lidos = gZipStream.Read(buffer, 0, buffer.Length);
-                    if(lidos < dataLength)
+                    if (lidos < dataLength)
                     {
                         Array.Resize(ref buffer, lidos);
                     }
@@ -714,10 +717,11 @@ namespace Snebur.Utilidade
 
         #region  CACHE FILTROS 
 
-        private static object _bloqueio = new object();
+        private static readonly object _bloqueio = new object();
 
-        private static Dictionary<string, HashSet<char>> _cacheFiltros;
-        public static Dictionary<string, HashSet<char>> CacheFiltros => LazyUtil.RetornarValorLazyComBloqueio(ref _cacheFiltros, () => new Dictionary<string, HashSet<char>>());
+        private static Dictionary<string, HashSet<char>>? _cacheFiltros;
+        public static Dictionary<string, HashSet<char>> CacheFiltros
+            => LazyUtil.RetornarValorLazyComBloqueio(ref _cacheFiltros, () => new Dictionary<string, HashSet<char>>());
         private static HashSet<char> RetoranrFiltroCache(HashSet<char> filtroBase,
                                                           IEnumerable<char> caractesExtras)
         {

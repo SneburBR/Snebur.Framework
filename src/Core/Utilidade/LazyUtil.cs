@@ -21,7 +21,7 @@ namespace Snebur.Utilidade
             return valor.Value;
         }
 
-        public static T RetornarValorLazyComBloqueio<T>(ref T valor, Func<T> retornarValor) where T : class
+        public static T RetornarValorLazyComBloqueio<T>(ref T? valor, Func<T> retornarValor) where T : class
         {
             if (valor == null)
             {
@@ -51,7 +51,7 @@ namespace Snebur.Utilidade
             return valor.Value;
         }
 
-        public static T RetornarValorLazy<T>(ref T valor, Func<T> retornarValor) where T : class
+        public static T RetornarValorLazy<T>(ref T? valor, Func<T> retornarValor) where T : class
         {
             if (valor == null)
             {

@@ -6,9 +6,9 @@ namespace Snebur.Dominio.Atributos
     [AttributeUsage(AttributeTargets.Property)]
     public class ValorPadraoConverterAttribute : Attribute, IValorPadrao
     {
-        private static object _bloqueio = new object();
+        private static readonly object _bloqueio = new();
 
-        private IConverterValorPadrao _instancia;
+        private IConverterValorPadrao? _instancia;
 
         public bool IsValorPadraoOnUpdate { get; set; } 
 
@@ -61,10 +61,10 @@ namespace Snebur.Dominio.Atributos
             {
                 return instanciaConverer;
             }
-            throw new Erro($"A instancia do tipo {instanca.GetType().Name} não implementa a interface {nameof(IValorPadrao)}");
+            throw new Erro($"A instancia do tipo {instanca?.GetType().Name} não implementa a interface {nameof(IValorPadrao)}");
         }
 
-        private object RetornarNovaInstanciaInterno()
+        private object? RetornarNovaInstanciaInterno()
         {
             
             var tipo = Type.GetType(this.CaminhoTipo);

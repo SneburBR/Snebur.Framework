@@ -22,7 +22,7 @@ namespace Snebur.Dominio.Atributos
             var resultado = base.IsValid(value, validationContext);
             if (resultado != null)
             {
-                var propriedade = validationContext.ObjectType.GetProperty(validationContext.MemberName);
+                var propriedade = validationContext.GetRequiredProperty();
                 var paiPropriedade = validationContext.ObjectInstance;
                 var valorPropriedade = value;
                 if (this.IsValido(propriedade, paiPropriedade, valorPropriedade))

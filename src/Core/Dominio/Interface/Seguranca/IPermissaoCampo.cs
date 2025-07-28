@@ -6,15 +6,15 @@ namespace Snebur.Dominio
     public interface IPermissaoCampo : IEntidadeSeguranca
     {
         [ValidacaoRequerido]
-        IPermissaoEntidade PermissaoEntidade { get; set; }
+        IPermissaoEntidade? PermissaoEntidade { get; set; }
 
         [PropriedadeDescricao]
         [ValidacaoRequerido]
         [ValidacaoTextoTamanho(100)]
         string NomeCampo { get; set; }
 
-        IRegraOperacao Leitura { get; set; }
+        IRegraOperacao? Leitura { get; set; }
 
-        IRegraOperacao Atualizar { get; set; }
+        IRegraOperacao? Atualizar { get; set; }
     }
 }

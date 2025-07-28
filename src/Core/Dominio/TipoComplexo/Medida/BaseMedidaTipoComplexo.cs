@@ -8,11 +8,11 @@ namespace Snebur.Dominio
     [IgnorarGlobalizacao]
     public abstract class BaseMedidaTipoComplexo : BaseTipoComplexo, IDpiVisualizacao
     {
-        protected Func<double?, double> FuncaoNormalizarDpiVisualizacao;
+        protected Func<double?, double>? FuncaoNormalizarDpiVisualizacao;
 
         [NaoMapear]
         [IgnorarPropriedade]
-        Func<double?, double> IDpiVisualizacao.FuncaoNormamlizarDpiVisualizacao
+        Func<double?, double>? IDpiVisualizacao.FuncaoNormamlizarDpiVisualizacao
         {
             get => this.FuncaoNormalizarDpiVisualizacao;
             set => this.FuncaoNormalizarDpiVisualizacao = value;

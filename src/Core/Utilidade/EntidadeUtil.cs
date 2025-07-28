@@ -11,33 +11,15 @@ namespace Snebur.Utilidade
 {
     public class EntidadeUtil
     {
-        private static PropertyInfo _propriedadeNomeTipoEntidade;
-        private static List<Type> _tiposInterfacesEntidade;
+        private static PropertyInfo? _propriedadeNomeTipoEntidade;
+        private static List<Type>? _tiposInterfacesEntidade;
         public static PropertyInfo PropriedadeNomeTipoEntidade
-        {
-            get
-            {
-                if (_propriedadeNomeTipoEntidade == null)
-                {
-                    _propriedadeNomeTipoEntidade = ReflexaoUtil.RetornarPropriedade<Entidade>(x => x.__NomeTipoEntidade);
-                }
-                return _propriedadeNomeTipoEntidade;
-            }
-        }
+            => _propriedadeNomeTipoEntidade ??= ReflexaoUtil.RetornarPropriedade<Entidade>(x => x.__NomeTipoEntidade);
 
         public static List<Type> TiposInterfaceEntidade
-        {
-            get
-            {
-                if (_tiposInterfacesEntidade == null)
-                {
-                    _tiposInterfacesEntidade = typeof(EntidadeUtil).Assembly.GetAccessibleTypes().Where(x => x.IsInterface && x.GetInterface(typeof(IEntidade).Name) != null).ToList();
-                }
-                return _tiposInterfacesEntidade;
-            }
-        }
+            => _tiposInterfacesEntidade ??= [.. typeof(EntidadeUtil).Assembly.GetAccessibleTypes().Where(x => x.IsInterface && x.GetInterface(typeof(IEntidade).Name) != null)];
 
-        public static FieldInfo RetornarCampoPrivadoChaveEstrangeira(Type tipoEntidade,
+        public static FieldInfo? RetornarCampoPrivadoChaveEstrangeira(Type tipoEntidade,
                                                                      PropertyInfo propriedade)
         {
             var propriedadeChaveEstrangeira = RetornarPropriedadeChaveEstrangeira(tipoEntidade, propriedade, true);
@@ -45,9 +27,9 @@ namespace Snebur.Utilidade
             {
                 return null;
             }
+
             var filedName = $"_{TextoUtil.RetornarPrimeiraLetraMinusculo(propriedadeChaveEstrangeira.Name)}";
-            var fi = tipoEntidade.GetField(filedName, BindingFlags.NonPublic | BindingFlags.Instance);
-            return fi;
+            return tipoEntidade.GetField(filedName, BindingFlags.NonPublic | BindingFlags.Instance);
         }
 
         public static PropertyInfo RetornarPropriedadeChaveEstrangeiraRelacaoFilhos(Type tipoEntidade,
@@ -56,13 +38,13 @@ namespace Snebur.Utilidade
             var atributoRelacaoFilhos = propriedadeRelacoesFilhos.GetCustomAttribute<RelacaoFilhosAttribute>();
             if (atributoRelacaoFilhos == null)
             {
-                throw new Erro($"Não foi encontrado o atributo RelacaoFilhosAttribute para a propriedade {propriedadeRelacoesFilhos.Name} em {propriedadeRelacoesFilhos.DeclaringType.Name} ");
+                throw new Erro($"Não foi encontrado o atributo RelacaoFilhosAttribute para a propriedade {propriedadeRelacoesFilhos.Name} em {propriedadeRelacoesFilhos.DeclaringType?.Name} ");
             }
 
             if (!propriedadeRelacoesFilhos.PropertyType.IsGenericType ||
                  propriedadeRelacoesFilhos.PropertyType.GetGenericArguments().Count() != 1)
             {
-                throw new Erro($"O da propriedade {propriedadeRelacoesFilhos.Name} em {propriedadeRelacoesFilhos.DeclaringType.Name} não é uma coleção de entidades");
+                throw new Erro($"O da propriedade {propriedadeRelacoesFilhos.Name} em {propriedadeRelacoesFilhos.DeclaringType?.Name} não é uma coleção de entidades");
             }
 
             var tipoEntidadeRelacao = propriedadeRelacoesFilhos.PropertyType.GetGenericArguments().Single();
@@ -83,9 +65,11 @@ namespace Snebur.Utilidade
             if (propriedadesRelacaoPai.Count == 1)
             {
                 var propriedadeRelacaoPai = propriedadesRelacaoPai[0];
-                return RetornarPropriedadeChaveEstrangeira(propriedadeRelacaoPai.DeclaringType,
-                                                           propriedadeRelacaoPai);
+                return RetornarPropriedadeChaveEstrangeira(propriedadeRelacaoPai.DeclaringType!,
+                                                           propriedadeRelacaoPai) ??
+                                                           throw new Erro($"Não foi encontrado a propriedade chave estrangeira para a propriedade {propriedadeRelacoesFilhos.Name} em {tipoEntidadeRelacao.Name} ");
             }
+
             if (propriedadesRelacaoPai.Count == 0)
             {
                 throw new Erro($"Não foi encontrado uma propriedade do tipo {tipoEntidade.Name} em {tipoEntidadeRelacao.Name} ");
@@ -93,7 +77,7 @@ namespace Snebur.Utilidade
             throw new Erro($"Foi encontrado mais de uma propriedade do tipo {tipoEntidade.Name} em {tipoEntidadeRelacao.Name} ");
         }
 
-        public static PropertyInfo RetornarPropriedadeChaveEstrangeira(Type tipoEntidade,
+        public static PropertyInfo? RetornarPropriedadeChaveEstrangeira(Type tipoEntidade,
                                                                        PropertyInfo propriedade,
                                                                        bool isIgnorarErro = false)
         {
@@ -119,7 +103,7 @@ namespace Snebur.Utilidade
             return propriedadeChaveEstrangeira;
         }
 
-        public static PropertyInfo RetornarPropriedadeRelacaoPai(Type tipoEntidade,
+        public static PropertyInfo? RetornarPropriedadeRelacaoPai(Type tipoEntidade,
                                                                  PropertyInfo propriedadeChaveEstrangeira)
         {
             return ReflexaoUtil.RetornarPropriedades(tipoEntidade, false)
@@ -162,9 +146,9 @@ namespace Snebur.Utilidade
             }
 
             var valorEntidade = propriedade.GetValue(entidade);
-            if (valorEntidade is Entidade)
+            if (valorEntidade is Entidade _e)
             {
-                return (valorEntidade as Entidade).Id;
+                return _e.Id;
             }
             else
             {
@@ -205,14 +189,14 @@ namespace Snebur.Utilidade
             return RetornarPropriedadesCampos(tipoEntidade, EnumFiltroPropriedadeCampo.Todas);
         }
 
-        public static TInterfaceAtributo RetornarAtributoImplementaInterface<TInterfaceAtributo>(PropertyInfo propriedade) where TInterfaceAtributo : class
+        public static TInterfaceAtributo? RetornarAtributoImplementaInterface<TInterfaceAtributo>(PropertyInfo propriedade) where TInterfaceAtributo : class
         {
             var atributos = propriedade.GetCustomAttributes();
             var tipoIValorPadrao = typeof(TInterfaceAtributo);
             var atributo = atributos.Where(x => ReflexaoUtil.IsTipoImplementaInterface(x.GetType(), tipoIValorPadrao, true)).ToArray();
             if (atributo.Length > 1)
             {
-                throw new Erro($"Existe mais de um atributo que implementa a interface {typeof(TInterfaceAtributo).Name}, Entidade: '{propriedade.DeclaringType.Name}', Propriedade: '{propriedade.Name}'");
+                throw new Erro($"Existe mais de um atributo que implementa a interface {typeof(TInterfaceAtributo).Name}, Entidade: '{propriedade.DeclaringType?.Name}', Propriedade: '{propriedade.Name}'");
             }
             return atributo.SingleOrDefault() as TInterfaceAtributo;
         }
@@ -223,7 +207,7 @@ namespace Snebur.Utilidade
         {
             var filtros = EnumUtil.RetornarFlags<EnumFiltroPropriedadeCampo>(filtro)
                 .ToHashSet();
-            
+
             var ignorarTipoBase = filtros.Contains(EnumFiltroPropriedadeCampo.IgnorarTipoBase);
             var ignorarChavePrimaria = filtros.Contains(EnumFiltroPropriedadeCampo.IgnorarChavePrimaria);
             var ignorarPropriedadeProtegida = filtros.Contains(EnumFiltroPropriedadeCampo.IgnorarPropriedadeProtegida);
@@ -257,7 +241,7 @@ namespace Snebur.Utilidade
                 }
             }
 
-            HashSet<string> nomePrpriedadesChaveEstrangeiras = null;
+            HashSet<string>? nomePrpriedadesChaveEstrangeiras = null;
             if (ignorarChaveEstrangeira)
             {
                 nomePrpriedadesChaveEstrangeiras = propriedades.Select(x => x.RetornarAtributoChaveEstrangeira()).
@@ -276,7 +260,7 @@ namespace Snebur.Utilidade
                                             // ignorar propriedades sobreescritas - override
                                             if (atributoChavePrimaria == null)
                                             {
-                                                resultado = resultado && getMethod.GetBaseDefinition().DeclaringType == getMethod.DeclaringType;
+                                                resultado = resultado && getMethod != null && getMethod.GetBaseDefinition().DeclaringType == getMethod.DeclaringType;
                                             }
                                             if (ignorarChavePrimaria)
                                             {
@@ -288,11 +272,11 @@ namespace Snebur.Utilidade
                                             }
                                             if (ignorarChaveEstrangeira)
                                             {
-                                                resultado = resultado && !nomePrpriedadesChaveEstrangeiras.Contains(propriedade.Name);
+                                                resultado = resultado && !nomePrpriedadesChaveEstrangeiras?.Contains(propriedade.Name) == true;
                                             }
                                             if (ignorarSobreescritas)
                                             {
-                                                resultado = resultado && !nomePrpriedadesChaveEstrangeiras.Contains(propriedade.Name);
+                                                resultado = resultado && !nomePrpriedadesChaveEstrangeiras?.Contains(propriedade.Name) == true;
                                             }
                                             return resultado;
                                         }
@@ -313,8 +297,8 @@ namespace Snebur.Utilidade
             var atrituboNaoMapearInterno = propriedade.GetCustomAttribute<NaoMapearInternoAttribute>();
             if (atrituboNaoMapear == null && atrituboNaoMapearInterno == null)
             {
-                if (propriedade.GetGetMethod() != null && propriedade.GetGetMethod().IsPublic &&
-                    propriedade.GetSetMethod() != null && propriedade.GetSetMethod().IsPublic)
+                if (propriedade.GetGetMethod()?.IsPublic == true &&
+                    propriedade.GetSetMethod()?.IsPublic == true)
                 {
                     if (propriedade.PropertyType.IsSubclassOf(typeof(BaseTipoComplexo)))
                     {
@@ -383,7 +367,6 @@ namespace Snebur.Utilidade
             var nomeCampo = "_" + nomePropriedade;
             return nomeCampo;
         }
-
     }
 
     public enum EnumFiltroPropriedadeCampo

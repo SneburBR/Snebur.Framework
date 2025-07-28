@@ -12,14 +12,15 @@ namespace Snebur.AcessoDados
 
         public EnumStatusSessaoUsuario StatusSessao { get; }
 
-        public ErroSessaoUsuarioExpirada(EnumStatusSessaoUsuario status,
-                                        Guid identificadorSessaoUsuario,
-                                        string mensagem = "",
-                                        Exception erroInterno = null,
-                                        [CallerMemberName] string nomeMetodo = "",
-                                        [CallerFilePath] string caminhoArquivo = "",
-                                        [CallerLineNumber] int linhaDoErro = 0) :
-                                        base(mensagem, erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
+        public ErroSessaoUsuarioExpirada(
+            EnumStatusSessaoUsuario status,
+            Guid identificadorSessaoUsuario,
+            string mensagem = "",
+            Exception? erroInterno = null,
+            [CallerMemberName] string nomeMetodo = "",
+            [CallerFilePath] string caminhoArquivo = "",
+            [CallerLineNumber] int linhaDoErro = 0) :
+            base(mensagem, erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
         {
         }
         #region Serializacao 
@@ -27,11 +28,7 @@ namespace Snebur.AcessoDados
         public ErroSessaoUsuarioExpirada()
         {
         }
-
-        protected ErroSessaoUsuarioExpirada(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
-
+         
         protected override bool IsNotificar()
         {
             return false;
@@ -54,11 +51,7 @@ namespace Snebur.AcessoDados
         public ErroSessaoUsuarioInvalida()
         {
         }
-
-        protected ErroSessaoUsuarioInvalida(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
-
+         
         protected override bool IsNotificar()
         {
             return false;

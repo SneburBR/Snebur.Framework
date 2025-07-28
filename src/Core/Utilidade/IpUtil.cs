@@ -9,7 +9,8 @@ namespace Snebur
 {
     public static class IpUtil
     {
-        private static string _ipPublico;
+        private static string? _ipPublico;
+        private static DadosIPInformacao? _ipDadosInformacao;
         /// <summary>
         /// retornar 0.0.0.0
         /// </summary>
@@ -21,10 +22,10 @@ namespace Snebur
             }
         }
 
-        private static DadosIPInformacao _ipDadosInformacao;
 
-        public static DadosIPInformacao IPInformacao =>
-            LazyUtil.RetornarValorLazyComBloqueio(ref _ipDadosInformacao, RetornarIPInformacaoInterno);
+
+        public static DadosIPInformacao IPInformacao 
+            => LazyUtil.RetornarValorLazyComBloqueio(ref _ipDadosInformacao, RetornarIPInformacaoInterno);
 
         private static DadosIPInformacao RetornarIPInformacaoInterno()
         {
@@ -51,10 +52,10 @@ namespace Snebur
 
         public static DadosIPInformacao RetornarIPInformacao(string ip)
         {
-            if(String.IsNullOrEmpty(ip))
+            if (String.IsNullOrEmpty(ip))
             {
                 ip = RetornarIpPublico();
-            }   
+            }
 
             var url = (IsIpVazioOuLocal(ip)) ? "http://ipinfo.io/json" :
                                                        String.Format("http://ipinfo.io/{0}/json", ip);

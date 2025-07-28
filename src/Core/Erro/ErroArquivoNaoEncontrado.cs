@@ -10,12 +10,13 @@ namespace System
     public class ErroArquivoNaoEncontrado : Erro
     {
 
-        public ErroArquivoNaoEncontrado(string mensagem = "",
-                                        Exception erroInterno = null,
-                                        [CallerMemberName] string nomeMetodo = "",
-                                        [CallerFilePath] string caminhoArquivo = "",
-                                        [CallerLineNumber] int linhaDoErro = 0) :
-                                        base(mensagem, erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
+        public ErroArquivoNaoEncontrado(
+            string mensagem = "",
+            Exception? erroInterno = null,
+            [CallerMemberName] string nomeMetodo = "",
+            [CallerFilePath] string caminhoArquivo = "",
+            [CallerLineNumber] int linhaDoErro = 0) :
+            base(mensagem, erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
         {
         }
         #region Serializacao 
@@ -23,10 +24,7 @@ namespace System
         public ErroArquivoNaoEncontrado()
         {
         }
-
-        protected ErroArquivoNaoEncontrado(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+         
         #endregion
     }
 }

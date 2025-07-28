@@ -10,7 +10,7 @@ namespace Snebur
 
     public abstract partial class AplicacaoSnebur
     {
-        public static IConfiguration Configuration { get; set; }
+        public static IConfiguration? Configuration { get; set; }
 
         public void SetConfigure(IConfiguration configuration)
         {

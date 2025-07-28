@@ -8,7 +8,7 @@ namespace Snebur.Dominio
 
         Guid IndetificadorLog { get; set; }
 
-        ISessaoUsuario SessaoUsuario { get; set; }
+        ISessaoUsuario? SessaoUsuario { get; set; }
 
         DateTime? DataHoraInicio { get; set; }
 

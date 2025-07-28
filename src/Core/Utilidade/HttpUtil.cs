@@ -16,11 +16,6 @@ namespace Snebur.Utilidade
         public const int TIMEOUT_PADRAO = 15;
         private const int TAMANHO_BUFFER_PADRAO = 8 * 1024;
 
-#if NET6_0_OR_GREATER
-
-     
-#endif
-
         public static string RetornarString(string url)
         {
             return RetornarString(url, TimeSpan.FromSeconds(TIMEOUT_PADRAO), false);
@@ -44,26 +39,35 @@ namespace Snebur.Utilidade
             return RetornarString(url, null, timeout, ignorarErro);
         }
 
-        public static string RetornarString(Uri uri, Dictionary<string, string> cabecalho, TimeSpan timeout, bool ignorarErro)
+        public static string RetornarString(Uri uri,
+            Dictionary<string, string>? cabecalho, TimeSpan timeout, bool ignorarErro)
         {
             var resultado = RetornarStringCabecalhoResposta(uri, cabecalho, timeout, ignorarErro);
             return resultado.Item1;
         }
-        public static string RetornarString(string url, Dictionary<string, string> cabecalho, TimeSpan timeout, bool ignorarErro)
+        public static string RetornarString(
+            string url,
+            Dictionary<string, string>? cabecalho,
+            TimeSpan timeout,
+            bool ignorarErro)
         {
             var resultado = RetornarStringCabecalhoResposta(url, cabecalho, timeout, ignorarErro);
             return resultado.Item1;
 
         }
 
-        public static Tuple<string, WebHeaderCollection> RetornarStringCabecalhoResposta(string url,
-                                                                                         Dictionary<string, string> cabecalho,
-                                                                                         TimeSpan timeout,
-                                                                                         bool ignorarErro)
+        public static Tuple<string, WebHeaderCollection> RetornarStringCabecalhoResposta(
+            string url,
+            Dictionary<string, string>? cabecalho,
+            TimeSpan timeout,
+            bool ignorarErro)
         {
             return RetornarStringCabecalhoResposta(new Uri(url), cabecalho, timeout, ignorarErro);
         }
-        public static Tuple<string, WebHeaderCollection> RetornarStringCabecalhoResposta(Uri url, Dictionary<string, string> cabecalho, TimeSpan timeout, bool ignorarErro)
+        public static Tuple<string, WebHeaderCollection> RetornarStringCabecalhoResposta(
+            Uri url,
+            Dictionary<string, string>? cabecalho,
+            TimeSpan timeout, bool ignorarErro)
         {
             var resultado = RetornarBytesCabecalhoResposta(url, cabecalho, timeout, ignorarErro);
             var resultadoString = (resultado?.Item1 == null) ? String.Empty : Encoding.UTF8.GetString(resultado.Item1);
@@ -73,52 +77,64 @@ namespace Snebur.Utilidade
 
         public static byte[] RetornarBytes(string url)
         {
-            return RetornarBytes(url, null, TimeSpan.FromSeconds(TIMEOUT_PADRAO), false);
+            return RetornarBytes(url, null, TimeSpan.FromSeconds(TIMEOUT_PADRAO), false)
+                ?? throw new Erro($" Não foi possível obter os bytes da URL: {url}");
+
         }
 
-        public static byte[] RetornarBytes(string url, bool ignorarErro)
+        public static byte[]? RetornarBytes(string url, bool ignorarErro)
         {
             return RetornarBytes(url, null, TimeSpan.FromSeconds(TIMEOUT_PADRAO), ignorarErro);
         }
 
         public static byte[] RetornarBytes(string url, Dictionary<string, string> cabecalhos)
         {
-            return RetornarBytes(url, cabecalhos, TimeSpan.FromSeconds(TIMEOUT_PADRAO), false);
+            return RetornarBytes(url, cabecalhos, TimeSpan.FromSeconds(TIMEOUT_PADRAO), false) ??
+                throw new Exception($"Não foi possível obter os bytes da URL: {url}");
         }
 
-        public static byte[] RetornarBytes(string url, Dictionary<string, string> cabecalhos, bool ignorarErro)
+        public static byte[]? RetornarBytes(string url,
+            Dictionary<string, string>? cabecalhos, bool ignorarErro)
         {
             return RetornarBytes(url, cabecalhos, TimeSpan.FromSeconds(TIMEOUT_PADRAO), ignorarErro);
         }
 
-        public static byte[] RetornarBytes(string url, Dictionary<string, string> cabecalho, TimeSpan timeout, bool ignorarErro)
+        public static byte[]? RetornarBytes(
+            string url,
+            Dictionary<string, string>? cabecalho,
+            TimeSpan timeout,
+            bool ignorarErro)
         {
             var bytesCabecalho = RetornarBytesCabecalhoResposta(url, cabecalho, timeout, ignorarErro);
-            return bytesCabecalho.Item1;
+            return bytesCabecalho?.Item1;
         }
 
-        public static Tuple<byte[], WebHeaderCollection> RetornarBytesCabecalhoResposta(string url, Dictionary<string, string> cabecalho)
+        public static Tuple<byte[], WebHeaderCollection>? RetornarBytesCabecalhoResposta(string url, Dictionary<string, string> cabecalho)
         {
             return RetornarBytesCabecalhoResposta(url, cabecalho, TimeSpan.FromSeconds(TIMEOUT_PADRAO), false);
         }
 
-        public static Tuple<byte[], WebHeaderCollection> RetornarBytesCabecalhoResposta(string url, Dictionary<string, string> cabecalho, TimeSpan timeout, bool ignorarErro)
+        public static Tuple<byte[], WebHeaderCollection>? RetornarBytesCabecalhoResposta(
+            string url,
+            Dictionary<string, string>? cabecalho, TimeSpan timeout, bool ignorarErro)
         {
             return RetornarBytesCabecalhoResposta(new Uri(url), cabecalho, timeout, ignorarErro);
         }
 
-        public static Tuple<byte[], WebHeaderCollection> RetornarBytesCabecalhoResposta(Uri uri,
-                                                                                        Dictionary<string, string> cabecalho,
-                                                                                        TimeSpan timeout,
-                                                                                        bool ignorarErro)
+        public static Tuple<byte[], WebHeaderCollection>? RetornarBytesCabecalhoResposta(
+            Uri uri,
+            Dictionary<string, string>? cabecalho,
+            TimeSpan timeout,
+            bool ignorarErro)
         {
             return RetornarBytesCabecalhoResposta(uri, cabecalho, timeout, ignorarErro, 0);
         }
-        private static Tuple<byte[], WebHeaderCollection> RetornarBytesCabecalhoResposta(Uri uri,
-                                                                                         Dictionary<string, string> cabecalho,
-                                                                                         TimeSpan timeout,
-                                                                                         bool ignorarErro,
-                                                                                         int tentativa)
+        private static Tuple<byte[], WebHeaderCollection>? RetornarBytesCabecalhoResposta(
+            Uri uri,
+            Dictionary<string, string>? cabecalho,
+            TimeSpan timeout,
+            bool ignorarErro,
+            int tentativa)
         {
             try
             {
@@ -174,29 +190,50 @@ namespace Snebur.Utilidade
 
         public static MemoryStream RetornarMemoryStream(string url)
         {
-            return RetornarMemoryStream(url, null, TimeSpan.FromSeconds(30), false);
+            return RetornarMemoryStream(url, null, TimeSpan.FromSeconds(30), false) ??
+                throw new Erro($" Não foi possível obter o MemoryStream da URL: {url}");
         }
         public static MemoryStream RetornarMemoryStream(Uri url)
         {
-            return RetornarMemoryStream(url, null, TimeSpan.FromSeconds(30), false);
+            return RetornarMemoryStream(url, null, TimeSpan.FromSeconds(30), false)
+                ?? throw new Erro($" Não foi possível obter o MemoryStream da URL: {url}");
         }
 
-        public static MemoryStream RetornarMemoryStream(string url,
-                                                       Dictionary<string, string> cabecalho, TimeSpan timeout, bool ignorarErro)
+        public static MemoryStream? RetornarMemoryStream(
+            string url,
+            Dictionary<string, string>? cabecalho,
+            TimeSpan timeout,
+            bool ignorarErro)
         {
-            return RetornarMemoryStream(new Uri(url), cabecalho, timeout, ignorarErro);
+            return RetornarMemoryStream(new Uri(url),
+                cabecalho,
+                timeout,
+                ignorarErro);
         }
-        public static MemoryStream RetornarMemoryStream(Uri uri, Dictionary<string, string> cabecalho, TimeSpan timeout, bool ignorarErro)
+        public static MemoryStream? RetornarMemoryStream(
+            Uri uri,
+            Dictionary<string, string>? cabecalho,
+            TimeSpan timeout,
+            bool ignorarErro)
         {
             var resultado = RetornarMemoryStreamCabecalhoResposta(uri, cabecalho, timeout, ignorarErro);
-            return resultado.Item1;
+            return resultado?.Item1;
         }
 
-        public static Tuple<MemoryStream, WebHeaderCollection> RetornarMemoryStreamCabecalhoResposta(string url, Dictionary<string, string> cabecalho, TimeSpan timeout, bool ignorarErro)
+        public static Tuple<MemoryStream, WebHeaderCollection>? RetornarMemoryStreamCabecalhoResposta(
+            string url,
+            Dictionary<string, string>? cabecalho,
+            TimeSpan timeout,
+            bool ignorarErro)
         {
             return RetornarMemoryStreamCabecalhoResposta(new Uri(url), cabecalho, timeout, ignorarErro);
         }
-        public static Tuple<MemoryStream, WebHeaderCollection> RetornarMemoryStreamCabecalhoResposta(Uri uri, Dictionary<string, string> cabecalho, TimeSpan timeout, bool ignorarErro)
+
+        public static Tuple<MemoryStream, WebHeaderCollection>? RetornarMemoryStreamCabecalhoResposta(
+            Uri uri,
+            Dictionary<string, string>? cabecalho,
+            TimeSpan timeout,
+            bool ignorarErro)
         {
             try
             {
@@ -261,8 +298,11 @@ namespace Snebur.Utilidade
                 }
 
                 var valores = origem.GetValues(chave);
-                var valor = String.Join(", ", valores);
-                retorno.Add(chave, valor);
+                if (valores?.Length > 0)
+                {
+                    var valor = String.Join(", ", valores);
+                    retorno.Add(chave, valor);
+                }
             }
             return retorno;
         }

@@ -28,10 +28,10 @@ namespace Snebur.Dominio
         bool IsTipoComplexo { get; set; }
 
         [ValidacaoTextoTamanho(5000)]
-        string ValorPropriedadeAntigo { get; set; }
+        string? ValorPropriedadeAntigo { get; set; }
 
         [ValidacaoTextoTamanho(5000)]
-        string ValorPropriedadeAlterada { get; set; }
+        string? ValorPropriedadeAlterada { get; set; }
 
         DateTime? DataHoraFimAlteracao { get; set; }
  

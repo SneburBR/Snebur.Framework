@@ -3,6 +3,7 @@ using Snebur.Dominio.Atributos;
 using Snebur.Publicacao;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -21,22 +22,22 @@ namespace Snebur.Utilidade
             {
                 return true;
             }
-       
+
             if (propriedade.PropertyType.IsIdType() &&
-                paiPropriedade is Entidade entidade )
+                paiPropriedade is Entidade entidade)
             {
                 var propriedadeChaveEstrangeira = EntidadeUtil.RetornarPropriedadeRelacaoPai(entidade.GetType(),
                                                                                              propriedade);
 
-                if(propriedadeChaveEstrangeira != null)
+                if (propriedadeChaveEstrangeira != null)
                 {
-                    if ((long)valorPropriedade  > 0 )
+                    if ((long)valorPropriedade > 0)
                     {
                         return true;
                     }
 
                     var valorRelacaoPai = propriedadeChaveEstrangeira.GetValue(entidade);
-                    if(valorRelacaoPai is Entidade)
+                    if (valorRelacaoPai is Entidade)
                     {
                         return true;
                     }
@@ -62,7 +63,7 @@ namespace Snebur.Utilidade
                     }
                 }
             }
-           
+
             if (valorPropriedade == null)
             {
                 return false;
@@ -140,7 +141,8 @@ namespace Snebur.Utilidade
                    IsIp(servidor);
         }
 
-        public static bool IsDefinido(object valorPropriedade)
+        public static bool IsDefinido(
+            [NotNullWhen(true)] object? valorPropriedade)
         {
             if (valorPropriedade != null)
             {
@@ -153,15 +155,16 @@ namespace Snebur.Utilidade
             return false;
         }
 
-        public static bool IsPropriedadeRequerida(PropertyInfo propriedade)
+        public static bool IsPropriedadeRequerida(
+            PropertyInfo? propriedade)
         {
             //return !propriedade.PropertyType.IsValueType || propriedade.GetCustomAttribute<ValidacaoRequeridoAttribute>() != null;
-            var atributo = propriedade.GetCustomAttribute<ValidacaoRequeridoAttribute>();
-            if(atributo!= null)
+            var atributo = propriedade?.GetCustomAttribute<ValidacaoRequeridoAttribute>();
+            if (atributo != null)
             {
                 return (atributo.OpcoesComparacaoAuxiliar == null ||
                         atributo.OpcoesComparacaoAuxiliar == EnumOpcoesComparacaoAuxiliar.Nenhuma);
-                 
+
             }
             return false;
         }

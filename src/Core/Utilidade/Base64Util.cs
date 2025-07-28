@@ -38,7 +38,7 @@ namespace Snebur.Utilidade
             return true;
         }
 
-        public static string Encode(string texto,
+        public static string Encode(string? texto,
                                     bool isUtf8 = true)
         {
             if (!String.IsNullOrEmpty(texto))

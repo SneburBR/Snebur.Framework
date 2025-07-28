@@ -8,7 +8,7 @@ namespace System
     {
 
         public ErroNaoImplementado(string mensagem = "",
-                                   Exception erroInterno = null,
+                                   Exception? erroInterno = null,
                                    [CallerMemberName] string nomeMetodo = "",
                                    [CallerFilePath] string caminhoArquivo = "",
                                    [CallerLineNumber] int linhaDoErro = 0) : base(mensagem, erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
@@ -19,10 +19,7 @@ namespace System
         public ErroNaoImplementado()
         {
         }
-
-        protected ErroNaoImplementado(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+         
         #endregion
     }
 }

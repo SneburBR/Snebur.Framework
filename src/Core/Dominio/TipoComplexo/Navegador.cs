@@ -1,4 +1,5 @@
-﻿using Snebur.Dominio.Atributos;
+﻿using Newtonsoft.Json;
+using Snebur.Dominio.Atributos;
 
 namespace Snebur.Dominio
 {
@@ -6,9 +7,9 @@ namespace Snebur.Dominio
     public class Navegador : BaseTipoComplexo
     {
         private EnumNavegador _navegadorEnum;
-        private string _nome;
-        private string _codenome;
-        private string _versao;
+        private string _nome = "";
+        private string _codenome = "";
+        private string _versao = "";
 
         public EnumNavegador NavegadorEnum { get => this._navegadorEnum; set => this.NotificarValorPropriedadeAlterada(this._navegadorEnum, this._navegadorEnum = value); }
 
@@ -26,11 +27,15 @@ namespace Snebur.Dominio
         //    throw new NotImplementedException();
         //}
 
+        [JsonConstructor]
         public Navegador() : base()
         {
         }
 
-        public Navegador(EnumNavegador navegadorEnum, string nome, string codenome, string versao) : base()
+        public Navegador(EnumNavegador navegadorEnum, 
+            string nome,
+            string codenome,
+            string versao) : base()
         {
             this._navegadorEnum = navegadorEnum;
             this._nome = nome;

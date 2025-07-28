@@ -13,9 +13,8 @@ namespace Snebur.Utilidade
         public const string IDENTIFICADOR_APLICACAO = "IdentificadorAplicacao";
         //public const string IDENTIFICADOR_PROPRIETARIO = "IdentificadorProprietario";
         private const string CHAVE_CRIPTOGRAFIA = "248c6619-8119-45bd-ae2a-662512aff841";
-
-        
-        private static CredencialUsuario _credencialUsuario;
+         
+        private static CredencialUsuario? _credencialUsuario;
 
         private static object _bloqueioIdentificadorSessaoUsuario = new object();
         private static object _bloqueioAcessoArquivoAppData = new object();
@@ -84,7 +83,7 @@ namespace Snebur.Utilidade
         //    return _dadosIpInformacao;
         //}
 
-      
+
         #endregion
 
         #region Identificador Sessão usuario
@@ -120,7 +119,7 @@ namespace Snebur.Utilidade
             return RetornarIdentificadorSessaoUsuario();
         }
 
-        public static void SalvarIdentificadorSessaoUsuario( Guid identificadorSessaoUsuario)
+        public static void SalvarIdentificadorSessaoUsuario(Guid identificadorSessaoUsuario)
         {
             var identificadorUsuario = AplicacaoSnebur.Atual.CredencialUsuario.IdentificadorUsuario;
             if (IdentificadoresSessaoUsuario.ContainsKey(identificadorUsuario))
@@ -284,7 +283,7 @@ namespace Snebur.Utilidade
 
                     }
                 }
-                return default;
+                return default!;
             }
         }
 

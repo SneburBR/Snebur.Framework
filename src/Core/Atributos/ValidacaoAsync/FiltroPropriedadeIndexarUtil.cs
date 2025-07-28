@@ -6,7 +6,7 @@ namespace Snebur.Dominio.Atributos
 {
     public static class FiltroPropriedadeIndexarUtil
     {
-        public static FiltroPropriedadeIndexar RetornarPropriedadeFiltro(Type tipoEntidade, string[] partes)
+        public static FiltroPropriedadeIndexar? RetornarPropriedadeFiltro(Type tipoEntidade, string[] partes)
         {
             if (partes.Count() != 3)
             {
@@ -45,5 +45,4 @@ namespace Snebur.Dominio.Atributos
             }
         }
     }
-
 }

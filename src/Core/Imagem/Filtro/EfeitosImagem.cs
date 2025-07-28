@@ -32,28 +32,28 @@ namespace Snebur.UI
             {EnumEfeitoImagem.Londres, Londres }
         };
 
-        private static EfeitoImagem _normal;
-        private static EfeitoImagem _pretoBranco;
-        private static EfeitoImagem _sepia;
-        private static EfeitoImagem _cancum;
-        private static EfeitoImagem _moscou;
-        private static EfeitoImagem _dubai;
-        private static EfeitoImagem _paris;
-        private static EfeitoImagem _chicago;
-        private static EfeitoImagem _veneza;
-        private static EfeitoImagem _cairo;
-        private static EfeitoImagem _acapulco;
-        private static EfeitoImagem _fortaleza;
-        private static EfeitoImagem _pequim;
-        private static EfeitoImagem _atenas;
-        private static EfeitoImagem _dakar;
-        private static EfeitoImagem _rio;
-        private static EfeitoImagem _sydney;
-        private static EfeitoImagem _vancouver;
-        private static EfeitoImagem _saoPaulo;
-        private static EfeitoImagem _jaipur;
-        private static EfeitoImagem _medellin;
-        private static EfeitoImagem _londres;
+        private static EfeitoImagem? _normal;
+        private static EfeitoImagem? _pretoBranco;
+        private static EfeitoImagem? _sepia;
+        private static EfeitoImagem? _cancum;
+        private static EfeitoImagem? _moscou;
+        private static EfeitoImagem? _dubai;
+        private static EfeitoImagem? _paris;
+        private static EfeitoImagem? _chicago;
+        private static EfeitoImagem? _veneza;
+        private static EfeitoImagem? _cairo;
+        private static EfeitoImagem? _acapulco;
+        private static EfeitoImagem? _fortaleza;
+        private static EfeitoImagem? _pequim;
+        private static EfeitoImagem? _atenas;
+        private static EfeitoImagem? _dakar;
+        private static EfeitoImagem? _rio;
+        private static EfeitoImagem? _sydney;
+        private static EfeitoImagem? _vancouver;
+        private static EfeitoImagem? _saoPaulo;
+        private static EfeitoImagem? _jaipur;
+        private static EfeitoImagem? _medellin;
+        private static EfeitoImagem? _londres;
 
         public static EfeitoImagem Normal
         {

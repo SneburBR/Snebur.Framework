@@ -10,7 +10,7 @@ namespace System
         public EnumTipoLogSeguranca TipoLogSeguranca { get; }
         public ErroSeguranca(string mensagem,
                              EnumTipoLogSeguranca tipo,
-                             Exception erroInterno = null,
+                             Exception? erroInterno = null,
                              [CallerMemberName] string nomeMetodo = "",
                              [CallerFilePath] string caminhoArquivo = "",
                              [CallerLineNumber] int linhaDoErro = 0) :
@@ -28,10 +28,7 @@ namespace System
         public ErroSeguranca()
         {
         }
-
-        protected ErroSeguranca(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+         
         #endregion
     }
 }

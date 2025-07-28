@@ -17,9 +17,10 @@ namespace Snebur.Utilidade
     public static class JsonUtil
     {
 
-        private static IReferenceResolver _referenceResolver;
+        private static IReferenceResolver? _referenceResolver;
 
-        public static IReferenceResolver ReferenceResolver => LazyUtil.RetornarValorLazyComBloqueio(ref _referenceResolver, () => new ResolverReferencia());
+        public static IReferenceResolver ReferenceResolver 
+            => LazyUtil.RetornarValorLazyComBloqueio(ref _referenceResolver, () => new ResolverReferencia());
 
         private static readonly JsonSerializerSettings ConfiguracoesJavascript = new JsonSerializerSettings
         {
@@ -46,12 +47,12 @@ namespace Snebur.Utilidade
 
         };
 
-        public static T DeserializaArquivor<T>(string caminhoArquivo, EnumTipoSerializacao tipoSerializacao)
+        public static T? DeserializaArquivor<T>(string caminhoArquivo, EnumTipoSerializacao tipoSerializacao)
         {
             return DeserializaArquivor<T>(caminhoArquivo, Encoding.UTF8, tipoSerializacao);
         }
 
-        public static T DeserializaArquivor<T>(string caminhoArquivo,
+        public static T? DeserializaArquivor<T>(string caminhoArquivo,
                                               Encoding encoding,
                                               EnumTipoSerializacao tipoSerializacao)
         {
@@ -63,7 +64,7 @@ namespace Snebur.Utilidade
             }
         }
 
-        public static T TryDeserializar<T>(string json, EnumTipoSerializacao tipoSerializacao)
+        public static T? TryDeserializar<T>(string json, EnumTipoSerializacao tipoSerializacao)
         {
             try
             {
@@ -75,22 +76,22 @@ namespace Snebur.Utilidade
             }
         }
 
-        public static T Deserializar<T>(string json, EnumTipoSerializacao tipoSerializacao)
+        public static T? Deserializar<T>(string json, EnumTipoSerializacao tipoSerializacao)
         {
             return Deserializar<T>(json, tipoSerializacao, CultureInfo.InvariantCulture);
         }
-        public static T Deserializar<T>(string json,
+        public static T? Deserializar<T>(string json,
                                         EnumTipoSerializacao tipoSerializacao,
                                         CultureInfo culture)
         {
             if (String.IsNullOrEmpty(json))
             {
-                return default(T);
+                return default;
             }
-            return (T)Deserializar(json, typeof(T), tipoSerializacao, culture);
+            return (T?)Deserializar(json, typeof(T), tipoSerializacao, culture);
         }
 
-        public static object Deserializar(string json,
+        public static object? Deserializar(string json,
                                           Type tipo,
                                           EnumTipoSerializacao tipoSerializacao)
         {
@@ -99,7 +100,8 @@ namespace Snebur.Utilidade
                                 tipoSerializacao,
                                 CultureInfo.InvariantCulture);
         }
-        public static object Deserializar(string json,
+
+        public static object? Deserializar(string json,
                                           Type tipo,
                                           EnumTipoSerializacao tipoSerializacao,
                                           CultureInfo culture)

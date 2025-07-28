@@ -8,11 +8,13 @@ namespace Snebur.Dominio.Atributos
     [AttributeUsage(AttributeTargets.Property)]
     public abstract class BaseAtributoValidacao : ValidationAttribute, IAtributoValidacao
     {
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
-            var propriedade = validationContext.ObjectType.GetProperty(validationContext.MemberName);
+
+            var propriedade = validationContext.GetRequiredProperty();
             var paiPropriedade = validationContext.ObjectInstance;
             var valorPropriedade = value;
+
             if (this.IsValido(propriedade, paiPropriedade, valorPropriedade))
             {
                 return ValidationResult.Success;
@@ -20,11 +22,14 @@ namespace Snebur.Dominio.Atributos
             else
             {
                 this.ErrorMessage = this.RetornarMensagemValidacao(propriedade, paiPropriedade, valorPropriedade);
-                return new ValidationResult(this.ErrorMessage, new List<string>() { validationContext.MemberName });
+                return new ValidationResult(
+                    this.ErrorMessage,
+                    [validationContext.MemberName!]);
             }
         }
 
-        public abstract bool IsValido(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade);
-        public abstract string RetornarMensagemValidacao(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade);
+        public abstract bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade);
+
+        public abstract string RetornarMensagemValidacao(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade);
     }
 }

@@ -5,6 +5,7 @@ using Snebur.Utilidade;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
@@ -113,12 +114,13 @@ namespace Snebur.Dominio
         [NaoMapear]
         [PropriedadeProtegida]
         [SomenteLeitura]
-        public Dictionary<string, PropriedadeAlterada> __PropriedadesAlteradas { get; set; } = null;
+        public Dictionary<string, PropriedadeAlterada>? __PropriedadesAlteradas { get; set; } = null;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [NaoMapear]
         [IgnorarPropriedade, IgnorarPropriedadeTSReflexao]
         [JsonIgnore]
+        [MemberNotNullWhen(true, nameof(__PropriedadesAlteradas))]
         public bool __IsControladorPropriedadesAlteradaAtivo { get; private set; } = false;
 
         [XmlIgnore]
@@ -186,11 +188,12 @@ namespace Snebur.Dominio
             }
         }
 
-        internal protected virtual void NotificarValorPropriedadeAlterada<T>(T antigoValor,
-                                                                             T novoValor,
-                                                                             [CallerMemberName] string nomePropriedade = "",
-                                                                             string nomePropriedadeEntidade = null,
-                                                                             string nomePropriedadeTipoComplexo = null)
+        internal protected virtual void NotificarValorPropriedadeAlterada<T>(
+            T? antigoValor,
+            T? novoValor,
+            [CallerMemberName] string nomePropriedade = "",
+            string? nomePropriedadeEntidade = null,
+            string? nomePropriedadeTipoComplexo = null)
         {
             if (this.IsSerializando)
             {
@@ -200,7 +203,7 @@ namespace Snebur.Dominio
             if (this.__IsControladorPropriedadesAlteradaAtivo)
             {
                 if (this.__PropriedadesAlteradas.TryGetValue(nomePropriedade,
-                                                            out PropriedadeAlterada propriedadeAlterada))
+                                                            out PropriedadeAlterada? propriedadeAlterada))
                 {
                     if (!this.__IsClonado &&
                         Util.SaoIgual(propriedadeAlterada.AntigoValor, novoValor))
@@ -260,7 +263,7 @@ namespace Snebur.Dominio
         [EditorBrowsable(EditorBrowsableState.Never)]
         public bool __AtivarNotificacaoPropriedadeAlterada { get; set; } = true;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal protected void OnPropertyChanged(PropertyChangedEventArgs e)
@@ -285,13 +288,15 @@ namespace Snebur.Dominio
         [EditorBrowsable(EditorBrowsableState.Never)]
         [JsonProperty]
         private Guid? __IdentificadorReferencia;
+    
         [EditorBrowsable(EditorBrowsableState.Never)]
         [JsonProperty]
         private bool? __IsBaseDominioReferencia;
 
         public Guid RetornarIdentificadorReferencia()
         {
-            if (this.__IsBaseDominioReferencia.GetValueOrDefault())
+            if (this.__IsBaseDominioReferencia.GetValueOrDefault() &&
+                this.__IdentificadorReferencia.HasValue)
             {
                 return this.__IdentificadorReferencia.Value;
             }

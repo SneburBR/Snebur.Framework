@@ -22,7 +22,7 @@ namespace Snebur.Dominio
         [IgnorarPropriedadeTSReflexao]
         [OcultarColuna]
         [PropriedadeProtegida]
-        internal string __NomePropriedadeEntidade { get; set; }
+        internal string? __NomePropriedadeEntidade { get; set; }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [NaoMapear]
@@ -32,7 +32,7 @@ namespace Snebur.Dominio
         [IgnorarPropriedadeTSReflexao]
         [OcultarColuna]
         [PropriedadeProtegida]
-        internal Entidade __Entidade { get; set; }
+        internal Entidade? __Entidade { get; set; }
 
         private List<PropertyInfo> PropriedadesMapeadas { get; }
 
@@ -51,25 +51,28 @@ namespace Snebur.Dominio
             this.PropriedadesMapeadas = tipo.GetProperties().Where(x => x.DeclaringType == tipo &&
                                         x.GetGetMethod() != null &&
                                         x.GetSetMethod() != null &&
-                                        x.GetSetMethod().IsPublic &&
-                                        x.GetGetMethod().IsPublic &&
+                                        x.GetSetMethod()?.IsPublic == true &&
+                                        x.GetGetMethod()?.IsPublic == true &&
                                         x.GetCustomAttribute<NaoMapearAttribute>() == null).ToList();
         }
 
-        internal protected override void NotificarValorPropriedadeAlterada<T>(T antigoValor, T novoValor,
-                                                                           [CallerMemberName] string nomePropriedade = "",
-                                                                           string nomePropriedadeEntidade = null,
-                                                                           string nomePropriedadeTipoComplexo = null)
+        protected internal override void NotificarValorPropriedadeAlterada<T>(
+            T? antigoValor,
+            T? novoValor, [CallerMemberName] string nomePropriedade = "",
+            string? nomePropriedadeEntidade = null,
+            string? nomePropriedadeTipoComplexo = null)
+            where T : default
         {
             if (this.IsCongelado && !Util.SaoIgual(antigoValor, novoValor))
             {
                 throw new Erro("Não é possível alterar valores das propriedades quando um objeto está congelado");
             }
-            if (this.__Entidade != null &&
-                this.__Entidade.__IsControladorPropriedadesAlteradaAtivo)
+
+            if (this.__Entidade?.__IsControladorPropriedadesAlteradaAtivo == true)
             {
                 var caminhoPropriedade = $"{this.__NomePropriedadeEntidade}_{nomePropriedade}";
-                this.__Entidade.NotificarValorPropriedadeAlterada(antigoValor,
+                this.__Entidade.NotificarValorPropriedadeAlterada(
+                    antigoValor,
                     novoValor,
                     caminhoPropriedade,
                     this.__NomePropriedadeEntidade,
@@ -77,6 +80,7 @@ namespace Snebur.Dominio
             }
             base.NotificarPropriedadeAlterada(nomePropriedade);
         }
+         
 
         internal void NotificarTodasPropriedadesAlteradas(BaseTipoComplexo objetoAntigo)
         {
@@ -85,7 +89,7 @@ namespace Snebur.Dominio
                 var novoValor = propriedade.GetValue(this);
                 var antigoValor = propriedade.GetValue(objetoAntigo);
                 var caminhoPropriedade = $"{this.__NomePropriedadeEntidade}_{propriedade.Name}";
-                this.__Entidade.NotificarValorPropriedadeAlterada(antigoValor, novoValor, caminhoPropriedade);
+                this.__Entidade?.NotificarValorPropriedadeAlterada(antigoValor, novoValor, caminhoPropriedade);
             }
         }
 
@@ -98,13 +102,16 @@ namespace Snebur.Dominio
 
         public T Clone<T>() where T : BaseTipoComplexo
         {
-            return this.Clone() as T;
+            return this.Clone() as T ??
+                throw new InvalidOperationException("Clone não implementado.");
         }
 
         public BaseTipoComplexo Clone()
         {
-            return (this as ICloneable).Clone() as BaseTipoComplexo;
+            return (this as ICloneable)?.Clone() as BaseTipoComplexo
+                ?? throw new InvalidOperationException("Clone não implementado.");
         }
+
         public void Congelar()
         {
             this.IsCongelado = true;

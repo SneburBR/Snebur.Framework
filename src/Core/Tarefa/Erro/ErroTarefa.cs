@@ -15,15 +15,13 @@ namespace Snebur.Tarefa
                           base(mensagem, erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
         {
         }
+
         #region Serializacao 
 
         public ErroTarefa()
         {
         }
-
-        protected ErroTarefa(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+         
         #endregion
     }
 }

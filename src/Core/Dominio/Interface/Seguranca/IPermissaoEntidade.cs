@@ -7,7 +7,7 @@ namespace Snebur.Dominio
     public interface IPermissaoEntidade : IEntidadeSeguranca
     {
         [ValidacaoRequerido]
-        IIdentificacao Identificacao { get; set; }
+        IIdentificacao? Identificacao { get; set; }
 
         [PropriedadeDescricao]
         [Indexar]
@@ -18,16 +18,16 @@ namespace Snebur.Dominio
         //int MaximoRegistroConsulta { get; set; }
 
         [ValidacaoRequerido]
-        IRegraOperacao Leitura { get; set; }
+        IRegraOperacao? Leitura { get; set; }
 
         [ValidacaoRequerido]
-        IRegraOperacao Adicionar { get; set; }
+        IRegraOperacao? Adicionar { get; set; }
 
         [ValidacaoRequerido]
-        IRegraOperacao Atualizar { get; set; }
+        IRegraOperacao? Atualizar { get; set; }
 
         [ValidacaoRequerido]
-        IRegraOperacao Deletar { get; set; }
+        IRegraOperacao? Deletar { get; set; }
 
         IEnumerable<IPermissaoCampo> PermissoesCampo { get; }
 

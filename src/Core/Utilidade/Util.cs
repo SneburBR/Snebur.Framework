@@ -57,7 +57,7 @@ namespace Snebur.Utilidade
             return EqualityComparer<T>.Default.Equals(valor1, valor2);
         }
 
-        public static bool SaoIgual(object objeto1, object objeto2)
+        public static bool SaoIgual(object? objeto1, object? objeto2)
         {
             if (objeto1 != null && objeto2 != null)
             {

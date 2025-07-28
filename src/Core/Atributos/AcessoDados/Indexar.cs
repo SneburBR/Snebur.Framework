@@ -9,6 +9,6 @@ namespace Snebur.Dominio.Atributos
         [IgnorarPropriedade, IgnorarPropriedadeTSReflexao]
         public bool IsIgnorarMigracao { get; set; }
 
-        public string NomeIndice { get; set; }
+        public string? NomeIndice { get; set; }
     }
 }

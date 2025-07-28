@@ -2,6 +2,8 @@
 {
     public enum EnumStatusSessaoUsuario
     {
+
+        Desconhecido = 0,
         Nova = 100,
 
         Ativo = 200,
@@ -22,6 +24,6 @@
 
         IdentificadorSessaoUsuarioInexistente = 1000,
 
-        Desconhecida = 1001
+
     }
 }

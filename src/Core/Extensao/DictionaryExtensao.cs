@@ -1,4 +1,5 @@
-﻿using Snebur.Linq;
+﻿using Snebur;
+using Snebur.Linq;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -80,17 +81,21 @@ namespace System
             }
         }
 
-        public static TValue GetValueOrDefault<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> dicionario, TKey key)
+        public static TValue? GetValueOrDefault<TKey, TValue>(
+            this ConcurrentDictionary<TKey, TValue> dicionario, TKey key)
+            where TKey : notnull
         {
-            if (dicionario.TryGetValue(key, out TValue valor))
+            if (dicionario.TryGetValue(key, out TValue? valor))
             {
                 return valor;
             }
             return default;
         }
-        public static TValue GetOrAddWithLockKey<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> dicionario,
-                                                             TKey chave,
-                                                             Func<TKey, TValue> funcaoRetornarValor)
+        public static TValue? GetOrAddWithLockKey<TKey, TValue>(
+            this ConcurrentDictionary<TKey, TValue> dicionario,
+            TKey chave,
+            Func<TKey, TValue> funcaoRetornarValor)
+            where TKey : notnull
         {
             return GetOrAddWithLockKeyInterno(dicionario,
                                               chave,
@@ -98,10 +103,12 @@ namespace System
                                               funcaoRetornarValor);
         }
 
-        public static TValue GetOrAddWithLockKey<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> dicionario,
-                                                          TKey chave,
-                                                          object userState,
-                                                          Func<TKey, object, TValue> funcaoRetornarValor)
+        public static TValue? GetOrAddWithLockKey<TKey, TValue>(
+            this ConcurrentDictionary<TKey, TValue> dicionario,
+            TKey chave,
+            object? userState,
+            Func<TKey, object, TValue> funcaoRetornarValor)
+            where TKey : notnull
         {
             return GetOrAddWithLockKeyInterno(dicionario,
                                               chave,
@@ -109,20 +116,17 @@ namespace System
                                               funcaoRetornarValor);
         }
 
-        private static TValue GetOrAddWithLockKeyInterno<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> dicionario,
-                                                         TKey chave,
-                                                         object userState,
-                                                         Delegate funcaoRetornarValor,
-                                                         int tentativa = 0)
+        private static TValue? GetOrAddWithLockKeyInterno<TKey, TValue>(
+            this ConcurrentDictionary<TKey, TValue> dicionario,
+            TKey chave,
+            object? userState,
+            Delegate funcaoRetornarValor,
+            int tentativa = 0)
+            where TKey : notnull
         {
-            if (chave == null)
-            {
-                throw new ArgumentNullException(nameof(chave));
-            }
-            if (funcaoRetornarValor == null)
-            {
-                throw new ArgumentNullException(nameof(funcaoRetornarValor));
-            }
+            Guard.NotNull(chave);
+            Guard.NotNull(funcaoRetornarValor);
+            
             if (!dicionario.ContainsKey(chave))
             {
                 var bloqueio = dicionario.RetornarBloqueio(chave);
@@ -132,14 +136,14 @@ namespace System
                     {
                         if (!dicionario.ContainsKey(chave))
                         {
-                            TValue novoValor;
+                            TValue? novoValor;
                             if (funcaoRetornarValor is Func<TKey, TValue> normal)
                             {
                                 novoValor = normal.Invoke(chave);
                             }
-                            else if (funcaoRetornarValor is Func<TKey, object, TValue> aaaa)
+                            else if (funcaoRetornarValor is Func<TKey, object?, TValue> funcaoComEstado)
                             {
-                                novoValor = aaaa.Invoke(chave, userState);
+                                novoValor = funcaoComEstado.Invoke(chave, userState);
                             }
                             else
                             {
@@ -169,11 +173,13 @@ namespace System
             return GetOrAddWithLockKeyInterno(dicionario, chave, userState, funcaoRetornarValor, tentativa += 1);
 #endif
         }
-         
+
         //private static readonly object _bloqueioDicionario = new object();
         //private static readonly object _bloqueioChave = new object();
-        private static object RetornarBloqueio<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> dicionario,
-                                                            TKey chave)
+        private static object RetornarBloqueio<TKey, TValue>(
+            this ConcurrentDictionary<TKey, TValue> dicionario,
+            TKey chave)
+            where TKey : notnull
         {
             var hashDicionario = dicionario.GetHashCode();
             if (!_dicionariosBloqueio.ContainsKey(hashDicionario))

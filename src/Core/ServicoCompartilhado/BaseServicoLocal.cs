@@ -12,7 +12,7 @@ namespace Snebur.Servicos
         private const int LIMITE_DIAS_LOGS = 30; // dias
 
         protected bool IsDebugAttachDispararErro { get; set; }
-        private string _retornarRepositorioLogs;
+        private string? _retornarRepositorioLogs;
         private string CaminhoRetornarRepositorioLogs
         {
             get

@@ -7,7 +7,7 @@ namespace System
     public class ErroNaoSuportado : Erro
     {
         public ErroNaoSuportado(Type tipo,
-                              Exception erroInterno = null,
+                              Exception? erroInterno = null,
                               [CallerMemberName] string nomeMetodo = "",
                               [CallerFilePath] string caminhoArquivo = "",
                               [CallerLineNumber] int linhaDoErro = 0) :
@@ -16,7 +16,7 @@ namespace System
         }
 
         public ErroNaoSuportado(object objeto,
-                                Exception erroInterno = null,
+                                Exception? erroInterno = null,
                                 [CallerMemberName] string nomeMetodo = "",
                                 [CallerFilePath] string caminhoArquivo = "",
                                 [CallerLineNumber] int linhaDoErro = 0) :
@@ -25,7 +25,7 @@ namespace System
         }
 
         public ErroNaoSuportado(string mensagem = "",
-                                Exception erroInterno = null,
+                                Exception? erroInterno = null,
                                 [CallerMemberName] string nomeMetodo = "",
                                 [CallerFilePath] string caminhoArquivo = "",
                                 [CallerLineNumber] int linhaDoErro = 0) :
@@ -33,7 +33,7 @@ namespace System
         {
         }
 
-        private static string RetornarMensagem(Type tipo)
+        private static string RetornarMensagem(Type? tipo)
         {
             if (tipo != null)
             {
@@ -41,15 +41,13 @@ namespace System
             }
             return "o tipo não é suportado";
         }
+
         #region Serializacao 
 
         public ErroNaoSuportado()
         {
         }
-
-        protected ErroNaoSuportado(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+         
         #endregion
     }
 }

@@ -10,7 +10,7 @@ namespace Snebur.Dominio.Atributos
         public bool IsValorPadraoOnUpdate => false;
 
         public bool IsPermitirValorGlboal { get; set; }
-        public string ValorGlobal { get; set; }
+        public string? ValorGlobal { get; set; }
 
         public PropriedadeIdentificadorProprietarioAttribute()
         {

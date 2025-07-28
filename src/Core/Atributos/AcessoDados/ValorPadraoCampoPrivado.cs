@@ -6,8 +6,8 @@ namespace Snebur.Dominio.Atributos
     [AttributeUsage(AttributeTargets.Property)]
     public class ValorPadraoCampoPrivadoAttribute : Attribute/*, IValorPadrao*/
     {
-        public object ValorPadrao { get; set; }
-        public Type TipoEnum { get; }
+        public object? ValorPadrao { get; }
+        public Type? TipoEnum { get; }
 
         //public ValorPadraoCampoPrivadoAttribute(Enum valorPadrao)
         //{
@@ -78,7 +78,7 @@ namespace Snebur.Dominio.Atributos
         //    this.ValorPadrao = valorPadrao;
         //}
 
-        public object RetornarValorPadrao()
+        public object? RetornarValorPadrao()
         {
             return this.ValorPadrao;
         }

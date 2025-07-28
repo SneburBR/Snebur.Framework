@@ -16,13 +16,7 @@ namespace System
                          base(mensagem, erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
         {
         }
-        #region Serializacao 
-
-        protected ErroGlobal(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
-        #endregion
-
+       
 #if !EXTENSAO_VISUALSTUDIO
 
         protected override EnumNivelErro RetornarNivelErro()

@@ -23,7 +23,7 @@ namespace Snebur.Dominio
 
         bool __IsNewEntity { get; }
 
-        Dictionary<string, PropriedadeAlterada> __PropriedadesAlteradas { get; }
+        Dictionary<string, PropriedadeAlterada>? __PropriedadesAlteradas { get; }
         //IEntidade CloneSomenteId();
 
         //TEntidade CloneSomenteId<TEntidade>() where TEntidade : IEntidade;

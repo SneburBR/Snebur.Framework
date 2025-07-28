@@ -10,7 +10,7 @@ namespace Snebur.Dominio.Atributos
 
         public bool IsIgnorarMigracao { get; set; }
 
-        public string NomePropriedadeMapeada { get; set; }
+        public string? NomePropriedadeMapeada { get; set; }
 
         public OrdenacaoOpcoesAttribute()
         {
@@ -22,8 +22,8 @@ namespace Snebur.Dominio.Atributos
         {
             this.OrdenacaoNovoRegistro = ordenacaoNovoRegistro;
         }
-
     }
+
     [IgnorarGlobalizacao]
     public enum EnumOrdenacaoNovoRegistro
     {

@@ -4,12 +4,12 @@ namespace Snebur.Utilidade
 {
     public class ThreadControleErro
     {
-        private Action Acao { get; set; }
+        private Action? _acao;
         private string NomeThread { get; }
 
         public ThreadControleErro(Action acao, string nomeThread)
         {
-            this.Acao = acao;
+            this._acao = acao;
             this.NomeThread = nomeThread;
         }
 
@@ -20,11 +20,11 @@ namespace Snebur.Utilidade
 
         public void Executar()
         {
-            ValidacaoUtil.ValidarReferenciaNula(this.Acao, nameof(this.Acao));
+            Guard.NotNull(this._acao);
 
             try
             {
-                this.Acao.Invoke();
+                this._acao.Invoke();
             }
             catch (Exception ex)
             {
@@ -36,7 +36,7 @@ namespace Snebur.Utilidade
             }
             finally
             {
-                this.Acao = null;
+                this._acao = null;
             }
         }
 

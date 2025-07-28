@@ -13,6 +13,6 @@ namespace Snebur.Dominio
 
         long? SessaoUsuarioDeletado_Id { get; set; }
 
-        ISessaoUsuario SessaoUsuarioDeletado { get; set; }
+        ISessaoUsuario? SessaoUsuarioDeletado { get; set; }
     }
 }

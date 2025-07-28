@@ -20,10 +20,7 @@ namespace Snebur.AcessoDados
         public ErroFalhaAutenticacao()
         {
         }
-
-        protected ErroFalhaAutenticacao(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+         
         #endregion
     }
 }

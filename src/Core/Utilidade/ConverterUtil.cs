@@ -1,6 +1,8 @@
 ﻿using Snebur.Dominio;
+using Snebur.Helpers;
 using Snebur.Reflexao;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 
@@ -12,12 +14,17 @@ namespace Snebur.Utilidade
 
         #endregion
 
-        public static T Converter<T>(object valor)
+        public static T Converter<T>(object? valor)
         {
-            return (T)Converter(valor, typeof(T));
+            var conveterdValue = (T?)Converter(valor, typeof(T));
+            if (conveterdValue is not null)
+            {
+                return conveterdValue;
+            }
+            return default!;
         }
 
-        public static object Converter(object valor, Type tipo)
+        public static object? Converter(object? valor, Type tipo)
         {
             var tipoValor = valor?.GetType();
             if (valor == null || valor == DBNull.Value)
@@ -26,7 +33,8 @@ namespace Snebur.Utilidade
                 {
                     if (ReflexaoUtil.IsTipoNullable(tipo))
                     {
-                        return null;
+                        return TypeHelper.GetDefaultValue(tipo);
+
                     }
                     return RetornarValorNuloPadrao(ReflexaoUtil.RetornarTipoPrimarioEnum(tipo));
                 }
@@ -38,9 +46,12 @@ namespace Snebur.Utilidade
                 tipo = ReflexaoUtil.RetornarTipoSemNullable(tipo);
             }
 
-            if (ReflexaoUtil.IsTipoIgualOuHerda(tipoValor, tipo))
+            if (tipoValor is not null)
             {
-                return valor;
+                if (ReflexaoUtil.IsTipoIgualOuHerda(tipoValor, tipo))
+                {
+                    return valor;
+                }
             }
 
             if (tipo.IsValueType || tipo == typeof(string))
@@ -63,76 +74,82 @@ namespace Snebur.Utilidade
             return Convert.ChangeType(valor, tipo);
         }
 
-        public static object ConverterTipoPrimario(object valor,
+        public static object? ConverterTipoPrimario(object? valor,
                                                   EnumTipoPrimario tipoPrimarioEnum)
         {
-            if (IsValorVazioOuNull(valor))
+            if (valor is null)
             {
-                return RetornarValorNuloPadrao(tipoPrimarioEnum);
+                return RetornarValorNuloPadrao(tipoPrimarioEnum)!;
             }
-            else
+
+            var valorString = valor.ToString()!;
+            if (string.IsNullOrWhiteSpace(valorString))
             {
-                switch (tipoPrimarioEnum)
-                {
-                    case EnumTipoPrimario.String:
+                return RetornarValorNuloPadrao(tipoPrimarioEnum)!;
+            }
 
-                        return ParaString(valor);
+            Guard.NotNull(valor);
 
-                    case EnumTipoPrimario.Boolean:
+            switch (tipoPrimarioEnum)
+            {
+                case EnumTipoPrimario.String:
 
-                        return ParaBoolean(valor);
+                    return ParaString(valor);
 
-                    case EnumTipoPrimario.Integer:
+                case EnumTipoPrimario.Boolean:
 
-                        return ParaInt32(valor);
+                    return ParaBoolean(valor);
 
-                    case EnumTipoPrimario.Long:
+                case EnumTipoPrimario.Integer:
 
-                        return ParaInt64(valor);
+                    return ParaInt32(valor);
 
-                    case EnumTipoPrimario.Decimal:
+                case EnumTipoPrimario.Long:
 
-                        return ParaDecimal(valor);
+                    return ParaInt64(valor);
 
-                    case EnumTipoPrimario.Double:
+                case EnumTipoPrimario.Decimal:
 
-                        return ParaDouble(valor);
+                    return ParaDecimal(valor);
 
-                    case EnumTipoPrimario.Guid:
+                case EnumTipoPrimario.Double:
 
-                        return ParaGuid(valor);
+                    return ParaDouble(valor);
 
-                    case EnumTipoPrimario.TimeSpan:
+                case EnumTipoPrimario.Guid:
 
-                        return TimeSpan.Parse(valor.ToString());
+                    return ParaGuid(valor);
 
-                    case EnumTipoPrimario.DateTime:
+                case EnumTipoPrimario.TimeSpan:
 
-                        return ParaDateTime(valor);
+                    return TimeSpan.Parse(valor.ToString()!);
 
-                    case EnumTipoPrimario.Single:
+                case EnumTipoPrimario.DateTime:
 
-                        return ParaSingle(valor);
+                    return ParaDateTime(valor);
 
-                    //case EnumTipoPrimario.Uri:
+                case EnumTipoPrimario.Single:
 
-                    //    return new Uri(valor.ToString());
+                    return ParaSingle(valor);
 
-                    case EnumTipoPrimario.EnumValor:
+                //case EnumTipoPrimario.Uri:
 
-                        return Int32.Parse(valor.ToString());
+                //    return new Uri(valor.ToString());
 
-                    case EnumTipoPrimario.Char:
+                case EnumTipoPrimario.EnumValor:
 
-                        return Char.Parse(valor.ToString());
+                    return Int32.Parse(valorString);
 
-                    case EnumTipoPrimario.Byte:
+                case EnumTipoPrimario.Char:
 
-                        return Convert.ToByte(valor);
+                    return Char.Parse(valorString);
 
-                    default:
-                        throw new ErroNaoSuportado(String.Format("O tipo {0} não é suportado", EnumUtil.RetornarDescricao(tipoPrimarioEnum)));
-                }
+                case EnumTipoPrimario.Byte:
+
+                    return Convert.ToByte(valor);
+
+                default:
+                    throw new ErroNaoSuportado(String.Format("O tipo {0} não é suportado", EnumUtil.RetornarDescricao(tipoPrimarioEnum)));
             }
         }
 
@@ -142,56 +159,60 @@ namespace Snebur.Utilidade
             return resultado;
         }
 
-        public static bool ParaBoolean(object valor)
+        public static bool ParaBoolean(object? valor)
         {
-            if (valor == null || valor == DBNull.Value || String.IsNullOrWhiteSpace(valor.ToString()))
+            if (valor == null || valor == DBNull.Value)
             {
                 return false;
             }
-            else
+
+            var valorString = valor.ToString()?.ToLower().Trim();
+            if (String.IsNullOrWhiteSpace(valorString))
             {
-                if (valor is string)
+                return false;
+            }
+
+            if (valor is string)
+            {
+                switch (valorString)
                 {
-                    var valorString = valor.ToString().ToLower().Trim();
-                    switch (valorString)
-                    {
-                        case "true":
-                        case "yes":
-                        case "sim":
-                        case "1":
+                    case "true":
+                    case "yes":
+                    case "sim":
+                    case "1":
 
-                            return true;
+                        return true;
 
-                        case "false":
-                        case "no":
-                        case "nao":
-                        case "não":
-                        case "0":
+                    case "false":
+                    case "no":
+                    case "nao":
+                    case "não":
+                    case "0":
 
-                            return false;
+                        return false;
 
-                        default:
+                    default:
 
-                            if (Boolean.TryParse(valorString, out var resultdo))
-                            {
-                                return resultdo;
-                            }
-                            return false;
-                            //throw new ErroNaoSuportado(String.Format("Não é possível converter o valor {0} em bollean", valorString));
-                    }
-                }
-                else
-                {
-                    if (valor is IConvertible convertible)
-                    {
-                        return convertible.ToBoolean(CultureInfo.CurrentCulture);
-                    }
-                    return false;
+                        if (Boolean.TryParse(valorString, out var resultdo))
+                        {
+                            return resultdo;
+                        }
+                        return false;
+                        //throw new ErroNaoSuportado(String.Format("Não é possível converter o valor {0} em bollean", valorString));
                 }
             }
+            else
+            {
+                if (valor is IConvertible convertible)
+                {
+                    return convertible.ToBoolean(CultureInfo.CurrentCulture);
+                }
+                return false;
+            }
+
         }
 
-        public static object Para(object valor, Type tipo)
+        public static object? Para(object? valor, Type tipo)
         {
             if (valor == null || DBNull.Value == valor)
             {
@@ -211,7 +232,7 @@ namespace Snebur.Utilidade
             return ConverterTipoPrimario(valor, tipoPrimario);
         }
 
-        public static T Try<T>(object valor)
+        public static T Try<T>(object? valor)
         {
             try
             {
@@ -219,16 +240,16 @@ namespace Snebur.Utilidade
             }
             catch
             {
-                return default;
+                return default!;
             }
-
         }
-        public static T Para<T>(object valor)
+
+        public static T Para<T>(object? valor)
         {
             if (valor == null || DBNull.Value == valor ||
                (valor is string str && String.IsNullOrEmpty(str)))
             {
-                return default;
+                return default!;
             }
 
             var tipo = typeof(T);
@@ -238,10 +259,10 @@ namespace Snebur.Utilidade
                 return (T)Convert.ChangeType(valor, tipo);
             }
 
-            return (T)ConverterTipoPrimario(valor, tipoPrimario);
+            return (T)ConverterTipoPrimario(valor, tipoPrimario)!;
         }
 
-        public static int ParaInt32(object valor, IFormatProvider provider = null)
+        public static int ParaInt32(object valor, IFormatProvider? provider = null)
         {
             if (valor is int)
             {
@@ -259,7 +280,7 @@ namespace Snebur.Utilidade
             return 0;
         }
 
-        public static long ParaInt64(object valor, IFormatProvider provider = null)
+        public static long ParaInt64(object valor, IFormatProvider? provider = null)
         {
             if (valor is long lvalor)
             {
@@ -276,7 +297,7 @@ namespace Snebur.Utilidade
             return 0L;
         }
 
-        public static decimal ParaDecimal(object valor, IFormatProvider provider = null)
+        public static decimal ParaDecimal(object valor, IFormatProvider? provider = null)
         {
             if (valor is decimal d)
             {
@@ -293,7 +314,7 @@ namespace Snebur.Utilidade
             return 0m;
         }
 
-        public static double ParaSingle(object valor, IFormatProvider provider = null)
+        public static double ParaSingle(object valor, IFormatProvider? provider = null)
         {
             if (valor is float d)
             {
@@ -310,7 +331,7 @@ namespace Snebur.Utilidade
             return 0f;
         }
 
-        public static double ParaDouble(object valor, IFormatProvider provider = null)
+        public static double ParaDouble(object valor, IFormatProvider? provider = null)
         {
             if (valor is double d)
             {
@@ -322,9 +343,9 @@ namespace Snebur.Utilidade
                 return 0D;
             }
 
-            if(valor is string str)
+            if (valor is string str)
             {
-                if(provider== null)
+                if (provider == null)
                 {
                     var indexLastVirgual = str.LastIndexOf(',');
                     var indexLastPonto = str.LastIndexOf('.');
@@ -346,18 +367,23 @@ namespace Snebur.Utilidade
             return 0d;
         }
 
-        public static DateTime ParaDateTime(object valor, IFormatProvider provider = null)
+        public static DateTime ParaDateTime(object valor, IFormatProvider? provider = null)
         {
             if (valor is DateTime d)
             {
                 return d;
             }
 
-            if (IsValorVazioOuNull(valor))
+            if (valor is null)
             {
                 return DateTime.Now;
             }
+
             var dataString = valor.ToString();
+            if (String.IsNullOrWhiteSpace(dataString))
+            {
+                return DateTime.Now;
+            }
 
             if (DateTime.TryParse(dataString,
                                   CultureInfo.CurrentCulture,
@@ -366,6 +392,7 @@ namespace Snebur.Utilidade
             {
                 return data;
             }
+
             if (DateTime.TryParse(dataString,
                               CultureInfo.InvariantCulture,
                               DateTimeStyles.AssumeUniversal,
@@ -425,7 +452,7 @@ namespace Snebur.Utilidade
                    String.IsNullOrWhiteSpace(valor.ToString());
         }
 
-        public static object RetornarValorNuloPadrao(EnumTipoPrimario tipoPrimarioEnum)
+        public static object? RetornarValorNuloPadrao(EnumTipoPrimario tipoPrimarioEnum)
         {
             switch (tipoPrimarioEnum)
             {
@@ -495,9 +522,10 @@ namespace Snebur.Utilidade
             }
         }
 
-        public static string ParaString(object valorTipado, bool isAceitarNulo = false)
+        
+        public static string? ParaString(object? valorTipado, bool isAceitarNulo = false)
         {
-            if (valorTipado == null)
+            if (valorTipado is null)
             {
                 if (isAceitarNulo)
                 {
@@ -505,7 +533,7 @@ namespace Snebur.Utilidade
                 }
                 return String.Empty;
             }
-            return valorTipado.ToString();
+            return valorTipado?.ToString();
         }
 
         public static string ConverterHexaParaRgbaInterno(string corHexa)
@@ -546,7 +574,7 @@ namespace Snebur.Utilidade
 
         internal static Dimensao ParaDimensao(object valor)
         {
-            if(valor== null)
+            if (valor == null)
             {
                 return Dimensao.Empty;
             }
@@ -561,11 +589,11 @@ namespace Snebur.Utilidade
                 return new Dimensao(_dimensao.Largura, _dimensao.Altura);
             }
 
-            if(valor is string str)
+            if (valor is string str)
             {
                 return Dimensao.Parse(str);
             }
-            
+
             throw new ErroNaoSuportado($"Não foi possível converter o valor {valor} para Dimensão");
         }
     }

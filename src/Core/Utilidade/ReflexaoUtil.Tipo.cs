@@ -338,9 +338,8 @@ namespace Snebur.Utilidade
 
         public static bool IsTipoIgualOuHerda(Type tipo, Type tipoBase)
         {
-
-            ErroUtil.ValidarReferenciaNula(tipo, nameof(tipo));
-            ErroUtil.ValidarReferenciaNula(tipoBase, nameof(tipoBase));
+            Guard.NotNull(tipo);
+            Guard.NotNull(tipoBase);
 
             if (tipo == tipoBase || tipo.IsSubclassOf(tipoBase))
             {

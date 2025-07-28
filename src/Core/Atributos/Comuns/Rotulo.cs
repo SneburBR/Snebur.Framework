@@ -8,9 +8,9 @@ namespace Snebur.Dominio.Atributos
                     AttributeTargets.Enum, AllowMultiple = false)]
     public class RotuloAttribute : BaseAtributoDominio
     {
-        private string _rotuloPlural;
+        private string? _rotuloPlural;
 
-        public string Rotulo { get; set; }
+        public string Rotulo { get; }
 
         public string RotuloPlural
         {
@@ -27,6 +27,7 @@ namespace Snebur.Dominio.Atributos
                 this._rotuloPlural = value;
             }
         }
+
         [IgnorarConstrutorTS]
         public RotuloAttribute(string rotulo)
         {

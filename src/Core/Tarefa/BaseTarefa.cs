@@ -17,7 +17,7 @@ namespace Snebur.Tarefa
         #region Propriedades
 
         private double _progresso;
-        private EnumStatusTarefa _statusTarefa { get; set; }
+        private EnumStatusTarefa _statusTarefa;
 
         public double Progresso
         {
@@ -48,32 +48,32 @@ namespace Snebur.Tarefa
 
         public Guid Identificador { get; }
 
-        public TimeSpan Timeout { get; set; }
+        public TimeSpan Timeout { get; }
         public bool AtivarProgresso { get; set; }
         public DateTime DataHoraUltimaAtividade { get; set; }
-        public Exception Erro { get; set; }
+        public Exception? Erro { get; set; }
 
-        protected Action<ResultadoTarefaFinalizadaEventArgs> CallbackTarefaConcluida;
+        protected Action<ResultadoTarefaFinalizadaEventArgs>? CallbackTarefaConcluida;
 
         #endregion
 
         #region Eventos
 
-        public event EventHandler<ProgressoAlteradoEventArgs> ProgressoAlterado;
-        public event EventHandler<StatusTarefaAlteradoEventArgs> StatusTarefaAlterado;
+        public event EventHandler<ProgressoAlteradoEventArgs>? ProgressoAlterado;
+        public event EventHandler<StatusTarefaAlteradoEventArgs>? StatusTarefaAlterado;
         //public event EventHandler<Exception> EventoErro;
 
         #endregion
 
         public static readonly object _bloqueio = new object();
 
-        private Timer TimerAnalizarTimeout { get; set; }
+        private Timer? _timerAnalizarTimeout;
 
-        private TimeSpan IntervalorAnalisarTimeout { get; set; } = TIMEOUT_PADRAO;
+        private TimeSpan IntervalorAnalisarTimeout { get; } = TIMEOUT_PADRAO;
 
         #region Construtor
 
-        public BaseTarefa()
+        protected BaseTarefa()
         {
             this.Identificador = Guid.NewGuid();
             this._statusTarefa = EnumStatusTarefa.Aguardando;
@@ -92,8 +92,8 @@ namespace Snebur.Tarefa
 
         private void Iniciar()
         {
-            this.TimerAnalizarTimeout = new Timer((int)this.IntervalorAnalisarTimeout.TotalMilliseconds);
-            this.TimerAnalizarTimeout.Start();
+            this._timerAnalizarTimeout = new Timer((int)this.IntervalorAnalisarTimeout.TotalMilliseconds);
+            this._timerAnalizarTimeout.Start();
 
             this.Status = EnumStatusTarefa.Executando;
             this.DataHoraUltimaAtividade = DateTime.Now;
@@ -104,8 +104,8 @@ namespace Snebur.Tarefa
         {
             lock (_bloqueio)
             {
-                this.TimerAnalizarTimeout?.Stop();
-                this.Status = (erro != null) ? EnumStatusTarefa.Erro : EnumStatusTarefa.Concluida;
+                this._timerAnalizarTimeout?.Stop();
+                this.Status = (erro is not null) ? EnumStatusTarefa.Erro : EnumStatusTarefa.Concluida;
                 if (this.CallbackTarefaConcluida != null)
                 {
                     var callback = this.CallbackTarefaConcluida;
@@ -164,7 +164,8 @@ namespace Snebur.Tarefa
             {
                 TaskUtil.Run(() =>
                 {
-                    try { this.ProgressoAlterado(this, progressoEventArgs); } catch { };
+                    try { this.ProgressoAlterado(this, progressoEventArgs); } catch { }
+                    ;
                 });
             }
         }
@@ -176,21 +177,21 @@ namespace Snebur.Tarefa
         {
             this.Status = EnumStatusTarefa.Pausando;
             this.DataHoraUltimaAtividade = DateTime.Now;
-            this.TimerAnalizarTimeout.Stop();
+            this._timerAnalizarTimeout?.Stop();
         }
 
         protected void IniciarCancelamento()
         {
             this.Status = EnumStatusTarefa.Cancelando;
             this.DataHoraUltimaAtividade = DateTime.Now;
-            this.TimerAnalizarTimeout.Stop();
+            this._timerAnalizarTimeout?.Stop();
         }
 
         protected void IniciarContinuar()
         {
             this.Status = EnumStatusTarefa.Executando;
             this.DataHoraUltimaAtividade = DateTime.Now;
-            this.TimerAnalizarTimeout.Start();
+            this._timerAnalizarTimeout?.Start();
         }
 
         internal abstract void ExecutarInterno();
@@ -236,7 +237,7 @@ namespace Snebur.Tarefa
 
         #region INotifyPropertyChanged
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         private void NotificarPropriedadeAlterada([CallerMemberName] string nomePropriedade = "")
         {

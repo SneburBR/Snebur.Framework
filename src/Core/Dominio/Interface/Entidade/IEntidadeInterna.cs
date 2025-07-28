@@ -6,9 +6,9 @@ namespace Snebur.Dominio
     [IgnorarInterfaceTS]
     public interface IEntidadeInterna : IEntidade
     {
-        List<string> __PropriedadesAbertas { get; }
+        List<string>? __PropriedadesAbertas { get; }
 
-        List<string> __PropriedadesAutorizadas { get; }
+        List<string>? __PropriedadesAutorizadas { get; }
 
         //void AtivarControladorPropriedadeAlterada();
 

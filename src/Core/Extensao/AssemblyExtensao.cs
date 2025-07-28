@@ -48,19 +48,19 @@ namespace System.Reflection
 
         public static bool IsAssemblyEntidades(this Assembly assembly)
         {
-            if (assembly.FullName.StartsWith("System"))
+            if (assembly.FullName?.StartsWith("System") == true)
             {
                 return false;
             }
 
-            if(assembly.GetCustomAttribute<AssemblyEntidadesAttribute>() != null)
+            if (assembly.GetCustomAttribute<AssemblyEntidadesAttribute>() != null)
             {
                 return true;
             }
 
             if (DebugUtil.IsAttached)
             {
-                if (assembly.FullName.Contains("Entidades"))
+                if (assembly.FullName?.Contains("Entidades") == true)
                 {
                     throw new Exception($"Adicione o atributos {nameof(AssemblyEntidadesAttribute)} no assembly {assembly.FullName}");
                 }
@@ -83,12 +83,16 @@ namespace System.Reflection
             }
             catch (ReflectionTypeLoadException ex)
             {
-                return ex.Types.Where(t => t != null);
+                return ex.Types.Where(t => t is not null)
+                    .Cast<Type>()
+                    .ToArray();
             }
         }
-         
+
         public static string GetResourceAsString(
-            this Assembly assembly, string resource, Encoding encoding = null)
+            this Assembly assembly, 
+            string resource,
+            Encoding? encoding = null)
         {
             encoding = encoding ?? Encoding.UTF8;
             using (var ms = new MemoryStream())

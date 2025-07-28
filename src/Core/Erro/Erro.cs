@@ -10,10 +10,9 @@ namespace System
     {
 
         internal protected virtual bool IsNotificarErro => true;
-
         internal protected virtual bool IsParaDepuracaoAtachada => true;
 
-        internal bool NotificaoEnviada { get; private set; }
+        internal bool NotificaoEnviada { get; }
 
         public string NomeMetodo { get; }
         public string CaminhoArquivo { get; }
@@ -26,7 +25,7 @@ namespace System
         public bool IsExisteLinhaDoErro => this.LinhaDoErro > 0;
 
         public Erro(string mensagem = "",
-                    Exception erroInterno = null,
+                    Exception? erroInterno = null,
                     [CallerMemberName] string nomeMetodo = "",
                     [CallerFilePath] string caminhoArquivo = "",
                     [CallerLineNumber] int linhaDoErro = 0) : base(mensagem, erroInterno)
@@ -49,17 +48,20 @@ namespace System
         }
         #region Serialização 
 
-        public Erro()
+        private Erro()
         {
+            this.NomeMetodo = "";
+            this.CaminhoArquivo = "";
         }
 
-        protected Erro(SerializationInfo info, StreamingContext context)
-#if NET6_0
-            : base(info, context)
-#endif
-        {
-        }
-#endregion
+        //        protected Erro(SerializationInfo info, StreamingContext context)
+        //#if NET6_0_OR_GREATER
+        //            : base(info, context)
+        //#endif
+        //        {
+        //        }
+
+        #endregion
 
         protected virtual bool IsNotificar()
         {

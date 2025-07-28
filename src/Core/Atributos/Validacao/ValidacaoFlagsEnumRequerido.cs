@@ -11,22 +11,30 @@ namespace Snebur.Dominio.Atributos
         [MensagemValidacao]
         public static string MensagemValidacao { get; set; } = "O campo {0} deve ser preenchido.";
 
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
             var resultado = base.IsValid(value, validationContext);
-            if (resultado != null)
+            if (resultado is not null)
             {
-                var propriedade = validationContext.ObjectType.GetProperty(validationContext.MemberName);
-                var paiPropriedade = validationContext.ObjectInstance;
-                var valorPropriedade = value;
-                if (this.IsValido(propriedade, paiPropriedade, valorPropriedade))
+                if (!String.IsNullOrWhiteSpace(validationContext.MemberName))
                 {
-                    return ValidationResult.Success;
-                }
-                else
-                {
-                    this.ErrorMessage = this.RetornarMensagemValidacao(propriedade, paiPropriedade, valorPropriedade);
-                    resultado.ErrorMessage = this.ErrorMessage;
+                    var propriedade = validationContext.GetRequiredProperty();
+                    if (propriedade is not null)
+                    {
+                        var paiPropriedade = validationContext.ObjectInstance;
+                        var valorPropriedade = value;
+                        if (this.IsValido(propriedade, paiPropriedade, valorPropriedade))
+                        {
+                            return ValidationResult.Success;
+                        }
+                        else
+                        {
+                            this.ErrorMessage = this.RetornarMensagemValidacao(propriedade, 
+                                paiPropriedade, 
+                                valorPropriedade);
+                            resultado.ErrorMessage = this.ErrorMessage;
+                        }
+                    }
                 }
             }
             return resultado;
@@ -34,12 +42,18 @@ namespace Snebur.Dominio.Atributos
 
         #region IAtributoValidacao
 
-        public bool IsValido(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
+        public bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
         {
+            if(valorPropriedade is null)
+            {
+                return false;
+            }
             return ValidacaoUtil.IsFlagsEnumDefinida(propriedade.PropertyType, (Enum)valorPropriedade);
         }
 
-        public string RetornarMensagemValidacao(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
+        public string RetornarMensagemValidacao(PropertyInfo propriedade, 
+            object paiPropriedade,
+            object? valorPropriedade)
         {
             var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
             return String.Format(MensagemValidacao, rotulo);

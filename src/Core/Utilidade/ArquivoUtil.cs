@@ -76,7 +76,7 @@ namespace Snebur.Utilidade
             return extensao;
         }
 
-        public static string RetornarVersao(string arquivo)
+        public static string? RetornarVersao(string arquivo)
         {
             return FileVersionInfo.GetVersionInfo(arquivo).FileVersion;
         }
@@ -236,8 +236,9 @@ namespace Snebur.Utilidade
                 }
                 return;
             }
+
             var arquivoDestino = new FileInfo(caminhoDestinio);
-            DiretorioUtil.CriarDiretorio(arquivoDestino.Directory.FullName);
+            DiretorioUtil.CriarDiretorio(arquivoDestino.Directory?.FullName);
 
             if (arquivoDestino.Exists || File.Exists(caminhoDestinio))
             {
@@ -269,7 +270,6 @@ namespace Snebur.Utilidade
                         throw new Erro(String.Format("O arquivo {0} de destino já existe {0}", caminhoDestinio));
                     }
                 }
-
             }
             catch
             {
@@ -348,8 +348,13 @@ namespace Snebur.Utilidade
             return RetornarCaminhoArquivoCopia(new FileInfo(caminhoArquivo), copia, incluirPalabraCopia);
         }
 
-        public static string RetornarCaminhoArquivoCopia(FileInfo fi, int copia, bool incluirPalabraCopia = false)
+        public static string RetornarCaminhoArquivoCopia(FileInfo fi,
+            int copia,
+            bool incluirPalabraCopia = false)
         {
+
+            Guard.NotNull(fi.Directory);
+
             var nomeArquivo = RetornarNomeArquivoCopia(fi.Name, copia, incluirPalabraCopia);
             return CaminhoUtil.Combine(fi.Directory.FullName, nomeArquivo);
         }
@@ -361,6 +366,7 @@ namespace Snebur.Utilidade
 
         public static string RetornarCaminhoArquivoCopia(FileInfo fi, bool incluirPalabraCopia = false, bool incluirEspaco = true)
         {
+            Guard.NotNull(fi.Directory);
             DiretorioUtil.CriarDiretorio(fi.Directory.FullName);
 
             var contador = 1;
@@ -456,7 +462,7 @@ namespace Snebur.Utilidade
             return LerTexto(arquivoScript.FullName);
         }
 
-        public static string TryLerTexto(string caminho, Encoding encoding = null)
+        public static string TryLerTexto(string caminho, Encoding? encoding = null)
         {
             try
             {
@@ -464,7 +470,7 @@ namespace Snebur.Utilidade
             }
             catch
             {
-                return null;
+                return String.Empty;
             }
         }
 
@@ -474,13 +480,13 @@ namespace Snebur.Utilidade
             return LerTexto(caminho, encoding);
         }
 
-        public static string LerTexto(string caminho, Encoding encoding = null)
+        public static string LerTexto(string caminho, Encoding? encoding = null)
         {
             return File.ReadAllText(caminho, encoding ?? Encoding.UTF8);
         }
 
         public static void CriarArquivoTexto(string caminho,
-                                             string contudo = null,
+                                             string? contudo = null,
                                              bool isIgnorarEro = false)
         {
             if (File.Exists(caminho))
@@ -515,13 +521,16 @@ namespace Snebur.Utilidade
             SalvarTexto(caminho, texto, Encoding.UTF8);
         }
 
-        public static void SalvarTexto(string caminho, string texto, Encoding encoding)
+        public static void SalvarTexto(string caminho, string texto, Encoding? encoding)
         {
-            ErroUtil.ValidarReferenciaNula(caminho, nameof(caminho));
-            ErroUtil.ValidarReferenciaNula(texto, nameof(texto));
-            ErroUtil.ValidarReferenciaNula(encoding, nameof(encoding));
+            Guard.NotNull(caminho);
+            Guard.NotNull(texto);
 
+            encoding ??= Encoding.UTF8;
+             
             var infoArquivo = new FileInfo(caminho);
+            Guard.NotNull(infoArquivo.Directory);
+
             DiretorioUtil.CriarDiretorio(infoArquivo.Directory.FullName);
 
             if (infoArquivo.Exists)
@@ -538,9 +547,10 @@ namespace Snebur.Utilidade
             }
         }
 
-        public static Task SalvarArquivoTextoAsync(string caminhoArquivo,
-                                                   string texto,
-                                                   Encoding encoding = null)
+        public static Task SalvarArquivoTextoAsync(
+            string caminhoArquivo,
+            string texto,
+            Encoding? encoding = null)
         {
             return TaskUtil.Run(() => SalvarArquivoTexto(caminhoArquivo, texto, encoding));
         }
@@ -551,18 +561,20 @@ namespace Snebur.Utilidade
         }
         public static void SalvarArquivoTexto(string caminhoArquivo,
                                               string texto,
-                                              Encoding encoding)
+                                              Encoding? encoding)
         {
             SalvarArquivoTexto(caminhoArquivo, texto, encoding, 0, false);
         }
 
         private static void SalvarArquivoTexto(string caminhoArquivo,
                                                string texto,
-                                               Encoding encoding,
+                                               Encoding? encoding,
                                                int tentatava,
                                                bool temmporario)
         {
             var fi = new FileInfo(caminhoArquivo);
+            Guard.NotNull(fi.Directory);
+
             DiretorioUtil.CriarDiretorio(fi.Directory.FullName);
             try
             {
@@ -611,6 +623,7 @@ namespace Snebur.Utilidade
 
         public static string GetCurrentFilaName(this FileInfo fi)
         {
+            Guard.NotNull(fi.Directory);
             var arquivos = Directory.GetFiles(fi.Directory.FullName, fi.Name);
             if (arquivos.Length == 1)
             {

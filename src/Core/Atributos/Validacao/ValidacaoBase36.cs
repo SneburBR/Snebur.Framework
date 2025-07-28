@@ -12,7 +12,7 @@ namespace Snebur.Dominio.Atributos
 
         public bool IsPermitirEspaco { get; set; }
         public bool IsIgnorarCase { get; set; }
-        public string CaracteresExtra { get; set; }
+        public string? CaracteresExtra { get; set; }
 
         [IgnorarConstrutorTS]
         public ValidacaoBase36Attribute() : this(false, true, null)
@@ -26,7 +26,7 @@ namespace Snebur.Dominio.Atributos
 
         public ValidacaoBase36Attribute(bool isPermitirEspaco,
                                         bool isIgnorarCase,
-                                        string caracteresExtra)
+                                        string? caracteresExtra)
         {
             this.IsPermitirEspaco = isPermitirEspaco;
             this.IsIgnorarCase = isIgnorarCase;
@@ -34,14 +34,14 @@ namespace Snebur.Dominio.Atributos
         }
 
         public override bool IsValido(PropertyInfo propriedade,
-                                      object paiPropriedade,
-                                      object valorPropriedade)
+                                      object? paiPropriedade,
+                                      object? valorPropriedade)
         {
             if (!ValidacaoUtil.IsDefinido(valorPropriedade))
             {
                 return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
             }
-
+            
             return Base36Util.IsBase36(valorPropriedade.ToString(), 
                                        this.IsPermitirEspaco,
                                        this.IsIgnorarCase,

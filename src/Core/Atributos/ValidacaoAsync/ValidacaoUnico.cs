@@ -12,9 +12,9 @@ namespace Snebur.Dominio.Atributos
         public static string MensagemValidacao { get; set; } = "O {0} '{1}' já existe.";
         public bool IsIgnorarNulo { get; set; } = true;
         public bool IsIgnorarZero { get; set; }
-        public Type TipoEntidade { get; }
-        public string NomePropriedadeFiltro { get; }
-        public object ValorPropriedadeFiltro { get; }
+        public Type? TipoEntidade { get; }
+        public string? NomePropriedadeFiltro { get; }
+        public object? ValorPropriedadeFiltro { get; }
         public EnumOperadorComparacao OperadorFiltro { get; }
 
         [IgnorarPropriedade, IgnorarPropriedadeTSReflexao]
@@ -31,10 +31,12 @@ namespace Snebur.Dominio.Atributos
         }
 
         [IgnorarConstrutorTS]
-        public ValidacaoUnicoAttribute(Type tipoEntidade,
-                                       string nomePropriedadeFiltro,
-                                       object valorPropriedadeFiltro,
-                                       EnumOperadorComparacao operadorFiltro = EnumOperadorComparacao.Igual) : this(tipoEntidade, false, false, nomePropriedadeFiltro, valorPropriedadeFiltro, operadorFiltro)
+        public ValidacaoUnicoAttribute(
+            Type tipoEntidade,
+            string nomePropriedadeFiltro,
+            object valorPropriedadeFiltro,
+            EnumOperadorComparacao operadorFiltro = EnumOperadorComparacao.Igual) 
+            : this(tipoEntidade, false, false, nomePropriedadeFiltro, valorPropriedadeFiltro, operadorFiltro)
         {
 
         }

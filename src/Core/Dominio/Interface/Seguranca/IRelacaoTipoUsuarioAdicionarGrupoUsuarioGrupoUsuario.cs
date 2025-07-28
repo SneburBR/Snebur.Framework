@@ -6,9 +6,9 @@ namespace Snebur.Dominio
     public interface IRelacaoTipoUsuarioAdicionarGrupoUsuarioGrupoUsuario : IEntidadeSeguranca
     {
         [RelacaoPai]
-        ITipoUsuarioAdicionarGrupoUsuario TipoUsuarioAdicionarGrupoUsuario { get; set; }
+        ITipoUsuarioAdicionarGrupoUsuario? TipoUsuarioAdicionarGrupoUsuario { get; set; }
 
         [RelacaoPai]
-        IGrupoUsuario GrupoUsuario { get; set; }
+        IGrupoUsuario? GrupoUsuario { get; set; }
     }
 }

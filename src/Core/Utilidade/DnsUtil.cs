@@ -19,7 +19,7 @@ namespace Snebur.Utilidade
             private const string DNS_SERVER = "8.8.8.8";
             private readonly QueryType queryType;
             private readonly string Domain;
-            private int[] Response;
+            private int[]? _response;
 
             public DNSClient(string domain, QueryType queryType)
             {
@@ -35,12 +35,12 @@ namespace Snebur.Utilidade
                     byte[] request = this.CreateRequest();
 
                     udpClient.Send(request, request.Length);
-                    IPEndPoint endpoint = null;
+                    IPEndPoint? endpoint = null;
                     byte[] responseBytes = udpClient.Receive(ref endpoint);
-                    this.Response = new int[responseBytes.Length];
-                    for (int i = 0; i < this.Response.Length; i++)
+                    this._response = new int[responseBytes.Length];
+                    for (int i = 0; i < this._response.Length; i++)
                     {
-                        this.Response[i] = Convert.ToInt32(responseBytes[i]);
+                        this._response[i] = Convert.ToInt32(responseBytes[i]);
                     }
                 }
                 return this.ParseResponse();
@@ -71,16 +71,20 @@ namespace Snebur.Utilidade
                 return request;
             }
 
-            private DnsRecord[] ParseResponse()
+            private DnsRecord[]? ParseResponse()
             {
+                if(this._response is null)
+                {
+                    return null;
+                }
 
-                int status = this.Response[3];
+                int status = this._response[3];
                 if (status != 128)
                 {
                     return null;
                 }
 
-                int nAnswers = this.Response[7];
+                int nAnswers = this._response[7];
                 if (nAnswers == 0) return null;
 
                 int pos = this.Domain.Length + 18;
@@ -89,7 +93,7 @@ namespace Snebur.Utilidade
                     var dnsRecords = new List<DnsRecord>();
                     while (nAnswers > 0)
                     {
-                        int preference = this.Response[pos + 13];
+                        int preference = this._response[pos + 13];
                         pos += 14; //offset
                         string record = this.ParseMXRecord(pos, out pos);
                         if (!String.IsNullOrWhiteSpace(record))
@@ -120,13 +124,14 @@ namespace Snebur.Utilidade
 
             private string ParseARecord(ref int start)
             {
-                StringBuilder sb = new StringBuilder();
+                Guard.NotNull(this._response);
 
-                int length = this.Response[start];
+                var sb = new StringBuilder();
+                int length = this._response[start];
                 for (int i = start; i < start + length; i++)
                 {
                     if (sb.Length > 0) sb.Append(".");
-                    sb.Append(this.Response[i + 1]);
+                    sb.Append(this._response[i + 1]);
                 }
                 start += length + 1;
                 return sb.ToString();
@@ -134,21 +139,23 @@ namespace Snebur.Utilidade
 
             private string ParseMXRecord(int start, out int pos)
             {
+                Guard.NotNull(this._response);
+
                 StringBuilder sb = new StringBuilder();
-                int length = this.Response[start];
+                int length = this._response[start];
                 while (length > 0)
                 {
                     if (length != 192)
                     {
                         if (sb.Length > 0) sb.Append(".");
                         for (int i = start; i < start + length; i++)
-                            sb.Append(Convert.ToChar(this.Response[i + 1])); ;
+                            sb.Append(Convert.ToChar(this._response[i + 1])); ;
                         start += length + 1;
-                        length = this.Response[start];
+                        length = this._response[start];
                     }
                     if (length == 192)
                     {
-                        int newPos = this.Response[start + 1];
+                        int newPos = this._response[start + 1];
                         if (sb.Length > 0) sb.Append(".");
                         sb.Append(this.ParseMXRecord(newPos, out newPos));
                         start++;

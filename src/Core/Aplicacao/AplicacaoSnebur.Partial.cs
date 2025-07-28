@@ -6,9 +6,9 @@ namespace Snebur
     {
         private readonly static object _bloqueio = new object();
         internal static int _mainThreadId;
-        internal static AplicacaoSnebur _aplicacao;
+        internal static AplicacaoSnebur? _aplicacao;
         public static AplicacaoSnebur Atual
-            => _aplicacao;
+            => _aplicacao?? throw new Exception(" A aplicação atual não foi inicializada, a deve ser inicializar no StartUp da aplicação");
 
         public static T AtualTipada<T>() where T : AplicacaoSnebur
         {
@@ -31,8 +31,5 @@ namespace Snebur
  
             //return new AplicacaoSneburInterna();
         }
-
-       
     }
-
 }
