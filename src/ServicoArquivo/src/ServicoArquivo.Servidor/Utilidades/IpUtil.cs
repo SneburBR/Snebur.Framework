@@ -1,7 +1,4 @@
-﻿using System.Web;
-using Snebur.Utilidade;
-
-namespace Snebur.ServicoArquivo
+﻿namespace Snebur.ServicoArquivo
 {
 
 //    internal class IpUtilLocal

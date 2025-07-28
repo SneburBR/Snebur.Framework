@@ -4,8 +4,6 @@ using Snebur.Utilidade;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Web;
-using Zyoncore.Imagens;
 
 #if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Http;

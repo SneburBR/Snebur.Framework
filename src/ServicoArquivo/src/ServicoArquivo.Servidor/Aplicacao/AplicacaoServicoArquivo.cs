@@ -1,7 +1,6 @@
 ﻿using Snebur.Computador;
 using Snebur.Utilidade;
 using System;
-using System.Configuration;
 using System.Runtime.InteropServices;
 
 namespace Snebur.ServicoArquivo.Servidor

@@ -1,7 +1,5 @@
 ﻿using Snebur.Utilidade;
 using System.IO;
-using System.Text;
-using System;
 using System.Threading.Tasks;
 
 #if NET6_0_OR_GREATER
