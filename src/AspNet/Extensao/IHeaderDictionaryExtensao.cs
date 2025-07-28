@@ -1,7 +1,5 @@
 ﻿#if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Extensions;
-using Microsoft.Net.Http.Headers;
 #else
 using System.Collections.Specialized;
 #endif

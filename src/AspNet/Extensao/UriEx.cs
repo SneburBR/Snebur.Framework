@@ -1,8 +1,4 @@
-﻿using Snebur.Utilidade;
-using System;
-using System.Web;
-
-namespace Snebur
+﻿namespace Snebur
 {
 #if NET6_0_OR_GREATER == false
     public static class UriEx

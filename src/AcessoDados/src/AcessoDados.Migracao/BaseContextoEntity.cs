@@ -1,7 +1,4 @@
-﻿
-using Snebur.Dominio;
-using System;
-using System.Linq;
+﻿using System;
 
 #if NET9_0_OR_GREATER
 using Microsoft.EntityFrameworkCore;
