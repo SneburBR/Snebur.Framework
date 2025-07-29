@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -38,7 +39,7 @@ namespace Snebur.Utilidade
             return EnumUtil.IsFlagsEnumDefinida(tipoEnum, soma);
         }
 
-        public static bool IsEmailOuTelefone(string emailOuTelefone)
+        public static bool IsEmailOuTelefone(string? emailOuTelefone)
         {
             return IsEmail(emailOuTelefone) || IsTelefone(emailOuTelefone);
         }
@@ -229,7 +230,9 @@ namespace Snebur.Utilidade
             return false;
         }
 
-        public static bool IsDominioDns(string? dominio)
+        public static bool IsDominioDns(
+            [NotNullWhen(true)]
+            string? dominio)
         {
             if (String.IsNullOrEmpty(dominio))
             {
@@ -254,7 +257,7 @@ namespace Snebur.Utilidade
         /// <param name="dominio"></param>
         /// <param name="tempoMaximo"> em milisegundos padrao 3000</param>
         /// <returns></returns>
-        public static bool IsResolverDominioDns(string dominio, int tempoMaximo = 3000)
+        public static bool IsResolverDominioDns(string? dominio, int tempoMaximo = 3000)
         {
             if (IsDominioDns(dominio))
             {
@@ -277,13 +280,21 @@ namespace Snebur.Utilidade
             return false;
         }
 
-        public static bool IsNumero(object valor)
+        public static bool IsNumero(object? valor)
         {
+            if (valor is null)
+            {
+                return false;
+            }
             return Double.TryParse(valor.ToString(), out var resultado) && !Double.IsNaN(resultado);
         }
 
-        public static bool IsInteiro(object valor)
+        public static bool IsInteiro(object? valor)
         {
+            if (valor is null)
+            {
+                return false;
+            }
             return Int32.TryParse(valor.ToString(), out _);
         }
 
@@ -300,65 +311,65 @@ namespace Snebur.Utilidade
             return false;
         }
 
-        public static void ValidarIntervalo(double opacidade, double inicio, double fim)
-        {
-            if (!IsIntervaloValido(opacidade, inicio, fim))
-            {
-                throw new Erro($"O valor {opacidade} está fora do intervalo {inicio}, {fim}");
-            }
-        }
+        //public static void ValidarIntervalo(double opacidade, double inicio, double fim)
+        //{
+        //    if (!IsIntervaloValido(opacidade, inicio, fim))
+        //    {
+        //        throw new Erro($"O valor {opacidade} está fora do intervalo {inicio}, {fim}");
+        //    }
+        //}
 
-        public static void ValidarReferenciaNulaOuVazia(string referencia, string nomeReferencia,
-                                                        [CallerMemberName] string nomeMetodo = "",
-                                                        [CallerFilePath] string caminhoArquivo = "",
-                                                        [CallerLineNumber] int linhaDoErro = 0)
-        {
-            if (String.IsNullOrWhiteSpace(referencia))
-            {
-                var mensagem = String.Format("A referencia '{0}' não foi definida", nomeReferencia);
-                throw new ErroNaoDefinido(mensagem, null, nomeMetodo, caminhoArquivo, linhaDoErro);
-            }
-        }
+        //public static void ValidarReferenciaNulaOuVazia(string referencia, string nomeReferencia,
+        //                                                [CallerMemberName] string nomeMetodo = "",
+        //                                                [CallerFilePath] string caminhoArquivo = "",
+        //                                                [CallerLineNumber] int linhaDoErro = 0)
+        //{
+        //    if (String.IsNullOrWhiteSpace(referencia))
+        //    {
+        //        var mensagem = String.Format("A referencia '{0}' não foi definida", nomeReferencia);
+        //        throw new ErroNaoDefinido(mensagem, null, nomeMetodo, caminhoArquivo, linhaDoErro);
+        //    }
+        //}
 
-        public static void ValidarReferenciaNula(object referencia, string nomeReferencia,
-                                                 [CallerMemberName] string nomeMetodo = "",
-                                                 [CallerFilePath] string caminhoArquivo = "",
-                                                 [CallerLineNumber] int linhaDoErro = 0)
-        {
-            if (referencia == null)
-            {
-                var mensagem = String.Format("A referencia '{0}' não foi definida", nomeReferencia);
-                throw new ErroNaoDefinido(mensagem, null, nomeMetodo, caminhoArquivo, linhaDoErro);
-            }
-        }
+        //public static void ValidarReferenciaNula(object referencia, string nomeReferencia,
+        //                                         [CallerMemberName] string nomeMetodo = "",
+        //                                         [CallerFilePath] string caminhoArquivo = "",
+        //                                         [CallerLineNumber] int linhaDoErro = 0)
+        //{
+        //    if (referencia == null)
+        //    {
+        //        var mensagem = String.Format("A referencia '{0}' não foi definida", nomeReferencia);
+        //        throw new ErroNaoDefinido(mensagem, null, nomeMetodo, caminhoArquivo, linhaDoErro);
+        //    }
+        //}
 
-        public static void ValidarEnumDefinido<TEnum>(TEnum valorEnum) where TEnum : struct
-        {
-            var tipoEnum = valorEnum.GetType();
-            if (!tipoEnum.IsEnum)
-            {
-                throw new Erro($"O tipo '{tipoEnum.Name}' não é um Enum");
-            }
-            if (!Enum.IsDefined(tipoEnum, valorEnum))
-            {
-                throw new Erro($"O valor '{valorEnum.ToString()}' não está definido no Enum '{tipoEnum.Name}'");
-            }
-        }
+        //public static void ValidarEnumDefinido<TEnum>(TEnum valorEnum) where TEnum : struct
+        //{
+        //    var tipoEnum = valorEnum.GetType();
+        //    if (!tipoEnum.IsEnum)
+        //    {
+        //        throw new Erro($"O tipo '{tipoEnum.Name}' não é um Enum");
+        //    }
+        //    if (!Enum.IsDefined(tipoEnum, valorEnum))
+        //    {
+        //        throw new Erro($"O valor '{valorEnum.ToString()}' não está definido no Enum '{tipoEnum.Name}'");
+        //    }
+        //}
 
-        public static void ValidarExisteArquivo(string caminhoArquivo)
-        {
-            if (!File.Exists(caminhoArquivo))
-            {
-                throw new ErroArquivoNaoEncontrado(caminhoArquivo);
-            }
-        }
+        //public static void ValidarExisteArquivo(string caminhoArquivo)
+        //{
+        //    if (!File.Exists(caminhoArquivo))
+        //    {
+        //        throw new ErroArquivoNaoEncontrado(caminhoArquivo);
+        //    }
+        //}
 
         public static bool IsSomenteNumeros(string? texto)
         {
             return TextoUtil.IsSomenteNumeros(texto);
         }
 
-        public static bool IsSomenteNumerosPontosSinaisSimbolos(string texto)
+        public static bool IsSomenteNumerosPontosSinaisSimbolos(string? texto)
         {
             return TextoUtil.IsSomenteNumerosPontosSinaisSimbolos(texto);
         }
@@ -383,8 +394,13 @@ namespace Snebur.Utilidade
                    !String.IsNullOrEmpty(sobrenome);
         }
 
-        public static bool IsPossuiSobrenome(string nomeCompleto)
+        public static bool IsPossuiSobrenome(string? nomeCompleto)
         {
+            if (String.IsNullOrEmpty(nomeCompleto))
+            {
+                return false;
+            }
+
             var (nome, sobrenome) = FormatacaoNomeUtil.FormatarNomeSobrenome(nomeCompleto);
             return !String.IsNullOrEmpty(sobrenome);
         }
@@ -402,22 +418,22 @@ namespace Snebur.Utilidade
         }
         #endregion
 
-        public static bool IsCorHexa(string value)
+        public static bool IsCorHexa(string? value)
         {
-            if (value != null)
+            if (String.IsNullOrEmpty(value))
             {
-                return RegexCorHexa.IsMatch(value.Trim());
+                return false;
             }
-            return false;
+            return RegexCorHexa.IsMatch(value.Trim());
         }
 
-        public static bool IsCorRgbOuRgba(string value)
+        public static bool IsCorRgbOuRgba(string? value)
         {
-            if (value != null)
+            if (String.IsNullOrEmpty(value))
             {
-                return RegexCorRgba.IsMatch(value.Trim());
+                return false;
             }
-            return false;
+            return RegexCorRgba.IsMatch(value.Trim());
         }
 
         public static bool IsRota(string? rota)
@@ -433,7 +449,7 @@ namespace Snebur.Utilidade
             return false;
         }
 
-        public static bool IsExisteContaEmail(string email)
+        public static bool IsExisteContaEmail(string? email)
         {
             return ValidacaoEmailUtil.IsExisteEmail(email);
         }
@@ -460,19 +476,21 @@ namespace Snebur.Utilidade
             return false;
         }
 
-        public static bool IsPossuiEspacoEmBranco(string value)
+        public static bool IsPossuiEspacoEmBranco(string? value)
         {
-            if (value == null) return false;
+            if (value == null)
+                return false;
+
             var reg = new Regex(@"\s");
             return reg.IsMatch(value);
         }
 
-        public static void ValidarMaiorZero<T>(T value, string nome) where T : struct, IComparable<T>
-        {
-            if (!(value.CompareTo(default) > 0))
-            {
-                throw new Exception($"O valor {nome} deve ser maior que zero");
-            }
-        }
+        //public static void ValidarMaiorZero<T>(T value, string nome) where T : struct, IComparable<T>
+        //{
+        //    if (!(value.CompareTo(default) > 0))
+        //    {
+        //        throw new Exception($"O valor {nome} deve ser maior que zero");
+        //    }
+        //}
     }
 }
