@@ -89,7 +89,10 @@ public class EntidadeUtil
             throw new ErroNaoDefinido(String.Format("O atributo chave estrangeira não foi definido na propriedade {0}", propriedade.Name));
         }
         var nomePropriedade = atributoChaveEstrangeira.Name;
-        var propriedadeChaveEstrangeira = tipoEntidade.GetProperties().Where(x => x.Name == nomePropriedade).SingleOrDefault();
+        var propriedadeChaveEstrangeira = tipoEntidade.GetProperties()
+            .Where(x => x.Name == nomePropriedade)
+            .SingleOrDefault();
+
         if (propriedadeChaveEstrangeira == null)
         {
             if (isIgnorarErro)

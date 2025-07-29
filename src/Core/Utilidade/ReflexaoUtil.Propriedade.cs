@@ -124,6 +124,7 @@ public static partial class ReflexaoUtil
     {
         return pi.CanWrite && pi.GetSetMethod(true)?.IsPublic == true;
     }
+
     /// <summary>
     /// Retornar lista da propriedade até chegar no caminho
     /// </summary>
@@ -132,39 +133,43 @@ public static partial class ReflexaoUtil
     /// /// <param name="procurarTiposEspecializado"> Se true, procurar o nos tipos especializados, Tipo (Pessoa), Caminho (PessoaFisica) Cpf</param>
     /// <returns></returns>
     /// 
-    public static List<PropertyInfo> RetornarPropriedadesCaminho(Type tipo, string caminhoPropriedade)
+    public static List<PropertyInfo> RetornarPropriedadesCaminho(Type tipo, string? caminhoPropriedade)
     {
         return RetornarPropriedadesCaminho(tipo, caminhoPropriedade, ResolverPropriedadeNaoEncontrada);
     }
 
     public static List<PropertyInfo> RetornarPropriedadesCaminho(
         Type tipo,
-        string caminhoPropriedade,
+        string? caminhoPropriedade,
         Func<Type, string, PropertyInfo?>? resolverPropriedadeNaoEncontrada)
     {
-        var nomesPropriedade = caminhoPropriedade.Split(".".ToCharArray()).Select(x => x.Trim());
+        var nomesPropriedade = caminhoPropriedade?.Split(".".ToCharArray()).Select(x => x.Trim()).ToArray();
         var propriedades = new List<PropertyInfo>();
         var tipoAtual = tipo;
 
-        foreach (var nomePropriedade in nomesPropriedade)
+        if (nomesPropriedade?.Length > 0)
         {
-            if (!String.IsNullOrEmpty(nomePropriedade))
+            foreach (var nomePropriedade in nomesPropriedade)
             {
-                var propriedade = RetornarPropriedadeInterno(tipoAtual, nomePropriedade, resolverPropriedadeNaoEncontrada);
-                if (propriedade is null)
+                if (!String.IsNullOrEmpty(nomePropriedade))
                 {
-                    throw new Erro($"A propriedade '{nomePropriedade}' não foi encontrada no tipo '{tipoAtual.Name}'.");
-                }
+                    var propriedade = RetornarPropriedadeInterno(tipoAtual, nomePropriedade, resolverPropriedadeNaoEncontrada);
+                    if (propriedade is null)
+                    {
+                        throw new Erro($"A propriedade '{nomePropriedade}' não foi encontrada no tipo '{tipoAtual.Name}'.");
+                    }
 
-                tipoAtual = propriedade.PropertyType;
-                propriedades.Add(propriedade);
+                    tipoAtual = propriedade.PropertyType;
+                    propriedades.Add(propriedade);
 
-                if (propriedade.PropertyType.IsGenericType && IsTipoRetornaColecaoEntidade(propriedade.PropertyType))
-                {
-                    tipoAtual = tipoAtual.GetGenericArguments().First();
+                    if (propriedade.PropertyType.IsGenericType && IsTipoRetornaColecaoEntidade(propriedade.PropertyType))
+                    {
+                        tipoAtual = tipoAtual.GetGenericArguments().First();
+                    }
                 }
             }
         }
+
         return propriedades;
     }
 

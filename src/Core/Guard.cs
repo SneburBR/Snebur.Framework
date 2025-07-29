@@ -10,13 +10,8 @@ public static class Guard
 {
 
     public static void NotNull(
-#if NET9_0_OR_GREATER
             [NotNull] object? value,
             [CallerArgumentExpression(nameof(value))] string paramName = "")
-#else
-            object value,
-            [CallerMemberName] string paramName = "")
-#endif
     {
         if (value is null)
         {
@@ -25,13 +20,9 @@ public static class Guard
     }
 
     public static void NotNullOrWhiteSpace(
-#if NET9_0_OR_GREATER
             [NotNull] string? value,
             [CallerArgumentExpression(nameof(value))] string paramName = "")
-#else
-            string value,
-            [CallerMemberName] string paramName = "")
-#endif
+ 
 
     {
         if (string.IsNullOrWhiteSpace(value))
