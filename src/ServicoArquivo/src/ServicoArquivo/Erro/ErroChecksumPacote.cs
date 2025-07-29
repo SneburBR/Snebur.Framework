@@ -8,7 +8,7 @@ namespace System
     {
 
         public ErroChecksumPacote(string mensagem = "",
-                                     Exception erroInterno = null,
+                                     Exception? erroInterno = null,
                                      [CallerMemberName] string nomeMetodo = "",
                                      [CallerFilePath] string caminhoArquivo = "",
                                      [CallerLineNumber] int linhaDoErro = 0) :
@@ -21,10 +21,7 @@ namespace System
         {
 
         }
-
-        protected ErroChecksumPacote(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+         
         #endregion
     }
 }

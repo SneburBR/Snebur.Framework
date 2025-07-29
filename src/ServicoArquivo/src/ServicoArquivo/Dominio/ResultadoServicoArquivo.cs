@@ -9,7 +9,7 @@ namespace Snebur.ServicoArquivo
 
         private long _id;
         private bool _isSucesso;
-        private string _mensagemErro;
+        private string? _mensagemErro;
         private EnumTipoErroServicoArquivo _tipoErroServicoArquivo;
 
         #endregion
@@ -18,7 +18,7 @@ namespace Snebur.ServicoArquivo
 
         public bool IsSucesso { get => this.RetornarValorPropriedade(this._isSucesso); set => this.NotificarValorPropriedadeAlterada(this._isSucesso, this._isSucesso = value); }
 
-        public string MensagemErro { get => this.RetornarValorPropriedade(this._mensagemErro); set => this.NotificarValorPropriedadeAlterada(this._mensagemErro, this._mensagemErro = value); }
+        public string? MensagemErro { get => this.RetornarValorPropriedade(this._mensagemErro); set => this.NotificarValorPropriedadeAlterada(this._mensagemErro, this._mensagemErro = value); }
 
         public EnumTipoErroServicoArquivo TipoErroServicoArquivo { get => this.RetornarValorPropriedade(this._tipoErroServicoArquivo); set => this.NotificarValorPropriedadeAlterada(this._tipoErroServicoArquivo, this._tipoErroServicoArquivo = value); }
     }
