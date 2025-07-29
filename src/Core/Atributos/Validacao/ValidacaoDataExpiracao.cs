@@ -19,7 +19,7 @@ namespace Snebur.Dominio.Atributos
             this.NomePropriedadeDataPublicacao = nomePropriedadeDataPublicacao;
         }
 
-        public override bool IsValido(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
+        public override bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
         {
             if (paiPropriedade != null && valorPropriedade is DateTime dataExpiracao)
             {
@@ -45,7 +45,7 @@ namespace Snebur.Dominio.Atributos
             return true;
         }
 
-        public override string RetornarMensagemValidacao(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
+        public override string RetornarMensagemValidacao(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
         {
             var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
             return String.Format(MensagemValidacao, rotulo);

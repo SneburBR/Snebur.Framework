@@ -12,7 +12,7 @@ namespace Snebur.Dominio.Atributos
         [MensagemValidacao]
         public static string MensagemValidacao { get; set; } = "O campo {0} deve ser preenchido.";
 
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
             if (!DebugUtil.IsAttached)
             {
@@ -40,12 +40,12 @@ namespace Snebur.Dominio.Atributos
 
         #region IAtributoValidacao
 
-        public bool IsValido(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
+        public bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
         {
             return ValidacaoUtil.IsValidacaoRequerido(propriedade, valorPropriedade, paiPropriedade);
         }
 
-        public string RetornarMensagemValidacao(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
+        public string RetornarMensagemValidacao(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
         {
             var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
             return String.Format(MensagemValidacao, rotulo);

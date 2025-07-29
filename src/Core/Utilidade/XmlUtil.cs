@@ -98,7 +98,6 @@ namespace Snebur.Utilidade
             public void Dispose()
             {
                 this.ObjetosAnalisados?.Clear();
-                this.ObjetosAnalisados = null;
             }
         }
     }

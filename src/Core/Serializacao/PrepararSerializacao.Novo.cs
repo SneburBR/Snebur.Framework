@@ -298,11 +298,6 @@ namespace Snebur.Serializacao
             this.ObjetosAnalisados.Clear();
             this.BasesDominioOrigem.Clear();
             this.BasesDominioReferenciadas.Clear();
-
-            this.Objeto = null;
-            this.ObjetosAnalisados = null;
-            this.BasesDominioOrigem = null;
-            this.BasesDominioReferenciadas = null;
         }
     }
 }

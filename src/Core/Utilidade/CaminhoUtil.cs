@@ -6,12 +6,16 @@ namespace Snebur.Utilidade
 {
     public static class CaminhoUtil
     {
-        public static bool IsFullPath(string path)
+        public static bool IsFullPath(string? path)
         {
+            if (String.IsNullOrWhiteSpace(path))
+            {
+                return false;
+            }
             return !String.IsNullOrWhiteSpace(path) &&
                     path.IndexOfAny(Path.GetInvalidPathChars().ToArray()) == -1 &&
                     Path.IsPathRooted(path) &&
-                    !Path.GetPathRoot(path).Equals(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal);
+                    Path.GetPathRoot(path)?.Equals(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal) == false;
         }
 
         public static string RetornarCaminhoArquivoBackup(string caminhoArquivo)
@@ -46,7 +50,7 @@ namespace Snebur.Utilidade
             return RetornarCaminhoArquivoTemporario(diretorio, null);
         }
 
-        public static string RetornarCaminhoArquivoTemporario(string diretorio, string extensao)
+        public static string RetornarCaminhoArquivoTemporario(string diretorio, string? extensao)
         {
             var nomeArquivoTemporario = RetornarNomeArquivoTemporario(extensao);
             //if (!String.IsNullOrEmpty(extensao))
@@ -66,7 +70,7 @@ namespace Snebur.Utilidade
             return RetornarNomeArquivoTemporario(".tmp");
         }
 
-        public static string RetornarNomeArquivoTemporario(string extensao)
+        public static string RetornarNomeArquivoTemporario(string? extensao)
         {
             if (String.IsNullOrWhiteSpace(extensao))
             {

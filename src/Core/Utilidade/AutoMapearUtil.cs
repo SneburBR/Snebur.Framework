@@ -44,7 +44,10 @@ namespace Snebur.Utilidade
             Mapear(origem, destino, ignorarErro, propriedades.Select(x => x.Name).ToList());
         }
 
-        public static void Mapear(object origem, object destino, bool ignorarErro, List<string> propriedadesIgnroar, Func<(PropertyInfo PropriedadeOrigem, PropertyInfo PropriedadeDestino), bool> manipuladorIsMapearPropriedade = null)
+        public static void Mapear(object origem, object destino, bool ignorarErro,
+            List<string>? propriedadesIgnroar,
+            Func<(PropertyInfo? PropriedadeOrigem,
+            PropertyInfo PropriedadeDestino), bool>? manipuladorIsMapearPropriedade = null)
         {
             Guard.NotNull(origem);
             Guard.NotNull(destino);

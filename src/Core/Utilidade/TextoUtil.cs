@@ -240,7 +240,7 @@ namespace Snebur.Utilidade
             return RetornarTextoCaracteresPermitido(texto, Letras, false);
         }
 
-        public static string RetornarSomenteNumeros(string texto)
+        public static string RetornarSomenteNumeros(string? texto)
         {
             return RetornarTextoCaracteresPermitido(texto, Numeros, false);
         }
@@ -400,7 +400,7 @@ namespace Snebur.Utilidade
             }
             return texto ?? String.Empty;
         }
-         
+
         public static string? RetornarPrimeiraLetraMinusculo(
             [NotNullIfNotNull(nameof(texto))]
             this string? texto)
@@ -594,24 +594,24 @@ namespace Snebur.Utilidade
             return LetrasNumeros.Contains(caracter);
         }
 
-        public static bool IsSomenteNumeros(string texto)
+        public static bool IsSomenteNumeros(string? texto)
         {
             return IsTextoValidoInterno(texto, TextoUtilConstantes.Numeros);
         }
 
-        public static bool IsSomenteNumerosPontosSinais(string texto)
+        public static bool IsSomenteNumerosPontosSinais(string? texto)
         {
             return IsTextoValidoInterno(texto,
               TextoUtilConstantes.NumerosPontosSinais);
         }
 
-        public static bool IsSomenteNumerosPontosSinaisSimbolos(string texto)
+        public static bool IsSomenteNumerosPontosSinaisSimbolos(string? texto)
         {
             return IsTextoValidoInterno(texto,
               TextoUtilConstantes.NumerosPontosSinaisSimbolos);
         }
 
-        private static bool IsTextoValidoInterno(string texto, HashSet<char> caracteresPermitidoObjetos)
+        private static bool IsTextoValidoInterno(string? texto, HashSet<char> caracteresPermitidoObjetos)
         {
             if (texto != null)
             {
@@ -626,8 +626,12 @@ namespace Snebur.Utilidade
             }
             return true;
         }
-        public static string ComprimirTexto(string texto)
+        public static string ComprimirTexto(string? texto)
         {
+            if (String.IsNullOrWhiteSpace(texto))
+            {
+                return String.Empty;
+            }
             var buffer = Encoding.UTF8.GetBytes(texto);
             using (var memoryStream = new MemoryStream())
             {
@@ -648,8 +652,12 @@ namespace Snebur.Utilidade
             ;
         }
 
-        public static string DescomprimirTexto(string textoComprimdo)
+        public static string DescomprimirTexto(string? textoComprimdo)
         {
+            if (String.IsNullOrWhiteSpace(textoComprimdo))
+            {
+                return String.Empty;
+            }
             var gZipBuffer = Convert.FromBase64String(textoComprimdo);
             using (var memoryStream = new MemoryStream())
             {
@@ -672,15 +680,19 @@ namespace Snebur.Utilidade
 
         public static string Concatar(string separador, params string[] partes)
         {
-            return String.Join(separador, partes.Where(x => !String.IsNullOrWhiteSpace(x)));
+            return String.Join(separador ?? "", partes.Where(x => !String.IsNullOrWhiteSpace(x)));
         }
 
         public static string Repeat(char c, int quantidade)
         {
             return new string(c, quantidade);
         }
-        public static string Repeat(string texto, int quantidade)
+        public static string Repeat(string? texto, int quantidade)
         {
+            if (String.IsNullOrEmpty(texto) || quantidade <= 0)
+            {
+                return String.Empty;
+            }
             var sb = new StringBuilder();
             for (var i = 0; i < quantidade; i++)
             {
@@ -689,9 +701,14 @@ namespace Snebur.Utilidade
             return sb.ToString();
         }
 
-        public static List<string> DividirTextoEmLinhas(string descricaoAtributosCompleta,
-                                                               int maximoCaracterPorLinha)
+        public static List<string> DividirTextoEmLinhas(
+            string? descricaoAtributosCompleta,
+            int maximoCaracterPorLinha)
         {
+            if (String.IsNullOrEmpty(descricaoAtributosCompleta))
+            {
+                return new List<string>();
+            }
             var linhas = new List<string>();
             var sb = new StringBuilder();
             foreach (var ch in descricaoAtributosCompleta)
@@ -742,7 +759,7 @@ namespace Snebur.Utilidade
             return CacheFiltros[chave];
         }
 
-        public static string RetornarTextoCaracteresPermitido(string texto,
+        public static string RetornarTextoCaracteresPermitido(string? texto,
                                                               HashSet<char> caracterPermitidos,
                                                               bool isPermitirEspacoBranco,
                                                               char? substituirPor = null)
@@ -751,6 +768,7 @@ namespace Snebur.Utilidade
             {
                 return String.Empty;
             }
+
             ErroUtil.ValidarReferenciaNula(caracterPermitidos, nameof(caracterPermitidos));
 
             var sb = new StringBuilder();

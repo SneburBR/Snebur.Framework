@@ -502,7 +502,7 @@ namespace Snebur.Linq
         }
         #endregion
 
-        public static HashSet<T> ToHashSet<T>(this IEnumerable<T> colecao, bool aceitarNull) where T : class
+        public static HashSet<T?> ToHashSet<T>(this IEnumerable<T?> colecao, bool aceitarNull) where T : class
         {
             var hashSet = colecao.ToHashSet();
             if (aceitarNull)

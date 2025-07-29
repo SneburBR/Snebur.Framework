@@ -123,7 +123,7 @@ namespace Snebur.Dominio.Atributos
             }
         }
 
-        private PropriedadeIndexar RetornarPropriedadeIndexar(string nomePropriedade)
+        private PropriedadeIndexar? RetornarPropriedadeIndexar(string nomePropriedade)
         {
             var tipoEntidade = this.TipoEntidade;
 
@@ -141,7 +141,7 @@ namespace Snebur.Dominio.Atributos
             return null;
         }
 
-        private Exception RetornarException(string nomePropriedade, string mensagem = null)
+        private Exception RetornarException(string nomePropriedade, string? mensagem = null)
         {
             var tipoEntidade = this.TipoEntidade;
             var nomesPropriedade = this.NomesPropriedade;

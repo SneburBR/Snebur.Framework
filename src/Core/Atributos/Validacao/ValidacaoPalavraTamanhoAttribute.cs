@@ -42,7 +42,7 @@ namespace Snebur.Dominio.Atributos
 
         #region IAtributoValidacao
 
-        public override bool IsValido(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
+        public override bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
         {
             if (!ValidacaoUtil.IsDefinido(valorPropriedade))
             {
@@ -53,10 +53,16 @@ namespace Snebur.Dominio.Atributos
             return ValidacaoUtil.ValidarPalavraTamanho(texto, this.TamanhoMinimo, this.TamanhoMaximo);
         }
 
-        public override string RetornarMensagemValidacao(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
+        public override string RetornarMensagemValidacao(
+            PropertyInfo propriedade, 
+            object? paiPropriedade, 
+            object? valorPropriedade)
         {
             //var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
-            var palavraInvalida = new Regex(@"\s+").Split(valorPropriedade.ToString()).
+            var valorPropriedadeString = valorPropriedade?.ToString();
+            var palavraInvalida = String.IsNullOrWhiteSpace(valorPropriedadeString)
+                ? null 
+                : new Regex(@"\s+").Split(valorPropriedadeString).
                                             Where(x => !ValidacaoUtil.ValidarTextoTamanho(x, this.TamanhoMinimo, this.TamanhoMaximo)).
                                             First();
 
@@ -64,10 +70,12 @@ namespace Snebur.Dominio.Atributos
             {
                 return String.Format(MensagemValidacaoIntervalo, palavraInvalida, this.TamanhoMinimo, this.TamanhoMaximo);
             }
+
             if (this.TamanhoMinimo > 0)
             {
                 return String.Format(MensagemValidacaoMinimo, palavraInvalida, this.TamanhoMinimo);
             }
+
             if (this.TamanhoMaximo > 0)
             {
                 return String.Format(MensagemValidacaoMaximo, palavraInvalida, this.TamanhoMaximo);

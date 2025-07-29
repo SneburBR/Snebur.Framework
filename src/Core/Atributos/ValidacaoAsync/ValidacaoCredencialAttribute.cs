@@ -30,17 +30,19 @@ namespace Snebur.Dominio.Atributos
             this.TipoDominio = tipoDominio;
             this.NomePropriedadeIdentificador = nomePropriedadeIdentificador;
             //this.CaminhoTipoEntidadeUsuario = $"{this.TipoEntidadeUsuario.Namespace}.{this.TipoEntidadeUsuario.Name}";
-            this.Propriedade = tipoDominio.GetProperty(nomePropriedadeIdentificador);
-            if (this.Propriedade == null)
+            var propriedade = tipoDominio.GetProperty(nomePropriedadeIdentificador);
+            if (propriedade is null)
             {
                 throw new Exception($"A propriedade {nomePropriedadeIdentificador}  não foi encontrada em {nomePropriedadeIdentificador}");
             }
+            this.Propriedade= propriedade;
         }
 
         public ValidacaoCredencialAttribute(string nomePropriedadeIdentificador)
         {
             throw new Exception("Não usar esse construtor, está aqui para auxiliar o dminio Typescript");
         }
+
         #region IAtributoValidacao
 
         public bool IsValido(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)

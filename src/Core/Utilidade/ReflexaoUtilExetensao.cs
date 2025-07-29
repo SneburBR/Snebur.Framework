@@ -28,10 +28,15 @@ namespace Snebur.Utilidade
             }
         }
 
-        public static string RetornarRotulo(PropertyInfo pi)
+        public static string RetornarRotulo(PropertyInfo? pi)
         {
-            RotuloAttribute atributoRotulo = (RotuloAttribute)pi.GetCustomAttributes(typeof(RotuloAttribute), true).FirstOrDefault();
-            if (atributoRotulo == null)
+            if (pi is null)
+            {
+                return string.Empty;
+            }
+
+            var atributoRotulo = pi.GetCustomAttribute<RotuloAttribute>();
+            if (atributoRotulo is null)
             {
                 return pi.Name;
             }

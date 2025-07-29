@@ -90,7 +90,6 @@ namespace Snebur.Dominio
 
         public void Dispose()
         {
-            this.Entidades = null;
         }
         #endregion
     }

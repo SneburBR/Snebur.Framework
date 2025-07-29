@@ -123,7 +123,7 @@ namespace Snebur.Utilidade
             }
         }
 
-        public static string DescompactarTexto(Stream stream, string senha = null)
+        public static string DescompactarTexto(Stream stream, string? senha = null)
         {
             if (stream != null)
             {
@@ -259,7 +259,7 @@ namespace Snebur.Utilidade
 
         public static List<string> DescompactarArquivos(Stream stream, 
                                                         string diretorioDestino, 
-                                                        string senha,
+                                                        string? senha,
                                                         bool isSobreEscrever = true)
         {
             var arquivos = new List<string>();

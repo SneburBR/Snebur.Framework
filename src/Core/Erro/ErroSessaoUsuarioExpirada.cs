@@ -39,7 +39,7 @@ namespace Snebur.AcessoDados
     public class ErroSessaoUsuarioInvalida : Erro
     {
         public ErroSessaoUsuarioInvalida(string mensagem = "",
-                                        Exception erroInterno = null,
+                                        Exception? erroInterno = null,
                                         [CallerMemberName] string nomeMetodo = "",
                                         [CallerFilePath] string caminhoArquivo = "",
                                         [CallerLineNumber] int linhaDoErro = 0) :

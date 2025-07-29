@@ -10,8 +10,13 @@ namespace Snebur.Utilidade
     {
         private static readonly int[] PortasSmtp = new int[] { 587, 465, 25 };
 
-        public static bool IsExisteEmail(string email)
+        public static bool IsExisteEmail(string? email)
         {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return false;
+            }
+
             var dominio = email.Split('@')[1];
             var dnsRecords = DnsUtil.GetDnsRecords(dominio, QueryType.MX);
             if (dnsRecords?.Length > 0)

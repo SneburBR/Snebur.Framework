@@ -13,12 +13,12 @@ namespace Snebur.Dominio.Atributos
         [MensagemValidacao]
         public static string MensagemValidacao { get; set; } = "Mensagem de validação não definida.";
 
-        public override bool IsValido(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
+        public override bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
         {
             throw new NotImplementedException();
         }
 
-        public override string RetornarMensagemValidacao(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
+        public override string RetornarMensagemValidacao(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
         {
             throw new NotImplementedException();
         }

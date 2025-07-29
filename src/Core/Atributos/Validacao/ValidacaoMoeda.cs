@@ -61,7 +61,7 @@ namespace Snebur.Dominio.Atributos
 
         #region IAtributoValidacao
 
-        public override bool IsValido(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
+        public override bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
         {
             if (!ValidacaoUtil.IsValidacaoRequerido(propriedade, valorPropriedade))
             {
@@ -76,7 +76,7 @@ namespace Snebur.Dominio.Atributos
             return (valor >= this.ValorMinimo && valor <= this.ValorMaximo);
         }
 
-        public override string RetornarMensagemValidacao(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
+        public override string RetornarMensagemValidacao(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
         {
             var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
             return String.Format(MensagemValidacaoPadrao, rotulo);

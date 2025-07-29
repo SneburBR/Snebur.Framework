@@ -8,7 +8,7 @@ namespace Snebur.Tarefa
 
         internal override void ExecutarInterno()
         {
-            Erro erro = null;
+            Erro? erro = null;
             try
             {
                 this.Executar();

@@ -8,11 +8,21 @@ namespace Snebur.Utilidade
 {
     public static partial class TextoUtil
     {
-        public static bool IsIgual(string conteudo,
-                                   string comparar,
+        public static bool IsIgual(string? conteudo,
+                                   string? comparar,
                                    bool isIgnorarLinhasEmBranco,
                                    bool isTrim)
         {
+            if (conteudo is null && comparar is null)
+            {
+                return true;
+            }
+
+            if (conteudo is null || comparar is null)
+            {
+                return false;
+            }
+
             var linhasConteudo = conteudo.ToLines(isIgnorarLinhasEmBranco);
             var linhasComparar = comparar.ToLines(isIgnorarLinhasEmBranco);
 

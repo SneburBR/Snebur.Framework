@@ -100,7 +100,7 @@ namespace Snebur.Tarefa
             this.ExecutarInterno();
         }
 
-        public void FinalizarTarefa(Exception erro)
+        public void FinalizarTarefa(Exception? erro)
         {
             lock (_bloqueio)
             {

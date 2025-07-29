@@ -226,7 +226,11 @@ namespace Snebur.Utilidade
             return Guid.Empty;
         }
 
-        public static void DesempenhoAsync(string mensagem, Stopwatch tempo, EnumTipoLogDesempenho tipo, bool erroIsAttach = true, Action<Guid> callback = null)
+        public static void DesempenhoAsync(string mensagem, 
+            Stopwatch tempo,
+            EnumTipoLogDesempenho tipo, 
+            bool erroIsAttach = true,
+            Action<Guid>? callback = null)
         {
             var informacaoAdicional = ServicoCompartilhadoUtil.RetornarInformacaoAdicionalServicoCompartilhado();
             if (DebugUtil.IsAttached && erroIsAttach)

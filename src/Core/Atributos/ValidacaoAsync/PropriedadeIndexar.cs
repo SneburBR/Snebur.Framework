@@ -7,7 +7,7 @@ namespace Snebur.Dominio.Atributos
         public PropertyInfo Propriedade { get; }
         public bool IsIgnorarNulo { get; }
         public bool IsIgrnorarZero { get; }
-        public string NomeIndice { get; }
+        public string? NomeIndice { get; }
 
         public PropriedadeIndexar(PropertyInfo propriedade, string nomeIndice) : this(propriedade, false, false)
         {
@@ -23,11 +23,6 @@ namespace Snebur.Dominio.Atributos
             this.IsIgnorarNulo = isIgnorarNulo;
             this.IsIgrnorarZero = isIgnorarZero;
         }
-
-        public PropriedadeIndexar(PropertyInfo propriedade,
-                                  ValidacaoUnicoAttribute validacaoUnicoAttribute)
-        {
-
-        }
+ 
     }
 }

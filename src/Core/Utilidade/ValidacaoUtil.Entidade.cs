@@ -13,8 +13,8 @@ namespace Snebur.Utilidade
     public static partial class ValidacaoUtil
     {
         public static bool IsValidacaoRequerido(PropertyInfo propriedade,
-                                                object valorPropriedade,
-                                                object paiPropriedade = null)
+                                                object? valorPropriedade,
+                                                object? paiPropriedade = null)
         {
             //var valorString = Convert.ToString(valorPropriedade);
             //if (String.IsNullOrWhiteSpace(valorString))
@@ -86,7 +86,7 @@ namespace Snebur.Utilidade
             return false;
         }
 
-        internal static bool ValidarPalavraTamanho(string texto,
+        internal static bool ValidarPalavraTamanho(string? texto,
                                                    int tamanhoMinimo,
                                                    int tamanhoMaximo)
         {
@@ -126,8 +126,13 @@ namespace Snebur.Utilidade
             return NormalizacaoUtil.NormlizarHost(host) == ConstantesPublicacao.LOCALHOST;
         }
 
-        public static bool IsUrl(string caminho)
+        public static bool IsUrl(string? caminho)
         {
+            if (String.IsNullOrWhiteSpace(caminho))
+            {
+                return false;
+            }
+
             if (Uri.TryCreate(caminho, UriKind.Absolute, out var uri))
             {
                 return uri.Scheme == Uri.UriSchemeHttp ||
