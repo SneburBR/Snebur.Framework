@@ -10,6 +10,5 @@ namespace Snebur.Dominio.Atributos
         {
             this.MigrationId = migrationId;
         }
-
     }
 }

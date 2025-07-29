@@ -33,7 +33,7 @@ namespace Snebur.Dominio.Atributos
                 var propriedade = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nomePropriedade, true);
                 if (propriedade == null)
                 {
-                    if (AplicacaoSnebur.Atual.TipoAplicacao == EnumTipoAplicacao.ExtensaoVisualStudio)
+                    if (AplicacaoSnebur.AtualRequired.TipoAplicacao == EnumTipoAplicacao.ExtensaoVisualStudio)
                     {
                         return;
                     }

@@ -153,7 +153,6 @@ namespace Snebur.Dominio.Atributos
                             return $"O campo {this.NomePropridadeAuxiliar} deve ser falso.";
                     }
                 }
-
             }
             return String.Format(MensagemValidacao, rotulo);
         }

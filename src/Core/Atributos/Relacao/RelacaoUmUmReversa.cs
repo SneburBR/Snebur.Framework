@@ -16,7 +16,9 @@ namespace Snebur.Dominio.Atributos
         public PropertyInfo PropriedadeRelacaoReversa { get; }
 
         [IgnorarConstrutorTS]
-        public RelacaoUmUmReversaAttribute(Type tipoEntidadeRelacao, string nomePropriedadeChaveEstrangeiraReversa)
+        public RelacaoUmUmReversaAttribute(
+            Type tipoEntidadeRelacao, 
+            string nomePropriedadeChaveEstrangeiraReversa)
         {
             this.NomePropriedadeChaveEstrangeiraReversa = nomePropriedadeChaveEstrangeiraReversa;
             this.PropriedadeRelacaoReversa = ReflexaoUtil.RetornarPropriedade(tipoEntidadeRelacao, nomePropriedadeChaveEstrangeiraReversa);

@@ -19,5 +19,4 @@ namespace Snebur.Dominio.Atributos
         LetrasNumeros,
         Personalizado
     }
-
 }

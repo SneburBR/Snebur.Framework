@@ -7,7 +7,7 @@ namespace Snebur.Dominio.Atributos
     {
         public bool IsTipoNullableRequerido => false;
         public bool IsValorPadraoOnUpdate => true;
-        public object RetornarValorPadrao(object contexto, 
+        public object? RetornarValorPadrao(object contexto, 
                                           Entidade entidadeCorrente,
                                           object valorPropriedade)
         {
@@ -17,6 +17,5 @@ namespace Snebur.Dominio.Atributos
             }
             return null;
         }
-         
     }
 }

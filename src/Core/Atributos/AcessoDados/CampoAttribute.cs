@@ -8,11 +8,11 @@ namespace Snebur.Dominio.Atributos
     public class CampoAttribute : ColumnAttribute
     {
 
-        public string NomeCampo { get; set; }
+        public string? NomeCampo { get; set; }
 
-        public CampoAttribute() : base()
-        {
-        }
+        //public CampoAttribute() : base()
+        //{
+        //}
 
         public CampoAttribute(string nomeCampo) : base(nomeCampo)
         {

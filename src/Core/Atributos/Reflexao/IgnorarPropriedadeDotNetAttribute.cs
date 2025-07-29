@@ -7,5 +7,4 @@ namespace Snebur.Dominio.Atributos
     {
 
     }
-
 }

@@ -7,5 +7,4 @@ namespace Snebur.Dominio.Atributos
     public sealed class IgnorarPropriedadeTSAttribute : Attribute
     {
     }
-
 }

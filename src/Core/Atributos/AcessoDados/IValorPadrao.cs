@@ -10,7 +10,7 @@
     [IgnorarInterfaceTS]
     public interface IConverterValorPadrao
     {
-        object RetornarValorPadrao(object contexto,
+        object? RetornarValorPadrao(object contexto,
                                    Entidade entidadeCorrente,
                                    object valorPropriedade);
     }
@@ -20,6 +20,4 @@
     {
      
     }
-
- 
 }

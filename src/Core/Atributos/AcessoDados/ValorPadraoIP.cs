@@ -11,15 +11,16 @@ namespace Snebur.Dominio.Atributos
 
         }
 
-        public object RetornarValorPadrao(object contexto, 
+        public object? RetornarValorPadrao(object contexto, 
                                           Entidade entidade, 
                                           object valorPropriedade)
         {
             
             
-            return AplicacaoSnebur.Atual.IpPublico;
+            return AplicacaoSnebur.AtualRequired.IpPublico;
             //return IpUtil.RetornarIpInternet();
         }
+
         #region IValorPadrao 
 
         public bool IsTipoNullableRequerido { get { return true; } }

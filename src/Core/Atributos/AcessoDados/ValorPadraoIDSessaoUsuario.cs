@@ -14,6 +14,5 @@ namespace Snebur.Dominio.Atributos
         {
             this.IsSomenteCadastro = isSomenteCadastro;
         }
-
     }
 }

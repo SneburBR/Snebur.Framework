@@ -29,7 +29,10 @@ namespace Snebur.Dominio.Atributos
             return true;
         }
 
-        public string RetornarMensagemValidacao(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
+        public string RetornarMensagemValidacao(
+            PropertyInfo propriedade, 
+            object? paiPropriedade, 
+            object? valorPropriedade)
         {
             var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
             var mensagem = this.IsNovoIdentificador ? MensagemValidacaoNovoIdentificador : MensagemValidacaoIdentificador;

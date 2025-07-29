@@ -78,7 +78,7 @@ namespace Snebur.Dominio.Atributos
             return true;
         }
 
-        public string RetornarMensagemValidacao(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
+        public string RetornarMensagemValidacao(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
         {
             var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
             return String.Format(MensagemValidacao, rotulo, valorPropriedade?.ToString() ?? "null");

@@ -21,10 +21,11 @@ namespace Snebur.Dominio.Atributos
  
         public EnumOpcoesAlterarPropriedade Opcoes { get; }
          
-        public NotificarAlteracaoPropriedadeAttribute(Type tipoEntidadeAlteracaoPropriedade,
-                                                      string nomePropriedadeRelacao,
-                                                      string nomePropriedadeAlterada,
-                                                      EnumOpcoesAlterarPropriedade opcoes = EnumOpcoesAlterarPropriedade.Nenhuma)
+        public NotificarAlteracaoPropriedadeAttribute(
+            Type tipoEntidadeAlteracaoPropriedade,
+            string nomePropriedadeRelacao,
+            string nomePropriedadeAlterada,
+            EnumOpcoesAlterarPropriedade opcoes = EnumOpcoesAlterarPropriedade.Nenhuma)
         {
             this.TipoEntidadeAlteracaoPropriedade = tipoEntidadeAlteracaoPropriedade;
             this.Opcoes = opcoes;

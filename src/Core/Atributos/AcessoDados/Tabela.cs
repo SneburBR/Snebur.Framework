@@ -8,9 +8,9 @@ namespace Snebur.Dominio.Atributos
     [AttributeUsage(AttributeTargets.Class)]
     public class TabelaAttribute : TableAttribute
     {
-        public string GrupoArquivoDados { get; }
+        public string? GrupoArquivoDados { get; }
 
-        public string GrupoArquivoIndices { get; }
+        public string? GrupoArquivoIndices { get; }
 
         public TabelaAttribute(string nomeTabela) : base(nomeTabela)
         {

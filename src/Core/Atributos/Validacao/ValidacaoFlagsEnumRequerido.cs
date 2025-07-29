@@ -52,7 +52,7 @@ namespace Snebur.Dominio.Atributos
         }
 
         public string RetornarMensagemValidacao(PropertyInfo propriedade, 
-            object paiPropriedade,
+            object? paiPropriedade,
             object? valorPropriedade)
         {
             var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);

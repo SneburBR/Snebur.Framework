@@ -22,7 +22,7 @@ namespace Snebur.Dominio.Atributos
 
         public bool IsTipoNullableRequerido { get; } = false;
 
-        public object RetornarValorPadrao(object contexto, 
+        public object? RetornarValorPadrao(object contexto, 
                                           Entidade entidadeCorrente, 
                                          object valorPropriedade)
         {

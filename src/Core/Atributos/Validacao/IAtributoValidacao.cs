@@ -8,7 +8,7 @@ namespace Snebur.Dominio.Atributos
     {
         bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade);
 
-        string RetornarMensagemValidacao(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade);
+        string RetornarMensagemValidacao(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade);
     }
 
     [IgnorarInterfaceTS]

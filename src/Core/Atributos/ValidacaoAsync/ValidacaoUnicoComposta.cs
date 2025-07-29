@@ -94,7 +94,6 @@ namespace Snebur.Dominio.Atributos
                                    $" no  índice {nameof(ValidacaoUnicoCompostaAttribute)} em {tipoEntidade.Name} ");
                 }
             }
-
         }
 
         private void AdicioanrFiltro(string nomePropriedadeOuFiltro)
@@ -166,5 +165,4 @@ namespace Snebur.Dominio.Atributos
         }
         #endregion
     }
-
 }

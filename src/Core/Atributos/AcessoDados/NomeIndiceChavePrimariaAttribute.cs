@@ -11,6 +11,5 @@ namespace Snebur.Dominio.Atributos
         {
             this.Nome = nome;
         }
-
     }
 }

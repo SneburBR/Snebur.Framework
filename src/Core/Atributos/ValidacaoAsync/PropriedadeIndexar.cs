@@ -23,6 +23,5 @@ namespace Snebur.Dominio.Atributos
             this.IsIgnorarNulo = isIgnorarNulo;
             this.IsIgrnorarZero = isIgnorarZero;
         }
- 
     }
 }
