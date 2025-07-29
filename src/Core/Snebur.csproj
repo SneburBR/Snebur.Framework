@@ -96,6 +96,7 @@
 	<ItemGroup>
 		<Compile Include="Net40\HashCode.cs" />
 		<Compile Include="Properties\AssemblyInfo.cs" />
+		<Compile Include="Utilidade\CaminhoUtil - Copy.cs.bkp" />
 	</ItemGroup>
 
 </Project>

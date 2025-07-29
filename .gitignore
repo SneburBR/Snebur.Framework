@@ -372,3 +372,7 @@ bin/
 *.js
 *.css
 *.ts
+*.bkp
+
+
+Core.Net48/
