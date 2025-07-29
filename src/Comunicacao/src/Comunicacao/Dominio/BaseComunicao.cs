@@ -1,7 +1,6 @@
-﻿using Snebur.Dominio;
-using Snebur.Dominio.Atributos;
+﻿using Snebur.Dominio.Atributos;
 
-namespace Snebur.Comunicacao
+namespace Snebur.Comunicacao.Dominio
 {
     //<IgnorarClasseJSReflexao()>
     [IgnorarGlobalizacao]

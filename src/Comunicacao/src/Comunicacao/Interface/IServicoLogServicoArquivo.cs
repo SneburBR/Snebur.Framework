@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Snebur.Comunicacao
+﻿namespace Snebur.Comunicacao.Interface
 {
     public interface IServicoLogServicoArquivo : IBaseServico
     {

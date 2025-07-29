@@ -1,6 +1,4 @@
-﻿using Snebur.Dominio;
-
-namespace Snebur.Comunicacao.Mensageiro
+﻿namespace Snebur.Comunicacao.Dominio.Mensageiro
 {
     public class Remetente : BaseDominio
     {

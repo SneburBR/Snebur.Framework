@@ -1,4 +1,4 @@
-﻿namespace Snebur.Comunicacao
+﻿namespace Snebur.Comunicacao.Dominio
 {
     //public class ErroServico : BaseTipoComunicao
     //{

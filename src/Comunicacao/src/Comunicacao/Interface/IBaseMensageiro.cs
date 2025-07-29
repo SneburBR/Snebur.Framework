@@ -1,7 +1,7 @@
-﻿using Snebur.Dominio;
+﻿using Snebur.Comunicacao.Dominio.Mensageiro;
 using Snebur.Dominio.Atributos;
 
-namespace Snebur.Comunicacao.Mensageiro
+namespace Snebur.Comunicacao.Interface
 {
 
     public delegate void EventoMensagemHandler<TBaseDominho>(Remetente usario, TBaseDominho mensagem) where TBaseDominho : BaseDominio;

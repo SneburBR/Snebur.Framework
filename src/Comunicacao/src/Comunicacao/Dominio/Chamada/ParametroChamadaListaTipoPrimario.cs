@@ -1,7 +1,6 @@
 ﻿using Snebur.Reflexao;
-using System.Collections.Generic;
 
-namespace Snebur.Comunicacao
+namespace Snebur.Comunicacao.Dominio.Chamada
 {
 
     public class ParametroChamadaListaTipoPrimario : ParametroChamadaLista

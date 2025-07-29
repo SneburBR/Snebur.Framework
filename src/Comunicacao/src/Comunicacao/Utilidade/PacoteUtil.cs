@@ -8,7 +8,7 @@ using System.Text;
 using Ionic.Zip;
 #endif
 
-namespace Snebur.Comunicacao
+namespace Snebur.Comunicacao.Utilidade
 {
     public class PacoteUtil
     {

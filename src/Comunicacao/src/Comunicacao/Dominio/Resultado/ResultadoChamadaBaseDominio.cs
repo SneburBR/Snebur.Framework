@@ -1,6 +1,4 @@
-﻿using Snebur.Dominio;
-
-namespace Snebur.Comunicacao
+﻿namespace Snebur.Comunicacao.Dominio.Resultado
 {
     public class ResultadoChamadaBaseDominio : ResultadoChamada
     {

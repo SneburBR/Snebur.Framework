@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Snebur.Comunicacao
+﻿namespace Snebur.Comunicacao.Dominio.Resultado
 {
     public class ResultadoChamadaListaEnum : ResultadoChamadaLista
     {

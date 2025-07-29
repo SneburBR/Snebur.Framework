@@ -1,8 +1,8 @@
-﻿using Snebur.Comunicacao;
+﻿using Snebur.Comunicacao.Dominio.RegraNegocio;
 using Snebur.Dominio.Atributos;
 using System.Reflection;
 
-namespace Snebur.AcessoDados
+namespace Snebur.Comunicacao.Dominio.ServicoRegrasNegocio
 {
     public interface IServicoRegrasNegocio : IBaseServico
     {

@@ -1,7 +1,6 @@
 ﻿using Snebur.Seguranca;
-using System;
 
-namespace Snebur.Comunicacao
+namespace Snebur.Comunicacao.Dominio
 {
     public class Cabecalho : BaseComunicao /*, IIdentificadorProprietario, IIdentificadorAplicacao */
     {
@@ -20,6 +19,5 @@ namespace Snebur.Comunicacao
         public CredencialUsuario CredencialAvalista { get;   set; } = new();
 
         public string? UrlOrigem { get => this.RetornarValorPropriedade(this._urlOrigem); set => this.NotificarValorPropriedadeAlterada(this._urlOrigem, this._urlOrigem = value); }
-
     }
 }

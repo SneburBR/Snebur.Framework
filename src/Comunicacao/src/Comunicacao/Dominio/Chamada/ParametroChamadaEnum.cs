@@ -1,4 +1,4 @@
-﻿namespace Snebur.Comunicacao
+﻿namespace Snebur.Comunicacao.Dominio.Chamada
 {
 
     public class ParametroChamadaEnum : ParametroChamada

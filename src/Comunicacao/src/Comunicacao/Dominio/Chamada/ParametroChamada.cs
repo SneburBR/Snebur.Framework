@@ -1,6 +1,6 @@
 ﻿using Snebur.Dominio.Atributos;
 
-namespace Snebur.Comunicacao
+namespace Snebur.Comunicacao.Dominio.Chamada
 {
     [Plural("ParametrosChamada")]
     public abstract class ParametroChamada : BaseComunicao

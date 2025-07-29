@@ -1,7 +1,4 @@
-﻿using Snebur.Dominio;
-using System.Collections.Generic;
-
-namespace Snebur.Comunicacao
+﻿namespace Snebur.Comunicacao.Dominio.Resultado
 {
     public class ResultadoChamadaListaBaseDominio : ResultadoChamadaLista
     {

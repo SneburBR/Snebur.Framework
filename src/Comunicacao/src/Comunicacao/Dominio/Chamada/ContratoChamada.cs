@@ -1,9 +1,6 @@
-﻿using Snebur.Dominio;
-using Snebur.Dominio.Atributos;
-using System;
-using System.Collections.Generic;
+﻿using Snebur.Dominio.Atributos;
 
-namespace Snebur.Comunicacao
+namespace Snebur.Comunicacao.Dominio.Chamada
 {
     [Plural("ContratoChamada")]
     public class ContratoChamada : BaseComunicao

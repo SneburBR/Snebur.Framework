@@ -1,7 +1,4 @@
-﻿using Snebur.Dominio;
-using System.Collections.Generic;
-
-namespace Snebur.Comunicacao
+﻿namespace Snebur.Comunicacao.Dominio.ServicoGlobalizacao
 {
 
     public class ResultadoGlobalizacao : BaseViewModel
@@ -21,5 +18,4 @@ namespace Snebur.Comunicacao
 
         public List<TelaGlobalizacao> Telas { get; set; } = new();
     }
-
 }

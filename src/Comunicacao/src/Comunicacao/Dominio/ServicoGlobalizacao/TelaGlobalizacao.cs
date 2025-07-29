@@ -1,6 +1,4 @@
-﻿using Snebur.Dominio;
-
-namespace Snebur.Comunicacao
+﻿namespace Snebur.Comunicacao.Dominio.ServicoGlobalizacao
 {
     public class TelaGlobalizacao : BaseViewModel
     {

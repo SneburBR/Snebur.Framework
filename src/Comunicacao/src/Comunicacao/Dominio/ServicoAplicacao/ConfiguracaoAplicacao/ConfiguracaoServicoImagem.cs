@@ -1,6 +1,6 @@
 ﻿using Snebur.Dominio.Atributos;
 
-namespace Snebur.Comunicacao
+namespace Snebur.Comunicacao.Dominio.ServicoAplicacao.ConfiguracaoAplicacao
 {
     [IgnorarGlobalizacao]
     public class ConfiguracaoServicoImagem : BaseComunicao

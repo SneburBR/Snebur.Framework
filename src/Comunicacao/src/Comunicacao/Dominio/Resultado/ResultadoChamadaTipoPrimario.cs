@@ -1,6 +1,6 @@
 ﻿using Snebur.Reflexao;
 
-namespace Snebur.Comunicacao
+namespace Snebur.Comunicacao.Dominio.Resultado
 {
     public class ResultadoChamadaTipoPrimario : ResultadoChamada
     {

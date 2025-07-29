@@ -1,4 +1,4 @@
-﻿namespace Snebur.Comunicacao.Mensageiro
+﻿namespace Snebur.Comunicacao.Dominio.Mensageiro
 {
     public class Destinatario
     {

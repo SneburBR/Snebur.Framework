@@ -1,8 +1,6 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
+﻿using System.Runtime.CompilerServices;
 
-namespace Snebur.Comunicacao
+namespace Snebur.Comunicacao.Erro
 {
     [Serializable]
     public class ErroComunicacao : Erro

@@ -8,6 +8,7 @@
 		<Nullable>enable</Nullable>
 		<AssemblyName>Snebur.Comunicacao</AssemblyName>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 	</PropertyGroup>
  
 	<ItemGroup>

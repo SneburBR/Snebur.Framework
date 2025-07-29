@@ -1,7 +1,4 @@
-﻿using Snebur.Dominio;
-using System.Collections.Generic;
-
-namespace Snebur.Comunicacao
+﻿namespace Snebur.Comunicacao.Dominio.Chamada
 {
     public class ParametroChamadaListaBaseDominio : ParametroChamadaLista
     {
