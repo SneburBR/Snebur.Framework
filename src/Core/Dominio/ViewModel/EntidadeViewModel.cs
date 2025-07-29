@@ -6,6 +6,6 @@ namespace Snebur.Dominio
     [IgnorarClasseTS]
     public class EntidadeViewModel : BaseViewModel
     {
-        public Entidade Entidade { get; set; }
+        public Entidade? Entidade { get; set; }
     }
 }

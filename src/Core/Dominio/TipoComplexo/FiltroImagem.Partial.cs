@@ -30,7 +30,8 @@ namespace Snebur.Dominio
 
         public bool IsExisteExposicao => !this.IsNullOuPadrao(this.Exposicao, EXPOSICAO_PADRAO);
 
-        public bool IsExisteExposicaoExtra => this.IsExisteExposicao && Math.Abs(this.Exposicao.Value) > 50;
+        public bool IsExisteExposicaoExtra
+            => this.IsExisteExposicao && Math.Abs(this.Exposicao.GetValueOrDefault()) > 50;
 
         public bool IsExisteAjuste => this.IsExisteAjusteCor || this.IsExisteAjusteComum;
 

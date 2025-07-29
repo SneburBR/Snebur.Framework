@@ -24,6 +24,5 @@
 
         IdentificadorSessaoUsuarioInexistente = 1000,
 
-
     }
 }

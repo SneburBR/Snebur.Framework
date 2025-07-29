@@ -34,6 +34,5 @@ namespace Snebur.Dominio
         string? ValorPropriedadeAlterada { get; set; }
 
         DateTime? DataHoraFimAlteracao { get; set; }
- 
     }
 }

@@ -25,6 +25,5 @@ namespace Snebur.Dominio
         double ProgressoEnvioArquivo { get; set; }
 
         double VelocidadeEnvio { get; set; }
-
     }
 }

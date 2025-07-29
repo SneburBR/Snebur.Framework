@@ -16,6 +16,5 @@ namespace Snebur.Dominio
         double Espessura { get; set; }
 
         int Arredondamento { get; set; }
-
     }
 }

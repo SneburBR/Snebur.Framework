@@ -23,5 +23,4 @@ namespace Snebur.Dominio
         [Rotulo("Forte")]
         Forte = 900
     }
-
 }

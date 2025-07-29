@@ -19,6 +19,5 @@ namespace Snebur.Dominio
         string MensagemErro { get; set; }
 
         int NumeroTentativa { get; set; }
-
     }
 }

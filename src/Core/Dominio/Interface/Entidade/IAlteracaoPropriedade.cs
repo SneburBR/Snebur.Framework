@@ -22,5 +22,4 @@ namespace Snebur.Dominio
         //[IgnorarPropriedadeTSReflexao]
         DateTime? DataHoraFimAlteracao { get; set; }
     }
-
 }

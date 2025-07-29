@@ -54,7 +54,7 @@ namespace Snebur.Dominio
             return base.ToString() + $" {this.Largura} x {this.Altura}";
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is Dimensao d)
             {

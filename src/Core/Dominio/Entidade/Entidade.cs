@@ -123,7 +123,7 @@ namespace Snebur.Dominio
                     if (isValidarTipoComplexo)
                     {
                         throw new Exception($"  A propriedade {propriedadeTipoComplexo.Name} do tipo complexo {propriedadeTipoComplexo.PropertyType.Name} " +
-                                            $"   não foi definida no campo privado na entidade '{propriedadeTipoComplexo.DeclaringType.Name}'. Atualize os projetos na  extensão Snebur");
+                                            $"   não foi definida no campo privado na entidade '{propriedadeTipoComplexo.DeclaringType?.Name}'. Atualize os projetos na  extensão Snebur");
                     }
                 }
             }
@@ -199,7 +199,7 @@ namespace Snebur.Dominio
         }
 
         internal protected override T RetornarValorPropriedade<T>(
-            T valor, 
+            T valor,
             [CallerMemberName] string nomePropriedade = "")
         {
             if (this.__IsControladorPropriedadesAlteradaAtivo)
@@ -258,7 +258,7 @@ namespace Snebur.Dominio
             BaseTipoComplexo novoValor,
             [CallerMemberName] string nomePropriedade = "")
         {
-            if (antigoValor != null)
+            if (antigoValor is not null)
             {
                 novoValor.__Entidade = null;
                 novoValor.__NomePropriedadeEntidade = null;
@@ -302,25 +302,31 @@ namespace Snebur.Dominio
                         if (!entidadeRelacao.Id.Equals(novoValor))
                         {
                             var propriedadeRelacao = this.__TipoEntidade.GetProperty(nomePropriedadeRelacao);
+                            if (propriedadeRelacao is null)
+                            {
+                                throw new Exception($"Não foi possível encontrar a propriedade '{nomePropriedadeRelacao}' na entidade '{this.__TipoEntidade.Name}'");
+                            }
                             propriedadeRelacao.SetValue(this, null);
                         }
                     }
-
                 }
             }
         }
 
         //para server valor null na chave estrangeira de chaveEstrangeira_Id = null
-        internal protected virtual void NotificarValorPropriedadeAlteradaRelacao(object? antigoValor,
-                                                                                 object? novoValor,
-                                                                                 [CallerMemberName] string nomePropriedade = "")
+        internal protected virtual void NotificarValorPropriedadeAlteradaRelacao(
+            object? antigoValor,
+            object? novoValor,
+            [CallerMemberName] string nomePropriedade = "")
         {
             if (this.IsSerializando)
             {
                 return;
             }
+
             this.NotificarValorPropriedadeAlterada(antigoValor, novoValor, nomePropriedade);
-            if (this.__IsControladorPropriedadesAlteradaAtivo && this is Entidade)
+            if (this.__IsControladorPropriedadesAlteradaAtivo &&
+                this is Entidade _)
             {
                 if (!Util.SaoIgual(antigoValor, novoValor))
                 {
@@ -334,6 +340,11 @@ namespace Snebur.Dominio
                         if (antigoValorChaveEstrangeira != novoValorChaveEstrangeira || novoValorChaveEstrangeira == 0)
                         {
                             var propriedadeChaveEstrageira = EntidadeUtil.RetornarPropriedadeChaveEstrangeira(tipoEntidade, propriedade);
+                            if (propriedadeChaveEstrageira is null)
+                            {
+                                throw new Exception($"Não foi possível encontrar a propriedade de chave estrangeira para a propriedade '{nomePropriedade}' na entidade '{tipoEntidade.Name}'");
+                            }
+
                             if (novoValorChaveEstrangeira > 0)
                             {
                                 propriedadeChaveEstrageira.SetValue(this, novoValorChaveEstrangeira);
@@ -388,7 +399,7 @@ namespace Snebur.Dominio
         #region Métodos públicos
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual Dictionary<string, PropriedadeAlterada> RetornarPropriedadesAlteradas()
+        public virtual Dictionary<string, PropriedadeAlterada>? RetornarPropriedadesAlteradas()
         {
             return this.__PropriedadesAlteradas;
         }
@@ -402,7 +413,8 @@ namespace Snebur.Dominio
         public TEntidade CloneSomenteId<TEntidade>(
             Expression<Func<TEntidade, object>>[]? expressoesPropriedade = null) where TEntidade : Entidade, IEntidade
         {
-            var entidadeClonada = (TEntidade)Activator.CreateInstance(this.__TipoEntidade);
+            var entidadeClonada = (TEntidade?)Activator.CreateInstance(this.__TipoEntidade);
+            Guard.NotNull(entidadeClonada);
             entidadeClonada.__IsClonado = true;
 
             entidadeClonada.AtivarControladorPropriedadeAlterada();
@@ -424,16 +436,17 @@ namespace Snebur.Dominio
 
         public TEntidade CloneSomenteId<TEntidade>(bool incluirTiposPrimariosETipoCompleto = true) where TEntidade : Entidade, IEntidade
         {
-            var entidadeClonada = (TEntidade)Activator.CreateInstance(this.__TipoEntidade);
+            var entidadeClonada = (TEntidade?)Activator.CreateInstance(this.__TipoEntidade);
+            Guard.NotNull(entidadeClonada);
             entidadeClonada.__IsClonado = true;
 
             if (incluirTiposPrimariosETipoCompleto)
             {
-                var propriedades = this.__TipoEntidade.GetProperties(ReflexaoUtil.BindingFlags).
-                                                                Where(x => x.GetGetMethod() != null && x.GetGetMethod().IsPublic &&
-                                                                          x.GetSetMethod() != null && x.GetSetMethod().IsPublic &&
-                                                                          (ReflexaoUtil.IsPropriedadeRetornaTipoPrimario(x, true) ||
-                                                                           ReflexaoUtil.IsPropriedadeRetornaTipoComplexo(x, true)));
+                var propriedades = this.__TipoEntidade.GetProperties(ReflexaoUtil.BindingFlags)
+                        .Where(x => x.GetGetMethod()?.IsPublic == true &&
+                                    x.GetSetMethod()?.IsPublic == true &&
+                                    (ReflexaoUtil.IsPropriedadeRetornaTipoPrimario(x, true) ||
+                                     ReflexaoUtil.IsPropriedadeRetornaTipoComplexo(x, true)));
 
                 foreach (var propriedade in propriedades)
                 {
@@ -468,7 +481,8 @@ namespace Snebur.Dominio
 
         public TEntidade LimparRelacoes<TEntidade>(bool isRelacaoEntidade = true, bool isColecaoEntidade = true) where TEntidade : Entidade, IEntidade
         {
-            var entidade = (TEntidade)Activator.CreateInstance(this.__TipoEntidade);
+            var entidade = (TEntidade?)Activator.CreateInstance(this.__TipoEntidade);
+            Guard.NotNull(entidade);
             entidade.Id = this.Id;
 
             AutoMapearUtil.Mapear(this, entidade, true, ((PropertyInfo PropriedadeOrigem, PropertyInfo PropriedadeDestino) arg) =>
@@ -535,7 +549,7 @@ namespace Snebur.Dominio
             return $"{this.__TipoEntidade.Name} ({this.Id})";
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj != null && this.GetType() == obj.GetType() && this.Id > 0 && this.Id == ((Entidade)obj).Id)
             {
@@ -572,7 +586,7 @@ namespace Snebur.Dominio
             foreach (var propriedade in propriedadesRelacoesNn)
             {
                 var lista = propriedade.GetValue(this) as IListaEntidades;
-                if (lista.EntidadesRemovida.Count > 0)
+                if (lista?.EntidadesRemovida.Count > 0)
                 {
                     return true;
                 }
@@ -761,7 +775,7 @@ namespace Snebur.Dominio
 
         internal protected string RetornarDescricaoComDeletado(string descricao)
         {
-            if (AplicacaoSnebur.Atual.IsAlicacaoCliente)
+            if (AplicacaoSnebur.AtualRequired.IsAlicacaoCliente)
             {
                 if (this is IDeletado deletado && deletado.IsDeletado &&
                     !descricao.Contains("deletado", CompareOptions.IgnoreCase))

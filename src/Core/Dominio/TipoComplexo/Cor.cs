@@ -119,7 +119,7 @@ namespace Snebur.Dominio
             return new Cor(this.Red, this.Green, this.Blue, this.AlphaDecimal);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is Cor cor)
             {

@@ -27,7 +27,6 @@ namespace Snebur.Dominio
         public double Vertical => Math.Min((this.Superior ?? 0), (this.Inferior ?? 0));
         public double Horizontal => Math.Min((this.Esquerda ?? 0), (this.Direita ?? 0));
 
-
         public Margem()
         {
         }
@@ -85,7 +84,7 @@ namespace Snebur.Dominio
             return false;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj != null && obj is Margem margem)
             {

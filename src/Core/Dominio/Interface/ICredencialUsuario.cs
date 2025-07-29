@@ -5,6 +5,5 @@
         string Nome { get; set; }
 
         string IdentificadorAmigavel { get; set; }
-
     }
 }

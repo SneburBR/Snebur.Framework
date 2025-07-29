@@ -51,6 +51,5 @@
         Dimensao DimensaoImagemImpressao { get; set; }
 
         EnumFormatoImagem FormatoImagem { get; set; }
-
     }
 }

@@ -34,12 +34,12 @@ namespace Snebur.Dominio
             }
         }
 
-        public static Localizacao Parse(string localicacaoString)
+        public static Localizacao Parse(string? localicacaoString)
         {
             return Parse(localicacaoString, ',');
         }
 
-        public static Localizacao Parse(string localicacaoString, char divisor)
+        public static Localizacao Parse(string? localicacaoString, char divisor)
         {
             if (!String.IsNullOrWhiteSpace(localicacaoString))
             {

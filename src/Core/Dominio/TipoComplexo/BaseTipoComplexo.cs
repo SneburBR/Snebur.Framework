@@ -80,9 +80,8 @@ namespace Snebur.Dominio
             }
             base.NotificarPropriedadeAlterada(nomePropriedade);
         }
-         
-
-        internal void NotificarTodasPropriedadesAlteradas(BaseTipoComplexo objetoAntigo)
+          
+        internal void NotificarTodasPropriedadesAlteradas(BaseTipoComplexo? objetoAntigo)
         {
             foreach (var propriedade in this.PropriedadesMapeadas)
             {

@@ -75,7 +75,7 @@ namespace Snebur.Dominio
 
         #region Métodos
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj != null && obj is Area area)
             {
