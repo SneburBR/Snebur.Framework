@@ -44,7 +44,7 @@ namespace Snebur.Dominio.Atributos
         }
         #endregion
 
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
             var resultado = base.IsValid(value, validationContext);
             if (resultado != null)
@@ -60,13 +60,14 @@ namespace Snebur.Dominio.Atributos
         }
         #region IAtributoValidacao
 
-        public bool IsValido(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
+        public bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
         {
-            if (!ValidacaoUtil.IsDefinido(valorPropriedade))
+            var texto = Convert.ToString(valorPropriedade);
+            if (String.IsNullOrWhiteSpace(texto))
             {
                 return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
             }
-            var texto = Convert.ToString(valorPropriedade);
+            
             if (this.TamanhoMinimo > 0 && this.TamanhoMaximo > 0)
             {
                 return texto.Length >= this.TamanhoMinimo &&
@@ -83,7 +84,7 @@ namespace Snebur.Dominio.Atributos
             return false;
         }
 
-        public string RetornarMensagemValidacao(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
+        public string RetornarMensagemValidacao(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
         {
             var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
             if (this.TamanhoMinimo > 0 && this.TamanhoMaximo > 0)

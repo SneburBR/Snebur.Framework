@@ -1,6 +1,7 @@
 ﻿using Snebur.Utilidade;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace Snebur.Dominio.Atributos
@@ -11,7 +12,7 @@ namespace Snebur.Dominio.Atributos
         [MensagemValidacao]
         public static string MensagemValidacao { get; set; } = "O campo {0} deve ser preenchido.";
         public EnumOpcoesComparacaoAuxiliar? OpcoesComparacaoAuxiliar { get; set; } = null;
-        public string NomePropridadeAuxiliar { get; set; }
+        public string? NomePropridadeAuxiliar { get; set; }
 
         public bool IsIgnorarValidacaoSeAuxiliarInvalido { get; set; } = false;
 
@@ -19,8 +20,8 @@ namespace Snebur.Dominio.Atributos
         /// Se valor comprar for diferente de null, o valor da propriedade auxiliar será comparado com este valor.
         /// Caso contrário, o valor da propriedade auxiliar será comparado com o valor da propriedade que está sendo validada.
         /// </summary>
-        public object ValorComparar { get; set; }
-        private PropertyInfo PropriedadeAuxiliar { get; set; }
+        public object? ValorComparar { get; set; }
+        private PropertyInfo? PropriedadeAuxiliar { get; set; }
 
         [IgnorarConstrutorTS]
         public ValidacaoRequeridoAttribute()
@@ -47,7 +48,7 @@ namespace Snebur.Dominio.Atributos
                                            [ParametroOpcionalTS] EnumOpcoesComparacaoAuxiliar opcoesComparacaoAuxiliar,
                                            [ParametroOpcionalTS] string nomePropridadeAuxiliar,
                                            [ParametroOpcionalTS] bool isIgnorarValidacaoSeAuxiliarInvalido = false,
-                                           [ParametroOpcionalTS] object valorComparar = null)
+                                           [ParametroOpcionalTS] object? valorComparar = null)
         {
             this.OpcoesComparacaoAuxiliar = opcoesComparacaoAuxiliar;
             this.NomePropridadeAuxiliar = nomePropridadeAuxiliar;
@@ -77,7 +78,7 @@ namespace Snebur.Dominio.Atributos
             return propriedade;
         }
 
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
             var resultado = base.IsValid(value, validationContext);
             if (resultado != null)
@@ -101,20 +102,23 @@ namespace Snebur.Dominio.Atributos
         #region IAtributoValidacao
 
         public string RetornarMensagemValidacao(PropertyInfo propriedade,
-                                                object paiPropriedade,
-                                                object valorPropriedade)
+                                                object? paiPropriedade,
+                                                object? valorPropriedade)
         {
             var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
 
             var opcao = this.OpcoesComparacaoAuxiliar;
-            if (opcao.HasValue && !this.IsIgnorarValidacaoSeAuxiliarInvalido && opcao != EnumOpcoesComparacaoAuxiliar.Nenhuma)
+            if (opcao.HasValue && !this.IsIgnorarValidacaoSeAuxiliarInvalido &&
+                opcao != EnumOpcoesComparacaoAuxiliar.Nenhuma)
             {
                 if (!this.IsIgnorarValidacaoSeAuxiliarInvalido &&
                     !this.IsAuxiliarValido(paiPropriedade, valorPropriedade))
                 {
                     var valorPropriedadeAuxiliar = this.RetornarValorPropriedadeAuxilizar(paiPropriedade);
-                    var rotutloPropriedadeAuxiliar = ReflexaoUtil.RetornarRotulo(this.PropriedadeAuxiliar); 
- 
+
+                    Guard.NotEmpty(this.PropriedadeAuxiliar);
+                    var rotutloPropriedadeAuxiliar = ReflexaoUtil.RetornarRotulo(this.PropriedadeAuxiliar);
+
                     switch (opcao.Value)
                     {
                         case EnumOpcoesComparacaoAuxiliar.Igual:
@@ -154,7 +158,7 @@ namespace Snebur.Dominio.Atributos
             return String.Format(MensagemValidacao, rotulo);
         }
 
-        public bool IsValido(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
+        public bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
         {
             if (this.IsAuxiliarValido(paiPropriedade, valorPropriedade))
             {
@@ -163,7 +167,9 @@ namespace Snebur.Dominio.Atributos
             return this.IsIgnorarValidacaoSeAuxiliarInvalido;
         }
 
-        private bool IsAuxiliarValido(object paiPropriedade, object valorPropriedade)
+        private bool IsAuxiliarValido(
+            object? paiPropriedade,
+            object? valorPropriedade)
         {
             if (this.OpcoesComparacaoAuxiliar == null ||
                 this.OpcoesComparacaoAuxiliar == EnumOpcoesComparacaoAuxiliar.Nenhuma)
@@ -171,7 +177,7 @@ namespace Snebur.Dominio.Atributos
                 return true;
             }
 
-            if (paiPropriedade == null)
+            if (paiPropriedade is null)
             {
                 return false;
             }
@@ -259,18 +265,23 @@ namespace Snebur.Dominio.Atributos
             }
         }
 
-        private object RetornarValorPropriedadeAuxilizar(object paiPropriedade)
+        private object? RetornarValorPropriedadeAuxilizar(object? paiPropriedade)
         {
-
-            var tipoPaiPropriedade = paiPropriedade.GetType();
             var propriedadeAuxiliar = this.PropriedadeAuxiliar;
-            if (propriedadeAuxiliar.DeclaringType != tipoPaiPropriedade &&
-                !propriedadeAuxiliar.DeclaringType.IsSubclassOf(tipoPaiPropriedade))
+            if (paiPropriedade is null || propriedadeAuxiliar is null)
             {
-                throw new Exception($"A propriedade auxiliar {propriedadeAuxiliar.Name} declarada em {propriedadeAuxiliar.DeclaringType.Name} não pertence a entidade {tipoPaiPropriedade.Name}.");
+                return null;
             }
 
-            return this.PropriedadeAuxiliar.GetValue(paiPropriedade);
+            var tipoPaiPropriedade = paiPropriedade.GetType();
+
+            if (propriedadeAuxiliar.DeclaringType != tipoPaiPropriedade &&
+                !propriedadeAuxiliar.DeclaringType?.IsSubclassOf(tipoPaiPropriedade) == true)
+            {
+                throw new Exception($"A propriedade auxiliar {propriedadeAuxiliar.Name} declarada em {propriedadeAuxiliar.DeclaringType?.Name} não pertence a entidade {tipoPaiPropriedade.Name}.");
+            }
+
+            return propriedadeAuxiliar.GetValue(paiPropriedade);
         }
 
         #endregion

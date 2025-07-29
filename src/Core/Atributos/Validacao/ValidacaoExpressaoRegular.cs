@@ -47,7 +47,7 @@ namespace Snebur.Dominio.Atributos
 
         #region IAtributoValidacao
 
-        public bool IsValido(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
+        public bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
         {
            
             var valorPropriedadeString = valorPropriedade?.ToString();
@@ -59,7 +59,7 @@ namespace Snebur.Dominio.Atributos
             return match.Success;
         }
 
-        public string RetornarMensagemValidacao(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
+        public string RetornarMensagemValidacao(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
         {
             var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
             return String.Format(MensagemValidacao, rotulo);

@@ -37,10 +37,10 @@ namespace Snebur.Dominio.Atributos
         #region IAtributoValidacao
 
         public override bool IsValido(PropertyInfo propriedade, 
-                                     object paiPropriedade, object valorPropriedade)
+                                     object? paiPropriedade, object? valorPropriedade)
         {
             var senha = Convert.ToString(valorPropriedade);
-            if (!(senha.Length >= this.TamanhoMinimo))
+            if (!(senha?.Length >= this.TamanhoMinimo))
             {
                 return false;
             }
@@ -48,7 +48,7 @@ namespace Snebur.Dominio.Atributos
             //throw new NotImplementedException();
         }
 
-        public override string RetornarMensagemValidacao(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
+        public override string RetornarMensagemValidacao(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
         {
             var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
             return String.Format(this.MensagemValidacao, rotulo);
