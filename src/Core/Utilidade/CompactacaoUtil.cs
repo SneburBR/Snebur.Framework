@@ -108,11 +108,11 @@ namespace Snebur.Utilidade
             {
                 if (SistemaUtil.IsAplicacao64Bits)
                 {
-                    return CaminhoUtil.Combine(AplicacaoSnebur.Atual.DiretorioAplicacao, "x64", "7z.dll");
+                    return CaminhoUtil.Combine(AplicacaoSnebur.AtualRequired.DiretorioAplicacao, "x64", "7z.dll");
                 }
                 else
                 {
-                    return CaminhoUtil.Combine(AplicacaoSnebur.Atual.DiretorioAplicacao, "x86", "7z.dll");
+                    return CaminhoUtil.Combine(AplicacaoSnebur.AtualRequired.DiretorioAplicacao, "x86", "7z.dll");
                 }
             }
         }

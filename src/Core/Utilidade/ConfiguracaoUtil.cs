@@ -24,17 +24,22 @@ namespace Snebur.Utilidade
         private static string? _caminhoAppDataAplicacaoSemVersao;
         private static string? _caminhoAppDataAplicacaoSemIdentificadorPropretario;
          
-        public static string UrlWebService => AplicacaoSnebur.Atual.UrlWebService;
-        public static string UrlServicoArquivo => AplicacaoSnebur.Atual.UrlServicoArquivo;
-        public static string UrlServicoDados => AplicacaoSnebur.Atual.UrlServicoDados;
-        public static string UrlServicoImagem => AplicacaoSnebur.Atual.UrlServicoImagem;
+        public static string? UrlWebService 
+            => AplicacaoSnebur.Atual?.UrlWebService;
+        public static string? UrlServicoArquivo 
+            => AplicacaoSnebur.Atual?.UrlServicoArquivo;
+        public static string? UrlServicoDados 
+            => AplicacaoSnebur.Atual?.UrlServicoDados;
+        public static string? UrlServicoImagem 
+            => AplicacaoSnebur.Atual?.UrlServicoImagem;
+
         public static Guid ChaveSeguranca => LazyUtil.RetornarValorLazyComBloqueio(ref _chaveSeguranca, RetornarChaveSeguranca);
 
         public static bool IsLogDebugOutputSql=> LazyUtil.RetornarValorLazyComBloqueio(ref _isLogDebugOutputSql, RetornarIsLogDebugOutputSql);
 
         private static Guid RetornarChaveSeguranca()
         {
-            if (Guid.TryParse(AplicacaoSnebur.Atual.AppSettings["ChaveSeguranca"], out var resultado))
+            if (Guid.TryParse(AplicacaoSnebur.Atual?.AppSettings["ChaveSeguranca"], out var resultado))
             {
                 return resultado;
             }
@@ -42,7 +47,7 @@ namespace Snebur.Utilidade
         }
         private static bool RetornarIsLogDebugOutputSql()
         {
-            if (Boolean.TryParse(AplicacaoSnebur.Atual.AppSettings["IsLogDebugOutputSql"], out var resultado))
+            if (Boolean.TryParse(AplicacaoSnebur.Atual?.AppSettings["IsLogDebugOutputSql"], out var resultado))
             {
                 return resultado;
             }
@@ -53,8 +58,10 @@ namespace Snebur.Utilidade
                                                   DebugUtil.IsAttached;
 
         public static CultureInfo CulturaPortuguesBrasil { get; } = new CultureInfo("pt-BR");
-        public static NameValueCollection AppSettings => AplicacaoSnebur.Atual.AppSettings;
-        public static NameValueCollection ConnectionStrings => AplicacaoSnebur.Atual.ConnectionStrings;
+        public static NameValueCollection? AppSettings 
+            => AplicacaoSnebur.Atual?.AppSettings;
+        public static NameValueCollection? ConnectionStrings 
+            => AplicacaoSnebur.Atual?.ConnectionStrings;
         public static string CaminhoAppDataAplicacao
         {
             get
@@ -66,7 +73,7 @@ namespace Snebur.Utilidade
                         if (_caminhoAppDataAplicacao == null || IsAtualizarCaminhoAppData(_caminhoAppDataAplicacao, true))
                         {
                             var caminhoAppData = CaminhoAppDataAplicacaoSemVersao;
-                            _caminhoAppDataAplicacao = CaminhoUtil.Combine(caminhoAppData, AplicacaoSnebur.Atual.VersaoAplicao.ToString());
+                            _caminhoAppDataAplicacao = CaminhoUtil.Combine(caminhoAppData, AplicacaoSnebur.Atual?.VersaoAplicao.ToString());
                             DiretorioUtil.CriarDiretorio(_caminhoAppDataAplicacao);
                         }
                     }
