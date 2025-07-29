@@ -9,6 +9,6 @@ namespace Snebur.AcessoDados
 
         #endregion
 
-        public List<BaseFiltro> Filtros { get; set; } = new List<BaseFiltro>();
+        public List<BaseFiltro> Filtros { get; set; } = new();
     }
 }

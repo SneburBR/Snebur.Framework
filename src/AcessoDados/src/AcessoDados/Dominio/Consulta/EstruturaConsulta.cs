@@ -11,8 +11,8 @@ namespace Snebur.AcessoDados
 
 		#region Campos Privados
 
-        private string _nomeTipoEntidade;
-        private string _tipoEntidadeAssemblyQualifiedName;
+        private string? _nomeTipoEntidade;
+        private string? _tipoEntidadeAssemblyQualifiedName;
         private bool _isIncluirDeletados;
         private bool _isIncluirInativos;
         private bool _isDesativarOrdenacao;

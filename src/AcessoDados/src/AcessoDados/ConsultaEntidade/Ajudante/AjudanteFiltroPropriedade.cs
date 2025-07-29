@@ -20,11 +20,11 @@ namespace Snebur.AcessoDados.Ajudantes
             var partes = new List<string>();
             var tipoEntidadeAtual = estruturaConsulta.TipoEntidadeConsulta;
 
-            PropertyInfo propriedade = null;
+            PropertyInfo? propriedade = null;
             foreach (var p in propriedades)
             {
                 propriedade = p;
-                if (propriedade.DeclaringType.IsInterface)
+                if (propriedade.DeclaringType?.IsInterface == true)
                 {
                     propriedade = AjudanteConsultaEntidade.RetornarPropriedadeInterface(tipoEntidadeAtual, propriedade);
                     if (propriedade.PropertyType.IsSubclassOf(typeof(Entidade)))
@@ -35,7 +35,8 @@ namespace Snebur.AcessoDados.Ajudantes
                 var atributoProprieadeInterface = propriedade.GetCustomAttribute<PropriedadeInterfaceAttribute>();
                 if (atributoProprieadeInterface != null)
                 {
-                    propriedade = ReflexaoUtil.RetornarPropriedade(propriedade.DeclaringType, 
+                    Guard.NotNull(propriedade.DeclaringType);
+                    propriedade = ReflexaoUtil.RetornarPropriedade(propriedade.DeclaringType,
                                                                    atributoProprieadeInterface.NomePropriedade);
                 }
                 partes.Add(propriedade.Name);
@@ -51,7 +52,7 @@ namespace Snebur.AcessoDados.Ajudantes
                                                                           object valorPropriedade,
                                                                           EnumOperadorFiltro operadorFiltro)
         {
-            if (propriedade.DeclaringType.IsInterface)
+            if (propriedade.DeclaringType?.IsInterface == true)
             {
                 if (caminhoPropriedade.Contains("."))
                 {
@@ -61,18 +62,24 @@ namespace Snebur.AcessoDados.Ajudantes
             }
             //propriedade = AjudanteFiltroPropriedade.NormalizarPropriedadeEspecializada(propriedade);
 
-            if (propriedade.PropertyType.IsSubclassOf(typeof(Entidade)))
+            if (propriedade.PropertyType.IsSubclassOf(typeof(Entidade)) &&
+                valorPropriedade is Entidade entidade)
             {
-                if (valorPropriedade is Entidade && !valorPropriedade.GetType().IsTipoIguaOuHerda(propriedade.PropertyType))
+                if (!entidade.GetType().IsTipoIguaOuHerda(propriedade.PropertyType))
                 {
                     throw new Erro($"A entidade '{valorPropriedade.GetType().Name}' não é compatível com tipo propriedade '{propriedade.Name}' do tipo '{propriedade.PropertyType.Name}' ");
                 }
 
                 var novoCaminhoPropriedade = caminhoPropriedade.Contains(".") ? caminhoPropriedade.Substring(0, caminhoPropriedade.LastIndexOf(".") + 1) : String.Empty;
                 var propriedadeChavaEstrangeira = EntidadeUtil.RetornarPropriedadeChaveEstrangeira(propriedade.DeclaringType, propriedade);
+
+                Guard.NotNull(propriedadeChavaEstrangeira);
+
+
                 novoCaminhoPropriedade = novoCaminhoPropriedade + propriedadeChavaEstrangeira.Name;
 
-                var novoValorPropriedade = (valorPropriedade as Entidade).Id;
+                //Guard.NotNull(entidade);
+                var novoValorPropriedade = entidade.Id;
 
                 valorPropriedade = novoValorPropriedade;
                 propriedade = propriedadeChavaEstrangeira;
@@ -160,56 +167,56 @@ namespace Snebur.AcessoDados.Ajudantes
             }
         }
 
-        private static object RetornarValorPropriedadeFormatado(object valorPropriedade, EnumTipoPrimario tipoPrimario)
-        {
-            switch (tipoPrimario)
-            {
-                case EnumTipoPrimario.String:
+        //private static object RetornarValorPropriedadeFormatado(object valorPropriedade, EnumTipoPrimario tipoPrimario)
+        //{
+        //    switch (tipoPrimario)
+        //    {
+        //        case EnumTipoPrimario.String:
 
-                    return valorPropriedade.ToString();
+        //            return valorPropriedade.ToString();
 
-                case EnumTipoPrimario.Integer:
+        //        case EnumTipoPrimario.Integer:
 
-                    return Convert.ToInt32(valorPropriedade).ToString();
+        //            return Convert.ToInt32(valorPropriedade).ToString();
 
-                case EnumTipoPrimario.Long:
+        //        case EnumTipoPrimario.Long:
 
-                    return Convert.ToInt64(valorPropriedade).ToString();
+        //            return Convert.ToInt64(valorPropriedade).ToString();
 
-                case EnumTipoPrimario.Decimal:
+        //        case EnumTipoPrimario.Decimal:
 
-                    return Convert.ToDecimal(valorPropriedade).ToString().Replace(",", ".");
+        //            return Convert.ToDecimal(valorPropriedade).ToString().Replace(",", ".");
 
-                case EnumTipoPrimario.Boolean:
+        //        case EnumTipoPrimario.Boolean:
 
-                    return Convert.ToBoolean(valorPropriedade).ToString();
+        //            return Convert.ToBoolean(valorPropriedade).ToString();
 
-                case EnumTipoPrimario.DateTime:
+        //        case EnumTipoPrimario.DateTime:
 
-                    return Convert.ToDateTime(valorPropriedade).ToString();
+        //            return Convert.ToDateTime(valorPropriedade).ToString();
 
-                case EnumTipoPrimario.Guid:
-                    {
-                        if (valorPropriedade == null)
-                        {
-                            return Guid.Empty.ToString();
-                        }
-                        else
-                        {
-                            Guid guidValor;
-                            if (!Guid.TryParse(valorPropriedade.ToString(), out guidValor))
-                            {
-                                throw new Erro(String.Format("Não foi possível converter o valor {0} para guid", valorPropriedade.ToString()));
-                            }
-                        }
-                        break;
-                    }
-                default:
+        //        case EnumTipoPrimario.Guid:
+        //            {
+        //                if (valorPropriedade == null)
+        //                {
+        //                    return Guid.Empty.ToString();
+        //                }
+        //                else
+        //                {
+        //                    Guid guidValor;
+        //                    if (!Guid.TryParse(valorPropriedade.ToString(), out guidValor))
+        //                    {
+        //                        throw new Erro(String.Format("Não foi possível converter o valor {0} para guid", valorPropriedade.ToString()));
+        //                    }
+        //                }
+        //                break;
+        //            }
+        //        default:
 
-                    throw new ErroNaoSuportado(String.Format("Tipo não suportado {0} ", EnumUtil.RetornarDescricao(tipoPrimario)));
-            }
-            throw new ErroNaoSuportado(String.Format("Tipo não suportado {0} ", EnumUtil.RetornarDescricao(tipoPrimario)));
-        }
+        //            throw new ErroNaoSuportado(String.Format("Tipo não suportado {0} ", EnumUtil.RetornarDescricao(tipoPrimario)));
+        //    }
+        //    throw new ErroNaoSuportado(String.Format("Tipo não suportado {0} ", EnumUtil.RetornarDescricao(tipoPrimario)));
+        //}
 
         private static PropertyInfo RetornarPropriedade(MemberExpression expressao)
         {

@@ -26,7 +26,7 @@ namespace Snebur.AcessoDados.Ajudantes
         public static PropertyInfo RetornarPropriedadeInterface(Type tipoDeclarado,
                                                                 PropertyInfo ipropriedade)
         {
-            if (!ipropriedade.DeclaringType.IsInterface)
+            if (ipropriedade.DeclaringType?.IsInterface == false)
             {
                 throw new InvalidOperationException($"a propriedade {ipropriedade.Name} não foi declarada em um interface");
             }
@@ -34,7 +34,7 @@ namespace Snebur.AcessoDados.Ajudantes
             var propriedade = ReflexaoUtil.RetornarPropriedade(tipoDeclarado, ipropriedade.Name, true);
             if (propriedade == null)
             {
-                var nomePropriedadeExplicida = String.Format("{0}.{1}.{2}", ipropriedade.DeclaringType.Namespace, ipropriedade.DeclaringType.Name, ipropriedade.Name);
+                var nomePropriedadeExplicida = String.Format("{0}.{1}.{2}", ipropriedade.DeclaringType?.Namespace, ipropriedade.DeclaringType?.Name, ipropriedade.Name);
                 propriedade = ReflexaoUtil.RetornarPropriedade(tipoDeclarado, nomePropriedadeExplicida);
             }
             var atributoProprieadeInterface = propriedade.GetCustomAttribute<PropriedadeInterfaceAttribute>();
@@ -58,14 +58,14 @@ namespace Snebur.AcessoDados.Ajudantes
             return false;
         }
 
-        public static Type RetornarTipoListaEntidade(Type tipoDeclarado, PropertyInfo propriedade)
+        public static Type? RetornarTipoListaEntidade(Type tipoDeclarado, PropertyInfo propriedade)
         {
-            if (propriedade.DeclaringType.IsInterface)
+            if (propriedade.DeclaringType?.IsInterface == true)
             {
                 propriedade = AjudanteConsultaEntidade.RetornarPropriedadeInterface(tipoDeclarado, propriedade);
             }
             var tipoEntidade = AjudanteConsultaEntidade.RetornarTipoListaEntidade(propriedade.PropertyType);
-            if (!tipoEntidade.IsSubclassOf(typeof(Entidade)))
+            if (tipoEntidade?.IsSubclassOf(typeof(Entidade)) == false)
             {
                 throw new ErroNaoSuportado(String.Format("O Tipo não é um entidade {0}", tipoEntidade.Name));
             }
@@ -76,7 +76,7 @@ namespace Snebur.AcessoDados.Ajudantes
 
         #region Metodos Privados
 
-        private static Type RetornarTipoListaEntidade(Type tipo)
+        private static Type? RetornarTipoListaEntidade(Type? tipo)
         {
             if (tipo == null)
             {
