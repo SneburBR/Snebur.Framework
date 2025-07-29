@@ -18,7 +18,7 @@ namespace Snebur.AcessoDados
 
         [IgnorarPropriedade]
         [IgnorarPropriedadeTSReflexao]
-        public Exception Erro { get; set; } = null;
+        public Exception? Erro { get; set; } = null;
 
         public string MensagemErro { get => this.RetornarValorPropriedade(this._mensagemErro); set => this.NotificarValorPropriedadeAlterada(this._mensagemErro, this._mensagemErro = value); }
 

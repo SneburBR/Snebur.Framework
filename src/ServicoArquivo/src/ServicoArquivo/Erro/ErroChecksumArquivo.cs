@@ -7,7 +7,7 @@ namespace System
     public class ErroChecksumArquivo : ErroServicoArquivo
     {
         public ErroChecksumArquivo(string mensagem = "",
-                                     Exception erroInterno = null,
+                                     Exception? erroInterno = null,
                                      [CallerMemberName] string nomeMetodo = "",
                                      [CallerFilePath] string caminhoArquivo = "",
                                      [CallerLineNumber] int linhaDoErro = 0) :
@@ -19,10 +19,7 @@ namespace System
         public ErroChecksumArquivo()
         {
         }
-
-        protected ErroChecksumArquivo(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+         
         #endregion
     }
 }

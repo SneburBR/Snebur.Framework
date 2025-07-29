@@ -9,6 +9,6 @@ namespace Snebur.Comunicacao.Mensageiro
 
         #endregion
 
-        private IUsuario Usuario { get; set; }
+        private IUsuario? Usuario { get; set; }
     }
 }

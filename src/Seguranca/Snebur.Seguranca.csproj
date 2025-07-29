@@ -6,7 +6,8 @@
 		<RootNamespace>Snebur.Seguranca</RootNamespace>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-		<Nullable>disable</Nullable>
+		<Nullable>enable</Nullable>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 	</PropertyGroup>
  
 	<ItemGroup>

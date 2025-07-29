@@ -9,7 +9,7 @@ namespace Snebur.ServicoArquivo
     {
 
         public ErroArquivoNaoEncontrado(string mensagem = "",
-                                        Exception erroInterno = null,
+                                        Exception? erroInterno = null,
                                         [CallerMemberName] string nomeMetodo = "",
                                         [CallerFilePath] string caminhoArquivo = "",
                                         [CallerLineNumber] int linhaDoErro = 0) :
@@ -21,10 +21,7 @@ namespace Snebur.ServicoArquivo
         public ErroArquivoNaoEncontrado()
         {
         }
-
-        protected ErroArquivoNaoEncontrado(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+         
         #endregion
     }
 

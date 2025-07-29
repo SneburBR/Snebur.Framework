@@ -37,7 +37,7 @@ namespace Snebur.Comunicacao
             }
         }
 
-        public static string DescompactarPacote(Stream stream)
+        public static string? DescompactarPacote(Stream stream)
         {
             if (stream != null)
             {

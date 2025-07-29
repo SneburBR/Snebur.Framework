@@ -10,7 +10,7 @@ namespace Snebur.AcessoDados
 
         private long _id;
         private Guid _identificadorUnicoEntidade;
-        private string _caminhoTipoEntidadeSalva;
+        private string? _caminhoTipoEntidadeSalva;
 
         #endregion
 
@@ -18,7 +18,7 @@ namespace Snebur.AcessoDados
 
         public Guid IdentificadorUnicoEntidade { get => this.RetornarValorPropriedade(this._identificadorUnicoEntidade); set => this.NotificarValorPropriedadeAlterada(this._identificadorUnicoEntidade, this._identificadorUnicoEntidade = value); }
 
-        public string CaminhoTipoEntidadeSalva { get => this.RetornarValorPropriedade(this._caminhoTipoEntidadeSalva); set => this.NotificarValorPropriedadeAlterada(this._caminhoTipoEntidadeSalva, this._caminhoTipoEntidadeSalva = value); }
+        public string? CaminhoTipoEntidadeSalva { get => this.RetornarValorPropriedade(this._caminhoTipoEntidadeSalva); set => this.NotificarValorPropriedadeAlterada(this._caminhoTipoEntidadeSalva, this._caminhoTipoEntidadeSalva = value); }
 
         public List<PropriedadeComputada> PropriedadesComputada { get; set; } = new List<PropriedadeComputada>();
     }

@@ -8,7 +8,7 @@ namespace System
     {
 
         public ErroTotalBytesDiferente(string mensagem = "",
-                                    Exception erroInterno = null,
+                                    Exception? erroInterno = null,
                                     [CallerMemberName] string nomeMetodo = "",
                                     [CallerFilePath] string caminhoArquivo = "",
                                     [CallerLineNumber] int linhaDoErro = 0) :
@@ -20,10 +20,7 @@ namespace System
         public ErroTotalBytesDiferente()
         {
         }
-
-        protected ErroTotalBytesDiferente(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+         
         #endregion
     }
 }

@@ -7,11 +7,11 @@ namespace Snebur.AcessoDados
 
         #region Campos Privados
 
-        private string _caminhoPropriedade;
+        private string? _caminhoPropriedade;
 
         #endregion
 
-        public string CaminhoPropriedade { get => this.RetornarValorPropriedade(this._caminhoPropriedade); set => this.NotificarValorPropriedadeAlterada(this._caminhoPropriedade, this._caminhoPropriedade = value); }
+        public string? CaminhoPropriedade { get => this.RetornarValorPropriedade(this._caminhoPropriedade); set => this.NotificarValorPropriedadeAlterada(this._caminhoPropriedade, this._caminhoPropriedade = value); }
 
         public List<string> Lista { get; set; } = new List<string>();
 

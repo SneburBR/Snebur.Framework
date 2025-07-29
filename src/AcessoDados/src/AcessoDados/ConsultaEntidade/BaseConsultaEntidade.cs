@@ -23,7 +23,7 @@ namespace Snebur.AcessoDados
 
         protected BaseConsultaEntidade(__BaseContextoDados contextoDados,
                                        Type tipoEntidadeConsulta,
-                                       EstruturaConsulta estruturaConsulta)
+                                       EstruturaConsulta? estruturaConsulta)
         {
             this.TipoEntidadeConsulta = tipoEntidadeConsulta;
             this.ContextoDados = contextoDados;

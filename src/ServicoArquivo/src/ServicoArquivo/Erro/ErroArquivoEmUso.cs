@@ -7,7 +7,7 @@ namespace System
     public class ErroArquivoEmUso : ErroServicoArquivo
     {
         public ErroArquivoEmUso(string mensagem = "",
-                                     Exception erroInterno = null,
+                                     Exception? erroInterno = null,
                                      [CallerMemberName] string nomeMetodo = "",
                                      [CallerFilePath] string caminhoArquivo = "",
                                      [CallerLineNumber] int linhaDoErro = 0) :
@@ -19,10 +19,7 @@ namespace System
         public ErroArquivoEmUso()
         {
         }
-
-        protected ErroArquivoEmUso(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+         
         #endregion
     }
 }

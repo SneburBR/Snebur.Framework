@@ -7,8 +7,8 @@ namespace Snebur.Utilidade
 {
     public class HttpTokenUtil
     {
-        public static T RetornarResultado<T>(string url,
-                                             Dictionary<string, string> parametros = null,
+        public static T? RetornarResultado<T>(string url,
+                                             Dictionary<string, string>? parametros = null,
                                              TimeSpan? timeout = null,
                                              bool isIgnorarErro = false)
         {
@@ -26,7 +26,7 @@ namespace Snebur.Utilidade
             if (!parametros.ContainsKey(ConstantesCabecalho.NOME_ASSEMBLY_APLICACAO))
             {
                 parametros.Add(ConstantesCabecalho.NOME_ASSEMBLY_APLICACAO,
-                               Uri.EscapeDataString(AplicacaoSnebur.Atual.NomeAplicacao));
+                               Uri.EscapeDataString(AplicacaoSnebur.AtualRequired.NomeAplicacao));
             }
 
             var timeoutTipado = timeout ?? TimeSpan.FromSeconds(HttpUtil.TIMEOUT_PADRAO);

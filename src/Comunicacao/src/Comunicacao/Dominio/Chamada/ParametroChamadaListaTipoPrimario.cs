@@ -12,7 +12,7 @@ namespace Snebur.Comunicacao
 
         #endregion
 
-        public List<object> Lista { get; set; }
+        public List<object> Lista { get; set; } = new();
 
         public EnumTipoPrimario TipoPrimarioEnum { get => this.RetornarValorPropriedade(this._tipoPrimarioEnum); set => this.NotificarValorPropriedadeAlterada(this._tipoPrimarioEnum, this._tipoPrimarioEnum = value); }
     }
