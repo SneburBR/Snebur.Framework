@@ -1,23 +1,22 @@
 ﻿using Snebur.Seguranca;
 
-namespace Snebur.ServicoArquivo
+namespace Snebur.ServicoArquivo.Seguranca;
+
+public class CredencialServicoArquivo
 {
-    public class CredencialServicoArquivo
+    public static Credencial ServicoArquivo
     {
-        public static Credencial ServicoArquivo
+        get
         {
-            get
+            return new CredencialServico
             {
-                return new CredencialServico
-                {
-                    IdentificadorUsuario = CredencialServicoArquivo.IDENTIFICADOR_USUARIO,
-                    Senha = CredencialServicoArquivo.SENHA
-                };
-            }
+                IdentificadorUsuario = IDENTIFICADOR_USUARIO,
+                Senha = SENHA
+            };
         }
-
-        private const string IDENTIFICADOR_USUARIO = "ServicoArquivo";
-
-        private const string SENHA = "0388cb06-7431-4c5e-b70f-31129e7fd7da";
     }
+
+    private const string IDENTIFICADOR_USUARIO = "ServicoArquivo";
+
+    private const string SENHA = "0388cb06-7431-4c5e-b70f-31129e7fd7da";
 }

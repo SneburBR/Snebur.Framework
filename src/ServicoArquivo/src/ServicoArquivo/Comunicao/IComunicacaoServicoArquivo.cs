@@ -1,20 +1,17 @@
-﻿using Snebur.Dominio.Atributos;
+﻿namespace Snebur.ServicoArquivo.Comunicao;
 
-namespace Snebur.ServicoArquivo
+[IgnorarInterfaceTS]
+public interface IComunicacaoServicoArquivo
 {
-    [IgnorarInterfaceTS]
-    public interface IComunicacaoServicoArquivo
-    {
-        bool ExisteIdArquivo(long idArquivo);
+    bool ExisteIdArquivo(long idArquivo);
 
-        bool ExisteArquivo(long idArquivo);
+    bool ExisteArquivo(long idArquivo);
 
-        bool NotificarInicioEnvioArquivo(long idArquivo);
+    bool NotificarInicioEnvioArquivo(long idArquivo);
 
-        bool NotificarFimEnvioArquivo(long idArquivo, long totalBytes, string checksum);
+    bool NotificarFimEnvioArquivo(long idArquivo, long totalBytes, string checksum);
 
-        bool NotificarArquivoDeletado(long idArquivo);
+    bool NotificarArquivoDeletado(long idArquivo);
 
-        bool NotificarProgresso(long idArquivo, double progresso);
-    }
+    bool NotificarProgresso(long idArquivo, double progresso);
 }

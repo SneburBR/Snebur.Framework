@@ -1,13 +1,9 @@
-﻿using Snebur.Dominio;
-using Snebur.Dominio.Atributos;
+﻿namespace Snebur.ServicoArquivo.Comunicao;
 
-namespace Snebur.ServicoArquivo
+[IgnorarInterfaceTS]
+public interface IComunicacaoServicoImagem : IComunicacaoServicoArquivo
 {
-    [IgnorarInterfaceTS]
-    public interface IComunicacaoServicoImagem : IComunicacaoServicoArquivo
-    {
-        bool ExisteImagem(long idImagem, EnumTamanhoImagem tamanhoImagem);
+    bool ExisteImagem(long idImagem, EnumTamanhoImagem tamanhoImagem);
 
-        bool NotificarFimEnvioImagem(long idImagem, long totalBytes, EnumTamanhoImagem tamanhoImagem, string checksum);
-    }
+    bool NotificarFimEnvioImagem(long idImagem, long totalBytes, EnumTamanhoImagem tamanhoImagem, string checksum);
 }
