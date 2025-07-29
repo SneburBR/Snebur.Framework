@@ -6,12 +6,124 @@ namespace Snebur.Utilidade
 {
     public static class CaminhoUtil
     {
-        public static bool IsFullPath(string? path)
+        public static string Combine(string? path1, string? path2)
         {
-            if (String.IsNullOrWhiteSpace(path))
+            return Combinar(path1, path2);
+        }
+
+        public static string Combine(string path1,
+                                     string path2,
+                                     string path3)
+        {
+            return Combinar(path1, path2, path3);
+        }
+
+        public static string Combine(string path1,
+                                     string path2,
+                                     string path3,
+                                     string path4)
+        {
+            return Combinar(path1, path2, path3, path4);
+        }
+
+        public static string Combine(params string?[] paths)
+        {
+            return Combinar(paths);
+        }
+
+        public static string SubstituirNomeDiretorioRecursivo(
+            string camiho,
+            string nomeDiretorio,
+            string novoNomeDiretorio)
+        {
+            camiho = camiho.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+            var diretorios = camiho.Split(Path.DirectorySeparatorChar);
+
+            for (int i = 0; i < diretorios.Length; i++)
             {
-                return false;
+                if (diretorios[i].Equals(nomeDiretorio, StringComparison.OrdinalIgnoreCase))
+                {
+                    diretorios[i] = novoNomeDiretorio;
+                    break;
+                }
             }
+            return Combine(diretorios);
+        }
+
+        private static string Combinar(params string?[] paths)
+        {
+            if (paths.Length == 0)
+            {
+                return String.Empty;
+            }
+
+            paths[0] = paths[0]?.Trim() ?? "";
+
+            for (int i = 1; i < paths.Length; i++)
+            {
+                var path = NormalizarPath(paths[i]);
+                if (!String.IsNullOrWhiteSpace(path))
+                {
+                    paths[i] = path;
+                }
+            }
+
+            var firstPath = paths[0];
+            if (firstPath?.Length == 2 && firstPath[1] == Path.VolumeSeparatorChar)
+            {
+                paths[0] = $"{paths[0]}{Path.DirectorySeparatorChar}";
+            }
+
+            if (firstPath?.Length > 2 &&
+                firstPath[1] == Path.VolumeSeparatorChar &&
+                !IsDirectorySeparator(firstPath[2]))
+            {
+                paths[0] = $"{firstPath[0]}{Path.VolumeSeparatorChar}{Path.DirectorySeparatorChar}{NormalizarPath(firstPath.Substring(2))}";
+            }
+
+            var pathNotEmpties = paths
+                .Where(p => !string.IsNullOrWhiteSpace(p))
+                .ToArray();
+
+            if (pathNotEmpties.Length == 0)
+            {
+                return String.Empty;
+            }
+            return Path.GetFullPath(Path.Combine(pathNotEmpties!));
+        }
+
+        private static bool IsDirectorySeparator(char @char)
+        {
+            return @char == Path.DirectorySeparatorChar ||
+                   @char == Path.AltDirectorySeparatorChar;
+        }
+
+        private static string? NormalizarPath(string? path)
+        {
+            if (path is null)
+            {
+                return null;
+            }
+            path = path.Trim();
+
+            if (path.Length == 0)
+            {
+                return path;
+            }
+
+            if (path[0] == Path.DirectorySeparatorChar)
+            {
+                path = path.TrimStart(Path.DirectorySeparatorChar);
+            }
+            else if (path[0] == Path.AltDirectorySeparatorChar)
+            {
+                path = path.TrimStart(Path.AltDirectorySeparatorChar);
+            }
+            return path;
+        }
+
+        public static bool IsFullPath(string path)
+        {
             return !String.IsNullOrWhiteSpace(path) &&
                     path.IndexOfAny(Path.GetInvalidPathChars().ToArray()) == -1 &&
                     Path.IsPathRooted(path) &&
@@ -244,14 +356,14 @@ namespace Snebur.Utilidade
             return caminhoArquivoSuportado;
         }
 
-        public static FileInfo RetornarCaminhoArquivoRecursivo(FileInfo arquivo)
+        public static FileInfo? RetornarCaminhoArquivoRecursivo(FileInfo arquivo)
         {
             try
             {
                 while (!arquivo.Exists)
                 {
-                    arquivo = new FileInfo(Combine(arquivo.Directory.Parent.FullName, arquivo.Name));
-                    if (arquivo.Directory.Parent == null)
+                    arquivo = new FileInfo(Combine(arquivo.Directory?.Parent?.FullName, arquivo.Name));
+                    if (arquivo.Directory?.Parent == null)
                     {
                         return null;
                     }
@@ -267,25 +379,25 @@ namespace Snebur.Utilidade
             return null;
         }
 
-        public static string Combine(string path1, string path2)
-        {
-            return Path.Combine(path1, path2);
-        }
+        //public static string Combine(string path1, string path2)
+        //{
+        //    return Path.Combine(path1, path2);
+        //}
 
-        public static string Combine(string path1, string path2, string path3)
-        {
-            return Path.Combine(path1, path2, path3);
-        }
+        //public static string Combine(string path1, string path2, string path3)
+        //{
+        //    return Path.Combine(path1, path2, path3);
+        //}
 
-        public static string Combine(string path1, string path2, string path3, string path4)
-        {
-            return Path.Combine(path1, path2, path3, path4);
-        }
+        //public static string Combine(string path1, string path2, string path3, string path4)
+        //{
+        //    return Path.Combine(path1, path2, path3, path4);
+        //}
 
-        public static string Combine(params string[] paths)
-        {
-            return Path.Combine(paths);
-        }
+        //public static string Combine(params string[] paths)
+        //{
+        //    return Path.Combine(paths);
+        //}
     }
 
     public enum EnumTipoCaminho
