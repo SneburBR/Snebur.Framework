@@ -1,9 +1,4 @@
-﻿using Snebur.Dominio;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Snebur.AcessoDados;
+﻿namespace Snebur.AcessoDados;
 
 public partial class ConsultaEntidade<TEntidade> : BaseConsultaEntidade, IConsultaEntidade<TEntidade> where TEntidade : IEntidade
 {

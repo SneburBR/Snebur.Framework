@@ -1,7 +1,4 @@
 ﻿using Snebur.AcessoDados.Ajudantes;
-using Snebur.Dominio;
-using System;
-using System.Linq.Expressions;
 
 namespace Snebur.AcessoDados;
 

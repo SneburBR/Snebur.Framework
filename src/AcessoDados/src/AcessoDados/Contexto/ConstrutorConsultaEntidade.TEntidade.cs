@@ -1,11 +1,4 @@
-﻿using Snebur.Dominio;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Reflection;
-
-namespace Snebur.AcessoDados;
+﻿namespace Snebur.AcessoDados;
 
 internal class ConstrutorConsultaEntidade<TEntidade> : ConstrutorConsultaEntidade, IConsultaEntidade<TEntidade> where TEntidade : IEntidade
 {

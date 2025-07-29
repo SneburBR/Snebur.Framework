@@ -1,12 +1,5 @@
-﻿using Snebur.Dominio;
-using Snebur.Dominio.Atributos;
-using Snebur.Reflexao;
-using Snebur.Utilidade;
-using System;
-using System.Collections.Generic;
+﻿using Snebur.Reflexao;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq.Expressions;
-using System.Reflection;
 
 namespace Snebur.AcessoDados.Ajudantes;
 

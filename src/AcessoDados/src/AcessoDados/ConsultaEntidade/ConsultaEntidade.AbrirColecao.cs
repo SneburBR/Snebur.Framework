@@ -1,11 +1,4 @@
 ﻿using Snebur.AcessoDados.Ajudantes;
-using Snebur.Dominio;
-using Snebur.Utilidade;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Reflection;
 
 namespace Snebur.AcessoDados;
 

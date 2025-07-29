@@ -1,6 +1,4 @@
-﻿using Snebur.Dominio;
-
-namespace Snebur.AcessoDados;
+﻿namespace Snebur.AcessoDados;
 
 public class Ordenacao : BaseAcessoDados
 {

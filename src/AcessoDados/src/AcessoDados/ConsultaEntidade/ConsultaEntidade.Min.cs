@@ -1,8 +1,4 @@
-﻿using Snebur.Dominio;
-using System;
-using System.Linq.Expressions;
-
-namespace Snebur.AcessoDados;
+﻿namespace Snebur.AcessoDados;
 
 
 public partial class ConsultaEntidade<TEntidade> where TEntidade : IEntidade

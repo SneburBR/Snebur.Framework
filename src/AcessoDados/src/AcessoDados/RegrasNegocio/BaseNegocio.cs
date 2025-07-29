@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Snebur.RegrasNegocio;
+﻿namespace Snebur.RegrasNegocio;
 
 public class BaseNegocio
 {

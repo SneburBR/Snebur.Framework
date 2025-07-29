@@ -1,7 +1,4 @@
-﻿using Snebur.Dominio.Atributos;
-using Snebur.Reflexao;
-using Snebur.Utilidade;
-using System.Reflection;
+﻿using Snebur.Reflexao;
 
 namespace Snebur.AcessoDados;
 

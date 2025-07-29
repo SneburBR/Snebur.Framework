@@ -1,7 +1,4 @@
-﻿using Snebur.Dominio.Atributos;
-using System.Collections.Generic;
-
-namespace Snebur.AcessoDados.Seguranca;
+﻿namespace Snebur.AcessoDados.Seguranca;
 
 public interface IEstruturaConsultaSeguranca
 {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq.Expressions;
-
-namespace Snebur.AcessoDados.Ajudantes;
+﻿namespace Snebur.AcessoDados.Ajudantes;
 
 internal partial class AjudanteFiltroPropriedade
 {

@@ -1,7 +1,4 @@
-﻿using Snebur.Dominio;
-using System.Collections.Generic;
-
-namespace Snebur.AcessoDados;
+﻿namespace Snebur.AcessoDados;
 
 public class ResultadoSalvar : Resultado
 {

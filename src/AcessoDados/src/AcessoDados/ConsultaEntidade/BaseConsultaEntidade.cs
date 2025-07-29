@@ -1,7 +1,4 @@
-﻿using Snebur.Dominio;
-using System;
-
-namespace Snebur.AcessoDados;
+﻿namespace Snebur.AcessoDados;
 
 public abstract partial class BaseConsultaEntidade
 {

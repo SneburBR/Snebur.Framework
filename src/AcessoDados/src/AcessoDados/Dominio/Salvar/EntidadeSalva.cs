@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Snebur.AcessoDados;
+﻿namespace Snebur.AcessoDados;
 
 public class EntidadeSalva : BaseAcessoDados
 {

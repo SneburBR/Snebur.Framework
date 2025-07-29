@@ -1,12 +1,4 @@
-﻿using Snebur.Dominio;
-using Snebur.Dominio.Atributos;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Reflection;
-
-namespace Snebur.AcessoDados;
+﻿namespace Snebur.AcessoDados;
 
 [IgnorarInterfaceTS]
 public interface IConsultaEntidade
