@@ -21,9 +21,10 @@ namespace Snebur.Dominio.Atributos
         {
             this.IsNovoIdentificador = isNovoIdentificador;
         }
+
         #region IAtributoValidacao
 
-        public bool IsValido(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
+        public bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
         {
             return true;
         }

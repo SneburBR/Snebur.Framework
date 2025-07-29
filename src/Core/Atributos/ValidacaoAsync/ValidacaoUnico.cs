@@ -68,7 +68,7 @@ namespace Snebur.Dominio.Atributos
 
         #region IAtributoValidacao
 
-        public bool IsValido(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
+        public bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
         {
             if (!ValidacaoUtil.IsDefinido(valorPropriedade))
             {
