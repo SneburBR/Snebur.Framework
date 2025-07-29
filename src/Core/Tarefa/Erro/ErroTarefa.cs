@@ -8,7 +8,7 @@ namespace Snebur.Tarefa
     public class ErroTarefa : Erro
     {
         public ErroTarefa(string mensagem = "",
-                          Exception erroInterno = null,
+                          Exception? erroInterno = null,
                           [CallerMemberName] string nomeMetodo = "",
                           [CallerFilePath] string caminhoArquivo = "",
                           [CallerLineNumber] int linhaDoErro = 0) :

@@ -18,7 +18,7 @@ namespace Snebur.Dominio
         public double? Direita { get => this._direita; set => this.NotificarValorPropriedadeAlterada(this._direita, this._direita = value); }
 
         public double? Inferior { get => this._inferior; set => this.NotificarValorPropriedadeAlterada(this._inferior, this._inferior = value); }
-         
+
         public double MaiorValor => Math.Max(this.Esquerda ?? 0, Math.Max(this.Superior ?? 0, Math.Max(this.Direita ?? 0, this.Inferior ?? 0)));
 
         public double MenorValor => Math.Min(this.Esquerda ?? 0, Math.Min(this.Superior ?? 0, Math.Min(this.Direita ?? 0, this.Inferior ?? 0)));
@@ -26,8 +26,8 @@ namespace Snebur.Dominio
 
         public double Vertical => Math.Min((this.Superior ?? 0), (this.Inferior ?? 0));
         public double Horizontal => Math.Min((this.Esquerda ?? 0), (this.Direita ?? 0));
-        
-        
+
+
         public Margem()
         {
         }
@@ -58,17 +58,18 @@ namespace Snebur.Dominio
 
         #region Operadores
 
-        public static bool operator ==(Margem margem1, Margem margem2)
+        public static bool operator ==(Margem? margem1, Margem? margem2)
         {
-            if (margem1 != null && margem2 != null)
-            {
-                return margem1.Equals(margem2);
-            }
-            if ((margem1 is null) && margem2 is null)
+            if (margem1 is null && margem2 is null)
             {
                 return true;
             }
-            return false;
+
+            if (margem1 is null || margem2 is null)
+            {
+                return false;
+            }
+            return margem1.Equals(margem2);
         }
 
         public static bool operator !=(Margem margem1, Margem margem2)

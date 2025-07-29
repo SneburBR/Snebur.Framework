@@ -46,17 +46,17 @@ namespace Snebur.Dominio
         }
         #region Operadores
 
-        public static bool operator ==(Area area1, Area area2)
+        public static bool operator ==(Area? area1, Area? area2)
         {
-            if (area1 != null && area2 != null)
-            {
-                return area1.Equals(area2);
-            }
-            if ((area1 is null) && area2 is null)
+            if (area1 is null && area2 is null)
             {
                 return true;
             }
-            return false;
+            if (area1 is null || area2 is null)
+            {
+                return false;
+            }
+            return area1.Equals(area2);
         }
 
         public static bool operator !=(Area area1, Area area2)

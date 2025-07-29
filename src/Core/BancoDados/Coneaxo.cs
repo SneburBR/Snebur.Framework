@@ -238,7 +238,7 @@ namespace Snebur.BancoDados
         /// <param name="sqls"></param>
         /// <param name="acao"> A acao será invokada em cadas script </param>
         public bool ExecutarComandos(IEnumerable<string> sqls,
-                                     Action<SqlCommand> acao,
+                                     Action<SqlCommand>? acao,
                                      bool isIgnorarErro,
                                      params SqlParameter[] parametros)
         {
@@ -310,8 +310,6 @@ namespace Snebur.BancoDados
 
         public void Dispose()
         {
-            this.ConnectionString = null;
-            this.NomeConnectionString = null;
         }
     }
 }

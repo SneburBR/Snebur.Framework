@@ -8,7 +8,7 @@ namespace Snebur.AcessoDados
     public class ErroFalhaAutenticacao : Erro
     {
         public ErroFalhaAutenticacao(string mensagem = "",
-                                     Exception erroInterno = null,
+                                     Exception? erroInterno = null,
                                      [CallerMemberName] string nomeMetodo = "",
                                      [CallerFilePath] string caminhoArquivo = "",
                                      [CallerLineNumber] int linhaDoErro = 0) :

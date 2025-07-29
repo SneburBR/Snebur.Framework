@@ -38,33 +38,26 @@ namespace Snebur.Dominio
         }
         #region Operadores
 
-        public static bool operator ==(Regiao regiao1, Regiao regiao2)
+        public static bool operator ==(Regiao? regiao1, Regiao? regiao2)
         {
-            if (regiao1 != null && regiao2 != null)
-            {
-                return regiao1.Equals(regiao2);
-            }
-            if ((regiao1 is null) && regiao2 is null)
+            if (regiao1 is null && regiao2 is null)
             {
                 return true;
             }
-            return false;
+
+            if (regiao1 is null || regiao2 is null)
+            {
+                return false;
+            }
+            return regiao1.Equals(regiao2);
         }
 
-        public static bool operator !=(Regiao regiao1, Regiao regiao2)
+        public static bool operator !=(Regiao? regiao1, Regiao? regiao2)
         {
-            if (!(regiao1 is null) && !(regiao2 is null))
-            {
-                return !regiao1.Equals(regiao2);
-            }
-            if ((regiao1 is null) && regiao2 is null)
-            {
-                return true;
-            }
-            return false;
+            return !(regiao1 == regiao2);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj != null && obj is Regiao regiao)
             {

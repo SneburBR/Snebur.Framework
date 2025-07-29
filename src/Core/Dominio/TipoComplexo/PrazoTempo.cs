@@ -109,17 +109,19 @@ namespace Snebur.Dominio
         }
         #region Operadores
 
-        public static bool operator ==(PrazoTempo prazoTempo1, PrazoTempo prazoTempo2)
+        public static bool operator ==(PrazoTempo? prazoTempo1, PrazoTempo? prazoTempo2)
         {
-            if (prazoTempo1 != null && prazoTempo2 != null)
-            {
-                return prazoTempo1.Equals(prazoTempo2);
-            }
-            if ((prazoTempo1 is null) && prazoTempo2 is null)
+            if (prazoTempo1 is null && prazoTempo2 is null)
             {
                 return true;
             }
-            return false;
+
+            if (prazoTempo1 is null || prazoTempo2 is null)
+            {
+                return false;
+            }
+
+            return prazoTempo1.Equals(prazoTempo2);
         }
 
         public static bool operator !=(PrazoTempo prazoTempo1, PrazoTempo prazoTempo2)
