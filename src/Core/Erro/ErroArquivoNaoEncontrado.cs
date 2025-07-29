@@ -1,9 +1,6 @@
-﻿#if NET40
-extern alias MicrosoftBcl;
-#endif
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 
-namespace System;
+namespace Snebur;
 
 [Serializable]
 public class ErroArquivoNaoEncontrado : Erro

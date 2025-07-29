@@ -1,7 +1,7 @@
 ﻿using Snebur;
 using System.Runtime.CompilerServices;
 
-namespace System;
+namespace Snebur;
 
 [Serializable]
 public class ErroGlobal : Erro

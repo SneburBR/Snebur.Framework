@@ -1,6 +1,6 @@
 ﻿using System.Collections.Specialized;
 
-namespace System;
+namespace Snebur;
 
 public static class NameValueCollectionExtensao
 {

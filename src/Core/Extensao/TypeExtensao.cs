@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace System;
+namespace Snebur;
 
 public static class TypeExtensao
 {

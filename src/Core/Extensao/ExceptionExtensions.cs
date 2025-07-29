@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace System;
+namespace Snebur;
 
 public static class ExceptionExtensions
 {

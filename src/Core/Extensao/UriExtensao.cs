@@ -1,10 +1,11 @@
 ﻿using Snebur.Utilidade;
+using System.IO;
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
-namespace System;
+namespace Snebur;
 
 public static class UriExtensao
 {
@@ -32,10 +33,10 @@ public static class UriExtensao
 
         if (isRemoveFileName)
         {
-            var fileName = IO.Path.GetFileName(path);
+            var fileName = Path.GetFileName(path);
             if (fileName.Contains("."))
             {
-                return IO.Path.GetDirectoryName(path) ?? path;
+                return Path.GetDirectoryName(path) ?? path;
             }
         }
         return path;

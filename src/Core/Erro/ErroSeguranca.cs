@@ -2,7 +2,7 @@
 using Snebur.Utilidade;
 using System.Runtime.CompilerServices;
 
-namespace System;
+namespace Snebur;
 
 public class ErroSeguranca : Erro
 {

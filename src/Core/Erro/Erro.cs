@@ -1,9 +1,8 @@
-﻿using Snebur;
-using Snebur.Utilidade;
+﻿using Snebur.Utilidade;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
-namespace System;
+namespace Snebur;
 
 [Serializable]
 public class Erro : Exception, ISerializable

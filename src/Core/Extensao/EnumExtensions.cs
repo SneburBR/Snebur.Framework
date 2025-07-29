@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 
-namespace System;
+namespace Snebur;
 
 public static class EnumExtensions
 {

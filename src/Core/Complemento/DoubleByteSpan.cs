@@ -1,4 +1,4 @@
-﻿namespace System;
+﻿namespace Snebur;
 
 public class DoubleByteSpan
 {

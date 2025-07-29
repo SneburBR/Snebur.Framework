@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace System;
+namespace Snebur;
 
 public static class StringExtensao
 {

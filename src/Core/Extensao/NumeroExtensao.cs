@@ -1,6 +1,6 @@
 ﻿using Snebur.Utilidade;
 
-namespace System;
+namespace Snebur;
 
 public static class NumeroExtensao
 {

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace System;
+namespace Snebur;
 
 [Serializable]
 public class ErroNaoSuportado : Erro
