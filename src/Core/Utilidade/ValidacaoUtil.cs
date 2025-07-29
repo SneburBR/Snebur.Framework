@@ -43,17 +43,18 @@ namespace Snebur.Utilidade
             return IsEmail(emailOuTelefone) || IsTelefone(emailOuTelefone);
         }
 
-        public static bool IsEmail(string email)
+        public static bool IsEmail(string? email)
         {
-            if (!String.IsNullOrEmpty(email))
+            if (String.IsNullOrEmpty(email))
             {
-                if (RegexHasSpace.IsMatch(email))
-                {
-                    return false;
-                }
-                return RegexValidacaoEmail.IsMatch(email.Trim());
+                return false;
             }
-            return false;
+
+            if (RegexHasSpace.IsMatch(email))
+            {
+                return false;
+            }
+            return RegexValidacaoEmail.IsMatch(email.Trim());
         }
 
         public static bool IsCep(string? cep)
@@ -127,35 +128,37 @@ namespace Snebur.Utilidade
             return false;
         }
 
-        public static bool IsTelefone(string telefone)
+        public static bool IsTelefone(string? telefone)
         {
-            if (!String.IsNullOrEmpty(telefone))
+            if (String.IsNullOrEmpty(telefone))
             {
-                var letras = TextoUtil.RetornarSomenteLetras(telefone);
-                var numeros = TextoUtil.RetornarSomenteNumeros(telefone);
-
-                numeros = TextoUtil.RemoverCaracteresInicial(numeros, "0");
-
-                var isNacional = (letras.Length == 0 && (numeros.Length == 10 ||
-                                                       numeros.Length == 11));
-                if (isNacional)
-                {
-                    var ddd = Convert.ToInt32(numeros.Substring(0, 2));
-                    return TelefoneUtil.DicionariosDDD.ContainsKey(ddd);
-                }
-                //var isInternacional = (letras.Length == 0 && (numeros.Length == 10 ||
-                //                                              numeros.Length == 11));
                 return false;
             }
+
+            var letras = TextoUtil.RetornarSomenteLetras(telefone);
+            var numeros = TextoUtil.RetornarSomenteNumeros(telefone);
+
+            numeros = TextoUtil.RemoverCaracteresInicial(numeros, "0");
+
+            var isNacional = (letras.Length == 0 && (numeros.Length == 10 ||
+                                                   numeros.Length == 11));
+            if (isNacional)
+            {
+                var ddd = Convert.ToInt32(numeros.Substring(0, 2));
+                return TelefoneUtil.DicionariosDDD.ContainsKey(ddd);
+            }
+            //var isInternacional = (letras.Length == 0 && (numeros.Length == 10 ||
+            //                                              numeros.Length == 11));
             return false;
         }
 
-        public static bool IsCpf(string cpf)
+        public static bool IsCpf(string? cpf)
         {
             if (String.IsNullOrWhiteSpace(cpf))
             {
                 return false;
             }
+
             cpf = TextoUtil.RetornarSomenteNumeros(cpf);
             if (cpf.Length != 11)
             {
@@ -200,7 +203,7 @@ namespace Snebur.Utilidade
             return true;
         }
 
-        public static bool IsCpfOuCpj(string cpfOuCnpj)
+        public static bool IsCpfOuCpj(string? cpfOuCnpj)
         {
             var numeros = TextoUtil.RetornarSomenteNumeros(cpfOuCnpj);
             if (numeros.Count() == 11)
@@ -210,7 +213,7 @@ namespace Snebur.Utilidade
             return IsCnpj(cpfOuCnpj);
         }
 
-        public static bool IsIp(string ip)
+        public static bool IsIp(string? ip)
         {
             if (ip == IpUtil.Empty)
             {
@@ -226,8 +229,13 @@ namespace Snebur.Utilidade
             return false;
         }
 
-        public static bool IsDominioDns(string dominio)
+        public static bool IsDominioDns(string? dominio)
         {
+            if (String.IsNullOrEmpty(dominio))
+            {
+                return false;
+            }
+
             var url = new Regex(@"^[\w\-_]+((\.[\w\-_]+)+([a-z]))?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
             if (url.IsMatch(dominio))
             {
@@ -279,7 +287,7 @@ namespace Snebur.Utilidade
             return Int32.TryParse(valor.ToString(), out _);
         }
 
-        public static bool IsVersao(string versao)
+        public static bool IsVersao(string? versao)
         {
             if (!String.IsNullOrEmpty(versao))
             {
@@ -345,7 +353,7 @@ namespace Snebur.Utilidade
             }
         }
 
-        public static bool IsSomenteNumeros(string texto)
+        public static bool IsSomenteNumeros(string? texto)
         {
             return TextoUtil.IsSomenteNumeros(texto);
         }
@@ -355,26 +363,24 @@ namespace Snebur.Utilidade
             return TextoUtil.IsSomenteNumerosPontosSinaisSimbolos(texto);
         }
 
-        public static bool IsSomenteNumerosPontosSinais(string texto)
+        public static bool IsSomenteNumerosPontosSinais(string? texto)
         {
             return TextoUtil.IsSomenteNumerosPontosSinais(texto);
         }
 
         #region Nome
 
-        public static bool IsNomeCompleto(string nomeCompleto)
+        public static bool IsNomeCompleto(string? nomeCompleto)
         {
-            if (nomeCompleto != null)
+            if (String.IsNullOrEmpty(nomeCompleto))
             {
-                var (nome, sobrenome) = FormatacaoNomeUtil.FormatarNomeSobrenome(nomeCompleto);
-
-                return !String.IsNullOrEmpty(nome) &&
-                       !String.IsNullOrEmpty(sobrenome);
-
-                //var partes = valorPropriedade.Trim().Split(' ');
-                //return partes.Count() >= 1 && partes.Where(x => x.Length >= 2).Count() >= 2;
+                return false;
             }
-            return false;
+
+            var (nome, sobrenome) = FormatacaoNomeUtil.FormatarNomeSobrenome(nomeCompleto);
+
+            return !String.IsNullOrEmpty(nome) &&
+                   !String.IsNullOrEmpty(sobrenome);
         }
 
         public static bool IsPossuiSobrenome(string nomeCompleto)
@@ -383,8 +389,12 @@ namespace Snebur.Utilidade
             return !String.IsNullOrEmpty(sobrenome);
         }
 
-        public static bool IsPossuiPrimeiroNome(string nomeCompleto)
+        public static bool IsPossuiPrimeiroNome(string? nomeCompleto)
         {
+            if (String.IsNullOrEmpty(nomeCompleto))
+            {
+                return false;
+            }
             var (nome, sobrenome) = FormatacaoNomeUtil.FormatarNomeSobrenome(nomeCompleto);
             var letras = TextoUtil.RetornarSomenteLetras(nome);
             return letras.Length >= 2;
@@ -410,8 +420,12 @@ namespace Snebur.Utilidade
             return false;
         }
 
-        public static bool IsRota(string rota)
+        public static bool IsRota(string? rota)
         {
+            if (String.IsNullOrEmpty(rota))
+            {
+                return false;
+            }
             if (rota?.StartsWith("/") == true && rota.Length < 512)
             {
                 return new Regex("^/[A-Za-z0-9-_/]+/$").IsMatch(rota);
@@ -424,17 +438,21 @@ namespace Snebur.Utilidade
             return ValidacaoEmailUtil.IsExisteEmail(email);
         }
 
-        public static bool IsMd5(string value)
+        public static bool IsMd5(string? value)
         {
-            if (value != null)
+            if (String.IsNullOrEmpty(value))
             {
-                return RegexMd5.IsMatch(value.Trim());
+                return false;
             }
-            return false;
+            return RegexMd5.IsMatch(value.Trim());
         }
 
-        public static bool IsGuid(string value)
+        public static bool IsGuid(string? value)
         {
+            if (String.IsNullOrEmpty(value))
+            {
+                return false;
+            }
             if (value != null)
             {
                 return RegexGuid.IsMatch(value.Trim());

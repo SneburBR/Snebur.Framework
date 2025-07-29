@@ -240,7 +240,7 @@ namespace Snebur.Utilidade
             return RetornarTextoCaracteresPermitido(texto, Letras, false);
         }
 
-        public static string RetornarSomenteNumeros(string texto)
+        public static string RetornarSomenteNumeros(string? texto)
         {
             return RetornarTextoCaracteresPermitido(texto, Numeros, false);
         }
@@ -594,12 +594,12 @@ namespace Snebur.Utilidade
             return LetrasNumeros.Contains(caracter);
         }
 
-        public static bool IsSomenteNumeros(string texto)
+        public static bool IsSomenteNumeros(string? texto)
         {
             return IsTextoValidoInterno(texto, TextoUtilConstantes.Numeros);
         }
 
-        public static bool IsSomenteNumerosPontosSinais(string texto)
+        public static bool IsSomenteNumerosPontosSinais(string? texto)
         {
             return IsTextoValidoInterno(texto,
               TextoUtilConstantes.NumerosPontosSinais);
@@ -611,7 +611,7 @@ namespace Snebur.Utilidade
               TextoUtilConstantes.NumerosPontosSinaisSimbolos);
         }
 
-        private static bool IsTextoValidoInterno(string texto, HashSet<char> caracteresPermitidoObjetos)
+        private static bool IsTextoValidoInterno(string? texto, HashSet<char> caracteresPermitidoObjetos)
         {
             if (texto != null)
             {
@@ -742,7 +742,7 @@ namespace Snebur.Utilidade
             return CacheFiltros[chave];
         }
 
-        public static string RetornarTextoCaracteresPermitido(string texto,
+        public static string RetornarTextoCaracteresPermitido(string? texto,
                                                               HashSet<char> caracterPermitidos,
                                                               bool isPermitirEspacoBranco,
                                                               char? substituirPor = null)
@@ -751,6 +751,7 @@ namespace Snebur.Utilidade
             {
                 return String.Empty;
             }
+
             ErroUtil.ValidarReferenciaNula(caracterPermitidos, nameof(caracterPermitidos));
 
             var sb = new StringBuilder();
