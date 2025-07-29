@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Snebur.Comunicacao.Erro
+namespace Snebur.Comunicacao
 {
     public class ErroSerializarPacote : ErroComunicacao
     {
