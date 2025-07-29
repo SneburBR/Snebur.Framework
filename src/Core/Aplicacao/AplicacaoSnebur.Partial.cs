@@ -7,12 +7,17 @@ namespace Snebur
         private readonly static object _bloqueio = new object();
         internal static int _mainThreadId;
         internal static AplicacaoSnebur? _aplicacao;
-        public static AplicacaoSnebur Atual
-            => _aplicacao?? throw new Exception(" A aplicação atual não foi inicializada, a deve ser inicializar no StartUp da aplicação");
+      
+        public static AplicacaoSnebur? Atual
+            => _aplicacao;
+
+        public static AplicacaoSnebur AtualRequired
+            => _aplicacao  ?? throw new InvalidOperationException("A aplicação atual não foi inicializada, a deve ser inicializar no StartUp da aplicação");
 
         public static T AtualTipada<T>() where T : AplicacaoSnebur
         {
-            return (T)Atual;
+            Guard.NotNull(_aplicacao);
+            return (T)_aplicacao;
         }
 
         private static AplicacaoSnebur RetornarAplicacaoAtual()
@@ -28,7 +33,7 @@ namespace Snebur
             //}
 
             throw new Exception("A aplicação atual não foi inicializada, a deve ser inicializar no StartUp da aplicação");
- 
+
             //return new AplicacaoSneburInterna();
         }
     }

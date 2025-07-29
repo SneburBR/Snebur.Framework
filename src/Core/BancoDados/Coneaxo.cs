@@ -10,7 +10,6 @@ using Snebur.Dominio;
 using System.Data.Common;
 using System.ComponentModel.DataAnnotations.Schema;
 
-
 #if NET6_0_OR_GREATER
 using Microsoft.Data.SqlClient;
 using Snebur;
@@ -23,29 +22,26 @@ namespace Snebur.BancoDados
 {
     public class Conexao : IDisposable
     {
-        public string NomeConnectionString;
-        private string ConnectionString;
+        public string NomeConnectionString { get; }
+        private string _connectionString;
 
         public int? CommandTimeout { get; set; }
 
         public Conexao(string nomeConnectionString)
         {
             this.NomeConnectionString = nomeConnectionString;
-            
-            if (AplicacaoSnebur.Atual?.ConnectionStrings[nomeConnectionString] != null)
-            {
-                this.ConnectionString = AplicacaoSnebur.Atual.ConnectionStrings[nomeConnectionString];
-            }
-            else
-            {
-               
-                this.ConnectionString = nomeConnectionString;
-            }
 
-            if (!this.IsConnecionStringValida(this.ConnectionString))
+            var connectionString = AplicacaoSnebur.Atual?.ConnectionStrings[nomeConnectionString] != null
+                ? AplicacaoSnebur.Atual?.ConnectionStrings[nomeConnectionString]
+                : nomeConnectionString;
+
+            Guard.NotNullOrWhiteSpace(connectionString);
+
+            if (!this.IsConnecionStringValida(connectionString))
             {
-                throw new Exception($"A string de conexão '{this.ConnectionString}' não é válida");
+                throw new Exception($"A string de conexão '{connectionString}' não é válida");
             }
+            this._connectionString = connectionString;
         }
 
         private bool IsConnecionStringValida(string connectionString)
@@ -69,7 +65,7 @@ namespace Snebur.BancoDados
                                           SqlParameter[] parametros)
         {
             var dt = new DataTable();
-            using (var conexao = new SqlConnection(this.ConnectionString))
+            using (var conexao = new SqlConnection(this._connectionString))
             {
                 conexao.Open();
                 try
@@ -88,7 +84,9 @@ namespace Snebur.BancoDados
                     }
                     if (propriedadesChavePrimaria != null && propriedadesChavePrimaria.Count > 0)
                     {
-                        var chavesPrimerias = propriedadesChavePrimaria.Select(x => dt.Columns[x.Name]).ToArray();
+                        var chavesPrimerias = propriedadesChavePrimaria
+                            .Select(x => dt.Columns[x.Name] ?? throw new Exception($"Column {x.Name} not found"))
+                            .ToArray();
                         dt.PrimaryKey = chavesPrimerias;
                     }
                 }
@@ -115,10 +113,10 @@ namespace Snebur.BancoDados
             var propriedades = tipo.GetProperties(BindingFlags.Public | BindingFlags.Instance).
                                     Where(x => x.DeclaringType != typeof(BaseDominio) &&
                                                x.GetCustomAttribute<NotMappedAttribute>(true) == null &&
-                                               x.GetGetMethod().IsPublic && (x.GetSetMethod()?.IsPublic ?? false));
-            
+                                               x.GetGetMethod()?.IsPublic == true && (x.GetSetMethod()?.IsPublic == true));
+
             var propriedadesChavePrimaria = tipo.GetProperties().
-                                                 Where(x => x.GetCustomAttribute<KeyAttribute>() != null  ).
+                                                 Where(x => x.GetCustomAttribute<KeyAttribute>() != null).
                                                  ToList();
 
             var dataTable = this.RetornarDataTable(sql,
@@ -144,16 +142,16 @@ namespace Snebur.BancoDados
                 {
                     retorno.Add((T)Convert.ChangeType(row[0], typeof(T)));
                 }
-
             }
             return retorno;
         }
 
-        public T RetornarValorScalar<T>(string sql,
-                                       params SqlParameter[] parametros)
+        public T? RetornarValorScalar<T>(
+            string sql,
+            params SqlParameter[] parametros)
         {
             object valorEscalor;
-            using (var conexao = new SqlConnection(this.ConnectionString))
+            using (var conexao = new SqlConnection(this._connectionString))
             {
                 conexao.Open();
                 try
@@ -198,14 +196,14 @@ namespace Snebur.BancoDados
         public int ExecutarComando(string sql,
                                    params SqlParameter[] parametros)
         {
-            using (var conexao = new SqlConnection(this.ConnectionString))
+            using (var conexao = new SqlConnection(this._connectionString))
             {
                 conexao.Open();
                 try
                 {
                     using (var cmd = new SqlCommand(sql, conexao))
                     {
-                        if(this.CommandTimeout.HasValue)
+                        if (this.CommandTimeout.HasValue)
                         {
                             cmd.CommandTimeout = this.CommandTimeout.Value;
                         }
@@ -213,7 +211,7 @@ namespace Snebur.BancoDados
                         {
                             cmd.Parameters.Add(parametro);
                         }
-                       return cmd.ExecuteNonQuery();
+                        return cmd.ExecuteNonQuery();
                     }
                 }
                 catch (Exception)
@@ -238,11 +236,11 @@ namespace Snebur.BancoDados
         /// <param name="sqls"></param>
         /// <param name="acao"> A acao será invokada em cadas script </param>
         public bool ExecutarComandos(IEnumerable<string> sqls,
-                                     Action<SqlCommand> acao,
+                                     Action<SqlCommand>? acao,
                                      bool isIgnorarErro,
                                      params SqlParameter[] parametros)
         {
-            using (var conexao = new SqlConnection(this.ConnectionString))
+            using (var conexao = new SqlConnection(this._connectionString))
             {
                 conexao.Open();
 
@@ -310,8 +308,7 @@ namespace Snebur.BancoDados
 
         public void Dispose()
         {
-            this.ConnectionString = null;
-            this.NomeConnectionString = null;
+
         }
     }
 }

@@ -662,7 +662,7 @@ namespace Snebur
 
         private static string RetornarIdentificadorAplicacao()
         {
-            if (Atual.AppSettings[SessaoUtil.IDENTIFICADOR_APLICACAO] != null)
+            if (Atual?.AppSettings[SessaoUtil.IDENTIFICADOR_APLICACAO] != null)
             {
                 var identificadorAplicacao = Atual.AppSettings[SessaoUtil.IDENTIFICADOR_APLICACAO];
                 if (!string.IsNullOrWhiteSpace(identificadorAplicacao))
@@ -687,7 +687,7 @@ namespace Snebur
 
         private static string RetornarIdentificadorProprietario()
         {
-            if (Atual.AppSettings[ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO] != null)
+            if (Atual?.AppSettings[ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO] != null)
             {
                 return Atual.AppSettings[ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO] ??
                     ConfiguracaoUtil.IDENTIFICADOR_PROPRIETARIO_GLOBAL;
