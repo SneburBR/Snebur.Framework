@@ -27,9 +27,9 @@ namespace Snebur.Dominio
 
         public new void Add(TEntidade item)
         {
-            if (this.EntidadesRemovida.Contains(item as Entidade))
+            if (this.EntidadesRemovida.Contains((item as Entidade)!))
             {
-                this.EntidadesRemovida.Remove(item as Entidade);
+                this.EntidadesRemovida.Remove((item as Entidade)!);
             }
             base.Add(item);
         }
@@ -47,9 +47,9 @@ namespace Snebur.Dominio
 
         public new bool Remove(TEntidade entidade)
         {
-            if (!this.EntidadesRemovida.Contains(entidade as Entidade))
+            if (!this.EntidadesRemovida.Contains((entidade as Entidade)!))
             {
-                this.EntidadesRemovida.Add(entidade as Entidade);
+                this.EntidadesRemovida.Add((entidade as Entidade)!);
             }
             return (base.Remove(entidade));
         }

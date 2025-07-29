@@ -5,8 +5,8 @@ namespace Snebur.Servicos
     public interface IServicoLogDesempenho
     {
         Guid NotificarLogDesempenho(string mensagem,
-                                    string stackTrace,
+                                    string? stackTrace,
                                     EnumTipoLogDesempenho tipoLogDesempenho,
-                                    BaseInformacaoAdicionalServicoCompartilhado informacaoAdicional);
+                                    BaseInformacaoAdicionalServicoCompartilhado? informacaoAdicional);
     }
 }

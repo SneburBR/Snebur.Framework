@@ -5,11 +5,11 @@ namespace Snebur.Servicos
 {
     public class ServicoCompartilhadoUtil
     {
-        public static BaseInformacaoAdicionalServicoCompartilhado RetornarInformacaoAdicionalServicoCompartilhado()
+        public static BaseInformacaoAdicionalServicoCompartilhado? RetornarInformacaoAdicionalServicoCompartilhado()
         {
             try
             {
-                return AplicacaoSnebur.Atual.FuncaoRetornarInformacaoAdicionalServicoCompartilhado?.Invoke();
+                return AplicacaoSnebur.AtualRequired.FuncaoRetornarInformacaoAdicionalServicoCompartilhado?.Invoke();
             }
             catch (Exception)
             {

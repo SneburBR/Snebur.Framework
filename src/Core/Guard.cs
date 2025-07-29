@@ -58,22 +58,17 @@ namespace Snebur
             }
         }
 
-        public static void MustBeGreaterThanZero(
-#if NET9_0_OR_GREATER
-                [NotNull] int value,
-                [CallerArgumentExpression(nameof(value))] string paramName = "")
-#else
-                int value,
-                [CallerMemberName] string paramName = "")
-#endif       
+        public static void MustBeGreaterThanZero<T>(
+            IComparable<T> value,
+            [CallerMemberName] string memberName = "")
+            where T : struct
         {
-            if (value <= 0)
+            if (value.CompareTo(default) <= 0)
             {
-                throw new ArgumentOutOfRangeException(paramName, $"{paramName} must be greater than zero.");
+                throw new ArgumentOutOfRangeException($"{memberName} deve ser maior que zero.");
             }
         }
-
-#if NET9_0_OR_GREATER
+ 
         public static void NotEmpty<T>(
                [NotNull] ICollection<T> value,
                [CallerArgumentExpression(nameof(value))] string paramName = "")
@@ -105,11 +100,8 @@ namespace Snebur
             if (value.Count > 0)
                 throw new ArgumentException($"{paramName} must be empty.", paramName);
         }
-
-        
-#endif
-
     }
+
     //public static class Guard
     //{
     //    public static void NotNull<T>(
@@ -157,8 +149,6 @@ namespace Snebur
     //        if (!ValidationUtils.IsSha256(value))
     //            throw new ArgumentException($"{paramName} must be a SHA-256 hash value.", paramName);
     //    }
-
-
 
     //    public static void NotEmpty<T>(
     //           [NotNull] ICollection<T> value,

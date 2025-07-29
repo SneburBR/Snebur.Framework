@@ -6,7 +6,7 @@ namespace Snebur.Imagens
     {
         public EnumEfeitoImagem EfeitoImagemEnum { get; }
         public FiltroImagem Filtro { get; }
-        public SobrePosicao SobrePosicao { get; }
+        public SobrePosicao? SobrePosicao { get; }
 
         public EfeitoImagem(EnumEfeitoImagem filtroImagemConhecidoEnum,
                                      FiltroImagem filtro)

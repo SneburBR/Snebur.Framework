@@ -36,13 +36,13 @@ namespace System
         internal static bool IsNumericType(this Type type)
         {
             return NumericTypes.Contains(type) ||
-                   NumericTypes.Contains(Nullable.GetUnderlyingType(type));
+                   NumericTypes.Contains(Nullable.GetUnderlyingType(type)!);
         }
 
         internal static bool IsIdType(this Type type)
         {
             return IdTypes.Contains(type) ||
-                   IdTypes.Contains(Nullable.GetUnderlyingType(type));
+                   IdTypes.Contains(Nullable.GetUnderlyingType(type)!);
         }
     }
 }

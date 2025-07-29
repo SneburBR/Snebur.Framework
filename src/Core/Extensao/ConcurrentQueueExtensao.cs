@@ -6,7 +6,7 @@
         {
             while (origem.Count > 0)
             {
-                origem.TryDequeue(out T item);
+                origem.TryDequeue(out T? _);
             }
         }
     }

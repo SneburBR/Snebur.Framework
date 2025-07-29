@@ -49,12 +49,15 @@ namespace Snebur.Serializacao
             }
         }
 
-        private void SubstiuirReferencia(Referencia referencia, IBaseDominioReferencia baseDominio)
+        private void SubstiuirReferencia(
+            Referencia? referencia, 
+            IBaseDominioReferencia baseDominio)
         {
             switch (referencia)
             {
                 case ReferenciaColecao referenciaColecao:
 
+                    Guard.NotEmpty(referenciaColecao.Colecao);
                     referenciaColecao.Colecao[referenciaColecao.Posicao] = baseDominio;
                     break;
 
@@ -66,6 +69,7 @@ namespace Snebur.Serializacao
 
                     //var objetoPai = this.NormalizarObjetoPai(referenciaPropriedade.ObjetoPai);
                     var objetoPai = referenciaPropriedade.ObjetoPai;
+                    Guard.NotNull(referenciaPropriedade.Propriedade);
                     referenciaPropriedade.Propriedade.SetValue(objetoPai, baseDominio);
                     break;
 
@@ -105,7 +109,7 @@ namespace Snebur.Serializacao
             this.VarrerObjeto(this.Objeto);
         }
 
-        private void VarrerObjeto(object objeto)
+        private void VarrerObjeto(object? objeto)
         {
             this.Contador += 1;
 
@@ -113,7 +117,7 @@ namespace Snebur.Serializacao
             {
                 throw new Exception("Falha ao preparar objeto para serialização, o numero maximo de analise foi atingido");
             }
-            if (objeto == null)
+            if (objeto is null)
             {
                 return;
             }

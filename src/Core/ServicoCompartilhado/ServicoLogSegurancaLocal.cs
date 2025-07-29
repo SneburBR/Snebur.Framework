@@ -7,11 +7,12 @@ namespace Snebur.Servicos
 {
     public class ServicoLogSegurancaLocal : BaseServicoLocal, IServicoLogSeguranca
     {
-        public Guid NotificarLogSeguranca(string mensagem,
-                              string stackTrace,
-                              InfoRequisicao infoRequisicao,
-                              EnumTipoLogSeguranca tipoLogSeguranca,
-                              BaseInformacaoAdicionalServicoCompartilhado informacaoAdicional)
+        public Guid NotificarLogSeguranca(
+            string mensagem,
+            string? stackTrace,
+            InfoRequisicao? infoRequisicao,
+            EnumTipoLogSeguranca tipoLogSeguranca,
+            BaseInformacaoAdicionalServicoCompartilhado? informacaoAdicional)
         {
             var sb = new StringBuilder();
             var descricaoTipo = EnumUtil.RetornarDescricao(tipoLogSeguranca);

@@ -10,6 +10,6 @@ namespace Snebur.Comunicacao
         public int LimiteTentantivaAtingido { get; set; }
 
         public int TempoRestante { get; set; }
-        public string MensagemErro { get; set; }
+        public string? MensagemErro { get; set; }
     }
 }

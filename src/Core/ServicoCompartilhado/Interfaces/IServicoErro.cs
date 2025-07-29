@@ -9,7 +9,7 @@ namespace Snebur.Servicos
                            string statkTrace,
                            string descricaoCompleta,
                            EnumNivelErro nivelErro,
-                           BaseInformacaoAdicionalServicoCompartilhado informacaoAdicional);
+                           BaseInformacaoAdicionalServicoCompartilhado? informacaoAdicional);
 
         bool CapturarPrimeiroErro();
     }

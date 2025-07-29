@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml.Serialization;
 
@@ -17,14 +18,15 @@ namespace Snebur.Serializacao
         {
             var propriedades = ReflexaoUtil.RetornarPropriedades(tipo, false);
             propriedades = propriedades.Where(x => x.CanRead && x.CanWrite &&
-                                                   x.GetGetMethod() != null && x.GetGetMethod().IsPublic &&
-                                                   x.GetSetMethod() != null && x.GetSetMethod().IsPublic).
+                                                   x.GetGetMethod()?.IsPublic == true &&
+                                                   x.GetSetMethod()?.IsPublic == true).
                                         Where(x =>
             {
-                if (x.GetGetMethod().GetParameters().Length > 0)
+                if (x.GetGetMethod()?.GetParameters().Length > 0)
                 {
                     return false;
                 }
+
                 var atributoPropriedadeInterface = x.GetCustomAttribute(typeof(PropriedadeInterfaceAttribute));
                 return atributoPropriedadeInterface == null;
 
@@ -32,7 +34,7 @@ namespace Snebur.Serializacao
             return propriedades;
         }
 
-        public static string SerializarTipoSimples(object valor,
+        public static string? SerializarTipoSimples(object valor,
                                                    bool isNotNumericWithinSingleQuotes = false)
         {
             if (valor == null)
@@ -93,7 +95,7 @@ namespace Snebur.Serializacao
 
                 case DateTime valorTipado:
 
-                    var valorDateTimeFormatado = valorTipado.ToString(AplicacaoSnebur.Atual.CulturaPadrao);
+                    var valorDateTimeFormatado = valorTipado.ToString(AplicacaoSnebur.AtualRequired.CulturaPadrao);
                     return isNotNumericWithinSingleQuotes
                             ? $"\'{valorDateTimeFormatado}\'"
                             : valorDateTimeFormatado;
@@ -123,7 +125,7 @@ namespace Snebur.Serializacao
             }
         }
 
-        public static object DeserilizarTipoSimples(Type tipo, string valorSerializado,
+        public static object? DeserilizarTipoSimples(Type tipo, string valorSerializado,
                                                     bool isNotNumericRemoveSingleQuotes = false)
         {
             if (String.IsNullOrWhiteSpace(valorSerializado))
@@ -228,17 +230,15 @@ namespace Snebur.Serializacao
             return valorString;
         }
 
-        private static string EscapeSingleQuote(string valorString)
+        private static string EscapeSingleQuote(string? valorString)
         {
-            return valorString.Replace("\'", "\'\'");
+            return valorString?.Replace("\'", "\'\'") ?? string.Empty;
         }
 
         internal static bool IsPoderDerializarPropriedade(PropertyInfo propriedade,
                                                           EnumTipoSerializacao tipoSerializacao)
         {
-           
-
-            if (propriedade.GetGetMethod().IsPublic)
+            if (propriedade.GetGetMethod()?.IsPublic == true)
             {
                 var atributopsIgnorar = new List<Type>
                 {

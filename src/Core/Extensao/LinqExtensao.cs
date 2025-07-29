@@ -20,7 +20,7 @@ namespace Snebur.Linq
             return (enumerable as ICollection)?.SyncRoot ?? __lock;
         }
 
-        public static T TryGet<T>(this IList<T> colecao, int index)
+        public static T? TryGet<T>(this IList<T> colecao, int index)
         {
             if (index < colecao.Count)
             {
@@ -29,7 +29,7 @@ namespace Snebur.Linq
             return default;
         }
 
-        public static string TryGet(this string[] colecao, int index)
+        public static string? TryGet(this string[] colecao, int index)
         {
             if (index < colecao.Length)
             {
@@ -46,7 +46,7 @@ namespace Snebur.Linq
             }
         }
 
-        public static T Pop<T>(this IList<T> colecao)
+        public static T? Pop<T>(this IList<T> colecao)
         {
             if (colecao?.Count > 0)
             {
@@ -61,7 +61,7 @@ namespace Snebur.Linq
         }
 
         //shift
-        public static T Shift<T>(this IList<T> colecao)
+        public static T? Shift<T>(this IList<T> colecao)
         {
             if (colecao?.Count > 0)
             {
@@ -120,9 +120,11 @@ namespace Snebur.Linq
             }
         }
 
-        public static void AddRange<T>(this ICollection<T> colecao, IEnumerable<T> itens)
+        public static void AddRange<T>(
+            this ICollection<T> colecao,
+            IEnumerable<T> ?itens)
         {
-            if (itens == null)
+            if (itens is null)
             {
                 return;
             }
@@ -194,7 +196,7 @@ namespace Snebur.Linq
             return colecao[new Random().Next(colecao.Count)];
         }
 
-        public static TSource MinOrDefault<TSource>(this IEnumerable<TSource> colecao)
+        public static TSource? MinOrDefault<TSource>(this IEnumerable<TSource> colecao)
         {
             if (colecao.Count() > 0)
             {
@@ -203,7 +205,7 @@ namespace Snebur.Linq
             return default;
         }
 
-        public static TResult MinOrDefault<TSource, TResult>(this IEnumerable<TSource> colecao, Func<TSource, TResult> selector)
+        public static TResult? MinOrDefault<TSource, TResult>(this IEnumerable<TSource> colecao, Func<TSource, TResult> selector)
         {
             if (colecao.Count() > 0)
             {
@@ -212,7 +214,7 @@ namespace Snebur.Linq
             return default;
         }
 
-        public static TSource MaxOrDefault<TSource>(this ICollection<TSource> colecao)
+        public static TSource? MaxOrDefault<TSource>(this ICollection<TSource> colecao)
         {
             if (colecao.Count > 0)
             {
@@ -221,7 +223,7 @@ namespace Snebur.Linq
             return default;
         }
 
-        public static TResult MaxOrDefault<TSource, TResult>(this ICollection<TSource> colecao, Func<TSource, TResult> selector)
+        public static TResult? MaxOrDefault<TSource, TResult>(this ICollection<TSource> colecao, Func<TSource, TResult> selector)
         {
             if (colecao.Count > 0)
             {
@@ -249,7 +251,7 @@ namespace Snebur.Linq
             throw new Erro("A coleção não possui nenhum elemento");
         }
 
-        public static TSource RandomOrDefault<TSource>(this ICollection<TSource> colecao)
+        public static TSource? RandomOrDefault<TSource>(this ICollection<TSource> colecao)
         {
             var count = colecao.Count;
             if (count > 0)
@@ -527,7 +529,7 @@ namespace Snebur.Linq
             return false;
         }
 
-        public static T PeekOrDefault<T>(this Queue<T> queue)
+        public static T? PeekOrDefault<T>(this Queue<T> queue)
         {
             if (queue.Count > 0)
             {

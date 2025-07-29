@@ -17,13 +17,13 @@ namespace Snebur.Serializacao
 
     internal class ReferenciaColecao : Referencia
     {
-        internal IList Colecao { get; set; }
+        internal IList? Colecao { get; set; }
         internal int Posicao { get; set; }
     }
     internal class ReferenciaDicionario : Referencia
     {
-        public IDictionary Dicionario { get; internal set; }
-        public object Chave { get; internal set; }
+        public IDictionary? Dicionario { get; internal set; }
+        public object? Chave { get; internal set; }
 
         public ReferenciaDicionario()
         {
@@ -32,14 +32,14 @@ namespace Snebur.Serializacao
     }
     internal class ReferenciaPropriedade : Referencia
     {
-        internal object ObjetoPai { get; set; }
-        internal PropertyInfo Propriedade { get; set; }
+        internal object? ObjetoPai { get; set; }
+        internal PropertyInfo? Propriedade { get; set; }
     }
 
     internal class BaseDominioRefenciada
     {
-        internal IBaseDominioReferencia BaseDominio { get; set; }
-        internal Referencia Referencia { get; set; }
+        internal IBaseDominioReferencia? BaseDominio { get; set; }
+        internal Referencia? Referencia { get; set; }
         internal Guid IdentificadorReferencia { get; set; }
     }
 
@@ -48,12 +48,11 @@ namespace Snebur.Serializacao
         public IBaseDominioReferencia BaseDominio { get; }
         public List<Referencia> Referencias { get; } = new List<Referencia>();
         public List<BaseDominioRefenciada> BaseDominioRefenciadas { get; } = new List<BaseDominioRefenciada>();
-        public Referencia ReferenciaOrigem { get; internal set; }
+        public Referencia? ReferenciaOrigem { get; internal set; }
 
         public BaseDominioOrigem(BaseDominio baseDominio)
         {
             this.BaseDominio = baseDominio;
         }
-
     }
 }

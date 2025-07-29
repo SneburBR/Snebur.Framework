@@ -21,11 +21,11 @@ namespace System.Reflection
             }
             catch (ReflectionTypeLoadException ex)
             {
-                return ex.Types.Where(t => t != null);
+                return ex.Types.Where(t => t is not null)!;
             }
         }
 
-        public static object TryGetValueOrDefault(this PropertyInfo propriedade, object obj)
+        public static object? TryGetValueOrDefault(this PropertyInfo propriedade, object? obj)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace System.Reflection
 
         public static bool TrySetValue(this PropertyInfo propriedade,
                                        object obj,
-                                       object value,
+                                       object? value,
                                        bool isLogErro = false)
         {
             try
@@ -57,7 +57,7 @@ namespace System.Reflection
                 {
                     var mensagem = $"TrySetValue falha  Propriedade {propriedade.Name} ({propriedade.PropertyType.Name}) " +
                                    $"obj:  {obj?.GetType().Name} {obj?.ToString() ?? "null"}, " +
-                                   $"value {value.GetType().Name} {value?.ToString() ?? "null"} ";
+                                   $"value {value?.GetType().Name} {value?.ToString() ?? "null"} ";
 
                     LogUtil.ErroAsync(new Exception(mensagem, ex));
 
@@ -90,7 +90,9 @@ namespace System.Reflection
         /// </summary>
         /// <param name="propriedade"></param>
         /// <returns></returns>
-        public static IChaveEstrangeiraAttribute RetornarAtributoChaveEstrangeira(this PropertyInfo propriedade, bool isIgnorarErro = false)
+        public static IChaveEstrangeiraAttribute? RetornarAtributoChaveEstrangeira(
+            this PropertyInfo propriedade,
+            bool isIgnorarErro = false)
         {
             var atributoChaveEstrangeira = propriedade.GetCustomAttribute<ChaveEstrangeiraAttribute>();
             if (atributoChaveEstrangeira != null)
@@ -106,7 +108,7 @@ namespace System.Reflection
             {
                 return null;
             }
-            throw new Erro(String.Format("Não foi encontrado um chave estrangeira para a propriedade {0} em {1} ", propriedade.Name, propriedade.DeclaringType.Name));
+            throw new Erro($"Não foi encontrado um chave estrangeira para a propriedade {propriedade.Name} em {propriedade.DeclaringType?.Name} ");
         }
     }
 }

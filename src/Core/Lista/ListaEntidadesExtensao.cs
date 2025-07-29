@@ -7,22 +7,22 @@ namespace System.Linq
     public static class ListaEntidades
     {
  
-        public static TEntidade Incluir<TEntidade>(this ListaEntidades<TEntidade> source) where TEntidade : IEntidade
+        public static TEntidade? Incluir<TEntidade>(this ListaEntidades<TEntidade> source) where TEntidade : IEntidade
         {
             return default;
         }
 
-        public static TEntidade Incluir<TEntidade>(this IListaEntidades<TEntidade> source) where TEntidade : IEntidade
+        public static TEntidade? Incluir<TEntidade>(this IListaEntidades<TEntidade> source) where TEntidade : IEntidade
         {
             return default;
         }
 
-        public static TEntidade Incluir<TEntidade>(this IEnumerable<TEntidade> source) where TEntidade : IEntidade
+        public static TEntidade? Incluir<TEntidade>(this IEnumerable<TEntidade> source) where TEntidade : IEntidade
         {
             return default;
         }
 
-        public static TEntidadeEspecializar IncluirTipado<TEntidadeEspecializar>(this IListaEntidades source) where TEntidadeEspecializar : IEntidade
+        public static TEntidadeEspecializar? IncluirTipado<TEntidadeEspecializar>(this IListaEntidades source) where TEntidadeEspecializar : IEntidade
         {
             return default;
         }

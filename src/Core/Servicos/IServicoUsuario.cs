@@ -34,5 +34,4 @@ namespace Snebur.Comunicacao
         void FinalizarSessaoUsuario(Guid identificadorSessaoUsuario);
 
     }
-
 }

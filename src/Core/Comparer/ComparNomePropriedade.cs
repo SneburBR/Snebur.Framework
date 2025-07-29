@@ -43,12 +43,23 @@ namespace Snebur.Comparer
             }
         }
 
-        public bool Equals(PropertyInfo x, PropertyInfo y)
+        public bool Equals(PropertyInfo? x, PropertyInfo? y)
         {
+            if (x is null && y is null)
+            {
+                return true;
+            }
+
+            if (x is null || y is null)
+            {
+                return false;
+            }
+             
             if (this.Igual)
             {
                 return Object.Equals(x, y);
             }
+
             bool resultado = false;
             if (this.ComprarNome)
             {

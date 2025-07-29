@@ -5,10 +5,10 @@ namespace Snebur.Servicos
     public interface IServicoLogAplicacao
     {
         Guid NotificarLogAplicacao(string mensagem,
-                                   BaseInformacaoAdicionalServicoCompartilhado informacaoAdicional);
+                                   BaseInformacaoAdicionalServicoCompartilhado? informacaoAdicional);
 
-        void NotificarAplicacaoAtiva(BaseInformacaoAdicionalServicoCompartilhado informacaoAdicional);
+        void NotificarAplicacaoAtiva(BaseInformacaoAdicionalServicoCompartilhado? informacaoAdicional);
 
-        bool AtivarLogServicoOnline(BaseInformacaoAdicionalServicoCompartilhado informacaoAdicional);
+        bool AtivarLogServicoOnline(BaseInformacaoAdicionalServicoCompartilhado? informacaoAdicional);
     }
 }

@@ -54,7 +54,7 @@ namespace Snebur.Tarefa
             this.Executando = new ConcurrentDictionary<Guid, TTarefa>();
         }
 
-        public override void IniciarAsync(Action<ResultadoTarefaFinalizadaEventArgs> callback)
+        public override void IniciarAsync(Action<ResultadoTarefaFinalizadaEventArgs>? callback)
         {
             base.IniciarAsync(callback);
         }
@@ -149,7 +149,7 @@ namespace Snebur.Tarefa
                     {
                         while ((this.Fila.Count > 0) && (this.Executando.Count < this.MaximoTarefasSimultaneas))
                         {
-                            TTarefa proximaTarefa;
+                            TTarefa? proximaTarefa;
                             if (this.Fila.TryDequeue(out proximaTarefa))
                             {
                                 this.Executando.TryAdd(proximaTarefa.Identificador, proximaTarefa);
@@ -163,7 +163,7 @@ namespace Snebur.Tarefa
 
         private void Tarefa_Finalizada(ResultadoTarefaFinalizadaEventArgs args)
         {
-            if (!this.Executando.TryRemove(args.Tarefa.Identificador, out TTarefa tarefaRemovida))
+            if (!this.Executando.TryRemove(args.Tarefa.Identificador, out TTarefa? tarefaRemovida))
             {
                 throw new InvalidOperationException("O tarefa já foi removida");
             }
@@ -179,7 +179,7 @@ namespace Snebur.Tarefa
 
         #region Métodos privados
 
-        private Erro RetornarErro()
+        private Erro? RetornarErro()
         {
             if (this.TarefasComErros.Count() > 0)
             {

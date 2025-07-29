@@ -35,8 +35,8 @@ namespace System.Reflection
 
         public static bool IsAssemblySnebur(this Assembly assembly)
         {
-            return assembly.FullName.StartsWith("Snebur") ||
-                   assembly.FullName.StartsWith("Snebur");
+            return assembly.FullName?.StartsWith("Snebur") == true ||
+                   assembly.FullName?.StartsWith("Snebur") == true;
             //var atributo = assembly.GetCustomAttribute<AssemblyCompanyAttribute>();
             //if (atributoVersao != null)
             //{

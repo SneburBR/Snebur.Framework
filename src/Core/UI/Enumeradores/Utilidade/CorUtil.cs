@@ -46,7 +46,7 @@ namespace Snebur.UI
         //    return sufixoCor + sufixoTonalidade;
         //}
 
-        public static string RetornarNomeOriginal(EnumCor cor, bool ignorarErro = false)
+        public static string? RetornarNomeOriginal(EnumCor cor, bool ignorarErro = false)
         {
             switch (cor)
             {
@@ -141,9 +141,9 @@ namespace Snebur.UI
             }
         }
 
-        public static Cor RetornarCor(string value)
+        public static Cor? RetornarCor(string? value)
         {
-            if (value != null)
+            if (value is not null)
             {
                 if (ValidacaoUtil.IsCorRgbOuRgba(value))
                 {

@@ -25,8 +25,22 @@ namespace Snebur.Comparer
         public bool IgnoreCase { get; private set; }
         public bool FloatNumbers { get; private set; }
 
-        public int Compare(string x, string y)
+        public int Compare(string? x, string? y)
         {
+            if (x is null && y is null)
+            {
+                return 0;
+            }
+            if (x is null)
+            {
+                return -1;
+            }
+
+            if (y is null)
+            {
+                return 1;
+            }
+
             int count = Math.Min(x.Length, y.Length);
 
             for (int i = 0; i < count; i++)

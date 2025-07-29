@@ -18,11 +18,11 @@ namespace Snebur.Tarefa
 
         Exception? Erro { get; set; }
 
-        void IniciarAsync(Action<ResultadoTarefaFinalizadaEventArgs> callbackConcluido);
+        void IniciarAsync(Action<ResultadoTarefaFinalizadaEventArgs>? callbackConcluido);
 
-        void PausarAsync(Action callbackConcluido);
+        void PausarAsync(Action? callbackConcluido);
 
-        void CancelarAsync(Action callbackConcluido);
+        void CancelarAsync(Action? callbackConcluido);
 
         void ContinuarAsync();
     }

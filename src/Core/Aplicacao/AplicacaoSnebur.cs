@@ -338,7 +338,8 @@ namespace Snebur
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public virtual InformacaoSessao InformacaoSessao => this.RetornarInformacaoSessaoUsuario();
-        public virtual string IpPublico => this.RetornarIpPublico();
+        public virtual string? IpPublico 
+            => this.RetornarIpPublico();
 
         //[EditorBrowsable(EditorBrowsableState.Never)]
         //public virtual InformacaoSessaoUsuario InformacaoSessaoUsuarioRequisicaoAtual => SessaoUtil.RetornarInformacaoSessaoUsuarioAplicacao();
@@ -791,7 +792,7 @@ namespace Snebur
             return this.UrlsServico[chaveConfiguracao];
         }
 
-        protected virtual string RetornarIpPublico()
+        protected virtual string? RetornarIpPublico()
         {
             if (this._ipPublico == null)
             {

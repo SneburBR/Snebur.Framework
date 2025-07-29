@@ -5,17 +5,17 @@ namespace Snebur.IO
 {
     public class AcessoDiretorio : IAcessoDiretorio
     {
-        public string Caminho { get; set; }
+        public string? Caminho { get; set; }
 
         public bool IsAutenticar { get; set; }
 
         public bool IsRede { get; set; }
 
-        public string Dominio { get; set; }
+        public string? Dominio { get; set; }
 
-        public string Usuario { get; set; }
+        public string? Usuario { get; set; }
 
-        public string Senha { get; set; }
+        public string? Senha { get; set; }
 
         public AcessoDiretorio()
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Snebur
@@ -9,11 +10,11 @@ namespace Snebur
         public static string RetornarAssemblyQualifiedName(this Type tipo)
         {
             var assemblyQualifiedName = RetornarAssemblyQualifiedNameInterno(tipo);
-            ValidarAssemblyQualifiedName(assemblyQualifiedName);
+            ValidarAssemblyQualifiedName(tipo, assemblyQualifiedName);
             return assemblyQualifiedName;
         }
 
-        private static string RetornarAssemblyQualifiedNameInterno(Type tipo)
+        private static string? RetornarAssemblyQualifiedNameInterno(Type tipo)
         {
             var assemblyQualifiedName = tipo.AssemblyQualifiedName;
             if (tipo.IsGenericType)
@@ -31,10 +32,10 @@ namespace Snebur
 
                 }
             }
-            var posicao = assemblyQualifiedName.IndexOf(", Version");
+            var posicao = assemblyQualifiedName?.IndexOf(", Version") ?? -1;
             if (posicao > 0)
             {
-                return assemblyQualifiedName.Substring(0, posicao).Trim();
+                return assemblyQualifiedName?.Substring(0, posicao).Trim();
             }
             return assemblyQualifiedName;
         }
@@ -42,27 +43,32 @@ namespace Snebur
         public static string RetornarAssemblyQualifiedNameList(this Type tipo)
         {
             var assemblyQualifiedName = RetornarAssemblyQualifiedNameListInterno(tipo);
-            ValidarAssemblyQualifiedName(assemblyQualifiedName);
+            ValidarAssemblyQualifiedName(tipo, assemblyQualifiedName);
 
             return assemblyQualifiedName;
         }
 
-        public static string RetornarAssemblyQualifiedNameListInterno(Type tipo)
+        public static string? RetornarAssemblyQualifiedNameListInterno(Type tipo)
         {
             var tipoList = typeof(List<>);
             var tipoListGenerico = tipoList.MakeGenericType(tipo);
 
             var assemblyQualifiedName = tipoListGenerico.AssemblyQualifiedName;
-            var posicao = assemblyQualifiedName.IndexOf(", Version");
+            var posicao = assemblyQualifiedName?.IndexOf(", Version") ?? -1;
             if (posicao > 0)
             {
-                return assemblyQualifiedName.Substring(0, posicao).Trim() + "]], mscorlib";
+                return assemblyQualifiedName?.Substring(0, posicao).Trim() + "]], mscorlib";
             }
             return assemblyQualifiedName;
         }
 
-        private static void ValidarAssemblyQualifiedName(string assemblyQualifiedName)
+        private static void ValidarAssemblyQualifiedName(Type tipo,
+            [NotNull] string? assemblyQualifiedName)
         {
+            if (string.IsNullOrWhiteSpace(assemblyQualifiedName))
+            {
+                throw new ArgumentException($"O tipo {tipo.Name} não possui um AssemblyQualifiedName válido.");
+            }
             //if (DebugUtil.IsAttached)
             //{
             //    if (Type.GetType(assemblyQualifiedName) == null)
@@ -71,6 +77,5 @@ namespace Snebur
             //    }
             //}
         }
-
     }
 }

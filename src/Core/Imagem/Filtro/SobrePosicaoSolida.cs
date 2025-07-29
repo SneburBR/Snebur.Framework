@@ -2,6 +2,6 @@
 {
     public class SobrePosicaoSolida : SobrePosicao
     {
-        public string Cor { get; set; }
+        public string? Cor { get; set; }
     }
 }

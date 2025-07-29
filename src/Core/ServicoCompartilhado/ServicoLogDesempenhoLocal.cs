@@ -6,9 +6,9 @@ namespace Snebur.Servicos
     public class ServicoLogDesempenhoLocal : BaseServicoLocal, IServicoLogDesempenho
     {
         public Guid NotificarLogDesempenho(string mensagem,
-                                           string stackTrace,
+                                           string? stackTrace,
                                            EnumTipoLogDesempenho tipoLogSeguranca,
-                                           BaseInformacaoAdicionalServicoCompartilhado informacaoAdicional)
+                                           BaseInformacaoAdicionalServicoCompartilhado? informacaoAdicional)
         {
             var descricaoTipo = EnumUtil.RetornarDescricao(tipoLogSeguranca);
             mensagem = String.Format("Tipo : {0} \n{1}", descricaoTipo, mensagem);

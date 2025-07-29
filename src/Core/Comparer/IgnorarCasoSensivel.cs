@@ -5,9 +5,18 @@ namespace Snebur
 {
     public class IgnorarCasoSensivel : IEqualityComparer<string>
     {
-        public bool Equals(string x, string y)
+        public bool Equals(string? x, string? y)
         {
-            return x.ToLower() == y.ToLower();
+            if (x is null && y is null)
+            {
+                return true;
+            }
+
+            if (x is null || y is null)
+            {
+                return false;
+            }
+            return x.ToLowerInvariant() == y.ToLowerInvariant();
         }
 
         public int GetHashCode(string obj)

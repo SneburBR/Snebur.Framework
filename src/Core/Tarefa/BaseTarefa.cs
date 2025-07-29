@@ -84,7 +84,7 @@ namespace Snebur.Tarefa
 
         #region Métodos publicos
 
-        public virtual void IniciarAsync(Action<ResultadoTarefaFinalizadaEventArgs> callback)
+        public virtual void IniciarAsync(Action<ResultadoTarefaFinalizadaEventArgs>? callback)
         {
             this.CallbackTarefaConcluida = callback;
             ThreadUtil.ExecutarAsync(this.Iniciar, true);
@@ -196,7 +196,7 @@ namespace Snebur.Tarefa
 
         internal abstract void ExecutarInterno();
 
-        public void PausarAsync(Action callbackConcluido)
+        public void PausarAsync(Action? callbackConcluido)
         {
             this.IniciarPausamento();
             Task.Factory.StartNew(() =>
@@ -208,7 +208,7 @@ namespace Snebur.Tarefa
                 });
             });
         }
-        public void CancelarAsync(Action callbackConcluido)
+        public void CancelarAsync(Action? callbackConcluido)
         {
             this.IniciarCancelamento();
             TaskUtil.Run(() =>

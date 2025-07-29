@@ -35,7 +35,7 @@ namespace System
                 var fileName = IO.Path.GetFileName(path);
                 if (fileName.Contains("."))
                 {
-                    return IO.Path.GetDirectoryName(path);
+                    return IO.Path.GetDirectoryName(path) ?? path;
                 }
             }
             return path;
@@ -127,8 +127,8 @@ namespace System
 
 #if NET40 == false
                     request.ServerCertificateValidationCallback += (object sender,
-                                                                    X509Certificate certificate,
-                                                                    X509Chain chain,
+                                                                    X509Certificate? certificate,
+                                                                    X509Chain? chain,
                                                                     SslPolicyErrors sslPolicyErrors) =>
                     {
                         if (sslPolicyErrors == SslPolicyErrors.None)
@@ -151,7 +151,6 @@ namespace System
                 {
                     promise.TrySetResult(false);
                 }
-
             });
             return promise.Task;
         }

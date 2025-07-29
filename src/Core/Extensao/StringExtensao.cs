@@ -98,11 +98,11 @@ namespace System
             return CultureInfo.InvariantCulture.CompareInfo.IndexOf(source, value, options) >= 0;
         }
 
-        public static string NullIfEmpty(this string str)
+        public static string? NullIfEmpty(this string str)
         {
             return string.IsNullOrEmpty(str) ? null : str;
         }
-        public static string NullIfWhiteSpace(this string str)
+        public static string? NullIfWhiteSpace(this string str)
         {
             return string.IsNullOrWhiteSpace(str) ? null : str;
         }
@@ -163,7 +163,5 @@ namespace System
         {
             return Encoding.Convert(Encoding.UTF8, ISO_8859_1, utfBytes);
         }
-
     }
-
 }

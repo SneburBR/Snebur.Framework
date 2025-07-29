@@ -5,8 +5,8 @@ namespace Snebur.Tarefa
 {
     public class ErroGerenciadorTarefa<TTarefa> : Erro where TTarefa : ITarefa
     {
-        public GerenciadorTarefa<TTarefa> GerenciadorTarefas { get; set; }
-        public List<TTarefa> Tarefas { get; set; }
+        public GerenciadorTarefa<TTarefa>? GerenciadorTarefas { get; set; }
+        public List<TTarefa> Tarefas { get; }
 
         public ErroGerenciadorTarefa(List<TTarefa> tarefas)
         {

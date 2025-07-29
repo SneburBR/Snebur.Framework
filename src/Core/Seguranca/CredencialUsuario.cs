@@ -6,9 +6,9 @@ namespace Snebur.Seguranca
 {
     public class CredencialUsuario : Credencial
     {
-        public string Nome { get; set; }
+        public string? Nome { get; set; } 
 
-        public string IdentificadorAmigavel { get; set; }
+        public string? IdentificadorAmigavel { get; set; }
 
         //public bool IsAnonimo => this.Validar(CredencialAnonimo.Anonimo);
 
@@ -33,7 +33,7 @@ namespace Snebur.Seguranca
             this.IdentificadorAmigavel = identificadorAmigavel;
         }
 
-        public string RetornarIdentificadorEmail()
+        public string? RetornarIdentificadorEmail()
         {
             if (ValidacaoUtil.IsEmail(this.IdentificadorAmigavel))
             {
@@ -46,7 +46,7 @@ namespace Snebur.Seguranca
             return null;
         }
 
-        public string RetornarIdentificadorTelefone()
+        public string? RetornarIdentificadorTelefone()
         {
             if (ValidacaoUtil.IsTelefone(this.IdentificadorAmigavel))
             {
@@ -59,7 +59,7 @@ namespace Snebur.Seguranca
             return null;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is CredencialUsuario credencial)
             {

@@ -29,7 +29,5 @@ namespace Snebur.Helpers
             }
             return Activator.CreateInstance(tipo);
         }
-
-       
     }
 }
