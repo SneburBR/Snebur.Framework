@@ -1,13 +1,12 @@
 ﻿using Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio
+namespace Snebur.Dominio;
+
+public enum EnumSentidoOrdenacao
 {
-    public enum EnumSentidoOrdenacao
-    {
 
-        [Rotulo("Ordenação crescente")]
-        Crescente = 1,
+    [Rotulo("Ordenação crescente")]
+    Crescente = 1,
 
-        Decrescente = 2
-    }
+    Decrescente = 2
 }

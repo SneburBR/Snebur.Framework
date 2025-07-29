@@ -1,15 +1,12 @@
-﻿using System;
+﻿namespace Snebur.Dominio;
 
-namespace Snebur.Dominio
+public interface IPerfilIcc
 {
-    public interface IPerfilIcc
-    {
-        string Nome { get; set; }
+    string Nome { get; set; }
 
-        string Checksum { get; set; }
+    string Checksum { get; set; }
 
-        DateTime? DataHoraCadastro { get; set; }
+    DateTime? DataHoraCadastro { get; set; }
 
-        long TotalBytes { get; set; }
-    }
+    long TotalBytes { get; set; }
 }

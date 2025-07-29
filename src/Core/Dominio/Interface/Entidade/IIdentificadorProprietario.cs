@@ -1,12 +1,11 @@
 ﻿using Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio
+namespace Snebur.Dominio;
+
+public interface IIdentificadorProprietario
 {
-    public interface IIdentificadorProprietario
-    {
-        [Indexar]
-        [ValidacaoRequerido]
-        [ValidacaoTextoTamanho(50)]
-        string IdentificadorProprietario { get; set; }
-    }
+    [Indexar]
+    [ValidacaoRequerido]
+    [ValidacaoTextoTamanho(50)]
+    string IdentificadorProprietario { get; set; }
 }

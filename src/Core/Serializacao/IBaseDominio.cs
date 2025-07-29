@@ -1,12 +1,11 @@
-﻿namespace Snebur.Serializacao
-{
-    public interface IBaseDominio
-    {
+﻿namespace Snebur.Serializacao;
 
-    }
-    public interface IBaseDominioControladorPropriedade : IBaseDominio
-    {
-        void DestivarControladorPropriedadeAlterada();
-        void AtivarControladorPropriedadeAlterada();
-    }
+public interface IBaseDominio
+{
+
+}
+public interface IBaseDominioControladorPropriedade : IBaseDominio
+{
+    void DestivarControladorPropriedadeAlterada();
+    void AtivarControladorPropriedadeAlterada();
 }

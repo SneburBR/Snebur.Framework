@@ -1,43 +1,42 @@
-﻿namespace Snebur.Seguranca
+﻿namespace Snebur.Seguranca;
+
+public class CredencialAnonimo
 {
-    public class CredencialAnonimo
+
+    public static CredencialUsuario Anonimo
     {
-
-        public static CredencialUsuario Anonimo
+        get
         {
-            get
+            return new CredencialUsuario
             {
-                return new CredencialUsuario
-                {
-                    Nome= "Anônimo",
-                    IdentificadorUsuario = IDENTIFICADOR_USUARIO,
-                    Senha = SENHA
-                };
-            }
+                Nome= "Anônimo",
+                IdentificadorUsuario = IDENTIFICADOR_USUARIO,
+                Senha = SENHA
+            };
         }
-
-        private const string IDENTIFICADOR_USUARIO = "Anonimo";
-
-        private const string SENHA = "c42b636c-97d1-4ea9-ba45-90ad98b42abb";
-
     }
-    public class CredencialServicoAnonimo
+
+    private const string IDENTIFICADOR_USUARIO = "Anonimo";
+
+    private const string SENHA = "c42b636c-97d1-4ea9-ba45-90ad98b42abb";
+
+}
+public class CredencialServicoAnonimo
+{
+    public static CredencialServico Anonimo
     {
-        public static CredencialServico Anonimo
+        get
         {
-            get
+            return new CredencialServico
             {
-                return new CredencialServico
-                {
-                    IdentificadorUsuario = IDENTIFICADOR_USUARIO,
-                    Senha = SENHA
-                };
-            }
+                IdentificadorUsuario = IDENTIFICADOR_USUARIO,
+                Senha = SENHA
+            };
         }
-
-        private const string IDENTIFICADOR_USUARIO = "Anonimo";
-
-        private const string SENHA = "c42b636c-97d1-4ea9-ba45-90ad98b42abb";
-
     }
+
+    private const string IDENTIFICADOR_USUARIO = "Anonimo";
+
+    private const string SENHA = "c42b636c-97d1-4ea9-ba45-90ad98b42abb";
+
 }

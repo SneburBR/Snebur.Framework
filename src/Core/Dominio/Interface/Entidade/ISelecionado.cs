@@ -1,7 +1,6 @@
-﻿namespace Snebur.Dominio
+﻿namespace Snebur.Dominio;
+
+public interface ISelecionado
 {
-    public interface ISelecionado
-    {
-        bool IsSelecionado { get; set; }
-    }
+    bool IsSelecionado { get; set; }
 }

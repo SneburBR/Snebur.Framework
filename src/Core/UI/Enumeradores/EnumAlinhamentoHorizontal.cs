@@ -1,12 +1,11 @@
-﻿namespace Snebur.UI
+﻿namespace Snebur.UI;
+
+public enum EnumAlinhamentoHorizontal
 {
-    public enum EnumAlinhamentoHorizontal
-    {
-        Esquerda,
-        Centro,
-        Direita,
-        EsquerdaAbsoluto,
-        CentroAbsoluto,
-        DireitaAbsoluto
-    }
+    Esquerda,
+    Centro,
+    Direita,
+    EsquerdaAbsoluto,
+    CentroAbsoluto,
+    DireitaAbsoluto
 }

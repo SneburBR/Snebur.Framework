@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -7,101 +6,100 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace Snebur.Utilidade
+namespace Snebur.Utilidade;
+
+public static class XmlUtil
 {
-    public static class XmlUtil
+    //
+    public static T? Deserializar<T>(string xml)
     {
-        //
-        public static T? Deserializar<T>(string xml)
+        using (var sr = new StringReader(xml))
         {
-            using (var sr = new StringReader(xml))
+            var xmlSerializer = new XmlSerializer(typeof(T));
+            return (T?)xmlSerializer.Deserialize(sr);
+        }
+    }
+
+    public static string Serializar(object obj, Encoding encoding)
+    {
+        using (var preparar = new PrepararSerializacao())
+        using (var ms = new MemoryStream())
+        {
+            preparar.Preparar(obj);
+
+            using (var sw = new StreamWriter(ms, encoding))
             {
-                var xmlSerializer = new XmlSerializer(typeof(T));
-                return (T?)xmlSerializer.Deserialize(sr);
+                var xmlSerializer = new XmlSerializer(obj.GetType());
+                xmlSerializer.Serialize(sw, obj);
+
+                ms.Position = 0;
+
+                using (var sr = new StreamReader(ms, encoding))
+                {
+                    return sr.ReadToEnd();
+                }
             }
         }
+    }
 
-        public static string Serializar(object obj, Encoding encoding)
+    private class PrepararSerializacao : IDisposable
+    {
+        private HashSet<object> ObjetosAnalisados = new HashSet<object>();
+
+        public void Preparar(object objeto)
         {
-            using (var preparar = new PrepararSerializacao())
-            using (var ms = new MemoryStream())
+            if (this.ObjetosAnalisados.Contains(objeto))
             {
-                preparar.Preparar(obj);
+                return;
+            }
+            this.ObjetosAnalisados.Add(objeto);
 
-                using (var sw = new StreamWriter(ms, encoding))
+            var type = objeto.GetType();
+            var properties = type.GetProperties()
+                .Where(x => x.GetGetMethod()?.IsPublic == true && x.GetSetMethod() != null &&
+                            x.GetSetMethod()?.IsPublic == true).ToList();
+
+            if (properties.Count > 0)
+            {
+                foreach (var propertyInfo in properties)
                 {
-                    var xmlSerializer = new XmlSerializer(obj.GetType());
-                    xmlSerializer.Serialize(sw, obj);
-
-                    ms.Position = 0;
-
-                    using (var sr = new StreamReader(ms, encoding))
+                    if (propertyInfo.PropertyType.Equals(typeof(decimal)))
                     {
-                        return sr.ReadToEnd();
+                        var value = Convert.ToDecimal(propertyInfo.GetValue(objeto) ?? 0m);
+                        var formattedString = value.ToString("0.00", CultureInfo.InvariantCulture);
+                        propertyInfo.SetValue(objeto, decimal.Parse(formattedString, CultureInfo.InvariantCulture), null);
                     }
-                }
-            }
-        }
-
-        private class PrepararSerializacao : IDisposable
-        {
-            private HashSet<object> ObjetosAnalisados = new HashSet<object>();
-
-            public void Preparar(object objeto)
-            {
-                if (this.ObjetosAnalisados.Contains(objeto))
-                {
-                    return;
-                }
-                this.ObjetosAnalisados.Add(objeto);
-
-                var type = objeto.GetType();
-                var properties = type.GetProperties()
-                    .Where(x => x.GetGetMethod()?.IsPublic == true && x.GetSetMethod() != null &&
-                                x.GetSetMethod()?.IsPublic == true).ToList();
-
-                if (properties.Count > 0)
-                {
-                    foreach (var propertyInfo in properties)
+                    else
                     {
-                        if (propertyInfo.PropertyType.Equals(typeof(decimal)))
+                        if (objeto is IEnumerable lista)
                         {
-                            var value = Convert.ToDecimal(propertyInfo.GetValue(objeto) ?? 0m);
-                            var formattedString = value.ToString("0.00", CultureInfo.InvariantCulture);
-                            propertyInfo.SetValue(objeto, decimal.Parse(formattedString, CultureInfo.InvariantCulture), null);
+                            foreach (var item in lista)
+                            {
+                                if (item != null && !item.GetType().IsValueType && item.GetType() != typeof(string))
+                                {
+                                    this.Preparar(item);
+                                }
+                            }
                         }
                         else
                         {
-                            if (objeto is IEnumerable lista)
+                            if (!propertyInfo.PropertyType.IsValueType && propertyInfo.PropertyType != typeof(string))
                             {
-                                foreach (var item in lista)
+                                var valor = propertyInfo.GetValue(objeto);
+                                if (valor is not null)
                                 {
-                                    if (item != null && !item.GetType().IsValueType && item.GetType() != typeof(string))
-                                    {
-                                        this.Preparar(item);
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (!propertyInfo.PropertyType.IsValueType && propertyInfo.PropertyType != typeof(string))
-                                {
-                                    var valor = propertyInfo.GetValue(objeto);
-                                    if (valor is not null)
-                                    {
-                                        this.Preparar(valor);
-                                    }
+                                    this.Preparar(valor);
                                 }
                             }
                         }
                     }
                 }
             }
+        }
 
-            public void Dispose()
-            {
-                this.ObjetosAnalisados?.Clear();
-            }
+        public void Dispose()
+        {
+            this.ObjetosAnalisados?.Clear();
         }
     }
 }

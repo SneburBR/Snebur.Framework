@@ -1,15 +1,14 @@
 ﻿
-namespace Snebur.UI
+namespace Snebur.UI;
+
+public enum EnumTipoEntrada
 {
-    public enum EnumTipoEntrada
-    {
-        Nenhum = 0,
-        Texto,
-        Decimal,
-        Numero,
-        Telefone,
-        Pesquisa,
-        Email,
-        Url
-    }
+    Nenhum = 0,
+    Texto,
+    Decimal,
+    Numero,
+    Telefone,
+    Pesquisa,
+    Email,
+    Url
 }

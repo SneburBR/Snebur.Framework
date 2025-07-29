@@ -1,9 +1,6 @@
-﻿using System;
+﻿namespace Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio.Atributos
+[AttributeUsage(AttributeTargets.Property)]
+public class BaseRelacaoAttribute : BaseAtributoDominio
 {
-    [AttributeUsage(AttributeTargets.Property)]
-    public class BaseRelacaoAttribute : BaseAtributoDominio
-    {
-    }
 }

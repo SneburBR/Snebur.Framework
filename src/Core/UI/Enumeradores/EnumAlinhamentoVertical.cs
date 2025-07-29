@@ -1,13 +1,12 @@
 ﻿
-namespace Snebur.UI
+namespace Snebur.UI;
+
+public enum EnumAlinhamentoVertical
 {
-    public enum EnumAlinhamentoVertical
-    {
-        Superior,
-        Centro,
-        Inferior,
-        SuperiorAbsoluto,
-        CentroAbsoluto,
-        InferiorAbsoluto,
-    }
+    Superior,
+    Centro,
+    Inferior,
+    SuperiorAbsoluto,
+    CentroAbsoluto,
+    InferiorAbsoluto,
 }

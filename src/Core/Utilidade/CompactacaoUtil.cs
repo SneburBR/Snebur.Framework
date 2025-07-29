@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -7,113 +6,112 @@ using System.Linq;
 using SevenZip;
 #endif
 
-namespace Snebur.Utilidade
+namespace Snebur.Utilidade;
+
+public static class CompactacaoUtil
 {
-    public static class CompactacaoUtil
+    private static string[]? _extensoes;
+
+    public static string[] ExtensoesZip = { ".zip" };
+
+    public static string[] ExtensoesRar = { ".rar" };
+
+    public static string[] Extensoes7z = { ".7z" };
+
+    public static string[] Extensoes
     {
-        private static string[]? _extensoes;
-
-        public static string[] ExtensoesZip = { ".zip" };
-
-        public static string[] ExtensoesRar = { ".rar" };
-
-        public static string[] Extensoes7z = { ".7z" };
-
-        public static string[] Extensoes
+        get
         {
-            get
+            if (_extensoes == null)
             {
-                if (_extensoes == null)
-                {
-                    var extensoes = new List<string>();
-                    extensoes.AddRange(ExtensoesZip);
-                    extensoes.AddRange(ExtensoesRar);
-                    extensoes.AddRange(Extensoes7z);
+                var extensoes = new List<string>();
+                extensoes.AddRange(ExtensoesZip);
+                extensoes.AddRange(ExtensoesRar);
+                extensoes.AddRange(Extensoes7z);
 
-                    _extensoes = extensoes.ToArray();
-                }
-                return _extensoes;
+                _extensoes = extensoes.ToArray();
             }
+            return _extensoes;
         }
+    }
 
-        public static List<string> Descompactar(string caminhoArquivo, string diretorioDestino)
+    public static List<string> Descompactar(string caminhoArquivo, string diretorioDestino)
+    {
+        Guard.NotNull(diretorioDestino);
+
+        DiretorioUtil.CriarDiretorio(diretorioDestino);
+
+        if (IsZip(caminhoArquivo))
         {
-            Guard.NotNull(diretorioDestino);
+            return ZipUtil.Descompactar(caminhoArquivo, diretorioDestino);
+        }
+        else
+        {
+#if NET6_0_OR_GREATER || NET40
+            throw new NotSupportedException();
+#else
 
-            DiretorioUtil.CriarDiretorio(diretorioDestino);
-
-            if (IsZip(caminhoArquivo))
+            SevenZipBase.SetLibraryPath(CaminhoBilioteca7zip);
+            using (var sevenZip = new SevenZipExtractor(caminhoArquivo))
             {
-                return ZipUtil.Descompactar(caminhoArquivo, diretorioDestino);
+                sevenZip.ExtractFiles(diretorioDestino, sevenZip.ArchiveFileNames.ToArray());
+                return Directory.GetFiles(diretorioDestino, "*.*", SearchOption.AllDirectories).ToList();
+            }
+#endif
+        }
+    }
+
+    public static bool IsArquiviCompactado(string caminhoArquivo)
+    {
+        return IsArquiviCompactado(new FileInfo(caminhoArquivo));
+    }
+
+    public static bool IsArquiviCompactado(FileInfo fi)
+    {
+        return Extensoes.Contains(fi.Extension, new IgnorarCasoSensivel());
+    }
+
+    public static bool IsZip(string caminhoArquivo)
+    {
+        return IsZip(new FileInfo(caminhoArquivo));
+    }
+
+    public static bool IsZip(FileInfo fi)
+    {
+        return ExtensoesZip.Contains(fi.Extension, new IgnorarCasoSensivel());
+    }
+
+    public static bool IsRar(string caminhoArquivo)
+    {
+        return IsRar(new FileInfo(caminhoArquivo));
+    }
+
+    public static bool IsRar(FileInfo fi)
+    {
+        return ExtensoesRar.Contains(fi.Extension, new IgnorarCasoSensivel());
+    }
+
+    public static bool IsZz(string caminhoArquivo)
+    {
+        return IsZz(new FileInfo(caminhoArquivo));
+    }
+
+    public static bool IsZz(FileInfo fi)
+    {
+        return Extensoes7z.Contains(fi.Extension, new IgnorarCasoSensivel());
+    }
+
+    private static string CaminhoBilioteca7zip
+    {
+        get
+        {
+            if (SistemaUtil.IsAplicacao64Bits)
+            {
+                return CaminhoUtil.Combine(AplicacaoSnebur.AtualRequired.DiretorioAplicacao, "x64", "7z.dll");
             }
             else
             {
-#if NET6_0_OR_GREATER || NET40
-                throw new NotSupportedException();
-#else
-
-                SevenZipBase.SetLibraryPath(CaminhoBilioteca7zip);
-                using (var sevenZip = new SevenZipExtractor(caminhoArquivo))
-                {
-                    sevenZip.ExtractFiles(diretorioDestino, sevenZip.ArchiveFileNames.ToArray());
-                    return Directory.GetFiles(diretorioDestino, "*.*", SearchOption.AllDirectories).ToList();
-                }
-#endif
-            }
-        }
-
-        public static bool IsArquiviCompactado(string caminhoArquivo)
-        {
-            return IsArquiviCompactado(new FileInfo(caminhoArquivo));
-        }
-
-        public static bool IsArquiviCompactado(FileInfo fi)
-        {
-            return Extensoes.Contains(fi.Extension, new IgnorarCasoSensivel());
-        }
-
-        public static bool IsZip(string caminhoArquivo)
-        {
-            return IsZip(new FileInfo(caminhoArquivo));
-        }
-
-        public static bool IsZip(FileInfo fi)
-        {
-            return ExtensoesZip.Contains(fi.Extension, new IgnorarCasoSensivel());
-        }
-
-        public static bool IsRar(string caminhoArquivo)
-        {
-            return IsRar(new FileInfo(caminhoArquivo));
-        }
-
-        public static bool IsRar(FileInfo fi)
-        {
-            return ExtensoesRar.Contains(fi.Extension, new IgnorarCasoSensivel());
-        }
-
-        public static bool IsZz(string caminhoArquivo)
-        {
-            return IsZz(new FileInfo(caminhoArquivo));
-        }
-
-        public static bool IsZz(FileInfo fi)
-        {
-            return Extensoes7z.Contains(fi.Extension, new IgnorarCasoSensivel());
-        }
-
-        private static string CaminhoBilioteca7zip
-        {
-            get
-            {
-                if (SistemaUtil.IsAplicacao64Bits)
-                {
-                    return CaminhoUtil.Combine(AplicacaoSnebur.AtualRequired.DiretorioAplicacao, "x64", "7z.dll");
-                }
-                else
-                {
-                    return CaminhoUtil.Combine(AplicacaoSnebur.AtualRequired.DiretorioAplicacao, "x86", "7z.dll");
-                }
+                return CaminhoUtil.Combine(AplicacaoSnebur.AtualRequired.DiretorioAplicacao, "x86", "7z.dll");
             }
         }
     }

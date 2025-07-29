@@ -1,132 +1,131 @@
 ﻿using Snebur.Dominio.Atributos;
 
-namespace Snebur.UI
+namespace Snebur.UI;
+
+[IgnorarEnumTS]
+public enum EnumFormatacao
 {
-    [IgnorarEnumTS]
-    public enum EnumFormatacao
-    {
-        Nenhuma,
+    Nenhuma,
 
-        Absoluto,
-         
-        Bytes,// "bytes",
+    Absoluto,
+     
+    Bytes,// "bytes",
 
-        CaixaAlta, // "caixaalta",
+    CaixaAlta, // "caixaalta",
 
-        CaixaBaixa, // "caixabaixa"
-         
-        Centimetro, // "centimetro",
+    CaixaBaixa, // "caixabaixa"
+     
+    Centimetro, // "centimetro",
 
-        Cep, // "cep",
+    Cep, // "cep",
 
-        Cpf, // "cpf",
+    Cpf, // "cpf",
 
-        Cnpj, // "cnpj",
+    Cnpj, // "cnpj",
 
-        CpfCnpj, // "cpfcnpj",
-         
-        Data, // "data",
-         
-        DataHora, // "datahora",
+    CpfCnpj, // "cpfcnpj",
+     
+    Data, // "data",
+     
+    DataHora, // "datahora",
 
-        DataSemantica,
+    DataSemantica,
 
-        DataHoraSemantica, // "datahorasemantico",
+    DataHoraSemantica, // "datahorasemantico",
 
-        DataSemanticaHora, // "datahorasemantico",
-         
-        Decimal, // "decimal",
+    DataSemanticaHora, // "datahorasemantico",
+     
+    Decimal, // "decimal",
 
-        Decimal1, // "decimal1",
+    Decimal1, // "decimal1",
 
-        Decimal3, // "decimal3",
+    Decimal3, // "decimal3",
 
-        Dias, // "dias",
-        DiasUteis, //"diasuteis",
+    Dias, // "dias",
+    DiasUteis, //"diasuteis",
 
-        Dimensao,
+    Dimensao,
 
-        DimensaoCm,
+    DimensaoCm,
 
-        DimensaoPixels,
+    DimensaoPixels,
 
-        DoisPontosFinal,
+    DoisPontosFinal,
 
-        EntreParentes,
+    EntreParentes,
 
-        Grau, // "grau",
+    Grau, // "grau",
 
-        Grau1, // "grau1",
+    Grau1, // "grau1",
 
-        Grau2, // "grau2",
+    Grau2, // "grau2",
 
-        Hora, // "hora",
+    Hora, // "hora",
 
-        HoraDescricao, // "datahoradescricao",
+    HoraDescricao, // "datahoradescricao",
 
-        HoraDescricaoMin, // "datahoradescricaomin",
+    HoraDescricaoMin, // "datahoradescricaomin",
 
-        Inteiro, // "inteiro",
-         
-        Margem,
+    Inteiro, // "inteiro",
+     
+    Margem,
 
-        MelhorDecimal, // "melhordecimal",
+    MelhorDecimal, // "melhordecimal",
 
-        Moeda, // "moeda",
+    Moeda, // "moeda",
 
-        MoedaIgnorarSemValor,
+    MoedaIgnorarSemValor,
 
-        MoedaComSinal, // "moedacomsinal"
-         
-        NaoQuebrar, // "naoquebrar",
+    MoedaComSinal, // "moedacomsinal"
+     
+    NaoQuebrar, // "naoquebrar",
 
-        Nome,
+    Nome,
 
-        OcultarEmail,
+    OcultarEmail,
 
-        Prazo, // "prazo",
+    Prazo, // "prazo",
 
-        Peso, //"peso",
+    Peso, //"peso",
 
-        PesoKg, //"pesokg",
+    PesoKg, //"pesokg",
 
-        Pixel, // "pixel",
-         
-        Porcentagem, // "porcentagem",
+    Pixel, // "pixel",
+     
+    Porcentagem, // "porcentagem",
 
-        Porcentagem1, // "porcentagem1",
+    Porcentagem1, // "porcentagem1",
 
-        Porcentagem2, // "porcentagem2",
-         
-        PortentagemPositivoNegativo, //"porcentagempositivonegativo",
+    Porcentagem2, // "porcentagem2",
+     
+    PortentagemPositivoNegativo, //"porcentagempositivonegativo",
 
-        Portentagem1PositivoNegativo, //"porcentagem1positivonegativo",
+    Portentagem1PositivoNegativo, //"porcentagem1positivonegativo",
 
-        PositivoNegativo, //"positivonegativo",
+    PositivoNegativo, //"positivonegativo",
 
-        PositivoNegativoDecimal,//"positivonegativodecimal"
+    PositivoNegativoDecimal,//"positivonegativodecimal"
 
-        PrimeiraLetraMaiuscula, // "primeiraletramaiuscula",
+    PrimeiraLetraMaiuscula, // "primeiraletramaiuscula",
 
-        Proteger, // "proteger",
+    Proteger, // "proteger",
 
-        Senha, // "senha",
+    Senha, // "senha",
 
-        SimNao, // "simnao",
+    SimNao, // "simnao",
 
-        QuebrarLinhasHtml, //"quebrarlinhahtml",
+    QuebrarLinhasHtml, //"quebrarlinhahtml",
 
-        Tempo, // "tempo",
+    Tempo, // "tempo",
 
-        TempoSemantico, // "temposemantico",
-         
-        TamanhoArquivo, // "tamanhoarquivo",
+    TempoSemantico, // "temposemantico",
+     
+    TamanhoArquivo, // "tamanhoarquivo",
 
-        Telefone, // "telefone",
+    Telefone, // "telefone",
 
-        Titulo, // "titulo",
+    Titulo, // "titulo",
 
-        Trim, // "trim",
-          
-    }
+    Trim, // "trim",
+      
 }

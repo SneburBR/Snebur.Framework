@@ -1,11 +1,9 @@
 ﻿using Snebur.Dominio.Atributos;
-using System;
 
-namespace Snebur.Dominio
+namespace Snebur.Dominio;
+
+public interface IDpiVisualizacao
 {
-    public interface IDpiVisualizacao
-    {
-        [IgnorarPropriedade]
-        Func<double?, double>? FuncaoNormamlizarDpiVisualizacao { get; set; }
-    }
+    [IgnorarPropriedade]
+    Func<double?, double>? FuncaoNormamlizarDpiVisualizacao { get; set; }
 }

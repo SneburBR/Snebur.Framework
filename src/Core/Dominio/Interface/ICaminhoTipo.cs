@@ -1,7 +1,6 @@
-﻿namespace Snebur.Dominio
+﻿namespace Snebur.Dominio;
+
+public interface ICaminhoTipo
 {
-    public interface ICaminhoTipo
-    {
-        string __CaminhoTipo { get; }
-    }
+    string __CaminhoTipo { get; }
 }

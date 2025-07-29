@@ -1,6 +1,4 @@
-﻿using Snebur.Dominio;
-using Snebur.Utilidade;
-using System;
+﻿using Snebur.Utilidade;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;

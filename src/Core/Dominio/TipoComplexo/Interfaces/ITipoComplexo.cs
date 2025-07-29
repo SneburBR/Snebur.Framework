@@ -1,7 +1,6 @@
-﻿namespace Snebur.Dominio
+﻿namespace Snebur.Dominio;
+
+public interface ITipoComplexo
 {
-    public interface ITipoComplexo
-    {
-        //ITipoComplexo Clone();
-    }
+    //ITipoComplexo Clone();
 }

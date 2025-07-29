@@ -1,9 +1,6 @@
-﻿using System;
+﻿namespace Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio.Atributos
+[AttributeUsage(AttributeTargets.Interface)]
+public class IgnorarInterfaceTSAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Interface)]
-    public class IgnorarInterfaceTSAttribute : Attribute
-    {
-    }
 }

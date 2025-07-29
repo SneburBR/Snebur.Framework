@@ -1,17 +1,14 @@
-﻿using Snebur.Dominio;
-using Snebur.Dominio.Atributos;
-using System;
+﻿using Snebur.Dominio.Atributos;
 
-namespace Snebur.Serializacao
+namespace Snebur.Serializacao;
+
+[IgnorarInterfaceTS]
+public interface IBaseDominioReferencia : ICaminhoTipo
 {
-    [IgnorarInterfaceTS]
-    public interface IBaseDominioReferencia : ICaminhoTipo
-    {
-        bool IsSerializando { get; set; }
-        Guid __IdentificadorUnico { get; }
-        Guid? __IdentificadorReferencia { get; set; }
-        bool? __IsBaseDominioReferencia { get; set; }
-        Guid RetornarIdentificadorReferencia();
-        //void LimparRefencia();
-    }
+    bool IsSerializando { get; set; }
+    Guid __IdentificadorUnico { get; }
+    Guid? __IdentificadorReferencia { get; set; }
+    bool? __IsBaseDominioReferencia { get; set; }
+    Guid RetornarIdentificadorReferencia();
+    //void LimparRefencia();
 }

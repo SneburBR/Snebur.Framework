@@ -1,6 +1,4 @@
-﻿using Snebur.Dominio;
-using Snebur.Dominio.Atributos;
-using System;
+﻿using Snebur.Dominio.Atributos;
 using System.Collections.Generic;
 using System.Linq;
 

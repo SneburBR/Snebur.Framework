@@ -1,8 +1,6 @@
-﻿using System;
+﻿namespace Snebur.Utilidade;
 
-namespace Snebur.Utilidade
-{
-    public static partial class FormatacaoUtil
+public static partial class FormatacaoUtil
 	{
 
 		public static string FormatarDecimal(double? valor)
@@ -120,4 +118,3 @@ namespace Snebur.Utilidade
 
 		}
 	}
-}

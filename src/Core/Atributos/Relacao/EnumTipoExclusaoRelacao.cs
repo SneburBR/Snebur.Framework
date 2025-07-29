@@ -1,14 +1,13 @@
-﻿namespace Snebur.Dominio.Atributos
+﻿namespace Snebur.Dominio.Atributos;
+
+//[IgnorarEnumTS]
+//[IgnorarTSReflexaoAttribute]
+[IgnorarGlobalizacao]
+public enum EnumTipoExclusaoRelacao
 {
-    //[IgnorarEnumTS]
-    //[IgnorarTSReflexaoAttribute]
-    [IgnorarGlobalizacao]
-    public enum EnumTipoExclusaoRelacao
-    {
-        NaoDeletar = 1,
+    NaoDeletar = 1,
 
-        Cascata = 2,
+    Cascata = 2,
 
-        Zerar = 3
-    }
+    Zerar = 3
 }

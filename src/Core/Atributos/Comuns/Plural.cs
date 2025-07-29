@@ -1,16 +1,13 @@
-﻿using System;
+﻿namespace Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio.Atributos
+[AttributeUsage(AttributeTargets.Class)]
+public class PluralAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Class)]
-    public class PluralAttribute : Attribute
+
+    public string Nome { get; set; }
+
+    public PluralAttribute(string nome)
     {
-
-        public string Nome { get; set; }
-
-        public PluralAttribute(string nome)
-        {
-            this.Nome = nome;
-        }
+        this.Nome = nome;
     }
 }

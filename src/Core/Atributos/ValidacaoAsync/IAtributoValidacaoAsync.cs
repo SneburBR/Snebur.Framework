@@ -1,7 +1,6 @@
-﻿namespace Snebur.Dominio.Atributos
+﻿namespace Snebur.Dominio.Atributos;
+
+[IgnorarInterfaceTS]
+public interface IAtributoValidacaoAsync : IAtributoValidacao
 {
-    [IgnorarInterfaceTS]
-    public interface IAtributoValidacaoAsync : IAtributoValidacao
-    {
-    }
 }

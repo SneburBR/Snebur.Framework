@@ -1,10 +1,9 @@
-﻿namespace Snebur.Comunicacao
+﻿namespace Snebur.Comunicacao;
+
+public class ResultadoAlterarSenha : BaseResultadoRecuperarSenha
 {
-    public class ResultadoAlterarSenha : BaseResultadoRecuperarSenha
-    {
-        #region Campos Privados
+    #region Campos Privados
 
-        #endregion
+    #endregion
 
-    }
 }

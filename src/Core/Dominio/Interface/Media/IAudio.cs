@@ -1,6 +1,5 @@
-﻿namespace Snebur.Dominio
+﻿namespace Snebur.Dominio;
+
+public interface IAudio : IMedia
 {
-    public interface IAudio : IMedia
-    {
-    }
 }

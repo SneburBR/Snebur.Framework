@@ -1,10 +1,7 @@
-﻿using System;
+﻿namespace Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio.Atributos
+[AttributeUsage(AttributeTargets.Constructor)]
+public class IgnorarConstrutorTSAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Constructor)]
-    public class IgnorarConstrutorTSAttribute : Attribute
-    {
-    }
 }
 

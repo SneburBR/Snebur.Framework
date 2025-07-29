@@ -1,36 +1,35 @@
 ﻿using Snebur.Dominio.Atributos;
 using System.ComponentModel;
 
-namespace Snebur.Dominio
+namespace Snebur.Dominio;
+
+[IgnorarGlobalizacao]
+public enum EnumNavegador
 {
-    [IgnorarGlobalizacao]
-    public enum EnumNavegador
-    {
-        [Description("Internet Explorer")]
-        InternetExplorer = 1,
+    [Description("Internet Explorer")]
+    InternetExplorer = 1,
 
-        [Description("Chrome")]
-        Chrome = 2,
+    [Description("Chrome")]
+    Chrome = 2,
 
-        [Description("Safari")]
-        Safari = 3,
+    [Description("Safari")]
+    Safari = 3,
 
-        [Description("Firefox")]
-        Firefox = 4,
+    [Description("Firefox")]
+    Firefox = 4,
 
-        [Description("Opera")]
-        Opera = 5,
+    [Description("Opera")]
+    Opera = 5,
 
-        [Description("Edge")]
-        Edge = 6,
+    [Description("Edge")]
+    Edge = 6,
 
-        [Description("Edge Chromium")]
-        EdgeChromium = 7,
+    [Description("Edge Chromium")]
+    EdgeChromium = 7,
 
-        [Description("Nenhum")]
-        Nenhum = 98,
+    [Description("Nenhum")]
+    Nenhum = 98,
 
-        [Description("Desconhecido")]
-        Desconhecido = 99,
-    }
+    [Description("Desconhecido")]
+    Desconhecido = 99,
 }

@@ -1,37 +1,34 @@
-﻿using Snebur.Dominio;
-using Snebur.Seguranca;
-using System;
+﻿using Snebur.Seguranca;
 
-namespace Snebur.Comunicacao
+namespace Snebur.Comunicacao;
+
+public interface IServicoUsuario : IBaseServico
 {
-    public interface IServicoUsuario : IBaseServico
-    {
-        bool IsExisteInformacaoIp();
-        void AtualizarInformacaoIp(DadosIPInformacao ipInformacao);
+    bool IsExisteInformacaoIp();
+    void AtualizarInformacaoIp(DadosIPInformacao ipInformacao);
 
-        ResultadoExisteIdentificadoUsuario ExisteIdentificadorUsuario(string identificadorUsuario);
+    ResultadoExisteIdentificadoUsuario ExisteIdentificadorUsuario(string identificadorUsuario);
 
-        EnumResultadoValidacaoCredencial ValidarCredencial(CredencialUsuario credencial);
+    EnumResultadoValidacaoCredencial ValidarCredencial(CredencialUsuario credencial);
 
-        bool SessaoUsuarioAtiva(CredencialUsuario credencial, Guid identificadorSessaoUsuario);
+    bool SessaoUsuarioAtiva(CredencialUsuario credencial, Guid identificadorSessaoUsuario);
 
-        IUsuario RetornarUsuario(CredencialUsuario credencial);
+    IUsuario RetornarUsuario(CredencialUsuario credencial);
 
-        ResultadoAutenticacao Autenticar(CredencialUsuario credencial);
+    ResultadoAutenticacao Autenticar(CredencialUsuario credencial);
 
-        ISessaoUsuario RetornarSessaoUsuario(Guid identificadorSessaoUsuario);
+    ISessaoUsuario RetornarSessaoUsuario(Guid identificadorSessaoUsuario);
 
-        IUsuario CadastrarNovoUsuario(NovoUsuario novoUsuario, bool isAlterarSenhaProximoAcesso);
+    IUsuario CadastrarNovoUsuario(NovoUsuario novoUsuario, bool isAlterarSenhaProximoAcesso);
 
-        ResultadoEnviarCodigoRecuperarSenha EnviarCodigoRecuperarSenha(string identificadorAmigavel);
+    ResultadoEnviarCodigoRecuperarSenha EnviarCodigoRecuperarSenha(string identificadorAmigavel);
 
-        ResultadoValidarCodigoRecuperarSenha ValidarCodigRecuperarSenha(string identificadorAmigavel, string codigoRecuperarSenha);
+    ResultadoValidarCodigoRecuperarSenha ValidarCodigRecuperarSenha(string identificadorAmigavel, string codigoRecuperarSenha);
 
-        ResultadoRecuperarSenha RecuperarSenha(string identificadorAmigavel, string codigoRecuperarSenha, string novaSenha);
+    ResultadoRecuperarSenha RecuperarSenha(string identificadorAmigavel, string codigoRecuperarSenha, string novaSenha);
 
-        ResultadoAlterarSenha AlterarSenha(CredencialUsuario credencial, string novaSenha);
+    ResultadoAlterarSenha AlterarSenha(CredencialUsuario credencial, string novaSenha);
 
-        void FinalizarSessaoUsuario(Guid identificadorSessaoUsuario);
+    void FinalizarSessaoUsuario(Guid identificadorSessaoUsuario);
 
-    }
 }

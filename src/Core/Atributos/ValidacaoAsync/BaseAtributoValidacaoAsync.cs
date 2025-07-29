@@ -1,6 +1,5 @@
-﻿namespace Snebur.Dominio.Atributos
+﻿namespace Snebur.Dominio.Atributos;
+
+public abstract class BaseAtributoValidacaoAsync : BaseAtributoDominio
 {
-    public abstract class BaseAtributoValidacaoAsync : BaseAtributoDominio
-    {
-    }
 }

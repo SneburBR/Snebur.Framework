@@ -1,10 +1,7 @@
-﻿using System;
+﻿namespace Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio.Atributos
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum)]
+public class IgnorarTSReflexaoAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum)]
-    public class IgnorarTSReflexaoAttribute : Attribute
-    {
-    }
 }
 

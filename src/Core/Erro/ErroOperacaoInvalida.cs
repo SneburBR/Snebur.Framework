@@ -1,28 +1,26 @@
 ﻿using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
 
-namespace System
+namespace System;
+
+[Serializable]
+public class ErroOperacaoInvalida : Erro
 {
-    [Serializable]
-    public class ErroOperacaoInvalida : Erro
+
+    public ErroOperacaoInvalida(
+        string mensagem = "",
+        Exception? erroInterno = null,
+        [CallerMemberName] string nomeMetodo = "",
+        [CallerFilePath] string caminhoArquivo = "",
+        [CallerLineNumber] int linhaDoErro = 0) :
+        base(mensagem, erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
     {
-
-        public ErroOperacaoInvalida(
-            string mensagem = "",
-            Exception? erroInterno = null,
-            [CallerMemberName] string nomeMetodo = "",
-            [CallerFilePath] string caminhoArquivo = "",
-            [CallerLineNumber] int linhaDoErro = 0) :
-            base(mensagem, erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
-        {
-        }
-
-        #region Serializacao 
-
-        public ErroOperacaoInvalida()
-        {
-        }
-         
-        #endregion
     }
+
+    #region Serializacao 
+
+    public ErroOperacaoInvalida()
+    {
+    }
+     
+    #endregion
 }

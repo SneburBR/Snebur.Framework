@@ -1,10 +1,9 @@
-﻿namespace Snebur.Comunicacao
+﻿namespace Snebur.Comunicacao;
+
+public class ResultadoEnviarCodigoRecuperarSenha : BaseResultadoRecuperarSenha
 {
-    public class ResultadoEnviarCodigoRecuperarSenha : BaseResultadoRecuperarSenha
-    {
-        #region Campos Privados
+    #region Campos Privados
 
-        #endregion
+    #endregion
 
-    }
 }

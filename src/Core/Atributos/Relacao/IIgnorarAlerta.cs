@@ -1,7 +1,6 @@
-﻿namespace Snebur.Dominio.Atributos
+﻿namespace Snebur.Dominio.Atributos;
+
+public interface IIgnorarAlerta
 {
-    public interface IIgnorarAlerta
-    {
-        bool IgnorarAlerta { get; }
-    }
+    bool IgnorarAlerta { get; }
 }

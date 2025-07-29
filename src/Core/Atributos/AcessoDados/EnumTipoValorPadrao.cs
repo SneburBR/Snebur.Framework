@@ -1,13 +1,12 @@
-﻿namespace Snebur.Dominio
+﻿namespace Snebur.Dominio;
+
+public enum EnumTipoValorPadrao
 {
-    public enum EnumTipoValorPadrao
-    {
-        Nenhum,
-        IndentificadorProprietario,
-        SessaoUsuario_Id,
-        UsuarioLogado_Id,
-        Comum,
-        ValorPropriedadeNullOrDefault,
-        ValorPropriedadeNullOrWhiteSpace
-    }
+    Nenhum,
+    IndentificadorProprietario,
+    SessaoUsuario_Id,
+    UsuarioLogado_Id,
+    Comum,
+    ValorPropriedadeNullOrDefault,
+    ValorPropriedadeNullOrWhiteSpace
 }

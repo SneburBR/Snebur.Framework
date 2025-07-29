@@ -1,15 +1,12 @@
-﻿using System;
+﻿namespace Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio.Atributos
+[AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
+public class RotuloVSIntelliSenseAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
-    public class RotuloVSIntelliSenseAttribute : Attribute
-    {
-        public string Rotulo { get; set; }
+    public string Rotulo { get; set; }
 
-        public RotuloVSIntelliSenseAttribute(string rotulo)
-        {
-            this.Rotulo = rotulo;
-        }
+    public RotuloVSIntelliSenseAttribute(string rotulo)
+    {
+        this.Rotulo = rotulo;
     }
 }

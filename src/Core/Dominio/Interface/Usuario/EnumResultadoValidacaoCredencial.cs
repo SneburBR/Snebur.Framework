@@ -1,10 +1,9 @@
-﻿namespace Snebur.Dominio
+﻿namespace Snebur.Dominio;
+
+public enum EnumResultadoValidacaoCredencial
 {
-    public enum EnumResultadoValidacaoCredencial
-    {
-        Sucesso = 1,
-        UsuarioNaoExiste = 2,
-        SenhaIncorreta = 3,
-        MaximoTentativaAtingido = 4
-    }
+    Sucesso = 1,
+    UsuarioNaoExiste = 2,
+    SenhaIncorreta = 3,
+    MaximoTentativaAtingido = 4
 }

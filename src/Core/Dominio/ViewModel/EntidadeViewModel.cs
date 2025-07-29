@@ -1,11 +1,10 @@
 ﻿using Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio
+namespace Snebur.Dominio;
+
+[IgnorarTSReflexao]
+[IgnorarClasseTS]
+public class EntidadeViewModel : BaseViewModel
 {
-    [IgnorarTSReflexao]
-    [IgnorarClasseTS]
-    public class EntidadeViewModel : BaseViewModel
-    {
-        public Entidade? Entidade { get; set; }
-    }
+    public Entidade? Entidade { get; set; }
 }

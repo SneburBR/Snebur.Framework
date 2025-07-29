@@ -1,43 +1,40 @@
-﻿using System;
+﻿namespace Snebur.Utilidade;
 
-namespace Snebur.Utilidade
+public class ThreadControleErro
 {
-    public class ThreadControleErro
+    private Action? _acao;
+    private string NomeThread { get; }
+
+    public ThreadControleErro(Action acao, string nomeThread)
     {
-        private Action? _acao;
-        private string NomeThread { get; }
+        this._acao = acao;
+        this.NomeThread = nomeThread;
+    }
 
-        public ThreadControleErro(Action acao, string nomeThread)
+    public void ExecutarAsync()
+    {
+        ThreadUtil.ExecutarThread(this.Executar, this.NomeThread);
+    }
+
+    public void Executar()
+    {
+        Guard.NotNull(this._acao);
+
+        try
         {
-            this._acao = acao;
-            this.NomeThread = nomeThread;
+            this._acao.Invoke();
         }
-
-        public void ExecutarAsync()
+        catch (Exception ex)
         {
-            ThreadUtil.ExecutarThread(this.Executar, this.NomeThread);
+            if (!DebugUtil.IsAttached)
+            {
+                var mensagem = $"Erro na thread {this.NomeThread}";
+                LogUtil.ErroAsync(new Exception(mensagem, ex));
+            }
         }
-
-        public void Executar()
+        finally
         {
-            Guard.NotNull(this._acao);
-
-            try
-            {
-                this._acao.Invoke();
-            }
-            catch (Exception ex)
-            {
-                if (!DebugUtil.IsAttached)
-                {
-                    var mensagem = $"Erro na thread {this.NomeThread}";
-                    LogUtil.ErroAsync(new Exception(mensagem, ex));
-                }
-            }
-            finally
-            {
-                this._acao = null;
-            }
+            this._acao = null;
         }
     }
 }

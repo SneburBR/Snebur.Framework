@@ -1,13 +1,12 @@
-﻿namespace Snebur.UI
+﻿namespace Snebur.UI;
+
+public enum EnumFormatacaoTexto
 {
-    public enum EnumFormatacaoTexto
-    {
-        SemFormatacao = 1,
+    SemFormatacao = 1,
 
-        CaixaAlta = 2,
+    CaixaAlta = 2,
 
-        CaixaBaixa = 3,
+    CaixaBaixa = 3,
 
-        PrimeiraLetraMaiuscula = 4
-    }
+    PrimeiraLetraMaiuscula = 4
 }

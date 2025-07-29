@@ -1,12 +1,11 @@
-﻿namespace Snebur.UI
+﻿namespace Snebur.UI;
+
+public enum EnumIconeCategoria
 {
-    public enum EnumIconeCategoria
-    {
-        Vazio = BaseEnumApresentacao.Vazio,
-        Filled,
-        Outlined,
-        Rounded,
-        Sharp,
-        TwoTone
-    }
+    Vazio = BaseEnumApresentacao.Vazio,
+    Filled,
+    Outlined,
+    Rounded,
+    Sharp,
+    TwoTone
 }

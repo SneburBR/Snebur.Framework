@@ -1,15 +1,14 @@
-﻿namespace Snebur.Dominio
+﻿namespace Snebur.Dominio;
+
+public interface IDimensao
 {
-    public interface IDimensao
-    {
-        double Largura { get; set; }
+    double Largura { get; set; }
 
-        double Altura { get; set; }
+    double Altura { get; set; }
 
-        //[IgnorarPropriedadeTS]
-        //int LarguraVisualizacao { get; }
+    //[IgnorarPropriedadeTS]
+    //int LarguraVisualizacao { get; }
 
-        //[IgnorarPropriedadeTS]
-        //int AlturaVisualizacao { get; }
-    }
+    //[IgnorarPropriedadeTS]
+    //int AlturaVisualizacao { get; }
 }

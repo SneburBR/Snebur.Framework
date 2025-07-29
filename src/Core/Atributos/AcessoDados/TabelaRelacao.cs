@@ -1,15 +1,12 @@
-﻿using System;
+﻿namespace Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio.Atributos
+[IgnorarAtributoTS]
+[AttributeUsage(AttributeTargets.Class)]
+public class TabelaRelacao : TabelaAttribute
 {
-    [IgnorarAtributoTS]
-    [AttributeUsage(AttributeTargets.Class)]
-    public class TabelaRelacao : TabelaAttribute
-    {
-        public const string SCHEMA_ATIVIDADE = "relacao";
+    public const string SCHEMA_ATIVIDADE = "relacao";
 
-        public TabelaRelacao(string nomeTabela) : base(nomeTabela, SCHEMA_ATIVIDADE)
-        {
-        }
+    public TabelaRelacao(string nomeTabela) : base(nomeTabela, SCHEMA_ATIVIDADE)
+    {
     }
 }

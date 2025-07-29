@@ -1,10 +1,6 @@
-﻿using System;
+﻿namespace Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio.Atributos
+[AttributeUsage(AttributeTargets.Property)]
+public sealed class IgnorarPropriedadeTSAttribute : Attribute
 {
-
-    [AttributeUsage(AttributeTargets.Property)]
-    public sealed class IgnorarPropriedadeTSAttribute : Attribute
-    {
-    }
 }

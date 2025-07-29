@@ -1,7 +1,6 @@
-﻿namespace Snebur.Imagens
+﻿namespace Snebur.Imagens;
+
+public class SobrePosicaoSolida : SobrePosicao
 {
-    public class SobrePosicaoSolida : SobrePosicao
-    {
-        public string? Cor { get; set; }
-    }
+    public string? Cor { get; set; }
 }

@@ -4,160 +4,159 @@ using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
-namespace System
+namespace System;
+
+public static class UriExtensao
 {
-    public static class UriExtensao
+    public static string GetQuery(this Uri uri)
     {
-        public static string GetQuery(this Uri uri)
+        if (uri.IsAbsoluteUri)
         {
-            if (uri.IsAbsoluteUri)
-            {
-                return uri.Query;
-            }
-            var url = uri.ToString();
-            if (url.Contains("?"))
-            {
-                return url.Substring(url.IndexOf("?") + 1);
-            }
-            return String.Empty;
+            return uri.Query;
         }
-
-        public static string GetPath(this Uri uri, bool isRemoveFileName)
+        var url = uri.ToString();
+        if (url.Contains("?"))
         {
-            var path = uri.GetPath();
-            if (String.IsNullOrWhiteSpace(path))
-            {
-                return path;
-            }
+            return url.Substring(url.IndexOf("?") + 1);
+        }
+        return String.Empty;
+    }
 
-            if (isRemoveFileName)
-            {
-                var fileName = IO.Path.GetFileName(path);
-                if (fileName.Contains("."))
-                {
-                    return IO.Path.GetDirectoryName(path) ?? path;
-                }
-            }
+    public static string GetPath(this Uri uri, bool isRemoveFileName)
+    {
+        var path = uri.GetPath();
+        if (String.IsNullOrWhiteSpace(path))
+        {
             return path;
-
-        }
-        public static string GetPath(this Uri uri)
-        {
-            if (uri.IsAbsoluteUri)
-            {
-                return uri.AbsolutePath;
-            }
-
-            var url = uri.ToString();
-            if (url.Contains("?"))
-            {
-                return url.Substring(0, url.IndexOf("?"));
-            }
-            if (url.Contains("#"))
-            {
-                return url.Substring(0, url.IndexOf("#"));
-            }
-            return uri.ToString();
         }
 
-        public static Uri UriSchemeHttps(this Uri uri)
+        if (isRemoveFileName)
         {
-            if (uri.Scheme == Uri.UriSchemeHttps)
+            var fileName = IO.Path.GetFileName(path);
+            if (fileName.Contains("."))
             {
-                return uri;
+                return IO.Path.GetDirectoryName(path) ?? path;
             }
-
-            return (new UriBuilder(uri)
-            {
-                Scheme = Uri.UriSchemeHttps,
-                Port = -1 // default port for scheme
-            }).Uri;
         }
-        public static Uri UriSchemeHttp(this Uri uri)
+        return path;
+
+    }
+    public static string GetPath(this Uri uri)
+    {
+        if (uri.IsAbsoluteUri)
         {
-            if (uri.Scheme == Uri.UriSchemeHttp)
-            {
-                return uri;
-            }
-            return (new UriBuilder(uri)
-            {
-                Scheme = Uri.UriSchemeHttp,
-                Port = -1 // default port for scheme
-            }).Uri;
+            return uri.AbsolutePath;
         }
 
-        public static Uri NormalizarWWW(this Uri uri)
+        var url = uri.ToString();
+        if (url.Contains("?"))
         {
-            var host = uri.Host.ToLower();
-            if (!host.StartsWith("www."))
-            {
-                return (new UriBuilder(uri)
-                {
-                    Host = "www." + uri.Host,
-                }).Uri;
-            }
-            return uri;
+            return url.Substring(0, url.IndexOf("?"));
         }
-        public static Uri RemoverWWW(this Uri uri)
+        if (url.Contains("#"))
         {
-            var host = uri.Host.ToLower();
-            if (host.StartsWith("www."))
-            {
-                return (new UriBuilder(uri)
-                {
-                    Host = uri.Host.Substring(4),
-                }).Uri;
-            }
+            return url.Substring(0, url.IndexOf("#"));
+        }
+        return uri.ToString();
+    }
+
+    public static Uri UriSchemeHttps(this Uri uri)
+    {
+        if (uri.Scheme == Uri.UriSchemeHttps)
+        {
             return uri;
         }
 
-        public static Task<bool> IsSslValidoAsync(this Uri uri)
+        return (new UriBuilder(uri)
         {
-            var uriHttps = uri.UriSchemeHttps();
-            var promise = new TaskCompletionSource<bool>();
+            Scheme = Uri.UriSchemeHttps,
+            Port = -1 // default port for scheme
+        }).Uri;
+    }
+    public static Uri UriSchemeHttp(this Uri uri)
+    {
+        if (uri.Scheme == Uri.UriSchemeHttp)
+        {
+            return uri;
+        }
+        return (new UriBuilder(uri)
+        {
+            Scheme = Uri.UriSchemeHttp,
+            Port = -1 // default port for scheme
+        }).Uri;
+    }
 
-            TaskUtil.Run(() =>
+    public static Uri NormalizarWWW(this Uri uri)
+    {
+        var host = uri.Host.ToLower();
+        if (!host.StartsWith("www."))
+        {
+            return (new UriBuilder(uri)
             {
-                try
-                {
+                Host = "www." + uri.Host,
+            }).Uri;
+        }
+        return uri;
+    }
+    public static Uri RemoverWWW(this Uri uri)
+    {
+        var host = uri.Host.ToLower();
+        if (host.StartsWith("www."))
+        {
+            return (new UriBuilder(uri)
+            {
+                Host = uri.Host.Substring(4),
+            }).Uri;
+        }
+        return uri;
+    }
+
+    public static Task<bool> IsSslValidoAsync(this Uri uri)
+    {
+        var uriHttps = uri.UriSchemeHttps();
+        var promise = new TaskCompletionSource<bool>();
+
+        TaskUtil.Run(() =>
+        {
+            try
+            {
 #pragma warning disable SYSLIB0014
-                    var request = (HttpWebRequest)WebRequest.Create(uriHttps);
+                var request = (HttpWebRequest)WebRequest.Create(uriHttps);
 #pragma warning restore SYSLIB0014
-                    request.Timeout = (int)TimeSpan.FromSeconds(15).TotalMilliseconds;
+                request.Timeout = (int)TimeSpan.FromSeconds(15).TotalMilliseconds;
 
 #if NET40 == false
-                    request.ServerCertificateValidationCallback += (object sender,
-                                                                    X509Certificate? certificate,
-                                                                    X509Chain? chain,
-                                                                    SslPolicyErrors sslPolicyErrors) =>
+                request.ServerCertificateValidationCallback += (object sender,
+                                                                X509Certificate? certificate,
+                                                                X509Chain? chain,
+                                                                SslPolicyErrors sslPolicyErrors) =>
+                {
+                    if (sslPolicyErrors == SslPolicyErrors.None)
                     {
-                        if (sslPolicyErrors == SslPolicyErrors.None)
-                        {
-                            promise.TrySetResult(true);
-                            return true;
-                        }
-                        else
-                        {
-                            promise.TrySetResult(false);
-                            return false;
-                        }
-                    };
+                        promise.TrySetResult(true);
+                        return true;
+                    }
+                    else
+                    {
+                        promise.TrySetResult(false);
+                        return false;
+                    }
+                };
 #endif
 
-                    request.GetResponse();
-                    promise.TrySetResult(true);
-                }
-                catch
-                {
-                    promise.TrySetResult(false);
-                }
-            });
-            return promise.Task;
-        }
+                request.GetResponse();
+                promise.TrySetResult(true);
+            }
+            catch
+            {
+                promise.TrySetResult(false);
+            }
+        });
+        return promise.Task;
+    }
 
-        public static bool IsWWW(this Uri uri)
-        {
-            return uri.Host.ToLower().StartsWith("www");
-        }
+    public static bool IsWWW(this Uri uri)
+    {
+        return uri.Host.ToLower().StartsWith("www");
     }
 }

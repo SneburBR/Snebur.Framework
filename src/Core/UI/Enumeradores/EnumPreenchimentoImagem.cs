@@ -2,21 +2,20 @@
 using Snebur.Dominio.Atributos;
 using Snebur.UI;
 
-namespace Snebur.Dominio
+namespace Snebur.Dominio;
+
+public enum EnumPreenchimentoImagem
 {
-    public enum EnumPreenchimentoImagem
-    {
-        [Rotulo("Vazio")]
-        Vazio = BaseEnumApresentacao.Vazio,
+    [Rotulo("Vazio")]
+    Vazio = BaseEnumApresentacao.Vazio,
 
-        Nenhum = 0,
+    Nenhum = 0,
 
-        UniformeDentro = 1,
+    UniformeDentro = 1,
 
-        UniformeFora = 2,
+    UniformeFora = 2,
 
-        UniformeCheio = 3,
+    UniformeCheio = 3,
 
-        Esticar = 4
-    }
+    Esticar = 4
 }

@@ -1,10 +1,9 @@
 ﻿using Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio
+namespace Snebur.Dominio;
+
+[IgnorarInterfaceTS]
+public interface ITipoUsuarioAdicionarGrupoUsuario : IEntidadeSeguranca, IMembrosDe
 {
-    [IgnorarInterfaceTS]
-    public interface ITipoUsuarioAdicionarGrupoUsuario : IEntidadeSeguranca, IMembrosDe
-    {
-        string NomeTipoUsuario { get; set; }
-    }
+    string NomeTipoUsuario { get; set; }
 }

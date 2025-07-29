@@ -1,10 +1,7 @@
-﻿using System;
+﻿namespace Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio.Atributos
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Property | AttributeTargets.Enum | AttributeTargets.Assembly)]
+public class IgnorarGlobalizacaoAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property | AttributeTargets.Enum | AttributeTargets.Assembly)]
-    public class IgnorarGlobalizacaoAttribute : Attribute
-    {
-    }
 }
 

@@ -1,17 +1,16 @@
 ﻿using Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio
+namespace Snebur.Dominio;
+
+public interface IPosicao
 {
-    public interface IPosicao
-    {
-        double X { get; set; }
+    double X { get; set; }
 
-        double Y { get; set; }
+    double Y { get; set; }
 
-        [IgnorarPropriedade]
-        int XVisualizacao { get; }
+    [IgnorarPropriedade]
+    int XVisualizacao { get; }
 
-        [IgnorarPropriedade]
-        int YVisualizacao { get; }
-    }
+    [IgnorarPropriedade]
+    int YVisualizacao { get; }
 }

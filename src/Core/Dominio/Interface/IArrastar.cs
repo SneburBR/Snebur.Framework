@@ -1,7 +1,6 @@
-﻿namespace Snebur.Dominio
+﻿namespace Snebur.Dominio;
+
+public interface IArrastar
 {
-    public interface IArrastar
-    {
-        Posicao Posicao { get; set; }
-    }
+    Posicao Posicao { get; set; }
 }

@@ -1,8 +1,5 @@
-﻿using System;
+﻿namespace Snebur.Tarefa;
 
-namespace Snebur.Tarefa
+public class StatusTarefaAlteradoEventArgs : EventArgs
 {
-    public class StatusTarefaAlteradoEventArgs : EventArgs
-    {
-    }
 }

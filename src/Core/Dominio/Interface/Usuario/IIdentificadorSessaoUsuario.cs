@@ -1,12 +1,10 @@
 ﻿using Snebur.Dominio.Atributos;
-using System;
 
-namespace Snebur.Dominio
+namespace Snebur.Dominio;
+
+public interface IIdentificadorSessaoUsuario
 {
-    public interface IIdentificadorSessaoUsuario
-    {
-        [ValidacaoRequerido]
-        [ValidacaoUnico]
-        Guid IdentificadorSessaoUsuario { get; set; }
-    }
+    [ValidacaoRequerido]
+    [ValidacaoUnico]
+    Guid IdentificadorSessaoUsuario { get; set; }
 }

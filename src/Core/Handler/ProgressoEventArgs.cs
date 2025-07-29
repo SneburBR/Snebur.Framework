@@ -1,16 +1,13 @@
-﻿using System;
+﻿namespace Snebur;
 
-namespace Snebur
+public delegate void ProgressoEventHandler(object sender, ProgressoEventArgs e);
+
+public class ProgressoEventArgs : EventArgs
 {
-    public delegate void ProgressoEventHandler(object sender, ProgressoEventArgs e);
+    public double Progresso { get; set; }
 
-    public class ProgressoEventArgs : EventArgs
+    public ProgressoEventArgs(double progresso)
     {
-        public double Progresso { get; set; }
-
-        public ProgressoEventArgs(double progresso)
-        {
-            this.Progresso = progresso;
-        }
+        this.Progresso = progresso;
     }
 }

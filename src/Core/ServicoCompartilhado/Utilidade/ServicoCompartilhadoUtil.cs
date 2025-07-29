@@ -1,24 +1,22 @@
 ﻿using Snebur.Utilidade;
-using System;
 
-namespace Snebur.Servicos
+namespace Snebur.Servicos;
+
+public class ServicoCompartilhadoUtil
 {
-    public class ServicoCompartilhadoUtil
+    public static BaseInformacaoAdicionalServicoCompartilhado? RetornarInformacaoAdicionalServicoCompartilhado()
     {
-        public static BaseInformacaoAdicionalServicoCompartilhado? RetornarInformacaoAdicionalServicoCompartilhado()
+        try
         {
-            try
+            return AplicacaoSnebur.AtualRequired.FuncaoRetornarInformacaoAdicionalServicoCompartilhado?.Invoke();
+        }
+        catch (Exception)
+        {
+            if (DebugUtil.IsAttached)
             {
-                return AplicacaoSnebur.AtualRequired.FuncaoRetornarInformacaoAdicionalServicoCompartilhado?.Invoke();
+                throw;
             }
-            catch (Exception)
-            {
-                if (DebugUtil.IsAttached)
-                {
-                    throw;
-                }
-                return null;
-            }
+            return null;
         }
     }
 }

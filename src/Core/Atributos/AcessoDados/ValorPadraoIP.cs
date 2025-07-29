@@ -1,30 +1,27 @@
-﻿using System;
+﻿namespace Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio.Atributos
+[AttributeUsage(AttributeTargets.Property)]
+public class ValorPadraoIPAttribute : SomenteLeituraAttribute, IValorPadrao
 {
-    [AttributeUsage(AttributeTargets.Property)]
-    public class ValorPadraoIPAttribute : SomenteLeituraAttribute, IValorPadrao
+    public bool IsValorPadraoOnUpdate { get; set; }
+    public ValorPadraoIPAttribute()
     {
-        public bool IsValorPadraoOnUpdate { get; set; }
-        public ValorPadraoIPAttribute()
-        {
 
-        }
-
-        public object? RetornarValorPadrao(object contexto, 
-                                          Entidade entidade, 
-                                          object valorPropriedade)
-        {
-            
-            
-            return AplicacaoSnebur.AtualRequired.IpPublico;
-            //return IpUtil.RetornarIpInternet();
-        }
-
-        #region IValorPadrao 
-
-        public bool IsTipoNullableRequerido { get { return true; } }
-
-        #endregion
     }
+
+    public object? RetornarValorPadrao(object contexto, 
+                                      Entidade entidade, 
+                                      object valorPropriedade)
+    {
+        
+        
+        return AplicacaoSnebur.AtualRequired.IpPublico;
+        //return IpUtil.RetornarIpInternet();
+    }
+
+    #region IValorPadrao 
+
+    public bool IsTipoNullableRequerido { get { return true; } }
+
+    #endregion
 }

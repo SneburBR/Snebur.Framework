@@ -1,10 +1,9 @@
 ﻿
-namespace Snebur.Dominio
+namespace Snebur.Dominio;
+
+public enum EnumOrientacao
 {
-    public enum EnumOrientacao
-    {
-        Quadrado = 2,
-        Horizontal = 4,
-        Vertical = 8,
-    }
+    Quadrado = 2,
+    Horizontal = 4,
+    Vertical = 8,
 }

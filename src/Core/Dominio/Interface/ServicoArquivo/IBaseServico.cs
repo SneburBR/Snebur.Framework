@@ -1,11 +1,10 @@
-﻿namespace Snebur.Comunicacao
+﻿namespace Snebur.Comunicacao;
+
+public interface IBaseServico
 {
-    public interface IBaseServico
-    {
-        bool Ping();
+    bool Ping();
 
-        //DateTime RetornarDataHoraUTC();
+    //DateTime RetornarDataHoraUTC();
 
-        //DateTime RetornarDataHora();
-    }
+    //DateTime RetornarDataHora();
 }

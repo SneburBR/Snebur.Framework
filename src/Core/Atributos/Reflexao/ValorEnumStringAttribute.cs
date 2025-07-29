@@ -1,16 +1,13 @@
-﻿using System;
+﻿namespace Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio.Atributos
+[AttributeUsage(AttributeTargets.Field)]
+public class ValorEnumStringAttribute : BaseAtributoDominio
 {
-    [AttributeUsage(AttributeTargets.Field)]
-    public class ValorEnumStringAttribute : BaseAtributoDominio
-    {
-        public string Valor { get; }
+    public string Valor { get; }
 
-        public ValorEnumStringAttribute(string valor)
-        {
-            this.Valor = valor;
-        }
+    public ValorEnumStringAttribute(string valor)
+    {
+        this.Valor = valor;
     }
 }
 

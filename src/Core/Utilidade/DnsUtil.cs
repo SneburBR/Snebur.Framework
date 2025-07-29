@@ -1,192 +1,190 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-namespace Snebur.Utilidade
+namespace Snebur.Utilidade;
+
+public static class DnsUtil
 {
-    public static class DnsUtil
+    public static DnsRecord[]? GetDnsRecords(string domain, QueryType queryType)
     {
-        public static DnsRecord[]? GetDnsRecords(string domain, QueryType queryType)
+        var dnsRecords = new DNSClient(domain, queryType);
+        return dnsRecords.GetRecords();
+    }
+ 
+    private class DNSClient
+    {
+        private const string DNS_SERVER = "8.8.8.8";
+        private readonly QueryType queryType;
+        private readonly string Domain;
+        private int[]? _response;
+
+        public DNSClient(string domain, QueryType queryType)
         {
-            var dnsRecords = new DNSClient(domain, queryType);
-            return dnsRecords.GetRecords();
+            this.Domain = domain;
+            this.queryType = queryType;
         }
-     
-        private class DNSClient
+
+        public DnsRecord[]? GetRecords()
         {
-            private const string DNS_SERVER = "8.8.8.8";
-            private readonly QueryType queryType;
-            private readonly string Domain;
-            private int[]? _response;
 
-            public DNSClient(string domain, QueryType queryType)
+            using (UdpClient udpClient = new UdpClient(DNS_SERVER, 53))
             {
-                this.Domain = domain;
-                this.queryType = queryType;
+                byte[] request = this.CreateRequest();
+
+                udpClient.Send(request, request.Length);
+                IPEndPoint? endpoint = null;
+                byte[] responseBytes = udpClient.Receive(ref endpoint);
+                this._response = new int[responseBytes.Length];
+                for (int i = 0; i < this._response.Length; i++)
+                {
+                    this._response[i] = Convert.ToInt32(responseBytes[i]);
+                }
+            }
+            return this.ParseResponse();
+        }
+
+        private byte[] CreateRequest()
+        {
+            List<byte> requestList = new List<byte>();
+            requestList.AddRange(new byte[] { 88, 89, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0 });
+
+            string[] segments = this.Domain.Split('.');
+            foreach (string segment in segments)
+            {
+                requestList.Add(Convert.ToByte(segment.Length));
+                char[] chars = segment.ToCharArray();
+                foreach (char c in chars)
+                    requestList.Add(Convert.ToByte(Convert.ToInt32(c)));
             }
 
-            public DnsRecord[]? GetRecords()
+            requestList.AddRange(new byte[] { 0, 0, Convert.ToByte(this.queryType), 0, 1 });
+
+            byte[] request = new byte[requestList.Count];
+            for (int i = 0; i < requestList.Count; i++)
             {
+                request[i] = requestList[i];
+            }
 
-                using (UdpClient udpClient = new UdpClient(DNS_SERVER, 53))
+            return request;
+        }
+
+        private DnsRecord[]? ParseResponse()
+        {
+            if(this._response is null)
+            {
+                return null;
+            }
+
+            int status = this._response[3];
+            if (status != 128)
+            {
+                return null;
+            }
+
+            int nAnswers = this._response[7];
+            if (nAnswers == 0) return null;
+
+            int pos = this.Domain.Length + 18;
+            if (this.queryType == QueryType.MX)
+            {
+                var dnsRecords = new List<DnsRecord>();
+                while (nAnswers > 0)
                 {
-                    byte[] request = this.CreateRequest();
-
-                    udpClient.Send(request, request.Length);
-                    IPEndPoint? endpoint = null;
-                    byte[] responseBytes = udpClient.Receive(ref endpoint);
-                    this._response = new int[responseBytes.Length];
-                    for (int i = 0; i < this._response.Length; i++)
+                    int preference = this._response[pos + 13];
+                    pos += 14; //offset
+                    string record = this.ParseMXRecord(pos, out pos);
+                    if (!String.IsNullOrWhiteSpace(record))
                     {
-                        this._response[i] = Convert.ToInt32(responseBytes[i]);
+                        dnsRecords.Add(new DnsRecord() { Preference = preference, Record = record });
                     }
+                    nAnswers--;
                 }
-                return this.ParseResponse();
+                return dnsRecords.ToArray();
             }
 
-            private byte[] CreateRequest()
+            if (this.queryType == QueryType.A)
             {
-                List<byte> requestList = new List<byte>();
-                requestList.AddRange(new byte[] { 88, 89, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0 });
-
-                string[] segments = this.Domain.Split('.');
-                foreach (string segment in segments)
+                var dnsRecords = new List<DnsRecord>();
+                while (nAnswers > 0)
                 {
-                    requestList.Add(Convert.ToByte(segment.Length));
-                    char[] chars = segment.ToCharArray();
-                    foreach (char c in chars)
-                        requestList.Add(Convert.ToByte(Convert.ToInt32(c)));
+                    pos += 11; //offset
+                    string record = this.ParseARecord(ref pos);
+                    dnsRecords.Add(new DnsRecord() { Record = record });
+                    nAnswers--;
                 }
-
-                requestList.AddRange(new byte[] { 0, 0, Convert.ToByte(this.queryType), 0, 1 });
-
-                byte[] request = new byte[requestList.Count];
-                for (int i = 0; i < requestList.Count; i++)
-                {
-                    request[i] = requestList[i];
-                }
-
-                return request;
+                return dnsRecords.ToArray();
             }
 
-            private DnsRecord[]? ParseResponse()
+            throw new Exception("Query type not supported");
+
+        }
+
+        private string ParseARecord(ref int start)
+        {
+            Guard.NotNull(this._response);
+
+            var sb = new StringBuilder();
+            int length = this._response[start];
+            for (int i = start; i < start + length; i++)
             {
-                if(this._response is null)
-                {
-                    return null;
-                }
-
-                int status = this._response[3];
-                if (status != 128)
-                {
-                    return null;
-                }
-
-                int nAnswers = this._response[7];
-                if (nAnswers == 0) return null;
-
-                int pos = this.Domain.Length + 18;
-                if (this.queryType == QueryType.MX)
-                {
-                    var dnsRecords = new List<DnsRecord>();
-                    while (nAnswers > 0)
-                    {
-                        int preference = this._response[pos + 13];
-                        pos += 14; //offset
-                        string record = this.ParseMXRecord(pos, out pos);
-                        if (!String.IsNullOrWhiteSpace(record))
-                        {
-                            dnsRecords.Add(new DnsRecord() { Preference = preference, Record = record });
-                        }
-                        nAnswers--;
-                    }
-                    return dnsRecords.ToArray();
-                }
-
-                if (this.queryType == QueryType.A)
-                {
-                    var dnsRecords = new List<DnsRecord>();
-                    while (nAnswers > 0)
-                    {
-                        pos += 11; //offset
-                        string record = this.ParseARecord(ref pos);
-                        dnsRecords.Add(new DnsRecord() { Record = record });
-                        nAnswers--;
-                    }
-                    return dnsRecords.ToArray();
-                }
-
-                throw new Exception("Query type not supported");
-
+                if (sb.Length > 0) sb.Append(".");
+                sb.Append(this._response[i + 1]);
             }
+            start += length + 1;
+            return sb.ToString();
+        }
 
-            private string ParseARecord(ref int start)
+        private string ParseMXRecord(int start, out int pos)
+        {
+            Guard.NotNull(this._response);
+
+            StringBuilder sb = new StringBuilder();
+            int length = this._response[start];
+            while (length > 0)
             {
-                Guard.NotNull(this._response);
-
-                var sb = new StringBuilder();
-                int length = this._response[start];
-                for (int i = start; i < start + length; i++)
+                if (length != 192)
                 {
                     if (sb.Length > 0) sb.Append(".");
-                    sb.Append(this._response[i + 1]);
+                    for (int i = start; i < start + length; i++)
+                        sb.Append(Convert.ToChar(this._response[i + 1])); ;
+                    start += length + 1;
+                    length = this._response[start];
                 }
-                start += length + 1;
-                return sb.ToString();
-            }
-
-            private string ParseMXRecord(int start, out int pos)
-            {
-                Guard.NotNull(this._response);
-
-                StringBuilder sb = new StringBuilder();
-                int length = this._response[start];
-                while (length > 0)
+                if (length == 192)
                 {
-                    if (length != 192)
-                    {
-                        if (sb.Length > 0) sb.Append(".");
-                        for (int i = start; i < start + length; i++)
-                            sb.Append(Convert.ToChar(this._response[i + 1])); ;
-                        start += length + 1;
-                        length = this._response[start];
-                    }
-                    if (length == 192)
-                    {
-                        int newPos = this._response[start + 1];
-                        if (sb.Length > 0) sb.Append(".");
-                        sb.Append(this.ParseMXRecord(newPos, out newPos));
-                        start++;
-                        break;
-                    }
+                    int newPos = this._response[start + 1];
+                    if (sb.Length > 0) sb.Append(".");
+                    sb.Append(this.ParseMXRecord(newPos, out newPos));
+                    start++;
+                    break;
                 }
-                pos = start + 1;
-                return sb.ToString();
             }
-
-            public bool IsReusable { get { return false; } }
+            pos = start + 1;
+            return sb.ToString();
         }
 
-        public class DnsRecord
-        {
-            public int Preference { get; set; }
-            public string? Record { get; set; }
-        }
+        public bool IsReusable { get { return false; } }
     }
 
-    public enum QueryType : byte
+    public class DnsRecord
     {
-        A = 1,
-        MX = 15,
-        NS = 2,
-        CNAME = 5,
-        SOA = 6,
-        PTR = 12,
-        TXT = 16,
-        AAAA = 28,
-        SRV = 33,
-        ANY = 255
+        public int Preference { get; set; }
+        public string? Record { get; set; }
     }
+}
+
+public enum QueryType : byte
+{
+    A = 1,
+    MX = 15,
+    NS = 2,
+    CNAME = 5,
+    SOA = 6,
+    PTR = 12,
+    TXT = 16,
+    AAAA = 28,
+    SRV = 33,
+    ANY = 255
 }

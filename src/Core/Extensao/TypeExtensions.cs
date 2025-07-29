@@ -1,19 +1,16 @@
-﻿using System;
+﻿namespace Snebur.Extensao;
 
-namespace Snebur.Extensao
+public static class TypeExtensions
 {
-    public static class TypeExtensions
+    public static Type GetUnderlyingType(this Type type)
     {
-        public static Type GetUnderlyingType(this Type type)
+
+        if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
         {
-
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
-            {
-                return Nullable.GetUnderlyingType(type)
-                    ?? type;
-            }
-            return type;
-
+            return Nullable.GetUnderlyingType(type)
+                ?? type;
         }
+        return type;
+
     }
 }

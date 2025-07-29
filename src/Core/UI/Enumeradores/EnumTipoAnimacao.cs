@@ -1,9 +1,8 @@
 ﻿
-namespace Snebur.UI
+namespace Snebur.UI;
+
+public enum EnumTipoAnimacao
 {
-    public enum EnumTipoAnimacao
-    {
-        Nenhuma = 0,
-        Deslizante = 1,
-    }
+    Nenhuma = 0,
+    Deslizante = 1,
 }

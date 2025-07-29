@@ -1,8 +1,5 @@
-﻿using System;
+﻿namespace Snebur.Tarefa;
 
-namespace Snebur.Tarefa
+public class ErroTarefaCancelada : Erro
 {
-    public class ErroTarefaCancelada : Erro
-    {
-    }
 }

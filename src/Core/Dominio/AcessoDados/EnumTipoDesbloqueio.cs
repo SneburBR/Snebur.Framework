@@ -1,8 +1,7 @@
-﻿namespace Snebur.Dominio
+﻿namespace Snebur.Dominio;
+
+public enum EnumTipoDesbloqueio
 {
-    public enum EnumTipoDesbloqueio
-    {
-        Tudo = 1,
-        UmPorVez = 2,
-    }
+    Tudo = 1,
+    UmPorVez = 2,
 }

@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Snebur.Tarefa
+namespace Snebur.Tarefa;
+
+public class ErroGerenciadorTarefa<TTarefa> : Erro where TTarefa : ITarefa
 {
-    public class ErroGerenciadorTarefa<TTarefa> : Erro where TTarefa : ITarefa
-    {
-        public GerenciadorTarefa<TTarefa>? GerenciadorTarefas { get; set; }
-        public List<TTarefa> Tarefas { get; }
+    public GerenciadorTarefa<TTarefa>? GerenciadorTarefas { get; set; }
+    public List<TTarefa> Tarefas { get; }
 
-        public ErroGerenciadorTarefa(List<TTarefa> tarefas)
-        {
-            this.Tarefas = tarefas;
-        }
+    public ErroGerenciadorTarefa(List<TTarefa> tarefas)
+    {
+        this.Tarefas = tarefas;
     }
 }

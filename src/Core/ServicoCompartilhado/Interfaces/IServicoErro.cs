@@ -1,16 +1,13 @@
-﻿using System;
+﻿namespace Snebur.Servicos;
 
-namespace Snebur.Servicos
+public interface IServicoLogErro
 {
-    public interface IServicoLogErro
-    {
-        Guid NotificarErro(string nomeTipoErro,
-                           string mensagem,
-                           string statkTrace,
-                           string descricaoCompleta,
-                           EnumNivelErro nivelErro,
-                           BaseInformacaoAdicionalServicoCompartilhado? informacaoAdicional);
+    Guid NotificarErro(string nomeTipoErro,
+                       string mensagem,
+                       string statkTrace,
+                       string descricaoCompleta,
+                       EnumNivelErro nivelErro,
+                       BaseInformacaoAdicionalServicoCompartilhado? informacaoAdicional);
 
-        bool CapturarPrimeiroErro();
-    }
+    bool CapturarPrimeiroErro();
 }

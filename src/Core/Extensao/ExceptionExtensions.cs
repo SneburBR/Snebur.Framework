@@ -1,19 +1,18 @@
 ﻿using System.Text;
 
-namespace System
+namespace System;
+
+public static class ExceptionExtensions
 {
-    public static class ExceptionExtensions
+    public static string GetAllExceptionMessages(this Exception exception)
     {
-        public static string GetAllExceptionMessages(this Exception exception)
+        var sb = new StringBuilder();
+        Exception? currentException = exception;
+        while (currentException != null)
         {
-            var sb = new StringBuilder();
-            Exception? currentException = exception;
-            while (currentException != null)
-            {
-                sb.AppendLine(currentException.Message);
-                currentException = currentException.InnerException;
-            }
-            return sb.ToString().TrimEnd();
+            sb.AppendLine(currentException.Message);
+            currentException = currentException.InnerException;
         }
+        return sb.ToString().TrimEnd();
     }
 }

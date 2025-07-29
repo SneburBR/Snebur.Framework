@@ -1,16 +1,13 @@
-﻿using System;
+﻿namespace Snebur.Tarefa;
 
-namespace Snebur.Tarefa
+public class ProgressoAlteradoEventArgs : EventArgs
 {
-    public class ProgressoAlteradoEventArgs : EventArgs
-    {
-        public BaseTarefa Tarefa { get; set; }
-        public double Progresso { get; set; }
+    public BaseTarefa Tarefa { get; set; }
+    public double Progresso { get; set; }
 
-        public ProgressoAlteradoEventArgs(BaseTarefa tarefa, double progresso)
-        {
-            this.Tarefa = tarefa;
-            this.Progresso = progresso;
-        }
+    public ProgressoAlteradoEventArgs(BaseTarefa tarefa, double progresso)
+    {
+        this.Tarefa = tarefa;
+        this.Progresso = progresso;
     }
 }

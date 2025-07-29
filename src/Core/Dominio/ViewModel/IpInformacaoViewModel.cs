@@ -1,3 +1,1 @@
-﻿namespace Snebur.Dominio
-{
-}
+﻿namespace Snebur.Dominio;

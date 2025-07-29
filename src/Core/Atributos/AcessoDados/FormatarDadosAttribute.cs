@@ -1,22 +1,19 @@
-﻿using System;
+﻿namespace Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio.Atributos
+public class FormatarDadosAttribute : Attribute
 {
-    public class FormatarDadosAttribute : Attribute
-    {
-        public EnumFormatacaoDados FormatadoDados { get; }
+    public EnumFormatacaoDados FormatadoDados { get; }
 
-        public FormatarDadosAttribute(EnumFormatacaoDados formatacao)
-        {
-            this.FormatadoDados = formatacao;
-        }
-    }
-
-    public enum EnumFormatacaoDados
+    public FormatarDadosAttribute(EnumFormatacaoDados formatacao)
     {
-        SomenteNumeros,
-        SomenteLetras,
-        LetrasNumeros,
-        Personalizado
+        this.FormatadoDados = formatacao;
     }
+}
+
+public enum EnumFormatacaoDados
+{
+    SomenteNumeros,
+    SomenteLetras,
+    LetrasNumeros,
+    Personalizado
 }

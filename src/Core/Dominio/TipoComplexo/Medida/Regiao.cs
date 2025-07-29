@@ -1,88 +1,87 @@
 ﻿using Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio
+namespace Snebur.Dominio;
+
+public partial class Regiao : BaseMedidaTipoComplexo, IRegiao
 {
-    public partial class Regiao : BaseMedidaTipoComplexo, IRegiao
+    private double _x;
+    private double _y;
+    private double _largura;
+    private double _altura;
+
+    public double X { get => this._x; set => this.NotificarValorPropriedadeAlterada(this._x, this._x = value); }
+
+    public double Y { get => this._y; set => this.NotificarValorPropriedadeAlterada(this._y, this._y = value); }
+
+    public double Largura { get => this._largura; set => this.NotificarValorPropriedadeAlterada(this._largura, this._largura = value); }
+
+    public double Altura { get => this._altura; set => this.NotificarValorPropriedadeAlterada(this._altura, this._altura = value); }
+
+    public Regiao()
     {
-        private double _x;
-        private double _y;
-        private double _largura;
-        private double _altura;
 
-        public double X { get => this._x; set => this.NotificarValorPropriedadeAlterada(this._x, this._x = value); }
+    }
 
-        public double Y { get => this._y; set => this.NotificarValorPropriedadeAlterada(this._y, this._y = value); }
+    [IgnorarConstrutorTS]
+    public Regiao(double x, double y, double largura, double altura)
+    {
+        this.X = x;
+        this.Y = y;
+        this.Largura = largura;
+        this.Altura = altura;
+    }
 
-        public double Largura { get => this._largura; set => this.NotificarValorPropriedadeAlterada(this._largura, this._largura = value); }
+    public Regiao(Posicao posicao, Dimensao dimensao)
+    {
+        this.Posicao = posicao;
+        this.Dimensao = dimensao;
+    }
+    #region Operadores
 
-        public double Altura { get => this._altura; set => this.NotificarValorPropriedadeAlterada(this._altura, this._altura = value); }
-
-        public Regiao()
+    public static bool operator ==(Regiao? regiao1, Regiao? regiao2)
+    {
+        if (regiao1 is null && regiao2 is null)
         {
-
+            return true;
         }
 
-        [IgnorarConstrutorTS]
-        public Regiao(double x, double y, double largura, double altura)
+        if (regiao1 is null || regiao2 is null)
         {
-            this.X = x;
-            this.Y = y;
-            this.Largura = largura;
-            this.Altura = altura;
-        }
-
-        public Regiao(Posicao posicao, Dimensao dimensao)
-        {
-            this.Posicao = posicao;
-            this.Dimensao = dimensao;
-        }
-        #region Operadores
-
-        public static bool operator ==(Regiao? regiao1, Regiao? regiao2)
-        {
-            if (regiao1 is null && regiao2 is null)
-            {
-                return true;
-            }
-
-            if (regiao1 is null || regiao2 is null)
-            {
-                return false;
-            }
-            return regiao1.Equals(regiao2);
-        }
-
-        public static bool operator !=(Regiao? regiao1, Regiao? regiao2)
-        {
-            return !(regiao1 == regiao2);
-        }
-
-        public override bool Equals(object? obj)
-        {
-            if (obj != null && obj is Regiao regiao)
-            {
-                return this.X == regiao.X &&
-                       this.Y == regiao.Y &&
-                       this.Largura == regiao.Largura &&
-                       this.Altura == regiao.Altura;
-            }
             return false;
         }
+        return regiao1.Equals(regiao2);
+    }
 
-        public override int GetHashCode()
-        {
-            return this.ToString().GetHashCode();
-        }
+    public static bool operator !=(Regiao? regiao1, Regiao? regiao2)
+    {
+        return !(regiao1 == regiao2);
+    }
 
-        public override string ToString()
+    public override bool Equals(object? obj)
+    {
+        if (obj != null && obj is Regiao regiao)
         {
-            return $"{this.X}-{this.Y}-{this.Largura}-{this.Altura}";
+            return this.X == regiao.X &&
+                   this.Y == regiao.Y &&
+                   this.Largura == regiao.Largura &&
+                   this.Altura == regiao.Altura;
         }
-        #endregion
+        return false;
+    }
 
-        protected internal override BaseTipoComplexo BaseClone()
-        {
-            return new Regiao(this.X, this.Y, this.Largura, this.Altura);
-        }
+    public override int GetHashCode()
+    {
+        return this.ToString().GetHashCode();
+    }
+
+    public override string ToString()
+    {
+        return $"{this.X}-{this.Y}-{this.Largura}-{this.Altura}";
+    }
+    #endregion
+
+    protected internal override BaseTipoComplexo BaseClone()
+    {
+        return new Regiao(this.X, this.Y, this.Largura, this.Altura);
     }
 }

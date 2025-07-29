@@ -1,13 +1,10 @@
-﻿using System;
+﻿namespace Snebur.Dominio;
 
-namespace Snebur.Dominio
+public interface IArquivoDeletada
 {
-    public interface IArquivoDeletada
-    {
-        long Imagem_Id { get; set; }
+    long Imagem_Id { get; set; }
 
-        DateTime DataHoraCadastro { get; set; }
+    DateTime DataHoraCadastro { get; set; }
 
-        DateTime DataHoraArquivoDeletado { get; set; }
-    }
+    DateTime DataHoraArquivoDeletado { get; set; }
 }

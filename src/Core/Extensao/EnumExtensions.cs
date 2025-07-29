@@ -1,17 +1,16 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 
-namespace System
+namespace System;
+
+public static class EnumExtensions
 {
-    public static class EnumExtensions
+    public static string GetDescription(this Enum value)
     {
-        public static string GetDescription(this Enum value)
-        {
-            var field = value.GetType().GetField(value.ToString());
-            if (field == null) 
-                return value.ToString();
-            var attribute = field.GetCustomAttribute<DescriptionAttribute>();
-            return attribute != null ? attribute.Description : value.ToString();
-        }
+        var field = value.GetType().GetField(value.ToString());
+        if (field == null) 
+            return value.ToString();
+        var attribute = field.GetCustomAttribute<DescriptionAttribute>();
+        return attribute != null ? attribute.Description : value.ToString();
     }
 }

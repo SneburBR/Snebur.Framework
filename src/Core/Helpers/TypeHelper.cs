@@ -1,33 +1,30 @@
-﻿using System;
+﻿namespace Snebur.Helpers;
 
-namespace Snebur.Helpers
+public static class TypeHelper
 {
-    public static class TypeHelper
+    public static T GetUnderlyingDefaultValue<T>()
     {
-        public static T GetUnderlyingDefaultValue<T>()
+        var type = typeof(T);
+        var underlyingType = Nullable.GetUnderlyingType(type);
+        if (underlyingType is not null)
         {
-            var type = typeof(T);
-            var underlyingType = Nullable.GetUnderlyingType(type);
-            if (underlyingType is not null)
-            {
-                return (T)Activator.CreateInstance(underlyingType)!;
-            }
-            return default!;
+            return (T)Activator.CreateInstance(underlyingType)!;
+        }
+        return default!;
+    }
+
+    public static object? GetDefaultValue(Type tipo)
+    {
+        if (!tipo.IsValueType)
+        {
+            return null;
         }
 
-        public static object? GetDefaultValue(Type tipo)
+        if (tipo.IsGenericType &&
+            tipo.GetGenericTypeDefinition() == typeof(Nullable<>))
         {
-            if (!tipo.IsValueType)
-            {
-                return null;
-            }
-
-            if (tipo.IsGenericType &&
-                tipo.GetGenericTypeDefinition() == typeof(Nullable<>))
-            {
-                return null;
-            }
-            return Activator.CreateInstance(tipo);
+            return null;
         }
+        return Activator.CreateInstance(tipo);
     }
 }

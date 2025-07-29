@@ -1,78 +1,77 @@
-﻿namespace System
+﻿namespace System;
+
+public class ByteSpan
 {
-    public class ByteSpan
+    public const long TOTAL_BYTES_KB = 1024;
+    public const long TOTAL_BYTES_MB = TOTAL_BYTES_KB * 1024;
+    public const long TOTAL_BYTES_GB = TOTAL_BYTES_MB * 1024;
+    public const long TOTAL_BYTES_TB = TOTAL_BYTES_GB * 1024;
+
+    public long TotalBytes { get; private set; }
+
+    public double TotalMegaBytes
     {
-        public const long TOTAL_BYTES_KB = 1024;
-        public const long TOTAL_BYTES_MB = TOTAL_BYTES_KB * 1024;
-        public const long TOTAL_BYTES_GB = TOTAL_BYTES_MB * 1024;
-        public const long TOTAL_BYTES_TB = TOTAL_BYTES_GB * 1024;
-
-        public long TotalBytes { get; private set; }
-
-        public double TotalMegaBytes
+        get
         {
-            get
-            {
-                return this.TotalBytes / (double)TOTAL_BYTES_MB;
-            }
+            return this.TotalBytes / (double)TOTAL_BYTES_MB;
         }
+    }
 
-        public double TotalKilobytes
+    public double TotalKilobytes
+    {
+        get
         {
-            get
-            {
-                return this.TotalBytes / (double)TOTAL_BYTES_KB;
-            }
+            return this.TotalBytes / (double)TOTAL_BYTES_KB;
         }
+    }
 
-        public double TotalGibaBytes
+    public double TotalGibaBytes
+    {
+        get
         {
-            get
-            {
-                return this.TotalBytes / (double)TOTAL_BYTES_GB;
-            }
+            return this.TotalBytes / (double)TOTAL_BYTES_GB;
         }
+    }
 
-        public double TotalTeraBytes
+    public double TotalTeraBytes
+    {
+        get
         {
-            get
-            {
-                return this.TotalBytes / (double)TOTAL_BYTES_TB;
-            }
+            return this.TotalBytes / (double)TOTAL_BYTES_TB;
         }
+    }
 
-        public ByteSpan(long totalBytes)
-        {
-            this.TotalBytes = totalBytes;
-        }
+    public ByteSpan(long totalBytes)
+    {
+        this.TotalBytes = totalBytes;
+    }
 
-        public static ByteSpan FromBytes(long totalBytes)
-        {
-            return new ByteSpan(totalBytes);
-        }
+    public static ByteSpan FromBytes(long totalBytes)
+    {
+        return new ByteSpan(totalBytes);
+    }
 
-        public static ByteSpan FromKiloBytes(double totalKiloBytes)
-        {
-            long totalBytes = Convert.ToInt64(totalKiloBytes * TOTAL_BYTES_KB);
-            return new ByteSpan(totalBytes);
-        }
+    public static ByteSpan FromKiloBytes(double totalKiloBytes)
+    {
+        long totalBytes = Convert.ToInt64(totalKiloBytes * TOTAL_BYTES_KB);
+        return new ByteSpan(totalBytes);
+    }
 
-        public static ByteSpan FromMegaBytes(double totalMegaBytes)
-        {
-            long totalBytes = Convert.ToInt64(totalMegaBytes * TOTAL_BYTES_MB);
-            return new ByteSpan(totalBytes);
-        }
+    public static ByteSpan FromMegaBytes(double totalMegaBytes)
+    {
+        long totalBytes = Convert.ToInt64(totalMegaBytes * TOTAL_BYTES_MB);
+        return new ByteSpan(totalBytes);
+    }
 
-        public static ByteSpan FromGigaBytes(double totalGigaBytes)
-        {
-            long totalBytes = Convert.ToInt64(totalGigaBytes * TOTAL_BYTES_GB);
-            return new ByteSpan(totalBytes);
-        }
+    public static ByteSpan FromGigaBytes(double totalGigaBytes)
+    {
+        long totalBytes = Convert.ToInt64(totalGigaBytes * TOTAL_BYTES_GB);
+        return new ByteSpan(totalBytes);
+    }
 
-        public static ByteSpan FromTeraBytes(double totalTeraBytes)
-        {
-            long totalBytes = Convert.ToInt64(totalTeraBytes * TOTAL_BYTES_TB);
-            return new ByteSpan(totalBytes);
-        }
+    public static ByteSpan FromTeraBytes(double totalTeraBytes)
+    {
+        long totalBytes = Convert.ToInt64(totalTeraBytes * TOTAL_BYTES_TB);
+        return new ByteSpan(totalBytes);
     }
 }

@@ -1,15 +1,14 @@
 ﻿using Snebur.Dominio.Atributos;
 
-namespace Snebur.Seguranca
+namespace Snebur.Seguranca;
+
+public class CredencialServico : Credencial
 {
-    public class CredencialServico : Credencial
+    public CredencialServico()
     {
-        public CredencialServico()
-        {
-        }
-        [IgnorarConstrutorTS]
-        public CredencialServico(string identificadorUsuario, string senha) : base(identificadorUsuario, senha)
-        {
-        }
+    }
+    [IgnorarConstrutorTS]
+    public CredencialServico(string identificadorUsuario, string senha) : base(identificadorUsuario, senha)
+    {
     }
 }

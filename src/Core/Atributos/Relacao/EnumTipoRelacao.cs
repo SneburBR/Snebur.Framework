@@ -1,20 +1,19 @@
-﻿namespace Snebur.Dominio.Atributos
+﻿namespace Snebur.Dominio.Atributos;
+
+[IgnorarGlobalizacao]
+[IgnorarEnumTS]
+[IgnorarTSReflexao]
+public enum EnumTipoRelacao
 {
-    [IgnorarGlobalizacao]
-    [IgnorarEnumTS]
-    [IgnorarTSReflexao]
-    public enum EnumTipoRelacao
-    {
-        RelacaoPai = 1,
+    RelacaoPai = 1,
 
-        RelacaoUmUm = 2,
+    RelacaoUmUm = 2,
 
-        RelacaoUmUmReversa = 3,
+    RelacaoUmUmReversa = 3,
 
-        RelacaoFilhos = 4,
+    RelacaoFilhos = 4,
 
-        RelacaoNn = 5,
+    RelacaoNn = 5,
 
-        RelacaoNnEspecializada = 6
-    }
+    RelacaoNnEspecializada = 6
 }

@@ -1,11 +1,8 @@
-﻿using System;
+﻿namespace Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio.Atributos
+[IgnorarAtributoTS]
+[AttributeUsage(AttributeTargets.Property)]
+public class AutorizarAlteracaoPropriedadeAttribute : Attribute
 {
-    [IgnorarAtributoTS]
-    [AttributeUsage(AttributeTargets.Property)]
-    public class AutorizarAlteracaoPropriedadeAttribute : Attribute
-    {
 
-    }
 }

@@ -1,6 +1,5 @@
-﻿namespace Snebur.Dominio
+﻿namespace Snebur.Dominio;
+
+public interface IVideo : IMedia
 {
-    public interface IVideo : IMedia
-    {
-    }
 }

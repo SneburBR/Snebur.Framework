@@ -1,92 +1,90 @@
 ﻿using Snebur.Utilidade;
-using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Snebur.Comparer
+namespace Snebur.Comparer;
+
+public class CompararPropriedade : IEqualityComparer<PropertyInfo>
 {
-    public class CompararPropriedade : IEqualityComparer<PropertyInfo>
+    private bool ComprarNome { get; set; }
+    private bool CompararTipoProprieade { get; set; }
+    private bool Igual { get; set; }
+
+    public CompararPropriedade()
     {
-        private bool ComprarNome { get; set; }
-        private bool CompararTipoProprieade { get; set; }
-        private bool Igual { get; set; }
+        this.Igual = true;
+    }
 
-        public CompararPropriedade()
+    public CompararPropriedade(EnumCompararPropriedade comparar)
+    {
+        var valores = EnumUtil.RetornarFlags<EnumCompararPropriedade>(comparar);
+        foreach (var valor in valores)
         {
-            this.Igual = true;
-        }
-
-        public CompararPropriedade(EnumCompararPropriedade comparar)
-        {
-            var valores = EnumUtil.RetornarFlags<EnumCompararPropriedade>(comparar);
-            foreach (var valor in valores)
+            switch (valor)
             {
-                switch (valor)
-                {
-                    case EnumCompararPropriedade.Igual:
+                case EnumCompararPropriedade.Igual:
 
-                        this.Igual = true;
-                        break;
+                    this.Igual = true;
+                    break;
 
-                    case EnumCompararPropriedade.NomePropriedade:
+                case EnumCompararPropriedade.NomePropriedade:
 
-                        this.ComprarNome = true;
-                        break;
-                    case EnumCompararPropriedade.TipoPropriedade:
+                    this.ComprarNome = true;
+                    break;
+                case EnumCompararPropriedade.TipoPropriedade:
 
-                        this.CompararTipoProprieade = true;
-                        break;
+                    this.CompararTipoProprieade = true;
+                    break;
 
-                    default:
-                        break;
-                }
+                default:
+                    break;
             }
         }
+    }
 
-        public bool Equals(PropertyInfo? x, PropertyInfo? y)
+    public bool Equals(PropertyInfo? x, PropertyInfo? y)
+    {
+        if (x is null && y is null)
         {
-            if (x is null && y is null)
-            {
-                return true;
-            }
+            return true;
+        }
 
-            if (x is null || y is null)
-            {
-                return false;
-            }
-             
-            if (this.Igual)
-            {
-                return Object.Equals(x, y);
-            }
+        if (x is null || y is null)
+        {
+            return false;
+        }
+         
+        if (this.Igual)
+        {
+            return Object.Equals(x, y);
+        }
 
-            bool resultado = false;
-            if (this.ComprarNome)
-            {
-                resultado = x.Name == y.Name;
-            }
-            if (!resultado)
-            {
-                return resultado;
-            }
-            if (this.CompararTipoProprieade)
-            {
-                resultado = x.PropertyType == y.PropertyType;
-            }
+        bool resultado = false;
+        if (this.ComprarNome)
+        {
+            resultado = x.Name == y.Name;
+        }
+        if (!resultado)
+        {
             return resultado;
         }
-
-        public int GetHashCode(PropertyInfo obj)
+        if (this.CompararTipoProprieade)
         {
-            var hash = String.Concat(obj.Name, obj.PropertyType.Name);
-            return hash.GetHashCode();
+            resultado = x.PropertyType == y.PropertyType;
         }
+        return resultado;
     }
 
-    public enum EnumCompararPropriedade
+    public int GetHashCode(PropertyInfo obj)
     {
-        Igual = 1,
-        NomePropriedade = 2,
-        TipoPropriedade = 4,
+        var hash = String.Concat(obj.Name, obj.PropertyType.Name);
+        return hash.GetHashCode();
     }
+}
+
+public enum EnumCompararPropriedade
+{
+    Igual = 1,
+    NomePropriedade = 2,
+    TipoPropriedade = 4,
 }

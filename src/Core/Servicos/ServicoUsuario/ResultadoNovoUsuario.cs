@@ -1,17 +1,16 @@
-﻿namespace Snebur.Comunicacao
-{
-    //public abstract class ResultadoNovoUsuario<TUsuario> : BaseComunicao
-    //{
+﻿namespace Snebur.Comunicacao;
 
-    //    #region Campos Privados
+//public abstract class ResultadoNovoUsuario<TUsuario> : BaseComunicao
+//{
 
-    //    private bool _sucesso;
+//    #region Campos Privados
 
-    //    #endregion
+//    private bool _sucesso;
 
-    //    public IUsuario Usuario { get; set; }
+//    #endregion
 
-    //    public bool Sucesso { get => this.RetornarValorPropriedade(this._sucesso); set => this.NotificarValorPropriedadeAlterada(this._sucesso, this._sucesso = value); }
+//    public IUsuario Usuario { get; set; }
 
-    //}
-}
+//    public bool Sucesso { get => this.RetornarValorPropriedade(this._sucesso); set => this.NotificarValorPropriedadeAlterada(this._sucesso, this._sucesso = value); }
+
+//}

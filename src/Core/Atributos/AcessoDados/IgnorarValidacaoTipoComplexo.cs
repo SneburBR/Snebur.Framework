@@ -1,6 +1,5 @@
-﻿namespace Snebur.Dominio.Atributos
+﻿namespace Snebur.Dominio.Atributos;
+
+public class IgnorarValidacaoTipoComplexo : BaseAtributoDominio
 {
-    public class IgnorarValidacaoTipoComplexo : BaseAtributoDominio
-    {
-    }
 }

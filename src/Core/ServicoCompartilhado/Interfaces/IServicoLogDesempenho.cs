@@ -1,12 +1,9 @@
-﻿using System;
+﻿namespace Snebur.Servicos;
 
-namespace Snebur.Servicos
+public interface IServicoLogDesempenho
 {
-    public interface IServicoLogDesempenho
-    {
-        Guid NotificarLogDesempenho(string mensagem,
-                                    string? stackTrace,
-                                    EnumTipoLogDesempenho tipoLogDesempenho,
-                                    BaseInformacaoAdicionalServicoCompartilhado? informacaoAdicional);
-    }
+    Guid NotificarLogDesempenho(string mensagem,
+                                string? stackTrace,
+                                EnumTipoLogDesempenho tipoLogDesempenho,
+                                BaseInformacaoAdicionalServicoCompartilhado? informacaoAdicional);
 }

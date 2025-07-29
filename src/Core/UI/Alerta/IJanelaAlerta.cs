@@ -1,11 +1,9 @@
 ﻿using Snebur.Dominio.Atributos;
-using System;
 
-namespace Snebur.UI
+namespace Snebur.UI;
+
+[IgnorarInterfaceTS]
+public interface IJanelaAlerta : IDisposable
 {
-    [IgnorarInterfaceTS]
-    public interface IJanelaAlerta : IDisposable
-    {
-        void Fechar();
-    }
+    void Fechar();
 }

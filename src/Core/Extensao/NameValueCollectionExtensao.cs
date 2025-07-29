@@ -1,17 +1,16 @@
 ﻿using System.Collections.Specialized;
 
-namespace System
+namespace System;
+
+public static class NameValueCollectionExtensao
 {
-    public static class NameValueCollectionExtensao
+    public static string? GetValue(this NameValueCollection value,
+                                  string? chave)
     {
-        public static string? GetValue(this NameValueCollection value,
-                                      string? chave)
+        if (value is null)
         {
-            if (value is null)
-            {
-                return null;
-            }
-            return value[chave];
+            return null;
         }
+        return value[chave];
     }
 }

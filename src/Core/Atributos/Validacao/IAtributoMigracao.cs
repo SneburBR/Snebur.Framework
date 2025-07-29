@@ -1,8 +1,7 @@
-﻿namespace Snebur.Dominio.Atributos
+﻿namespace Snebur.Dominio.Atributos;
+
+[IgnorarInterfaceTS]
+public interface IAtributoMigracao
 {
-    [IgnorarInterfaceTS]
-    public interface IAtributoMigracao
-    {
-        bool IsIgnorarMigracao { get; }
-    }
+    bool IsIgnorarMigracao { get; }
 }

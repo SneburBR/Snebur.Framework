@@ -1,9 +1,8 @@
-﻿namespace Snebur.UI
+﻿namespace Snebur.UI;
+
+public enum EnumOpcapBindCssClasse
 {
-    public enum EnumOpcapBindCssClasse
-    {
-        Adicionar = 1,
-        Substituir = 2,
-        Alterar = 3,
-    }
+    Adicionar = 1,
+    Substituir = 2,
+    Alterar = 3,
 }

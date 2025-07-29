@@ -1,10 +1,9 @@
 ﻿using Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio
+namespace Snebur.Dominio;
+
+public interface IAtivo : IEntidade
 {
-    public interface IAtivo : IEntidade
-    {
-        [ValidacaoRequerido]
-        bool IsAtivo { get; set; }
-    }
+    [ValidacaoRequerido]
+    bool IsAtivo { get; set; }
 }

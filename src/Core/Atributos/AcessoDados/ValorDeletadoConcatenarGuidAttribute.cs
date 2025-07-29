@@ -1,14 +1,11 @@
-﻿using System;
+﻿namespace Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio.Atributos
+[IgnorarAtributoTS]
+[IgnorarTSReflexao]
+public class ValorDeletadoConcatenarGuidAttribute : Attribute
 {
-    [IgnorarAtributoTS]
-    [IgnorarTSReflexao]
-    public class ValorDeletadoConcatenarGuidAttribute : Attribute
-    {
-    }
-    //public class ValorDeletadoAttribute : Attribute
-    //{
-
-    //}
 }
+//public class ValorDeletadoAttribute : Attribute
+//{
+
+//}

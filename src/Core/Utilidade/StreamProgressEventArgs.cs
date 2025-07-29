@@ -1,28 +1,25 @@
-﻿using System;
+﻿namespace Snebur.Utilidade;
 
-namespace Snebur.Utilidade
+public class StreamProgressEventArgs : EventArgs
 {
-    public class StreamProgressEventArgs : EventArgs
+    public long TotalBytesRecebitos { get; set; }
+    public long TotalBytes { get; set; }
+
+    public double Progresso
     {
-        public long TotalBytesRecebitos { get; set; }
-        public long TotalBytes { get; set; }
-
-        public double Progresso
+        get
         {
-            get
+            if (this.TotalBytes == 0)
             {
-                if (this.TotalBytes == 0)
-                {
-                    return 0;
-                }
-                return (double)this.TotalBytesRecebitos / this.TotalBytes;
+                return 0;
             }
+            return (double)this.TotalBytesRecebitos / this.TotalBytes;
         }
+    }
 
-        public StreamProgressEventArgs(long totalBytesRecebitos, long totalBytes)
-        {
-            this.TotalBytesRecebitos = totalBytesRecebitos;
-            this.TotalBytes = totalBytes;
-        }
+    public StreamProgressEventArgs(long totalBytesRecebitos, long totalBytes)
+    {
+        this.TotalBytesRecebitos = totalBytesRecebitos;
+        this.TotalBytes = totalBytes;
     }
 }

@@ -1,9 +1,8 @@
-﻿namespace Snebur.UI
+﻿namespace Snebur.UI;
+
+public enum EnumVisibilidade
 {
-    public enum EnumVisibilidade
-    {
-        Visivel = 100,
-        Invisivel = 200,
-        Oculto = 300
-    }
+    Visivel = 100,
+    Invisivel = 200,
+    Oculto = 300
 }

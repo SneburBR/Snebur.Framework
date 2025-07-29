@@ -1,7 +1,6 @@
-﻿namespace Snebur.Dominio
+﻿namespace Snebur.Dominio;
+
+public interface ICongelado : IEntidade
 {
-    public interface ICongelado : IEntidade
-    {
-        bool IsCongelado { get; set; }
-    }
+    bool IsCongelado { get; set; }
 }

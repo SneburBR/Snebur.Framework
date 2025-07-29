@@ -1,11 +1,9 @@
 ﻿using Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio
-{
+namespace Snebur.Dominio;
 
-    public interface INormalizarIdentificadorProprietario
-    {
-        [IgnorarMetodoTS]
-        string NormalizarIdentificadorProprietario(string identificadorProprietario);
-    }
+public interface INormalizarIdentificadorProprietario
+{
+    [IgnorarMetodoTS]
+    string NormalizarIdentificadorProprietario(string identificadorProprietario);
 }

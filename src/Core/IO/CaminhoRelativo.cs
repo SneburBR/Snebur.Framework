@@ -1,10 +1,9 @@
 ﻿using System.IO;
 
-namespace Snebur.IO
+namespace Snebur.IO;
+
+internal class CaminhoRelativo
 {
-    internal class CaminhoRelativo
-    {
-        private FileSystemInfo? CaminhoCompleto { get; }
-        private FileSystemInfo? CaminhoBase { get; }
-    }
+    private FileSystemInfo? CaminhoCompleto { get; }
+    private FileSystemInfo? CaminhoBase { get; }
 }

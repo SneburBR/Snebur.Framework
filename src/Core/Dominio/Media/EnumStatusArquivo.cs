@@ -1,17 +1,16 @@
-﻿namespace Snebur.Dominio
+﻿namespace Snebur.Dominio;
+
+public enum EnumStatusArquivo
 {
-    public enum EnumStatusArquivo
-    {
-        Novo = 1,
+    Novo = 1,
 
-        Enviando = 2,
+    Enviando = 2,
 
-        EnvioConcluido = 3,
+    EnvioConcluido = 3,
 
-        ArquivoDeletado = 4,
+    ArquivoDeletado = 4,
 
-        Pendente = 5,
+    Pendente = 5,
 
-        ChecksumInvalido = 6,
-    }
+    ChecksumInvalido = 6,
 }

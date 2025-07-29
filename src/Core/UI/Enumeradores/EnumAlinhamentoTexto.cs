@@ -1,10 +1,9 @@
-﻿namespace Snebur.UI
+﻿namespace Snebur.UI;
+
+public enum EnumAlinhamentoTexto
 {
-    public enum EnumAlinhamentoTexto
-    {
-        Esquerda,
-        Centro,
-        Direita,
-        Justificado
-    }
+    Esquerda,
+    Centro,
+    Direita,
+    Justificado
 }

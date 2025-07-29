@@ -1,10 +1,9 @@
-﻿namespace Snebur.Imagens
+﻿namespace Snebur.Imagens;
+
+public enum EnumTipoSobrePosicao
 {
-    public enum EnumTipoSobrePosicao
-    {
-        Nenhum = 1,
-        Solida = 2,
-        GradienteLinear = 3,
-        GradienteRadial = 4
-    }
+    Nenhum = 1,
+    Solida = 2,
+    GradienteLinear = 3,
+    GradienteRadial = 4
 }

@@ -1,18 +1,17 @@
-﻿namespace Snebur.Dominio.Atributos
+﻿namespace Snebur.Dominio.Atributos;
+
+[IgnorarTSReflexao]
+public enum EnumOperadorComparacao
 {
-    [IgnorarTSReflexao]
-    public enum EnumOperadorComparacao
-    {
-        Igual = 1,
+    Igual = 1,
 
-        Diferente = 2,
+    Diferente = 2,
 
-        MaiorQue = 3,
+    MaiorQue = 3,
 
-        MenorQue = 4,
+    MenorQue = 4,
 
-        MaiorIgualA = 5,
+    MaiorIgualA = 5,
 
-        MenorIgualA = 6
-    }
+    MenorIgualA = 6
 }

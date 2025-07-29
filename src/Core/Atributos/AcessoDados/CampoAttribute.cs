@@ -1,34 +1,32 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Snebur.Dominio.Atributos
+namespace Snebur.Dominio.Atributos;
+
+[IgnorarAtributoTS]
+[AttributeUsage(AttributeTargets.Property)]
+public class CampoAttribute : ColumnAttribute
 {
-    [IgnorarAtributoTS]
-    [AttributeUsage(AttributeTargets.Property)]
-    public class CampoAttribute : ColumnAttribute
+
+    public string? NomeCampo { get; set; }
+
+    //public CampoAttribute() : base()
+    //{
+    //}
+
+    public CampoAttribute(string nomeCampo) : base(nomeCampo)
     {
-
-        public string? NomeCampo { get; set; }
-
-        //public CampoAttribute() : base()
-        //{
-        //}
-
-        public CampoAttribute(string nomeCampo) : base(nomeCampo)
-        {
-            this.NomeCampo = nomeCampo;
-        }
+        this.NomeCampo = nomeCampo;
     }
+}
 
-    [IgnorarAtributoTS]
-    [AttributeUsage(AttributeTargets.Property)]
-    public class TipoBancoAttribute : ColumnAttribute 
+[IgnorarAtributoTS]
+[AttributeUsage(AttributeTargets.Property)]
+public class TipoBancoAttribute : ColumnAttribute 
+{
+    public Type Tipo { get; }
+
+    public TipoBancoAttribute(Type tipo)
     {
-        public Type Tipo { get; }
-
-        public TipoBancoAttribute(Type tipo)
-        {
-            this.Tipo = tipo;
-        }
+        this.Tipo = tipo;
     }
 }

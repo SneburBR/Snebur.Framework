@@ -1,11 +1,9 @@
 ﻿using Snebur.Dominio.Atributos;
-using System;
 
-namespace Snebur.Dominio
+namespace Snebur.Dominio;
+
+[IgnorarAtributoTS]
+public class NaoAbrirPropriedade : Attribute
 {
-    [IgnorarAtributoTS]
-    public class NaoAbrirPropriedade : Attribute
-    {
 
-    }
 }

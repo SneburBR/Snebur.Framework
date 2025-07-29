@@ -3,112 +3,111 @@ using Snebur.Utilidade;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace System.Reflection
+namespace System.Reflection;
+
+public static class ReflexaoExtension
 {
-    public static class ReflexaoExtension
+    public static IEnumerable<Type> GetAccessibleTypes(this Assembly assembly)
     {
-        public static IEnumerable<Type> GetAccessibleTypes(this Assembly assembly)
+        try
         {
-            try
-            {
-                //
+            //
 #if NET40
-                return assembly.GetTypes();
+            return assembly.GetTypes();
 #else
-                return assembly.DefinedTypes.Select(t => t.AsType());
+            return assembly.DefinedTypes.Select(t => t.AsType());
 #endif
 
-            }
-            catch (ReflectionTypeLoadException ex)
-            {
-                return ex.Types.Where(t => t is not null)!;
-            }
         }
-
-        public static object? TryGetValueOrDefault(this PropertyInfo propriedade, object? obj)
+        catch (ReflectionTypeLoadException ex)
         {
-            try
-            {
-                return propriedade.GetValue(obj);
-            }
-            catch
-            {
-                return default;
-            }
+            return ex.Types.Where(t => t is not null)!;
         }
+    }
 
-        public static bool TrySetValue(this PropertyInfo propriedade,
-                                       object obj,
-                                       object? value,
-                                       bool isLogErro = false)
+    public static object? TryGetValueOrDefault(this PropertyInfo propriedade, object? obj)
+    {
+        try
         {
-            try
-            {
-                if (propriedade.CanRead && propriedade.CanWrite)
-                {
-                    propriedade.SetValue(obj, value);
-                    return true;
-                }
-                return false;
-            }
-            catch (Exception ex)
-            {
-                if (isLogErro)
-                {
-                    var mensagem = $"TrySetValue falha  Propriedade {propriedade.Name} ({propriedade.PropertyType.Name}) " +
-                                   $"obj:  {obj?.GetType().Name} {obj?.ToString() ?? "null"}, " +
-                                   $"value {value?.GetType().Name} {value?.ToString() ?? "null"} ";
-
-                    LogUtil.ErroAsync(new Exception(mensagem, ex));
-
-                }
-                return false;
-            }
+            return propriedade.GetValue(obj);
         }
-
-        public static bool IsTipoIguaOuHerda(this Type origem, Type tipo)
+        catch
         {
-            return origem == tipo || origem.IsSubclassOf(tipo);
-            //return metodo.GetBaseDefinition().DeclaringType != metodo.DeclaringType;
+            return default;
         }
+    }
 
-        public static bool IsOverride(this MethodInfo metodo)
+    public static bool TrySetValue(this PropertyInfo propriedade,
+                                   object obj,
+                                   object? value,
+                                   bool isLogErro = false)
+    {
+        try
         {
-            return metodo.GetBaseDefinition().DeclaringType != metodo.DeclaringType;
+            if (propriedade.CanRead && propriedade.CanWrite)
+            {
+                propriedade.SetValue(obj, value);
+                return true;
+            }
+            return false;
         }
+        catch (Exception ex)
+        {
+            if (isLogErro)
+            {
+                var mensagem = $"TrySetValue falha  Propriedade {propriedade.Name} ({propriedade.PropertyType.Name}) " +
+                               $"obj:  {obj?.GetType().Name} {obj?.ToString() ?? "null"}, " +
+                               $"value {value?.GetType().Name} {value?.ToString() ?? "null"} ";
 
-        public static bool IsOverride(this PropertyInfo propriedade)
-        {
-            var getMethod = propriedade.GetGetMethod();
-            var setMethod = propriedade.GetSetMethod();
-            var getIsOverride = (getMethod?.IsOverride() ?? false);
-            var setIsOverride = (setMethod?.IsOverride() ?? false);
-            return getIsOverride || setIsOverride;
+                LogUtil.ErroAsync(new Exception(mensagem, ex));
+
+            }
+            return false;
         }
-        /// <summary>
-        /// Paliativo, para contornar  a migração do entity framework
-        /// </summary>
-        /// <param name="propriedade"></param>
-        /// <returns></returns>
-        public static IChaveEstrangeiraAttribute? RetornarAtributoChaveEstrangeira(
-            this PropertyInfo propriedade,
-            bool isIgnorarErro = false)
+    }
+
+    public static bool IsTipoIguaOuHerda(this Type origem, Type tipo)
+    {
+        return origem == tipo || origem.IsSubclassOf(tipo);
+        //return metodo.GetBaseDefinition().DeclaringType != metodo.DeclaringType;
+    }
+
+    public static bool IsOverride(this MethodInfo metodo)
+    {
+        return metodo.GetBaseDefinition().DeclaringType != metodo.DeclaringType;
+    }
+
+    public static bool IsOverride(this PropertyInfo propriedade)
+    {
+        var getMethod = propriedade.GetGetMethod();
+        var setMethod = propriedade.GetSetMethod();
+        var getIsOverride = (getMethod?.IsOverride() ?? false);
+        var setIsOverride = (setMethod?.IsOverride() ?? false);
+        return getIsOverride || setIsOverride;
+    }
+    /// <summary>
+    /// Paliativo, para contornar  a migração do entity framework
+    /// </summary>
+    /// <param name="propriedade"></param>
+    /// <returns></returns>
+    public static IChaveEstrangeiraAttribute? RetornarAtributoChaveEstrangeira(
+        this PropertyInfo propriedade,
+        bool isIgnorarErro = false)
+    {
+        var atributoChaveEstrangeira = propriedade.GetCustomAttribute<ChaveEstrangeiraAttribute>();
+        if (atributoChaveEstrangeira != null)
         {
-            var atributoChaveEstrangeira = propriedade.GetCustomAttribute<ChaveEstrangeiraAttribute>();
-            if (atributoChaveEstrangeira != null)
-            {
-                return atributoChaveEstrangeira;
-            }
-            var atributoChaveEstrangeiraRelacaoUmUm = propriedade.GetCustomAttribute<ChaveEstrangeiraRelacaoUmUmAttribute>();
-            if (atributoChaveEstrangeiraRelacaoUmUm != null)
-            {
-                return atributoChaveEstrangeiraRelacaoUmUm;
-            }
-            if (isIgnorarErro)
-            {
-                return null;
-            }
-            throw new Erro($"Não foi encontrado um chave estrangeira para a propriedade {propriedade.Name} em {propriedade.DeclaringType?.Name} ");
+            return atributoChaveEstrangeira;
         }
+        var atributoChaveEstrangeiraRelacaoUmUm = propriedade.GetCustomAttribute<ChaveEstrangeiraRelacaoUmUmAttribute>();
+        if (atributoChaveEstrangeiraRelacaoUmUm != null)
+        {
+            return atributoChaveEstrangeiraRelacaoUmUm;
+        }
+        if (isIgnorarErro)
+        {
+            return null;
+        }
+        throw new Erro($"Não foi encontrado um chave estrangeira para a propriedade {propriedade.Name} em {propriedade.DeclaringType?.Name} ");
     }
 }

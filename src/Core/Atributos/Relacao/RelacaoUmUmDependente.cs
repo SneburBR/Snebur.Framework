@@ -1,6 +1,5 @@
-﻿namespace Snebur.Atributos.Relacao
+﻿namespace Snebur.Atributos.Relacao;
+
+internal class RelacaoUmUmDependente
 {
-    internal class RelacaoUmUmDependente
-    {
-    }
 }

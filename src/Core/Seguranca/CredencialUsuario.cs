@@ -1,81 +1,79 @@
 ﻿using Snebur.Dominio.Atributos;
 using Snebur.Utilidade;
-using System;
 
-namespace Snebur.Seguranca
+namespace Snebur.Seguranca;
+
+public class CredencialUsuario : Credencial
 {
-    public class CredencialUsuario : Credencial
+    public string? Nome { get; set; } 
+
+    public string? IdentificadorAmigavel { get; set; }
+
+    //public bool IsAnonimo => this.Validar(CredencialAnonimo.Anonimo);
+
+    public CredencialUsuario()
     {
-        public string? Nome { get; set; } 
+    }
 
-        public string? IdentificadorAmigavel { get; set; }
+    [IgnorarConstrutorTS]
+    public CredencialUsuario(string identificadorUsuario, string senha) : base(identificadorUsuario, senha)
+    {
+        this.Nome = identificadorUsuario;
+        this.IdentificadorAmigavel = identificadorUsuario;
+    }
 
-        //public bool IsAnonimo => this.Validar(CredencialAnonimo.Anonimo);
+    [IgnorarConstrutorTS]
+    public CredencialUsuario(string nome,
+                             string identificadorUsuario,
+                             string senha,
+                             string identificadorAmigavel) : base(identificadorUsuario, senha)
+    {
+        this.Nome = nome;
+        this.IdentificadorAmigavel = identificadorAmigavel;
+    }
 
-        public CredencialUsuario()
+    public string? RetornarIdentificadorEmail()
+    {
+        if (ValidacaoUtil.IsEmail(this.IdentificadorAmigavel))
         {
+            return this.IdentificadorAmigavel;
         }
-
-        [IgnorarConstrutorTS]
-        public CredencialUsuario(string identificadorUsuario, string senha) : base(identificadorUsuario, senha)
+        if (ValidacaoUtil.IsEmail(this.IdentificadorUsuario))
         {
-            this.Nome = identificadorUsuario;
-            this.IdentificadorAmigavel = identificadorUsuario;
+            return this.IdentificadorUsuario;
         }
+        return null;
+    }
 
-        [IgnorarConstrutorTS]
-        public CredencialUsuario(string nome,
-                                 string identificadorUsuario,
-                                 string senha,
-                                 string identificadorAmigavel) : base(identificadorUsuario, senha)
+    public string? RetornarIdentificadorTelefone()
+    {
+        if (ValidacaoUtil.IsTelefone(this.IdentificadorAmigavel))
         {
-            this.Nome = nome;
-            this.IdentificadorAmigavel = identificadorAmigavel;
+            return this.IdentificadorAmigavel;
         }
+        if (ValidacaoUtil.IsTelefone(this.IdentificadorUsuario))
+        {
+            return this.IdentificadorUsuario;
+        }
+        return null;
+    }
 
-        public string? RetornarIdentificadorEmail()
+    public override bool Equals(object? obj)
+    {
+        if (obj is CredencialUsuario credencial)
         {
-            if (ValidacaoUtil.IsEmail(this.IdentificadorAmigavel))
-            {
-                return this.IdentificadorAmigavel;
-            }
-            if (ValidacaoUtil.IsEmail(this.IdentificadorUsuario))
-            {
-                return this.IdentificadorUsuario;
-            }
-            return null;
+            return CredencialUtil.ValidarCredencial(this, credencial);
         }
+        return base.Equals(obj);
+    }
 
-        public string? RetornarIdentificadorTelefone()
+    public override int GetHashCode()
+    {
+        if (!String.IsNullOrEmpty(this.IdentificadorUsuario) &&
+            !String.IsNullOrEmpty(this.Senha))
         {
-            if (ValidacaoUtil.IsTelefone(this.IdentificadorAmigavel))
-            {
-                return this.IdentificadorAmigavel;
-            }
-            if (ValidacaoUtil.IsTelefone(this.IdentificadorUsuario))
-            {
-                return this.IdentificadorUsuario;
-            }
-            return null;
+            return (this.IdentificadorUsuario?.Trim().ToLower() + this.Senha).GetHashCode();
         }
-
-        public override bool Equals(object? obj)
-        {
-            if (obj is CredencialUsuario credencial)
-            {
-                return CredencialUtil.ValidarCredencial(this, credencial);
-            }
-            return base.Equals(obj);
-        }
-
-        public override int GetHashCode()
-        {
-            if (!String.IsNullOrEmpty(this.IdentificadorUsuario) &&
-                !String.IsNullOrEmpty(this.Senha))
-            {
-                return (this.IdentificadorUsuario?.Trim().ToLower() + this.Senha).GetHashCode();
-            }
-            return base.GetHashCode();
-        }
+        return base.GetHashCode();
     }
 }

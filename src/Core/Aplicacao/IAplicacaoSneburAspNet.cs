@@ -1,36 +1,33 @@
 ﻿using Snebur.Comunicacao;
 using Snebur.Dominio.Atributos;
 
-namespace Snebur
+namespace Snebur;
+
+[IgnorarInterfaceTS]
+public interface IAplicacaoSneburAspNet
 {
-    [IgnorarInterfaceTS]
-    public interface IAplicacaoSneburAspNet
-    {
-        bool IsPossuiRequisicaoAspNetAtiva { get; }
-        string RetornarValueCabecalho(string chave);
-        T GetHttpContext<T>();
+    bool IsPossuiRequisicaoAspNetAtiva { get; }
+    string RetornarValueCabecalho(string chave);
+    T GetHttpContext<T>();
 
-        //string RetornarUrlRequisicao();
+    //string RetornarUrlRequisicao();
 
-        //InformacaoSessaoUsuario InformacaoSessaoUsuarioRequisicaoAtual { get; }
+    //InformacaoSessaoUsuario InformacaoSessaoUsuarioRequisicaoAtual { get; }
 
-        //[EditorBrowsable(EditorBrowsableState.Never)]
-        //Guid IdentificadorSessaoUsuarioRequisicaoAtual { get; }
+    //[EditorBrowsable(EditorBrowsableState.Never)]
+    //Guid IdentificadorSessaoUsuarioRequisicaoAtual { get; }
 
-        //[EditorBrowsable(EditorBrowsableState.Never)]
-        //CredencialUsuario CredencialUsuarioRequisicaoAtual { get; }
+    //[EditorBrowsable(EditorBrowsableState.Never)]
+    //CredencialUsuario CredencialUsuarioRequisicaoAtual { get; }
 
-        //[EditorBrowsable(EditorBrowsableState.Never)]
-        //string IdentificadorProprietarioRequisicaoAtual { get; }
+    //[EditorBrowsable(EditorBrowsableState.Never)]
+    //string IdentificadorProprietarioRequisicaoAtual { get; }
 
-        //[EditorBrowsable(EditorBrowsableState.Never)]
-        string UserAgent { get; }
-        string IpRequisicao { get; }
+    //[EditorBrowsable(EditorBrowsableState.Never)]
+    string UserAgent { get; }
+    string IpRequisicao { get; }
 
-        InfoRequisicao RetornarInfoRequisicao();
+    InfoRequisicao RetornarInfoRequisicao();
 
- 
-
-        //string RetornarIpDaRequisicao();
-    }
+    //string RetornarIpDaRequisicao();
 }

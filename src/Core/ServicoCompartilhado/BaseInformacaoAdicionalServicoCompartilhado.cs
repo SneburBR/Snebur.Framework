@@ -1,8 +1,5 @@
-﻿using Snebur.Dominio;
+﻿namespace Snebur.Servicos;
 
-namespace Snebur.Servicos
+public abstract class BaseInformacaoAdicionalServicoCompartilhado : BaseDominio
 {
-    public abstract class BaseInformacaoAdicionalServicoCompartilhado : BaseDominio
-    {
-    }
 }

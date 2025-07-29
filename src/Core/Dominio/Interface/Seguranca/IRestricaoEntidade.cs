@@ -1,11 +1,10 @@
 ﻿using Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio
+namespace Snebur.Dominio;
+
+[IgnorarInterfaceTS]
+public interface IRestricaoEntidade : IEntidadeSeguranca
 {
-    [IgnorarInterfaceTS]
-    public interface IRestricaoEntidade : IEntidadeSeguranca
-    {
-        [RelacaoPai]
-        IPermissaoEntidade? PermissaoEntidade { get; set; }
-    }
+    [RelacaoPai]
+    IPermissaoEntidade? PermissaoEntidade { get; set; }
 }

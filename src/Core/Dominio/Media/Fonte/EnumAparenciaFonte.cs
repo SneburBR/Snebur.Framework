@@ -1,12 +1,11 @@
 ﻿using Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio
+namespace Snebur.Dominio;
+
+public enum EnumAparenciaFonte
 {
-    public enum EnumAparenciaFonte
-    {
-        [Rotulo("Normal")]
-        Normal = 1,
-        [Rotulo("Itálico")]
-        Italico = 2
-    }
+    [Rotulo("Normal")]
+    Normal = 1,
+    [Rotulo("Itálico")]
+    Italico = 2
 }

@@ -1,11 +1,8 @@
-﻿using System;
+﻿namespace Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio.Atributos
+[IgnorarAtributoTS]
+[AttributeUsage(AttributeTargets.Assembly)]
+public class NaoValidarNomeColunasAttribute : Attribute
 {
-    [IgnorarAtributoTS]
-    [AttributeUsage(AttributeTargets.Assembly)]
-    public class NaoValidarNomeColunasAttribute : Attribute
-    {
 
-    }
 }

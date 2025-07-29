@@ -1,7 +1,6 @@
-﻿namespace Snebur.Dominio
+﻿namespace Snebur.Dominio;
+
+public interface IIdentificadorAplicacao
 {
-    public interface IIdentificadorAplicacao
-    {
-        string IdentificadorAplicacao { get; set; }
-    }
+    string IdentificadorAplicacao { get; set; }
 }

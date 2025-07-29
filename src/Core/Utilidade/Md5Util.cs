@@ -1,53 +1,51 @@
-﻿using System;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace Snebur.Utilidade
+namespace Snebur.Utilidade;
+
+public static class Md5Util
 {
-    public static class Md5Util
+    public static string RetornarHash(string? texto)
     {
-        public static string RetornarHash(string? texto)
+        if (string.IsNullOrEmpty(texto))
         {
-            if (string.IsNullOrEmpty(texto))
+            return string.Empty;
+        }
+        using (var md5 =MD5.Create())
+        {
+            var bytes = Encoding.UTF8.GetBytes(texto);
+            bytes = md5.ComputeHash(bytes);
+            var sb = new StringBuilder();
+            foreach (var b in bytes)
             {
-                return string.Empty;
+                sb.Append(b.ToString("x2"));
             }
-            using (var md5 =MD5.Create())
-            {
-                var bytes = Encoding.UTF8.GetBytes(texto);
-                bytes = md5.ComputeHash(bytes);
-                var sb = new StringBuilder();
-                foreach (var b in bytes)
-                {
-                    sb.Append(b.ToString("x2"));
-                }
-                var r = sb.ToString();
-                return r;
-            }
+            var r = sb.ToString();
+            return r;
+        }
+    }
+
+    public static Guid RetornarHashGuid(string? texto)
+    {
+        if (string.IsNullOrEmpty(texto))
+        {
+            return Guid.Empty;
         }
 
-        public static Guid RetornarHashGuid(string? texto)
+        using (var md5 = MD5.Create())
         {
-            if (string.IsNullOrEmpty(texto))
-            {
-                return Guid.Empty;
-            }
-
-            using (var md5 = MD5.Create())
-            {
-                var bytes = Encoding.UTF8.GetBytes(texto);
-                bytes = md5.ComputeHash(bytes);
-                return new Guid(bytes);
-            }
+            var bytes = Encoding.UTF8.GetBytes(texto);
+            bytes = md5.ComputeHash(bytes);
+            return new Guid(bytes);
         }
+    }
 
-        public static bool IsMd5(string value)
+    public static bool IsMd5(string value)
+    {
+        if (String.IsNullOrEmpty(value))
         {
-            if (String.IsNullOrEmpty(value))
-            {
-                return false;
-            }
-            return ValidacaoUtil.IsMd5(value);
+            return false;
         }
+        return ValidacaoUtil.IsMd5(value);
     }
 }

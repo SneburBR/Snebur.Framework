@@ -1,10 +1,9 @@
-﻿namespace Snebur
+﻿namespace Snebur;
+
+public enum EnumAmbienteServidor
 {
-    public enum EnumAmbienteServidor
-    {
-        Localhost,
-        Interno,
-        Teste,
-        Producao
-    }
+    Localhost,
+    Interno,
+    Teste,
+    Producao
 }

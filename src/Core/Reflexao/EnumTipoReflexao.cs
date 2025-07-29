@@ -1,28 +1,27 @@
 ﻿using Snebur.Dominio.Atributos;
 
-namespace Snebur.Reflexao
+namespace Snebur.Reflexao;
+
+[IgnorarEnumTS]
+public enum EnumTipoReflexao
 {
-    [IgnorarEnumTS]
-    public enum EnumTipoReflexao
-    {
-        TipoPrimario = 1,
+    TipoPrimario = 1,
 
-        TipoBaseDominio = 2,
+    TipoBaseDominio = 2,
 
-        TipoEntidade = 3,
+    TipoEntidade = 3,
 
-        TipoEnum = 4,
+    TipoEnum = 4,
 
-        TipoListaTipoPrimario = 5,
+    TipoListaTipoPrimario = 5,
 
-        TipoListaBaseDominio = 6,
+    TipoListaBaseDominio = 6,
 
-        TipoListaEntidade = 7,
+    TipoListaEntidade = 7,
 
-        TipoListaEnum = 8,
+    TipoListaEnum = 8,
 
-        Dicionario = 9,
+    Dicionario = 9,
 
-        Generico = 10
-    }
+    Generico = 10
 }

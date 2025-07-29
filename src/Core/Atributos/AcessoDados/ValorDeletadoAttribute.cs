@@ -1,20 +1,16 @@
-﻿using System;
+﻿namespace Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio.Atributos
+[IgnorarAtributoTS]
+[IgnorarTSReflexao]
+public class ValorDeletadoAttribute : Attribute
 {
-
-    [IgnorarAtributoTS]
-    [IgnorarTSReflexao]
-    public class ValorDeletadoAttribute : Attribute
+    public object Valor { get; set; }
+    public ValorDeletadoAttribute(object valor)
     {
-        public object Valor { get; set; }
-        public ValorDeletadoAttribute(object valor)
-        {
-            this.Valor = valor;
-        }
+        this.Valor = valor;
     }
-    //public class ValorDeletadoAttribute : Attribute
-    //{
-
-    //}
 }
+//public class ValorDeletadoAttribute : Attribute
+//{
+
+//}

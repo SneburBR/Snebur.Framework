@@ -2,27 +2,26 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Snebur.Dominio
+namespace Snebur.Dominio;
+
+[IgnorarInterfaceTS]
+public interface IListaEntidades : IList
 {
-    [IgnorarInterfaceTS]
-    public interface IListaEntidades : IList
-    {
-        bool IsAberta { get; set; }
+    bool IsAberta { get; set; }
 
-        void AdicionarEntidades(IEnumerable entidades);
+    void AdicionarEntidades(IEnumerable entidades);
 
-        List<Entidade> EntidadesRemovida { get; set; }
+    List<Entidade> EntidadesRemovida { get; set; }
 
-        new int Count { get; }
+    new int Count { get; }
 
-        void Add(IEntidade value);
+    void Add(IEntidade value);
 
-        bool Remove(IEntidade entidade);
+    bool Remove(IEntidade entidade);
 
-        //Dictionary<string, IEntidade> EntidadesAdicionada { get; set; }
-    }
-    [IgnorarInterfaceTS]
-    public interface IListaEntidades<TEntidade> : IListaEntidades, IList<TEntidade> where TEntidade : IEntidade
-    {
-    }
+    //Dictionary<string, IEntidade> EntidadesAdicionada { get; set; }
+}
+[IgnorarInterfaceTS]
+public interface IListaEntidades<TEntidade> : IListaEntidades, IList<TEntidade> where TEntidade : IEntidade
+{
 }

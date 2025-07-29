@@ -1,44 +1,41 @@
-﻿using System;
+﻿namespace Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio.Atributos
+[AttributeUsage(AttributeTargets.Property |
+                AttributeTargets.Class |
+                AttributeTargets.Field |
+                AttributeTargets.Enum, AllowMultiple = false)]
+public class RotuloAttribute : BaseAtributoDominio
 {
-    [AttributeUsage(AttributeTargets.Property |
-                    AttributeTargets.Class |
-                    AttributeTargets.Field |
-                    AttributeTargets.Enum, AllowMultiple = false)]
-    public class RotuloAttribute : BaseAtributoDominio
+    private string? _rotuloPlural;
+
+    public string Rotulo { get; }
+
+    public string RotuloPlural
     {
-        private string? _rotuloPlural;
-
-        public string Rotulo { get; }
-
-        public string RotuloPlural
+        get
         {
-            get
+            if (String.IsNullOrEmpty(this._rotuloPlural))
             {
-                if (String.IsNullOrEmpty(this._rotuloPlural))
-                {
-                    return this.Rotulo;
-                }
-                return this._rotuloPlural;
+                return this.Rotulo;
             }
-            set
-            {
-                this._rotuloPlural = value;
-            }
+            return this._rotuloPlural;
         }
-
-        [IgnorarConstrutorTS]
-        public RotuloAttribute(string rotulo)
+        set
         {
-            this.Rotulo = rotulo;
+            this._rotuloPlural = value;
         }
+    }
 
-        public RotuloAttribute(string rotulo,
-                               [ParametroOpcionalTS] string rotuloPlural)
-        {
-            this.Rotulo = rotulo;
-            this.RotuloPlural = rotuloPlural;
-        }
+    [IgnorarConstrutorTS]
+    public RotuloAttribute(string rotulo)
+    {
+        this.Rotulo = rotulo;
+    }
+
+    public RotuloAttribute(string rotulo,
+                           [ParametroOpcionalTS] string rotuloPlural)
+    {
+        this.Rotulo = rotulo;
+        this.RotuloPlural = rotuloPlural;
     }
 }

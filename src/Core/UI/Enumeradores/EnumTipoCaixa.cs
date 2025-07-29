@@ -1,14 +1,13 @@
-﻿namespace Snebur.UI
-{
-    public enum EnumTipoCaixa
-    {
-        Padrao = 1,
-        Delineada = 2
-    }
+﻿namespace Snebur.UI;
 
-    public enum EnumTipoPainelAba
-    {
-        Padrao = 1,
-        MaterialDesign = 3
-    }
+public enum EnumTipoCaixa
+{
+    Padrao = 1,
+    Delineada = 2
+}
+
+public enum EnumTipoPainelAba
+{
+    Padrao = 1,
+    MaterialDesign = 3
 }

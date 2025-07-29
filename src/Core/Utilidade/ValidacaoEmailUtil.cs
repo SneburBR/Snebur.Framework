@@ -1,153 +1,151 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
-namespace Snebur.Utilidade
+namespace Snebur.Utilidade;
+
+public static class ValidacaoEmailUtil
 {
-    public static class ValidacaoEmailUtil
+    private static readonly int[] PortasSmtp = new int[] { 587, 465, 25 };
+
+    public static bool IsExisteEmail(string? email)
     {
-        private static readonly int[] PortasSmtp = new int[] { 587, 465, 25 };
-
-        public static bool IsExisteEmail(string? email)
+        if (string.IsNullOrWhiteSpace(email))
         {
-            if (string.IsNullOrWhiteSpace(email))
-            {
-                return false;
-            }
-
-            var dominio = email.Split('@')[1];
-            var dnsRecords = DnsUtil.GetDnsRecords(dominio, QueryType.MX);
-            if (dnsRecords?.Length > 0)
-            {
-                //foreach (var record in dnsRecords.OrderBy(x => x.Preference))
-                //{
-                //    var isEmailValid = IsEmailAccountValid(email, record);
-                //    if(isEmailValid)
-                //    {
-                //        return true;
-                //    }
-                //}
-                return true;
-            }
             return false;
         }
 
-        private static bool IsEmailAccountValid(string email, 
-                                                DnsUtil.DnsRecord record)
+        var dominio = email.Split('@')[1];
+        var dnsRecords = DnsUtil.GetDnsRecords(dominio, QueryType.MX);
+        if (dnsRecords?.Length > 0)
         {
-            var operetions = new Func<CancellationToken, bool>[PortasSmtp.Length];
+            //foreach (var record in dnsRecords.OrderBy(x => x.Preference))
+            //{
+            //    var isEmailValid = IsEmailAccountValid(email, record);
+            //    if(isEmailValid)
+            //    {
+            //        return true;
+            //    }
+            //}
+            return true;
+        }
+        return false;
+    }
 
-            for (var i = 0; i < PortasSmtp.Length; i++)
-            {
-                var porta = PortasSmtp[i];
-                operetions[i] = token =>
-                {
-                    return IsEmailAccountValid(record.Record,
-                                                                    email,
-                                                                    porta);
-                };
-            }
+    private static bool IsEmailAccountValid(string email, 
+                                            DnsUtil.DnsRecord record)
+    {
+        var operetions = new Func<CancellationToken, bool>[PortasSmtp.Length];
 
-            try
+        for (var i = 0; i < PortasSmtp.Length; i++)
+        {
+            var porta = PortasSmtp[i];
+            operetions[i] = token =>
             {
-                var t = OperationWithTimeout.ExecuteWithTimeout(operetions, 3000);
-                return t.Result;
-            }
-            catch
-            {
-                return false;
-            }
+                return IsEmailAccountValid(record.Record,
+                                                                email,
+                                                                porta);
+            };
         }
 
-        //private static bool TryIsEmailAccountValid(string tcpClient,
-        //                                           string emailAddress,
-        //                                           int porta)
-        //{
-        //    try
-        //    {
-        //        Func<CancellationToken, bool> operation = token =>
-        //        {
-        //            return ValidacaoEmailUtil.IsEmailAccountValid(tcpClient, emailAddress, porta);
-        //        };
-
-        //        var t = ThreadUtil.ExecuteWithTimeout(operation, 5000);
-        //        return t.Result;
-        //    }
-        //    catch
-        //    {
-        //        return false;
-        //    }
-        //}
-
-        private static bool IsEmailAccountValid(string? tcpClient, string emailAddress, int porta)
+        try
         {
-            if (string.IsNullOrWhiteSpace(tcpClient) || 
-                string.IsNullOrWhiteSpace(emailAddress))
-            {
-                return false;
-            }
+            var t = OperationWithTimeout.ExecuteWithTimeout(operetions, 3000);
+            return t.Result;
+        }
+        catch
+        {
+            return false;
+        }
+    }
 
-            string CRLF = "\r\n";
-            using (var tClient = new TcpClient(tcpClient, porta))
+    //private static bool TryIsEmailAccountValid(string tcpClient,
+    //                                           string emailAddress,
+    //                                           int porta)
+    //{
+    //    try
+    //    {
+    //        Func<CancellationToken, bool> operation = token =>
+    //        {
+    //            return ValidacaoEmailUtil.IsEmailAccountValid(tcpClient, emailAddress, porta);
+    //        };
+
+    //        var t = ThreadUtil.ExecuteWithTimeout(operation, 5000);
+    //        return t.Result;
+    //    }
+    //    catch
+    //    {
+    //        return false;
+    //    }
+    //}
+
+    private static bool IsEmailAccountValid(string? tcpClient, string emailAddress, int porta)
+    {
+        if (string.IsNullOrWhiteSpace(tcpClient) || 
+            string.IsNullOrWhiteSpace(emailAddress))
+        {
+            return false;
+        }
+
+        string CRLF = "\r\n";
+        using (var tClient = new TcpClient(tcpClient, porta))
+        {
+            byte[] dataBuffer;
+            string? responseString;
+            using (var netStream = tClient.GetStream())
+            using (var reader = new StreamReader(netStream))
             {
-                byte[] dataBuffer;
-                string? responseString;
-                using (var netStream = tClient.GetStream())
-                using (var reader = new StreamReader(netStream))
+                responseString = reader.ReadLine();
+                /* Perform HELO to SMTP Server and get Response */
+                dataBuffer = BytesFromString("HELO Hi" + CRLF);
+                netStream.Write(dataBuffer, 0, dataBuffer.Length);
+                responseString = reader.ReadLine();
+                dataBuffer = BytesFromString("MAIL FROM:<YourGmailIDHere@gmail.com>" + CRLF);
+                netStream.Write(dataBuffer, 0, dataBuffer.Length);
+                responseString = reader.ReadLine();
+                dataBuffer = BytesFromString($"RCPT TO:<{emailAddress}>" + CRLF);
+                netStream.Write(dataBuffer, 0, dataBuffer.Length);
+                responseString = reader.ReadLine();
+
+                var responseCode = GetResponseCode(responseString);
+
+                if (responseCode == 550)
                 {
-                    responseString = reader.ReadLine();
-                    /* Perform HELO to SMTP Server and get Response */
-                    dataBuffer = BytesFromString("HELO Hi" + CRLF);
-                    netStream.Write(dataBuffer, 0, dataBuffer.Length);
-                    responseString = reader.ReadLine();
-                    dataBuffer = BytesFromString("MAIL FROM:<YourGmailIDHere@gmail.com>" + CRLF);
-                    netStream.Write(dataBuffer, 0, dataBuffer.Length);
-                    responseString = reader.ReadLine();
-                    dataBuffer = BytesFromString($"RCPT TO:<{emailAddress}>" + CRLF);
-                    netStream.Write(dataBuffer, 0, dataBuffer.Length);
-                    responseString = reader.ReadLine();
-
-                    var responseCode = GetResponseCode(responseString);
-
-                    if (responseCode == 550)
-                    {
-                        return false;
-                    }
-
-                    /* QUITE CONNECTION */
-                    dataBuffer = BytesFromString("QUITE" + CRLF);
-                    netStream.Write(dataBuffer, 0, dataBuffer.Length);
-                    tClient.Close();
-                    return true;
+                    return false;
                 }
+
+                /* QUITE CONNECTION */
+                dataBuffer = BytesFromString("QUITE" + CRLF);
+                netStream.Write(dataBuffer, 0, dataBuffer.Length);
+                tClient.Close();
+                return true;
             }
         }
+    }
 
-        private static byte[] BytesFromString(string str)
+    private static byte[] BytesFromString(string str)
+    {
+        return Encoding.ASCII.GetBytes(str);
+    }
+
+    private static int GetResponseCode(string? responseString)
+    {
+        int statusCode;
+        try
         {
-            return Encoding.ASCII.GetBytes(str);
+            if (responseString is null)
+            {
+                return -1;
+            }
+            statusCode = Convert.ToInt32(responseString.Substring(0, 3));
         }
-
-        private static int GetResponseCode(string? responseString)
+        catch (Exception ex)
         {
-            int statusCode;
-            try
-            {
-                if (responseString is null)
-                {
-                    return -1;
-                }
-                statusCode = Convert.ToInt32(responseString.Substring(0, 3));
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"An error occurred while retrieving response code. {ex.Message}");
-                statusCode = -1;
-            }
-
-            return statusCode;
+            Console.WriteLine($"An error occurred while retrieving response code. {ex.Message}");
+            statusCode = -1;
         }
+
+        return statusCode;
     }
 }

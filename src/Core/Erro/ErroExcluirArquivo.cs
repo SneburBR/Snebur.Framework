@@ -1,28 +1,25 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
+﻿using System.Runtime.CompilerServices;
 
-namespace Snebur
+namespace Snebur;
+
+[Serializable]
+public class ErroExcluirArquivo : Erro
 {
-    [Serializable]
-    public class ErroExcluirArquivo : Erro
+
+    public ErroExcluirArquivo(string mensagem = "",
+                              Exception? erroInterno = null,
+                              [CallerMemberName] string nomeMetodo = "",
+                              [CallerFilePath] string caminhoArquivo = "",
+                              [CallerLineNumber] int linhaDoErro = 0) :
+                              base(mensagem, erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
     {
-
-        public ErroExcluirArquivo(string mensagem = "",
-                                  Exception? erroInterno = null,
-                                  [CallerMemberName] string nomeMetodo = "",
-                                  [CallerFilePath] string caminhoArquivo = "",
-                                  [CallerLineNumber] int linhaDoErro = 0) :
-                                  base(mensagem, erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
-        {
-        }
-
-        #region Serializacao 
-
-        public ErroExcluirArquivo()
-        {
-        }
-         
-        #endregion
     }
+
+    #region Serializacao 
+
+    public ErroExcluirArquivo()
+    {
+    }
+     
+    #endregion
 }

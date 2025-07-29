@@ -1,9 +1,6 @@
-﻿using System;
+﻿namespace Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio.Atributos
+[AttributeUsage(AttributeTargets.Field)]
+public class IgnorarConstanteTSAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Field)]
-    public class IgnorarConstanteTSAttribute : Attribute
-    {
-    }
 }

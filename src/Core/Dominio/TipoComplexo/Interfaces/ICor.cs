@@ -1,15 +1,14 @@
-﻿namespace Snebur.Dominio
+﻿namespace Snebur.Dominio;
+
+public interface ICor
 {
-    public interface ICor
-    {
-        byte Red { get; }
+    byte Red { get; }
 
-        byte Green { get; }
+    byte Green { get; }
 
-        byte Blue { get; }
+    byte Blue { get; }
 
-        double AlphaDecimal { get; }
+    double AlphaDecimal { get; }
 
-        string Rgba { get; set; }
-    }
+    string Rgba { get; set; }
 }

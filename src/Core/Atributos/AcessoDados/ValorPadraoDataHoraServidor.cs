@@ -1,36 +1,33 @@
-﻿using System;
+﻿namespace Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio.Atributos
+/// <summary>
+/// Pendente IsPermitirAtualizacao deve atualizar quando qualquer
+/// </summary>
+[AttributeUsage(AttributeTargets.Property)]
+public class ValorPadraoDataHoraServidorAttribute : SomenteLeituraAttribute, IValorPadrao
 {
-    /// <summary>
-    /// Pendente IsPermitirAtualizacao deve atualizar quando qualquer
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
-    public class ValorPadraoDataHoraServidorAttribute : SomenteLeituraAttribute, IValorPadrao
+    public bool IsDataHoraUTC { get; set; } = true;
+    public bool IsAceitarAtualizacao { get; set; } = false;
+    public bool IsValorPadraoOnUpdate { get; set; }
+    public override OpcoesSomenteLeitura OpcoesSomenteLeitura => new OpcoesSomenteLeitura(!this.IsAceitarAtualizacao, this.IsNotificarSeguranca);
+
+    public ValorPadraoDataHoraServidorAttribute( )
     {
-        public bool IsDataHoraUTC { get; set; } = true;
-        public bool IsAceitarAtualizacao { get; set; } = false;
-        public bool IsValorPadraoOnUpdate { get; set; }
-        public override OpcoesSomenteLeitura OpcoesSomenteLeitura => new OpcoesSomenteLeitura(!this.IsAceitarAtualizacao, this.IsNotificarSeguranca);
+        //this.IsDataHoraUTC = isDataHoraUTC;
+        //this.IsAceitarAtualizacao = isAceitarAtualizacao;
+        this.IsNotificarSeguranca = false;
+    }
 
-        public ValorPadraoDataHoraServidorAttribute( )
+    public bool IsTipoNullableRequerido { get; } = false;
+
+    public object? RetornarValorPadrao(object contexto, 
+                                      Entidade entidadeCorrente, 
+                                     object valorPropriedade)
+    {
+        if(!entidadeCorrente.__IsNewEntity)
         {
-            //this.IsDataHoraUTC = isDataHoraUTC;
-            //this.IsAceitarAtualizacao = isAceitarAtualizacao;
-            this.IsNotificarSeguranca = false;
+            return this.IsDataHoraUTC ? DateTime.UtcNow : DateTime.Now;
         }
-
-        public bool IsTipoNullableRequerido { get; } = false;
-
-        public object? RetornarValorPadrao(object contexto, 
-                                          Entidade entidadeCorrente, 
-                                         object valorPropriedade)
-        {
-            if(!entidadeCorrente.__IsNewEntity)
-            {
-                return this.IsDataHoraUTC ? DateTime.UtcNow : DateTime.Now;
-            }
-            return null;
-        }
+        return null;
     }
 }

@@ -1,13 +1,12 @@
-﻿namespace Snebur.UI
+﻿namespace Snebur.UI;
+
+public enum EnumTipoAlerta
 {
-    public enum EnumTipoAlerta
-    {
-        Atencao,
-        Informacao,
-        Sucesso,
-        Erro,
-        Pergunta,
-        Carregando,
-        CarregandoSemLoader
-    }
+    Atencao,
+    Informacao,
+    Sucesso,
+    Erro,
+    Pergunta,
+    Carregando,
+    CarregandoSemLoader
 }

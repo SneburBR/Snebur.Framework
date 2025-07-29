@@ -1,8 +1,5 @@
-﻿using System;
+﻿namespace Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio.Atributos
+public class DeletarRegristroAttribute : Attribute
 {
-    public class DeletarRegristroAttribute : Attribute
-    {
-    }
 }

@@ -1,23 +1,20 @@
-﻿using System;
+﻿namespace Snebur.Dominio;
 
-namespace Snebur.Dominio
+public interface IHistoricoManutencao : IEntidade
 {
-    public interface IHistoricoManutencao : IEntidade
-    {
-        string MigrationId { get; set; }
+    string MigrationId { get; set; }
 
-        int Prioridade { get; set; }
+    int Prioridade { get; set; }
 
-        string NomeTipoManutencao { get; set; }
+    string NomeTipoManutencao { get; set; }
 
-        DateTime? DataHoraExecucao { get; set; }
+    DateTime? DataHoraExecucao { get; set; }
 
-        DateTime? DataHoraUltimaExecucao { get; set; }
+    DateTime? DataHoraUltimaExecucao { get; set; }
 
-        bool IsSucesso { get; set; }
+    bool IsSucesso { get; set; }
 
-        string MensagemErro { get; set; }
+    string MensagemErro { get; set; }
 
-        int NumeroTentativa { get; set; }
-    }
+    int NumeroTentativa { get; set; }
 }

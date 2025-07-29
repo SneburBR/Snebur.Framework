@@ -1,6 +1,5 @@
-﻿namespace Snebur.Dominio
+﻿namespace Snebur.Dominio;
+
+public interface IEntidadeIdentificadorProprietario : IEntidade, IIdentificadorProprietario
 {
-    public interface IEntidadeIdentificadorProprietario : IEntidade, IIdentificadorProprietario
-    {
-    }
 }

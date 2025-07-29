@@ -1,10 +1,7 @@
-﻿using System;
+﻿namespace Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio.Atributos
+[IgnorarAtributoTS]
+[AttributeUsage(AttributeTargets.Class)]
+public class EntidadeRelacaoNnAttribute : Attribute
 {
-    [IgnorarAtributoTS]
-    [AttributeUsage(AttributeTargets.Class)]
-    public class EntidadeRelacaoNnAttribute : Attribute
-    {
-    }
 }

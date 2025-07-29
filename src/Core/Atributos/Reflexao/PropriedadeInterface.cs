@@ -1,15 +1,12 @@
-﻿using System;
+﻿namespace Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio.Atributos
+[AttributeUsage(AttributeTargets.Property)]
+public class PropriedadeInterfaceAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Property)]
-    public class PropriedadeInterfaceAttribute : Attribute
-    {
-        public string NomePropriedade { get; }
+    public string NomePropriedade { get; }
 
-        public PropriedadeInterfaceAttribute(string nomePropriedade)
-        {
-            this.NomePropriedade = nomePropriedade;
-        }
+    public PropriedadeInterfaceAttribute(string nomePropriedade)
+    {
+        this.NomePropriedade = nomePropriedade;
     }
 }

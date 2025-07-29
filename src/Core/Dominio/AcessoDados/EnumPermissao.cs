@@ -1,11 +1,10 @@
-﻿namespace Snebur.AcessoDados.Seguranca
+﻿namespace Snebur.AcessoDados.Seguranca;
+
+public enum EnumPermissao
 {
-    public enum EnumPermissao
-    {
-        Autorizado = 1,
+    Autorizado = 1,
 
-        AvalistaRequerido = 2,
+    AvalistaRequerido = 2,
 
-        Negado = -99
-    }
+    Negado = -99
 }

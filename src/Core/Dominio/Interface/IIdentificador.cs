@@ -1,9 +1,6 @@
-﻿using System;
+﻿namespace Snebur.Dominio;
 
-namespace Snebur.Dominio
+public interface IIdentificador
 {
-    public interface IIdentificador
-    {
-        Guid Identificador { get; }
-    }
+    Guid Identificador { get; }
 }

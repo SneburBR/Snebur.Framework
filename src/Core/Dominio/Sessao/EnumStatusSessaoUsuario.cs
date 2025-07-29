@@ -1,28 +1,27 @@
-﻿namespace Snebur.Dominio
+﻿namespace Snebur.Dominio;
+
+public enum EnumStatusSessaoUsuario
 {
-    public enum EnumStatusSessaoUsuario
-    {
 
-        Desconhecido = 0,
-        Nova = 100,
+    Desconhecido = 0,
+    Nova = 100,
 
-        Ativo = 200,
+    Ativo = 200,
 
-        Inativo = 300,
+    Inativo = 300,
 
-        Finalizada = 400,
+    Finalizada = 400,
 
-        Bloqueado = 500,
+    Bloqueado = 500,
 
-        Expirado = 600,
+    Expirado = 600,
 
-        Cancelada = 700,
+    Cancelada = 700,
 
-        SenhaAlterada = 800,
+    SenhaAlterada = 800,
 
-        UsuarioDiferente = 900,
+    UsuarioDiferente = 900,
 
-        IdentificadorSessaoUsuarioInexistente = 1000,
+    IdentificadorSessaoUsuarioInexistente = 1000,
 
-    }
 }

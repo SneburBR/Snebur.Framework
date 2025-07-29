@@ -1,8 +1,7 @@
-﻿namespace Snebur.UI
+﻿namespace Snebur.UI;
+
+public enum EnumAparencia
 {
-    public enum EnumAparencia
-    {
-        Clara = 1,
-        Escura = 2
-    }
+    Clara = 1,
+    Escura = 2
 }

@@ -1,11 +1,10 @@
-﻿namespace Snebur.Dominio
+﻿namespace Snebur.Dominio;
+
+public interface IPropriedadesDesbloqueada
 {
-    public interface IPropriedadesDesbloqueada
-    {
-        string NomeEntidade { get; set; }
+    string NomeEntidade { get; set; }
 
-        string NomeProprieade { get; set; }
+    string NomeProprieade { get; set; }
 
-        EnumTipoDesbloqueio EnumTipoDesbloqueio { get; set; }
-    }
+    EnumTipoDesbloqueio EnumTipoDesbloqueio { get; set; }
 }

@@ -1,44 +1,43 @@
 ﻿
 using Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio
+namespace Snebur.Dominio;
+
+public enum EnumFiltroImagem
 {
-    public enum EnumFiltroImagem
-    {
-        [Rotulo("Exposição")]
-        Exposicao,
+    [Rotulo("Exposição")]
+    Exposicao,
 
-        [Rotulo("Brilho")]
-        Brilho,
-         
-        [Rotulo("Contraste")]
-        Contraste,
+    [Rotulo("Brilho")]
+    Brilho,
+     
+    [Rotulo("Contraste")]
+    Contraste,
 
-        [Rotulo("Saturação")]
-        Saturacao,
-         
-        [Rotulo("Preto e branco")]
-        PretoBranco,
+    [Rotulo("Saturação")]
+    Saturacao,
+     
+    [Rotulo("Preto e branco")]
+    PretoBranco,
 
-        [Rotulo("Sépia")]
-        Sepia,
+    [Rotulo("Sépia")]
+    Sepia,
 
-        [Rotulo("Matriz")]
-        Matriz,
-         
-        [Rotulo("Inverter")]
-        Inverter,
-         
-        [Rotulo("Desfoque")]
-        Desfoque,
+    [Rotulo("Matriz")]
+    Matriz,
+     
+    [Rotulo("Inverter")]
+    Inverter,
+     
+    [Rotulo("Desfoque")]
+    Desfoque,
 
-        [Rotulo("Ciano")]
-        Ciano,
+    [Rotulo("Ciano")]
+    Ciano,
 
-        [Rotulo("Magenta")]
-        Magenta,
+    [Rotulo("Magenta")]
+    Magenta,
 
-        [Rotulo("Amarelo")]
-        Amarelo,
-    }
+    [Rotulo("Amarelo")]
+    Amarelo,
 }

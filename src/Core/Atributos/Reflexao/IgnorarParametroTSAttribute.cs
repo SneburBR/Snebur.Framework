@@ -1,9 +1,6 @@
-﻿using System;
+﻿namespace Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio.Atributos
+[AttributeUsage(AttributeTargets.Parameter)]
+public class IgnorarParametroTSAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Parameter)]
-    public class IgnorarParametroTSAttribute : Attribute
-    {
-    }
 }

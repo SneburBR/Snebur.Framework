@@ -1,9 +1,8 @@
-﻿namespace Snebur.Dominio
-{
-    public interface ICredencialUsuario : ICredencial
-    {
-        string Nome { get; set; }
+﻿namespace Snebur.Dominio;
 
-        string IdentificadorAmigavel { get; set; }
-    }
+public interface ICredencialUsuario : ICredencial
+{
+    string Nome { get; set; }
+
+    string IdentificadorAmigavel { get; set; }
 }

@@ -1,50 +1,48 @@
 ﻿using Snebur.Utilidade;
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
-namespace Snebur.Dominio.Atributos
+namespace Snebur.Dominio.Atributos;
+
+[AttributeUsage(AttributeTargets.Property)]
+public class ValidacaoTextoSomentoNumerosAttribute : BaseAtributoValidacao, IAtributoValidacao
 {
-    [AttributeUsage(AttributeTargets.Property)]
-    public class ValidacaoTextoSomentoNumerosAttribute : BaseAtributoValidacao, IAtributoValidacao
+     public bool IsAceitarPontosSinais { get; set; } = false;
+    [MensagemValidacao]
+    public static string MensagemValidacao { get; set; } = "A campo {0} é invalido (somente números).";
+
+    #region "Construtor"
+
+    public ValidacaoTextoSomentoNumerosAttribute( 
+        [ParametroOpcionalTS] bool isAceitarPontosSinais = false) : base() 
     {
-         public bool IsAceitarPontosSinais { get; set; } = false;
-        [MensagemValidacao]
-        public static string MensagemValidacao { get; set; } = "A campo {0} é invalido (somente números).";
-
-        #region "Construtor"
-
-        public ValidacaoTextoSomentoNumerosAttribute( 
-            [ParametroOpcionalTS] bool isAceitarPontosSinais = false) : base() 
-        {
-            this.IsAceitarPontosSinais = isAceitarPontosSinais;
-        }
-        #endregion
-
-        #region IAtributoValidacao
-
-        public override bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
-        {
-            var texto = Convert.ToString(valorPropriedade);
-            if (String.IsNullOrWhiteSpace(texto))
-            {
-                return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
-            }
-            
-            if (this.IsAceitarPontosSinais)
-            {
-                return ValidacaoUtil.IsSomenteNumerosPontosSinais(texto);
-            }
-            return ValidacaoUtil.IsSomenteNumeros(texto);
-        }
-
-        [Display]
-        public override string RetornarMensagemValidacao(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
-        {
-            var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
-            return String.Format(MensagemValidacao, rotulo);
-        }
-        #endregion
-
+        this.IsAceitarPontosSinais = isAceitarPontosSinais;
     }
+    #endregion
+
+    #region IAtributoValidacao
+
+    public override bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
+    {
+        var texto = Convert.ToString(valorPropriedade);
+        if (String.IsNullOrWhiteSpace(texto))
+        {
+            return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
+        }
+        
+        if (this.IsAceitarPontosSinais)
+        {
+            return ValidacaoUtil.IsSomenteNumerosPontosSinais(texto);
+        }
+        return ValidacaoUtil.IsSomenteNumeros(texto);
+    }
+
+    [Display]
+    public override string RetornarMensagemValidacao(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
+    {
+        var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
+        return String.Format(MensagemValidacao, rotulo);
+    }
+    #endregion
+
 }

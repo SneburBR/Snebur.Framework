@@ -1,10 +1,8 @@
-﻿using System;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
-namespace Snebur.Dominio.Atributos
+namespace Snebur.Dominio.Atributos;
+
+[AttributeUsage(AttributeTargets.Property)]
+public sealed class IgnorarPropriedadeAttribute : XmlIgnoreAttribute
 {
-    [AttributeUsage(AttributeTargets.Property)]
-    public sealed class IgnorarPropriedadeAttribute : XmlIgnoreAttribute
-    {
-    }
 }

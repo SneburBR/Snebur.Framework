@@ -1,21 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 
-namespace Snebur.Dominio.Atributos
+namespace Snebur.Dominio.Atributos;
+
+[IgnorarInterfaceTS]
+public interface IAtributoValidacao
 {
-    [IgnorarInterfaceTS]
-    public interface IAtributoValidacao
-    {
-        bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade);
+    bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade);
 
-        string RetornarMensagemValidacao(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade);
-    }
+    string RetornarMensagemValidacao(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade);
+}
 
-    [IgnorarInterfaceTS]
-    public interface IAtributoValidacaoEntidade
-    {
-        bool IsValido(object servico, List<Entidade> todasEntidades, Entidade entidade);
+[IgnorarInterfaceTS]
+public interface IAtributoValidacaoEntidade
+{
+    bool IsValido(object servico, List<Entidade> todasEntidades, Entidade entidade);
 
-        string RetornarMensagemValidacao(Entidade entidade);
-    }
+    string RetornarMensagemValidacao(Entidade entidade);
 }

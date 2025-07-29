@@ -1,9 +1,8 @@
 ﻿using Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio
+namespace Snebur.Dominio;
+
+[IgnorarInterfaceTS]
+public interface IRegraOperacao : IBaseRegraOperacao, IEntidade
 {
-    [IgnorarInterfaceTS]
-    public interface IRegraOperacao : IBaseRegraOperacao, IEntidade
-    {
-    }
 }

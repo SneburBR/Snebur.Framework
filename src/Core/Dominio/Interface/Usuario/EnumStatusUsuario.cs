@@ -1,18 +1,17 @@
 ﻿using Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio
+namespace Snebur.Dominio;
+
+public enum EnumStatusUsuario
 {
-    public enum EnumStatusUsuario
-    {
-        [EnumValorNaoDefido]
-        Desconhecido =0,
+    [EnumValorNaoDefido]
+    Desconhecido =0,
 
-        Novo = 1,
+    Novo = 1,
 
-        Ativo = 3,
+    Ativo = 3,
 
-        Inativo = 4,
+    Inativo = 4,
 
-        Bloqueado = 5
-    }
+    Bloqueado = 5
 }

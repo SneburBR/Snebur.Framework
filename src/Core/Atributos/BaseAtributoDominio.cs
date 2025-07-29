@@ -1,8 +1,5 @@
-﻿using System;
+﻿namespace Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio.Atributos
+public abstract class BaseAtributoDominio : Attribute
 {
-    public abstract class BaseAtributoDominio : Attribute
-    {
-    }
 }

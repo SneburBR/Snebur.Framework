@@ -1,6 +1,5 @@
-﻿namespace Snebur.Dominio
+﻿namespace Snebur.Dominio;
+
+public interface IIPInformacaoEntidade : IIPInformacao, IEntidade
 {
-    public interface IIPInformacaoEntidade : IIPInformacao, IEntidade
-    {
-    }
 }

@@ -1,11 +1,10 @@
 ﻿using Snebur.Dominio.Atributos;
 using System.Collections.Generic;
 
-namespace Snebur.Dominio
+namespace Snebur.Dominio;
+
+[IgnorarInterfaceTS]
+public interface IMembrosDe : IEntidadeSeguranca
 {
-    [IgnorarInterfaceTS]
-    public interface IMembrosDe : IEntidadeSeguranca
-    {
-        IEnumerable<IGrupoUsuario> MembrosDe { get; }
-    }
+    IEnumerable<IGrupoUsuario> MembrosDe { get; }
 }

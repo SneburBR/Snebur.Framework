@@ -1,14 +1,13 @@
 ﻿
 using Snebur.Dominio.Atributos;
 
-namespace Snebur.UI
-{
-    public enum EnumEstiloBorda
-    {
-        [Rotulo("Vazio")]
-        Vazio = BaseEnumApresentacao.Vazio,
+namespace Snebur.UI;
 
-        Solida,
-        Pontilhada,
-    }
+public enum EnumEstiloBorda
+{
+    [Rotulo("Vazio")]
+    Vazio = BaseEnumApresentacao.Vazio,
+
+    Solida,
+    Pontilhada,
 }

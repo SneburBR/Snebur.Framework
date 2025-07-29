@@ -1,9 +1,6 @@
-﻿using System;
+﻿namespace Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio.Atributos
+[AttributeUsage(AttributeTargets.Enum)]
+public class IgnorarValidacaoEnumValorUnicoAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Enum)]
-    public class IgnorarValidacaoEnumValorUnicoAttribute : Attribute
-    {
-    }
 }

@@ -1,6 +1,5 @@
-﻿namespace Snebur.Dominio
+﻿namespace Snebur.Dominio;
+
+public interface IDocumento : IArquivo
 {
-    public interface IDocumento : IArquivo
-    {
-    }
 }

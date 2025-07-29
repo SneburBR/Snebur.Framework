@@ -1,14 +1,13 @@
 ﻿using Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio
-{
-    [IgnorarInterfaceTS]
-    public interface IRelacaoIdentificacaoGrupoUsuario : IEntidadeSeguranca
-    {
-        [RelacaoPai]
-        IIdentificacao? Identificacao { get; set; }
+namespace Snebur.Dominio;
 
-        [RelacaoPai]
-        IGrupoUsuario? GrupoUsuario { get; set; }
-    }
+[IgnorarInterfaceTS]
+public interface IRelacaoIdentificacaoGrupoUsuario : IEntidadeSeguranca
+{
+    [RelacaoPai]
+    IIdentificacao? Identificacao { get; set; }
+
+    [RelacaoPai]
+    IGrupoUsuario? GrupoUsuario { get; set; }
 }

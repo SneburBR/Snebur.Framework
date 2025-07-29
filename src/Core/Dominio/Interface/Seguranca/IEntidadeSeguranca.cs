@@ -1,6 +1,5 @@
-﻿namespace Snebur.Dominio
+﻿namespace Snebur.Dominio;
+
+public interface IEntidadeSeguranca : IEntidade
 {
-    public interface IEntidadeSeguranca : IEntidade
-    {
-    }
 }

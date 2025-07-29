@@ -1,15 +1,12 @@
-﻿using System;
+﻿namespace Snebur.Dominio.Atributos;
 
-namespace Snebur.Dominio.Atributos
+[AttributeUsage(AttributeTargets.Property)]
+public class PropriedadeTSEspecializadaAttribute : BaseAtributoDominio
 {
-    [AttributeUsage(AttributeTargets.Property)]
-    public class PropriedadeTSEspecializadaAttribute : BaseAtributoDominio
-    {
-        public string NomePropriedade { get; set; }
+    public string NomePropriedade { get; set; }
 
-        public PropriedadeTSEspecializadaAttribute(string nomePropriedade)
-        {
-            this.NomePropriedade = nomePropriedade;
-        }
+    public PropriedadeTSEspecializadaAttribute(string nomePropriedade)
+    {
+        this.NomePropriedade = nomePropriedade;
     }
 }
