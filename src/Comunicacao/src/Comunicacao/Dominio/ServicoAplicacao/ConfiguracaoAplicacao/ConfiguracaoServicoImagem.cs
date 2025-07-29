@@ -7,13 +7,13 @@ namespace Snebur.Comunicacao
     {
         #region Campos Privados
 
-        private string _urlVisualizarImagem;
+        private string? _urlVisualizarImagem;
 
         #endregion
 
         [Rotulo("Url visualiuzar imagem")]
         [ValidacaoRequerido]
         [ValidacaoTextoTamanho(500)]
-        public string UrlVisualizarImagem { get => this.RetornarValorPropriedade(this._urlVisualizarImagem); set => this.NotificarValorPropriedadeAlterada(this._urlVisualizarImagem, this._urlVisualizarImagem = value); }
+        public string? UrlVisualizarImagem { get => this.RetornarValorPropriedade(this._urlVisualizarImagem); set => this.NotificarValorPropriedadeAlterada(this._urlVisualizarImagem, this._urlVisualizarImagem = value); }
     }
 }

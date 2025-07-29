@@ -8,6 +8,6 @@ namespace Snebur.Comunicacao
 
         #endregion
 
-        public BaseDominio BaseDominio { get; set; }
+        public BaseDominio? BaseDominio { get; set; }
     }
 }

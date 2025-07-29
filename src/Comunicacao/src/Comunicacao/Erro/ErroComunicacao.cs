@@ -8,7 +8,7 @@ namespace Snebur.Comunicacao
     public class ErroComunicacao : Erro
     {
         public ErroComunicacao(string mensagem = "",
-                                  Exception erroInterno = null,
+                                  Exception? erroInterno = null,
                                   [CallerMemberName] string nomeMetodo = "",
                                   [CallerFilePath] string caminhoArquivo = "",
                                   [CallerLineNumber] int linhaDoErro = 0) :
@@ -21,10 +21,7 @@ namespace Snebur.Comunicacao
         public ErroComunicacao()
         {
         }
-
-        protected ErroComunicacao(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+         
         #endregion
     }
 }
