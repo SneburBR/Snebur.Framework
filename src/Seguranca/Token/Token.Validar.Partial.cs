@@ -115,7 +115,7 @@ namespace Snebur.Seguranca
             return new ResultadoToken<T1, T2, T3, T4, T5>(chave, dataHora, expirar, item1, item2, item3, item4, item5);
         }
 
-        private static List<object> RetornarValores(string token, params Type[] tipos)
+        private static List<object>? RetornarValores(string token, params Type[] tipos)
         {
 
             if (String.IsNullOrEmpty(token))

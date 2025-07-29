@@ -15,8 +15,8 @@ namespace Snebur.Seguranca
 
         private static Guid RetornarChaveToken()
         {
-            var tokenString = ConfiguracaoUtil.AppSettings["CHAVE_TOKEN"];
-            if (tokenString != null && Guid.TryParse(tokenString, out var token) && token != Guid.Empty)
+            var tokenString = ConfiguracaoUtil.AppSettings?["CHAVE_TOKEN"];
+            if (tokenString is not null && Guid.TryParse(tokenString, out var token) && token != Guid.Empty)
             {
                 return token;
             }
@@ -66,7 +66,7 @@ namespace Snebur.Seguranca
 
         public static string RetornarToken(params object[] valores)
         {
-            var agoraUtc = DateTime.UtcNow.Add(AplicacaoSnebur.Atual.DiferencaDataHoraUtcServidor);
+            var agoraUtc = DateTime.UtcNow.Add(AplicacaoSnebur.Atual?.DiferencaDataHoraUtcServidor ?? new TimeSpan(0));
             var novaLista = new List<object>();
             novaLista.Add(Guid.NewGuid());
             novaLista.Add(agoraUtc);

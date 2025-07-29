@@ -18,7 +18,7 @@ namespace Snebur.Seguranca
             }
             this.DataHora = dataHora;
             var dataLimite = dataHora.Add(tempoExpirar);
-            var agoraUtc = DateTime.UtcNow.Add(AplicacaoSnebur.Atual.DiferencaDataHoraUtcServidor);
+            var agoraUtc = DateTime.UtcNow.Add(AplicacaoSnebur.Atual?.DiferencaDataHoraUtcServidor ?? default);
 
             if (chave != Token.CHAVE)
             {
@@ -71,9 +71,11 @@ namespace Snebur.Seguranca
 
     public partial class ResultadoToken<T> : ResultadoToken where T : struct
     {
-        public Tuple<T> Itens { get; set; }
+        public Tuple<T>? Itens { get; set; }
 
-        public ResultadoToken(Guid chave, DateTime dataHora, TimeSpan tempoExpirar, T item) : base(chave, dataHora, tempoExpirar)
+        public ResultadoToken(Guid chave,
+            DateTime dataHora,
+            TimeSpan tempoExpirar, T item) : base(chave, dataHora, tempoExpirar)
         {
             this.Itens = new Tuple<T>(item);
         }
@@ -82,7 +84,7 @@ namespace Snebur.Seguranca
     public partial class ResultadoToken<T1, T2> : ResultadoToken where T1 : struct
                                                                  where T2 : struct
     {
-        public Tuple<T1, T2> Itens { get; set; }
+        public Tuple<T1, T2>? Itens { get; set; }
 
         public ResultadoToken(Guid chave, DateTime dataHora, TimeSpan tempoExpirar, T1 item1, T2 item2) : base(chave, dataHora, tempoExpirar)
         {
@@ -94,7 +96,7 @@ namespace Snebur.Seguranca
                                                              where T2 : struct
                                                              where T3 : struct
     {
-        public Tuple<T1, T2, T3> Itens { get; set; }
+        public Tuple<T1, T2, T3>? Itens { get; set; }
 
         public ResultadoToken(Guid chave, DateTime dataHora, TimeSpan tempoExpirar, T1 item1, T2 item2, T3 item3) : base(chave, dataHora, tempoExpirar)
         {
@@ -107,7 +109,7 @@ namespace Snebur.Seguranca
                                                                  where T3 : struct
                                                                  where T4 : struct
     {
-        public Tuple<T1, T2, T3, T4> Itens { get; set; }
+        public Tuple<T1, T2, T3, T4>? Itens { get; set; }
 
         public ResultadoToken(Guid chave, DateTime dataHora, TimeSpan tempoExpirar, T1 item1, T2 item2, T3 item3, T4 item4) : base(chave, dataHora, tempoExpirar)
         {
@@ -120,7 +122,7 @@ namespace Snebur.Seguranca
                                                                      where T4 : struct
                                                                      where T5 : struct
     {
-        public Tuple<T1, T2, T3, T4, T5> Itens { get; set; }
+        public Tuple<T1, T2, T3, T4, T5>? Itens { get; set; }
 
         public ResultadoToken(Guid chave, DateTime dataHora, TimeSpan tempoExpirar, T1 item1, T2 item2, T3 item3, T4 item4, T5 item5) : base(chave, dataHora, tempoExpirar)
         {
