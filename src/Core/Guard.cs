@@ -41,9 +41,18 @@ namespace Snebur
             }
         }
 
-        public static void FileExists(string filePath)
+        public static void FileExists(
+            [NotNull] string? filePath)
         {
             if (!File.Exists(filePath))
+            {
+                throw new FileNotFoundException($"Project file not found. {filePath}", filePath);
+            }
+        }
+        public static void DirectoryExits(
+             [NotNull] string? filePath)
+        {
+            if (!Directory.Exists(filePath))
             {
                 throw new FileNotFoundException($"Project file not found. {filePath}", filePath);
             }
@@ -96,6 +105,8 @@ namespace Snebur
             if (value.Count > 0)
                 throw new ArgumentException($"{paramName} must be empty.", paramName);
         }
+
+        
 #endif
 
     }
@@ -147,48 +158,48 @@ namespace Snebur
     //            throw new ArgumentException($"{paramName} must be a SHA-256 hash value.", paramName);
     //    }
 
-      
 
-        //    public static void NotEmpty<T>(
-        //           [NotNull] ICollection<T> value,
-        //           [CallerArgumentExpression(nameof(value))] string paramName = "")
-        //    {
-        //        if (value.Count == 0)
-        //            throw new ArgumentException($"{paramName} cannot be empty.", paramName);
-        //    }
 
-        //    public static void MustBeEmpty<T>(T value,
-        //        [CallerArgumentExpression(nameof(value))] string paramName = "")
-        //    {
-        //        if (value is null)
-        //            return;
+    //    public static void NotEmpty<T>(
+    //           [NotNull] ICollection<T> value,
+    //           [CallerArgumentExpression(nameof(value))] string paramName = "")
+    //    {
+    //        if (value.Count == 0)
+    //            throw new ArgumentException($"{paramName} cannot be empty.", paramName);
+    //    }
 
-        //        if (!EqualityComparer<T>.Default.Equals(value, default))
-        //            throw new ArgumentException($"{paramName} must be empty.", paramName);
-        //    }
+    //    public static void MustBeEmpty<T>(T value,
+    //        [CallerArgumentExpression(nameof(value))] string paramName = "")
+    //    {
+    //        if (value is null)
+    //            return;
 
-        //    public static void MustBeEmpty<T>(
-        //        [NotNull] ICollection<T> value,
-        //        [CallerArgumentExpression(nameof(value))] string paramName = "")
-        //    {
-        //        if (value is null)
-        //            throw new ArgumentNullException(paramName, $"{paramName} cannot be null.");
+    //        if (!EqualityComparer<T>.Default.Equals(value, default))
+    //            throw new ArgumentException($"{paramName} must be empty.", paramName);
+    //    }
 
-        //        if (value.Count > 0)
-        //            throw new ArgumentException($"{paramName} must be empty.", paramName);
-        //    }
+    //    public static void MustBeEmpty<T>(
+    //        [NotNull] ICollection<T> value,
+    //        [CallerArgumentExpression(nameof(value))] string paramName = "")
+    //    {
+    //        if (value is null)
+    //            throw new ArgumentNullException(paramName, $"{paramName} cannot be null.");
 
-        //    public static void EnumNotDefined<TEnum>(
-        //        [NotNull] TEnum value,
-        //        [CallerArgumentExpression(nameof(value))] string paramName = "")
-        //        where TEnum : struct, Enum
-        //    {
-        //        if (!EnumUtils.IsDefined(value))
-        //        {
-        //            throw new ArgumentException(
-        //                $"Parameter '{paramName}' with value '{value}' is not defined into enum '{typeof(TEnum).Name}'. Please provide a valid enum value.",
-        //                paramName);
-        //        }
-        //    }
-        //}
-    }
+    //        if (value.Count > 0)
+    //            throw new ArgumentException($"{paramName} must be empty.", paramName);
+    //    }
+
+    //    public static void EnumNotDefined<TEnum>(
+    //        [NotNull] TEnum value,
+    //        [CallerArgumentExpression(nameof(value))] string paramName = "")
+    //        where TEnum : struct, Enum
+    //    {
+    //        if (!EnumUtils.IsDefined(value))
+    //        {
+    //            throw new ArgumentException(
+    //                $"Parameter '{paramName}' with value '{value}' is not defined into enum '{typeof(TEnum).Name}'. Please provide a valid enum value.",
+    //                paramName);
+    //        }
+    //    }
+    //}
+}
