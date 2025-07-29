@@ -1,11 +1,10 @@
-﻿namespace Snebur.AcessoDados
+﻿namespace Snebur.AcessoDados;
+
+public class FiltroGrupoE : BaseFiltroGrupo
 {
-    public class FiltroGrupoE : BaseFiltroGrupo
-    {
 
-        #region Campos Privados
+    #region Campos Privados
 
-        #endregion
+    #endregion
 
-    }
 }

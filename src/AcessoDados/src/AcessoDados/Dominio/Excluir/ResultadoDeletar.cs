@@ -1,9 +1,8 @@
-﻿namespace Snebur.AcessoDados
-{
-    public class ResultadoDeletar : Resultado
-    {
-        #region Campos Privados
+﻿namespace Snebur.AcessoDados;
 
-        #endregion
-    }
+public class ResultadoDeletar : Resultado
+{
+    #region Campos Privados
+
+    #endregion
 }

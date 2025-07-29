@@ -7,125 +7,125 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Snebur.AcessoDados
+namespace Snebur.AcessoDados;
+
+public partial class ConsultaEntidade<TEntidade> where TEntidade : IEntidade
 {
-    public partial class ConsultaEntidade<TEntidade> where TEntidade : IEntidade
+    //public ConsultaEntidade<TEntidade> AbrirRelacao<TRelacao>(Expression<Func<TEntidade, IEnumerable<TRelacao>>> expressao) where TRelacao : IEntidade
+    //{
+    //    return this.AbrirColecao(expressao);
+    //}
+
+    public ConsultaEntidade<TEntidade> AbrirColecao(string caminhoColecao)
     {
-        //public ConsultaEntidade<TEntidade> AbrirRelacao<TRelacao>(Expression<Func<TEntidade, IEnumerable<TRelacao>>> expressao) where TRelacao : IEntidade
-        //{
-        //    return this.AbrirColecao(expressao);
-        //}
+        return this.AbrirRelacao(this.EstruturaConsulta, caminhoColecao, false);
+    }
 
-        public ConsultaEntidade<TEntidade> AbrirColecao(string caminhoColecao)
+    public ConsultaEntidade<TEntidade> AbrirColecao<TRelacao>(Expression<Func<TEntidade, IEnumerable<TRelacao>>> expressao) where TRelacao : IEntidade
+    {
+        var expressaoInterna = (Expression)expressao;
+        return this.AbrirRelacao(this.EstruturaConsulta, expressaoInterna, false);
+    }
+
+    public ConsultaEntidade<TEntidade> AbrirColecao(Expression<Func<TEntidade, IEnumerable>> expressao)
+    {
+        var expressaoInterna = (Expression)expressao;
+        return this.AbrirRelacao(this.EstruturaConsulta, expressaoInterna, false);
+    }
+
+    public ConsultaEntidade<TEntidade> AbrirColecoes(params string[] caminhosColecao)
+    {
+        foreach (var caminhoColecao in caminhosColecao)
         {
-            return this.AbrirRelacao(this.EstruturaConsulta, caminhoColecao, false);
+            return this.AbrirRelacao(caminhoColecao);
         }
+        return this;
+    }
 
-        public ConsultaEntidade<TEntidade> AbrirColecao<TRelacao>(Expression<Func<TEntidade, IEnumerable<TRelacao>>> expressao) where TRelacao : IEntidade
+    public ConsultaEntidade<TEntidade> AbrirColecoes(params Expression<Func<TEntidade, IEnumerable>>[] expressoes)
+    {
+        foreach (var expessao in expressoes)
         {
-            var expressaoInterna = (Expression)expressao;
-            return this.AbrirRelacao(this.EstruturaConsulta, expressaoInterna, false);
+            this.AbrirColecao(expessao);
         }
+        return this;
+    }
+    //public ConsultaEntidade<TEntidade> AbrirColecoes<TRelacao>(params Expression<Func<TEntidade, IEnumerable<TRelacao>>>[] expressoes) where TRelacao : IEntidade
+    //{
+    //    foreach(var expressao in expressoes)
+    //    {
+    //        this.AbrirColecao(expressao);
+    //    }
+    //    return this;
+    //}
 
-        public ConsultaEntidade<TEntidade> AbrirColecao(Expression<Func<TEntidade, IEnumerable>> expressao)
-        {
-            var expressaoInterna = (Expression)expressao;
-            return this.AbrirRelacao(this.EstruturaConsulta, expressaoInterna, false);
-        }
+    public ConsultaEntidade<TEntidade> WhereColecao<TRelacao>(Expression<Func<TEntidade, ListaEntidades<TRelacao>>> expressaoCaminhoColecao, Expression<Func<TRelacao, bool>> filtro) where TRelacao : Entidade
+    {
+        var consultaAcessoDados = this.RetornarEstruturaConsultaRelacaoColecao(expressaoCaminhoColecao);
+        this.AdicionarFiltro(consultaAcessoDados, filtro, consultaAcessoDados.FiltroGrupoE);
+        return this;
+    }
 
-        public ConsultaEntidade<TEntidade> AbrirColecoes(params string[] caminhosColecao)
+    public ConsultaEntidade<TEntidade> OrderByColecao<TRelacao>(Expression<Func<TEntidade, ListaEntidades<TRelacao>>> expressaoCaminhoColecao, Expression<Func<TRelacao, object>> expressaoCaminhoPropriedade) where TRelacao : Entidade
+    {
+        var consultaAcessoDados = this.RetornarEstruturaConsultaRelacaoColecao(expressaoCaminhoColecao);
+        this.Ordernar(consultaAcessoDados, expressaoCaminhoPropriedade, EnumSentidoOrdenacao.Crescente);
+        return this;
+    }
+
+    public ConsultaEntidade<TEntidade> OrderByDescendingColecao<TRelacao>(Expression<Func<TEntidade, ListaEntidades<TRelacao>>> expressaoCaminhoColecao, Expression<Func<TRelacao, object>> expressaoCaminhoPropriedade) where TRelacao : Entidade
+    {
+        var consultaAcessoDados = this.RetornarEstruturaConsultaRelacaoColecao(expressaoCaminhoColecao);
+        this.Ordernar(consultaAcessoDados, expressaoCaminhoPropriedade, EnumSentidoOrdenacao.Decrescente);
+        return this;
+    }
+
+    public ConsultaEntidade<TEntidade> TakeColecao<TRelacao>(Expression<Func<TEntidade, ListaEntidades<TRelacao>>> expressaoCaminhoColecao, int take) where TRelacao : Entidade
+    {
+        var consultaAcessoDados = this.RetornarEstruturaConsultaRelacaoColecao(expressaoCaminhoColecao);
+        consultaAcessoDados.Take = take;
+        return this;
+    }
+
+    public ConsultaEntidade<TEntidade> SkipColecao<TRelacao>(Expression<Func<TEntidade, ListaEntidades<TRelacao>>> expressaoCaminhoColecao, int skip) where TRelacao : Entidade
+    {
+        var consultaAcessoDados = this.RetornarEstruturaConsultaRelacaoColecao(expressaoCaminhoColecao);
+        consultaAcessoDados.Skip = skip;
+        return this;
+    }
+
+    private EstruturaConsulta RetornarEstruturaConsultaRelacaoColecao(Expression expressaoCaminhoColecao)
+    {
+        var propriedades = ExpressaoUtil.RetornarPropriedades(expressaoCaminhoColecao);
+        var propriedadesCaminho = new List<PropertyInfo>();
+
+        EstruturaConsulta estruturaConsultaAtual = this.EstruturaConsulta;
+        foreach (var propriedade in propriedades)
         {
-            foreach (var caminhoColecao in caminhosColecao)
+            propriedadesCaminho.Add(propriedade);
+            var caminhoPropriedade = AjudanteConsultaEntidade.RetornarCaminhoPropriedade(propriedadesCaminho);
+
+            ErroUtil.ValidarStringVazia(caminhoPropriedade, nameof(caminhoPropriedade));
+
+            if (ReflexaoUtil.IsPropriedadeRetornaTipoPrimario(propriedade))
             {
-                return this.AbrirRelacao(caminhoColecao);
+                continue;
             }
-            return this;
-        }
-
-        public ConsultaEntidade<TEntidade> AbrirColecoes(params Expression<Func<TEntidade, IEnumerable>>[] expressoes)
-        {
-            foreach (var expessao in expressoes)
+            if (propriedade.PropertyType.IsSubclassOf(typeof(Entidade)))
             {
-                this.AbrirColecao(expessao);
+                continue;
             }
-            return this;
-        }
-        //public ConsultaEntidade<TEntidade> AbrirColecoes<TRelacao>(params Expression<Func<TEntidade, IEnumerable<TRelacao>>>[] expressoes) where TRelacao : IEntidade
-        //{
-        //    foreach(var expressao in expressoes)
-        //    {
-        //        this.AbrirColecao(expressao);
-        //    }
-        //    return this;
-        //}
-
-        public ConsultaEntidade<TEntidade> WhereColecao<TRelacao>(Expression<Func<TEntidade, ListaEntidades<TRelacao>>> expressaoCaminhoColecao, Expression<Func<TRelacao, bool>> filtro) where TRelacao : Entidade
-        {
-            var consultaAcessoDados = this.RetornarEstruturaConsultaRelacaoColecao(expressaoCaminhoColecao);
-            this.AdicionarFiltro(consultaAcessoDados, filtro, consultaAcessoDados.FiltroGrupoE);
-            return this;
-        }
-
-        public ConsultaEntidade<TEntidade> OrderByColecao<TRelacao>(Expression<Func<TEntidade, ListaEntidades<TRelacao>>> expressaoCaminhoColecao, Expression<Func<TRelacao, object>> expressaoCaminhoPropriedade) where TRelacao : Entidade
-        {
-            var consultaAcessoDados = this.RetornarEstruturaConsultaRelacaoColecao(expressaoCaminhoColecao);
-            this.Ordernar(consultaAcessoDados, expressaoCaminhoPropriedade, EnumSentidoOrdenacao.Crescente);
-            return this;
-        }
-
-        public ConsultaEntidade<TEntidade> OrderByDescendingColecao<TRelacao>(Expression<Func<TEntidade, ListaEntidades<TRelacao>>> expressaoCaminhoColecao, Expression<Func<TRelacao, object>> expressaoCaminhoPropriedade) where TRelacao : Entidade
-        {
-            var consultaAcessoDados = this.RetornarEstruturaConsultaRelacaoColecao(expressaoCaminhoColecao);
-            this.Ordernar(consultaAcessoDados, expressaoCaminhoPropriedade, EnumSentidoOrdenacao.Decrescente);
-            return this;
-        }
-
-        public ConsultaEntidade<TEntidade> TakeColecao<TRelacao>(Expression<Func<TEntidade, ListaEntidades<TRelacao>>> expressaoCaminhoColecao, int take) where TRelacao : Entidade
-        {
-            var consultaAcessoDados = this.RetornarEstruturaConsultaRelacaoColecao(expressaoCaminhoColecao);
-            consultaAcessoDados.Take = take;
-            return this;
-        }
-
-        public ConsultaEntidade<TEntidade> SkipColecao<TRelacao>(Expression<Func<TEntidade, ListaEntidades<TRelacao>>> expressaoCaminhoColecao, int skip) where TRelacao : Entidade
-        {
-            var consultaAcessoDados = this.RetornarEstruturaConsultaRelacaoColecao(expressaoCaminhoColecao);
-            consultaAcessoDados.Skip = skip;
-            return this;
-        }
-
-        private EstruturaConsulta RetornarEstruturaConsultaRelacaoColecao(Expression expressaoCaminhoColecao)
-        {
-            var propriedades = ExpressaoUtil.RetornarPropriedades(expressaoCaminhoColecao);
-            var propriedadesCaminho = new List<PropertyInfo>();
-
-            EstruturaConsulta estruturaConsultaAtual = this.EstruturaConsulta;
-            foreach (var propriedade in propriedades)
+            if (AjudanteConsultaEntidade.IsPropriedadeRetornarListaEntidade(propriedade))
             {
-                propriedadesCaminho.Add(propriedade);
-                var caminhoPropriedade = AjudanteConsultaEntidade.RetornarCaminhoPropriedade(propriedadesCaminho);
-
-                ErroUtil.ValidarStringVazia(caminhoPropriedade, nameof(caminhoPropriedade));
-
-                if (ReflexaoUtil.IsPropriedadeRetornaTipoPrimario(propriedade))
+                if (!estruturaConsultaAtual.ColecoesAberta.ContainsKey(caminhoPropriedade))
                 {
-                    continue;
+                    throw new Erro(String.Format("A preciso abrir a relação {0} ander de filtra-la, Caminho completo {1}", caminhoPropriedade, expressaoCaminhoColecao));
                 }
-                if (propriedade.PropertyType.IsSubclassOf(typeof(Entidade)))
-                {
-                    continue;
-                }
-                if (AjudanteConsultaEntidade.IsPropriedadeRetornarListaEntidade(propriedade))
-                {
-                    if (!estruturaConsultaAtual.ColecoesAberta.ContainsKey(caminhoPropriedade))
-                    {
-                        throw new Erro(String.Format("A preciso abrir a relação {0} ander de filtra-la, Caminho completo {1}", caminhoPropriedade, expressaoCaminhoColecao));
-                    }
-                    var relacaoAbertaColecao = (RelacaoAbertaColecao)estruturaConsultaAtual.ColecoesAberta[caminhoPropriedade];
-                    estruturaConsultaAtual = relacaoAbertaColecao.EstruturaConsulta;
-                }
+                var relacaoAbertaColecao = (RelacaoAbertaColecao)estruturaConsultaAtual.ColecoesAberta[caminhoPropriedade];
+                estruturaConsultaAtual = relacaoAbertaColecao.EstruturaConsulta!;
+                Guard.NotNull(estruturaConsultaAtual);
             }
-            return estruturaConsultaAtual;
         }
+        return estruturaConsultaAtual;
     }
 }

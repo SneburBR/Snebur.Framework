@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 
-namespace Snebur.AcessoDados
+namespace Snebur.AcessoDados;
+
+
+public abstract class BaseFiltroGrupo : BaseFiltro
 {
+    #region Campos Privados
 
-    public abstract class BaseFiltroGrupo : BaseFiltro
-    {
-        #region Campos Privados
+    #endregion
 
-        #endregion
-
-        public List<BaseFiltro> Filtros { get; set; } = new();
-    }
+    public List<BaseFiltro> Filtros { get; set; } = new();
 }

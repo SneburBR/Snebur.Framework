@@ -1,11 +1,10 @@
-﻿namespace Snebur.AcessoDados
-{
-    //Public Class FiltroPesquisa
-    //    Inherits BaseFiltroExpressao
+﻿namespace Snebur.AcessoDados;
 
-    //    Property PropriedadesPesquisa As New List(Of PropriedadePesquisa)
+//Public Class FiltroPesquisa
+//    Inherits BaseFiltroExpressao
 
-    //    Property Valor As String
+//    Property PropriedadesPesquisa As New List(Of PropriedadePesquisa)
 
-    //End Class
-}
+//    Property Valor As String
+
+//End Class

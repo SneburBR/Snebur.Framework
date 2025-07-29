@@ -3,20 +3,19 @@ using Snebur.Dominio;
 using System;
 using System.Collections.Generic;
 
-namespace Snebur.AcessoDados
+namespace Snebur.AcessoDados;
+
+public interface IServicoDados : IBaseServico
 {
-    public interface IServicoDados : IBaseServico
-    {
-        object RetornarValorScalar(EstruturaConsulta estruturaConsulta);
+    object RetornarValorScalar(EstruturaConsulta estruturaConsulta);
 
-        ResultadoConsulta RetornarResultadoConsulta(EstruturaConsulta estruturaConsulta);
+    ResultadoConsulta RetornarResultadoConsulta(EstruturaConsulta estruturaConsulta);
 
-        ResultadoSalvar Salvar(IEnumerable<IEntidade> entidades);
+    ResultadoSalvar Salvar(IEnumerable<IEntidade> entidades);
 
-        ResultadoDeletar Deletar(IEnumerable<IEntidade> entidades, string relacoesEmCascata);
+    ResultadoDeletar Deletar(IEnumerable<IEntidade> entidades, string relacoesEmCascata);
 
-        DateTime RetornarDataHora();
+    DateTime RetornarDataHora();
 
-        DateTime RetornarDataHoraUTC();
-    }
+    DateTime RetornarDataHoraUTC();
 }

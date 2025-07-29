@@ -8,6 +8,7 @@
 		<AssemblyName>Snebur.AcessoDados</AssemblyName>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<Nullable>enable</Nullable>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 	</PropertyGroup>
    
 	<ItemGroup>

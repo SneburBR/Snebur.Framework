@@ -1,19 +1,18 @@
 ﻿using Snebur.Dominio.Atributos;
 using System.Collections.Generic;
 
-namespace Snebur.AcessoDados.Seguranca
+namespace Snebur.AcessoDados.Seguranca;
+
+public interface IEstruturaConsultaSeguranca
 {
-    public interface IEstruturaConsultaSeguranca
-    {
-        //[IgnorarPropriedadeTS]
-        //[IgnorarPropriedadeTSReflexao]
-        List<string> PropriedadesAbertas { get; set; }
+    //[IgnorarPropriedadeTS]
+    //[IgnorarPropriedadeTSReflexao]
+    List<string> PropriedadesAbertas { get; set; }
 
-        [IgnorarPropriedade]
-        [IgnorarPropriedadeTSReflexao]
-        List<string> PropriedadesAutorizadas { get; }
+    [IgnorarPropriedade]
+    [IgnorarPropriedadeTSReflexao]
+    List<string>? PropriedadesAutorizadas { get; }
 
-        [IgnorarMetodoTS]
-        void AtribuirPropriedadeAutorizadas(List<string> propriedadesAutorizadas);
-    }
+    [IgnorarMetodoTS]
+    void AtribuirPropriedadeAutorizadas(List<string> propriedadesAutorizadas);
 }

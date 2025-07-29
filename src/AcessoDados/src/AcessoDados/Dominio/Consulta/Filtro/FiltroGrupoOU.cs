@@ -1,9 +1,8 @@
-﻿namespace Snebur.AcessoDados
-{
-    public class FiltroGrupoOU : BaseFiltroGrupo
-    {
-        #region Campos Privados
+﻿namespace Snebur.AcessoDados;
 
-        #endregion
-    }
+public class FiltroGrupoOU : BaseFiltroGrupo
+{
+    #region Campos Privados
+
+    #endregion
 }

@@ -1,8 +1,7 @@
-﻿namespace Snebur.AcessoDados
+﻿namespace Snebur.AcessoDados;
+
+public enum EnumPosicaoOrdenacao
 {
-    public enum EnumPosicaoOrdenacao
-    {
-        Afrente = 1,
-        Atras = 2
-    }
+    Afrente = 1,
+    Atras = 2
 }

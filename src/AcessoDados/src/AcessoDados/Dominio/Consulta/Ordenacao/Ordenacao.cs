@@ -1,19 +1,18 @@
 ﻿using Snebur.Dominio;
 
-namespace Snebur.AcessoDados
+namespace Snebur.AcessoDados;
+
+public class Ordenacao : BaseAcessoDados
 {
-    public class Ordenacao : BaseAcessoDados
-    {
 
-        #region Campos Privados
+    #region Campos Privados
 
-        private string? _caminhoPropriedade;
-        private EnumSentidoOrdenacao _sentidoOrdenacaoEnum;
+    private string? _caminhoPropriedade;
+    private EnumSentidoOrdenacao _sentidoOrdenacaoEnum;
 
-        #endregion
+    #endregion
 
-        public string? CaminhoPropriedade { get => this.RetornarValorPropriedade(this._caminhoPropriedade); set => this.NotificarValorPropriedadeAlterada(this._caminhoPropriedade, this._caminhoPropriedade = value); }
+    public string? CaminhoPropriedade { get => this.RetornarValorPropriedade(this._caminhoPropriedade); set => this.NotificarValorPropriedadeAlterada(this._caminhoPropriedade, this._caminhoPropriedade = value); }
 
-        public EnumSentidoOrdenacao SentidoOrdenacaoEnum { get => this.RetornarValorPropriedade(this._sentidoOrdenacaoEnum); set => this.NotificarValorPropriedadeAlterada(this._sentidoOrdenacaoEnum, this._sentidoOrdenacaoEnum = value); }
-    }
+    public EnumSentidoOrdenacao SentidoOrdenacaoEnum { get => this.RetornarValorPropriedade(this._sentidoOrdenacaoEnum); set => this.NotificarValorPropriedadeAlterada(this._sentidoOrdenacaoEnum, this._sentidoOrdenacaoEnum = value); }
 }
