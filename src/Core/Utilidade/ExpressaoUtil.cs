@@ -40,7 +40,6 @@ namespace Snebur.Utilidade
                         break;
                     }
                 }
-
             }
 
             return expressoes;
@@ -154,10 +153,12 @@ namespace Snebur.Utilidade
             return RetornarPropriedades(expressao, permitirMetodos).Last();
         }
 
-        public static List<PropertyInfo> RetornarPropriedades(Expression expressao, bool permitirMetodos = true)
+        public static List<PropertyInfo> RetornarPropriedades(
+            Expression? expressao, 
+            bool permitirMetodos = true)
         {
             var propriedades = new List<PropertyInfo>();
-            while (expressao != null)
+            while (expressao is not null)
             {
                 if (expressao is LambdaExpression)
                 {
@@ -199,7 +200,9 @@ namespace Snebur.Utilidade
             return propriedades;
         }
 
-        public static Expression RetornarExpressaoInterna(Expression expressao, List<PropertyInfo> propriedades, bool permitirMetodos = true)
+        public static Expression? RetornarExpressaoInterna(
+            Expression expressao,
+            List<PropertyInfo> propriedades, bool permitirMetodos = true)
         {
             if (expressao is UnaryExpression)
             {
@@ -255,7 +258,7 @@ namespace Snebur.Utilidade
 
         public static string RetornarTextoEntrarApas(string linhaVersao)
         {
-            return RetornarTextosEntraApas(linhaVersao).SingleOrDefault();
+            return RetornarTextosEntraApas(linhaVersao).SingleOrDefault() ?? string.Empty;
         }
 
         public static List<string> RetornarTextosEntraApas(string expressao)
@@ -266,7 +269,11 @@ namespace Snebur.Utilidade
             var texto = new List<string>();
             foreach (var resultado in resultados)
             {
-                var r = resultado.ToString();
+                var r = resultado?.ToString();
+                if (r is null || r.Length < 2)
+                {
+                    continue;
+                }
                 texto.Add(r.Substring(1, r.Length - 2));
             }
             return texto;

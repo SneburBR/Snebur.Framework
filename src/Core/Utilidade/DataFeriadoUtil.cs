@@ -158,6 +158,6 @@ namespace Snebur.Utilidade
     public class Feriado
     {
         public DateTime Data { get; internal set; }
-        public string Descricao { get; internal set; }
+        public string? Descricao { get; internal set; }
     }
 }

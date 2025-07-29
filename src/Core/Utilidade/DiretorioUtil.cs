@@ -382,7 +382,7 @@ namespace Snebur.Utilidade
         /// </summary>
         /// <param name="caminhoDiretorio"></param>
         /// <returns></returns>
-        public static bool IsRede(string caminhoDiretorio)
+        public static bool IsRede(string? caminhoDiretorio)
         {
             if (String.IsNullOrEmpty(caminhoDiretorio))
             {
@@ -511,12 +511,16 @@ namespace Snebur.Utilidade
             }
         }
 
-        public static string RetornarNomeComputador(string caminho)
+        public static string RetornarNomeComputador(string? caminho)
         {
+            if (string.IsNullOrWhiteSpace(caminho))
+            {
+                return String.Empty;
+            }
             if (IsRede(caminho))
             {
                 NormalizarCaminho(caminho);
-                while (caminho.StartsWith("\\"))
+                while (caminho.StartsWith("\\") == true)
                 {
                     caminho = caminho.Substring(1);
                 }
@@ -525,9 +529,9 @@ namespace Snebur.Utilidade
             return String.Empty;
         }
 
-        private static string NormalizarCaminho(string caminho)
+        private static string NormalizarCaminho(string? caminho)
         {
-            return caminho.Replace("/", "\\");
+            return caminho?.Replace("/", "\\") ?? String.Empty;
         }
 
         public static string RetornarDiretorioPai(IEnumerable<string> caminhos,
@@ -554,6 +558,5 @@ namespace Snebur.Utilidade
             }
             return prefix;
         }
-
     }
 }

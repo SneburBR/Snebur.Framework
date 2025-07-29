@@ -9,7 +9,7 @@ namespace Snebur
         private int Identificador;
         private readonly Delegate Acao;
 
-        private object[] Parametros;
+        private object[]? Parametros;
         public bool IsExecutarPedente { get; private set; }
 
         public bool IsNuncaExecutado { get; private set; } = true;
@@ -58,11 +58,11 @@ namespace Snebur
             }
         }
 
-        private void ExecutarInterno(object[] parametros)
+        private void ExecutarInterno(object[]? parametros)
         {
             if (this.Acao is Delegate acaoTipada)
             {
-                if (this.Parametros != null)
+                if (this.Parametros is not null)
                 {
                     acaoTipada.DynamicInvoke(this.Parametros);
                 }

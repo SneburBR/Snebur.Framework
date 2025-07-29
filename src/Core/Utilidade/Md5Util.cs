@@ -6,8 +6,12 @@ namespace Snebur.Utilidade
 {
     public static class Md5Util
     {
-        public static string RetornarHash(string texto)
+        public static string RetornarHash(string? texto)
         {
+            if (string.IsNullOrEmpty(texto))
+            {
+                return string.Empty;
+            }
             using (var md5 =MD5.Create())
             {
                 var bytes = Encoding.UTF8.GetBytes(texto);
@@ -22,8 +26,13 @@ namespace Snebur.Utilidade
             }
         }
 
-        public static Guid RetornarHashGuid(string texto)
+        public static Guid RetornarHashGuid(string? texto)
         {
+            if (string.IsNullOrEmpty(texto))
+            {
+                return Guid.Empty;
+            }
+
             using (var md5 = MD5.Create())
             {
                 var bytes = Encoding.UTF8.GetBytes(texto);

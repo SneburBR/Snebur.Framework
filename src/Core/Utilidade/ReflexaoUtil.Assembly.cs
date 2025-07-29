@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Snebur.Dominio.Atributos;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -8,10 +9,11 @@ namespace Snebur.Utilidade
     {
         private const string NOME_EMPRESA_PADRAO = "Snebur Sistemas";
         private const string NOME_SNEBUR = "Snebur";
-        private static Assembly _assemblyEntrada;
+        private static Assembly? _assemblyEntrada;
 
-        public static Assembly AssemblyEntrada => LazyUtil.RetornarValorLazyComBloqueio(ref _assemblyEntrada,
-                                                                                      RetornarAssemblyEntradaInterno);
+        public static Assembly AssemblyEntrada => LazyUtil.RetornarValorLazyComBloqueio(
+            ref _assemblyEntrada,
+            RetornarAssemblyEntradaInterno);
 
         private static Assembly RetornarAssemblyEntradaInterno()
         {
@@ -20,10 +22,10 @@ namespace Snebur.Utilidade
             {
                 return assemblyEntrada;
             }
-            var tipoAplicacao = AplicacaoSnebur.Atual.TipoAplicacao;
-            if (tipoAplicacao == Dominio.EnumTipoAplicacao.ExtensaoVisualStudio)
+            var tipoAplicacao = AplicacaoSnebur.Atual?.TipoAplicacao;
+            if (tipoAplicacao == EnumTipoAplicacao.ExtensaoVisualStudio)
             {
-                return AplicacaoSnebur._aplicacao.GetType().Assembly;
+                return AplicacaoSnebur._aplicacao!.GetType().Assembly;
             }
 
             if (AplicacaoSnebur._aplicacao != null )
@@ -65,19 +67,23 @@ namespace Snebur.Utilidade
 
         public static Version RetornarVersaoAssembly<T>()
         {
-            return typeof(T).Assembly.GetName().Version;
+            return typeof(T).Assembly.RetornarVersaoAssembly();
+            
         }
-        public static Version RetornarVersaoAssembly(Assembly assembly)
+        public static Version RetornarVersaoAssembly(this Assembly assembly)
         {
-            //return assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.ver;
-            return assembly.GetName().Version;
+            var assemblyName = assembly.GetName();
+            return assemblyName.Version ??
+                   throw new Exception($"Não foi possível obter a versão do assembly  {assemblyName.Name}");
         }
 
         public static Tuple<string, Version> RetornarNomeVersaoAssembly(Assembly assembly)
         {
             ErroUtil.ValidarReferenciaNula(assembly, nameof(assembly));
-            var assemblyName = assembly.GetName();
-            return new Tuple<string, Version>(assemblyName.Name, assemblyName.Version);
+            var version = assembly.RetornarVersaoAssembly();
+            var assemblyName = assembly.GetName().Name ?? $"Assembly sem nome {assembly.FullName}";
+
+            return new Tuple<string, Version>(assemblyName, version);
         }
 
         public static Tuple<string, Version> RetornarNomeVersaoAssemblyAplicacao()

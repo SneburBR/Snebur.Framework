@@ -81,7 +81,7 @@ namespace Snebur.Utilidade
             return Equals(objeto1, objeto2);
         }
 
-        public static T RetornarSeVerdadeiro<T>(bool condicao, T valor)
+        public static T? RetornarSeVerdadeiro<T>(bool condicao, T? valor)
         {
             if (condicao)
             {
@@ -98,9 +98,11 @@ namespace Snebur.Utilidade
             return objetos.ToArray();
         }
 
-        private static void VarrerObjeto<T>(object objeto, HashSet<T> objetos, HashSet<object> objetosAnalisados)
+        private static void VarrerObjeto<T>(object? objeto,
+            HashSet<T> objetos,
+            HashSet<object> objetosAnalisados)
         {
-            if (objeto == null)
+            if (objeto is null)
             {
                 return;
             }

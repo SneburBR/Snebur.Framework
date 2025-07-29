@@ -130,21 +130,22 @@ namespace Snebur.Utilidade
                 {
                     lock (_bloqueioCaminhoAppData)
                     {
-                        if (_caminhoAppDataAplicacaoSemVersao == null || IsAtualizarCaminhoAppData(_caminhoAppDataAplicacaoSemVersao, true))
+                        if (_caminhoAppDataAplicacaoSemVersao == null || 
+                            IsAtualizarCaminhoAppData(_caminhoAppDataAplicacaoSemVersao, true))
                         {
                             var caminhoAppData = RetornarCaminhoLocalAppData();
 
-                            _caminhoAppDataAplicacaoSemVersao = CaminhoUtil.Combine(caminhoAppData, AplicacaoSnebur.Atual.NomeEmpresa);
+                            _caminhoAppDataAplicacaoSemVersao = CaminhoUtil.Combine(caminhoAppData, AplicacaoSnebur.AtualRequired.NomeEmpresa);
 
                             if (AmbienteServidor != EnumAmbienteServidor.Producao)
                             {
                                 _caminhoAppDataAplicacaoSemVersao = CaminhoUtil.Combine(_caminhoAppDataAplicacaoSemVersao, AmbienteServidor.ToString());
                             }
-                            _caminhoAppDataAplicacaoSemVersao = CaminhoUtil.Combine(_caminhoAppDataAplicacaoSemVersao, AplicacaoSnebur.Atual.IdentificadorAplicacao);
+                            _caminhoAppDataAplicacaoSemVersao = CaminhoUtil.Combine(_caminhoAppDataAplicacaoSemVersao, AplicacaoSnebur.AtualRequired.IdentificadorAplicacao);
 
-                            if (AplicacaoSnebur.Atual.IsSeperarAppDataPorIdentificadorPropretario)
+                            if (AplicacaoSnebur.AtualRequired.IsSeperarAppDataPorIdentificadorPropretario)
                             {
-                                _caminhoAppDataAplicacaoSemVersao = CaminhoUtil.Combine(_caminhoAppDataAplicacaoSemVersao, AplicacaoSnebur.Atual.IdentificadorProprietario);
+                                _caminhoAppDataAplicacaoSemVersao = CaminhoUtil.Combine(_caminhoAppDataAplicacaoSemVersao, AplicacaoSnebur.AtualRequired.IdentificadorProprietario);
                             }
                             DiretorioUtil.CriarDiretorio(_caminhoAppDataAplicacaoSemVersao);
                         }
@@ -168,13 +169,13 @@ namespace Snebur.Utilidade
                         {
                             var caminhoAppData = RetornarCaminhoLocalAppData();
 
-                            _caminhoAppDataAplicacaoSemIdentificadorPropretario = CaminhoUtil.Combine(caminhoAppData, AplicacaoSnebur.Atual.NomeEmpresa);
+                            _caminhoAppDataAplicacaoSemIdentificadorPropretario = CaminhoUtil.Combine(caminhoAppData, AplicacaoSnebur.AtualRequired.NomeEmpresa);
                             if (AmbienteServidor != EnumAmbienteServidor.Producao)
                             {
                                 _caminhoAppDataAplicacaoSemIdentificadorPropretario = CaminhoUtil.Combine(_caminhoAppDataAplicacaoSemIdentificadorPropretario, AmbienteServidor.ToString());
                             }
                             _caminhoAppDataAplicacaoSemIdentificadorPropretario = CaminhoUtil.Combine(_caminhoAppDataAplicacaoSemIdentificadorPropretario,
-                                                                                                AplicacaoSnebur.Atual.NomeAplicacao);
+                                                                                                AplicacaoSnebur.AtualRequired.NomeAplicacao);
 
                             DiretorioUtil.CriarDiretorio(_caminhoAppDataAplicacaoSemIdentificadorPropretario);
                         }
@@ -184,7 +185,7 @@ namespace Snebur.Utilidade
             }
         }
 
-        private static bool IsAtualizarCaminhoAppData(string caminho, bool semVersao)
+        private static bool IsAtualizarCaminhoAppData(string? caminho, bool semVersao)
         {
             if (String.IsNullOrEmpty(caminho))
             {
@@ -199,7 +200,7 @@ namespace Snebur.Utilidade
             {
                 di = di.Parent;
             }
-            if (di.Name == "0")
+            if (di?.Name == "0")
             {
                 return true;
             }
@@ -242,7 +243,7 @@ namespace Snebur.Utilidade
             var nodeAppSetting = doc.SelectSingleNode(caminhonode);
             if (nodeAppSetting != null)
             {
-                if (nodeAppSetting.Attributes["configSource"] != null)
+                if (nodeAppSetting?.Attributes?["configSource"] is not null)
                 {
                     if (File.Exists(caminhoOrigemDoNode))
                     {
@@ -256,7 +257,7 @@ namespace Snebur.Utilidade
                             docAppSetting.Load(msAppSetting);
 
                             var nodeAppSettingOrigem = docAppSetting.SelectSingleNode(caminhonode);
-                            nodeAppSetting.InnerXml = nodeAppSettingOrigem.InnerXml;
+                            nodeAppSetting.InnerXml = nodeAppSettingOrigem?.InnerXml ?? String.Empty;
                             return true;
                         }
                     }
@@ -266,7 +267,7 @@ namespace Snebur.Utilidade
         }
         private static EnumAmbienteServidor RetornarAmbienteServidor()
         {
-            var descricao = AplicacaoSnebur.Atual.AppSettings[NOME_CHAVE_AMBIENTE_SERVIDOR];
+            var descricao = AplicacaoSnebur.AtualRequired.AppSettings[NOME_CHAVE_AMBIENTE_SERVIDOR];
             if (String.IsNullOrEmpty(descricao))
             {
                 if (DebugUtil.IsAttached)

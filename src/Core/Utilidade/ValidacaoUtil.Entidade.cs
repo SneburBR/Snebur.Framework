@@ -31,7 +31,7 @@ namespace Snebur.Utilidade
 
                 if (propriedadeChaveEstrangeira != null)
                 {
-                    if ((long)valorPropriedade > 0)
+                    if (Convert.ToInt64(valorPropriedade) > 0)
                     {
                         return true;
                     }
@@ -44,7 +44,6 @@ namespace Snebur.Utilidade
 
                     return false;
                 }
-
             }
 
             if (ReflexaoUtil.IsTipoIgualOuHerda(propriedade.PropertyType, typeof(Entidade)))
@@ -192,12 +191,13 @@ namespace Snebur.Utilidade
             return atributos.OfType<BaseValidacaoEntidadeAttribute>().ToList();
         }
 
-        private static bool IsValorPropriedadeRequerido(PropertyInfo propriedade, object valorPropriedade)
+        private static bool IsValorPropriedadeRequerido(PropertyInfo propriedade, object? valorPropriedade)
         {
-            if (valorPropriedade == null)
+            if (valorPropriedade is null)
             {
                 return false;
             }
+
             switch (valorPropriedade)
             {
                 case bool _:
@@ -247,8 +247,13 @@ namespace Snebur.Utilidade
             return data.Year >= 1900 && data.Year < 2100;
         }
 
-        private static bool IsValidacaoRequeridoTipoComplexo(BaseTipoComplexo valor)
+        private static bool IsValidacaoRequeridoTipoComplexo(BaseTipoComplexo? valor)
         {
+            if(valor is null)
+            {
+                return false;
+            }
+
             var tipo = valor.GetType();
             var propriedades = ReflexaoUtil.RetornarPropriedadesEntidade(valor.GetType());
             foreach (var propriedade in propriedades)
@@ -291,6 +296,5 @@ namespace Snebur.Utilidade
                     progresso >= 0 &&
                     progresso <= 100;
         }
-
     }
 }

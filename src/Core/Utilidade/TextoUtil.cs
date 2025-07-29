@@ -282,7 +282,7 @@ namespace Snebur.Utilidade
         }
 
         public static string RetornarSomentesLetrasNumeros(
-            string texto,
+            string? texto,
             bool isPermitirEspacoBranco = true,
             IEnumerable<char>? caractesExtras = null)
         {

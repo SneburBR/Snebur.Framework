@@ -82,17 +82,22 @@ namespace Snebur.Utilidade
         //    }
         //    return _dadosIpInformacao;
         //}
-
-
+         
         #endregion
 
-        #region Identificador Sessão usuario
+        #region Identificador Sessão usuário
 
         private static ConcurrentDictionary<string, Guid> IdentificadoresSessaoUsuario { get; set; } = new ConcurrentDictionary<string, Guid>();
 
         public static Guid RetornarIdentificadorSessaoUsuario()
         {
-            var identificadorUsuario = AplicacaoSnebur.Atual.CredencialUsuario.IdentificadorUsuario;
+            var identificadorUsuario = AplicacaoSnebur.AtualRequired.CredencialUsuario?.IdentificadorUsuario;
+            if (String.IsNullOrWhiteSpace(identificadorUsuario))
+            {
+                throw new ArgumentNullException(nameof(identificadorUsuario),
+                    "O identificador do usuário não pode ser nulo ou vazio.");
+            }
+
             if (IdentificadoresSessaoUsuario.ContainsKey(identificadorUsuario))
             {
                 return IdentificadoresSessaoUsuario[identificadorUsuario];
@@ -121,7 +126,14 @@ namespace Snebur.Utilidade
 
         public static void SalvarIdentificadorSessaoUsuario(Guid identificadorSessaoUsuario)
         {
-            var identificadorUsuario = AplicacaoSnebur.Atual.CredencialUsuario.IdentificadorUsuario;
+            var identificadorUsuario = AplicacaoSnebur.AtualRequired.CredencialUsuario?.IdentificadorUsuario;
+
+            if (String.IsNullOrWhiteSpace(identificadorUsuario))
+            {
+                throw new ArgumentNullException(nameof(identificadorUsuario),
+                    "O identificador do usuário não pode ser nulo ou vazio.");
+            }
+             
             if (IdentificadoresSessaoUsuario.ContainsKey(identificadorUsuario))
             {
                 IdentificadoresSessaoUsuario.TryRemove(identificadorUsuario, out _);
@@ -139,10 +151,10 @@ namespace Snebur.Utilidade
 
         private static string RetornarNomeArquivoIdentificadorSessaoUsuario()
         {
-            var credencialUsuario = AplicacaoSnebur.Atual.CredencialUsuario;
+            var credencialUsuario = AplicacaoSnebur.AtualRequired.CredencialUsuario;
             //if (DebugUtil.IsAttached)
             //{
-            return TextoUtil.RetornarSomentesLetrasNumeros(credencialUsuario.IdentificadorUsuario).ToLower();
+            return TextoUtil.RetornarSomentesLetrasNumeros(credencialUsuario?.IdentificadorUsuario).ToLower();
             //}
             //return Md5Util.RetornarHash(credencialUsuario.IdentificadorUsuario);
         }
@@ -235,7 +247,7 @@ namespace Snebur.Utilidade
                 LimparCredencialUsuario();
                 var caminhoArquivo = RetornarCaminhoArquivoCredencialUsuario();
                 SalvarConteudoAppData(credencial, caminhoArquivo);
-                AplicacaoSnebur.Atual.NotificarCredencialAlterada();
+                AplicacaoSnebur.AtualRequired.NotificarCredencialAlterada();
                 _credencialUsuario = null;
             }
         }
@@ -265,7 +277,7 @@ namespace Snebur.Utilidade
             return conteudo;
         }
 
-        private static T RetornarConteudoAppData<T>(string caminhoArquivo)
+        private static T? RetornarConteudoAppData<T>(string caminhoArquivo)
         {
             lock (_bloqueioAcessoArquivoAppData)
             {

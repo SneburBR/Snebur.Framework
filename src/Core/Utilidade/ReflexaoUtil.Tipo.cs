@@ -10,7 +10,7 @@ namespace Snebur.Utilidade
 {
     public static partial class ReflexaoUtil
     {
-        public static object GetDefaultValue(Type type)
+        public static object? GetDefaultValue(Type type)
         {
             if (type.IsValueType)
             {
@@ -166,7 +166,7 @@ namespace Snebur.Utilidade
 
         public static string RetornarNomeAssemblyEntrada()
         {
-            return new AssemblyName(AssemblyEntrada.FullName).Name;
+            return AssemblyEntrada.GetName().Name ?? $"Assembly SemNome {AssemblyEntrada.FullName}";
         }
 
         public static bool TipoRetornaTipoPrimario(Type tipo, bool removerNullable = false)
@@ -283,7 +283,8 @@ namespace Snebur.Utilidade
             }
             else
             {
-                return tipo.GetElementType();
+                return tipo.GetElementType() 
+                    ?? throw new ErroNaoSuportado($" O tipo '{tipo.Name}' não é um coleção genérica e não possui tipo de elemento definido");
             }
         }
 
@@ -346,14 +347,14 @@ namespace Snebur.Utilidade
                 return true;
             }
 
-            if(IsTipoRetornaColecao(tipo) &&  IsTipoRetornaColecao(tipoBase) )
+            if (IsTipoRetornaColecao(tipo) && IsTipoRetornaColecao(tipoBase))
             {
                 var tipoColexao = RetornarTipoGenericoColecao(tipo);
                 var tipoColexaoBase = RetornarTipoGenericoColecao(tipoBase);
                 return IsTipoIgualOuHerda(tipoColexao, tipoColexaoBase);
             }
             return false;
-            
+
         }
 
         public static bool IsTiposCompativel(Type tipo1, Type tipo2)

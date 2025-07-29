@@ -11,7 +11,7 @@ namespace Snebur.Utilidade
         private const int CASAS_DECIMAL_PADRAO = 2;
         public static string Formatar(object valor, EnumFormatacao formatar)
         {
-            if (valor == null)
+            if (valor is null)
             {
                 return String.Empty;
             }
@@ -135,7 +135,7 @@ namespace Snebur.Utilidade
             throw new NotImplementedException();
         }
 
-        public static string FormatarCep(string cep)
+        public static string FormatarCep(string? cep)
         {
             var cepNumeros = TextoUtil.RetornarSomenteNumeros(cep);
             return String.Format("{0:00\\.000-000}", Convert.ToInt64(cepNumeros));
@@ -157,13 +157,13 @@ namespace Snebur.Utilidade
             throw new NotImplementedException();
         }
 
-        public static string FormatarBytes(string totalBytes)
+        public static string FormatarBytes(string? totalBytes)
         {
             if (Int64.TryParse(totalBytes, out var bytes))
             {
                 return FormatarByteUtil.Formatar(bytes);
             }
-            return totalBytes;
+            return totalBytes ?? String.Empty;
         }
 
         public static string FormatarBytes(long totalBytes)
@@ -239,7 +239,7 @@ namespace Snebur.Utilidade
             return $"{espessura.ToString("0.0")} mm";
         }
 
-        public static string FormatarCpfCnpj(string cpfCnpj, bool isIgnoarErro = false)
+        public static string FormatarCpfCnpj(string? cpfCnpj, bool isIgnoarErro = false)
         {
             if (String.IsNullOrWhiteSpace(cpfCnpj))
             {
@@ -264,7 +264,7 @@ namespace Snebur.Utilidade
             throw new Exception(String.Format("O valor {0} não está em um formato de CPF ou CNPJ válido.", cpfCnpj));
         }
 
-        public static string FormatarTelefone(string telefone)
+        public static string FormatarTelefone(string? telefone)
         {
             var somenteNumeros = TextoUtil.RetornarSomenteNumeros(telefone);
             if (somenteNumeros.Length == 10)
@@ -275,7 +275,7 @@ namespace Snebur.Utilidade
             {
                 return String.Format("{0:(##) #####-####}", somenteNumeros);
             }
-            return telefone;
+            return telefone?? String.Empty;
         }
 
         public static string FormatarRota(string nome)
@@ -300,7 +300,7 @@ namespace Snebur.Utilidade
             return $"{espessura.ToString("0.0", new CultureInfo("pt-BR"))}cm";
         }
 
-        public static string Proteger(string valor)
+        public static string Proteger(string? valor)
         {
             if (valor?.Length > 3)
             {

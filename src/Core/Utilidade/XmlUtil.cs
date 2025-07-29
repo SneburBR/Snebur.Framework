@@ -12,12 +12,12 @@ namespace Snebur.Utilidade
     public static class XmlUtil
     {
         //
-        public static T Deserializar<T>(string xml)
+        public static T? Deserializar<T>(string xml)
         {
             using (var sr = new StringReader(xml))
             {
                 var xmlSerializer = new XmlSerializer(typeof(T));
-                return (T)xmlSerializer.Deserialize(sr);
+                return (T?)xmlSerializer.Deserialize(sr);
             }
         }
 
@@ -56,14 +56,17 @@ namespace Snebur.Utilidade
                 this.ObjetosAnalisados.Add(objeto);
 
                 var type = objeto.GetType();
-                var properties = type.GetProperties().Where(x => x.GetGetMethod().IsPublic && x.GetSetMethod() != null && x.GetSetMethod().IsPublic).ToList();
+                var properties = type.GetProperties()
+                    .Where(x => x.GetGetMethod()?.IsPublic == true && x.GetSetMethod() != null &&
+                                x.GetSetMethod()?.IsPublic == true).ToList();
+
                 if (properties.Count > 0)
                 {
                     foreach (var propertyInfo in properties)
                     {
                         if (propertyInfo.PropertyType.Equals(typeof(decimal)))
                         {
-                            var value = (decimal)propertyInfo.GetValue(objeto);
+                            var value = Convert.ToDecimal(propertyInfo.GetValue(objeto) ?? 0m);
                             var formattedString = value.ToString("0.00", CultureInfo.InvariantCulture);
                             propertyInfo.SetValue(objeto, decimal.Parse(formattedString, CultureInfo.InvariantCulture), null);
                         }
@@ -83,8 +86,8 @@ namespace Snebur.Utilidade
                             {
                                 if (!propertyInfo.PropertyType.IsValueType && propertyInfo.PropertyType != typeof(string))
                                 {
-                                    var valor = (object)propertyInfo.GetValue(objeto);
-                                    if (valor != null)
+                                    var valor = propertyInfo.GetValue(objeto);
+                                    if (valor is not null)
                                     {
                                         this.Preparar(valor);
                                     }

@@ -6,7 +6,7 @@ namespace Snebur.Utilidade
     {
         public static void Limpar<T>(ConcurrentQueue<T> fila)
         {
-            T item;
+            T? item;
             while (fila.TryDequeue(out item) || fila.Count > 0)
             {
             }

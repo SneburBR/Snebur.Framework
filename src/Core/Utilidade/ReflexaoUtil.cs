@@ -80,8 +80,10 @@ namespace Snebur.Utilidade
         {
             if (tipo.IsArray)
             {
-                return tipo.GetElementType();
+                return tipo.GetElementType()
+                    ?? throw new ErroNaoSuportado($" O tipo '{tipo.Name}' não é um coleção genérica e não possui tipo de elemento definido");
             }
+
             var tipoIEnumerableGenerico = tipo.GetInterfaces()
                     .FirstOrDefault(i =>
                     i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>));

@@ -209,7 +209,6 @@ namespace Snebur.Utilidade
                 }
                 return false;
             }
-
         }
 
         public static object? Para(object? valor, Type tipo)

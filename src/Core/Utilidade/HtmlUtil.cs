@@ -11,6 +11,5 @@ namespace Snebur.Utilidade
                        .ReplaceRegex(@"<[^>]+>", string.Empty).
                         ReplaceRegex(@"&[A-Za-z][A-Za-z0-9]{1,4};", string.Empty);
         }
-
     }
 }

@@ -79,6 +79,5 @@ namespace Snebur.Utilidade
         UpperCase,
         KebabCase
     }
-
 }
 

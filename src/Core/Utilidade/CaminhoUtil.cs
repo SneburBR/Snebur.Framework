@@ -138,7 +138,7 @@ namespace Snebur.Utilidade
         private static string RetornarCaminhoArquivoBackup(string caminhoArquivo, int contador = 0)
         {
             var fi = new FileInfo(caminhoArquivo);
-            var diretorio = Combine(fi.Directory.FullName, "bkp");
+            var diretorio = Combine(fi.Directory?.FullName, "bkp");
             diretorio = diretorio.RetornarPrimeirosCaracteres(DiretorioUtil.LIMITE_MAXIMO_CARACTERES_CAMINHO_PASTA + 3);
             DiretorioUtil.CriarDiretorio(diretorio);
 

@@ -245,8 +245,9 @@ namespace Snebur.Utilidade
             if (ignorarChaveEstrangeira)
             {
                 nomePrpriedadesChaveEstrangeiras = propriedades.Select(x => x.RetornarAtributoChaveEstrangeira()).
-                                                                Where(x => x != null).
-                                                                Select(x => x.NomePropriedade).ToHashSet();
+                                                                Where(x => x is not null).
+                                                                Select(x => x!.NomePropriedade)
+                                                                .ToHashSet();
             }
             return propriedades.Where(propriedade =>
                                     {
@@ -315,7 +316,7 @@ namespace Snebur.Utilidade
             var atributoCampo = propriedade.GetCustomAttribute<CampoAttribute>();
             if (atributoCampo != null)
             {
-                return atributoCampo.NomeCampo;
+                return atributoCampo.NomeCampo ?? propriedade.Name;
             }
             return propriedade.Name;
         }

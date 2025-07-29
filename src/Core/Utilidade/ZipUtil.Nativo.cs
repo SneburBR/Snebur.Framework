@@ -123,7 +123,7 @@ namespace Snebur.Utilidade
             }
         }
 
-        public static string DescompactarTexto(Stream stream, string? senha = null)
+        public static string? DescompactarTexto(Stream stream, string? senha = null)
         {
             if (stream != null)
             {
@@ -172,7 +172,7 @@ namespace Snebur.Utilidade
             }
         }
 
-        public static MemoryStream DescompactarArquivo(string caminhoArquivo)
+        public static MemoryStream? DescompactarArquivo(string caminhoArquivo)
         {
             using (var fsOrigem = new FileStream(caminhoArquivo, FileMode.Open))
             {
@@ -180,7 +180,7 @@ namespace Snebur.Utilidade
             }
         }
 
-        public static MemoryStream DescompactarArquivo(Stream stream)
+        public static MemoryStream? DescompactarArquivo(Stream stream)
         {
             if (stream != null)
             {
@@ -289,7 +289,8 @@ namespace Snebur.Utilidade
                                         }
                                         ArquivoUtil.DeletarArquivo(arquivoDestino);
                                     }
-                                    DiretorioUtil.CriarDiretorio(arquivoDestino.Directory.FullName);
+
+                                    DiretorioUtil.CriarDiretorio(arquivoDestino.Directory?.FullName);
                                     File.WriteAllBytes(arquivoDestino.FullName, msArquivo.ToArray());
                                     arquivos.Add(arquivoDestino.FullName);
                                 }

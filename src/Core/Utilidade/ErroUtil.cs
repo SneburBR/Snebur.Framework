@@ -96,9 +96,9 @@ namespace Snebur.Utilidade
             return sb.ToString();
         }
 
-        public static bool IsTipo<T>(Exception ex)
+        public static bool IsTipo<T>(Exception? ex)
         {
-            while (ex != null)
+            while (ex is not null)
             {
                 if (ex is T)
                 {

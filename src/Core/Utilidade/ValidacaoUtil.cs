@@ -44,7 +44,9 @@ namespace Snebur.Utilidade
             return IsEmail(emailOuTelefone) || IsTelefone(emailOuTelefone);
         }
 
-        public static bool IsEmail(string? email)
+        public static bool IsEmail(
+            [NotNullWhen(true)]
+            string? email)
         {
             if (String.IsNullOrEmpty(email))
             {
@@ -129,7 +131,8 @@ namespace Snebur.Utilidade
             return false;
         }
 
-        public static bool IsTelefone(string? telefone)
+        public static bool IsTelefone(
+            [NotNullWhen(true)] string? telefone)
         {
             if (String.IsNullOrEmpty(telefone))
             {

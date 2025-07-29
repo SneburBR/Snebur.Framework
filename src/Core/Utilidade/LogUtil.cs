@@ -26,7 +26,7 @@ namespace Snebur.Utilidade
                 {
                     stackTrace = Environment.StackTrace;
                 }
-                var nivelErro = (ex is Erro) ? (ex as Erro).NivelErro : EnumNivelErro.Normal;
+                var nivelErro = (ex is Erro erro) ? erro.NivelErro : EnumNivelErro.Normal;
                 var informacaoAdicional = ServicoCompartilhadoUtil.RetornarInformacaoAdicionalServicoCompartilhado();
                 Erro(ex, stackTrace, nivelErro, informacaoAdicional, nomeMetodo, caminhoArquivo, linhaDoErro);
             }
@@ -53,7 +53,7 @@ namespace Snebur.Utilidade
                     stackTrace = Environment.StackTrace;
                 }
                 stackTrace += "Nome thread :  '" + Thread.CurrentThread.Name + "' \n" + stackTrace;
-                var nivelErro = (ex is Erro) ? (ex as Erro).NivelErro : EnumNivelErro.Normal;
+                var nivelErro = (ex is Erro erro1) ? erro1.NivelErro : EnumNivelErro.Normal;
                 var informacaoAdicional = ServicoCompartilhadoUtil.RetornarInformacaoAdicionalServicoCompartilhado();
                 ThreadUtil.ExecutarAsync((Action)(() =>
                 {
@@ -77,12 +77,12 @@ namespace Snebur.Utilidade
         }
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static Guid Erro(Exception ex,
-                                   string stackTrace,
-                                   EnumNivelErro nivelErro,
-                                   BaseInformacaoAdicionalServicoCompartilhado informacaoAdicional,
-                                   [CallerMemberName] string nomeMetodo = "",
-                                   [CallerFilePath] string caminhoArquivo = "",
-                                   [CallerLineNumber] int linhaDoErro = 0)
+            string stackTrace,
+            EnumNivelErro nivelErro,
+            BaseInformacaoAdicionalServicoCompartilhado? informacaoAdicional,
+            [CallerMemberName] string nomeMetodo = "",
+            [CallerFilePath] string caminhoArquivo = "",
+            [CallerLineNumber] int linhaDoErro = 0)
         {
 
             var nomeTipoErro = ex.GetType().Name;
@@ -98,33 +98,40 @@ namespace Snebur.Utilidade
             {
                 mensagem = descricaoCompleta.RetornarPrimeirosCaracteres(100);
             }
+            var servicoErro = AplicacaoSnebur.Atual?.ServicoErro;
             try
             {
-                return AplicacaoSnebur.Atual.ServicoErro.NotificarErro(nomeTipoErro, 
-                                                                       mensagem, 
-                                                                       stackTrace, 
-                                                                       descricaoCompleta, 
-                                                                       nivelErro, 
-                                                                       informacaoAdicional);
+
+                if (servicoErro is not null)
+                {
+                    return servicoErro.NotificarErro(nomeTipoErro,
+                        mensagem,
+                        stackTrace,
+                        descricaoCompleta,
+                        nivelErro,
+                        informacaoAdicional);
+                }
             }
             catch
             {
-                if (!(AplicacaoSnebur.Atual.ServicoErro is ServicoErroLocal))
-                {
-                    return new ServicoErroLocal().NotificarErro(nomeTipoErro,
-                                                                mensagem,
-                                                                ex.StackTrace, 
-                                                                descricaoCompleta,
-                                                                nivelErro, 
-                                                                informacaoAdicional);
-                }
+
+            }
+
+            if (servicoErro is not ServicoErroLocal)
+            {
+                return new ServicoErroLocal().NotificarErro(nomeTipoErro,
+                                                 mensagem,
+                                                 ex.StackTrace,
+                                                 descricaoCompleta,
+                                                 nivelErro,
+                                                 informacaoAdicional);
             }
             return Guid.Empty;
         }
 
         public static void SegurancaAsync(string mensagem, EnumTipoLogSeguranca tipo, bool erroIsAttach = true)
         {
-            var infoRequisicao = AplicacaoSnebur.Atual.AspNet.RetornarInfoRequisicao();
+            var infoRequisicao = AplicacaoSnebur.Atual?.AspNet?.RetornarInfoRequisicao();
 
             if (SegurancaUtil.IsGerarLogErro(tipo))
             {
@@ -143,35 +150,42 @@ namespace Snebur.Utilidade
             {
                 var informacaoAdicional = ServicoCompartilhadoUtil.RetornarInformacaoAdicionalServicoCompartilhado();
                 Seguranca(mensagem,
-                                  infoRequisicao,
-                                  tipo,
-                                  informacaoAdicional);
+                    infoRequisicao,
+                    tipo,
+                    informacaoAdicional);
 
             }, true);
         }
         [EditorBrowsable(EditorBrowsableState.Never)]
-        private static Guid Seguranca(string mensagem,
-                                      InfoRequisicao infoRequisicao,
-                                      EnumTipoLogSeguranca tipoLogSeguranca,
-                                      BaseInformacaoAdicionalServicoCompartilhado informacaoAdicional)
+        private static Guid Seguranca(
+            string mensagem,
+            InfoRequisicao? infoRequisicao,
+            EnumTipoLogSeguranca tipoLogSeguranca,
+            BaseInformacaoAdicionalServicoCompartilhado? informacaoAdicional)
         {
             var stackTrace = Environment.StackTrace;
             try
             {
-                return AplicacaoSnebur.Atual.ServicoSeguranca.NotificarLogSeguranca(mensagem,
-                                                                                    stackTrace,
-                                                                                    infoRequisicao,
-                                                                                    tipoLogSeguranca,
-                                                                                    informacaoAdicional);
+                var servicoSeguranca = AplicacaoSnebur.Atual?.ServicoSeguranca;
+                if (servicoSeguranca is not null)
+                {
+                    return servicoSeguranca.NotificarLogSeguranca(mensagem,
+                         stackTrace,
+                         infoRequisicao,
+                         tipoLogSeguranca,
+                         informacaoAdicional);
+                }
             }
             catch
             {
-                return new ServicoLogSegurancaLocal().NotificarLogSeguranca(mensagem,
-                                                                            stackTrace,
-                                                                            infoRequisicao,
-                                                                            tipoLogSeguranca,
-                                                                            informacaoAdicional);
+
             }
+            return new ServicoLogSegurancaLocal()
+                .NotificarLogSeguranca(mensagem,
+                      stackTrace,
+                      infoRequisicao,
+                      tipoLogSeguranca,
+                      informacaoAdicional);
         }
 
         public static void LogAsync(string mensagem)
@@ -179,7 +193,7 @@ namespace Snebur.Utilidade
             var informacaoAdicional = ServicoCompartilhadoUtil.RetornarInformacaoAdicionalServicoCompartilhado();
             ThreadUtil.ExecutarAsync((Action)(() =>
             {
-                Log(mensagem, informacaoAdicional, AplicacaoSnebur.Atual.AtivarLogServicoOnline);
+                Log(mensagem, informacaoAdicional, AplicacaoSnebur.Atual?.AtivarLogServicoOnline == true);
             }), true);
         }
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -195,40 +209,45 @@ namespace Snebur.Utilidade
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static Guid Log(string mensagem, BaseInformacaoAdicionalServicoCompartilhado informacaoAdicional)
         {
-            return Log(mensagem, informacaoAdicional, AplicacaoSnebur.Atual.AtivarLogServicoOnline);
+            return Log(mensagem, informacaoAdicional, AplicacaoSnebur.Atual?.AtivarLogServicoOnline == true);
         }
-      
+
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static Guid Log(string mensagem, BaseInformacaoAdicionalServicoCompartilhado informacaoAdicional, bool salvarLogLocal)
+        public static Guid Log(string mensagem,
+            BaseInformacaoAdicionalServicoCompartilhado? informacaoAdicional,
+            bool salvarLogLocal)
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 LogWindows(mensagem, String.Empty, EventLogEntryType.Information);
             }
+
+            var servicoLogAplicacao = AplicacaoSnebur.Atual?.ServicoLogAplicacao;
             try
             {
-                if (!salvarLogLocal)
+                if (!salvarLogLocal && servicoLogAplicacao is not null)
                 {
-                    return AplicacaoSnebur.Atual.ServicoLogAplicacao.NotificarLogAplicacao(mensagem, informacaoAdicional);
-                }
-                else
-                {
-                    return new ServicoLogAplicacaoLocal().NotificarLogAplicacao(mensagem, informacaoAdicional);
+                    return servicoLogAplicacao.NotificarLogAplicacao(mensagem, informacaoAdicional);
                 }
             }
             catch
             {
-                if (!(AplicacaoSnebur.Atual.ServicoLogAplicacao is ServicoLogAplicacaoLocal))
-                {
-                    return new ServicoLogAplicacaoLocal().NotificarLogAplicacao(mensagem, informacaoAdicional);
-                }
+
             }
+
+            if (salvarLogLocal ||
+               servicoLogAplicacao is null ||
+               servicoLogAplicacao is not ServicoLogAplicacaoLocal)
+            {
+                return new ServicoLogAplicacaoLocal().NotificarLogAplicacao(mensagem, informacaoAdicional);
+            }
+
             return Guid.Empty;
         }
 
-        public static void DesempenhoAsync(string mensagem, 
+        public static void DesempenhoAsync(string mensagem,
             Stopwatch tempo,
-            EnumTipoLogDesempenho tipo, 
+            EnumTipoLogDesempenho tipo,
             bool erroIsAttach = true,
             Action<Guid>? callback = null)
         {
@@ -244,7 +263,9 @@ namespace Snebur.Utilidade
             }), true);
         }
         [EditorBrowsable(EditorBrowsableState.Never)]
-        private static Guid Desempenho(string mensagem, EnumTipoLogDesempenho tipo, BaseInformacaoAdicionalServicoCompartilhado informacaoAdicional)
+        private static Guid Desempenho(string mensagem, 
+            EnumTipoLogDesempenho tipo, 
+            BaseInformacaoAdicionalServicoCompartilhado? informacaoAdicional)
         {
             var stackTrace = Environment.StackTrace;
 
@@ -252,20 +273,27 @@ namespace Snebur.Utilidade
             {
                 LogWindows(mensagem, stackTrace, EventLogEntryType.Warning);
             }
+            var servicoLogDesempenho = AplicacaoSnebur.Atual?.ServicoDesempenho;
             try
             {
-                return AplicacaoSnebur.Atual.ServicoDesempenho.NotificarLogDesempenho(mensagem, stackTrace, tipo, informacaoAdicional);
+                if(servicoLogDesempenho is not null)
+                {
+                    return servicoLogDesempenho.NotificarLogDesempenho(
+                        mensagem, 
+                        stackTrace, 
+                        tipo, 
+                        informacaoAdicional);
+                }
             }
             catch
             {
-                return new ServicoLogDesempenhoLocal().NotificarLogDesempenho(mensagem, stackTrace, tipo, informacaoAdicional);
+                
             }
+
+            return new ServicoLogDesempenhoLocal()
+                .NotificarLogDesempenho(mensagem, stackTrace, tipo, informacaoAdicional);
         }
-        //public static Guid Desempenho()
-        //{
-
-        //}
-
+      
         #endregion region
 
         #region Métodos internos
@@ -278,7 +306,7 @@ namespace Snebur.Utilidade
         internal static void LogAplicacaoAtiva()
         {
             var informacaoAdicional = ServicoCompartilhadoUtil.RetornarInformacaoAdicionalServicoCompartilhado();
-            AplicacaoSnebur.Atual.ServicoLogAplicacao.NotificarAplicacaoAtiva(informacaoAdicional);
+            AplicacaoSnebur.Atual?.ServicoLogAplicacao.NotificarAplicacaoAtiva(informacaoAdicional);
         }
 
         internal static void AtivarLogServicoOnlineAsync(Action<bool> callback)
@@ -294,8 +322,8 @@ namespace Snebur.Utilidade
             try
             {
                 var informacaoAdicional = ServicoCompartilhadoUtil.RetornarInformacaoAdicionalServicoCompartilhado();
-                var resultado = AplicacaoSnebur.Atual.ServicoLogAplicacao.AtivarLogServicoOnline(informacaoAdicional);
-                callback(resultado);
+                var resultado = AplicacaoSnebur.Atual?.ServicoLogAplicacao.AtivarLogServicoOnline(informacaoAdicional);
+                callback(resultado == true);
             }
             catch
             {
@@ -356,7 +384,6 @@ namespace Snebur.Utilidade
                 {
                 }
             }
-
         }
 
         private static string RetornarNomeEspaco(string nomeEspaco)

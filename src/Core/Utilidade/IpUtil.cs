@@ -22,9 +22,7 @@ namespace Snebur
             }
         }
 
-
-
-        public static DadosIPInformacao IPInformacao 
+        public static DadosIPInformacao IPInformacao
             => LazyUtil.RetornarValorLazyComBloqueio(ref _ipDadosInformacao, RetornarIPInformacaoInterno);
 
         private static DadosIPInformacao RetornarIPInformacaoInterno()
@@ -32,9 +30,9 @@ namespace Snebur
             return RetornarIPInformacao(String.Empty);
         }
 
-        public static string RetornarIpPublico()
+        public static string? RetornarIpPublico()
         {
-            if (_ipPublico == null)
+            if (_ipPublico is null)
             {
                 var ipString = HttpUtil.RetornarString("https://api.ipify.org", null, TimeSpan.FromSeconds(5), true);
                 if (ValidacaoUtil.IsIp(ipString))
@@ -50,7 +48,7 @@ namespace Snebur
 
         }
 
-        public static DadosIPInformacao RetornarIPInformacao(string ip)
+        public static DadosIPInformacao RetornarIPInformacao(string? ip)
         {
             if (String.IsNullOrEmpty(ip))
             {
@@ -65,12 +63,17 @@ namespace Snebur
             if (!String.IsNullOrWhiteSpace(json))
             {
                 var ipInfo = JsonUtil.Deserializar<IpInfo>(json, EnumTipoSerializacao.Javascript);
+                if (ipInfo is null)
+                {
+                    return DadosIPInformacao.Vazio;
+                }
+
                 var localizacao = Localizacao.Parse(ipInfo.loc);
                 var mascaraIp = RetornarMascaraIp4(ipInfo.ip);
 
                 return new DadosIPInformacao
                 {
-                    IP = ipInfo.ip,
+                    IP = ipInfo.ip ?? "",
                     Cidade = ipInfo.city,
                     CodigoPostal = ipInfo.postal,
                     Hostname = ipInfo.hostname,
@@ -78,8 +81,9 @@ namespace Snebur
                     Regiao = ipInfo.region,
                     Pais = ipInfo.country,
                     ProvedorInternet = ipInfo.org,
-                    MascaraIp4 = RetornarMascaraIp4(ipInfo.ip)
+                    MascaraIp4 = RetornarMascaraIp4(ipInfo?.ip)
                 };
+
             }
             return DadosIPInformacao.Vazio;
         }
@@ -103,9 +107,9 @@ namespace Snebur
         //    return null;
         //}
 
-        public static string RetornarMascaraIp4(string ip)
+        public static string? RetornarMascaraIp4(string? ip)
         {
-            IPAddress ipaddress;
+            IPAddress? ipaddress;
             if (IPAddress.TryParse(ip, out ipaddress))
             {
                 if (ipaddress.AddressFamily == AddressFamily.InterNetwork)
@@ -128,7 +132,7 @@ namespace Snebur
             return ValidacaoUtil.IsIp(ip);
         }
 
-        public static bool IsIpVazioOuLocal(string ip)
+        public static bool IsIpVazioOuLocal(string? ip)
         {
             if (String.IsNullOrEmpty(ip))
             {
@@ -159,7 +163,7 @@ namespace Snebur
             return new Localizacao(0, 0);
         }
 
-        public static string RetornarIpLocal(bool isIgnorarErro = false)
+        public static string? RetornarIpLocal(bool isIgnorarErro = false)
         {
             var host = Dns.GetHostEntry(Dns.GetHostName());
             foreach (var ip in host.AddressList)
@@ -175,7 +179,6 @@ namespace Snebur
             }
             throw new Exception("O rede local não existe ou está desativada  ");
         }
-
     }
 }
 
@@ -183,23 +186,23 @@ namespace Snebur.Dominio
 {
     public class DadosIPInformacao : BaseDominio, IIPInformacao
     {
-        public string IP { get; set; }
+        public required string IP { get; set; } = "";
 
-        public string MascaraIp4 { get; set; }
+        public string? MascaraIp4 { get; set; }
 
-        public string Cidade { get; set; }
+        public string? Cidade { get; set; }
 
-        public string CodigoPostal { get; set; }
+        public string? CodigoPostal { get; set; }
 
-        public string Hostname { get; set; }
+        public string? Hostname { get; set; }
 
-        public Localizacao Localizacao { get; set; }
+        public Localizacao Localizacao { get; set; } = new Localizacao();
 
-        public string Pais { get; set; }
+        public string? Pais { get; set; }
 
-        public string ProvedorInternet { get; set; }
+        public string? ProvedorInternet { get; set; }
 
-        public string Regiao { get; set; }
+        public string? Regiao { get; set; }
 
         public static DadosIPInformacao Vazio
         {
@@ -234,13 +237,13 @@ namespace Snebur.Dominio
 
     public class IpInfo
     {
-        public string ip { get; set; }
-        public string hostname { get; set; }
-        public string city { get; set; }
-        public string region { get; set; }
-        public string country { get; set; }
-        public string loc { get; set; }
-        public string org { get; set; }
-        public string postal { get; set; }
+        public string? ip { get; set; }
+        public string? hostname { get; set; }
+        public string? city { get; set; }
+        public string? region { get; set; }
+        public string? country { get; set; }
+        public string? loc { get; set; }
+        public string? org { get; set; }
+        public string? postal { get; set; }
     }
 }

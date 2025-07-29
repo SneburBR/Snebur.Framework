@@ -57,7 +57,12 @@ namespace Snebur.Utilidade
             {
                 throw new Erro(String.Format("O tipo {0} não suportado, esperado Enum", tipoEnum.Name));
             }
-            return tipoEnum.GetFields().Where(x => x.IsLiteral).Select(x => (Enum)x.GetValue(null)).ToArray();
+
+            //return tipoEnum.GetFields()
+            //    .Where(x => x.IsLiteral)
+            //    .Select(x => (Enum)x.GetValue(null)).ToArray();
+
+            return Enum.GetValues(tipoEnum).Cast<Enum>().ToArray();
         }
 
         public static string RetornarDescricao(Enum valor)
@@ -106,7 +111,9 @@ namespace Snebur.Utilidade
             var campoDescricao = camposDescricao.Where(x => x.AtriburosDescricao.Description == descricao).
                                                  Select(x => x.Campo).SingleOrDefault();
 
-            return campoDescricao == null ? default : (Enum)campoDescricao.GetRawConstantValue();
+            return campoDescricao is null
+                ? default!
+                : (campoDescricao.GetRawConstantValue() as Enum)!;
         }
 
         public static string RetornarNome(Enum valor)

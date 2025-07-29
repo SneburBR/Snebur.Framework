@@ -29,7 +29,7 @@ namespace Snebur.Utilidade
                 return false;
             }
 
-            if (!String.IsNullOrEmpty(AplicacaoSnebur.Atual.UrlPingInternetConectada))
+            if (!String.IsNullOrEmpty(AplicacaoSnebur.Atual?.UrlPingInternetConectada))
             {
                 var urlPing = String.Format("{0}?State={1}", AplicacaoSnebur.Atual.UrlPingInternetConectada, Guid.NewGuid().ToString());
                 var resultadoPing = HttpUtil.RetornarString(urlPing, TimeSpan.FromSeconds(2), true);

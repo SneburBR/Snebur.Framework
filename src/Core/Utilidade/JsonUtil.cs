@@ -44,7 +44,6 @@ namespace Snebur.Utilidade
             {
                 return ReferenceResolver;
             }
-
         };
 
         public static T? DeserializaArquivor<T>(string caminhoArquivo, EnumTipoSerializacao tipoSerializacao)
@@ -154,11 +153,11 @@ namespace Snebur.Utilidade
                                        isPrepararSerializacao: true);
         }
 
-        public static string Serializar(object objeto,
-                                        EnumTipoSerializacao tipoSerializacao,
-                                        CultureInfo cultureInfo,
-                                        bool isIdentar,
-                                        bool isPrepararSerializacao = true)
+        public static string Serializar(object? objeto,
+            EnumTipoSerializacao tipoSerializacao,
+            CultureInfo cultureInfo,
+            bool isIdentar,
+            bool isPrepararSerializacao = true)
         {
             if (objeto == null)
             {
@@ -248,30 +247,33 @@ namespace Snebur.Utilidade
                 memberInfosQuery = memberInfosQuery.Where(x => !Attribute.IsDefined(x, typeof(IgnorarPropriedadeDotNetAttribute)));
             }
 
-            var memberInfos = memberInfosQuery.ToList<MemberInfo>();
+            var memberInfos = memberInfosQuery.ToList<MemberInfo?>();
             if (isCamposBaseDominio && objectType.IsSubclassOf(typeof(BaseDominio)))
             {
                 var flags = BindingFlags.NonPublic | BindingFlags.Instance;
                 var tipoBaseDominio = typeof(BaseDominio);
+             
                 memberInfos.Add(tipoBaseDominio.GetField(nameof(IBaseDominioReferencia.__IdentificadorUnico), flags));
                 memberInfos.Add(tipoBaseDominio.GetField(nameof(IBaseDominioReferencia.__IdentificadorReferencia), flags));
                 memberInfos.Add(tipoBaseDominio.GetField(nameof(IBaseDominioReferencia.__IsBaseDominioReferencia), flags));
             }
-            return memberInfos;
+            return memberInfos.Where(x => x is not null)
+                        .Distinct()
+                        .ToList()!;
         }
 
         public static string IndentarJson(string json,
-                                          CultureInfo culture,
-                                          EnumTipoSerializacao tipoSerializacao = EnumTipoSerializacao.Javascript)
+            CultureInfo culture,
+            EnumTipoSerializacao tipoSerializacao = EnumTipoSerializacao.Javascript)
         {
             try
             {
                 var objeto = Deserializar<object>(json, tipoSerializacao, culture);
                 return Serializar(objeto,
-                                          tipoSerializacao,
-                                          culture,
-                                          true,
-                                          false);
+                      tipoSerializacao,
+                      culture,
+                      true,
+                      false);
             }
             catch
             {
@@ -301,7 +303,6 @@ namespace Snebur.Utilidade
         {
             throw new NotImplementedException();
         }
-
     }
 
     public enum EnumTipoSerializacao
@@ -309,5 +310,4 @@ namespace Snebur.Utilidade
         Javascript = 1,
         DotNet = 2
     }
-
 }

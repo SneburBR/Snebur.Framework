@@ -206,7 +206,6 @@ namespace Snebur.Utilidade
                                         dataVencimento.Second,
                                         dataVencimento.Kind);
                 }
-
             }
             return dataVencimento;
         }
@@ -271,7 +270,6 @@ namespace Snebur.Utilidade
                     throw new Exception("tipo de data não suportado");
             }
         }
-
     }
     internal class DiaMesIgual : IEqualityComparer<DateTime>
     {

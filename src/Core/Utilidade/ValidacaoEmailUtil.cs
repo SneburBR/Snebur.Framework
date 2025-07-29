@@ -59,7 +59,6 @@ namespace Snebur.Utilidade
             {
                 return false;
             }
-      
         }
 
         //private static bool TryIsEmailAccountValid(string tcpClient,
@@ -82,13 +81,19 @@ namespace Snebur.Utilidade
         //    }
         //}
 
-        private static bool IsEmailAccountValid(string tcpClient, string emailAddress, int porta)
+        private static bool IsEmailAccountValid(string? tcpClient, string emailAddress, int porta)
         {
+            if (string.IsNullOrWhiteSpace(tcpClient) || 
+                string.IsNullOrWhiteSpace(emailAddress))
+            {
+                return false;
+            }
+
             string CRLF = "\r\n";
             using (var tClient = new TcpClient(tcpClient, porta))
             {
                 byte[] dataBuffer;
-                string responseString;
+                string? responseString;
                 using (var netStream = tClient.GetStream())
                 using (var reader = new StreamReader(netStream))
                 {
@@ -125,12 +130,12 @@ namespace Snebur.Utilidade
             return Encoding.ASCII.GetBytes(str);
         }
 
-        private static int GetResponseCode(string responseString)
+        private static int GetResponseCode(string? responseString)
         {
             int statusCode;
             try
             {
-                if (responseString == null)
+                if (responseString is null)
                 {
                     return -1;
                 }
@@ -144,7 +149,5 @@ namespace Snebur.Utilidade
 
             return statusCode;
         }
-
     }
-
 }

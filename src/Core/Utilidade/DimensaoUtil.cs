@@ -127,5 +127,4 @@ namespace Snebur.Utilidade
             return new Dimensao(novaLargura, novaAltura);
         }
     }
-
 }

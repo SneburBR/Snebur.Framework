@@ -32,19 +32,24 @@
                 return $"\"{valor}\"";
             }
         }
-        public static string NormlizarHost(string _host)
+        public static string NormlizarHost(string? host)
         {
-            var posicao = _host.IndexOf(':');
+            if (string.IsNullOrEmpty(host))
+            {
+                return string.Empty;
+            }
+
+            var posicao = host.IndexOf(':');
             if (posicao >= 0)
             {
-                _host = _host.Substring(posicao + 1);
-                posicao = _host.IndexOf(':');
+                host = host.Substring(posicao + 1);
+                posicao = host.IndexOf(':');
                 if (posicao > 0)
                 {
-                    _host = _host.Substring(0, posicao);
+                    host = host.Substring(0, posicao);
                 }
             }
-            return _host?.ToLower();
+            return host.ToLower();
         }
 
         public static string NormalizarNomeParametro(string parametro)

@@ -72,13 +72,17 @@ namespace Snebur.Utilidade
         /// <param name="ignorarErro">Em caso de erro, a aplicação não será finaliza, mas o log de erro será acionado</param>
         /// <param name="nomeMetodo"></param>
         /// <param name="debugAttachedSincrono"></param>
-        public static void ExecutarAsync(Action acao, bool? ignorarErro = null, [CallerMemberName] string nomeMetodo = "", [CallerFilePath] string caminhoArquivo = "")
+        public static void ExecutarAsync(
+            Action acao,
+            bool? ignorarErro = null,
+            [CallerMemberName] string nomeMetodo = "",
+            [CallerFilePath] string caminhoArquivo = "")
         {
             if (ignorarErro == null)
             {
-                ignorarErro = AplicacaoSnebur.Atual.IgnorarErros;
+                ignorarErro = AplicacaoSnebur.Atual?.IgnorarErros;
             }
-            if (ignorarErro.Value)
+            if (ignorarErro == true)
             {
                 var nomeClasse = System.IO.Path.GetFileNameWithoutExtension(caminhoArquivo);
                 var nomeThread = RetornarNomeThread(nomeClasse, nomeMetodo);
@@ -95,7 +99,7 @@ namespace Snebur.Utilidade
         public static void ExecutarMainThread(Action acao, [CallerMemberName] string nomeMetodo = "",
                                                            [CallerFilePath] string caminhoArquivo = "")
         {
-            if (AplicacaoSnebur.Atual.DispatcherObject != null)
+            if (AplicacaoSnebur.Atual?.DispatcherObject != null)
             {
                 AplicacaoSnebur.Atual.DispatcherObject.Invoke(acao);
             }
@@ -107,7 +111,7 @@ namespace Snebur.Utilidade
 
         public static bool IsMainThread()
         {
-            if (AplicacaoSnebur.Atual.DispatcherObject != null)
+            if (AplicacaoSnebur.Atual?.DispatcherObject != null)
             {
                 return AplicacaoSnebur.Atual.DispatcherObject.CheckAccess();
             }
@@ -125,13 +129,23 @@ namespace Snebur.Utilidade
             var nomeClasse = System.IO.Path.GetFileNameWithoutExtension(caminhoArquivo);
             var nomeThread = RetornarNomeThread(nomeMetodo, nomeClasse);
 
+            var aplicacao = AplicacaoSnebur.Atual;
             var thread = new Thread(new ThreadStart(acao))
             {
-                CurrentUICulture = AplicacaoSnebur.Atual.CulturaPadrao,
-                CurrentCulture = AplicacaoSnebur.Atual.CulturaPadrao,
+
                 IsBackground = false,
                 Name = nomeClasse
             };
+
+            if (aplicacao is not null)
+            {
+                if (aplicacao.CulturaPadrao != null)
+                    thread.CurrentUICulture = aplicacao.CulturaPadrao;
+
+                if (aplicacao.CulturaPadrao != null)
+                    thread.CurrentCulture = aplicacao.CulturaPadrao;
+
+            }
             thread.SetApartmentState(ApartmentState.STA);
             thread.Start();
         }
@@ -147,11 +161,22 @@ namespace Snebur.Utilidade
 
         internal static void ExecutarThread(Action acao, string nomeThread)
         {
-            var thread = new Thread(new ThreadStart(acao));
-            thread.IsBackground = true;
-            thread.CurrentCulture = AplicacaoSnebur.Atual.CulturaPadrao;
-            thread.CurrentUICulture = AplicacaoSnebur.Atual.CulturaPadrao;
-            thread.Name = nomeThread;
+            var aplicacao = AplicacaoSnebur.Atual;
+            var thread = new Thread(new ThreadStart(acao))
+            {
+                IsBackground = true,
+                Name = nomeThread
+            };
+
+            if (aplicacao is not null)
+            {
+                if (aplicacao.CulturaPadrao != null)
+                    thread.CurrentUICulture = aplicacao.CulturaPadrao;
+
+                if (aplicacao.CulturaPadrao != null)
+                    thread.CurrentCulture = aplicacao.CulturaPadrao;
+
+            }
             thread.Start();
 
 #if DEBUG
@@ -216,7 +241,7 @@ namespace Snebur.Utilidade
         public static T RetornarValorComBloqueio<T>(ref T? valor, Func<T> retornarValor) where T : struct => LazyUtil.RetornarValorLazyComBloqueio(ref valor, retornarValor);
 
         [Obsolete("Use " + nameof(LazyUtil) + "." + nameof(LazyUtil.RetornarValorLazyComBloqueio))]
-        public static T RetornarValorComBloqueio<T>(ref T valor, Func<T> retornarValor) where T : class => LazyUtil.RetornarValorLazyComBloqueio(ref valor, retornarValor);
+        public static T RetornarValorComBloqueio<T>(ref T? valor, Func<T> retornarValor) where T : class => LazyUtil.RetornarValorLazyComBloqueio(ref valor, retornarValor);
 
         /// <summary>
         /// Tenta executar uma exação, um tempo máximo pode ser dinido

@@ -39,6 +39,5 @@ namespace Snebur.Utilidade
                 this._acao = null;
             }
         }
-
     }
 }

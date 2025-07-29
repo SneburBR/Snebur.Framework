@@ -151,7 +151,7 @@ namespace Snebur.Utilidade
             return String.Join("&", di.Select(x => $"{x.Key}={retornarValor(x.Value)}"));
         }
 
-        public static string RetornarValorQuery(string query, string chave)
+        public static string? RetornarValorQuery(string query, string chave)
         {
             var partes = RetornarPartesConsulta(query);
             if (partes.ContainsKey(chave))
@@ -161,7 +161,7 @@ namespace Snebur.Utilidade
             return null;
         }
 
-        public static string RetornarHost(string url)
+        public static string? RetornarHost(string? url)
         {
             if(Uri.TryCreate(url,UriKind.Absolute, out var uri))
             {

@@ -8,7 +8,7 @@ namespace Snebur.Utilidade
 {
     public static class DnsUtil
     {
-        public static DnsRecord[] GetDnsRecords(string domain, QueryType queryType)
+        public static DnsRecord[]? GetDnsRecords(string domain, QueryType queryType)
         {
             var dnsRecords = new DNSClient(domain, queryType);
             return dnsRecords.GetRecords();
@@ -27,7 +27,7 @@ namespace Snebur.Utilidade
                 this.queryType = queryType;
             }
 
-            public DnsRecord[] GetRecords()
+            public DnsRecord[]? GetRecords()
             {
 
                 using (UdpClient udpClient = new UdpClient(DNS_SERVER, 53))
@@ -172,7 +172,7 @@ namespace Snebur.Utilidade
         public class DnsRecord
         {
             public int Preference { get; set; }
-            public string Record { get; set; }
+            public string? Record { get; set; }
         }
     }
 
@@ -189,5 +189,4 @@ namespace Snebur.Utilidade
         SRV = 33,
         ANY = 255
     }
-
 }

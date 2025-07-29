@@ -33,7 +33,6 @@ namespace Snebur.Utilidade
 
                     throw new ErroNaoSuportado($"O tipo de juros {tipoJuros} não é suportado");
             }
-
         }
 
         public static decimal CalcularJurosSimples(decimal valorCapital,

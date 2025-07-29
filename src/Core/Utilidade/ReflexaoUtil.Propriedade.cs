@@ -43,7 +43,7 @@ namespace Snebur.Utilidade
             return ExpressaoUtil.RetornarPropriedades(expressao).Last();
         }
 
-        public static PropertyInfo RetornarPropriedade<T>(Expression<Func<T, object>> expressaoCaminhoPropriedade, Type tipo)
+        public static PropertyInfo? RetornarPropriedade<T>(Expression<Func<T, object>> expressaoCaminhoPropriedade, Type tipo)
         {
             var nomePropriedade = RetornarNomePropriedade(expressaoCaminhoPropriedade);
             return tipo.GetProperty(nomePropriedade);
@@ -61,7 +61,7 @@ namespace Snebur.Utilidade
         /// <param name="publica">Se métodos get e set são publicos</param>
         /// <returns></returns>
         public static List<PropertyInfo> RetornarPropriedades(Type tipo,
-                                                             bool ignorarPropriedadesTipoBase = false, 
+                                                             bool ignorarPropriedadesTipoBase = false,
                                                              bool publica = true)
         {
             var propriedades = tipo.GetProperties(BindingFlags).AsEnumerable();
@@ -124,7 +124,7 @@ namespace Snebur.Utilidade
 
         public static bool IsPropriedadePublica(PropertyInfo pi)
         {
-            return pi.CanWrite && pi.GetSetMethod(true).IsPublic;
+            return pi.CanWrite && pi.GetSetMethod(true)?.IsPublic == true;
         }
         /// <summary>
         /// Retornar lista da propriedade até chegar no caminho
@@ -138,9 +138,11 @@ namespace Snebur.Utilidade
         {
             return RetornarPropriedadesCaminho(tipo, caminhoPropriedade, ResolverPropriedadeNaoEncontrada);
         }
-        public static List<PropertyInfo> RetornarPropriedadesCaminho(Type tipo,
-                                                                     string caminhoPropriedade,
-                                                                     Func<Type, string, PropertyInfo> resolverPropriedadeNaoEncontrada)
+
+        public static List<PropertyInfo> RetornarPropriedadesCaminho(
+            Type tipo,
+            string caminhoPropriedade,
+            Func<Type, string, PropertyInfo?>? resolverPropriedadeNaoEncontrada)
         {
             var nomesPropriedade = caminhoPropriedade.Split(".".ToCharArray()).Select(x => x.Trim());
             var propriedades = new List<PropertyInfo>();
@@ -151,8 +153,11 @@ namespace Snebur.Utilidade
                 if (!String.IsNullOrEmpty(nomePropriedade))
                 {
                     var propriedade = RetornarPropriedadeInterno(tipoAtual, nomePropriedade, resolverPropriedadeNaoEncontrada);
+                    if (propriedade is null)
+                    {
+                        throw new Erro($"A propriedade '{nomePropriedade}' não foi encontrada no tipo '{tipoAtual.Name}'.");
+                    }
 
-                    ErroUtil.ValidarReferenciaNula(propriedade, nameof(propriedade));
                     tipoAtual = propriedade.PropertyType;
                     propriedades.Add(propriedade);
 
@@ -165,20 +170,27 @@ namespace Snebur.Utilidade
             return propriedades;
         }
 
-        private static PropertyInfo RetornarPropriedadeInterno(Type tipoAtual,
+        private static PropertyInfo? RetornarPropriedadeInterno(Type tipoAtual,
                                                              string nomePropriedade,
-                                                             Func<Type, string, PropertyInfo> resolverPropriedadeNaoEncontrada)
+                                                             Func<Type, string, PropertyInfo?>? resolverPropriedadeNaoEncontrada)
         {
             var propriedade = tipoAtual.GetProperties(BindingFlags).Where(x => x.Name == nomePropriedade).SingleOrDefault();
-            if (propriedade == null)
+            if (propriedade is null)
             {
                 return resolverPropriedadeNaoEncontrada?.Invoke(tipoAtual, nomePropriedade);
             }
             return propriedade;
         }
 
-        private static PropertyInfo ResolverPropriedadeNaoEncontrada(Type tipoAtual, string nomePropriedade)
+        private static PropertyInfo? ResolverPropriedadeNaoEncontrada(
+            Type tipoAtual,
+            string? nomePropriedade)
         {
+            if (string.IsNullOrWhiteSpace(nomePropriedade))
+            {
+                return null;
+            }
+
             if (tipoAtual.IsAbstract)
             {
                 var subsTipo = tipoAtual.Assembly.GetAccessibleTypes().Where(x => x.IsSubclassOf(tipoAtual));
@@ -192,27 +204,28 @@ namespace Snebur.Utilidade
                 {
                     return null;
                 }
-                var tiposEncontradao = proprieades.Select(x => x.DeclaringType);
-                throw new Erro($"A propriedade {nomePropriedade} foi encotrada em mais de um tipo {String.Join(",", tiposEncontradao.Select(x => x.Name))}");
+                var tiposEncontradao = proprieades
+                    .Select(x => x?.DeclaringType);
+                throw new Erro($"A propriedade {nomePropriedade} foi encontrado em mais de um tipo {String.Join(",", tiposEncontradao.Select(x => x?.Name))}");
             }
             return null;
-
         }
 
         public static PropertyInfo RetornarPropriedade(Type tipo, string nomePropriedade)
         {
-            return RetornarPropriedade(tipo, nomePropriedade, false);
+            return RetornarPropriedade(tipo, nomePropriedade, false) ??
+                throw new Erro(String.Format("A propriedade '{0}' não foi encontrada em '{1}'.", nomePropriedade, tipo.Name));
         }
 
-        public static PropertyInfo RetornarPropriedade(Type tipo, 
-                                                       string nomePropriedade, 
+        public static PropertyInfo? RetornarPropriedade(Type tipo,
+                                                       string nomePropriedade,
                                                        bool ignorarPropriedadeNaoEncontrada)
         {
-            Type tipoAtual = tipo;
+            Type? tipoAtual = tipo;
 
-            PropertyInfo pi = default(PropertyInfo);
+            PropertyInfo? pi = null;
 
-            while (!ReferenceEquals(tipoAtual, typeof(object)))
+            while (tipoAtual != null && !ReferenceEquals(tipoAtual, typeof(object)))
             {
                 pi = tipoAtual.GetProperty(nomePropriedade, BindingFlags);
                 pi = tipoAtual.GetProperty(nomePropriedade);
@@ -235,22 +248,31 @@ namespace Snebur.Utilidade
             }
         }
         //Métodos para centralizar o retorno dos valores das propriedades
-        public static object RetornarValorPropriedade(object objeto, string nomePropriedade)
+        public static object? RetornarValorPropriedade(object objeto, string nomePropriedade)
         {
-            var pi = RetornarPropriedade(objeto.GetType(),
-                                                      nomePropriedade, false);
+            Guard.NotNull(objeto);
 
-            var valorPropriedade = pi.GetValue(objeto, null);
-            return valorPropriedade;
+            var pi = RetornarPropriedade(objeto.GetType(), nomePropriedade, false);
+            if (pi is null)
+            {
+                throw new Erro($"A propriedade '{nomePropriedade}' não foi encontrada no objeto do tipo '{objeto.GetType().Name}'.");
+            }
+            return pi.GetValue(objeto, null);
         }
 
-        public static object RetornarValorPropriedade<T>(Expression<Func<T, object>> expressaoPropriedade, object objeto)
+        public static object? RetornarValorPropriedade<T>(
+            Expression<Func<T, object>> expressaoPropriedade,
+            object objeto)
         {
             var propriedade = RetornarPropriedade(expressaoPropriedade, objeto.GetType());
+            if (propriedade is null)
+            {
+                throw new Erro($"A propriedade '{expressaoPropriedade}' não foi encontrada no objeto do tipo '{objeto.GetType().Name}'.");
+            }
             return propriedade.GetValue(objeto);
         }
 
-        public static object RetornarValorPropriedade(object objeto, PropertyInfo pi)
+        public static object? RetornarValorPropriedade(object objeto, PropertyInfo pi)
         {
             var valorPropriedade = pi.GetValue(objeto, null);
             return valorPropriedade;

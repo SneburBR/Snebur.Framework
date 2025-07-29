@@ -29,7 +29,7 @@ namespace Snebur.Utilidade
 
         public static void MostrarMensagemSemInternet()
         {
-            if (AplicacaoSnebur.Atual.Alerta != null)
+            if (AplicacaoSnebur.Atual?.Alerta != null)
             {
                 if (IsMostrarMensagem())
                 {

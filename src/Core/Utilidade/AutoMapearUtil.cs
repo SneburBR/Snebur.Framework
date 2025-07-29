@@ -19,7 +19,11 @@ namespace Snebur.Utilidade
             Mapear(origem, destino, false);
         }
 
-        public static void Mapear(object origem, object destino, bool ignorarErro, Func<(PropertyInfo PropriedadeOrigem, PropertyInfo PropriedadeDestino), bool> manipuladorIsMapearPropriedade)
+        public static void Mapear(
+            object origem,
+            object destino,
+            bool ignorarErro,
+            Func<(PropertyInfo PropriedadeOrigem, PropertyInfo PropriedadeDestino), bool>? manipuladorIsMapearPropriedade)
         {
             Mapear(origem, destino, ignorarErro, null, manipuladorIsMapearPropriedade);
         }
@@ -29,25 +33,38 @@ namespace Snebur.Utilidade
             Mapear(origem, destino, ignorarErro, new List<string>());
         }
 
-        public static void Mapear<TOrigem>(TOrigem origem, object destino, bool ignorarErro, params Expression<Func<TOrigem, object>>[] propriedadesIgnoraOrigem)
+        public static void Mapear<TOrigem>(
+            TOrigem origem,
+            object destino,
+            bool ignorarErro,
+            params Expression<Func<TOrigem, object>>[]? propriedadesIgnoraOrigem)
+            where TOrigem : notnull
         {
             var propriedades = new List<PropertyInfo>();
-            foreach (var expressao in propriedadesIgnoraOrigem)
+            if (propriedadesIgnoraOrigem?.Length > 0)
             {
-                propriedades.AddRange(ExpressaoUtil.RetornarPropriedades(expressao));
+                foreach (var expressao in propriedadesIgnoraOrigem)
+                {
+                    propriedades.AddRange(ExpressaoUtil.RetornarPropriedades(expressao));
+                }
             }
+
             Mapear(origem, destino, ignorarErro, propriedades);
         }
 
-        public static void Mapear<TOrigem>(TOrigem origem, object destino, bool ignorarErro, List<PropertyInfo> propriedades)
+        public static void Mapear<TOrigem>(
+            TOrigem origem,
+            object destino,
+            bool ignorarErro,
+            List<PropertyInfo> propriedades)
+            where TOrigem : notnull
         {
             Mapear(origem, destino, ignorarErro, propriedades.Select(x => x.Name).ToList());
         }
 
         public static void Mapear(object origem, object destino, bool ignorarErro,
             List<string>? propriedadesIgnroar,
-            Func<(PropertyInfo? PropriedadeOrigem,
-            PropertyInfo PropriedadeDestino), bool>? manipuladorIsMapearPropriedade = null)
+            Func<(PropertyInfo PropriedadeOrigem, PropertyInfo PropriedadeDestino), bool>? manipuladorIsMapearPropriedade = null)
         {
             Guard.NotNull(origem);
             Guard.NotNull(destino);
@@ -94,7 +111,6 @@ namespace Snebur.Utilidade
                                 }
                             }
                         }
-
                     }
                 }
             }

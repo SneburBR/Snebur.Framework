@@ -8,7 +8,7 @@ namespace Snebur.Utilidade
 {
     public static partial class ReflexaoUtil
     {
-        public static object RetornarValorPadraoPropriedade(PropertyInfo propriedade)
+        public static object? RetornarValorPadraoPropriedade(PropertyInfo propriedade)
         {
             var aceitaNulo = !propriedade.PropertyType.IsValueType || IsTipoNullable(propriedade.PropertyType);
 
@@ -48,27 +48,23 @@ namespace Snebur.Utilidade
 
         public static bool TipoPossuiPropriedade(Type tipo, PropertyInfo propriedade)
         {
-            return propriedade.DeclaringType == tipo || tipo.IsSubclassOf(propriedade.DeclaringType);
+            return propriedade.DeclaringType == tipo ||
+                  (propriedade.DeclaringType is not null && tipo.IsSubclassOf(propriedade.DeclaringType));
         }
 
         public static string RetornarPluralClasse(Type tipoClasse)
         {
-            var atributoRotulo = (RotuloAttribute)tipoClasse.GetCustomAttributes(typeof(RotuloAttribute), true).FirstOrDefault();
-            if (atributoRotulo == null)
+            var atributoRotulo = tipoClasse.GetCustomAttribute<RotuloAttribute>(false);
+            if (atributoRotulo is null)
             {
                 return string.Concat(tipoClasse.Name, "s");
             }
-            else
+
+            if (string.IsNullOrWhiteSpace(atributoRotulo.RotuloPlural))
             {
-                if (string.IsNullOrWhiteSpace(atributoRotulo.RotuloPlural))
-                {
-                    return string.Concat(tipoClasse.Name, "s");
-                }
-                else
-                {
-                    return atributoRotulo.RotuloPlural;
-                }
+                return string.Concat(tipoClasse.Name, "s");
             }
+            return atributoRotulo.RotuloPlural;
         }
 
         public static List<PropertyInfo> RetornarPropriedadesEntidade(Type tipo)
@@ -77,8 +73,8 @@ namespace Snebur.Utilidade
                                     Where(x =>
                                     {
                                         if (IsPropriedadeRetornaTipoPrimario(x, true) &&
-                                            x.GetGetMethod() != null && x.GetGetMethod().IsPublic &&
-                                            x.GetSetMethod() != null && x.GetSetMethod().IsPublic)
+                                            x.GetGetMethod()?.IsPublic == true &&
+                                            x.GetSetMethod()?.IsPublic == true)
                                         {
                                             var atrituboNaoMapear = x.GetCustomAttribute<NaoMapearAttribute>();
                                             return (atrituboNaoMapear == null);

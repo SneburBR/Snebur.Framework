@@ -19,8 +19,10 @@ namespace Snebur.Utilidade
         {
             get
             {
-                var entAssembly = Assembly.GetEntryAssembly() ?? AplicacaoSnebur.Atual.GetType().Assembly;
-                if (entAssembly == null)
+                var entAssembly = Assembly.GetEntryAssembly() ??
+                    AplicacaoSnebur.Atual?.GetType().Assembly;
+                
+                if (entAssembly is null)
                 {
                     throw new InvalidOperationException("Não foi possível determinar o caminho da aplicação. A Assembly de entrada é nula.");
                 }
@@ -242,8 +244,6 @@ namespace Snebur.Utilidade
 
                         _resolucao = new Dimensao((int)largura, (int)altura);
                     }
-
-                  
                 }
             }
             return new Dimensao(0, 0);

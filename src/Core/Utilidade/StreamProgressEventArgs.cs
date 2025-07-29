@@ -24,6 +24,5 @@ namespace Snebur.Utilidade
             this.TotalBytesRecebitos = totalBytesRecebitos;
             this.TotalBytes = totalBytes;
         }
-
     }
 }
