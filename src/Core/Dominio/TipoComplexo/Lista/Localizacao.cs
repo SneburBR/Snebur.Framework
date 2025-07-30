@@ -1,4 +1,4 @@
-﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Atributos;
 using System.Linq;
 
 namespace Snebur.Dominio;
@@ -9,9 +9,9 @@ public class Localizacao : BaseTipoComplexo
     private double _latitude;
     private double _longitude;
 
-    public double Latitude { get => this._latitude; set => this.NotificarValorPropriedadeAlterada(this._latitude, this._latitude = value); }
+    public double Latitude { get => this._latitude; set => this.SetProperty(this._latitude, this._latitude = value); }
 
-    public double Longitude { get => this._longitude; set => this.NotificarValorPropriedadeAlterada(this._longitude, this._longitude = value); }
+    public double Longitude { get => this._longitude; set => this.SetProperty(this._longitude, this._longitude = value); }
 
     [IgnorarConstrutorTS]
     public Localizacao()

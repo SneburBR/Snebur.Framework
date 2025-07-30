@@ -1,4 +1,4 @@
-﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Atributos;
 
 namespace Snebur.Dominio;
 
@@ -7,9 +7,9 @@ public partial class Posicao : BaseMedidaTipoComplexo, IPosicao
     private double _x;
     private double _y;
 
-    public double X { get => this._x; set => this.NotificarValorPropriedadeAlterada(this._x, this._x = value); }
+    public double X { get => this._x; set => this.SetProperty(this._x, this._x = value); }
 
-    public double Y { get => this._y; set => this.NotificarValorPropriedadeAlterada(this._y, this._y = value); }
+    public double Y { get => this._y; set => this.SetProperty(this._y, this._y = value); }
 
     public Posicao()
     {

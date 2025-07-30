@@ -1,4 +1,4 @@
-﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Atributos;
 using Snebur.Linq;
 using Snebur.Utilidade;
 using System.Collections.Generic;
@@ -25,7 +25,7 @@ public abstract class BaseListaTipoComplexo<T> : BaseTipoComplexo /*, IEnumerabl
         }
         set
         {
-            this.NotificarValorPropriedadeAlterada(this._json, this._json = value);
+            this.SetProperty(this._json, this._json = value);
             this.DeserilizarLista();
         }
     }

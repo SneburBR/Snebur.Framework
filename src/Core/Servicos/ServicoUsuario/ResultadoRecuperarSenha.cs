@@ -1,4 +1,4 @@
-﻿namespace Snebur.Comunicacao;
+namespace Snebur.Comunicacao;
 
 public class ResultadoRecuperarSenha : BaseResultadoRecuperarSenha
 {
@@ -10,7 +10,7 @@ public class ResultadoRecuperarSenha : BaseResultadoRecuperarSenha
 
     #endregion
 
-    public bool IsUsuarioEncontrado { get => this.RetornarValorPropriedade(this._isUsuarioEncontrado); set => this.NotificarValorPropriedadeAlterada(this._isUsuarioEncontrado, this._isUsuarioEncontrado = value); }
+    public bool IsUsuarioEncontrado { get => this.GetPropertyValue(this._isUsuarioEncontrado); set => this.SetProperty(this._isUsuarioEncontrado, this._isUsuarioEncontrado = value); }
 
-    public EnumStatusCodigoRecuperarSenha Status { get => this.RetornarValorPropriedade(this._status); set => this.NotificarValorPropriedadeAlterada(this._status, this._status = value); }
+    public EnumStatusCodigoRecuperarSenha Status { get => this.GetPropertyValue(this._status); set => this.SetProperty(this._status, this._status = value); }
 }

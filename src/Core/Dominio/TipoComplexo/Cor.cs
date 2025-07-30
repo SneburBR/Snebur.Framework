@@ -1,4 +1,4 @@
-﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Atributos;
 using Snebur.Utilidade;
 using System.Drawing;
 using System.Globalization;
@@ -39,7 +39,7 @@ public class Cor : BaseTipoComplexo, ICor
         get => this._rgba;
         set
         {
-            this.NotificarValorPropriedadeAlterada(this._rgba, this._rgba = value, nameof(this.Rgba));
+            this.SetProperty(this._rgba, this._rgba = value, nameof(this.Rgba));
             this.AtualizarValores();
         }
     }

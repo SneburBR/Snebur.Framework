@@ -1,4 +1,4 @@
-﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Atributos;
 using Snebur.Utilidade;
 using System.Text.RegularExpressions;
 
@@ -12,10 +12,10 @@ public partial class Dimensao : BaseMedidaTipoComplexo, IDimensao
     private double _altura;
 
     [ValidacaoRequerido]
-    public double Largura { get => this._largura; set => this.NotificarValorPropriedadeAlterada(this._largura, this._largura = value); }
+    public double Largura { get => this._largura; set => this.SetProperty(this._largura, this._largura = value); }
 
     [ValidacaoRequerido]
-    public double Altura { get => this._altura; set => this.NotificarValorPropriedadeAlterada(this._altura, this._altura = value); }
+    public double Altura { get => this._altura; set => this.SetProperty(this._altura, this._altura = value); }
 
     public Dimensao()
     {

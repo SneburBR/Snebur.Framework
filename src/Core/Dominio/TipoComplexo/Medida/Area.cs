@@ -1,4 +1,4 @@
-﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Atributos;
 
 namespace Snebur.Dominio;
 
@@ -12,17 +12,17 @@ public partial class Area : BaseMedidaTipoComplexo, IArea
     private double _largura;
     private double _altura;
 
-    public double? Esquerda { get => this._esquerda; set => this.NotificarValorPropriedadeAlterada(this._esquerda, this._esquerda = value); }
+    public double? Esquerda { get => this._esquerda; set => this.SetProperty(this._esquerda, this._esquerda = value); }
 
-    public double? Superior { get => this._superior; set => this.NotificarValorPropriedadeAlterada(this._superior, this._superior = value); }
+    public double? Superior { get => this._superior; set => this.SetProperty(this._superior, this._superior = value); }
 
-    public double? Direita { get => this._direita; set => this.NotificarValorPropriedadeAlterada(this._direita, this._direita = value); }
+    public double? Direita { get => this._direita; set => this.SetProperty(this._direita, this._direita = value); }
 
-    public double? Inferior { get => this._inferior; set => this.NotificarValorPropriedadeAlterada(this._inferior, this._inferior = value); }
+    public double? Inferior { get => this._inferior; set => this.SetProperty(this._inferior, this._inferior = value); }
 
-    public double Largura { get => this._largura; set => this.NotificarValorPropriedadeAlterada(this._largura, this._largura = value); }
+    public double Largura { get => this._largura; set => this.SetProperty(this._largura, this._largura = value); }
 
-    public double Altura { get => this._altura; set => this.NotificarValorPropriedadeAlterada(this._altura, this._altura = value); }
+    public double Altura { get => this._altura; set => this.SetProperty(this._altura, this._altura = value); }
 
     public Area()
     {

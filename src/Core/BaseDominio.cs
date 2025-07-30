@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Snebur.Dominio.Atributos;
 using Snebur.Serializacao;
 using Snebur.Utilidade;
@@ -187,17 +187,32 @@ public abstract class BaseDominio : IBaseDominio, IBaseDominioReferencia, INotif
         }
     }
 
-    internal protected virtual void NotificarValorPropriedadeAlterada<T>(
+    internal protected virtual void SetProperty<T>(
+       T? antigoValor,
+       T? novoValor,
+       [CallerMemberName] string nomePropriedade = "")
+    {
+
+        if (EqualityComparer<T>.Default.Equals(antigoValor, novoValor))
+        {
+            return;
+        }
+
+        this.SetProperty(antigoValor, novoValor, nomePropriedade, null, null);
+    }
+
+    internal virtual void SetProperty<T>(
         T? antigoValor,
         T? novoValor,
-        [CallerMemberName] string nomePropriedade = "",
-        string? nomePropriedadeEntidade = null,
-        string? nomePropriedadeTipoComplexo = null)
+        string? nomePropriedade,
+        string? nomePropriedadeEntidade,
+        string? nomePropriedadeTipoComplexo)
     {
         if (this.IsSerializando)
         {
             return;
         }
+        Guard.NotEmpty(nomePropriedade);
 
         if (this.__IsControladorPropriedadesAlteradaAtivo)
         {
@@ -237,16 +252,16 @@ public abstract class BaseDominio : IBaseDominio, IBaseDominioReferencia, INotif
         this.NotificarPropriedadeAlterada(nomePropriedade);
     }
 
-    internal protected virtual void NotificarValorPropriedadeAlteradaTipoCompleto(BaseTipoComplexo antigoValor, BaseTipoComplexo novoValor, [CallerMemberName] string nomePropriedade = "")
-    {
-        if (this.IsSerializando)
-        {
-            return;
-        }
-        this.NotificarValorPropriedadeAlterada(antigoValor, novoValor, nomePropriedade);
-    }
+    //internal protected virtual void NotificarValorPropriedadeAlteradaTipoCompleto(BaseTipoComplexo antigoValor, BaseTipoComplexo novoValor, [CallerMemberName] string nomePropriedade = "")
+    //{
+    //    if (this.IsSerializando)
+    //    {
+    //        return;
+    //    }
+    //    this.NotificarValorPropriedadeAlterada(antigoValor, novoValor, nomePropriedade);
+    //}
 
-    internal protected virtual T RetornarValorPropriedade<T>(T valor, [CallerMemberName] string nomePropriedade = "")
+    internal protected virtual T? GetPropertyValue<T>(T? valor, [CallerMemberName] string nomePropriedade = "")
     {
         return valor;
     }
@@ -277,6 +292,7 @@ public abstract class BaseDominio : IBaseDominio, IBaseDominioReferencia, INotif
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nomePropriedade));
         }
     }
+
     #endregion
 
     #region IBaseDominioReferencia
@@ -329,11 +345,7 @@ public abstract class BaseDominio : IBaseDominio, IBaseDominioReferencia, INotif
 
     #endregion
 
-    internal protected virtual void SetValue(object olbValue, object newValue, [CallerMemberName] string nomePropriedade = "")
-    {
-        this.NotificarValorPropriedadeAlterada(newValue, newValue, nomePropriedade);
-    }
-
+  
     #region IBaseDominioControlorPropriedade
     void IBaseDominioControladorPropriedade.DestivarControladorPropriedadeAlterada()
     {
@@ -375,4 +387,5 @@ public abstract class BaseDominio : IBaseDominio, IBaseDominioReferencia, INotif
     }
 
     #endregion
+ 
 }

@@ -1,4 +1,4 @@
-﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Atributos;
 using Snebur.Utilidade;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -54,12 +54,11 @@ public abstract class BaseTipoComplexo : BaseDominio, ICloneable
                                     x.GetGetMethod()?.IsPublic == true &&
                                     x.GetCustomAttribute<NaoMapearAttribute>() == null).ToList();
     }
-
-    protected internal override void NotificarValorPropriedadeAlterada<T>(
+     
+    protected internal override void SetProperty<T>(
         T? antigoValor,
-        T? novoValor, [CallerMemberName] string nomePropriedade = "",
-        string? nomePropriedadeEntidade = null,
-        string? nomePropriedadeTipoComplexo = null)
+        T? novoValor,
+        [CallerMemberName] string nomePropriedade = "")
         where T : default
     {
         if (this.IsCongelado && !Util.SaoIgual(antigoValor, novoValor))
@@ -70,16 +69,22 @@ public abstract class BaseTipoComplexo : BaseDominio, ICloneable
         if (this.__Entidade?.__IsControladorPropriedadesAlteradaAtivo == true)
         {
             var caminhoPropriedade = $"{this.__NomePropriedadeEntidade}_{nomePropriedade}";
-            this.__Entidade.NotificarValorPropriedadeAlterada(
+
+            string? nomePropriedadeTipoComplexo = nomePropriedade;
+
+            this.__Entidade.SetProperty(
                 antigoValor,
                 novoValor,
                 caminhoPropriedade,
                 this.__NomePropriedadeEntidade,
                 nomePropriedadeTipoComplexo);
+
+            throw new NotImplementedException("This need to be check");
+
         }
         base.NotificarPropriedadeAlterada(nomePropriedade);
     }
-      
+
     internal void NotificarTodasPropriedadesAlteradas(BaseTipoComplexo? objetoAntigo)
     {
         foreach (var propriedade in this.PropriedadesMapeadas)
@@ -87,7 +92,7 @@ public abstract class BaseTipoComplexo : BaseDominio, ICloneable
             var novoValor = propriedade.GetValue(this);
             var antigoValor = propriedade.GetValue(objetoAntigo);
             var caminhoPropriedade = $"{this.__NomePropriedadeEntidade}_{propriedade.Name}";
-            this.__Entidade?.NotificarValorPropriedadeAlterada(antigoValor, novoValor, caminhoPropriedade);
+            this.__Entidade?.Set(antigoValor, novoValor, caminhoPropriedade);
         }
     }
 

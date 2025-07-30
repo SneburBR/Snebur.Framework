@@ -1,4 +1,4 @@
-﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Atributos;
 
 namespace Snebur.Dominio;
 
@@ -17,15 +17,15 @@ public partial class Borda : BaseMedidaTipoComplexo, IBorda
     //public Cor Cor { get; }
 
     [ValidacaoTextoTamanho(32)]
-    public string CorRgba { get => this._corRgba; set => this.NotificarValorPropriedadeAlterada(this._corRgba, this._corRgba = value); }
+    public string CorRgba { get => this._corRgba; set => this.SetProperty(this._corRgba, this._corRgba = value); }
 
-    public bool IsInterna { get => this._isInterna; set => this.NotificarValorPropriedadeAlterada(this._isInterna, this._isInterna = value); }
+    public bool IsInterna { get => this._isInterna; set => this.SetProperty(this._isInterna, this._isInterna = value); }
 
-    public double Afastamento { get => this._afastamento; set => this.NotificarValorPropriedadeAlterada(this._afastamento, this._afastamento = value); }
+    public double Afastamento { get => this._afastamento; set => this.SetProperty(this._afastamento, this._afastamento = value); }
 
-    public double Espessura { get => this._espessura; set => this.NotificarValorPropriedadeAlterada(this._espessura, this._espessura = value); }
+    public double Espessura { get => this._espessura; set => this.SetProperty(this._espessura, this._espessura = value); }
 
-    public int Arredondamento { get => this._arredondamento; set => this.NotificarValorPropriedadeAlterada(this._arredondamento, this._arredondamento = value); }
+    public int Arredondamento { get => this._arredondamento; set => this.SetProperty(this._arredondamento, this._arredondamento = value); }
 
     public Borda()
     {

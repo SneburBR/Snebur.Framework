@@ -1,4 +1,4 @@
-﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Atributos;
 using Snebur.Utilidade;
 
 namespace Snebur.Dominio;
@@ -12,9 +12,9 @@ public class PrazoTempo : BaseTipoComplexo, IPrazoTempo
     private EnumTipoPrazo _tipoPrazo;
 
     //public double? PrazoMinimo { get => this._prazoMinimo; set => this.NotificarValorPropriedadeAlterada(this._prazoMinimo, this._prazoMinimo = value); }
-    public double Prazo { get => this._prazo; set => this.NotificarValorPropriedadeAlterada(this._prazo, this._prazo = value); }
+    public double Prazo { get => this._prazo; set => this.SetProperty(this._prazo, this._prazo = value); }
 
-    public EnumTipoPrazo TipoPrazo { get => this._tipoPrazo; set => this.NotificarValorPropriedadeAlterada(this._tipoPrazo, this._tipoPrazo = value); }
+    public EnumTipoPrazo TipoPrazo { get => this._tipoPrazo; set => this.SetProperty(this._tipoPrazo, this._tipoPrazo = value); }
 
     [NaoMapear]
     [IgnorarPropriedade]

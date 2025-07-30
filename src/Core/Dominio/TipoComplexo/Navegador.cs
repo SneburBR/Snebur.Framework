@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Snebur.Dominio.Atributos;
 
 namespace Snebur.Dominio;
@@ -11,16 +11,18 @@ public class Navegador : BaseTipoComplexo
     private string _codenome = "";
     private string _versao = "";
 
-    public EnumNavegador NavegadorEnum { get => this._navegadorEnum; set => this.NotificarValorPropriedadeAlterada(this._navegadorEnum, this._navegadorEnum = value); }
+    public EnumNavegador NavegadorEnum { get => this._navegadorEnum; set => this.SetProperty(this._navegadorEnum, this._navegadorEnum = value); }
 
     [ValidacaoTextoTamanho(255)]
-    public string Nome { get => this._nome; set => this.NotificarValorPropriedadeAlterada(this._nome, this._nome = value); }
+    public string Nome { get => this._nome; set => this.SetProperty(this._nome, this._nome = value); }
+
+    
 
     [ValidacaoTextoTamanho(255)]
-    public string Codenome { get => this._codenome; set => this.NotificarValorPropriedadeAlterada(this._codenome, this._codenome = value); }
+    public string Codenome { get => this._codenome; set => this.SetProperty(this._codenome, this._codenome = value); }
 
     [ValidacaoTextoTamanho(255)]
-    public string Versao { get => this._versao; set => this.NotificarValorPropriedadeAlterada(this._versao, this._versao = value); }
+    public string Versao { get => this._versao; set => this.SetProperty(this._versao, this._versao = value); }
 
     //public override Navegador Clone()
     //{

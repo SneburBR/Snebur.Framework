@@ -1,4 +1,4 @@
-﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Atributos;
 
 namespace Snebur.Dominio;
 
@@ -10,13 +10,13 @@ public partial class Margem : BaseMedidaTipoComplexo, IMargem
     private double? _direita = null;
     private double? _inferior = null;
 
-    public double? Esquerda { get => this._esquerda; set => this.NotificarValorPropriedadeAlterada(this._esquerda, this._esquerda = value); }
+    public double? Esquerda { get => this._esquerda; set => this.SetProperty(this._esquerda, this._esquerda = value); }
 
-    public double? Superior { get => this._superior; set => this.NotificarValorPropriedadeAlterada(this._superior, this._superior = value); }
+    public double? Superior { get => this._superior; set => this.SetProperty(this._superior, this._superior = value); }
 
-    public double? Direita { get => this._direita; set => this.NotificarValorPropriedadeAlterada(this._direita, this._direita = value); }
+    public double? Direita { get => this._direita; set => this.SetProperty(this._direita, this._direita = value); }
 
-    public double? Inferior { get => this._inferior; set => this.NotificarValorPropriedadeAlterada(this._inferior, this._inferior = value); }
+    public double? Inferior { get => this._inferior; set => this.SetProperty(this._inferior, this._inferior = value); }
 
     public double MaiorValor => Math.Max(this.Esquerda ?? 0, Math.Max(this.Superior ?? 0, Math.Max(this.Direita ?? 0, this.Inferior ?? 0)));
 

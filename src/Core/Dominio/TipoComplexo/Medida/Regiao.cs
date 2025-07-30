@@ -1,4 +1,4 @@
-﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Atributos;
 
 namespace Snebur.Dominio;
 
@@ -9,13 +9,13 @@ public partial class Regiao : BaseMedidaTipoComplexo, IRegiao
     private double _largura;
     private double _altura;
 
-    public double X { get => this._x; set => this.NotificarValorPropriedadeAlterada(this._x, this._x = value); }
+    public double X { get => this._x; set => this.SetProperty(this._x, this._x = value); }
 
-    public double Y { get => this._y; set => this.NotificarValorPropriedadeAlterada(this._y, this._y = value); }
+    public double Y { get => this._y; set => this.SetProperty(this._y, this._y = value); }
 
-    public double Largura { get => this._largura; set => this.NotificarValorPropriedadeAlterada(this._largura, this._largura = value); }
+    public double Largura { get => this._largura; set => this.SetProperty(this._largura, this._largura = value); }
 
-    public double Altura { get => this._altura; set => this.NotificarValorPropriedadeAlterada(this._altura, this._altura = value); }
+    public double Altura { get => this._altura; set => this.SetProperty(this._altura, this._altura = value); }
 
     public Regiao()
     {

@@ -1,4 +1,4 @@
-﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Atributos;
 
 namespace Snebur.Dominio;
 
@@ -34,40 +34,40 @@ public partial class FiltroImagem : BaseTipoComplexo, IFiltroImagem
     private double? _desfoque = null;
 
     [ValidacaoIntervalo(-100, 100)]
-    public double? Exposicao { get => this._exposicao; set => this.NotificarValorPropriedadeAlterada(this._exposicao, this._exposicao = (value == EXPOSICAO_PADRAO) ? null : value); }
+    public double? Exposicao { get => this._exposicao; set => this.SetProperty(this._exposicao, this._exposicao = (value == EXPOSICAO_PADRAO) ? null : value); }
 
     [ValidacaoIntervalo(-100, 100)]
-    public double? Magenta { get => this._magenta; set => this.NotificarValorPropriedadeAlterada(this._magenta, this._magenta = (value == MAGENTA_PADRAO) ? null : value); }
+    public double? Magenta { get => this._magenta; set => this.SetProperty(this._magenta, this._magenta = (value == MAGENTA_PADRAO) ? null : value); }
 
     [ValidacaoIntervalo(-100, 100)]
-    public double? Ciano { get => this._ciano; set => this.NotificarValorPropriedadeAlterada(this._ciano, this._ciano = (value == CIANO_PADRAO) ? null : value); }
+    public double? Ciano { get => this._ciano; set => this.SetProperty(this._ciano, this._ciano = (value == CIANO_PADRAO) ? null : value); }
 
     [ValidacaoIntervalo(-100, 100)]
-    public double? Amarelo { get => this._amarelo; set => this.NotificarValorPropriedadeAlterada(this._amarelo, this._amarelo = (value == AMARELO_PADRAO) ? null : value); }
+    public double? Amarelo { get => this._amarelo; set => this.SetProperty(this._amarelo, this._amarelo = (value == AMARELO_PADRAO) ? null : value); }
 
     [ValidacaoIntervalo(0, 200)]
-    public double? Contraste { get => this._contraste; set => this.NotificarValorPropriedadeAlterada(this._contraste, this._contraste = (value == CONTRASTE_PADRAO) ? null : value); }
+    public double? Contraste { get => this._contraste; set => this.SetProperty(this._contraste, this._contraste = (value == CONTRASTE_PADRAO) ? null : value); }
 
     [ValidacaoIntervalo(0, 200)]
-    public double? Brilho { get => this._brilho; set => this.NotificarValorPropriedadeAlterada(this._brilho, this._brilho = (value == BRILHO_PADRAO) ? null : value); }
+    public double? Brilho { get => this._brilho; set => this.SetProperty(this._brilho, this._brilho = (value == BRILHO_PADRAO) ? null : value); }
 
     [ValidacaoIntervalo(0, 100)]
-    public double? Sepia { get => this._sepia; set => this.NotificarValorPropriedadeAlterada(this._sepia, this._sepia = (value == SEPIA_PADRFAO) ? null : value); }
+    public double? Sepia { get => this._sepia; set => this.SetProperty(this._sepia, this._sepia = (value == SEPIA_PADRFAO) ? null : value); }
 
     [ValidacaoIntervalo(0, 200)]
-    public double? Saturacao { get => this._saturacao; set => this.NotificarValorPropriedadeAlterada(this._saturacao, this._saturacao = (value == SATURACAO_PADRAO) ? null : value); }
+    public double? Saturacao { get => this._saturacao; set => this.SetProperty(this._saturacao, this._saturacao = (value == SATURACAO_PADRAO) ? null : value); }
 
     [ValidacaoIntervalo(0, 100)]
-    public double? PretoBranco { get => this._pretoBranco; set => this.NotificarValorPropriedadeAlterada(this._pretoBranco, this._pretoBranco = (value == PRECO_BRANCO_PADRAO) ? null : value); }
+    public double? PretoBranco { get => this._pretoBranco; set => this.SetProperty(this._pretoBranco, this._pretoBranco = (value == PRECO_BRANCO_PADRAO) ? null : value); }
 
     [ValidacaoIntervalo(0, 100)]
-    public double? Inverter { get => this._inverter; set => this.NotificarValorPropriedadeAlterada(this._inverter, this._inverter = (value == INVERTER_PADRAO) ? null : value); }
+    public double? Inverter { get => this._inverter; set => this.SetProperty(this._inverter, this._inverter = (value == INVERTER_PADRAO) ? null : value); }
 
     [ValidacaoIntervalo(0, 360)]
-    public double? Matriz { get => this._matriz; set => this.NotificarValorPropriedadeAlterada(this._matriz, this._matriz = (value == MATRIZ_PADRAO) ? null : value); }
+    public double? Matriz { get => this._matriz; set => this.SetProperty(this._matriz, this._matriz = (value == MATRIZ_PADRAO) ? null : value); }
 
     [ValidacaoIntervalo(0, 10)]
-    public double? Desfoque { get => this._desfoque; set => this.NotificarValorPropriedadeAlterada(this._desfoque, this._desfoque = (value == DESFOQUE_PADRAO) ? null : value); }
+    public double? Desfoque { get => this._desfoque; set => this.SetProperty(this._desfoque, this._desfoque = (value == DESFOQUE_PADRAO) ? null : value); }
 
     public static FiltroImagem Empty
     {

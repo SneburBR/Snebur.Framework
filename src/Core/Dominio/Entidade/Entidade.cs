@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Snebur.Dominio.Atributos;
 using Snebur.Utilidade;
 using System.Collections;
@@ -16,7 +16,7 @@ namespace Snebur.Dominio;
 
 [NaoCriarTabelaEntidade]
 [Plural("Entidades")]
-public abstract class Entidade : BaseDominio, IEntidade, IEntidadeInterna, IEquatable<Entidade>, INotifyPropertyChanged, INomeTipoEntidade, IDataErrorInfo
+public abstract partial class Entidade : BaseDominio, IEntidade, IEntidadeInterna, IEquatable<Entidade>, INotifyPropertyChanged, INomeTipoEntidade, IDataErrorInfo
 {
     private bool _isValidacaoPropriedadeAbertasDesativada = false;
     private bool __isExisteAlteracaoTipoCompleto;
@@ -177,16 +177,18 @@ public abstract class Entidade : BaseDominio, IEntidade, IEntidadeInterna, IEqua
     #region Atribuir valor na propriedade
 
     #region Retornar Get
-    internal protected virtual long RetornarValorPropriedadeChaveEstrangeira(long valor, Entidade? relacao, [CallerMemberName] string nomePropriedade = "")
+
+    private long RetornarValorPropriedadeChaveEstrangeira(long valor, Entidade? relacao, [CallerMemberName] string nomePropriedade = "")
     {
         if (relacao is not null)
         {
             return relacao.Id;
         }
-        return this.RetornarValorPropriedade(valor, nomePropriedade);
+        //RetornarValorPropriedade(
+        return this.Get(valor, nomePropriedade);
     }
 
-    internal protected virtual long? RetornarValorPropriedadeChaveEstrangeira(
+    private long? RetornarValorPropriedadeChaveEstrangeira(
         long? valor,
         Entidade? relacao, [CallerMemberName] string nomePropriedade = "")
     {
@@ -194,10 +196,18 @@ public abstract class Entidade : BaseDominio, IEntidade, IEntidadeInterna, IEqua
         {
             return (long?)relacao.Id;
         }
-        return this.RetornarValorPropriedade(valor, nomePropriedade);
+        //RetornarValorPropriedade(
+        return this.Get(valor, nomePropriedade);
     }
 
-    internal protected override T RetornarValorPropriedade<T>(
+    protected internal override T? GetPropertyValue<T>(
+        T? valor,
+        [CallerMemberName] string nomePropriedade = "") where T : default
+    {
+        throw new InvalidOperationException($"Use Get<T> method instead");
+    }
+
+    private T RetornarValorPropriedade<T>(
         T valor,
         [CallerMemberName] string nomePropriedade = "")
     {
@@ -235,24 +245,43 @@ public abstract class Entidade : BaseDominio, IEntidade, IEntidadeInterna, IEqua
         return valor;
     }
 
-    internal protected virtual long Get(long valor, Entidade relacao, [CallerMemberName] string nomePropriedade = "")
-    {
-        return this.RetornarValorPropriedadeChaveEstrangeira(valor, relacao, nomePropriedade);
-    }
-    internal protected virtual long? Get(long? valor, Entidade relacao, [CallerMemberName] string nomePropriedade = "")
-    {
-        return this.RetornarValorPropriedadeChaveEstrangeira(valor, relacao, nomePropriedade);
-    }
     internal protected virtual T Get<T>(T valor, [CallerMemberName] string nomePropriedade = "")
     {
+        //RetornarValorPropriedade(
         return this.RetornarValorPropriedade(valor, nomePropriedade);
+    }
+
+    internal protected virtual long Get(long valor, Entidade? relacao, [CallerMemberName] string nomePropriedade = "")
+    {
+        return this.RetornarValorPropriedadeChaveEstrangeira(valor, relacao, nomePropriedade);
+    }
+
+    internal protected virtual long? Get(long? valor, Entidade? relacao, [CallerMemberName] string nomePropriedade = "")
+    {
+        return this.RetornarValorPropriedadeChaveEstrangeira(valor, relacao, nomePropriedade);
     }
 
     #endregion
 
     #region Notificar Set
 
-    internal protected override void NotificarValorPropriedadeAlteradaTipoCompleto(
+    internal override void SetProperty<T>(
+          T? antigoValor,
+          T? novoValor,
+          string? nomePropriedadeEntidade,
+          string? nomePropriedadeTipoComplexo,
+          [CallerMemberName] string? nomePropriedade = "") where T : default
+    {
+        this.SetProperty(
+            antigoValor: antigoValor,
+            novoValor: novoValor,
+            nomePropriedade: nomePropriedade,
+            nomePropriedadeEntidade: nomePropriedadeEntidade,
+            nomePropriedadeTipoComplexo: nomePropriedadeTipoComplexo);
+    }
+
+    //NotificarValorPropriedadeAlteradaTipoCompleto
+    private void SetComplexTypeProperty(
         BaseTipoComplexo antigoValor,
         BaseTipoComplexo novoValor,
         [CallerMemberName] string nomePropriedade = "")
@@ -275,22 +304,16 @@ public abstract class Entidade : BaseDominio, IEntidade, IEntidadeInterna, IEqua
         }
         this.NotificarPropriedadeAlterada(nomePropriedade);
     }
-
-    internal protected virtual void NotificarValorPropriedadeAlteradaChaveEstrangeiraAlterada<T>(
-                                        T antigoValor,
-                                        T novoValor)
-    {
-
-    }
-
-    internal protected virtual void NotificarValorPropriedadeAlteradaChaveEstrangeiraAlterada<T>(
+     
+    //NotificarValorPropriedadeAlteradaChaveEstrangeiraAlterada
+    private void SetForeignKeyProperty<T>(
                                         T antigoValor,
                                         T novoValor,
                                         string nomePropriedadeRelacao,
                                         Entidade? entidadeRelacao,
                                         [CallerMemberName] string nomePropriedade = "")
     {
-        this.NotificarValorPropriedadeAlterada(antigoValor, novoValor, nomePropriedade);
+        this.Set(antigoValor, novoValor, nomePropriedade);
 
         if (this.__IsControladorPropriedadesAlteradaAtivo)
         {
@@ -313,9 +336,9 @@ public abstract class Entidade : BaseDominio, IEntidade, IEntidadeInterna, IEqua
     }
 
     //para server valor null na chave estrangeira de chaveEstrangeira_Id = null
-    internal protected virtual void NotificarValorPropriedadeAlteradaRelacao(
-        object? antigoValor,
-        object? novoValor,
+    private void SetEntityProperty(
+        Entidade? antigoValor,
+        Entidade? novoValor,
         [CallerMemberName] string nomePropriedade = "")
     {
         if (this.IsSerializando)
@@ -323,7 +346,7 @@ public abstract class Entidade : BaseDominio, IEntidade, IEntidadeInterna, IEqua
             return;
         }
 
-        this.NotificarValorPropriedadeAlterada(antigoValor, novoValor, nomePropriedade);
+        this.Set<Entidade>(antigoValor, novoValor, nomePropriedade);
         if (this.__IsControladorPropriedadesAlteradaAtivo &&
             this is Entidade _)
         {
@@ -386,9 +409,115 @@ public abstract class Entidade : BaseDominio, IEntidade, IEntidadeInterna, IEqua
         this.NotificarPropriedadeAlterada(nomePropriedade);
     }
 
-    internal protected virtual void Set(object antigoValor, object novoValor, [CallerMemberName] string nomePropriedade = "")
+    internal protected void Set<T>(
+       T? antigoValor,
+       T? novoValor,
+       [CallerMemberName] string nomePropriedade = "")
     {
-        base.NotificarValorPropriedadeAlterada(antigoValor, novoValor, nomePropriedade);
+        if (this.IsSerializando)
+        {
+            return;
+        }
+
+        base.SetProperty(antigoValor, novoValor, nomePropriedade);
+    }
+
+    internal protected void Set<T>(
+        T? antigoValor,
+        T? novoValor,
+        string? nomePropriedadeEntidade,
+        string? nomePropriedadeTipoComplexo,
+        [CallerMemberName] string nomePropriedade = "")
+    {
+        if (EqualityComparer<T>.Default.Equals(antigoValor, novoValor))
+        {
+            return;
+        }
+
+        this.SetProperty(
+            antigoValor: antigoValor,
+            novoValor: novoValor,
+            nomePropriedadeEntidade: nomePropriedadeEntidade,
+            nomePropriedadeTipoComplexo,
+            nomePropriedade);
+    }
+
+    internal protected void Set(
+        BaseTipoComplexo antigoValor,
+        BaseTipoComplexo novoValor,
+        [CallerMemberName] string nomePropriedade = "")
+    {
+        if (antigoValor?.Equals(novoValor) == true)
+        {
+            return;
+        }
+        this.SetComplexTypeProperty(antigoValor!, novoValor, nomePropriedade);
+    }
+     
+    internal protected void SetForeignKey(
+          long? antigoValor,
+          long? novoValor,
+          string nomePropriedadeRelacao,
+          Entidade? entidadeRelacao,
+          [CallerMemberName] string nomePropriedade = "")
+    {
+        this.SetForeignKeyProperty(antigoValor,
+           novoValor,
+           nomePropriedadeRelacao,
+           entidadeRelacao,
+           nomePropriedade);
+    }
+
+    internal protected void SetForeignKey(
+        long antigoValor,
+        long novoValor,
+        string nomePropriedadeRelacao,
+        Entidade? entidadeRelacao,
+        [CallerMemberName] string nomePropriedade = "")
+    {
+        this.SetForeignKeyProperty(antigoValor,
+           novoValor,
+           nomePropriedadeRelacao,
+           entidadeRelacao,
+           nomePropriedade);
+    }
+
+    //internal protected virtual void Set<T>(
+    //     long antigoValor,
+    //     long novoValor,
+    //     string nomePropriedadeRelacao,
+    //     Entidade? entidadeRelacao,
+    //     [CallerMemberName] string nomePropriedade = "")
+    //{
+    //    //NotificarValorPropriedadeAlteradaChaveEstrangeiraAlterada
+    //    this.NotificarValorPropriedadeAlteradaChaveEstrangeiraAlterada(antigoValor,
+    //        novoValor,
+    //        nomePropriedadeRelacao,
+    //        entidadeRelacao,
+    //        nomePropriedade);
+    //}
+
+    internal protected virtual void Set(
+        ref Entidade? antigoValor,
+        Entidade? novoValor,
+        [CallerMemberName] string nomePropriedade = "")
+    {
+        this.SetEntityProperty(antigoValor, novoValor, nomePropriedade);
+    }
+
+    internal protected void NotificarValorPropriedadeAlteradaIsAtivo(
+       bool antigoValor,
+       bool novoValor,
+       [CallerMemberName] string nomePropriedade = "")
+    {
+        if (novoValor)
+        {
+            if (this is IDeletado deletado && deletado.IsDeletado)
+            {
+                throw new Erro("Uma entidade deletada não pode ser ativada");
+            }
+        }
+        this.Set(antigoValor, novoValor, nomePropriedade);
     }
 
     #endregion
@@ -761,7 +890,8 @@ public abstract class Entidade : BaseDominio, IEntidade, IEntidadeInterna, IEqua
 
     internal protected bool RetornarValorPropriedadeIsAtivo(bool valor, [CallerMemberName] string nomePropriedade = "")
     {
-        var isAtivo = this.RetornarValorPropriedade(valor, nomePropriedade);
+        //RetornarValorPropriedade(
+        var isAtivo = this.Get(valor, nomePropriedade);
         if (this is IDeletado endidadeDeletado)
         {
             return isAtivo && !endidadeDeletado.IsDeletado;
@@ -785,16 +915,7 @@ public abstract class Entidade : BaseDominio, IEntidade, IEntidadeInterna, IEqua
         return descricao;
     }
 
-    internal protected void NotificarValorPropriedadeAlteradaIsAtivo(bool antigoValor, bool novoValor, [CallerMemberName] string nomePropriedade = "")
-    {
-        if (novoValor)
-        {
-            if (this is IDeletado deletado && deletado.IsDeletado)
-            {
-                throw new Erro("Uma entidade deletada não pode ser ativada");
-            }
-        }
-        base.NotificarValorPropriedadeAlterada(antigoValor, novoValor, nomePropriedade);
-    }
+
+
     #endregion
 }
