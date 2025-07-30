@@ -1,4 +1,4 @@
-﻿namespace Snebur.Comunicacao.Dominio.ServicoGlobalizacao
+namespace Snebur.Comunicacao.Dominio.ServicoGlobalizacao
 {
 
     public class ResultadoGlobalizacao : BaseViewModel
@@ -10,9 +10,9 @@
 
         #endregion
 
-        public string? JsonIdiomaBase64 { get => this.RetornarValorPropriedade(this._jsonIdiomaBase64); set => this.NotificarValorPropriedadeAlterada(this._jsonIdiomaBase64, this._jsonIdiomaBase64 = value); }
+        public string? JsonIdiomaBase64 { get => this.GetPropertyValue(this._jsonIdiomaBase64); set => this.SetProperty(this._jsonIdiomaBase64, this._jsonIdiomaBase64 = value); }
 
-        public string? JsonCulturaBase64 { get => this.RetornarValorPropriedade(this._jsonCulturaBase64); set => this.NotificarValorPropriedadeAlterada(this._jsonCulturaBase64, this._jsonCulturaBase64 = value); }
+        public string? JsonCulturaBase64 { get => this.GetPropertyValue(this._jsonCulturaBase64); set => this.SetProperty(this._jsonCulturaBase64, this._jsonCulturaBase64 = value); }
 
         public List<DominioGlobalizacao> Dominios { get; set; } = new();
 

@@ -1,4 +1,4 @@
-﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Atributos;
 
 namespace Snebur.Comunicacao.Dominio.Chamada
 {
@@ -17,13 +17,13 @@ namespace Snebur.Comunicacao.Dominio.Chamada
         public Cabecalho? Cabecalho { get; set; }
 
         public InformacaoSessao? InformacaoSessao { get; set; }
-        public Guid IdentificadorSessaoUsuario { get => this.RetornarValorPropriedade(this._identificadorSessaoUsuario); set => this.NotificarValorPropriedadeAlterada(this._identificadorSessaoUsuario, this._identificadorSessaoUsuario = value); }
+        public Guid IdentificadorSessaoUsuario { get => this.GetPropertyValue(this._identificadorSessaoUsuario); set => this.SetProperty(this._identificadorSessaoUsuario, this._identificadorSessaoUsuario = value); }
 
-        public string? Operacao { get => this.RetornarValorPropriedade(this._operacao); set => this.NotificarValorPropriedadeAlterada(this._operacao, this._operacao = value); }
+        public string? Operacao { get => this.GetPropertyValue(this._operacao); set => this.SetProperty(this._operacao, this._operacao = value); }
 
-        public DateTime DataHora { get => this.RetornarValorPropriedade(this._dataHora); set => this.NotificarValorPropriedadeAlterada(this._dataHora, this._dataHora = value); }
+        public DateTime DataHora { get => this.GetPropertyValue(this._dataHora); set => this.SetProperty(this._dataHora, this._dataHora = value); }
 
-        public bool Async { get => this.RetornarValorPropriedade(this._async); set => this.NotificarValorPropriedadeAlterada(this._async, this._async = value); }
+        public bool Async { get => this.GetPropertyValue(this._async); set => this.SetProperty(this._async, this._async = value); }
 
         public List<ParametroChamada> Parametros { get; set; } = new List<ParametroChamada>();
 

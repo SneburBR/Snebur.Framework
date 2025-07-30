@@ -1,4 +1,4 @@
-﻿namespace Snebur.Comunicacao.Dominio.Resultado
+namespace Snebur.Comunicacao.Dominio.Resultado
 {
     public abstract class ResultadoChamada : BaseComunicao
     {
@@ -11,9 +11,9 @@
 
 		#endregion
 
-        public string? NomeServico { get => this.RetornarValorPropriedade(this._nomeServico); set => this.NotificarValorPropriedadeAlterada(this._nomeServico, this._nomeServico = value); }
-        public DateTime DataHora { get => this.RetornarValorPropriedade(this._dataHora); set => this.NotificarValorPropriedadeAlterada(this._dataHora, this._dataHora = value); }
-        public string? Operacao { get => this.RetornarValorPropriedade(this._operacao); set => this.NotificarValorPropriedadeAlterada(this._operacao, this._operacao = value); }
+        public string? NomeServico { get => this.GetPropertyValue(this._nomeServico); set => this.SetProperty(this._nomeServico, this._nomeServico = value); }
+        public DateTime DataHora { get => this.GetPropertyValue(this._dataHora); set => this.SetProperty(this._dataHora, this._dataHora = value); }
+        public string? Operacao { get => this.GetPropertyValue(this._operacao); set => this.SetProperty(this._operacao, this._operacao = value); }
         public BaseDominio? ExtraOpcional { get; set; }
     }
 }

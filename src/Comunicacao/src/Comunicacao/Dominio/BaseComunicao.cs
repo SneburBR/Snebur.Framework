@@ -1,4 +1,5 @@
-﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Atributos;
+using System.Runtime.CompilerServices;
 
 namespace Snebur.Comunicacao.Dominio
 {
@@ -7,10 +8,10 @@ namespace Snebur.Comunicacao.Dominio
     public class BaseComunicao : BaseDominio
     {
 
-		#region Campos Privados
+        #region Campos Privados
 
-		#endregion
+        #endregion
 
-      
+        
     }
 }

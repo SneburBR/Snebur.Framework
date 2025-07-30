@@ -1,4 +1,4 @@
-﻿using Snebur.Reflexao;
+using Snebur.Reflexao;
 
 namespace Snebur.Comunicacao.Dominio.Resultado
 {
@@ -11,8 +11,8 @@ namespace Snebur.Comunicacao.Dominio.Resultado
 
         #endregion
 
-        public object? Valor { get => this.RetornarValorPropriedade(this._valor); set => this.NotificarValorPropriedadeAlterada(this._valor, this._valor = value); }
+        public object? Valor { get => this.GetPropertyValue(this._valor); set => this.SetProperty(this._valor, this._valor = value); }
 
-        public EnumTipoPrimario TipoPrimarioEnum { get => this.RetornarValorPropriedade(this._tipoPrimarioEnum); set => this.NotificarValorPropriedadeAlterada(this._tipoPrimarioEnum, this._tipoPrimarioEnum = value); }
+        public EnumTipoPrimario TipoPrimarioEnum { get => this.GetPropertyValue(this._tipoPrimarioEnum); set => this.SetProperty(this._tipoPrimarioEnum, this._tipoPrimarioEnum = value); }
     }
 }

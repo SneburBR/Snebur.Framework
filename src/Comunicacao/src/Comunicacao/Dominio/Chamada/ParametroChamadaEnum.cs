@@ -1,4 +1,4 @@
-﻿namespace Snebur.Comunicacao.Dominio.Chamada
+namespace Snebur.Comunicacao.Dominio.Chamada
 {
 
     public class ParametroChamadaEnum : ParametroChamada
@@ -11,10 +11,10 @@
 
         #endregion
 
-        public string? NomeTipoEnum { get => this.RetornarValorPropriedade(this._nomeTipoEnum); set => this.NotificarValorPropriedadeAlterada(this._nomeTipoEnum, this._nomeTipoEnum = value); }
+        public string? NomeTipoEnum { get => this.GetPropertyValue(this._nomeTipoEnum); set => this.SetProperty(this._nomeTipoEnum, this._nomeTipoEnum = value); }
 
-        public string? NamespaceEnum { get => this.RetornarValorPropriedade(this._namespaceEnum); set => this.NotificarValorPropriedadeAlterada(this._namespaceEnum, this._namespaceEnum = value); }
+        public string? NamespaceEnum { get => this.GetPropertyValue(this._namespaceEnum); set => this.SetProperty(this._namespaceEnum, this._namespaceEnum = value); }
 
-        public int Valor { get => this.RetornarValorPropriedade(this._valor); set => this.NotificarValorPropriedadeAlterada(this._valor, this._valor = value); }
+        public int Valor { get => this.GetPropertyValue(this._valor); set => this.SetProperty(this._valor, this._valor = value); }
     }
 }

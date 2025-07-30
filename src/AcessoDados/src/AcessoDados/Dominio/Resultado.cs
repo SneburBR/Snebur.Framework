@@ -1,4 +1,4 @@
-﻿using Snebur.AcessoDados.Seguranca;
+using Snebur.AcessoDados.Seguranca;
 
 namespace Snebur.AcessoDados;
 
@@ -12,7 +12,7 @@ public abstract class Resultado : BaseAcessoDados
 
     #endregion
 
-    public bool IsSucesso { get => this.RetornarValorPropriedade(this._isSucesso); set => this.NotificarValorPropriedadeAlterada(this._isSucesso, this._isSucesso = value); }
+    public bool IsSucesso { get => this.GetPropertyValue(this._isSucesso); set => this.SetProperty(this._isSucesso, this._isSucesso = value); }
 
-    public EnumPermissao Permissao { get => this.RetornarValorPropriedade(this._permissao); set => this.NotificarValorPropriedadeAlterada(this._permissao, this._permissao = value); }
+    public EnumPermissao Permissao { get => this.GetPropertyValue(this._permissao); set => this.SetProperty(this._permissao, this._permissao = value); }
 }

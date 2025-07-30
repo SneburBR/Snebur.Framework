@@ -1,4 +1,4 @@
-﻿namespace Snebur.AcessoDados;
+namespace Snebur.AcessoDados;
 
 public class PropriedadeComputada : BaseAcessoDados
 {
@@ -9,7 +9,7 @@ public class PropriedadeComputada : BaseAcessoDados
 
     #endregion
 
-    public string? NomePropriedade { get => this.RetornarValorPropriedade(this._nomePropriedade); set => this.NotificarValorPropriedadeAlterada(this._nomePropriedade, this._nomePropriedade = value); }
+    public string? NomePropriedade { get => this.GetPropertyValue(this._nomePropriedade); set => this.SetProperty(this._nomePropriedade, this._nomePropriedade = value); }
 
-    public object? Valor { get => this.RetornarValorPropriedade(this._valor); set => this.NotificarValorPropriedadeAlterada(this._valor, this._valor = value); }
+    public object? Valor { get => this.GetPropertyValue(this._valor); set => this.SetProperty(this._valor, this._valor = value); }
 }

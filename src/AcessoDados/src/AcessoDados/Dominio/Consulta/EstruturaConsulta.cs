@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Snebur.AcessoDados.Seguranca;
 
 namespace Snebur.AcessoDados;
@@ -25,25 +25,25 @@ public class EstruturaConsulta : BaseAcessoDados, IEstruturaConsultaSeguranca
     [JsonIgnore, IgnorarPropriedadeTSReflexao]
     internal Type? TipoEntidadeConsulta { get; set; }
 
-    public string? NomeTipoEntidade { get => this.RetornarValorPropriedade(this._nomeTipoEntidade); set => this.NotificarValorPropriedadeAlterada(this._nomeTipoEntidade, this._nomeTipoEntidade = value); }
+    public string? NomeTipoEntidade { get => this.GetPropertyValue(this._nomeTipoEntidade); set => this.SetProperty(this._nomeTipoEntidade, this._nomeTipoEntidade = value); }
 
-    public string? TipoEntidadeAssemblyQualifiedName { get => this.RetornarValorPropriedade(this._tipoEntidadeAssemblyQualifiedName); set => this.NotificarValorPropriedadeAlterada(this._tipoEntidadeAssemblyQualifiedName, this._tipoEntidadeAssemblyQualifiedName = value); }
+    public string? TipoEntidadeAssemblyQualifiedName { get => this.GetPropertyValue(this._tipoEntidadeAssemblyQualifiedName); set => this.SetProperty(this._tipoEntidadeAssemblyQualifiedName, this._tipoEntidadeAssemblyQualifiedName = value); }
 
-    public bool IsIncluirDeletados { get => this.RetornarValorPropriedade(this._isIncluirDeletados); set => this.NotificarValorPropriedadeAlterada(this._isIncluirDeletados, this._isIncluirDeletados = value); }
+    public bool IsIncluirDeletados { get => this.GetPropertyValue(this._isIncluirDeletados); set => this.SetProperty(this._isIncluirDeletados, this._isIncluirDeletados = value); }
 
-    public bool IsIncluirInativos { get => this.RetornarValorPropriedade(this._isIncluirInativos); set => this.NotificarValorPropriedadeAlterada(this._isIncluirInativos, this._isIncluirInativos = value); }
+    public bool IsIncluirInativos { get => this.GetPropertyValue(this._isIncluirInativos); set => this.SetProperty(this._isIncluirInativos, this._isIncluirInativos = value); }
 
-    public bool IsDesativarOrdenacao { get => this.RetornarValorPropriedade(this._isDesativarOrdenacao); set => this.NotificarValorPropriedadeAlterada(this._isDesativarOrdenacao, this._isDesativarOrdenacao = value); }
+    public bool IsDesativarOrdenacao { get => this.GetPropertyValue(this._isDesativarOrdenacao); set => this.SetProperty(this._isDesativarOrdenacao, this._isDesativarOrdenacao = value); }
 
-    public int Take { get => this.RetornarValorPropriedade(this._take); set => this.NotificarValorPropriedadeAlterada(this._take, this._take = value); }
+    public int Take { get => this.GetPropertyValue(this._take); set => this.SetProperty(this._take, this._take = value); }
 
-    public int Skip { get => this.RetornarValorPropriedade(this._skip); set => this.NotificarValorPropriedadeAlterada(this._skip, this._skip = value); }
+    public int Skip { get => this.GetPropertyValue(this._skip); set => this.SetProperty(this._skip, this._skip = value); }
 
-    public int PaginaAtual { get => this.RetornarValorPropriedade(this._paginaAtual); set => this.NotificarValorPropriedadeAlterada(this._paginaAtual, this._paginaAtual = value); }
+    public int PaginaAtual { get => this.GetPropertyValue(this._paginaAtual); set => this.SetProperty(this._paginaAtual, this._paginaAtual = value); }
 
-    public string? CaminhoPropriedadeFuncao { get => this.RetornarValorPropriedade(this._caminhoPropriedadeFuncao); set => this.NotificarValorPropriedadeAlterada(this._caminhoPropriedadeFuncao, this._caminhoPropriedadeFuncao = value); }
+    public string? CaminhoPropriedadeFuncao { get => this.GetPropertyValue(this._caminhoPropriedadeFuncao); set => this.SetProperty(this._caminhoPropriedadeFuncao, this._caminhoPropriedadeFuncao = value); }
 
-    public EnumTipoFuncao TipoFuncaoEnum { get => this.RetornarValorPropriedade(this._tipoFuncaoEnum); set => this.NotificarValorPropriedadeAlterada(this._tipoFuncaoEnum, this._tipoFuncaoEnum = value); }
+    public EnumTipoFuncao TipoFuncaoEnum { get => this.GetPropertyValue(this._tipoFuncaoEnum); set => this.SetProperty(this._tipoFuncaoEnum, this._tipoFuncaoEnum = value); }
 
     [CriarInstanciaTS]
     public FiltroGrupoE FiltroGrupoE { get; set; } = new FiltroGrupoE();
@@ -75,7 +75,7 @@ public class EstruturaConsulta : BaseAcessoDados, IEstruturaConsultaSeguranca
     [IgnorarPropriedadeTSReflexao]
     List<string>? IEstruturaConsultaSeguranca.PropriedadesAutorizadas { get => this._propriedadesAutorizadas; }
 
-    public bool ContarRegistros { get => this.RetornarValorPropriedade(this._contarRegistros); set => this.NotificarValorPropriedadeAlterada(this._contarRegistros, this._contarRegistros = value); }
+    public bool ContarRegistros { get => this.GetPropertyValue(this._contarRegistros); set => this.SetProperty(this._contarRegistros, this._contarRegistros = value); }
 
     void IEstruturaConsultaSeguranca.AtribuirPropriedadeAutorizadas(List<string>? propriedadesAutorizadas)
     {

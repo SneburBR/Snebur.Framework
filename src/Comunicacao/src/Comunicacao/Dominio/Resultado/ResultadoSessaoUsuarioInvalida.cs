@@ -1,4 +1,4 @@
-﻿namespace Snebur.Comunicacao.Dominio.Resultado
+namespace Snebur.Comunicacao.Dominio.Resultado
 {
     public class ResultadoSessaoUsuarioInvalida : ResultadoChamadaErro
     {
@@ -10,9 +10,9 @@
 
 		#endregion
 
-        public EnumStatusSessaoUsuario StatusSessaoUsuario { get => this.RetornarValorPropriedade(this._statusSessaoUsuario); set => this.NotificarValorPropriedadeAlterada(this._statusSessaoUsuario, this._statusSessaoUsuario = value); }
+        public EnumStatusSessaoUsuario StatusSessaoUsuario { get => this.GetPropertyValue(this._statusSessaoUsuario); set => this.SetProperty(this._statusSessaoUsuario, this._statusSessaoUsuario = value); }
 
-        public Guid IdentificadorSessaoUsuario { get => this.RetornarValorPropriedade(this._identificadorSessaoUsuario); set => this.NotificarValorPropriedadeAlterada(this._identificadorSessaoUsuario, this._identificadorSessaoUsuario = value); }
+        public Guid IdentificadorSessaoUsuario { get => this.GetPropertyValue(this._identificadorSessaoUsuario); set => this.SetProperty(this._identificadorSessaoUsuario, this._identificadorSessaoUsuario = value); }
 
         public ResultadoSessaoUsuarioInvalida(EnumStatusSessaoUsuario statusSessaoUsuario,
                                               Guid identificadorSessaoUsuario, 

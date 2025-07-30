@@ -1,4 +1,4 @@
-﻿namespace Snebur.AcessoDados;
+namespace Snebur.AcessoDados;
 
 public class ConsultaFiltroColecao : BaseAcessoDados
 {
@@ -8,7 +8,7 @@ public class ConsultaFiltroColecao : BaseAcessoDados
 
     #endregion
 
-    public string? Relacao { get => this.RetornarValorPropriedade(this._relacao); set => this.NotificarValorPropriedadeAlterada(this._relacao, this._relacao = value); }
+    public string? Relacao { get => this.GetPropertyValue(this._relacao); set => this.SetProperty(this._relacao, this._relacao = value); }
 
     public EstruturaConsulta? EstruturaConsulta { get; set; }
 }

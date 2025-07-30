@@ -1,4 +1,4 @@
-﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Atributos;
 
 namespace Snebur.Comunicacao.Dominio.Chamada
 {
@@ -13,10 +13,10 @@ namespace Snebur.Comunicacao.Dominio.Chamada
 
         #endregion
 
-        public string? Nome { get => this.RetornarValorPropriedade(this._nome); set => this.NotificarValorPropriedadeAlterada(this._nome, this._nome = value); }
+        public string? Nome { get => this.GetPropertyValue(this._nome); set => this.SetProperty(this._nome, this._nome = value); }
 
-        public string? NomeTipoParametro { get => this.RetornarValorPropriedade(this._nomeTipoParametro); set => this.NotificarValorPropriedadeAlterada(this._nomeTipoParametro, this._nomeTipoParametro = value); }
+        public string? NomeTipoParametro { get => this.GetPropertyValue(this._nomeTipoParametro); set => this.SetProperty(this._nomeTipoParametro, this._nomeTipoParametro = value); }
 
-        public string? AssemblyQualifiedName { get => this.RetornarValorPropriedade(this._assemblyQualifiedName); set => this.NotificarValorPropriedadeAlterada(this._assemblyQualifiedName, this._assemblyQualifiedName = value); }
+        public string? AssemblyQualifiedName { get => this.GetPropertyValue(this._assemblyQualifiedName); set => this.SetProperty(this._assemblyQualifiedName, this._assemblyQualifiedName = value); }
     }
 }

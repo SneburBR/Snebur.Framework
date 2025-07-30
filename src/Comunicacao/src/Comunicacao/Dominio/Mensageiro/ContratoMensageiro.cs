@@ -1,4 +1,4 @@
-﻿namespace Snebur.Comunicacao.Dominio.Mensageiro
+namespace Snebur.Comunicacao.Dominio.Mensageiro
 {
     public class ContratoMensageiro : BaseDominio
     {
@@ -13,7 +13,7 @@
 
         public BaseDominio? Destinatario { get; set; } 
 
-        public string? NomeRecurso { get => this.RetornarValorPropriedade(this._nomeRecurso); set => this.NotificarValorPropriedadeAlterada(this._nomeRecurso, this._nomeRecurso = value); }
+        public string? NomeRecurso { get => this.GetPropertyValue(this._nomeRecurso); set => this.SetProperty(this._nomeRecurso, this._nomeRecurso = value); }
 
         public BaseDominio? ValorParametro { get; set; } 
     }

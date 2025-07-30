@@ -1,4 +1,4 @@
-﻿namespace Snebur.Comunicacao.Dominio.ServicoGlobalizacao
+namespace Snebur.Comunicacao.Dominio.ServicoGlobalizacao
 {
     public class DominioGlobalizacao : BaseViewModel
     {
@@ -14,8 +14,8 @@
         {
         }
 
-        public string? NamespaceGlobalizacao { get => this.RetornarValorPropriedade(this._namespaceGlobalizacao); set => this.NotificarValorPropriedadeAlterada(this._namespaceGlobalizacao, this._namespaceGlobalizacao = value); }
+        public string? NamespaceGlobalizacao { get => this.GetPropertyValue(this._namespaceGlobalizacao); set => this.SetProperty(this._namespaceGlobalizacao, this._namespaceGlobalizacao = value); }
 
-        public string? JsonBase54 { get => this.RetornarValorPropriedade(this._jsonBase54); set => this.NotificarValorPropriedadeAlterada(this._jsonBase54, this._jsonBase54 = value); }
+        public string? JsonBase54 { get => this.GetPropertyValue(this._jsonBase54); set => this.SetProperty(this._jsonBase54, this._jsonBase54 = value); }
     }
 }

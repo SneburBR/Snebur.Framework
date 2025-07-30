@@ -1,4 +1,4 @@
-﻿namespace Snebur.Comunicacao.Dominio.Resultado
+namespace Snebur.Comunicacao.Dominio.Resultado
 {
     public abstract class ResultadoChamadaLista : ResultadoChamada
     {
@@ -8,6 +8,6 @@
 
         #endregion
 
-        public string? AssemblyQualifiedName { get => this.RetornarValorPropriedade(this._assemblyQualifiedName); set => this.NotificarValorPropriedadeAlterada(this._assemblyQualifiedName, this._assemblyQualifiedName = value); }
+        public string? AssemblyQualifiedName { get => this.GetPropertyValue(this._assemblyQualifiedName); set => this.SetProperty(this._assemblyQualifiedName, this._assemblyQualifiedName = value); }
     }
 }

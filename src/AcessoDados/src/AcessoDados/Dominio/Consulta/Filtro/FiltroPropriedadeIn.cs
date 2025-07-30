@@ -1,4 +1,4 @@
-﻿namespace Snebur.AcessoDados;
+namespace Snebur.AcessoDados;
 
 public class FiltroPropriedadeIn : BaseFiltro
 {
@@ -9,7 +9,7 @@ public class FiltroPropriedadeIn : BaseFiltro
 
     #endregion
 
-    public string? CaminhoPropriedade { get => this.RetornarValorPropriedade(this._caminhoPropriedade); set => this.NotificarValorPropriedadeAlterada(this._caminhoPropriedade, this._caminhoPropriedade = value); }
+    public string? CaminhoPropriedade { get => this.GetPropertyValue(this._caminhoPropriedade); set => this.SetProperty(this._caminhoPropriedade, this._caminhoPropriedade = value); }
 
     public List<string> Lista { get; set; } = new List<string>();
 

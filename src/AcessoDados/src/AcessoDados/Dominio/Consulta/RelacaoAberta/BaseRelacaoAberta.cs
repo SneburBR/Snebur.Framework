@@ -1,4 +1,4 @@
-﻿namespace Snebur.AcessoDados;
+namespace Snebur.AcessoDados;
 
 public abstract class BaseRelacaoAberta : BaseAcessoDados
 {
@@ -12,13 +12,13 @@ public abstract class BaseRelacaoAberta : BaseAcessoDados
 
     #endregion
 
-    public string? CaminhoPropriedade { get => this.RetornarValorPropriedade(this._caminhoPropriedade); set => this.NotificarValorPropriedadeAlterada(this._caminhoPropriedade, this._caminhoPropriedade = value); }
+    public string? CaminhoPropriedade { get => this.GetPropertyValue(this._caminhoPropriedade); set => this.SetProperty(this._caminhoPropriedade, this._caminhoPropriedade = value); }
 
-    public string? NomeTipoEntidade { get => this.RetornarValorPropriedade(this._nomeTipoEntidade); set => this.NotificarValorPropriedadeAlterada(this._nomeTipoEntidade, this._nomeTipoEntidade = value); }
+    public string? NomeTipoEntidade { get => this.GetPropertyValue(this._nomeTipoEntidade); set => this.SetProperty(this._nomeTipoEntidade, this._nomeTipoEntidade = value); }
 
-    public string? NomeTipoDeclarado { get => this.RetornarValorPropriedade(this._nomeTipoDeclarado); set => this.NotificarValorPropriedadeAlterada(this._nomeTipoDeclarado, this._nomeTipoDeclarado = value); }
-    public string? TipoEntidadeAssemblyQualifiedName { get => this.RetornarValorPropriedade(this._tipoEntidadeAssemblyQualifiedName); set => this.NotificarValorPropriedadeAlterada(this._tipoEntidadeAssemblyQualifiedName, this._tipoEntidadeAssemblyQualifiedName = value); }
-    public string? TipoDeclaradoAssemblyQualifiedName { get => this.RetornarValorPropriedade(this._tipoDeclaradoAssemblyQualifiedName); set => this.NotificarValorPropriedadeAlterada(this._tipoDeclaradoAssemblyQualifiedName, this._tipoDeclaradoAssemblyQualifiedName = value); }
+    public string? NomeTipoDeclarado { get => this.GetPropertyValue(this._nomeTipoDeclarado); set => this.SetProperty(this._nomeTipoDeclarado, this._nomeTipoDeclarado = value); }
+    public string? TipoEntidadeAssemblyQualifiedName { get => this.GetPropertyValue(this._tipoEntidadeAssemblyQualifiedName); set => this.SetProperty(this._tipoEntidadeAssemblyQualifiedName, this._tipoEntidadeAssemblyQualifiedName = value); }
+    public string? TipoDeclaradoAssemblyQualifiedName { get => this.GetPropertyValue(this._tipoDeclaradoAssemblyQualifiedName); set => this.SetProperty(this._tipoDeclaradoAssemblyQualifiedName, this._tipoDeclaradoAssemblyQualifiedName = value); }
 
     public HashSet<string> PropriedadesAbertas { get; set; } = new();
 
