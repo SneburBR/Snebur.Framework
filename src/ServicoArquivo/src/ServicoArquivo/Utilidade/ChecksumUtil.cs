@@ -1,4 +1,4 @@
-﻿namespace Snebur.ServicoArquivo.Utilidade;
+namespace Snebur.ServicoArquivo.Utilidade;
 
 //public class ChecksumUtil
 //{

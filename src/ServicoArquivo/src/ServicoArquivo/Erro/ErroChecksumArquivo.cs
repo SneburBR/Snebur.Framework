@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
 
 namespace Snebur.ServicoArquivo;
 
@@ -18,6 +18,6 @@ public class ErroChecksumArquivo : ErroServicoArquivo
     public ErroChecksumArquivo()
     {
     }
-     
+
     #endregion
 }

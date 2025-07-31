@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
 
 namespace Snebur.ServicoArquivo;
 
@@ -19,6 +19,6 @@ public class ErroArquivoNaoEncontrado : ErroServicoArquivo
     public ErroArquivoNaoEncontrado()
     {
     }
-     
+
     #endregion
 }
