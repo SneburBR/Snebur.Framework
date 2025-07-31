@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Linq;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -15,7 +14,7 @@ public class CriptografiaUtil
         var senhaBytes = Encoding.UTF8.GetBytes(chave);
         var iv = Encoding.UTF8.GetBytes(chave);
 
-        
+
         using (var aes = Aes.Create())
         {
             aes.Key = senhaBytes;

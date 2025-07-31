@@ -1,6 +1,4 @@
-﻿using Snebur.Dominio.Atributos;
-using System.Collections.Generic;
-using System.Linq;
+using Snebur.Dominio.Atributos;
 
 namespace Snebur.Utilidade
 {
@@ -282,9 +280,9 @@ namespace Snebur.Utilidade
 
         public int GetHashCode(DateTime obj)
         {
-             return HashCode.Combine(obj.Day,
-                                    obj.Month);
- 
+            return HashCode.Combine(obj.Day,
+                                   obj.Month);
+
         }
     }
 

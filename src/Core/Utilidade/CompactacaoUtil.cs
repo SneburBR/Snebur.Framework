@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 #if NET40 == false && NET6_0_OR_GREATER == false
 using SevenZip;

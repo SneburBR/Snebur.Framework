@@ -1,6 +1,4 @@
-﻿using Snebur.Utilidade;
 using System.Collections;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace Snebur.Serializacao;
@@ -48,7 +46,7 @@ public class NormalizarDeserializacao : IDisposable
     }
 
     private void SubstiuirReferencia(
-        Referencia? referencia, 
+        Referencia? referencia,
         IBaseDominioReferencia baseDominio)
     {
         switch (referencia)

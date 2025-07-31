@@ -1,6 +1,4 @@
 using Snebur.Dominio.Atributos;
-using Snebur.Utilidade;
-using System.Text.RegularExpressions;
 
 namespace Snebur.Dominio;
 
@@ -43,7 +41,7 @@ public partial class Dimensao : BaseMedidaTipoComplexo, IDimensao
 
     [IgnorarConstrutorTS]
     public Dimensao(double largura, double altura,
-                    Func<double?,double> funcaoDpiVisualizacao) : this(largura, altura)
+                    Func<double?, double> funcaoDpiVisualizacao) : this(largura, altura)
     {
         this.FuncaoNormalizarDpiVisualizacao = funcaoDpiVisualizacao;
     }
@@ -118,7 +116,7 @@ public partial class Dimensao : BaseMedidaTipoComplexo, IDimensao
 
     public static Dimensao Parse(string str)
     {
-        if(String.IsNullOrWhiteSpace(str))
+        if (String.IsNullOrWhiteSpace(str))
         {
             return Empty;
         }

@@ -1,4 +1,3 @@
-﻿using Snebur.Utilidade;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Snebur.Dominio.Atributos;

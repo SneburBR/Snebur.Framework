@@ -1,4 +1,4 @@
-﻿using Snebur.UI;
+using Snebur.UI;
 using System.Globalization;
 using System.IO;
 
@@ -273,7 +273,7 @@ public static partial class FormatacaoUtil
         {
             return String.Format("{0:(##) #####-####}", somenteNumeros);
         }
-        return telefone?? String.Empty;
+        return telefone ?? String.Empty;
     }
 
     public static string FormatarRota(string nome)

@@ -1,5 +1,3 @@
-﻿using Snebur.Utilidade;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
@@ -19,7 +17,7 @@ public class NotificarAlteracaoPropriedadeAttribute : BaseAtributoDominio, INoti
     public PropertyInfo PropriedadeValorAntigo { get; }
 
     public EnumOpcoesAlterarPropriedade Opcoes { get; }
-     
+
     public NotificarAlteracaoPropriedadeAttribute(
         Type tipoEntidadeAlteracaoPropriedade,
         string nomePropriedadeRelacao,

@@ -1,4 +1,4 @@
-﻿namespace Snebur.Tarefa;
+namespace Snebur.Tarefa;
 
 public class ResultadoTarefaFinalizadaEventArgs : EventArgs
 {
@@ -7,7 +7,7 @@ public class ResultadoTarefaFinalizadaEventArgs : EventArgs
     public bool IsCancelado { get; }
     public EnumStatusTarefa Status { get; }
 
-    public ResultadoTarefaFinalizadaEventArgs(BaseTarefa tarefa, 
+    public ResultadoTarefaFinalizadaEventArgs(BaseTarefa tarefa,
                                               Exception? erro)
     {
         this.Tarefa = tarefa;

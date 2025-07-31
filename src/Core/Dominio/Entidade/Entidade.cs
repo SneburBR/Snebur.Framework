@@ -1,13 +1,10 @@
 using Newtonsoft.Json;
 using Snebur.Dominio.Atributos;
-using Snebur.Utilidade;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -304,7 +301,7 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntidadeIntern
         }
         this.NotificarPropriedadeAlterada(nomePropriedade);
     }
-     
+
     //NotificarValorPropriedadeAlteradaChaveEstrangeiraAlterada
     private void SetForeignKeyProperty<T>(
                                         T antigoValor,
@@ -453,7 +450,7 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntidadeIntern
         }
         this.SetComplexTypeProperty(antigoValor!, novoValor, nomePropriedade);
     }
-     
+
     internal protected void SetForeignKey(
           long? antigoValor,
           long? novoValor,

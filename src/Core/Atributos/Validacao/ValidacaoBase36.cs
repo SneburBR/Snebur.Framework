@@ -1,4 +1,3 @@
-﻿using Snebur.Utilidade;
 using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
@@ -40,8 +39,8 @@ public class ValidacaoBase36Attribute : BaseAtributoValidacao
         {
             return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
         }
-        
-        return Base36Util.IsBase36(valorPropriedade.ToString(), 
+
+        return Base36Util.IsBase36(valorPropriedade.ToString(),
                                    this.IsPermitirEspaco,
                                    this.IsIgnorarCase,
                                    this.CaracteresExtra);

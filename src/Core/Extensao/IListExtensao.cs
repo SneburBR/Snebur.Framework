@@ -1,5 +1,3 @@
-﻿using System.Collections.Generic;
-
 namespace Snebur;
 
 public static class IListExtensao

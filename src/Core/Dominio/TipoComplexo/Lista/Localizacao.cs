@@ -1,5 +1,4 @@
 using Snebur.Dominio.Atributos;
-using System.Linq;
 
 namespace Snebur.Dominio;
 

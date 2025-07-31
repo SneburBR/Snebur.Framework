@@ -1,7 +1,6 @@
-﻿using Snebur.Seguranca;
+using Snebur.Seguranca;
 using System.Collections.Concurrent;
 using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace Snebur.Utilidade;
@@ -12,7 +11,7 @@ public static class SessaoUtil
     public const string IDENTIFICADOR_APLICACAO = "IdentificadorAplicacao";
     //public const string IDENTIFICADOR_PROPRIETARIO = "IdentificadorProprietario";
     private const string CHAVE_CRIPTOGRAFIA = "248c6619-8119-45bd-ae2a-662512aff841";
-     
+
     private static CredencialUsuario? _credencialUsuario;
 
     private static object _bloqueioIdentificadorSessaoUsuario = new object();
@@ -81,7 +80,7 @@ public static class SessaoUtil
     //    }
     //    return _dadosIpInformacao;
     //}
-     
+
     #endregion
 
     #region Identificador Sessão usuário
@@ -132,7 +131,7 @@ public static class SessaoUtil
             throw new ArgumentNullException(nameof(identificadorUsuario),
                 "O identificador do usuário não pode ser nulo ou vazio.");
         }
-         
+
         if (IdentificadoresSessaoUsuario.ContainsKey(identificadorUsuario))
         {
             IdentificadoresSessaoUsuario.TryRemove(identificadorUsuario, out _);

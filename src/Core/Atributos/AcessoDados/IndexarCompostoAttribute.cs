@@ -1,7 +1,3 @@
-﻿using Snebur.Utilidade;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Snebur.Dominio.Atributos;
 
 [IgnorarAtributoTS]

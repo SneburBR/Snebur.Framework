@@ -1,4 +1,4 @@
-﻿namespace Snebur.Seguranca;
+namespace Snebur.Seguranca;
 
 public class CredencialAnonimo
 {
@@ -9,7 +9,7 @@ public class CredencialAnonimo
         {
             return new CredencialUsuario
             {
-                Nome= "Anônimo",
+                Nome = "Anônimo",
                 IdentificadorUsuario = IDENTIFICADOR_USUARIO,
                 Senha = SENHA
             };

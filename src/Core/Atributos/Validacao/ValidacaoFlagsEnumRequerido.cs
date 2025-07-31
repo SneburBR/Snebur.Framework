@@ -1,4 +1,3 @@
-﻿using Snebur.Utilidade;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
@@ -28,8 +27,8 @@ public class ValidacaoFlagsEnumRequeridoAttribute : RequiredAttribute, IAtributo
                     }
                     else
                     {
-                        this.ErrorMessage = this.RetornarMensagemValidacao(propriedade, 
-                            paiPropriedade, 
+                        this.ErrorMessage = this.RetornarMensagemValidacao(propriedade,
+                            paiPropriedade,
                             valorPropriedade);
                         resultado.ErrorMessage = this.ErrorMessage;
                     }
@@ -43,14 +42,14 @@ public class ValidacaoFlagsEnumRequeridoAttribute : RequiredAttribute, IAtributo
 
     public bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
     {
-        if(valorPropriedade is null)
+        if (valorPropriedade is null)
         {
             return false;
         }
         return ValidacaoUtil.IsFlagsEnumDefinida(propriedade.PropertyType, (Enum)valorPropriedade);
     }
 
-    public string RetornarMensagemValidacao(PropertyInfo propriedade, 
+    public string RetornarMensagemValidacao(PropertyInfo propriedade,
         object? paiPropriedade,
         object? valorPropriedade)
     {

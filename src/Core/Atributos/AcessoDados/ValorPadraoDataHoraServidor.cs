@@ -1,4 +1,4 @@
-﻿namespace Snebur.Dominio.Atributos;
+namespace Snebur.Dominio.Atributos;
 
 /// <summary>
 /// Pendente IsPermitirAtualizacao deve atualizar quando qualquer
@@ -11,7 +11,7 @@ public class ValorPadraoDataHoraServidorAttribute : SomenteLeituraAttribute, IVa
     public bool IsValorPadraoOnUpdate { get; set; }
     public override OpcoesSomenteLeitura OpcoesSomenteLeitura => new OpcoesSomenteLeitura(!this.IsAceitarAtualizacao, this.IsNotificarSeguranca);
 
-    public ValorPadraoDataHoraServidorAttribute( )
+    public ValorPadraoDataHoraServidorAttribute()
     {
         //this.IsDataHoraUTC = isDataHoraUTC;
         //this.IsAceitarAtualizacao = isAceitarAtualizacao;
@@ -20,11 +20,11 @@ public class ValorPadraoDataHoraServidorAttribute : SomenteLeituraAttribute, IVa
 
     public bool IsTipoNullableRequerido { get; } = false;
 
-    public object? RetornarValorPadrao(object contexto, 
-                                      Entidade entidadeCorrente, 
+    public object? RetornarValorPadrao(object contexto,
+                                      Entidade entidadeCorrente,
                                      object valorPropriedade)
     {
-        if(!entidadeCorrente.__IsNewEntity)
+        if (!entidadeCorrente.__IsNewEntity)
         {
             return this.IsDataHoraUTC ? DateTime.UtcNow : DateTime.Now;
         }

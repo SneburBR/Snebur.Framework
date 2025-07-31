@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
 
 namespace Snebur.Utilidade;
 
@@ -162,7 +160,7 @@ public static class UriUtil
 
     public static string? RetornarHost(string? url)
     {
-        if(Uri.TryCreate(url,UriKind.Absolute, out var uri))
+        if (Uri.TryCreate(url, UriKind.Absolute, out var uri))
         {
             return uri.Host;
         }

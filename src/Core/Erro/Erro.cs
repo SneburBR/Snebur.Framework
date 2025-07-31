@@ -1,4 +1,3 @@
-﻿using Snebur.Utilidade;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 

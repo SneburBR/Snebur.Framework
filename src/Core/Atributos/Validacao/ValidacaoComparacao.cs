@@ -1,4 +1,3 @@
-﻿using Snebur.Utilidade;
 using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
@@ -21,7 +20,7 @@ public class ValidacaoComparacaoAttribute : BaseAtributoValidacao, IAtributoVali
 
     #region IAtributoValidacao
 
-    public override bool IsValido(PropertyInfo propriedade, object?paiPropriedade, object? valorPropriedade)
+    public override bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {

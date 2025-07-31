@@ -1,4 +1,3 @@
-﻿using Snebur.Utilidade;
 using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
@@ -42,7 +41,7 @@ public class ValidacaoMoedaAttribute : BaseAtributoValidacao, IAtributoValidacao
     {
     }
 
-    public ValidacaoMoedaAttribute(bool aceitarNulo,    
+    public ValidacaoMoedaAttribute(bool aceitarNulo,
                                    bool aceitarNegativo,
                                    double valorMinimo,
                                    double valorMaximo)
@@ -67,7 +66,7 @@ public class ValidacaoMoedaAttribute : BaseAtributoValidacao, IAtributoValidacao
             return true;
         }
 
-        if(valorPropriedade == null)
+        if (valorPropriedade == null)
         {
             return this.AceitarNulo;
         }

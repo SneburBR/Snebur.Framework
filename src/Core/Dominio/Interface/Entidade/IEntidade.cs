@@ -1,5 +1,4 @@
-﻿using Snebur.Dominio.Atributos;
-using System.Collections.Generic;
+using Snebur.Dominio.Atributos;
 using System.ComponentModel;
 
 namespace Snebur.Dominio;

@@ -1,4 +1,4 @@
-﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Atributos;
 
 namespace Snebur.UI;
 
@@ -8,13 +8,13 @@ public enum EnumFormatacao
     Nenhuma,
 
     Absoluto,
-     
+
     Bytes,// "bytes",
 
     CaixaAlta, // "caixaalta",
 
     CaixaBaixa, // "caixabaixa"
-     
+
     Centimetro, // "centimetro",
 
     Cep, // "cep",
@@ -24,9 +24,9 @@ public enum EnumFormatacao
     Cnpj, // "cnpj",
 
     CpfCnpj, // "cpfcnpj",
-     
+
     Data, // "data",
-     
+
     DataHora, // "datahora",
 
     DataSemantica,
@@ -34,7 +34,7 @@ public enum EnumFormatacao
     DataHoraSemantica, // "datahorasemantico",
 
     DataSemanticaHora, // "datahorasemantico",
-     
+
     Decimal, // "decimal",
 
     Decimal1, // "decimal1",
@@ -67,7 +67,7 @@ public enum EnumFormatacao
     HoraDescricaoMin, // "datahoradescricaomin",
 
     Inteiro, // "inteiro",
-     
+
     Margem,
 
     MelhorDecimal, // "melhordecimal",
@@ -77,7 +77,7 @@ public enum EnumFormatacao
     MoedaIgnorarSemValor,
 
     MoedaComSinal, // "moedacomsinal"
-     
+
     NaoQuebrar, // "naoquebrar",
 
     Nome,
@@ -91,13 +91,13 @@ public enum EnumFormatacao
     PesoKg, //"pesokg",
 
     Pixel, // "pixel",
-     
+
     Porcentagem, // "porcentagem",
 
     Porcentagem1, // "porcentagem1",
 
     Porcentagem2, // "porcentagem2",
-     
+
     PortentagemPositivoNegativo, //"porcentagempositivonegativo",
 
     Portentagem1PositivoNegativo, //"porcentagem1positivonegativo",
@@ -119,7 +119,7 @@ public enum EnumFormatacao
     Tempo, // "tempo",
 
     TempoSemantico, // "temposemantico",
-     
+
     TamanhoArquivo, // "tamanhoarquivo",
 
     Telefone, // "telefone",
@@ -127,5 +127,5 @@ public enum EnumFormatacao
     Titulo, // "titulo",
 
     Trim, // "trim",
-      
+
 }

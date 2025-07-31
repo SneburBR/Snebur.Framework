@@ -1,16 +1,16 @@
-﻿namespace Snebur;
+namespace Snebur;
 
 public abstract partial class AplicacaoSnebur
 {
     private readonly static object _bloqueio = new object();
     internal static int _mainThreadId;
     internal static AplicacaoSnebur? _aplicacao;
-  
+
     public static AplicacaoSnebur? Atual
         => _aplicacao;
 
     public static AplicacaoSnebur AtualRequired
-        => _aplicacao  ?? throw new InvalidOperationException("A aplicação atual não foi inicializada, a deve ser inicializar no StartUp da aplicação");
+        => _aplicacao ?? throw new InvalidOperationException("A aplicação atual não foi inicializada, a deve ser inicializar no StartUp da aplicação");
 
     public static T AtualTipada<T>() where T : AplicacaoSnebur
     {

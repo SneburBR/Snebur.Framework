@@ -1,5 +1,4 @@
-﻿using Snebur.Imagens;
-using System.Collections.Generic;
+using Snebur.Imagens;
 
 namespace Snebur.UI;
 

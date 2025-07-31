@@ -1,9 +1,6 @@
-﻿using Snebur.Utilidade;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Snebur;
 
@@ -138,7 +135,7 @@ public static class StringExtensao
 
     public static string TrimEnd(
         this string str,
-        string ending, 
+        string ending,
         StringComparison comparison = StringComparison.OrdinalIgnoreCase)
     {
         if (str.EndsWith(ending, comparison))

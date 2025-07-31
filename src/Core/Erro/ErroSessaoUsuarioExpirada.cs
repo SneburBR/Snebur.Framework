@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
 
 namespace Snebur.AcessoDados;
 
@@ -25,7 +25,7 @@ public class ErroSessaoUsuarioExpirada : Erro
     public ErroSessaoUsuarioExpirada()
     {
     }
-     
+
     protected override bool IsNotificar()
     {
         return false;
@@ -48,7 +48,7 @@ public class ErroSessaoUsuarioInvalida : Erro
     public ErroSessaoUsuarioInvalida()
     {
     }
-     
+
     protected override bool IsNotificar()
     {
         return false;

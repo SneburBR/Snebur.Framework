@@ -1,4 +1,3 @@
-﻿using Snebur.Utilidade;
 using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
@@ -50,7 +49,7 @@ public class ValidacaoDataAttribute : BaseAtributoValidacao, IAtributoValidacao
             return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
         }
         var dataComparar = Convert.ToDateTime(valorPropriedade);
-        if( dataComparar >= this.DataMinima && dataComparar <= this.DataMaxima)
+        if (dataComparar >= this.DataMinima && dataComparar <= this.DataMaxima)
         {
             if (this.IsPrimeiraHoraDoDia)
             {

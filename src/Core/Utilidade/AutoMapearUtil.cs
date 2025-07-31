@@ -1,10 +1,8 @@
-﻿using Snebur.Comparer;
+using Snebur.Comparer;
 using Snebur.Dominio.Atributos;
 using Snebur.Linq;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 

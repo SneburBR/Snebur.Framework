@@ -1,8 +1,6 @@
 using Newtonsoft.Json;
 using Snebur.Dominio.Atributos;
 using Snebur.Serializacao;
-using Snebur.Utilidade;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
@@ -345,7 +343,7 @@ public abstract class BaseDominio : IBaseDominio, IBaseDominioReferencia, INotif
 
     #endregion
 
-  
+
     #region IBaseDominioControlorPropriedade
     void IBaseDominioControladorPropriedade.DestivarControladorPropriedadeAlterada()
     {
@@ -387,5 +385,5 @@ public abstract class BaseDominio : IBaseDominio, IBaseDominioReferencia, INotif
     }
 
     #endregion
- 
+
 }

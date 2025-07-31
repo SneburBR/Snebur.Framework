@@ -1,4 +1,4 @@
-﻿namespace Snebur.Arquivo;
+namespace Snebur.Arquivo;
 
 public enum EnumTipoArquivo
 {
@@ -25,5 +25,5 @@ public enum EnumTipoXFG
 {
     Jpg = 1,
     Bmp = 2,
-    XXX =3
+    XXX = 3
 }

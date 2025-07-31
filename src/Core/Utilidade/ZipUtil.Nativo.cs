@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Text;
 
 namespace Snebur.Utilidade;
@@ -150,8 +148,8 @@ public static class ZipUtil
         }
         return null;
     }
-     
-        public static void DescompactarArquivo(string caminhoArquivo, string caminhoDestino)
+
+    public static void DescompactarArquivo(string caminhoArquivo, string caminhoDestino)
     {
         ArquivoUtil.DeletarArquivo(caminhoDestino, true);
 
@@ -225,7 +223,7 @@ public static class ZipUtil
         }
     }
 
-    public static List<string> Extrair(string caminhoArquivo, 
+    public static List<string> Extrair(string caminhoArquivo,
                                        string diretorioDestino,
                                        bool isSobreEscrever)
     {
@@ -234,8 +232,8 @@ public static class ZipUtil
             return DescompactarArquivos(fs, diretorioDestino, isSobreEscrever);
         }
     }
-    public static List<string> Descompactar(string caminhoArquivo, 
-                                            string diretorioDestino, 
+    public static List<string> Descompactar(string caminhoArquivo,
+                                            string diretorioDestino,
                                             bool isSobreEscrever = true)
     {
         using (var fs = new FileStream(caminhoArquivo, FileMode.Open))
@@ -249,15 +247,15 @@ public static class ZipUtil
         return DescompactarArquivos(stream, diretorioDestino, null);
     }
 
-    public static List<string> DescompactarArquivos(Stream stream, 
+    public static List<string> DescompactarArquivos(Stream stream,
                                                    string diretorioDestino,
                                                     bool isSobreEscrever = true)
     {
         return DescompactarArquivos(stream, diretorioDestino, null, isSobreEscrever);
     }
 
-    public static List<string> DescompactarArquivos(Stream stream, 
-                                                    string diretorioDestino, 
+    public static List<string> DescompactarArquivos(Stream stream,
+                                                    string diretorioDestino,
                                                     string? senha,
                                                     bool isSobreEscrever = true)
     {
@@ -314,7 +312,7 @@ public static class ZipUtil
             //var arquivos = di.GetFiles();
             var arquivos = Directory.EnumerateFiles(diretorioOrigem, "*", SearchOption.AllDirectories);
 
-            foreach (var arquivo in arquivos.Select(path=> new FileInfo(path)))
+            foreach (var arquivo in arquivos.Select(path => new FileInfo(path)))
             {
                 if (arquivo.Attributes == (arquivo.Attributes & FileAttributes.Hidden) ||
                     caminhoDestino.Equals(arquivo.FullName, StringComparison.InvariantCultureIgnoreCase))
@@ -322,8 +320,8 @@ public static class ZipUtil
                     continue;
                 }
 
-                var relativePath = CaminhoUtil.RetornarCaminhoRelativo(arquivo.FullName, diretorioOrigem); 
-                 
+                var relativePath = CaminhoUtil.RetornarCaminhoRelativo(arquivo.FullName, diretorioOrigem);
+
                 var entry = zip.CreateEntry(relativePath);
                 using (var sr = entry.Open())
                 {

@@ -1,4 +1,3 @@
-﻿using Snebur.Utilidade;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
@@ -7,14 +6,14 @@ namespace Snebur.Dominio.Atributos;
 [AttributeUsage(AttributeTargets.Property)]
 public class ValidacaoTextoSomentoNumerosAttribute : BaseAtributoValidacao, IAtributoValidacao
 {
-     public bool IsAceitarPontosSinais { get; set; } = false;
+    public bool IsAceitarPontosSinais { get; set; } = false;
     [MensagemValidacao]
     public static string MensagemValidacao { get; set; } = "A campo {0} é invalido (somente números).";
 
     #region "Construtor"
 
-    public ValidacaoTextoSomentoNumerosAttribute( 
-        [ParametroOpcionalTS] bool isAceitarPontosSinais = false) : base() 
+    public ValidacaoTextoSomentoNumerosAttribute(
+        [ParametroOpcionalTS] bool isAceitarPontosSinais = false) : base()
     {
         this.IsAceitarPontosSinais = isAceitarPontosSinais;
     }
@@ -29,7 +28,7 @@ public class ValidacaoTextoSomentoNumerosAttribute : BaseAtributoValidacao, IAtr
         {
             return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
         }
-        
+
         if (this.IsAceitarPontosSinais)
         {
             return ValidacaoUtil.IsSomenteNumerosPontosSinais(texto);

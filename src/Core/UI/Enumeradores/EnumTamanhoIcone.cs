@@ -1,4 +1,4 @@
-﻿namespace Snebur.UI;
+namespace Snebur.UI;
 
 public enum EnumTamanhoIcone
 {
@@ -6,8 +6,8 @@ public enum EnumTamanhoIcone
     Padrao = 0,
     Pequeno = 1,
     PequenoMedio = 2,
-    MediodPequeno =3,
+    MediodPequeno = 3,
     Medio = 4,
-    MedioGrande =5,
+    MedioGrande = 5,
     Grande = 6
 }

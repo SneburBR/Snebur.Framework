@@ -1,7 +1,5 @@
-﻿using Snebur.Reflexao;
+using Snebur.Reflexao;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Snebur.Utilidade;
 
@@ -280,7 +278,7 @@ public static partial class ReflexaoUtil
         }
         else
         {
-            return tipo.GetElementType() 
+            return tipo.GetElementType()
                 ?? throw new ErroNaoSuportado($" O tipo '{tipo.Name}' não é um coleção genérica e não possui tipo de elemento definido");
         }
     }

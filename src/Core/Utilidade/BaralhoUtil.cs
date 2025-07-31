@@ -1,5 +1,3 @@
-﻿using System.Linq;
-
 namespace Snebur.Utilidade;
 
 public partial class BaralhoUtil

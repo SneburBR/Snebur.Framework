@@ -1,9 +1,7 @@
-﻿using Snebur.Comunicacao;
+using Snebur.Comunicacao;
 using Snebur.Seguranca;
 using Snebur.Servicos;
 using Snebur.UI;
-using Snebur.Utilidade;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -336,7 +334,7 @@ public abstract partial class AplicacaoSnebur
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     public virtual InformacaoSessao InformacaoSessao => this.RetornarInformacaoSessaoUsuario();
-    public virtual string? IpPublico 
+    public virtual string? IpPublico
         => this.RetornarIpPublico();
 
     //[EditorBrowsable(EditorBrowsableState.Never)]

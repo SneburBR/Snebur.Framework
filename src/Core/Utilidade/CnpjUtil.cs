@@ -1,4 +1,4 @@
-﻿namespace Snebur.Utilidade;
+namespace Snebur.Utilidade;
 
 public static class CnpjUtil
 {
@@ -33,6 +33,6 @@ public static class CnpjUtil
         var random = new Random();
         var cnpjBase = random.Next(10000000, 99999999).ToString("00000000") +
                        random.Next(1000, 9999).ToString("0000");
-        return cnpjBase + CalcularDV(cnpjBase); 
+        return cnpjBase + CalcularDV(cnpjBase);
     }
 }

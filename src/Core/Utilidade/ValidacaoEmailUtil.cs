@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -33,7 +33,7 @@ public static class ValidacaoEmailUtil
         return false;
     }
 
-    private static bool IsEmailAccountValid(string email, 
+    private static bool IsEmailAccountValid(string email,
                                             DnsUtil.DnsRecord record)
     {
         var operetions = new Func<CancellationToken, bool>[PortasSmtp.Length];
@@ -82,7 +82,7 @@ public static class ValidacaoEmailUtil
 
     private static bool IsEmailAccountValid(string? tcpClient, string emailAddress, int porta)
     {
-        if (string.IsNullOrWhiteSpace(tcpClient) || 
+        if (string.IsNullOrWhiteSpace(tcpClient) ||
             string.IsNullOrWhiteSpace(emailAddress))
         {
             return false;

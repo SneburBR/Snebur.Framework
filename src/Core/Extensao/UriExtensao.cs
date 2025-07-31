@@ -1,4 +1,3 @@
-﻿using Snebur.Utilidade;
 using System.IO;
 using System.Net;
 using System.Net.Security;

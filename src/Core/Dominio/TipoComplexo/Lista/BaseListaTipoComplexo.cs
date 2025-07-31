@@ -1,8 +1,5 @@
 using Snebur.Dominio.Atributos;
 using Snebur.Linq;
-using Snebur.Utilidade;
-using System.Collections.Generic;
-using System.Linq;
 using System.Xml.Serialization;
 
 namespace Snebur.Dominio;

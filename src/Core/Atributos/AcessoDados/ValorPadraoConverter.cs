@@ -1,4 +1,4 @@
-﻿namespace Snebur.Dominio.Atributos;
+namespace Snebur.Dominio.Atributos;
 
 [IgnorarAtributoTS]
 [AttributeUsage(AttributeTargets.Property)]
@@ -8,7 +8,7 @@ public class ValorPadraoConverterAttribute : Attribute, IValorPadrao
 
     private IConverterValorPadrao? _instancia;
 
-    public bool IsValorPadraoOnUpdate { get; set; } 
+    public bool IsValorPadraoOnUpdate { get; set; }
 
     public string CaminhoTipo { get; }
 
@@ -42,12 +42,12 @@ public class ValorPadraoConverterAttribute : Attribute, IValorPadrao
 
     public bool IsTipoNullableRequerido { get; } = false;
 
-    public object? RetornarValorPadrao(object contexto, 
-                                      Entidade entidadeCorrente, 
+    public object? RetornarValorPadrao(object contexto,
+                                      Entidade entidadeCorrente,
                                       object valorPropriedade)
     {
         return this.InstanciaConverter.RetornarValorPadrao(contexto,
-                                                           entidadeCorrente, 
+                                                           entidadeCorrente,
                                                            valorPropriedade);
     }
     #endregion
@@ -64,7 +64,7 @@ public class ValorPadraoConverterAttribute : Attribute, IValorPadrao
 
     private object? RetornarNovaInstanciaInterno()
     {
-        
+
         var tipo = Type.GetType(this.CaminhoTipo);
         if (tipo == null)
         {

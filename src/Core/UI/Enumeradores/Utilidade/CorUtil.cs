@@ -1,7 +1,3 @@
-﻿using Snebur.Utilidade;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Snebur.UI;
 
 public class CorUtil

@@ -1,4 +1,4 @@
-﻿using System.Security.Cryptography;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Snebur.Utilidade;
@@ -11,7 +11,7 @@ public static class Md5Util
         {
             return string.Empty;
         }
-        using (var md5 =MD5.Create())
+        using (var md5 = MD5.Create())
         {
             var bytes = Encoding.UTF8.GetBytes(texto);
             bytes = md5.ComputeHash(bytes);

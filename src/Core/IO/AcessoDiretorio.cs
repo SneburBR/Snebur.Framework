@@ -1,5 +1,3 @@
-﻿using Snebur.Utilidade;
-
 namespace Snebur.IO;
 
 public class AcessoDiretorio : IAcessoDiretorio

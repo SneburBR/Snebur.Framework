@@ -1,4 +1,3 @@
-﻿using System.Collections.Generic;
 using System.Globalization;
 
 namespace Snebur.Comparer;
@@ -14,7 +13,7 @@ public class StringLogicalComparer : IComparer<string>
     }
 
     public StringLogicalComparer(
-        bool ignoreCase, 
+        bool ignoreCase,
         bool floatNumbers)
     {
         this.IgnoreCase = ignoreCase;

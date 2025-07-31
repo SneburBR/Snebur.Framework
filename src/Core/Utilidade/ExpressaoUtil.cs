@@ -1,10 +1,7 @@
-﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Snebur.Utilidade;
 
@@ -153,7 +150,7 @@ public static class ExpressaoUtil
     }
 
     public static List<PropertyInfo> RetornarPropriedades(
-        Expression? expressao, 
+        Expression? expressao,
         bool permitirMetodos = true)
     {
         var propriedades = new List<PropertyInfo>();

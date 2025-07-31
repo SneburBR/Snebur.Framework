@@ -1,11 +1,10 @@
-﻿
+
 namespace Snebur;
 
 #if NET6_0_OR_GREATER
 
 using Microsoft.Extensions.Configuration;
 using System.Collections.Specialized;
-using System;
 using System.Linq;
 
 public abstract partial class AplicacaoSnebur

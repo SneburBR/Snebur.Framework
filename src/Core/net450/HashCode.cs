@@ -1,4 +1,4 @@
-﻿#if NET45 || NET40
+#if NET45 || NET40
 
 using System.Collections.Generic;
 using System.ComponentModel;

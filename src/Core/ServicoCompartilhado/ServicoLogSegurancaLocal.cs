@@ -1,5 +1,4 @@
-﻿using Snebur.Comunicacao;
-using Snebur.Utilidade;
+using Snebur.Comunicacao;
 using System.Text;
 
 namespace Snebur.Servicos;

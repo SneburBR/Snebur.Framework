@@ -1,10 +1,7 @@
-﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Atributos;
 using Snebur.Publicacao;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 
 namespace Snebur.Utilidade;
 
@@ -247,7 +244,7 @@ public static partial class ValidacaoUtil
 
     private static bool IsValidacaoRequeridoTipoComplexo(BaseTipoComplexo? valor)
     {
-        if(valor is null)
+        if (valor is null)
         {
             return false;
         }

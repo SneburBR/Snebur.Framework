@@ -1,5 +1,3 @@
-﻿using Snebur.Utilidade;
-
 namespace Snebur;
 
 public static class NumeroExtensao

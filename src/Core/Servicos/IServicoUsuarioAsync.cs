@@ -1,4 +1,4 @@
-﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Atributos;
 using Snebur.Seguranca;
 using System.Threading.Tasks;
 
@@ -8,7 +8,7 @@ namespace Snebur.Comunicacao;
 public interface IServicoUsuarioAsync : IBaseServico
 {
     Task<bool> IsExisteInformacaoIpAsync();
-    Task  AtualizarInformacaoIpAsync(DadosIPInformacao ipInformacao);
+    Task AtualizarInformacaoIpAsync(DadosIPInformacao ipInformacao);
     Task<ResultadoExisteIdentificadoUsuario> ExisteIdentificadorUsuarioAsync(string identificadorUsuario);
 
     Task<EnumResultadoValidacaoCredencial> ValidarCredencialAsync(CredencialUsuario credencial);

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections;
 using System.Linq.Expressions;
 
 namespace Snebur.Utilidade;
@@ -67,7 +65,7 @@ public static class Util
             return String.IsNullOrEmpty(str2);
         }
 
-        if(objeto2 == null && objeto1 is string str1)
+        if (objeto2 == null && objeto1 is string str1)
         {
             return String.IsNullOrEmpty(str1);
         }
@@ -146,6 +144,6 @@ public static class Util
             return defaultValue;
         }
         return text;
-        
+
     }
 }

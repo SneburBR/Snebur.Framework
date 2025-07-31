@@ -1,4 +1,3 @@
-﻿using Snebur.Utilidade;
 using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
@@ -17,7 +16,7 @@ public class ValidacaoCpfAttribute : BaseAtributoValidacao, IAtributoValidacao
         {
             return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
         }
-        var cpf = Convert.ToString(valorPropriedade);   
+        var cpf = Convert.ToString(valorPropriedade);
         return ValidacaoUtil.IsCpf(cpf);
     }
 

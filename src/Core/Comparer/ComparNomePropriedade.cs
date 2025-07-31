@@ -1,5 +1,3 @@
-﻿using Snebur.Utilidade;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace Snebur.Comparer;
@@ -53,7 +51,7 @@ public class CompararPropriedade : IEqualityComparer<PropertyInfo>
         {
             return false;
         }
-         
+
         if (this.Igual)
         {
             return Object.Equals(x, y);

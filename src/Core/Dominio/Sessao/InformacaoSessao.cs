@@ -1,4 +1,4 @@
-﻿namespace Snebur.Dominio;
+namespace Snebur.Dominio;
 
 public class InformacaoSessao : BaseDominio, IInformacaoSessao
 {

@@ -1,5 +1,4 @@
-﻿using Snebur.Dominio.Atributos;
-using System.Collections.Generic;
+using Snebur.Dominio.Atributos;
 
 namespace Snebur.Dominio;
 
@@ -17,7 +16,7 @@ public interface IEntidadeInterna : IEntidade
     void AtribuirPropriedadesAutorizadas(List<string> PropriedadesAutorizadas);
 
     void AdicionarProprieadeAberta(string nomePropriedade);
-   
+
     void DesativarValidacaoProprieadesAbertas();
 
     void AtivarValidacaoProprieadesAbertas();

@@ -1,4 +1,4 @@
-﻿using Snebur.Comunicacao;
+using Snebur.Comunicacao;
 using Snebur.Servicos;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -262,8 +262,8 @@ public static class LogUtil
         }), true);
     }
     [EditorBrowsable(EditorBrowsableState.Never)]
-    private static Guid Desempenho(string mensagem, 
-        EnumTipoLogDesempenho tipo, 
+    private static Guid Desempenho(string mensagem,
+        EnumTipoLogDesempenho tipo,
         BaseInformacaoAdicionalServicoCompartilhado? informacaoAdicional)
     {
         var stackTrace = Environment.StackTrace;
@@ -275,24 +275,24 @@ public static class LogUtil
         var servicoLogDesempenho = AplicacaoSnebur.Atual?.ServicoDesempenho;
         try
         {
-            if(servicoLogDesempenho is not null)
+            if (servicoLogDesempenho is not null)
             {
                 return servicoLogDesempenho.NotificarLogDesempenho(
-                    mensagem, 
-                    stackTrace, 
-                    tipo, 
+                    mensagem,
+                    stackTrace,
+                    tipo,
                     informacaoAdicional);
             }
         }
         catch
         {
-            
+
         }
 
         return new ServicoLogDesempenhoLocal()
             .NotificarLogDesempenho(mensagem, stackTrace, tipo, informacaoAdicional);
     }
-  
+
     #endregion region
 
     #region Métodos internos

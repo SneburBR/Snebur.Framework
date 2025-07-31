@@ -1,11 +1,10 @@
 using Snebur.Dominio.Atributos;
-using System.Linq;
 
 namespace Snebur.Dominio;
 
 [IgnorarClasseTS]
 
-public partial class RedeSociais : BaseTipoComplexo 
+public partial class RedeSociais : BaseTipoComplexo
 {
     private string? _facebook;
     private string? _instagram;
@@ -16,23 +15,23 @@ public partial class RedeSociais : BaseTipoComplexo
     private string? _github;
 
     [ValidacaoTextoTamanho(255)]
-    public string? Facebook { get=> this._facebook; set => this.SetProperty(this._facebook, this._facebook = value); }
-  
+    public string? Facebook { get => this._facebook; set => this.SetProperty(this._facebook, this._facebook = value); }
+
     [ValidacaoTextoTamanho(255)]
     public string? Instagram { get => this._instagram; set => this.SetProperty(this._instagram, this._instagram = value); }
-  
+
     [ValidacaoTextoTamanho(255)]
     public string? Twitter { get => this._twitter; set => this.SetProperty(this._twitter, this._twitter = value); }
-   
+
     [ValidacaoTextoTamanho(255)]
     public string? WhatsApp { get => this._whatsApp; set => this.SetProperty(this._whatsApp, this._whatsApp = value); }
-   
+
     [ValidacaoTextoTamanho(255)]
     public string? LinkedIn { get => this._linkedIn; set => this.SetProperty(this._linkedIn, this._linkedIn = value); }
-   
+
     [ValidacaoTextoTamanho(255)]
     public string? Youtube { get => this._youtube; set => this.SetProperty(this._youtube, this._youtube = value); }
-   
+
     [ValidacaoTextoTamanho(255)]
     public string? Github { get => this._github; set => this.SetProperty(this._github, this._github = value); }
 
@@ -67,7 +66,7 @@ public partial class RedeSociais : BaseTipoComplexo
         return base.GetHashCode();
         //return this.Largura.GetHashCode() + this.Altura.GetHashCode();
     }
- 
+
 
     protected internal override BaseTipoComplexo BaseClone()
     {

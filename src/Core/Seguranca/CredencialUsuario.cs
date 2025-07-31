@@ -1,11 +1,10 @@
-﻿using Snebur.Dominio.Atributos;
-using Snebur.Utilidade;
+using Snebur.Dominio.Atributos;
 
 namespace Snebur.Seguranca;
 
 public class CredencialUsuario : Credencial
 {
-    public string? Nome { get; set; } 
+    public string? Nome { get; set; }
 
     public string? IdentificadorAmigavel { get; set; }
 

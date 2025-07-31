@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -526,7 +524,7 @@ public static class ArquivoUtil
         Guard.NotNull(texto);
 
         encoding ??= Encoding.UTF8;
-         
+
         var infoArquivo = new FileInfo(caminho);
         Guard.NotNull(infoArquivo.Directory);
 

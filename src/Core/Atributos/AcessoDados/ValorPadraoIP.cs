@@ -1,4 +1,4 @@
-﻿namespace Snebur.Dominio.Atributos;
+namespace Snebur.Dominio.Atributos;
 
 [AttributeUsage(AttributeTargets.Property)]
 public class ValorPadraoIPAttribute : SomenteLeituraAttribute, IValorPadrao
@@ -9,12 +9,12 @@ public class ValorPadraoIPAttribute : SomenteLeituraAttribute, IValorPadrao
 
     }
 
-    public object? RetornarValorPadrao(object contexto, 
-                                      Entidade entidade, 
+    public object? RetornarValorPadrao(object contexto,
+                                      Entidade entidade,
                                       object valorPropriedade)
     {
-        
-        
+
+
         return AplicacaoSnebur.AtualRequired.IpPublico;
         //return IpUtil.RetornarIpInternet();
     }

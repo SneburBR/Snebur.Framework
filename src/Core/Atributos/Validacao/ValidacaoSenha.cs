@@ -1,4 +1,3 @@
-﻿using Snebur.Utilidade;
 using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
@@ -35,7 +34,7 @@ public class ValidacaoSenhaAttribute : BaseAtributoValidacao, IAtributoValidacao
 
     #region IAtributoValidacao
 
-    public override bool IsValido(PropertyInfo propriedade, 
+    public override bool IsValido(PropertyInfo propriedade,
                                  object? paiPropriedade, object? valorPropriedade)
     {
         var senha = Convert.ToString(valorPropriedade);

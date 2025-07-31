@@ -1,4 +1,3 @@
-﻿using Snebur.Utilidade;
 using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
@@ -8,7 +7,7 @@ public class ValidacaoEmailOuTelefoneAttribute : BaseAtributoValidacao, IAtribut
 {
     [MensagemValidacao]
     public static string MensagemValidacao { get; set; } = "O campo {0} é invalido.";
-     
+
     #region IAtributoValidacao
 
     public override bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)

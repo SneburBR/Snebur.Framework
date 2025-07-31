@@ -1,4 +1,3 @@
-﻿using Snebur.Utilidade;
 using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
@@ -29,8 +28,8 @@ public class ValidacaoIdenticadorUsuarioAttribute : BaseAtributoValidacaoAsync, 
     }
 
     public string RetornarMensagemValidacao(
-        PropertyInfo propriedade, 
-        object? paiPropriedade, 
+        PropertyInfo propriedade,
+        object? paiPropriedade,
         object? valorPropriedade)
     {
         var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);

@@ -1,11 +1,11 @@
-﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Atributos;
 
 namespace Snebur.Dominio;
 
 public enum EnumStatusUsuario
 {
     [EnumValorNaoDefido]
-    Desconhecido =0,
+    Desconhecido = 0,
 
     Novo = 1,
 

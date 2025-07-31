@@ -1,6 +1,3 @@
-﻿using System.Linq;
-using System.Text.RegularExpressions;
-
 namespace Snebur.Utilidade;
 
 public class CodigoUtil

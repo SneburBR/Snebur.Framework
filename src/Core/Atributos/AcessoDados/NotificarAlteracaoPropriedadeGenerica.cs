@@ -1,4 +1,4 @@
-﻿using Snebur.UI;
+using Snebur.UI;
 
 namespace Snebur.Dominio.Atributos;
 
@@ -7,12 +7,12 @@ namespace Snebur.Dominio.Atributos;
 public class NotificarAlteracaoPropriedadeGenericaAttribute : BaseAtributoDominio, INotificarAlteracaoPropriedade
 {
     public EnumOpcoesAlterarPropriedade Opcoes { get; }
-    public string? FormatacaoPersonalizada { get; set; } 
+    public string? FormatacaoPersonalizada { get; set; }
     public string Formatacao { get; set; } = EnumFormatacao.Nenhuma.ToString().ToLower();
     public Type? TipoPropriedadeRelacao { get; set; }
     public string? CaminhoTipoPropriedadeRelacao { get; set; }
     public bool IsEnum { get; set; }
-    
+
     public NotificarAlteracaoPropriedadeGenericaAttribute([TipoTS("string")] EnumFormatacao formatacao,
                                                           Type tipoPropriedadeRelacao,
                                                           string caminhoTipoPropriedadeRelacao,
@@ -43,7 +43,7 @@ public class NotificarAlteracaoPropriedadeGenericaAttribute : BaseAtributoDomini
     [IgnorarConstrutorTS]
     public NotificarAlteracaoPropriedadeGenericaAttribute(EnumOpcoesAlterarPropriedade opcoes)
     {
-        this.Opcoes = opcoes;   
+        this.Opcoes = opcoes;
     }
 
     [IgnorarConstrutorTS]

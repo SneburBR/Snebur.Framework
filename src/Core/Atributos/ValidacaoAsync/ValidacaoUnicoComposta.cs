@@ -1,9 +1,5 @@
-﻿using Snebur.Linq;
-using Snebur.Utilidade;
-using System.Collections.Generic;
-using System.Linq;
+using Snebur.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 
 namespace Snebur.Dominio.Atributos;
 
@@ -54,7 +50,7 @@ public class ValidacaoUnicoCompostaAttribute : BaseAtributoValidacaoAsync, IAtri
                 this.AdicioanrFiltro(expressaoPropriedadeFiltro);
             }
         }
-        
+
 
         if (ReflexaoUtil.IsTipoImplementaInterface(tipoEntidade, typeof(IDeletado)))
         {
@@ -147,7 +143,7 @@ public class ValidacaoUnicoCompostaAttribute : BaseAtributoValidacaoAsync, IAtri
         return new Exception(memsagem);
     }
 
-     
+
 
     #region IAtributoValidacao
 

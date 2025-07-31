@@ -1,4 +1,3 @@
-﻿using Snebur.Utilidade;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
@@ -66,7 +65,7 @@ public class ValidacaoTextoTamanhoAttribute : StringLengthAttribute, IAtributoVa
         {
             return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
         }
-        
+
         if (this.TamanhoMinimo > 0 && this.TamanhoMaximo > 0)
         {
             return texto.Length >= this.TamanhoMinimo &&

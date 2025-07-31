@@ -1,8 +1,3 @@
-﻿using System.Collections.Generic;
-
-using System.Linq;
-using Snebur.Utilidade;
-
 #if NET6_0_OR_GREATER
 using Microsoft.Data.SqlClient;
 #else

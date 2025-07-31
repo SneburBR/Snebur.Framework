@@ -1,7 +1,4 @@
-﻿using Snebur.Utilidade;
-using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 
 namespace Snebur.Dominio.Atributos;
 
@@ -53,14 +50,14 @@ public class ValidacaoPalavraTamanhoAttribute : BaseAtributoValidacao, IAtributo
     }
 
     public override string RetornarMensagemValidacao(
-        PropertyInfo propriedade, 
-        object? paiPropriedade, 
+        PropertyInfo propriedade,
+        object? paiPropriedade,
         object? valorPropriedade)
     {
         //var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
         var valorPropriedadeString = valorPropriedade?.ToString();
         var palavraInvalida = String.IsNullOrWhiteSpace(valorPropriedadeString)
-            ? null 
+            ? null
             : new Regex(@"\s+").Split(valorPropriedadeString).
                                         Where(x => !ValidacaoUtil.ValidarTextoTamanho(x, this.TamanhoMinimo, this.TamanhoMaximo)).
                                         First();

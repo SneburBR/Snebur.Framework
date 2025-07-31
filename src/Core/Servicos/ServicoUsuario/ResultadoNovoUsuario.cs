@@ -1,4 +1,4 @@
-﻿namespace Snebur.Comunicacao;
+namespace Snebur.Comunicacao;
 
 //public abstract class ResultadoNovoUsuario<TUsuario> : BaseComunicao
 //{

@@ -1,5 +1,3 @@
-﻿using System.Collections.Generic;
-
 namespace Snebur.Tarefa;
 
 public class ErroGerenciadorTarefa<TTarefa> : Erro where TTarefa : ITarefa

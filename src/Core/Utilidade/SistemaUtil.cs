@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 
@@ -19,7 +19,7 @@ public static class SistemaUtil
         {
             var entAssembly = Assembly.GetEntryAssembly() ??
                 AplicacaoSnebur.Atual?.GetType().Assembly;
-            
+
             if (entAssembly is null)
             {
                 throw new InvalidOperationException("Não foi possível determinar o caminho da aplicação. A Assembly de entrada é nula.");
@@ -234,7 +234,7 @@ public static class SistemaUtil
                 var propreidadeLargura = tipoSystemaParameters.GetProperty("PrimaryScreenWidth");
                 var propreidadeAltura = tipoSystemaParameters.GetProperty("PrimaryScreenHeight");
 
-                if(propreidadeLargura is not null && 
+                if (propreidadeLargura is not null &&
                     propreidadeAltura is not null)
                 {
                     var largura = ConverterUtil.Converter<int>(propreidadeLargura.GetValue(null));

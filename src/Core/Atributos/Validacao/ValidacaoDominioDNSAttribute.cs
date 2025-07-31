@@ -1,4 +1,3 @@
-﻿using Snebur.Utilidade;
 using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
@@ -9,7 +8,7 @@ public class ValidacaoDominioDNSAttribute : ValidacaoDominioAttribute, IAtributo
     #region IAtributoValidacao
 
     public override bool IsValido(
-        PropertyInfo propriedade, 
+        PropertyInfo propriedade,
         object? paiPropriedade,
         object? valorPropriedade)
     {

@@ -1,4 +1,4 @@
-﻿
+
 using Snebur.Dominio.Atributos;
 
 namespace Snebur.Dominio;
@@ -10,13 +10,13 @@ public enum EnumFiltroImagem
 
     [Rotulo("Brilho")]
     Brilho,
-     
+
     [Rotulo("Contraste")]
     Contraste,
 
     [Rotulo("Saturação")]
     Saturacao,
-     
+
     [Rotulo("Preto e branco")]
     PretoBranco,
 
@@ -25,10 +25,10 @@ public enum EnumFiltroImagem
 
     [Rotulo("Matriz")]
     Matriz,
-     
+
     [Rotulo("Inverter")]
     Inverter,
-     
+
     [Rotulo("Desfoque")]
     Desfoque,
 

@@ -1,4 +1,3 @@
-﻿using Snebur.Utilidade;
 using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
@@ -34,7 +33,7 @@ public class ValidacaoCredencialAttribute : BaseAtributoValidacaoAsync, IAtribut
         {
             throw new Exception($"A propriedade {nomePropriedadeIdentificador}  não foi encontrada em {nomePropriedadeIdentificador}");
         }
-        this.Propriedade= propriedade;
+        this.Propriedade = propriedade;
     }
 
     public ValidacaoCredencialAttribute(string nomePropriedadeIdentificador)

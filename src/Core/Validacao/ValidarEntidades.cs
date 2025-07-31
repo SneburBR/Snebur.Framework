@@ -1,6 +1,3 @@
-﻿using Snebur.Utilidade;
-using System.Collections.Generic;
-
 namespace Snebur.Dominio;
 
 public partial class ValidarEntidades : IDisposable
@@ -17,7 +14,7 @@ public partial class ValidarEntidades : IDisposable
         var erros = new List<ErroValidacao>();
         foreach (var entidade in this.Entidades)
         {
-            if(entidade is IDeletado deletado && deletado.IsDeletado) 
+            if (entidade is IDeletado deletado && deletado.IsDeletado)
             {
                 continue;
             }
@@ -25,7 +22,7 @@ public partial class ValidarEntidades : IDisposable
             var propriedades = ReflexaoUtil.RetornarPropriedades(entidade.GetType());
             foreach (var propriedade in propriedades)
             {
-                if (entidade.Id == 0 || (entidade.__PropriedadesAlteradas != null && 
+                if (entidade.Id == 0 || (entidade.__PropriedadesAlteradas != null &&
                                          entidade.__PropriedadesAlteradas.ContainsKey(propriedade.Name)))
                 {
                     var atributosValidacao = ValidacaoUtil.RetornarAtributosValidacao(propriedade);
@@ -40,9 +37,9 @@ public partial class ValidarEntidades : IDisposable
                                 {
                                     NomeTipoEntidade = entidade.__NomeTipoEntidade,
                                     NomePropriedade = propriedade.Name,
-                                    Mensagem = String.Format("Entidade : '{0}' - {1}", entidade.__NomeTipoEntidade, 
-                                                                                       atributoValidacao.RetornarMensagemValidacao(propriedade, 
-                                                                                                                                   entidade, 
+                                    Mensagem = String.Format("Entidade : '{0}' - {1}", entidade.__NomeTipoEntidade,
+                                                                                       atributoValidacao.RetornarMensagemValidacao(propriedade,
+                                                                                                                                   entidade,
                                                                                                                                    valorPropriedade)),
                                     NomeTipoValidacao = atributoValidacao.GetType().Name
                                 };

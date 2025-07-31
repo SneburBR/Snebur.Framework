@@ -1,9 +1,6 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Snebur.Dominio.Atributos;
-using Snebur.Utilidade;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Reflection;
 using System.Xml.Serialization;
 

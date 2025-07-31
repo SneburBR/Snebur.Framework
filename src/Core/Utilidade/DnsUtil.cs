@@ -1,4 +1,3 @@
-﻿using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -12,7 +11,7 @@ public static class DnsUtil
         var dnsRecords = new DNSClient(domain, queryType);
         return dnsRecords.GetRecords();
     }
- 
+
     private class DNSClient
     {
         private const string DNS_SERVER = "8.8.8.8";
@@ -72,7 +71,7 @@ public static class DnsUtil
 
         private DnsRecord[]? ParseResponse()
         {
-            if(this._response is null)
+            if (this._response is null)
             {
                 return null;
             }

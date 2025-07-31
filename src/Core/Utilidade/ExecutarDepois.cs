@@ -1,5 +1,3 @@
-﻿using Snebur.Utilidade;
-
 namespace Snebur;
 
 public class ExecutarDepois : IDisposable

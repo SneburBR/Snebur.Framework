@@ -1,4 +1,3 @@
-﻿using Snebur.Utilidade;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -56,7 +55,7 @@ public abstract class BaseServicoLocal
             }
         }
     }
-    
+
 
     private string RetornarPastaLog()
     {

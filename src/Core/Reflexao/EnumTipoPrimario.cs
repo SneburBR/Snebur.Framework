@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 #if !EXTENSAO_VISUALSTUDIO  
 using Snebur.Dominio.Atributos;
 #endif
@@ -55,7 +55,7 @@ public enum EnumTipoPrimario
 
     [Description("Byte")]
     Byte = 14,
-     
+
     //[Description("Uri")]
     //Uri = 11,
 

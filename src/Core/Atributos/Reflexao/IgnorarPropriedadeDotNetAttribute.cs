@@ -1,7 +1,7 @@
-﻿namespace Snebur.Dominio.Atributos;
+namespace Snebur.Dominio.Atributos;
 
 [AttributeUsage(AttributeTargets.Property)]
-public sealed class IgnorarPropriedadeDotNetAttribute: Attribute
+public sealed class IgnorarPropriedadeDotNetAttribute : Attribute
 {
 
 }

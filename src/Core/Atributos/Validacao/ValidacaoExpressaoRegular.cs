@@ -1,8 +1,5 @@
-﻿using Snebur.Utilidade;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
-using System.Text.RegularExpressions;
 
 namespace Snebur.Dominio.Atributos;
 
@@ -29,10 +26,10 @@ public class ValidacaoExpressaoRegularAttribute : RegularExpressionAttribute, IA
         Guard.NotNull(validationContext.MemberName);
 
         var propriedade = validationContext.GetRequiredProperty();
-      
+
         var paiPropriedade = validationContext.ObjectInstance;
         var valorPropriedade = value;
-       
+
         if (this.IsValido(propriedade, paiPropriedade, valorPropriedade))
         {
             return ValidationResult.Success;
@@ -48,7 +45,7 @@ public class ValidacaoExpressaoRegularAttribute : RegularExpressionAttribute, IA
 
     public bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
     {
-       
+
         var valorPropriedadeString = valorPropriedade?.ToString();
         if (!ValidacaoUtil.IsDefinido(valorPropriedadeString))
         {

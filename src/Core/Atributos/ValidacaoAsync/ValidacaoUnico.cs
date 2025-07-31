@@ -1,5 +1,3 @@
-﻿using Snebur.Utilidade;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
@@ -34,7 +32,7 @@ public class ValidacaoUnicoAttribute : BaseAtributoValidacaoAsync, IAtributoVali
         Type tipoEntidade,
         string nomePropriedadeFiltro,
         object valorPropriedadeFiltro,
-        EnumOperadorComparacao operadorFiltro = EnumOperadorComparacao.Igual) 
+        EnumOperadorComparacao operadorFiltro = EnumOperadorComparacao.Igual)
         : this(tipoEntidade, false, false, nomePropriedadeFiltro, valorPropriedadeFiltro, operadorFiltro)
     {
 
@@ -53,7 +51,7 @@ public class ValidacaoUnicoAttribute : BaseAtributoValidacaoAsync, IAtributoVali
         this.NomePropriedadeFiltro = nomePropriedadeFiltro;
         this.ValorPropriedadeFiltro = valorPropriedadeFiltro;
         this.OperadorFiltro = operadorFiltro;
-         
+
         var propriedade = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nomePropriedadeFiltro, true);
         if (propriedade == null)
         {

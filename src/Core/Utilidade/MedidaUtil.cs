@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections;
 
 namespace Snebur.Utilidade;
 
@@ -53,7 +51,7 @@ public static class MedidaUtil
     }
 
     public static int RetornarDpiVisualizacao(
-        Dimensao dimensaoCentimetros, 
+        Dimensao dimensaoCentimetros,
         Dimensao dimensaoPixels,
         double tolerancia = 1)
     {
@@ -115,7 +113,7 @@ public static class MedidaUtil
             {
                 var propriedades = objeto.GetType()
                     .GetProperties()
-                    .Where(x => x.GetSetMethod() != null && 
+                    .Where(x => x.GetSetMethod() != null &&
                                 x.GetSetMethod()?.IsPublic == true);
 
                 foreach (var p in propriedades)

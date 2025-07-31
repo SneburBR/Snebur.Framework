@@ -1,7 +1,7 @@
-﻿namespace Snebur.Dominio.Atributos;
+namespace Snebur.Dominio.Atributos;
 
 [AttributeUsage(AttributeTargets.Property)]
-public class CampoProtegidoAttribute: Attribute
+public class CampoProtegidoAttribute : Attribute
 {
 
 }

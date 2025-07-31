@@ -1,10 +1,6 @@
-﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
-
-using System.Linq;
 using System.Reflection;
-using Snebur.Utilidade;
 using System.Data.Common;
 using System.ComponentModel.DataAnnotations.Schema;
 

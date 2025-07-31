@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
 
 namespace Snebur.AcessoDados;
 
@@ -18,6 +18,6 @@ public class ErroFalhaAutenticacao : Erro
     public ErroFalhaAutenticacao()
     {
     }
-     
+
     #endregion
 }

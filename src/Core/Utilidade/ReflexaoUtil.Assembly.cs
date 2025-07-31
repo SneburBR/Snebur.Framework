@@ -1,4 +1,3 @@
-﻿using System.Collections.Generic;
 using System.Reflection;
 
 namespace Snebur.Utilidade;
@@ -26,7 +25,7 @@ public static partial class ReflexaoUtil
             return AplicacaoSnebur._aplicacao!.GetType().Assembly;
         }
 
-        if (AplicacaoSnebur._aplicacao != null )
+        if (AplicacaoSnebur._aplicacao != null)
         {
             return AplicacaoSnebur._aplicacao.GetType().Assembly;
         }
@@ -66,7 +65,7 @@ public static partial class ReflexaoUtil
     public static Version RetornarVersaoAssembly<T>()
     {
         return typeof(T).Assembly.RetornarVersaoAssembly();
-        
+
     }
     public static Version RetornarVersaoAssembly(this Assembly assembly)
     {
@@ -109,7 +108,7 @@ public static partial class ReflexaoUtil
 
         if (String.IsNullOrWhiteSpace(atributoNomeEmpresa?.Company))
         {
-            if (DebugUtil.IsAttached )
+            if (DebugUtil.IsAttached)
             {
                 throw new Exception(String.Format("O atributo {0} não foi definido no AssemblyInfo", nameof(AssemblyCompanyAttribute)));
             }

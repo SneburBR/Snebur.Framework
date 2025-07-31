@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
 
 namespace Snebur;
 
@@ -21,6 +21,6 @@ public class ErroOperacaoInvalida : Erro
     public ErroOperacaoInvalida()
     {
     }
-     
+
     #endregion
 }

@@ -1,8 +1,6 @@
-﻿using Snebur;
 using Snebur.Linq;
 using System.Collections;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 
 namespace Snebur;
 
@@ -126,7 +124,7 @@ public static class DictionaryExtensao
     {
         Guard.NotNull(chave);
         Guard.NotNull(funcaoRetornarValor);
-        
+
         if (!dicionario.ContainsKey(chave))
         {
             var bloqueio = dicionario.RetornarBloqueio(chave);

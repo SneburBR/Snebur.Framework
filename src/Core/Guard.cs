@@ -1,5 +1,4 @@
-﻿using Snebur.Helpers;
-using System.Collections.Generic;
+using Snebur.Helpers;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -22,7 +21,7 @@ public static class Guard
     public static void NotNullOrWhiteSpace(
             [NotNull] string? value,
             [CallerArgumentExpression(nameof(value))] string paramName = "")
- 
+
 
     {
         if (string.IsNullOrWhiteSpace(value))

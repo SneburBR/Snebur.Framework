@@ -1,4 +1,4 @@
-﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Atributos;
 
 namespace Snebur.Imagens;
 
@@ -10,7 +10,7 @@ public class ConstantesImagemApresentacao
 
     public const int LARGURA_IMAGEM_MINIATURA = 160;
     public const int ALTURA_IMAGEM_MINIATURA = 90;
-     
+
     public const int LARGURA_IMAGEM_PEQUENA = 290;
     public const int ALTURA_IMAGEM_PEQUENA = 160;
 

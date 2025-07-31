@@ -1,9 +1,7 @@
-﻿using Snebur.Linq;
-using System.Collections.Generic;
+using Snebur.Linq;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Text;
 
 namespace Snebur.Utilidade;

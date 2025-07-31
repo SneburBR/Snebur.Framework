@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
 namespace Snebur;
@@ -6,7 +6,7 @@ namespace Snebur;
 public static class ValidationContextExtensions
 {
     public static PropertyInfo GetRequiredProperty(
-        this ValidationContext context )
+        this ValidationContext context)
     {
         Guard.NotNull(context);
         Guard.NotNullOrWhiteSpace(context.MemberName);

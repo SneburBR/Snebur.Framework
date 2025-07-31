@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Snebur.Dominio.Atributos;
 
@@ -21,7 +21,7 @@ public class CampoAttribute : ColumnAttribute
 
 [IgnorarAtributoTS]
 [AttributeUsage(AttributeTargets.Property)]
-public class TipoBancoAttribute : ColumnAttribute 
+public class TipoBancoAttribute : ColumnAttribute
 {
     public Type Tipo { get; }
 

@@ -1,8 +1,6 @@
 using Snebur.Dominio.Atributos;
-using Snebur.Utilidade;
 using System.Drawing;
 using System.Globalization;
-using System.Linq;
 
 namespace Snebur.Dominio;
 
@@ -58,13 +56,13 @@ public class Cor : BaseTipoComplexo, ICor
     {
         get
         {
-            return this.Alpha == 255 && 
-                   this.Red == 255 && 
-                   this.Green == 255 && 
+            return this.Alpha == 255 &&
+                   this.Red == 255 &&
+                   this.Green == 255 &&
                    this.Blue == 255;
         }
     }
-    
+
     [IgnorarConstrutorTS]
     public Cor() : this(0, 0, 0, 0)
     {

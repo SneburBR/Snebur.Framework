@@ -1,4 +1,3 @@
-﻿using Snebur.Utilidade;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -152,7 +151,7 @@ public static class FormatoImagemUtil
         stream.Seek(0, SeekOrigin.Begin);
         byte[] buffer = new byte[16];
         var lidos = stream.Read(buffer, 0, buffer.Length);
-        if(lidos < buffer.Length)
+        if (lidos < buffer.Length)
         {
             return EnumFormatoImagem.Desconhecido;
         }

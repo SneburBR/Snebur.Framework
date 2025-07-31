@@ -1,8 +1,6 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Snebur.Utilidade;
 using System.Collections;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace Snebur.Serializacao;

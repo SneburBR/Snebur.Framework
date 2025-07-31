@@ -1,7 +1,5 @@
-﻿using Snebur.Dominio.Atributos;
-using System.Collections.Generic;
+using Snebur.Dominio.Atributos;
 using System.ComponentModel;
-using System.Linq;
 using System.Reflection;
 
 namespace Snebur.Utilidade;

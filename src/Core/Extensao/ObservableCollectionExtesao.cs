@@ -1,5 +1,3 @@
-﻿using System.Collections.Generic;
-
 namespace System.Collections.ObjectModel;
 
 public static class ObservableCollectionEx

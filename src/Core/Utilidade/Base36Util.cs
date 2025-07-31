@@ -1,14 +1,12 @@
-﻿using System.Text.RegularExpressions;
-
 namespace Snebur.Utilidade;
 
-public static  class Base36Util
+public static class Base36Util
 {
     private const int Base = 36;
     private const string Chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    public static bool IsBase36(string? valor, 
-                                bool isPermitirEspaco, 
+    public static bool IsBase36(string? valor,
+                                bool isPermitirEspaco,
                                 bool isIgnorarCase,
                                 string? caracteresExtra = null)
     {
@@ -21,7 +19,7 @@ public static  class Base36Util
         {
             valor = valor.ToUpper();
         }
-         
+
         var regexString = @"^[0-9A-Z";
         if (isPermitirEspaco)
         {
@@ -43,7 +41,7 @@ public static  class Base36Util
         {
             sb.Insert(0, Chars[valor % Base]);
             valor /= Base;
-        } 
+        }
         while (valor != 0);
         return sb.ToString();
     }

@@ -1,5 +1,4 @@
-﻿using Snebur.Servicos;
-using Snebur.Utilidade;
+using Snebur.Servicos;
 using System.Runtime.CompilerServices;
 
 namespace Snebur;
@@ -27,6 +26,6 @@ public class ErroSeguranca : Erro
     public ErroSeguranca()
     {
     }
-     
+
     #endregion
 }

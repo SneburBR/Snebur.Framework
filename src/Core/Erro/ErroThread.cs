@@ -1,4 +1,3 @@
-﻿using Snebur;
 using System.Runtime.CompilerServices;
 
 namespace Snebur;
@@ -16,7 +15,7 @@ public class ErroThread : Erro
     {
     }
     #region Serializacao 
-     
+
     protected override EnumNivelErro RetornarNivelErro()
     {
         return EnumNivelErro.Baixo;

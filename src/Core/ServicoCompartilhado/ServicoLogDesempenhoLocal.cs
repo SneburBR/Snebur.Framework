@@ -1,5 +1,3 @@
-﻿using Snebur.Utilidade;
-
 namespace Snebur.Servicos;
 
 public class ServicoLogDesempenhoLocal : BaseServicoLocal, IServicoLogDesempenho

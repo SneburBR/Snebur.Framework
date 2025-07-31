@@ -1,4 +1,3 @@
-﻿using Snebur;
 using System.Runtime.CompilerServices;
 
 namespace Snebur;
@@ -15,7 +14,7 @@ public class ErroGlobal : Erro
                      base(mensagem, erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
     {
     }
-   
+
 #if !EXTENSAO_VISUALSTUDIO
 
     protected override EnumNivelErro RetornarNivelErro()

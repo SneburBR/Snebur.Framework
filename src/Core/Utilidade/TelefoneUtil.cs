@@ -1,6 +1,3 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
 namespace Snebur.Utilidade;
 
 public static partial class TelefoneUtil

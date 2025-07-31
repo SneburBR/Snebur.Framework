@@ -1,6 +1,3 @@
-﻿using Snebur.Utilidade;
-using System.Linq;
-
 namespace Snebur.Dominio.Atributos;
 
 public static class FiltroPropriedadeIndexarUtil

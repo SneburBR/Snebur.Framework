@@ -1,5 +1,5 @@
-﻿using System.IO.Compression;
 using System.IO;
+using System.IO.Compression;
 using System.Text;
 
 namespace Snebur.Utilidade;
@@ -14,13 +14,13 @@ public static class StringCompressionUtil
         {
             using (var compressedStream = new MemoryStream())
             {
-                
+
                 using (var compressorStream = new DeflateStream(
                     compressedStream,
 #if NET40
                     CompressionMode.Compress,
 #else
-                    CompressionLevel.Optimal, 
+                    CompressionLevel.Optimal,
 #endif
                     true))
                 {

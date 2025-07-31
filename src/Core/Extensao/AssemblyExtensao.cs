@@ -1,8 +1,5 @@
-﻿using Snebur.Dominio.Atributos;
-using Snebur.Utilidade;
-using System.Collections.Generic;
+using Snebur.Dominio.Atributos;
 using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace System.Reflection;
@@ -90,7 +87,7 @@ public static class AssemblyExtensao
     }
 
     public static string GetResourceAsString(
-        this Assembly assembly, 
+        this Assembly assembly,
         string resource,
         Encoding? encoding = null)
     {

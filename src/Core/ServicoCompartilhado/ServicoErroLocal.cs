@@ -1,4 +1,4 @@
-﻿namespace Snebur.Servicos;
+namespace Snebur.Servicos;
 
 public class ServicoErroLocal : BaseServicoLocal, IServicoLogErro
 {
@@ -6,7 +6,7 @@ public class ServicoErroLocal : BaseServicoLocal, IServicoLogErro
     public Guid NotificarErro(string nomeTipoErro,
         string mensagem,
         string? statkTrace,
-        string descricaoCompleta, 
+        string descricaoCompleta,
         EnumNivelErro nivelErro,
         BaseInformacaoAdicionalServicoCompartilhado? informacaoAdicional)
     {

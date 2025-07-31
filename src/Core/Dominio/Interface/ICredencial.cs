@@ -1,4 +1,4 @@
-﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Atributos;
 
 namespace Snebur.Dominio;
 
@@ -22,10 +22,10 @@ public interface ICredencial
 
 public static class CredencialExtensions
 {
-    
+
     public static bool IsValid(this ICredencial credencial)
     {
-        return !string.IsNullOrWhiteSpace(credencial?.IdentificadorUsuario) && 
+        return !string.IsNullOrWhiteSpace(credencial?.IdentificadorUsuario) &&
                !string.IsNullOrWhiteSpace(credencial?.Senha);
     }
 }

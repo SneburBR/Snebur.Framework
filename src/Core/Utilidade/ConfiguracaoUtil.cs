@@ -1,4 +1,4 @@
-﻿using System.Collections.Specialized;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.IO;
 using System.Xml;
@@ -21,19 +21,19 @@ public static class ConfiguracaoUtil
     private static string? _caminhoAppDataAplicacaoLogs;
     private static string? _caminhoAppDataAplicacaoSemVersao;
     private static string? _caminhoAppDataAplicacaoSemIdentificadorPropretario;
-     
-    public static string? UrlWebService 
+
+    public static string? UrlWebService
         => AplicacaoSnebur.Atual?.UrlWebService;
-    public static string? UrlServicoArquivo 
+    public static string? UrlServicoArquivo
         => AplicacaoSnebur.Atual?.UrlServicoArquivo;
-    public static string? UrlServicoDados 
+    public static string? UrlServicoDados
         => AplicacaoSnebur.Atual?.UrlServicoDados;
-    public static string? UrlServicoImagem 
+    public static string? UrlServicoImagem
         => AplicacaoSnebur.Atual?.UrlServicoImagem;
 
     public static Guid ChaveSeguranca => LazyUtil.RetornarValorLazyComBloqueio(ref _chaveSeguranca, RetornarChaveSeguranca);
 
-    public static bool IsLogDebugOutputSql=> LazyUtil.RetornarValorLazyComBloqueio(ref _isLogDebugOutputSql, RetornarIsLogDebugOutputSql);
+    public static bool IsLogDebugOutputSql => LazyUtil.RetornarValorLazyComBloqueio(ref _isLogDebugOutputSql, RetornarIsLogDebugOutputSql);
 
     private static Guid RetornarChaveSeguranca()
     {
@@ -56,9 +56,9 @@ public static class ConfiguracaoUtil
                                               DebugUtil.IsAttached;
 
     public static CultureInfo CulturaPortuguesBrasil { get; } = new CultureInfo("pt-BR");
-    public static NameValueCollection? AppSettings 
+    public static NameValueCollection? AppSettings
         => AplicacaoSnebur.Atual?.AppSettings;
-    public static NameValueCollection? ConnectionStrings 
+    public static NameValueCollection? ConnectionStrings
         => AplicacaoSnebur.Atual?.ConnectionStrings;
     public static string CaminhoAppDataAplicacao
     {
@@ -117,7 +117,7 @@ public static class ConfiguracaoUtil
             return _caminhoAppDataAplicacaoLogs;
         }
     }
-     
+
 
     public static string CaminhoAppDataAplicacaoSemVersao
     {
@@ -128,7 +128,7 @@ public static class ConfiguracaoUtil
             {
                 lock (_bloqueioCaminhoAppData)
                 {
-                    if (_caminhoAppDataAplicacaoSemVersao == null || 
+                    if (_caminhoAppDataAplicacaoSemVersao == null ||
                         IsAtualizarCaminhoAppData(_caminhoAppDataAplicacaoSemVersao, true))
                     {
                         var caminhoAppData = RetornarCaminhoLocalAppData();

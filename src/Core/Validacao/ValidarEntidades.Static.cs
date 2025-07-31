@@ -1,5 +1,3 @@
-﻿using System.Collections.Generic;
-
 namespace Snebur.Dominio;
 
 public partial class ValidarEntidades

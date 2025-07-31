@@ -1,4 +1,3 @@
-﻿using Snebur.Utilidade;
 using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
@@ -16,7 +15,7 @@ public class RelacaoUmUmReversaAttribute : BaseRelacaoAttribute
 
     [IgnorarConstrutorTS]
     public RelacaoUmUmReversaAttribute(
-        Type tipoEntidadeRelacao, 
+        Type tipoEntidadeRelacao,
         string nomePropriedadeChaveEstrangeiraReversa)
     {
         this.NomePropriedadeChaveEstrangeiraReversa = nomePropriedadeChaveEstrangeiraReversa;

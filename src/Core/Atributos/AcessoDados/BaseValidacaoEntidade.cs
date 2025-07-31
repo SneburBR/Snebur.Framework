@@ -1,5 +1,3 @@
-﻿using System.Collections.Generic;
-
 namespace Snebur.Dominio.Atributos;
 
 [AttributeUsage(AttributeTargets.Class)]

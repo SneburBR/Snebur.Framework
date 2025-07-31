@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-
 namespace System.Collections.Concurrent;
 
 public static class ConcurrentDictionaryExtensao
 {
     public static ConcurrentDictionary<TKey, TElement> ToConcurrentDictionary<TSource, TKey, TElement>(
         this IEnumerable<TSource> source, Func<TSource, TKey> keySelector,
-        Func<TSource, TElement> elementSelector, 
+        Func<TSource, TElement> elementSelector,
         IEqualityComparer<TKey>? comparer)
         where TKey : notnull
     {
@@ -34,7 +32,7 @@ public static class ConcurrentDictionaryExtensao
     }
 
     public static ConcurrentDictionary<TKey, TElement> ToConcurrentDictionary<TSource, TKey, TElement>(
-        this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, 
+        this IEnumerable<TSource> source, Func<TSource, TKey> keySelector,
         Func<TSource, TElement> elementSelector)
         where TKey : notnull
     {

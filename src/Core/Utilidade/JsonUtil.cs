@@ -1,11 +1,9 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Snebur.Dominio.Atributos;
 using Snebur.Serializacao;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xml.Serialization;
@@ -17,7 +15,7 @@ public static class JsonUtil
 
     private static IReferenceResolver? _referenceResolver;
 
-    public static IReferenceResolver ReferenceResolver 
+    public static IReferenceResolver ReferenceResolver
         => LazyUtil.RetornarValorLazyComBloqueio(ref _referenceResolver, () => new ResolverReferencia());
 
     private static readonly JsonSerializerSettings ConfiguracoesJavascript = new JsonSerializerSettings
@@ -250,7 +248,7 @@ public static class JsonUtil
         {
             var flags = BindingFlags.NonPublic | BindingFlags.Instance;
             var tipoBaseDominio = typeof(BaseDominio);
-         
+
             memberInfos.Add(tipoBaseDominio.GetField(nameof(IBaseDominioReferencia.__IdentificadorUnico), flags));
             memberInfos.Add(tipoBaseDominio.GetField(nameof(IBaseDominioReferencia.__IdentificadorReferencia), flags));
             memberInfos.Add(tipoBaseDominio.GetField(nameof(IBaseDominioReferencia.__IsBaseDominioReferencia), flags));

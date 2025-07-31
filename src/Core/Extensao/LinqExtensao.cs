@@ -1,7 +1,5 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Snebur.Linq;
 
@@ -120,7 +118,7 @@ public static class LinqExtensao
 
     public static void AddRange<T>(
         this ICollection<T> colecao,
-        IEnumerable<T> ?itens)
+        IEnumerable<T>? itens)
     {
         if (itens is null)
         {

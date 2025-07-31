@@ -1,7 +1,4 @@
-﻿using Snebur.Utilidade;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace Snebur.Serializacao;
@@ -265,7 +262,7 @@ public class PrapararSerializacao : IDisposable
                 throw new Erro("Referencia não suportado");
         }
     }
-     
+
     private bool IsObjetoAnalisado(object objeto)
     {
         if (objeto is IBaseDominioReferencia baseDominio)
