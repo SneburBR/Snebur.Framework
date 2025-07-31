@@ -1,8 +1,8 @@
-﻿global using System;
-global using System.Collections;
 global using Snebur.Dominio;
 global using Snebur.Dominio.Atributos;
 global using Snebur.Utilidade;
+global using System;
+global using System.Collections;
 global using System.Collections.Generic;
 global using System.Linq;
 global using System.Linq.Expressions;

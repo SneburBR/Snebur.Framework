@@ -1,4 +1,4 @@
-﻿namespace Snebur.AcessoDados.Ajudantes;
+namespace Snebur.AcessoDados.Ajudantes;
 
 internal class AjudanteConsultaEntidade
 {
@@ -28,7 +28,7 @@ internal class AjudanteConsultaEntidade
             var nomePropriedadeExplicida = String.Format("{0}.{1}.{2}", propriedadeInterface.DeclaringType?.Namespace, propriedadeInterface.DeclaringType?.Name, propriedadeInterface.Name);
             propriedade = ReflexaoUtil.RetornarPropriedade(tipoDeclarado, nomePropriedadeExplicida);
         }
-        
+
         var atributoProprieadeInterface = propriedade.GetCustomAttribute<PropriedadeInterfaceAttribute>();
         if (atributoProprieadeInterface != null)
         {

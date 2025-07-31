@@ -1,4 +1,4 @@
-﻿namespace Snebur.AcessoDados;
+namespace Snebur.AcessoDados;
 
 internal class ConstrutorConsultaEntidade<TEntidade> : ConstrutorConsultaEntidade, IConsultaEntidade<TEntidade> where TEntidade : IEntidade
 {
@@ -58,7 +58,7 @@ internal class ConstrutorConsultaEntidade<TEntidade> : ConstrutorConsultaEntidad
         var consulta = new ConsultaEntidade<TEntidade>(this.ContextoDados);
         return consulta.WhereIn(expressaoPropriedade, lista);
     }
-     
+
     public ConsultaEntidade<TEntidade> WhereIn(Expression<Func<TEntidade, Enum>> expressaoPropriedade, IEnumerable<int> lista)
     {
         var consulta = new ConsultaEntidade<TEntidade>(this.ContextoDados);
@@ -142,7 +142,7 @@ internal class ConstrutorConsultaEntidade<TEntidade> : ConstrutorConsultaEntidad
         return new ConsultaEntidade<TEntidade>(this.ContextoDados, this.TipoEntidade).AbrirRelacao(expressao);
     }
 
-    public ConsultaEntidade<TEntidade> AbrirRelacoes(Expression<Func<TEntidade, object>>[] expressoes) 
+    public ConsultaEntidade<TEntidade> AbrirRelacoes(Expression<Func<TEntidade, object>>[] expressoes)
     {
         return new ConsultaEntidade<TEntidade>(this.ContextoDados, this.TipoEntidade).AbrirRelacoes(expressoes);
     }

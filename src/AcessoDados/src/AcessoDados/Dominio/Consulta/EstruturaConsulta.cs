@@ -6,7 +6,7 @@ namespace Snebur.AcessoDados;
 public class EstruturaConsulta : BaseAcessoDados, IEstruturaConsultaSeguranca
 {
 
-		#region Campos Privados
+    #region Campos Privados
 
     private string? _nomeTipoEntidade;
     private string? _tipoEntidadeAssemblyQualifiedName;
@@ -20,7 +20,7 @@ public class EstruturaConsulta : BaseAcessoDados, IEstruturaConsultaSeguranca
     private EnumTipoFuncao _tipoFuncaoEnum;
     private bool _contarRegistros;
 
-		#endregion
+    #endregion
 
     [JsonIgnore, IgnorarPropriedadeTSReflexao]
     internal Type? TipoEntidadeConsulta { get; set; }
@@ -64,7 +64,7 @@ public class EstruturaConsulta : BaseAcessoDados, IEstruturaConsultaSeguranca
     public EstruturaConsulta()
     {
     }
-     
+
     #region IEstruturaConsultaSeguranca  
 
     private List<string>? _propriedadesAutorizadas;

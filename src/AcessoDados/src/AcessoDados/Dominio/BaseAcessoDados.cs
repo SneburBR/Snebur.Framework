@@ -1,5 +1,3 @@
-using System.Runtime.CompilerServices;
-
 namespace Snebur.AcessoDados;
 
 public abstract class BaseAcessoDados : BaseDominio

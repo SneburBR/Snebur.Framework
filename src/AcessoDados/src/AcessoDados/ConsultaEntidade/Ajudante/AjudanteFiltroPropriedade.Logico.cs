@@ -1,4 +1,4 @@
-﻿namespace Snebur.AcessoDados.Ajudantes;
+namespace Snebur.AcessoDados.Ajudantes;
 
 internal partial class AjudanteFiltroPropriedade
 {
@@ -84,7 +84,7 @@ internal partial class AjudanteFiltroPropriedade
                 return expressaoInterna.GetType().Name != "FieldExpression";
             }
 
-            if (expressaoInterna.NodeType == ExpressionType.Convert )
+            if (expressaoInterna.NodeType == ExpressionType.Convert)
             {
                 var expressaoString = expressao.ToString();
                 return expressaoString == "Convert(x).Id" ||

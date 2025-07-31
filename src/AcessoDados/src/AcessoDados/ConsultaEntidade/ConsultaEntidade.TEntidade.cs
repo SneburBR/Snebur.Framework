@@ -1,4 +1,4 @@
-﻿namespace Snebur.AcessoDados;
+namespace Snebur.AcessoDados;
 
 public partial class ConsultaEntidade<TEntidade> : BaseConsultaEntidade, IConsultaEntidade<TEntidade> where TEntidade : IEntidade
 {
@@ -109,7 +109,7 @@ public partial class ConsultaEntidade<TEntidade> : BaseConsultaEntidade, IConsul
         this.EstruturaConsulta.IsIncluirDeletados = true;
         return this;
     }
-     
+
 
     //public TEntidade RetornarPorId(long id)
     //{

@@ -1,12 +1,12 @@
-﻿namespace Snebur.AcessoDados;
+namespace Snebur.AcessoDados;
 
 public class RelacaoAbertaColecao : BaseRelacaoAberta
 {
     #region Campos Privados
 
     #endregion
-   
-    public EstruturaConsulta? EstruturaConsulta { get; set; } 
+
+    public EstruturaConsulta? EstruturaConsulta { get; set; }
 
     public RelacaoAbertaColecao() : base()
     {

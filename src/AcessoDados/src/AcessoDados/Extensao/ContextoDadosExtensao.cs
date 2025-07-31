@@ -1,4 +1,4 @@
-﻿using Snebur.Serializacao;
+using Snebur.Serializacao;
 
 namespace Snebur.AcessoDados;
 
@@ -111,7 +111,7 @@ public static class ContextoDadosExtensao
         return resultado;
     }
 
-    
+
 
     public static void RecuperarPropriedade<TEntidade>(this IContextoDados contexto,
                                                       TEntidade entidade,

@@ -1,4 +1,4 @@
-﻿using Snebur.AcessoDados.Ajudantes;
+using Snebur.AcessoDados.Ajudantes;
 
 namespace Snebur.AcessoDados;
 
@@ -31,7 +31,7 @@ public partial class ConsultaEntidade<TEntidade> where TEntidade : IEntidade
         return this.AbrirRelacao(this.EstruturaConsulta, expressao, false);
     }
 
-    public ConsultaEntidade<TEntidade> AbrirRelacoes(params Expression<Func<TEntidade, object>>[] expressoes) 
+    public ConsultaEntidade<TEntidade> AbrirRelacoes(params Expression<Func<TEntidade, object>>[] expressoes)
     {
         foreach (var expressao in expressoes)
         {
@@ -65,15 +65,15 @@ public partial class ConsultaEntidade<TEntidade> where TEntidade : IEntidade
     }
 
     private ConsultaEntidade<TEntidade> AbrirRelacaoFiltro(
-        EstruturaConsulta estruturaConsulta, 
+        EstruturaConsulta estruturaConsulta,
         string? caminhoPropriedade)
     {
         return this.AbrirRelacao(estruturaConsulta, caminhoPropriedade, true);
     }
 
     private ConsultaEntidade<TEntidade> AbrirRelacao(
-        EstruturaConsulta estruturaConsulta, 
-        string? caminhoPropriedade, 
+        EstruturaConsulta estruturaConsulta,
+        string? caminhoPropriedade,
         bool filtro)
     {
         Guard.NotNull(estruturaConsulta.TipoEntidadeConsulta);
@@ -165,7 +165,7 @@ public partial class ConsultaEntidade<TEntidade> where TEntidade : IEntidade
                         throw new ErroNaoSuportado("Não é possível suporta abrir relação filtro nas coleções");
                     }
                     var tipoPropridadeItemBaseEntidade = AjudanteConsultaEntidade.RetornarTipoListaEntidade(estruturaConsultaAtual.TipoEntidadeConsulta, propriedade);
-                   
+
                     Guard.NotNull(tipoPropridadeItemBaseEntidade);
                     Guard.NotNull(propriedade.DeclaringType);
 
@@ -204,7 +204,7 @@ public partial class ConsultaEntidade<TEntidade> where TEntidade : IEntidade
         }
         return this;
     }
-     
+
     private PropertyInfo NormalizarPropriedadeRelacaoEspecializda(PropertyInfo propriedade)
     {
         var atributoPropriedadeEspecializada = propriedade.GetCustomAttribute<PropriedadeTSEspecializadaAttribute>();

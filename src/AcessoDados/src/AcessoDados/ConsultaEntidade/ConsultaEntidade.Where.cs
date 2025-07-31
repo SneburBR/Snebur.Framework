@@ -1,4 +1,4 @@
-﻿using Snebur.AcessoDados.Ajudantes;
+using Snebur.AcessoDados.Ajudantes;
 
 namespace Snebur.AcessoDados;
 
@@ -56,7 +56,7 @@ public partial class ConsultaEntidade<TEntidade> where TEntidade : IEntidade
 
     public ConsultaEntidade<TEntidade> WhereIn(Expression<Func<TEntidade, Enum>> expressaoPropriedade, IEnumerable<int> lista)
     {
-        return this.WhereInInterno(expressaoPropriedade, lista.Select(x=> x.ToString()).ToList());
+        return this.WhereInInterno(expressaoPropriedade, lista.Select(x => x.ToString()).ToList());
     }
 
     private ConsultaEntidade<TEntidade> WhereInInterno(Expression expressaoPropriedade, List<string> lista)
@@ -71,8 +71,8 @@ public partial class ConsultaEntidade<TEntidade> where TEntidade : IEntidade
         var filtroPropriedade = AjudanteFiltroPropriedade.RetornarFiltroCaminhoPropriedadePropriedade(
             this.EstruturaConsulta,
             propriedade,
-            propriedade.Name, 
-            valor, 
+            propriedade.Name,
+            valor,
             operador);
 
         this.EstruturaConsulta.FiltroGrupoE.Filtros.Add(filtroPropriedade);
@@ -93,7 +93,7 @@ public partial class ConsultaEntidade<TEntidade> where TEntidade : IEntidade
             var lambdaExpression = (LambdaExpression)expressao;
             expressao = lambdaExpression.Body;
         }
-       
+
         if (expressao is not null)
         {
             switch (expressao.NodeType)
@@ -231,11 +231,11 @@ public partial class ConsultaEntidade<TEntidade> where TEntidade : IEntidade
                 case ExpressionType.Convert:
 
                     var expressaoConvert = (UnaryExpression)expressao;
-                    this.AdicionarFiltro(estruturaConsulta, 
-                                         expressaoConvert.Operand, 
+                    this.AdicionarFiltro(estruturaConsulta,
+                                         expressaoConvert.Operand,
                                          grupoFiltroAtual);
                     break;
-                     
+
                 default:
 
                     var msgExpressaoNaoSuportada = String.Format("A expressão não é suportado {0} ", EnumUtil.RetornarDescricao(expressao.NodeType));

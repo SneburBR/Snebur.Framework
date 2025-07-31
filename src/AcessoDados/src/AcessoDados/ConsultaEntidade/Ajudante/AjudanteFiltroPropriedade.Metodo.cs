@@ -1,4 +1,4 @@
-﻿namespace Snebur.AcessoDados.Ajudantes;
+namespace Snebur.AcessoDados.Ajudantes;
 
 internal partial class AjudanteFiltroPropriedade
 {
@@ -10,7 +10,7 @@ internal partial class AjudanteFiltroPropriedade
         var operadorFiltro = AjudanteFiltroPropriedade.RetornarOperadorFiltroMetodo(expressao.Method, comparacao);
 
         var memberExpression = expressao.Object as MemberExpression;
-        if(memberExpression is null)
+        if (memberExpression is null)
         {
             throw new ErroNaoSuportado("A expressão não é um MemberExpression, não é possível retornar o filtro de propriedade.");
         }

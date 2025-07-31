@@ -1,4 +1,4 @@
-﻿using Snebur.Reflexao;
+using Snebur.Reflexao;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Snebur.AcessoDados.Ajudantes;
@@ -49,7 +49,7 @@ internal partial class AjudanteFiltroPropriedade
         object? valorPropriedade,
         EnumOperadorFiltro operadorFiltro)
     {
-        if(propriedade is not null)
+        if (propriedade is not null)
         {
             Guard.NotNull(propriedade.DeclaringType);
             Guard.NotEmpty(estruturaConsulta);
@@ -74,7 +74,7 @@ internal partial class AjudanteFiltroPropriedade
                 }
 
                 var novoCaminhoPropriedade = caminhoPropriedade?.Contains(".") == true
-                    ? caminhoPropriedade?.Substring(0, caminhoPropriedade.LastIndexOf(".") + 1) 
+                    ? caminhoPropriedade?.Substring(0, caminhoPropriedade.LastIndexOf(".") + 1)
                     : String.Empty;
 
                 Guard.NotNull(propriedade.DeclaringType);
@@ -93,7 +93,7 @@ internal partial class AjudanteFiltroPropriedade
                 caminhoPropriedade = novoCaminhoPropriedade;
             }
         }
-         
+
         var filtroPropriedade = new FiltroPropriedade()
         {
             Operador = operadorFiltro,

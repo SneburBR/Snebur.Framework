@@ -1,4 +1,4 @@
-﻿using Snebur.AcessoDados.Ajudantes;
+using Snebur.AcessoDados.Ajudantes;
 
 namespace Snebur.AcessoDados;
 
@@ -26,7 +26,7 @@ public partial class ConsultaEntidade<TEntidade> where TEntidade : IEntidade
             NomeTipoEntidade = this.EstruturaConsulta.NomeTipoEntidade,
             TipoEntidadeAssemblyQualifiedName = this.EstruturaConsulta.TipoEntidadeAssemblyQualifiedName,
             FiltroGrupoE = this.EstruturaConsulta.FiltroGrupoE,
-            RelacoesAbertaFiltro= this.EstruturaConsulta.RelacoesAbertaFiltro,
+            RelacoesAbertaFiltro = this.EstruturaConsulta.RelacoesAbertaFiltro,
         };
 
         if (estruturaConsultaEscalar.Take > 0 || estruturaConsultaEscalar.Skip > 0)
