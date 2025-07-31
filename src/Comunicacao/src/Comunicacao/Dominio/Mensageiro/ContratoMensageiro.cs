@@ -9,12 +9,12 @@ namespace Snebur.Comunicacao.Dominio.Mensageiro
 
         #endregion
 
-        public BaseDominio? Remetente { get; set; } 
+        public BaseDominio? Remetente { get; set; }
 
-        public BaseDominio? Destinatario { get; set; } 
+        public BaseDominio? Destinatario { get; set; }
 
         public string? NomeRecurso { get => this.GetPropertyValue(this._nomeRecurso); set => this.SetProperty(this._nomeRecurso, this._nomeRecurso = value); }
 
-        public BaseDominio? ValorParametro { get; set; } 
+        public BaseDominio? ValorParametro { get; set; }
     }
 }

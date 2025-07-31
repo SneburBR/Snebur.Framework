@@ -1,4 +1,4 @@
-﻿//namespace Snebur.Comunicacao
+//namespace Snebur.Comunicacao
 //{
 //    public class ResultadoDeletar : BaseComunicao
 //    {

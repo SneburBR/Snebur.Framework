@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
 
 namespace Snebur.Comunicacao
 {
@@ -19,7 +19,7 @@ namespace Snebur.Comunicacao
         public ErroComunicacao()
         {
         }
-         
+
         #endregion
     }
 }

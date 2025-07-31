@@ -1,5 +1,4 @@
 using Snebur.Dominio.Atributos;
-using System.Runtime.CompilerServices;
 
 namespace Snebur.Comunicacao.Dominio
 {
@@ -12,6 +11,6 @@ namespace Snebur.Comunicacao.Dominio
 
         #endregion
 
-        
+
     }
 }
