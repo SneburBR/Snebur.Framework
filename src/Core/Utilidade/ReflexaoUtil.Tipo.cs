@@ -1,5 +1,6 @@
 using Snebur.Reflexao;
 using System.Collections;
+using System.Reflection;
 
 namespace Snebur.Utilidade;
 
@@ -223,6 +224,7 @@ public static partial class ReflexaoUtil
         //}
     }
 
+    
     public static bool IsTipoRetornaColecaoEntidade(Type tipo)
     {
         if (IsTipoRetornaColecao(tipo))
@@ -232,6 +234,15 @@ public static partial class ReflexaoUtil
             {
                 var tipoGenericoColecao = tipo.GetGenericArguments().Single();
                 return IsTipoEntidade(tipoGenericoColecao);
+            }
+
+            if (tipo.IsArray)
+            {
+                var tipoArray = tipo.GetElementType();
+                if (tipoArray != null)
+                {
+                    return IsTipoEntidade(tipoArray);
+                }
             }
         }
         return false;

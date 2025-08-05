@@ -3,6 +3,8 @@ using System.Data;
 using System.Reflection;
 using System.Data.Common;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Threading.Tasks;
+
 
 #if NET6_0_OR_GREATER
 using Microsoft.Data.SqlClient;
@@ -215,6 +217,12 @@ public class Conexao : IDisposable
                 conexao.Close();
             }
         }
+    }
+    public Task<bool> ExecutarComandosAsync(
+        IEnumerable<string> sqls,
+        bool isIgnorarErro = false)
+    {
+        return Task.Run(() => this.ExecutarComandos(sqls, isIgnorarErro));
     }
 
     public bool ExecutarComandos(IEnumerable<string> sqls,

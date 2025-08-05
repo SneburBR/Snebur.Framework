@@ -1,4 +1,6 @@
-﻿namespace Snebur.Dominio.Atributos;
+using Newtonsoft.Json.Linq;
+
+namespace Snebur.Dominio.Atributos;
 
 [IgnorarAtributoTS]
 [AttributeUsage(AttributeTargets.Property)]
@@ -61,11 +63,12 @@ public class ValorPadraoCampoPrivadoAttribute : Attribute/*, IValorPadrao*/
         this.TipoEnum = tipoEnum;
     }
 
-    public ValorPadraoCampoPrivadoAttribute(Type tipoEnum, Enum valorPadrao)
-    {
-        this.ValorPadrao = valorPadrao;
-        this.TipoEnum = tipoEnum;
-    }
+    //public ValorPadraoCampoPrivadoAttribute(Type tipoEnum, Enum valorPadrao)
+    //{
+    //    this.ValorPadrao = valorPadrao;
+    //    this.TipoEnum = tipoEnum;
+    //}
+
     //public ValorPadraoCampoPrivadoAttribute<TEnum>(TEnum valorPadrao) where T:struc
     //{
     //    this.ValorPadrao = valorPadrao;
@@ -78,8 +81,14 @@ public class ValorPadraoCampoPrivadoAttribute : Attribute/*, IValorPadrao*/
 
     public object? RetornarValorPadrao()
     {
+        if (this.TipoEnum != null)
+        {
+            return Enum.ToObject(this.TipoEnum, Convert.ToInt32(this.ValorPadrao));
+            //return Convert.ChangeType(this.ValorPadrao, this.TipoEnum);
+        }
         return this.ValorPadrao;
     }
+
 
     #region IValorPadrao 
 
@@ -87,3 +96,4 @@ public class ValorPadraoCampoPrivadoAttribute : Attribute/*, IValorPadrao*/
 
     #endregion
 }
+

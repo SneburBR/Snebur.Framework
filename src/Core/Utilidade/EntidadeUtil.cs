@@ -86,6 +86,7 @@ public class EntidadeUtil
             }
             throw new ErroNaoDefinido(String.Format("O atributo chave estrangeira não foi definido na propriedade {0}", propriedade.Name));
         }
+
         var nomePropriedade = atributoChaveEstrangeira.Name;
         var propriedadeChaveEstrangeira = tipoEntidade.GetProperties()
             .Where(x => x.Name == nomePropriedade)
@@ -123,7 +124,8 @@ public class EntidadeUtil
 
     public static PropertyInfo RetornarPropriedadeChavaPrimaria(Type tipoEntidade)
     {
-        var propriedade = tipoEntidade.GetProperties().Where(x => x.GetCustomAttribute<KeyAttribute>() != null).SingleOrDefault();
+        var propriedade = tipoEntidade.GetProperties()
+            .Where(x => x.GetCustomAttribute<KeyAttribute>(true) != null).SingleOrDefault();
         if (propriedade == null)
         {
             throw new Erro($"A propriedade chave primaria não foi encontrada para o tipo {tipoEntidade.Name}");
