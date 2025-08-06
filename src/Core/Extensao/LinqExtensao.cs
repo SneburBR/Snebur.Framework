@@ -534,6 +534,15 @@ public static class LinqExtensao
         return default;
     }
 
+    public static string StringJoin(this IEnumerable<string?> source, string separator)
+    {
+        if (source == null || !source.Any())
+        {
+            return string.Empty;
+        }
+        return string.Join(separator, source);
+    }
+
 #if NET45 || NET40
     public static IEnumerable<T> Prepend<T>(this IEnumerable<T> source, T item)
     {
