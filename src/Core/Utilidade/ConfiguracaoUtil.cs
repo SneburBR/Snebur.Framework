@@ -118,7 +118,6 @@ public static class ConfiguracaoUtil
         }
     }
 
-
     public static string CaminhoAppDataAplicacaoSemVersao
     {
         get

@@ -90,6 +90,18 @@ public static partial class ReflexaoUtil
             return tipoIEnumerableGenerico.GetGenericArguments()[0];
         }
 
+        if (tipo.IsInterface &&
+            tipo.IsGenericType && tipo.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+        {
+            return tipo.GetGenericArguments()[0];
+        }
+
+        if(tipo.IsGenericType &&
+          tipo.GetGenericArguments().Length == 1)
+        {
+            return tipo.GetGenericArguments()[0];
+        }
+
         throw new ArgumentException($"O tipo {tipo.Name} não é uma coleção suportada.");
     }
     #endregion

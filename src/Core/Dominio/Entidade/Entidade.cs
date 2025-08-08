@@ -912,7 +912,5 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntidadeIntern
         return descricao;
     }
 
-
-
     #endregion
 }

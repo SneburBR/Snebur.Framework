@@ -67,7 +67,6 @@ public partial class RedeSociais : BaseTipoComplexo
         //return this.Largura.GetHashCode() + this.Altura.GetHashCode();
     }
 
-
     protected internal override BaseTipoComplexo BaseClone()
     {
         return new RedeSociais

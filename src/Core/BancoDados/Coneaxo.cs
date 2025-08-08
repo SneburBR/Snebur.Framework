@@ -5,7 +5,6 @@ using System.Data.Common;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Threading.Tasks;
 
-
 #if NET6_0_OR_GREATER
 using Microsoft.Data.SqlClient;
 #else

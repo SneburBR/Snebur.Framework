@@ -140,7 +140,14 @@ public static class StringExtensions
         {
             return value.ToLowerInvariant();
         }
-
         return char.ToLowerInvariant(value[0]) + value.Substring(1);
+    }
+
+    public static bool IsCapitalized(this string? value)
+    {
+        if (value is null || value.Length == 0)
+            return false;
+
+        return char.IsUpper(value[0]);
     }
 }

@@ -96,7 +96,7 @@ public static class ReflexaoExtension
         {
             return atributoChaveEstrangeira;
         }
-        var atributoChaveEstrangeiraRelacaoUmUm = propriedade.GetCustomAttribute<ChaveEstrangeiraRelacaoUmUmAttribute>();
+        var atributoChaveEstrangeiraRelacaoUmUm = propriedade.GetCustomAttribute<ChaveEstrangeiraRelacaoAttribute>();
         if (atributoChaveEstrangeiraRelacaoUmUm != null)
         {
             return atributoChaveEstrangeiraRelacaoUmUm;

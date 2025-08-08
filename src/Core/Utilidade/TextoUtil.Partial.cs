@@ -70,7 +70,6 @@ public static partial class TextoUtil
         private const string PONTOS_SINAIS = "+-.,()";
         private const string PONTOS_SINAIS_SIMBOLOS = ",.;:?!|+-_.,@~^`´&$#*/\\§%|(){}[]<>";
 
-
         private static HashSet<char>? _numeros;
         private static HashSet<char>? _letras;
         private static HashSet<char>? _letrasNumeros;

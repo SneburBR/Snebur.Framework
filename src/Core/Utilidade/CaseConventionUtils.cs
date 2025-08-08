@@ -143,7 +143,7 @@ public static partial class CaseConventionUtils
         return string.Join(string.Empty, words).ToUpperInvariant();
     }
 
-    private static string[] SplitWords(string input)
+    public static string[] SplitWords(string input)
     {
         //Split the input into parts that contain no letters or digits.
         string[] parts = SpliPartsNoLetterOrDigitRegex().Split(input);

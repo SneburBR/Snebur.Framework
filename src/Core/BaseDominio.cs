@@ -343,7 +343,6 @@ public abstract class BaseDominio : IBaseDominio, IBaseDominioReferencia, INotif
 
     #endregion
 
-
     #region IBaseDominioControlorPropriedade
     void IBaseDominioControladorPropriedade.DestivarControladorPropriedadeAlterada()
     {

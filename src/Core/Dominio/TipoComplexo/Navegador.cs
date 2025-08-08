@@ -16,8 +16,6 @@ public class Navegador : BaseTipoComplexo
     [ValidacaoTextoTamanho(255)]
     public string Nome { get => this._nome; set => this.SetProperty(this._nome, this._nome = value); }
 
-
-
     [ValidacaoTextoTamanho(255)]
     public string Codenome { get => this._codenome; set => this.SetProperty(this._codenome, this._codenome = value); }
 

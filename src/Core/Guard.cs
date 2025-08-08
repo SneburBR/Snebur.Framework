@@ -22,7 +22,6 @@ public static class Guard
             [NotNull] string? value,
             [CallerArgumentExpression(nameof(value))] string paramName = "")
 
-
     {
         if (string.IsNullOrWhiteSpace(value))
         {

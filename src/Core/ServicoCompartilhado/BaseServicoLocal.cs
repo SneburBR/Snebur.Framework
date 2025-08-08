@@ -56,7 +56,6 @@ public abstract class BaseServicoLocal
         }
     }
 
-
     private string RetornarPastaLog()
     {
         if (this is ServicoErroLocal)
