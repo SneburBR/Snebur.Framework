@@ -3,7 +3,7 @@ using System.Reflection;
 namespace Snebur.Dominio.Atributos;
 
 [AttributeUsage(AttributeTargets.Property)]
-public class ValidacaoUnicoAttribute : BaseAtributoValidacaoAsync, IAtributoValidacao, IAtributoMigracao
+public class ValidacaoUnicoAttribute : BaseAtributoValidacaoAsync, IAtributoValidacao, IAtributoMigracao, IIndexAttribute
 {
     [MensagemValidacao]
     public static string MensagemValidacao { get; set; } = "O {0} '{1}' já existe.";
@@ -80,5 +80,10 @@ public class ValidacaoUnicoAttribute : BaseAtributoValidacaoAsync, IAtributoVali
         var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
         return String.Format(MensagemValidacao, rotulo, valorPropriedade?.ToString() ?? "null");
     }
+
+    public bool IsUnique => throw new NotImplementedException();
+
     #endregion
 }
+
+ 

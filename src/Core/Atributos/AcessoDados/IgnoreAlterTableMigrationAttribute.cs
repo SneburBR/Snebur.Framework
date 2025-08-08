@@ -1,7 +1,7 @@
 namespace Snebur.Dominio.Atributos;
 
 [IgnorarAtributoTS]
-[AttributeUsage(AttributeTargets.Class)]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Property)]
 public class IgnoreAlterTableMigrationAttribute : Attribute
 {
     public string? Message { get; }

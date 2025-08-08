@@ -1,12 +1,13 @@
-﻿namespace Snebur.Dominio.Atributos;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Snebur.Dominio.Atributos;
 
 [AttributeUsage(AttributeTargets.Property)]
-public class ChaveEstrangeiraRelacaoUmUmAttribute : BaseAtributoDominio, IChaveEstrangeiraAttribute
+public class ChaveEstrangeiraRelacaoAttribute : ForeignKeyAttribute, IChaveEstrangeiraAttribute
 {
     public string NomePropriedade { get; set; }
-    public string Name => this.NomePropriedade;
 
-    public ChaveEstrangeiraRelacaoUmUmAttribute(string nomePropriedade)
+    public ChaveEstrangeiraRelacaoAttribute(string nomePropriedade): base(nomePropriedade)
     {
         this.NomePropriedade = nomePropriedade;
     }

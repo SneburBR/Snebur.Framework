@@ -4,7 +4,7 @@ using System.Reflection;
 namespace Snebur.Dominio.Atributos;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = true, Inherited = true)]
-public class ValidacaoUnicoCompostaAttribute : BaseAtributoValidacaoAsync, IAtributoMigracao
+public class ValidacaoUnicoCompostaAttribute : BaseAtributoValidacaoAsync, IAtributoMigracao, ICompositeIndexAttribute
 {
     [IgnorarPropriedade]
     [IgnorarPropriedadeTSReflexao]
@@ -31,7 +31,7 @@ public class ValidacaoUnicoCompostaAttribute : BaseAtributoValidacaoAsync, IAtri
 
     [IgnorarPropriedade, IgnorarPropriedadeTSReflexao]
     public bool IsIgnorarMigracao { get; set; }
-
+    public bool IsUnique => true;
     public ValidacaoUnicoCompostaAttribute(Type tipoEntidade,
                                            params string[] expressoesPropriedadeFiltro)
     {
@@ -50,8 +50,7 @@ public class ValidacaoUnicoCompostaAttribute : BaseAtributoValidacaoAsync, IAtri
                 this.AdicioanrFiltro(expressaoPropriedadeFiltro);
             }
         }
-
-
+         
         if (ReflexaoUtil.IsTipoImplementaInterface(tipoEntidade, typeof(IDeletado)))
         {
             var propriedadeIsDeletado = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nameof(IDeletado.IsDeletado), true);
@@ -143,8 +142,6 @@ public class ValidacaoUnicoCompostaAttribute : BaseAtributoValidacaoAsync, IAtri
         return new Exception(memsagem);
     }
 
-
-
     #region IAtributoValidacao
 
     public bool IsValido(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
@@ -158,5 +155,6 @@ public class ValidacaoUnicoCompostaAttribute : BaseAtributoValidacaoAsync, IAtri
         var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
         return String.Format(MensagemValidacao, rotulo);
     }
+     
     #endregion
 }

@@ -14,7 +14,6 @@ public class ValorPadraoIPAttribute : SomenteLeituraAttribute, IValorPadrao
                                       object valorPropriedade)
     {
 
-
         return AplicacaoSnebur.AtualRequired.IpPublico;
         //return IpUtil.RetornarIpInternet();
     }

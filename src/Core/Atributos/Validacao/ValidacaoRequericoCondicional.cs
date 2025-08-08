@@ -16,8 +16,6 @@
 //        public bool IsValidoSeAuxiliarInvalido { get; set; } = false;
 //        private PropertyInfo PropriedadeAuxiliar { get; set; }
 
-
-
 //        public ValidacaoRequericoCondicionalAttribute([IgnorarParametroTS] Type tipoEntidade,
 //                                                      [ParametroOpcionalTS] EnumOpcoesComparacaoAuxiliar opcoesComparacaoAuxiliar,
 //                                                      [ParametroOpcionalTS] string nomePropridadeAuxiliar,

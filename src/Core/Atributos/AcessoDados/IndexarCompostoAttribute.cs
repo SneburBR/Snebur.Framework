@@ -1,15 +1,16 @@
 namespace Snebur.Dominio.Atributos;
 
 [IgnorarAtributoTS]
-[AttributeUsage(AttributeTargets.Class)]
-public class IndexarCompostoAttribute : Attribute, IAtributoMigracao
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+public class IndexarCompostoAttribute : Attribute, IAtributoMigracao, ICompositeIndexAttribute
 {
     public Type TipoEntidade { get; }
     public string[] NomesPropriedade { get; }
 
     [IgnorarPropriedade, IgnorarPropriedadeTSReflexao]
     public bool IsIgnorarMigracao { get; set; }
-    public List<PropriedadeIndexar> Propriedades { get; } = new List<PropriedadeIndexar>();
+
+    public List<FiltroPropriedadeIndexar>? Filtros { get; } = null;
 
     public IndexarCompostoAttribute(Type tipoEntidade, params string[] nomesPropriedade)
     {
@@ -38,4 +39,12 @@ public class IndexarCompostoAttribute : Attribute, IAtributoMigracao
             this.Propriedades.Add(new PropriedadeIndexar(propriedade, isIgnorarNulo, false));
         }
     }
+
+    #region ICompositeIndexAttribute
+
+    public List<PropriedadeIndexar> Propriedades { get; } = new List<PropriedadeIndexar>();
+
+    public bool IsUnique { get; } = false;
+
+    #endregion
 }

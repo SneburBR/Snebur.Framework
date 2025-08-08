@@ -89,7 +89,6 @@ public class ValorPadraoCampoPrivadoAttribute : Attribute/*, IValorPadrao*/
         return this.ValorPadrao;
     }
 
-
     #region IValorPadrao 
 
     public bool TipoNullableRequerido { get { return false; } }
