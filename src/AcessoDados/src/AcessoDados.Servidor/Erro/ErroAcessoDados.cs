@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
@@ -15,15 +15,13 @@ namespace Snebur.AcessoDados
                                [CallerLineNumber] int linhaDoErro = 0) : base(mensagem, erroInterno)
         {
         }
+
         #region Serializacao 
 
         public ErroAcessoDados()
         {
         }
-
-        protected ErroAcessoDados(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+         
         #endregion
     }
 

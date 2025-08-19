@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
@@ -20,10 +20,7 @@ namespace Snebur.AcessoDados
         public ErroFalhaManutencao()
         {
         }
-
-        protected ErroFalhaManutencao(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+         
         #endregion
     }
 }

@@ -1,6 +1,5 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
 
 namespace Snebur.AcessoDados
 {
@@ -22,10 +21,7 @@ namespace Snebur.AcessoDados
         public ErroConsultaSql()
         {
         }
-
-        protected ErroConsultaSql(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+ 
         #endregion
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
@@ -21,10 +21,7 @@ namespace Snebur.AcessoDados
         public ErroExecutarSql()
         {
         }
-
-        protected ErroExecutarSql(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+         
         #endregion
     }
 }

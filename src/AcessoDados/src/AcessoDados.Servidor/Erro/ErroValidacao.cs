@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -32,10 +32,7 @@ namespace Snebur.AcessoDados
         public ErroValidacao()
         {
         }
-
-        protected ErroValidacao(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+         
         #endregion
     }
 }

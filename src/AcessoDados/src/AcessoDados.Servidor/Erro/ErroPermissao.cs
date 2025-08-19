@@ -1,4 +1,4 @@
-﻿using Snebur.AcessoDados.Seguranca;
+using Snebur.AcessoDados.Seguranca;
 using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
@@ -21,10 +21,7 @@ namespace Snebur.AcessoDados
         public ErroPermissao()
         {
         }
-
-        protected ErroPermissao(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+         
         #endregion
     }
 }

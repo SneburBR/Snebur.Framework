@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
@@ -19,10 +19,7 @@ namespace Snebur.AcessoDados
         public ErroParametro()
         {
         }
-
-        public ErroParametro(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+         
         #endregion
     }
 

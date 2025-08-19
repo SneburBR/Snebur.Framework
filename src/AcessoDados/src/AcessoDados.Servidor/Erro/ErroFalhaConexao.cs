@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
@@ -21,11 +21,7 @@ namespace Snebur.AcessoDados
         public ErroFalhaConexao()
         {
         }
-
-        protected ErroFalhaConexao(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
-
+         
         protected override EnumNivelErro RetornarNivelErro()
         {
             return EnumNivelErro.Critico;
