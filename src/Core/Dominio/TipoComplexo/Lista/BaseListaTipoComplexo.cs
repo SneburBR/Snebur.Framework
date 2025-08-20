@@ -1,5 +1,6 @@
 using Snebur.Dominio.Atributos;
 using Snebur.Linq;
+using System.Data;
 using System.Xml.Serialization;
 
 namespace Snebur.Dominio;
@@ -14,6 +15,7 @@ public abstract class BaseListaTipoComplexo<T> : BaseTipoComplexo /*, IEnumerabl
     private bool IsSerializandoLista;
 
     [ValidacaoTextoTamanho(Int16.MaxValue)]
+    [SqlDbType(SqlDbType.Text)]
     public string Json
     {
         get

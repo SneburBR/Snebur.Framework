@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using Snebur.Dominio.Atributos;
 
 namespace Snebur.Dominio;
@@ -10,13 +11,18 @@ public abstract class BaseMedidaTipoComplexo : BaseTipoComplexo, IDpiVisualizaca
 
     [NaoMapear]
     [IgnorarPropriedade]
+    [JsonIgnore]
     Func<double?, double>? IDpiVisualizacao.FuncaoNormamlizarDpiVisualizacao
     {
         get => this.FuncaoNormalizarDpiVisualizacao;
         set => this.FuncaoNormalizarDpiVisualizacao = value;
     }
 
-    public double DpiVisualizacao => this.FuncaoNormalizarDpiVisualizacao?.Invoke(null) ?? 0;
+    [NaoMapear]
+    [IgnorarPropriedade]
+    [JsonIgnore]
+    public double DpiVisualizacao
+        => this.FuncaoNormalizarDpiVisualizacao?.Invoke(null) ?? 0;
 
     public void SetFuncaoDpiVisualizacao(Func<double?, double> funcaoNormalizarDpiVisualizacao)
     {

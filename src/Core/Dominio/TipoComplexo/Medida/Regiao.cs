@@ -36,6 +36,7 @@ public partial class Regiao : BaseMedidaTipoComplexo, IRegiao
         this.Posicao = posicao;
         this.Dimensao = dimensao;
     }
+
     #region Operadores
 
     public static bool operator ==(Regiao? regiao1, Regiao? regiao2)

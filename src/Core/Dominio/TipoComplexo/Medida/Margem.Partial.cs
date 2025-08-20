@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Snebur.Dominio.Atributos;
 
 namespace Snebur.Dominio;
@@ -7,6 +7,36 @@ namespace Snebur.Dominio;
 public partial class Margem : BaseMedidaTipoComplexo, IMargem
 {
     public static Margem Empty => new Margem(null, null, null, null);
+
+    [JsonIgnore]
+    [NaoMapear]
+    [IgnorarPropriedade]
+    [IgnorarPropriedadeTSReflexao]
+    public double MaiorValor
+        => Math.Max(this.Esquerda ?? 0, Math.Max(this.Superior ?? 0, Math.Max(this.Direita ?? 0, this.Inferior ?? 0)));
+
+    [JsonIgnore]
+    [NaoMapear]
+    [IgnorarPropriedade]
+    [IgnorarPropriedadeTSReflexao]
+    public double MenorValor
+        => Math.Min(this.Esquerda ?? 0, Math.Min(this.Superior ?? 0, Math.Min(this.Direita ?? 0, this.Inferior ?? 0)));
+    public double ValorMedio
+        => (this.Esquerda ?? 0 + this.Superior ?? 0 + this.Direita ?? 0 + this.Inferior ?? 0) / 4;
+
+    [JsonIgnore]
+    [NaoMapear]
+    [IgnorarPropriedade]
+    [IgnorarPropriedadeTSReflexao]
+    public double Vertical
+        => Math.Min((this.Superior ?? 0), (this.Inferior ?? 0));
+
+    [JsonIgnore]
+    [NaoMapear]
+    [IgnorarPropriedade]
+    [IgnorarPropriedadeTSReflexao]
+    public double Horizontal
+        => Math.Min((this.Esquerda ?? 0), (this.Direita ?? 0));
 
     [JsonIgnore]
     [NaoMapear]

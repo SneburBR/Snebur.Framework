@@ -30,6 +30,7 @@ public partial class Borda : BaseMedidaTipoComplexo, IBorda
     public Borda()
     {
     }
+
     [IgnorarConstrutorTS]
     public Borda(Cor cor, bool isInterna, double afastamento, double espessura, int arredondamento)
     {

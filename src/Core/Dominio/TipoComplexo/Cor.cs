@@ -41,6 +41,7 @@ public class Cor : BaseTipoComplexo, ICor
             this.AtualizarValores();
         }
     }
+
     [IgnorarPropriedade]
     [IgnorarPropriedadeTSReflexao]
     public bool IsTransparente
