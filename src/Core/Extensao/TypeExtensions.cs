@@ -46,4 +46,43 @@ public static class TypeExtensions
     {
         return type.GetCustomAttribute<ObsoleteAttribute>(false) != null;
     }
+
+    public static bool IsSameType(this Type? type, Type? other)
+    {
+        if (type is null && other is null)
+            return true;
+
+        if (type is null || other is null)
+            return false;
+
+        if (type == other || type.Equals(other))
+            return true;
+
+        //When the type came from different AppDomains
+        return type.FullName == other.FullName
+               && type.Assembly.IsSameAssembly(other.Assembly);
+    }
+
+    public static string GetFriendlyName(this Type? type)
+    {
+        if (type is null)
+        {
+            return "null";
+        }
+
+        if (type.IsGenericType)
+        {
+            var genericTypeDefinition = type.GetGenericTypeDefinition();
+            var genericArguments = type.GetGenericArguments();
+            var genericArgumentNames = string.Join(", ", genericArguments.Select(t => t.GetFriendlyName()));
+            var typeName = genericTypeDefinition.Name;
+            var indexLastBacktick = typeName.LastIndexOf('`');
+            if (indexLastBacktick >= 0)
+            {
+                typeName = typeName.Substring(0, indexLastBacktick);
+            }
+            return $"{typeName}<{genericArgumentNames}>";
+        }
+        return type.Name;
+    }
 }

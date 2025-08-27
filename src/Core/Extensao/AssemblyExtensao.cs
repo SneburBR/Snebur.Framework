@@ -1,8 +1,9 @@
 using Snebur.Dominio.Atributos;
 using System.IO;
+using System.Reflection;
 using System.Text;
 
-namespace System.Reflection;
+namespace Snebur.Extensao;
 
 public static class AssemblyExtensao
 {
@@ -107,8 +108,18 @@ public static class AssemblyExtensao
         return new FileInfo(new Uri(assembly.Location).LocalPath);
     }
 
-    //public static FileInfo GetAssemblyFile(this AssemblyName assemblyName)
-    //{
-    //    return assemblyName.
-    //}
+    public static bool IsSameAssembly(this Assembly? assembly, Assembly? other)
+    {
+        if (assembly is null && other is null)
+            return true;
+
+        if (assembly is null || other is null)
+            return false;
+
+        if (assembly == other || assembly.Equals(other))
+            return true;
+
+        return assembly.FullName == other.FullName
+               && assembly.GetName().Version == other.GetName().Version;
+    }
 }

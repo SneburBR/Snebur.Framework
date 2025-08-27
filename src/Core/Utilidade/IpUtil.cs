@@ -103,7 +103,7 @@ namespace Snebur
         //    return null;
         //}
 
-        public static string? RetornarMascaraIp4(string? ip)
+        public static string RetornarMascaraIp4(string? ip)
         {
             IPAddress? ipaddress;
             if (IPAddress.TryParse(ip, out ipaddress))
@@ -120,7 +120,7 @@ namespace Snebur
                     }
                 }
             }
-            return null;
+            return String.Empty;
         }
 
         public static bool IsIP(string ip)
@@ -184,7 +184,7 @@ namespace Snebur.Dominio
     {
         public required string IP { get; set; } = "";
 
-        public string? MascaraIp4 { get; set; }
+        public required string MascaraIp4 { get; set; }
 
         public string? Cidade { get; set; }
 
@@ -206,7 +206,8 @@ namespace Snebur.Dominio
             {
                 return new DadosIPInformacao
                 {
-                    IP = IpUtil.Empty
+                    IP = IpUtil.Empty,
+                    MascaraIp4= IpUtil.Empty,
                 };
             }
         }

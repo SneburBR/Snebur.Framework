@@ -1,3 +1,4 @@
+using Snebur.Extensao;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 
@@ -46,5 +47,22 @@ public static class PropertyInfoExtensions
             }
         }
         return null;
+    }
+
+    public static bool IsSameProperty(this PropertyInfo? property, PropertyInfo? other)
+    {
+        if (property is null && other is null)
+            return true;
+        
+
+        if (property is null || other is null)
+            return false;
+
+        if (property == other || property.Equals(other))
+            return true;
+
+        return property.DeclaringType.IsSameType(other.DeclaringType) &&
+               property.Name == other.Name;
+
     }
 }
