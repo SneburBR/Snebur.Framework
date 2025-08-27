@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Snebur.AcessoDados
@@ -10,17 +10,17 @@ namespace Snebur.AcessoDados
 
         internal static void Inicializar(BaseContextoDados contexto)
         {
-            lock (GerenciadorMigracao.Bloqueio)
-            {
-                if (!GerenciadorMigracao.Inicializados.Contains(contexto.GetType()))
-                {
-                    using (var migration = new GerenciadorMigracao(contexto))
-                    {
-                        migration.Migrar();
-                    }
-                    GerenciadorMigracao.Inicializados.Add(contexto.GetType());
-                }
-            }
+            //lock (GerenciadorMigracao.Bloqueio)
+            //{
+            //    if (!GerenciadorMigracao.Inicializados.Contains(contexto.GetType()))
+            //    {
+            //        using (var migration = new GerenciadorMigracao(contexto))
+            //        {
+            //            migration.Migrar();
+            //        }
+            //        GerenciadorMigracao.Inicializados.Add(contexto.GetType());
+            //    }
+            //}
         }
     }
 }

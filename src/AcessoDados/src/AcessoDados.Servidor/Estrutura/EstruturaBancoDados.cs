@@ -1,5 +1,6 @@
-﻿using Snebur.AcessoDados.Mapeamento;
+using Snebur.AcessoDados.Mapeamento;
 using Snebur.Dominio;
+using Snebur.Extensao;
 using Snebur.Utilidade;
 using System;
 using System.Collections.Generic;
@@ -312,7 +313,11 @@ namespace Snebur.AcessoDados.Estrutura
 
         private void PopularInterceptadores()
         {
-            var tipos = this.TipoContexto.Assembly.GetLoadableTypes().Where(x => typeof(IInterceptador).IsAssignableFrom(x)).ToList();
+            var tipos = this.TipoContexto.Assembly
+                .GetLoadableTypes()
+                .Where(x => typeof(IInterceptador).IsAssignableFrom(x))
+                .ToList();
+
             if(tipos.Count> 0)
             {
                 var grupos = tipos.GroupBy(x => getTipoEntidade(x));

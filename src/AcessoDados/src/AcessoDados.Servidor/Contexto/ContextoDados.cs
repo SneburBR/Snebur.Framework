@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -616,7 +616,7 @@ namespace Snebur.AcessoDados
         {
             if (this.IsValidarUsuarioSessaoUsuario)
             {
-                ValidacaoUtil.ValidarReferenciaNula(this.CacheSessaoUsuario, nameof(this.CacheSessaoUsuario));
+                Guard.NotNull(this.CacheSessaoUsuario);
 
                 if (this.CacheSessaoUsuario.StatusSessaoUsuario != EnumStatusSessaoUsuario.Ativo)
                 {

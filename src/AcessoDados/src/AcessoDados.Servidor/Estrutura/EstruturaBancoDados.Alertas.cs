@@ -1,4 +1,4 @@
-﻿using Snebur.Dominio;
+using Snebur.Dominio;
 using Snebur.Dominio.Atributos;
 using Snebur.Linq;
 using Snebur.Utilidade;
@@ -47,7 +47,7 @@ namespace Snebur.AcessoDados.Estrutura
                     }
                 }
                 var propriedades = ReflexaoUtil.RetornarPropriedades(estruturaEntidade.TipoEntidade).Where(x => ReflexaoUtil.IsPropriedadePossuiAtributo(x, typeof(ChaveEstrangeiraAttribute)) ||
-                                                                                                                ReflexaoUtil.IsPropriedadePossuiAtributo(x, typeof(ChaveEstrangeiraRelacaoUmUmAttribute))).ToList();
+                                                                                                                ReflexaoUtil.IsPropriedadePossuiAtributo(x, typeof(ChaveEstrangeiraRelacaoAttribute))).ToList();
                 foreach (var propriedade in propriedades)
                 {
                     var atributos = propriedade.GetCustomAttributes<BaseRelacaoAttribute>();

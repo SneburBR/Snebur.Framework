@@ -1,4 +1,4 @@
-﻿using Snebur.Dominio;
+using Snebur.Dominio;
 using Snebur.Utilidade;
 
 namespace Snebur.AcessoDados.Seguranca
@@ -9,12 +9,11 @@ namespace Snebur.AcessoDados.Seguranca
 
         internal EstruturaPermissaoCampo(IPermissaoCampo permissaoCampo)
         {
-            ValidacaoUtil.ValidarReferenciaNula(permissaoCampo, nameof(permissaoCampo));
+            Guard.NotNull(permissaoCampo);
+            Guard.NotNull(permissaoCampo.Leitura);
+            Guard.NotNull(permissaoCampo.Atualizar);
 
             this.PermissaoCampo = permissaoCampo;
-
-            ValidacaoUtil.ValidarReferenciaNula(permissaoCampo.Leitura, nameof(permissaoCampo.Leitura));
-            ValidacaoUtil.ValidarReferenciaNula(permissaoCampo.Atualizar, nameof(permissaoCampo.Atualizar));
         }
     }
 }

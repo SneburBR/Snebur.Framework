@@ -1,4 +1,4 @@
-﻿using Snebur.Dominio;
+using Snebur.Dominio;
 using Snebur.Seguranca;
 using Snebur.Utilidade;
 using System;
@@ -118,7 +118,7 @@ namespace Snebur.AcessoDados
 
         private void InicializarInterno()
         {
-            ValidacaoUtil.ValidarReferenciaNula(this.Credencial, nameof(this.Credencial));
+            Guard.NotNull(this.Credencial);
 
             this.Usuario = this.AjudanteSessaoUsuario.RetornarUsuario(this.Contexto, this.Credencial);
             if (this.Usuario == null)

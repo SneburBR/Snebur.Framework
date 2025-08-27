@@ -1,9 +1,9 @@
-﻿using Snebur.Dominio;
+using Snebur.Dominio;
 using Snebur.Dominio.Atributos;
+using Snebur.Extensao;
 using Snebur.Utilidade;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -56,7 +56,7 @@ namespace Snebur.AcessoDados
                             }
                             if (_tiposEntidade.Count == 0)
                             {
-                                throw new Erro($"Nenhum tipo entidade foi encontrado, adicione o atributp {nameof(AssemblyEntidadesAttribute)} no projetos das Entidades ");
+                                throw new Erro($"Nenhum tipo entidade foi encontrado, adicione o atributo {nameof(AssemblyEntidadesAttribute)} no projetos das Entidades ");
                             }
                         }
                     }
