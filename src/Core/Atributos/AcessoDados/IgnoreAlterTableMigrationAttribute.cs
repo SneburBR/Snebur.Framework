@@ -13,5 +13,4 @@ public class IgnoreAlterTableMigrationAttribute : Attribute
     public IgnoreAlterTableMigrationAttribute()
     {
     }
-
 }
