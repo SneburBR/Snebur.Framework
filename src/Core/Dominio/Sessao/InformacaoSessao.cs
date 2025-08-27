@@ -12,7 +12,7 @@ public class InformacaoSessao : BaseDominio, IInformacaoSessao
 
     //public string Local { get; set; }
 
-    public required string Cultura { get; set; }
+    public required string? Cultura { get; set; }
 
     public required string Idioma { get; set; }
 
@@ -30,7 +30,7 @@ public class InformacaoSessao : BaseDominio, IInformacaoSessao
 
     public required string VersaoAplicacao { get; set; }
 
-    public required string NomeComputador { get; set; }
+    public required string? NomeComputador { get; set; }
 
     //public string IP { get; set; }
 

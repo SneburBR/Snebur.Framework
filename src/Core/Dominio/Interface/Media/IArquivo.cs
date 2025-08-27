@@ -1,4 +1,4 @@
-﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Atributos;
 
 namespace Snebur.Dominio;
 
@@ -6,9 +6,9 @@ public interface IArquivo : IEntidade
 {
     string NomeArquivo { get; set; }
 
-    string CaminhoArquivo { get; set; }
+    string? CaminhoArquivo { get; set; }
 
-    string Checksum { get; set; }
+    string? Checksum { get; set; }
 
     long TotalBytesLocal { get; set; }
 
@@ -28,7 +28,7 @@ public interface IArquivo : IEntidade
 
     EnumStatusArquivo Status { get; set; }
 
-    double Progresso { get; set; }
+    double? Progresso { get; set; }
 
     ISessaoUsuario? SessaoUsuario { get; set; }
 

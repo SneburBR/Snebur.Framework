@@ -1,8 +1,8 @@
-﻿namespace Snebur.Dominio;
+namespace Snebur.Dominio;
 
 public interface IImagem : IMedia
 {
-    string ChecksumArquivoLocal { get; set; }
+    string? ChecksumArquivoLocal { get; set; }
     bool IsExisteMiniatura { get; set; }
 
     bool IsExistePequena { get; set; }
@@ -10,14 +10,14 @@ public interface IImagem : IMedia
     bool IsExisteMedia { get; set; }
 
     bool IsExisteGrande { get; set; }
+     
+    long? TotalBytesMiniatura { get; set; }
 
-    long TotalBytesMiniatura { get; set; }
+    long? TotalBytesPequena { get; set; }
 
-    long TotalBytesPequena { get; set; }
+    long? TotalBytesMedia { get; set; }
 
-    long TotalBytesMedia { get; set; }
-
-    long TotalBytesGrande { get; set; }
+    long? TotalBytesGrande { get; set; }
 
     //[Indexar]
     //bool ImagemProcessada { get; set; }

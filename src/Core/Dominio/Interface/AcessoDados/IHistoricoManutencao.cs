@@ -1,4 +1,4 @@
-﻿namespace Snebur.Dominio;
+namespace Snebur.Dominio;
 
 public interface IHistoricoManutencao : IEntidade
 {
@@ -14,7 +14,7 @@ public interface IHistoricoManutencao : IEntidade
 
     bool IsSucesso { get; set; }
 
-    string MensagemErro { get; set; }
+    string? MensagemErro { get; set; }
 
     int NumeroTentativa { get; set; }
 }

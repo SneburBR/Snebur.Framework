@@ -4,6 +4,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -899,8 +900,14 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntidadeIntern
     //Isso deve ser implementado apenas no domino do lado do cliente.
     //deve IsAplicacaoCliente ser true
 
-    internal protected string RetornarDescricaoComDeletado(string descricao)
+   
+    internal protected string? RetornarDescricaoComDeletado(
+        [NotNullIfNotNull(nameof(descricao))]
+        string? descricao)
     {
+        if (descricao is null)
+            return null;
+
         if (AplicacaoSnebur.AtualRequired.IsAlicacaoCliente)
         {
             if (this is IDeletado deletado && deletado.IsDeletado &&

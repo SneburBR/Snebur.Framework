@@ -1,6 +1,7 @@
 using Snebur.Dominio.Atributos;
 using System.Drawing;
 using System.Globalization;
+using System.Text.Json.Serialization;
 
 namespace Snebur.Dominio;
 
@@ -42,6 +43,8 @@ public class Cor : BaseTipoComplexo, ICor
         }
     }
 
+    [NaoMapear]
+    [JsonIgnore]
     [IgnorarPropriedade]
     [IgnorarPropriedadeTSReflexao]
     public bool IsTransparente
@@ -51,6 +54,9 @@ public class Cor : BaseTipoComplexo, ICor
             return this.Alpha == 0;
         }
     }
+
+    [NaoMapear]
+    [JsonIgnore]
     [IgnorarPropriedade]
     [IgnorarPropriedadeTSReflexao]
     public bool IsBranca

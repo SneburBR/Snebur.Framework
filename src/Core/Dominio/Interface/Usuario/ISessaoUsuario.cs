@@ -1,4 +1,4 @@
-﻿namespace Snebur.Dominio;
+namespace Snebur.Dominio;
 
 public interface ISessaoUsuario : IEntidade, IInformacaoSessao, IIdentificadorSessaoUsuario, IIdentificadorProprietario
 {
@@ -14,7 +14,7 @@ public interface ISessaoUsuario : IEntidade, IInformacaoSessao, IIdentificadorSe
 
     EnumStatusServicoArquivo StatusServicoArquivo { get; set; }
 
-    string MotivoBloqueio { get; set; }
+    string? MotivoBloqueio { get; set; }
 
     DateTime? DataHoraExpiracaoBloqueio { get; set; }
 

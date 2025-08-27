@@ -1,9 +1,9 @@
-﻿namespace Snebur.Dominio;
+namespace Snebur.Dominio;
 
 public interface IInformacaoSessao : IIdentificadorAplicacao
 {
 
-    string Cultura { get; set; }
+    string? Cultura { get; set; }
 
     string Idioma { get; set; }
 
@@ -21,7 +21,7 @@ public interface IInformacaoSessao : IIdentificadorAplicacao
 
     string VersaoAplicacao { get; set; }
 
-    string NomeComputador { get; set; }
+    string? NomeComputador { get; set; }
 
     //string IP { get; set; }
 
