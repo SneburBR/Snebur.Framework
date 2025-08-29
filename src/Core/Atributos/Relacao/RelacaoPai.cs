@@ -5,8 +5,6 @@ public class RelacaoPaiAttribute : RelacaoChaveEstrangeiraAttribute, IIgnorarAle
 {
     public bool IgnorarAlerta { get; set; }
 
-    public bool IsRelacaoUmUm { get; set; }
-
     public string? NomePropriedadeLinkNavegacao { get; set; }
 
     public EnumTipoExclusaoRelacao TipoExclusao { get; set; } = EnumTipoExclusaoRelacao.NaoDeletar;

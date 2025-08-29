@@ -251,19 +251,26 @@ public class Conexao : IDisposable
                     {
                         using (var cmd = new SqlCommand(sql, conexao, trans))
                         {
-                            foreach (var parametro in parametros)
+                            try
                             {
-                                cmd.Parameters.Add(parametro);
+                                foreach (var parametro in parametros)
+                                {
+                                    cmd.Parameters.Add(parametro);
+                                }
+                                cmd.CommandTimeout = (int)TimeSpan.FromMinutes(100).TotalSeconds;
+                                acao?.Invoke(cmd);
+                                cmd.ExecuteNonQuery();
                             }
-                            cmd.CommandTimeout = (int)TimeSpan.FromMinutes(100).TotalSeconds;
-                            acao?.Invoke(cmd);
-                            cmd.ExecuteNonQuery();
+                            catch (Exception ex)
+                            {
+                                throw new SqlCommandExecutionException(sql, ex);
+                            }
                         }
                     }
                     trans.Commit();
                     return true;
                 }
-                catch (Exception)
+                catch
                 {
 
                     if (isIgnorarErro)

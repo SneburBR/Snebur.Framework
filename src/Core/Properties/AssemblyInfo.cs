@@ -10,6 +10,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 [assembly: Guid("1e3261cf-9d28-4bbd-9f90-95d93826081a")]
-[assembly: AssemblyVersion("25.8.27.1093")]
-[assembly: AssemblyFileVersion("25.8.27.1093")]
+[assembly: AssemblyVersion("25.8.28.1104")]
+[assembly: AssemblyFileVersion("25.8.28.1104")]
 

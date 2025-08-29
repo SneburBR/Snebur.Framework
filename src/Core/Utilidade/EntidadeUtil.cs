@@ -111,6 +111,15 @@ public class EntidadeUtil
                     .FirstOrDefault();
     }
 
+    public static PropertyInfo? RetornarPropriedadeRelacaoExterna(
+        Type tipoEntidade,
+        PropertyInfo nomePropriedadeChaveEstrangeiraExterna)
+    {
+        return ReflexaoUtil.RetornarPropriedades(tipoEntidade, false)
+                    .Where(propriedade => IsPropriedadeRelacaoExterna(propriedade, nomePropriedadeChaveEstrangeiraExterna.Name))
+                    .FirstOrDefault();
+    }
+
     private static bool IsPropriedadeRelacaoPai(PropertyInfo propriedade,
                                                 string nomePropriedadeChaveEstrangeira)
     {
@@ -118,6 +127,17 @@ public class EntidadeUtil
         if (atributoChaveEstrangeira != null)
         {
             return atributoChaveEstrangeira.NomePropriedade == nomePropriedadeChaveEstrangeira;
+        }
+        return false;
+    }
+
+    private static bool IsPropriedadeRelacaoExterna(PropertyInfo propriedade,
+                                                string nomePropriedadeChaveEstrangeira)
+    {
+        var atributoChaveExterna = propriedade.GetCustomAttribute<RelacaoPaiExternaAttribute>();
+        if (atributoChaveExterna != null)
+        {
+            return atributoChaveExterna.NomePropriedadeChaveEstrangeira == nomePropriedadeChaveEstrangeira;
         }
         return false;
     }

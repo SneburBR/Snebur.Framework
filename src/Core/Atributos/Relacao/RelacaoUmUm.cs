@@ -1,16 +1,19 @@
-﻿using System.Diagnostics;
-
 namespace Snebur.Dominio.Atributos;
 
 [AttributeUsage(AttributeTargets.Property)]
-public class RelacaoUmUmAttribute : RelacaoChaveEstrangeiraAttribute, IIgnorarAlerta
+public class RelacaoUmUmFilhoAttribute : RelacaoPaiAttribute, IIgnorarAlerta
 {
-    public bool IgnorarAlerta { get; set; }
-
-    public EnumTipoExclusaoRelacao TipoExclusao { get; set; } = EnumTipoExclusaoRelacao.NaoDeletar;
-
-    public RelacaoUmUmAttribute()
+    public RelacaoUmUmFilhoAttribute()
     {
-        Trace.TraceWarning("RelacaoUmUmAttribute is not implementada");
+
+    }
+}
+
+[AttributeUsage(AttributeTargets.Property)]
+public class RelacaoUmUmPaiAttribute : RelacaoPaiAttribute, IIgnorarAlerta
+{
+    public RelacaoUmUmPaiAttribute()
+    {
+
     }
 }

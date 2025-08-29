@@ -9,8 +9,9 @@
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<Nullable>enable</Nullable>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<LangVersion>preview</LangVersion>
 	</PropertyGroup>
-  
+
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Core\Snebur.csproj" />
 	</ItemGroup>

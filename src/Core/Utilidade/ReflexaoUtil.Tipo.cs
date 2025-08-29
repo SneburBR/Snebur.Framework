@@ -1,9 +1,7 @@
 using Snebur.Reflexao;
 using System.Collections;
-using System.Reflection;
 
 namespace Snebur.Utilidade;
-
 public static partial class ReflexaoUtil
 {
     public static object? GetDefaultValue(Type type)
@@ -224,7 +222,7 @@ public static partial class ReflexaoUtil
         //}
     }
 
-    
+
     public static bool IsTipoRetornaColecaoEntidade(Type tipo)
     {
         if (IsTipoRetornaColecao(tipo))

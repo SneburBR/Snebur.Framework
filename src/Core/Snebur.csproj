@@ -9,8 +9,9 @@
 		<Configurations>Debug;Release</Configurations>
 		<Nullable>enable</Nullable>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<LangVersion>preview</LangVersion>
 	</PropertyGroup>
-  
+
 	<ItemGroup Condition="'$(TargetFramework)' == 'net48'">
 
 		<Reference Include="System.ServiceModel" />
@@ -27,7 +28,7 @@
 		<Reference Include="System.Net.Http" />
 
 		<PackageReference Include="SevenZipSharp.Net45" Version="1.0.19" />
- 
+
 	</ItemGroup>
 
 

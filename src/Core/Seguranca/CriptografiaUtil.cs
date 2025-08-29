@@ -81,7 +81,8 @@ public class CriptografiaUtil
             str = str.PadLeft(4, '0');
         }
         var bytes = BaralhoUtil.Embaralhar(Encoding.ASCII.GetBytes(str));
-        var strCript = Encoding.ASCII.GetString(bytes.Reverse().ToArray());
+        bytes.Reverse();
+        var strCript = Encoding.ASCII.GetString(bytes);
         var idCripgrafado = HexUtil.Encode(strCript);
 
         if (DebugUtil.IsAttached)
@@ -98,7 +99,10 @@ public class CriptografiaUtil
     public static long DescriptografarID(string valorParametro)
     {
         var strCrpt = HexUtil.Decode(valorParametro);
-        var bytes = BaralhoUtil.Desembaralhar(Encoding.ASCII.GetBytes(strCrpt).Reverse().ToArray());
+        var bytesEmbaralhados = Encoding.ASCII.GetBytes(strCrpt);
+        bytesEmbaralhados.Reverse();
+
+        var bytes = BaralhoUtil.Desembaralhar(bytesEmbaralhados);
         var str = Encoding.ASCII.GetString(bytes);
         var id = TextoUtil.RetornarSomenteNumeros(str);
         return Int64.Parse(id);
