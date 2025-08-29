@@ -1,4 +1,4 @@
-﻿using Snebur.Dominio;
+using Snebur.Dominio;
 using Snebur.Dominio.Atributos;
 using Snebur.Linq;
 using Snebur.Utilidade;
@@ -182,7 +182,7 @@ namespace Snebur.AcessoDados.Estrutura
 
             this.IsEntidadeRelacaoNn = this.RetornarIsEntidadeRelacaoNn();
             this.EstruturaEntidadeBase = estruturaEntidadeBase;
-             
+
             this.IsChavePrimariaAutoIncrimento = this.RetornarIsChavePrimariaAutoIncrimento();
             this.IsEntity = this.RetornarIsEntity();
 
@@ -262,10 +262,10 @@ namespace Snebur.AcessoDados.Estrutura
                 {
                     this.AdicionarEstruturaRelacaoPai(proriedade, estruturasEntidade);
                 }
-                else if (atributoRelacao is RelacaoUmUmAttribute)
-                {
-                    this.AdicionarEstruturaRelacaoUmUm(proriedade, estruturasEntidade);
-                }
+                //else if (atributoRelacao is RelacaoUmUmAttribute)
+                //{
+                //    this.AdicionarEstruturaRelacaoUmUm(proriedade, estruturasEntidade);
+                //}
                 else if (atributoRelacao is RelacaoUmUmReversaAttribute)
                 {
                     this.AdicionarEstruturaRelacaoUmUmReversa(proriedade, estruturasEntidade);
@@ -541,7 +541,9 @@ namespace Snebur.AcessoDados.Estrutura
             return (atributo != null);
         }
 
-        private void AdicionarEstruturaRelacaoPai(PropertyInfo propriedade, DicionarioEstrutura<EstruturaEntidade> estruturasEntidade)
+        private void AdicionarEstruturaRelacaoPai(
+            PropertyInfo propriedade,
+            DicionarioEstrutura<EstruturaEntidade> estruturasEntidade)
         {
             if (!estruturasEntidade.ContainsKey(propriedade.PropertyType.Name))
             {
@@ -553,6 +555,14 @@ namespace Snebur.AcessoDados.Estrutura
             var estruturaCampoChaveEstrangeira = this.RetornarEstruturaCampoChaveEstrangeira(nomePropriedadeChaveEstrangeira);
             this.EstruturasRelacoes.Add(propriedade.Name, new EstruturaRelacaoPai(propriedade, this, estruturaEntidadePai, estruturaCampoChaveEstrangeira));
         }
+
+        //private void AdicionarEstruturaRelacaoUmUm(PropertyInfo propriedade, DicionarioEstrutura<EstruturaEntidade> estruturasEntidade)
+        //{
+        //    var estruturaEntidadePai = estruturasEntidade[propriedade.PropertyType.Name];
+        //    var nomePropriedadeChaveEstrangeira = AjudanteEstruturaBancoDados.RetornarNomePropriedadeChaveEstrangeira(propriedade);
+        //    var estruturaCampoChaveEstrangeira = this.RetornarEstruturaCampoChaveEstrangeira(nomePropriedadeChaveEstrangeira);
+        //    this.EstruturasRelacoes.Add(propriedade.Name, new EstruturaRelacaoUmUm(propriedade, this, estruturaEntidadePai, estruturaCampoChaveEstrangeira));
+        //}
 
         public EstruturaCampo RetornarEstruturaCampoChaveEstrangeira(string nomePropriedadeChaveEstrageira)
         {
@@ -568,13 +578,7 @@ namespace Snebur.AcessoDados.Estrutura
             throw new Exception($"Não existe o campo {nomePropriedadeChaveEstrageira} em {this.TipoEntidade.Name} ");
         }
 
-        private void AdicionarEstruturaRelacaoUmUm(PropertyInfo propriedade, DicionarioEstrutura<EstruturaEntidade> estruturasEntidade)
-        {
-            var estruturaEntidadePai = estruturasEntidade[propriedade.PropertyType.Name];
-            var nomePropriedadeChaveEstrangeira = AjudanteEstruturaBancoDados.RetornarNomePropriedadeChaveEstrangeira(propriedade);
-            var estruturaCampoChaveEstrangeira = this.RetornarEstruturaCampoChaveEstrangeira(nomePropriedadeChaveEstrangeira);
-            this.EstruturasRelacoes.Add(propriedade.Name, new EstruturaRelacaoUmUm(propriedade, this, estruturaEntidadePai, estruturaCampoChaveEstrangeira));
-        }
+
 
         private void AdicionarEstruturaRelacaoUmUmReversa(PropertyInfo propriedade,
                                                             DicionarioEstrutura<EstruturaEntidade> estruturasEntidade)

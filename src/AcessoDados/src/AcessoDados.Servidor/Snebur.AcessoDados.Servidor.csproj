@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
- 
+
 	<PropertyGroup>
 		<TargetFrameworks>net9.0</TargetFrameworks>
 		<RootNamespace>Snebur.AcessoDados</RootNamespace>
@@ -8,24 +8,25 @@
 		<Nullable>disable</Nullable>
 		<AssemblyName>Snebur.AcessoDados.Servidor</AssemblyName>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<LangVersion>preview</LangVersion>
 	</PropertyGroup>
 
-	
+
 	<ItemGroup>
 		<Compile Remove="Bibliotecas\**" />
 		<EmbeddedResource Remove="Bibliotecas\**" />
 		<None Remove="Bibliotecas\**" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Compile Remove="Consulta\Entidade\BaseMapeamentoEntidade.Sql.cs" />
-	  <Compile Remove="Consulta\Entidade\BaseMapeamentoEntidade.SqlFiltroMapeamento.cs" />
-	  <Compile Remove="Consulta\Entidade\BaseMapeamentoEntidade.SqlFiltros.cs" />
+		<Compile Remove="Consulta\Entidade\BaseMapeamentoEntidade.Sql.cs" />
+		<Compile Remove="Consulta\Entidade\BaseMapeamentoEntidade.SqlFiltroMapeamento.cs" />
+		<Compile Remove="Consulta\Entidade\BaseMapeamentoEntidade.SqlFiltros.cs" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Remove="Recursos\SNAPSHOT.sql" />
 	</ItemGroup>
 	<ItemGroup>
-	  <EmbeddedResource Include="Recursos\SNAPSHOT.sql" />
+		<EmbeddedResource Include="Recursos\SNAPSHOT.sql" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Core\Snebur.csproj" />
