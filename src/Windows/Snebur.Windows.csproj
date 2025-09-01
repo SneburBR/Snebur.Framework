@@ -7,8 +7,10 @@
 		<RootNamespace>Snebur.Computador</RootNamespace>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-		<Nullable>disable</Nullable>
 		<UseWPF>true</UseWPF>
+		<Nullable>enable</Nullable>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<LangVersion>preview</LangVersion>
 
 	</PropertyGroup>
 
@@ -24,22 +26,22 @@
 		<PackageReference Include="WindowsAPICodePack-Core" version="1.1.2" />
 		<PackageReference Include="WindowsAPICodePack-Shell" version="1.1.1" />
 	</ItemGroup>
- 
+
 	<ItemGroup>
-	  <Compile Remove="Converters\UrlImagemConverter.cs" />
-	  <Compile Remove="Extensoes\IImagemExtensao.cs" />
+		<Compile Remove="Converters\UrlImagemConverter.cs" />
+		<Compile Remove="Extensoes\IImagemExtensao.cs" />
 	</ItemGroup>
 
-  
+
 
 	<ItemGroup>
 		<ProjectReference Include="..\Core\Snebur.csproj" />
 	</ItemGroup>
 
-  
+
 
 	<ItemGroup>
-	  <Folder Include="Utilidade\" />
+		<Folder Include="Utilidade\" />
 	</ItemGroup>
 
 </Project>

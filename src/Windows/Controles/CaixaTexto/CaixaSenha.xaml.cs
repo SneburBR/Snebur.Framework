@@ -1,11 +1,9 @@
-﻿namespace Snebur.Windows
-{
+namespace Snebur.Windows;
 
-    public partial class CaixaSenha : BaseCaixaTexto
+public partial class CaixaSenha : BaseCaixaTexto
+{
+    public CaixaSenha()
     {
-        public CaixaSenha()
-        {
-            this.InitializeComponent();
-        }
+        this.InitializeComponent();
     }
 }

@@ -1,8 +1,5 @@
-﻿using System.Windows.Controls;
+namespace Snebur.Windows;
 
-namespace Snebur.Windows
+public class CheckBox: System.Windows.Controls.CheckBox
 {
-    public class CheckBox: System.Windows.Controls.CheckBox
-    {
-    }
 }

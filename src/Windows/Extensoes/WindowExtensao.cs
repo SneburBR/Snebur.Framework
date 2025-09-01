@@ -1,14 +1,12 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Windows;
 
-namespace Snebur
+namespace Snebur;
+
+public static class WindowExtensao
 {
-    public static class WindowExtensao
+    public static bool IsModal(this Window window)
     {
-        public static bool IsModal(this Window window)
-        {
-            return (bool)typeof(Window).GetField("_showingAsDialog", BindingFlags.Instance | 
-                                                                     BindingFlags.NonPublic).GetValue(window);
-        }
+        return Convert.ToBoolean(typeof(Window).GetField("_showingAsDialog", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(window));
     }
 }
