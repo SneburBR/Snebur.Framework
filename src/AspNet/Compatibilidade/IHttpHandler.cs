@@ -1,15 +1,14 @@
-﻿#if NET6_0_OR_GREATER
+#if NET6_0_OR_GREATER
 using System.Threading.Tasks;
 
-namespace Microsoft.AspNetCore.Http
-{
-   
-    public interface IHttpHandler
-    {
+namespace Microsoft.AspNetCore.Http;
 
-        //bool IsReusable { get; }
-        Task ProcessRequestAsync(HttpContext context);
-    }
+
+public interface IHttpHandler
+{
+
+    //bool IsReusable { get; }
+    Task ProcessRequestAsync(HttpContext context);
 }
 
 #endif
