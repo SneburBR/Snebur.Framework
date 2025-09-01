@@ -8,20 +8,20 @@
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<Nullable>enable</Nullable>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<LangVersion>preview</LangVersion>
 	</PropertyGroup>
- 
+
 	<ItemGroup>
 		<Compile Remove="Properties\**" />
 		<EmbeddedResource Remove="Properties\**" />
 		<None Remove="Properties\**" />
 	</ItemGroup>
-	 
+
 	<ItemGroup>
 		<Compile Include="Properties\AssemblyInfo.cs" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Core\Snebur.csproj" />
 	</ItemGroup>
- 
 
 </Project>

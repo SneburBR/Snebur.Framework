@@ -1,21 +1,20 @@
-﻿namespace Snebur.Seguranca
+namespace Snebur.Seguranca;
+
+public class CredencialServicoGlobalizacao
 {
-    public class CredencialServicoGlobalizacao
+    public static CredencialServico Globalizacao
     {
-        public static CredencialServico Globalizacao
+        get
         {
-            get
+            return new CredencialServico
             {
-                return new CredencialServico
-                {
-                    IdentificadorUsuario = CredencialServicoGlobalizacao.IDENTIFICADOR_USUARIO,
-                    Senha = CredencialServicoGlobalizacao.SENHA
-                };
-            }
+                IdentificadorUsuario = CredencialServicoGlobalizacao.IDENTIFICADOR_USUARIO,
+                Senha = CredencialServicoGlobalizacao.SENHA
+            };
         }
-
-        private const string IDENTIFICADOR_USUARIO = "ServicoGlobalizacao";
-
-        private const string SENHA = "fba8079f-e3b9-437f-ba6d-17a517dfa265";
     }
+
+    private const string IDENTIFICADOR_USUARIO = "ServicoGlobalizacao";
+
+    private const string SENHA = "fba8079f-e3b9-437f-ba6d-17a517dfa265";
 }
