@@ -1,424 +1,416 @@
-﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Snebur.Utilidade;
 
-namespace Snebur.Imagens
+namespace Snebur.Imagens;
+
+public class BmpEncoder
 {
-    public class BmpEncoder
+    private const int RESERVED = 0;
+    private const short LLANE = 1;
+    private const short BITS_PER_PIXELS = 24;
+    private const int COMPRESS = 0;
+    private const int HR = 0;
+    private const int VR = 0;
+    private const int COLORS = 0;
+    private const int IMPORTANT_COLORS = 0;
+    private const int TAMANHO_CABECALHO = 54;
+    private const int HEADER_INFO_SIZE = 40;
+    private const string FLAB_BM = "BM";
+
+    //private Stream StreamOrigem { get; set; }
+    //private Stream streamDestino { get; set; }
+
+    //private byte[] pixelsOrigem { get; set; }
+
+    //Obsoleto
+    //private byte[] BytesDestino { get; set; }
+
+    //private BinaryReader ReaderOrigem { get; set; }
+    //private BinaryWriter writerDestino { get; set; }
+
+    private bool BufferAlpha { get; set; } = true;
+    private int Largura { get; set; }
+    private int Altura { get; set; }
+    private int TotalBytesExtraPorLinha { get; set; }
+    private int TamanhoFrameRgb { get; set; }
+    private int TamanhoArquivo { get; set; }
+    private int Posicao { get; set; }
+
+    public BmpEncoder()
     {
-        private const int RESERVED = 0;
-        private const short LLANE = 1;
-        private const short BITS_PER_PIXELS = 24;
-        private const int COMPRESS = 0;
-        private const int HR = 0;
-        private const int VR = 0;
-        private const int COLORS = 0;
-        private const int IMPORTANT_COLORS = 0;
-        private const int TAMANHO_CABECALHO = 54;
-        private const int HEADER_INFO_SIZE = 40;
-        private const string FLAB_BM = "BM";
 
-        //private Stream StreamOrigem { get; set; }
-        //private Stream streamDestino { get; set; }
+    }
 
-        //private byte[] pixelsOrigem { get; set; }
+    private void AtriburValoresPropriedadesCabecalho(int largura, int altura)
+    {
+        this.BufferAlpha = true;
+        this.Largura = largura;
+        this.Altura = altura;
+        this.TotalBytesExtraPorLinha = this.Largura % 4;
+        this.TamanhoFrameRgb = this.Altura * (3 * this.Largura + this.TotalBytesExtraPorLinha);
+        this.TamanhoArquivo = (this.TamanhoFrameRgb + TAMANHO_CABECALHO);
+    }
 
-        //Obsoleto
-        //private byte[] BytesDestino { get; set; }
+    public void Salvar(BitmapSource bitmapSource, string caminhoDestino)
+    {
+        ArquivoUtil.DeletarArquivo(caminhoDestino);
+        var streamDestino = new FileStream(caminhoDestino, FileMode.Create, FileAccess.Write, FileShare.Write);
 
-        //private BinaryReader ReaderOrigem { get; set; }
-        //private BinaryWriter writerDestino { get; set; }
+        this.SalvarPartes(bitmapSource, streamDestino, 10);
 
-        private bool BufferAlpha { get; set; } = true;
-        private int Largura { get; set; }
-        private int Altura { get; set; }
-        private int TotalBytesExtraPorLinha { get; set; }
-        private int TamanhoFrameRgb { get; set; }
-        private int TamanhoArquivo { get; set; }
-        private int Posicao { get; set; }
+        streamDestino.Dispose();
+    }
 
-        public BmpEncoder()
+    public void SalvarPartes(BitmapSource bitmapSource, Stream streamDestino, int totalPartes)
+    {
+        var writerDestino = new BinaryWriter(streamDestino);
+
+        var pixels = bitmapSource.GetPixels(EnumPixelFormato.Rgba);
+
+        var largura = bitmapSource.PixelWidth;
+        var altura = bitmapSource.PixelHeight;
+
+        this.AtriburValoresPropriedadesCabecalho(bitmapSource.PixelWidth, bitmapSource.PixelHeight);
+        this.AjustarTamanhoStream(streamDestino);
+        //var alturaParte = bitmapSource.PixelHeight;
+        //var pixelsParte = pixels;
+        var bytesPorLinha = largura * 4;
+
+        var alturaParte = altura / totalPartes;
+        for (var i = 0; i < totalPartes; i++)
         {
+            var parteAtual = i + 1;
+            var offset = (i * (bytesPorLinha * alturaParte));
 
-        }
-
-        private void AtriburValoresPropriedadesCabecalho(int largura, int altura)
-        {
-            this.BufferAlpha = true;
-            this.Largura = largura;
-            this.Altura = altura;
-            this.TotalBytesExtraPorLinha = this.Largura % 4;
-            this.TamanhoFrameRgb = this.Altura * (3 * this.Largura + this.TotalBytesExtraPorLinha);
-            this.TamanhoArquivo = (this.TamanhoFrameRgb + TAMANHO_CABECALHO);
-        }
-
-        public void Salvar(BitmapSource bitmapSource, string caminhoDestino)
-        {
-            ArquivoUtil.DeletarArquivo(caminhoDestino);
-            var streamDestino = new FileStream(caminhoDestino, FileMode.Create, FileAccess.Write, FileShare.Write);
-
-            this.SalvarPartes(bitmapSource, streamDestino, 10);
-
-            streamDestino.Dispose();
-        }
-
-        public void SalvarPartes(BitmapSource bitmapSource, Stream streamDestino, int totalPartes)
-        {
-            var writerDestino = new BinaryWriter(streamDestino);
-
-            var pixels = bitmapSource.GetPixels(EnumPixelFormato.Rgba);
-
-            var largura = bitmapSource.PixelWidth;
-            var altura = bitmapSource.PixelHeight;
-
-            this.AtriburValoresPropriedadesCabecalho(bitmapSource.PixelWidth, bitmapSource.PixelHeight);
-            this.AjustarTamanhoStream(streamDestino);
-            //var alturaParte = bitmapSource.PixelHeight;
-            //var pixelsParte = pixels;
-            var bytesPorLinha = largura * 4;
-
-            var alturaParte = altura / totalPartes;
-            for (var i = 0; i < totalPartes; i++)
+            if (parteAtual == totalPartes)
             {
-                var parteAtual = i + 1;
-                var offset = (i * (bytesPorLinha * alturaParte));
-
-                if (parteAtual == totalPartes)
-                {
-                    alturaParte += altura % totalPartes;
-                }
-                var len = bytesPorLinha * alturaParte;
-                var pixelsParte = pixels.Skip(offset).Take(len).ToArray();
-
-                this.SalvarPixels(writerDestino, largura, altura, pixelsParte, alturaParte, parteAtual, totalPartes);
-                //break;
+                alturaParte += altura % totalPartes;
             }
+            var len = bytesPorLinha * alturaParte;
+            var pixelsParte = pixels.Skip(offset).Take(len).ToArray();
 
+            this.SalvarPixels(writerDestino, largura, altura, pixelsParte, alturaParte, parteAtual, totalPartes);
+            //break;
         }
-        //public void Salvar(BitmapSource bitmapSource, Stream streamDestino)
-        //{
-        //    var pixels = bitmapSource.GetPixels(EnumPixelFormato.Rgba);
+    }
+    //public void Salvar(BitmapSource bitmapSource, Stream streamDestino)
+    //{
+    //    var pixels = bitmapSource.GetPixels(EnumPixelFormato.Rgba);
 
-        //    var largura = bitmapSource.PixelWidth;
-        //    var altura = bitmapSource.PixelHeight;
-        //    var alturaParte = bitmapSource.PixelHeight;
-        //    var pixelsParte = pixels;
-        //    var parteAtual = 1;
-        //    var totalPartes = 1;
+    //    var largura = bitmapSource.PixelWidth;
+    //    var altura = bitmapSource.PixelHeight;
+    //    var alturaParte = bitmapSource.PixelHeight;
+    //    var pixelsParte = pixels;
+    //    var parteAtual = 1;
+    //    var totalPartes = 1;
 
-        //    this.Salvar(streamDestino, largura, altura, pixelsParte, alturaParte, parteAtual, totalPartes);
-        //}
+    //    this.Salvar(streamDestino, largura, altura, pixelsParte, alturaParte, parteAtual, totalPartes);
+    //}
 
-        //private void Salvar(BinaryWriter streamDestino, int largura, int altura, byte[] pixelsParte, int alturaParte, int parteAtual, int totalPartes)
-        //{
+    //private void Salvar(BinaryWriter streamDestino, int largura, int altura, byte[] pixelsParte, int alturaParte, int parteAtual, int totalPartes)
+    //{
 
-        //    var writerDestino = new BinaryWriter(streamDestino);
-        //    this.SalvarPixels(writerDestino, pixelsParte, alturaParte, parteAtual, totalPartes);
-        //}
+    //    var writerDestino = new BinaryWriter(streamDestino);
+    //    this.SalvarPixels(writerDestino, pixelsParte, alturaParte, parteAtual, totalPartes);
+    //}
 
-        public void SalvarPixels(BinaryWriter writerDestino, int largura, int altura, byte[] pixelsParte, int alturaParte, int parteAtual, int totalPartes)
+    public void SalvarPixels(BinaryWriter writerDestino, int largura, int altura, byte[] pixelsParte, int alturaParte, int parteAtual, int totalPartes)
+    {
+        this.AtriburValoresPropriedadesCabecalho(largura, altura);
+
+        //this.SalvarCabecalho(writerDestino);
+        if (parteAtual == 1)
         {
-            this.AtriburValoresPropriedadesCabecalho(largura, altura);
+            this.SalvarCabecalho(writerDestino);
+        }
 
-            //this.SalvarCabecalho(writerDestino);
-            if (parteAtual == 1)
+        var bytesPorPixel = (this.BufferAlpha) ? 4 : 3;
+        var bytesLinhaDestino = 3 * this.Largura + this.TotalBytesExtraPorLinha;
+        var strideOrigem = this.Largura * bytesPorPixel;
+
+        var linhaOrigem = 0;
+
+        //for (var linha = this.Height - 1; linha >= 0; linha--)
+
+        var tamanhoBuffer = alturaParte * bytesLinhaDestino;
+        var bufferParte = new byte[tamanhoBuffer];
+
+        for (var linha = 0; linha < alturaParte; linha++)
+        {
+            linhaOrigem = (alturaParte - (linha + 1));
+            for (var coluna = 0; coluna < this.Largura; coluna++)
             {
-                this.SalvarCabecalho(writerDestino);
-            }
 
-            var bytesPorPixel = (this.BufferAlpha) ? 4 : 3;
-            var bytesLinhaDestino = 3 * this.Largura + this.TotalBytesExtraPorLinha;
-            var strideOrigem = this.Largura * bytesPorPixel;
+                var posicaoOrigem = linhaOrigem * strideOrigem + (coluna * bytesPorPixel);
+                var posicaoDestino = linha * bytesLinhaDestino + coluna * 3;
 
-            var linhaOrigem = 0;
+                //writerDestino.BaseStream.Position = posicaoDestino;
+                var red = pixelsParte[posicaoOrigem++];
+                var green = pixelsParte[posicaoOrigem++];
+                var blue = pixelsParte[posicaoOrigem++];
 
-            //for (var linha = this.Height - 1; linha >= 0; linha--)
+                //byte[] pixel = new byte[3] { blue, green, red };
+                //writerDestino.Write(pixel);
+                //this.StreamDestino.Seek(p, SeekOrigin.Begin);
+                //this.WriterDestino.Write(redr);
+                //this.WriterDestino.Write(green);
+                //this.WriterDestino.Write(blue);
 
-            var tamanhoBuffer = alturaParte * bytesLinhaDestino;
-            var bufferParte = new byte[tamanhoBuffer];
+                bufferParte[posicaoDestino] = blue;
+                bufferParte[posicaoDestino + 1] = green;
+                bufferParte[posicaoDestino + 2] = red;
 
-            for (var linha = 0; linha < alturaParte; linha++)
-            {
-                linhaOrigem = (alturaParte - (linha + 1));
-                for (var coluna = 0; coluna < this.Largura; coluna++)
-                {
-
-                    var posicaoOrigem = linhaOrigem * strideOrigem + (coluna * bytesPorPixel);
-                    var posicaoDestino = linha * bytesLinhaDestino + coluna * 3;
-
-                    //writerDestino.BaseStream.Position = posicaoDestino;
-                    var red = pixelsParte[posicaoOrigem++];
-                    var green = pixelsParte[posicaoOrigem++];
-                    var blue = pixelsParte[posicaoOrigem++];
-
-                    //byte[] pixel = new byte[3] { blue, green, red };
-                    //writerDestino.Write(pixel);
-                    //this.StreamDestino.Seek(p, SeekOrigin.Begin);
-                    //this.WriterDestino.Write(redr);
-                    //this.WriterDestino.Write(green);
-                    //this.WriterDestino.Write(blue);
-
-                    bufferParte[posicaoDestino] = blue;
-                    bufferParte[posicaoDestino + 1] = green;
-                    bufferParte[posicaoDestino + 2] = red;
-
-                    //if (this.BufferAlpha)
-                    //{
-                    //    i++;
-                    //}
-                }
-
-                //if (this.TotalBytesExtraPorLinha > 0)
+                //if (this.BufferAlpha)
                 //{
-                //    var bytesExtras = new byte[this.TotalBytesExtraPorLinha];
-                //    writerDestino.Write(bytesExtras);
-                //    //    var fillOffset = this.pos + y * rowBytes + this.Width * 3;
-                //    //    BytesDestino.fill(0, fillOffset, fillOffset + this.ExtraBytes);
+                //    i++;
                 //}
             }
 
-            int offsetStremOrigem = 0;
-            if (parteAtual == totalPartes)
-            {
-                offsetStremOrigem = TAMANHO_CABECALHO;
-            }
-            else
-            {
-                var diferenca = (totalPartes - parteAtual);
-
-                offsetStremOrigem = TAMANHO_CABECALHO + (diferenca * (alturaParte * bytesLinhaDestino));
-            }
-
-            writerDestino.BaseStream.Seek(offsetStremOrigem, SeekOrigin.Begin);
-            writerDestino.Write(bufferParte);
-            //var frame = this.BytesDestino.Skip(54).ToArray();
-            //this.WriterDestino.Write(frame, 0, frame.Count());
+            //if (this.TotalBytesExtraPorLinha > 0)
+            //{
+            //    var bytesExtras = new byte[this.TotalBytesExtraPorLinha];
+            //    writerDestino.Write(bytesExtras);
+            //    //    var fillOffset = this.pos + y * rowBytes + this.Width * 3;
+            //    //    BytesDestino.fill(0, fillOffset, fillOffset + this.ExtraBytes);
+            //}
         }
 
-        private void SalvarCabecalho(BinaryWriter writerDestino)
+        int offsetStremOrigem = 0;
+        if (parteAtual == totalPartes)
         {
-            //this.Largura = largura;
-            //this.Altura = altura;
-            //this.TotalBytesExtraPorLinha = this.Largura % 4;
-            //this.TamanhoFrameRgb = this.Altura * (3 * this.Largura + this.TotalBytesExtraPorLinha);
-            //this.TamanhoArquivo = (this.TamanhoFrameRgb + TAMANHO_CABECALHO);
-
-            writerDestino.BaseStream.Seek(0, SeekOrigin.Begin);
-
-            writerDestino.Write(Encoding.UTF8.GetBytes(BmpEncoder.FLAB_BM.ToCharArray()));
-
-            writerDestino.Write(this.TamanhoArquivo);
-
-            writerDestino.Write(BmpEncoder.RESERVED);
-
-            writerDestino.Write(TAMANHO_CABECALHO);
-
-            writerDestino.Write(HEADER_INFO_SIZE);
-
-            writerDestino.Write(this.Largura);
-
-            writerDestino.Write(this.Altura);
-
-            writerDestino.Write(BmpEncoder.LLANE);
-
-            writerDestino.Write(BmpEncoder.BITS_PER_PIXELS);
-
-            writerDestino.Write(BmpEncoder.COMPRESS);
-
-            writerDestino.Write(this.TamanhoFrameRgb);
-
-            writerDestino.Write(BmpEncoder.HR);
-
-            writerDestino.Write(BmpEncoder.VR);
-
-            writerDestino.Write(BmpEncoder.COLORS);
-
-            writerDestino.Write(BmpEncoder.IMPORTANT_COLORS);
+            offsetStremOrigem = TAMANHO_CABECALHO;
         }
-
-        private void AjustarTamanhoStream(Stream streamDestino)
+        else
         {
-            if (streamDestino is FileStream fsDestino)
-            {
-                if (streamDestino.Length < this.TamanhoArquivo)
-                {
-                    streamDestino.Seek(this.TamanhoArquivo - 1, SeekOrigin.Begin);
-                    streamDestino.Write(new byte[] { 0 }, 0, 1);
-                    fsDestino.Flush(true);
-                }
-            }
+            var diferenca = (totalPartes - parteAtual);
+
+            offsetStremOrigem = TAMANHO_CABECALHO + (diferenca * (alturaParte * bytesLinhaDestino));
         }
 
-        //private void SalvarBytesDestinoObsoleto()
-        //{
-        //    this.BytesDestino = new byte[TAMANHO_CABECALHO + this.TamanhoFrameRgb];
-
-        //    BytesDestino.Write(BmpEncoder.FLAB_BM, this.Posicao, 2);
-        //    this.Posicao += 2;
-        //    BytesDestino.WriteUInt32LE(this.TamanhoArquivo, this.Posicao);
-        //    this.Posicao += 4;
-        //    BytesDestino.WriteUInt32LE(BmpEncoder.RESERVED, this.Posicao);
-        //    this.Posicao += 4;
-        //    BytesDestino.WriteUInt32LE(TAMANHO_CABECALHO, this.Posicao);
-        //    this.Posicao += 4;
-        //    BytesDestino.WriteUInt32LE(HEADER_INFO_SIZE, this.Posicao);
-        //    this.Posicao += 4;
-        //    BytesDestino.WriteUInt32LE(this.Largura, this.Posicao);
-        //    this.Posicao += 4;
-        //    BytesDestino.WriteUInt32LE(this.Altura, this.Posicao);
-        //    this.Posicao += 4;
-        //    BytesDestino.WriteUInt16LE(BmpEncoder.LLANE, this.Posicao);
-        //    this.Posicao += 2;
-        //    BytesDestino.WriteUInt16LE(BmpEncoder.BITS_PER_PIXELS, this.Posicao);
-        //    this.Posicao += 2;
-        //    BytesDestino.WriteUInt32LE(BmpEncoder.COMPRESS, this.Posicao);
-        //    this.Posicao += 4;
-        //    BytesDestino.WriteUInt32LE(this.TamanhoFrameRgb, this.Posicao);
-        //    this.Posicao += 4;
-        //    BytesDestino.WriteUInt32LE(BmpEncoder.HR, this.Posicao);
-        //    this.Posicao += 4;
-        //    BytesDestino.WriteUInt32LE(BmpEncoder.VR, this.Posicao);
-        //    this.Posicao += 4;
-        //    BytesDestino.WriteUInt32LE(BmpEncoder.COLORS, this.Posicao);
-        //    this.Posicao += 4;
-        //    BytesDestino.WriteUInt32LE(BmpEncoder.IMPORTANT_COLORS, this.Posicao);
-        //    this.Posicao += 4;
-
-        //    var i = 0;
-        //    var rowBytes = 3 * this.Largura + this.TotalBytesExtraPorLinha;
-
-        //    for (var y = this.Altura - 1; y >= 0; y--)
-        //    {
-        //        for (var x = 0; x < this.Largura; x++)
-        //        {
-        //            var p = this.Posicao + y * rowBytes + x * 3;
-        //            BytesDestino[p + 2] = pixelsOrigem[i++];//r
-        //            BytesDestino[p + 1] = pixelsOrigem[i++];//g
-        //            BytesDestino[p] = pixelsOrigem[i++];//b
-        //            if (this.BufferAlpha)
-        //            {
-        //                i++;
-        //            }
-        //        }
-        //        //if (this.ExtraBytes > 0)
-        //        //{
-        //        //    var fillOffset = this.pos + y * rowBytes + this.Width * 3;
-        //        //    BytesDestino.fill(0, fillOffset, fillOffset + this.ExtraBytes);
-        //        //}
-        //    }
-        //    this.streamDestino.Write(BytesDestino, 0, BytesDestino.Length);
-        //}
-
+        writerDestino.BaseStream.Seek(offsetStremOrigem, SeekOrigin.Begin);
+        writerDestino.Write(bufferParte);
+        //var frame = this.BytesDestino.Skip(54).ToArray();
+        //this.WriterDestino.Write(frame, 0, frame.Count());
     }
 
-    public static class Extensoes
+    private void SalvarCabecalho(BinaryWriter writerDestino)
     {
-        public static void Write(this byte[] origem, string conteudo, int offset)
-        {
-            Extensoes.Write(origem, conteudo, offset, conteudo.Length);
-        }
+        //this.Largura = largura;
+        //this.Altura = altura;
+        //this.TotalBytesExtraPorLinha = this.Largura % 4;
+        //this.TamanhoFrameRgb = this.Altura * (3 * this.Largura + this.TotalBytesExtraPorLinha);
+        //this.TamanhoArquivo = (this.TamanhoFrameRgb + TAMANHO_CABECALHO);
 
-        public static void Write(this byte[] origem, string conteudo, int offset, int length)
-        {
-            Extensoes.Write(origem, conteudo, offset, length, Encoding.UTF8);
-        }
+        writerDestino.BaseStream.Seek(0, SeekOrigin.Begin);
 
-        public static void Write(this byte[] origem, string conteudo, int offset, int length, Encoding encoding)
-        {
-            var bytes = encoding.GetBytes(conteudo.ToCharArray(), 0, length);
-            Extensoes.WriteBytes(origem, bytes, offset);
-        }
+        writerDestino.Write(Encoding.UTF8.GetBytes(BmpEncoder.FLAB_BM.ToCharArray()));
 
-        public static void WriteUInt32LE(this byte[] origem, int valor, int offset)
-        {
-            WriteUInt32LE(origem, (uint)valor, offset);
-        }
+        writerDestino.Write(this.TamanhoArquivo);
 
-        public static void WriteUInt32LE(this byte[] origem, uint valor, int offset)
-        {
-            var bytes = BitConverter.GetBytes(valor);
-            Extensoes.WriteBytes(origem, bytes, offset);
-        }
+        writerDestino.Write(BmpEncoder.RESERVED);
 
-        public static void WriteUInt16LE(this byte[] origem, short valor, int offset)
-        {
-            Extensoes.WriteUInt16LE(origem, (ushort)valor, offset);
-        }
+        writerDestino.Write(TAMANHO_CABECALHO);
 
-        public static void WriteUInt16LE(this byte[] origem, ushort valor, int offset)
-        {
-            var bytes = BitConverter.GetBytes(valor);
-            Extensoes.WriteBytes(origem, bytes, offset);
+        writerDestino.Write(HEADER_INFO_SIZE);
 
-        }
+        writerDestino.Write(this.Largura);
 
-        public static void fill(this byte[] origem, byte valor, int offset, int fim)
-        {
-            var bytes = new byte[fim - offset];
-            Extensoes.WriteBytes(origem, bytes, offset);
-        }
+        writerDestino.Write(this.Altura);
 
-        public static void WriteBytes(this byte[] origem, byte[] bytes, int offset)
-        {
-            for (var i = 0; i < bytes.Length; i++)
-            {
-                origem[offset + i] = bytes[i];
-            }
-        }
+        writerDestino.Write(BmpEncoder.LLANE);
 
-        //public static byte[] GetPixels(this BitmapSource origem, EnumPixelFormato formato)
-        //{
-        //    var stride = origem.PixelWidth * 4;
-        //    var rgb24 = new FormatConvertedBitmap(origem, PixelFormats.Rgb24, null, 0);
-        //    var pixelsRgb24 = new byte[origem.PixelHeight * stride];
-        //    rgb24.CopyPixels(pixelsRgb24, stride, 0);
+        writerDestino.Write(BmpEncoder.BITS_PER_PIXELS);
 
-        //    if (formato == EnumPixelFormato.Rgb24)
-        //    {
-        //        return pixelsRgb24;
-        //    }
+        writerDestino.Write(BmpEncoder.COMPRESS);
 
-        //    if (formato == EnumPixelFormato.Rgba)
-        //    {
-        //        var pixelsRgba = new byte[origem.PixelHeight * stride];
-        //        for (var linha = 0; linha < origem.PixelHeight; linha++)
-        //        {
-        //            for (var coluna = 0; coluna < origem.PixelWidth; coluna++)
-        //            {
-        //                var posicaoRgb24 = (linha * stride) + (coluna * 3);
-        //                var posicaoRgba = (linha * stride) + (coluna * 4);
+        writerDestino.Write(this.TamanhoFrameRgb);
 
-        //                var r = pixelsRgb24[posicaoRgb24];
-        //                var g = pixelsRgb24[posicaoRgb24 + 1];
-        //                var b = pixelsRgb24[posicaoRgb24 + 2];
+        writerDestino.Write(BmpEncoder.HR);
 
-        //                pixelsRgba[posicaoRgba] = r;
-        //                pixelsRgba[posicaoRgba + 1] = g;
-        //                pixelsRgba[posicaoRgba + 2] = b;
-        //            }
+        writerDestino.Write(BmpEncoder.VR);
 
-        //        }
-        //        return pixelsRgba;
-        //    }
+        writerDestino.Write(BmpEncoder.COLORS);
 
-        //    throw new NotSupportedException();
-
-        //}
+        writerDestino.Write(BmpEncoder.IMPORTANT_COLORS);
     }
 
-    //public enum EnumPixelFormato
+    private void AjustarTamanhoStream(Stream streamDestino)
+    {
+        if (streamDestino is FileStream fsDestino)
+        {
+            if (streamDestino.Length < this.TamanhoArquivo)
+            {
+                streamDestino.Seek(this.TamanhoArquivo - 1, SeekOrigin.Begin);
+                streamDestino.Write(new byte[] { 0 }, 0, 1);
+                fsDestino.Flush(true);
+            }
+        }
+    }
+
+    //private void SalvarBytesDestinoObsoleto()
     //{
-    //    Rgba,
-    //    Rgb24,
+    //    this.BytesDestino = new byte[TAMANHO_CABECALHO + this.TamanhoFrameRgb];
+
+    //    BytesDestino.Write(BmpEncoder.FLAB_BM, this.Posicao, 2);
+    //    this.Posicao += 2;
+    //    BytesDestino.WriteUInt32LE(this.TamanhoArquivo, this.Posicao);
+    //    this.Posicao += 4;
+    //    BytesDestino.WriteUInt32LE(BmpEncoder.RESERVED, this.Posicao);
+    //    this.Posicao += 4;
+    //    BytesDestino.WriteUInt32LE(TAMANHO_CABECALHO, this.Posicao);
+    //    this.Posicao += 4;
+    //    BytesDestino.WriteUInt32LE(HEADER_INFO_SIZE, this.Posicao);
+    //    this.Posicao += 4;
+    //    BytesDestino.WriteUInt32LE(this.Largura, this.Posicao);
+    //    this.Posicao += 4;
+    //    BytesDestino.WriteUInt32LE(this.Altura, this.Posicao);
+    //    this.Posicao += 4;
+    //    BytesDestino.WriteUInt16LE(BmpEncoder.LLANE, this.Posicao);
+    //    this.Posicao += 2;
+    //    BytesDestino.WriteUInt16LE(BmpEncoder.BITS_PER_PIXELS, this.Posicao);
+    //    this.Posicao += 2;
+    //    BytesDestino.WriteUInt32LE(BmpEncoder.COMPRESS, this.Posicao);
+    //    this.Posicao += 4;
+    //    BytesDestino.WriteUInt32LE(this.TamanhoFrameRgb, this.Posicao);
+    //    this.Posicao += 4;
+    //    BytesDestino.WriteUInt32LE(BmpEncoder.HR, this.Posicao);
+    //    this.Posicao += 4;
+    //    BytesDestino.WriteUInt32LE(BmpEncoder.VR, this.Posicao);
+    //    this.Posicao += 4;
+    //    BytesDestino.WriteUInt32LE(BmpEncoder.COLORS, this.Posicao);
+    //    this.Posicao += 4;
+    //    BytesDestino.WriteUInt32LE(BmpEncoder.IMPORTANT_COLORS, this.Posicao);
+    //    this.Posicao += 4;
+
+    //    var i = 0;
+    //    var rowBytes = 3 * this.Largura + this.TotalBytesExtraPorLinha;
+
+    //    for (var y = this.Altura - 1; y >= 0; y--)
+    //    {
+    //        for (var x = 0; x < this.Largura; x++)
+    //        {
+    //            var p = this.Posicao + y * rowBytes + x * 3;
+    //            BytesDestino[p + 2] = pixelsOrigem[i++];//r
+    //            BytesDestino[p + 1] = pixelsOrigem[i++];//g
+    //            BytesDestino[p] = pixelsOrigem[i++];//b
+    //            if (this.BufferAlpha)
+    //            {
+    //                i++;
+    //            }
+    //        }
+    //        //if (this.ExtraBytes > 0)
+    //        //{
+    //        //    var fillOffset = this.pos + y * rowBytes + this.Width * 3;
+    //        //    BytesDestino.fill(0, fillOffset, fillOffset + this.ExtraBytes);
+    //        //}
+    //    }
+    //    this.streamDestino.Write(BytesDestino, 0, BytesDestino.Length);
     //}
 
 }
+
+public static class Extensoes
+{
+    public static void Write(this byte[] origem, string conteudo, int offset)
+    {
+        Extensoes.Write(origem, conteudo, offset, conteudo.Length);
+    }
+
+    public static void Write(this byte[] origem, string conteudo, int offset, int length)
+    {
+        Extensoes.Write(origem, conteudo, offset, length, Encoding.UTF8);
+    }
+
+    public static void Write(this byte[] origem, string conteudo, int offset, int length, Encoding encoding)
+    {
+        var bytes = encoding.GetBytes(conteudo.ToCharArray(), 0, length);
+        Extensoes.WriteBytes(origem, bytes, offset);
+    }
+
+    public static void WriteUInt32LE(this byte[] origem, int valor, int offset)
+    {
+        WriteUInt32LE(origem, (uint)valor, offset);
+    }
+
+    public static void WriteUInt32LE(this byte[] origem, uint valor, int offset)
+    {
+        var bytes = BitConverter.GetBytes(valor);
+        Extensoes.WriteBytes(origem, bytes, offset);
+    }
+
+    public static void WriteUInt16LE(this byte[] origem, short valor, int offset)
+    {
+        Extensoes.WriteUInt16LE(origem, (ushort)valor, offset);
+    }
+
+    public static void WriteUInt16LE(this byte[] origem, ushort valor, int offset)
+    {
+        var bytes = BitConverter.GetBytes(valor);
+        Extensoes.WriteBytes(origem, bytes, offset);
+
+    }
+
+    public static void fill(this byte[] origem, byte valor, int offset, int fim)
+    {
+        var bytes = new byte[fim - offset];
+        Extensoes.WriteBytes(origem, bytes, offset);
+    }
+
+    public static void WriteBytes(this byte[] origem, byte[] bytes, int offset)
+    {
+        for (var i = 0; i < bytes.Length; i++)
+        {
+            origem[offset + i] = bytes[i];
+        }
+    }
+
+    //public static byte[] GetPixels(this BitmapSource origem, EnumPixelFormato formato)
+    //{
+    //    var stride = origem.PixelWidth * 4;
+    //    var rgb24 = new FormatConvertedBitmap(origem, PixelFormats.Rgb24, null, 0);
+    //    var pixelsRgb24 = new byte[origem.PixelHeight * stride];
+    //    rgb24.CopyPixels(pixelsRgb24, stride, 0);
+
+    //    if (formato == EnumPixelFormato.Rgb24)
+    //    {
+    //        return pixelsRgb24;
+    //    }
+
+    //    if (formato == EnumPixelFormato.Rgba)
+    //    {
+    //        var pixelsRgba = new byte[origem.PixelHeight * stride];
+    //        for (var linha = 0; linha < origem.PixelHeight; linha++)
+    //        {
+    //            for (var coluna = 0; coluna < origem.PixelWidth; coluna++)
+    //            {
+    //                var posicaoRgb24 = (linha * stride) + (coluna * 3);
+    //                var posicaoRgba = (linha * stride) + (coluna * 4);
+
+    //                var r = pixelsRgb24[posicaoRgb24];
+    //                var g = pixelsRgb24[posicaoRgb24 + 1];
+    //                var b = pixelsRgb24[posicaoRgb24 + 2];
+
+    //                pixelsRgba[posicaoRgba] = r;
+    //                pixelsRgba[posicaoRgba + 1] = g;
+    //                pixelsRgba[posicaoRgba + 2] = b;
+    //            }
+
+    //        }
+    //        return pixelsRgba;
+    //    }
+
+    //    throw new NotSupportedException();
+
+    //}
+}
+
+//public enum EnumPixelFormato
+//{
+//    Rgba,
+//    Rgb24,
+//}
 
 //private void SalvarInterno()
 //{

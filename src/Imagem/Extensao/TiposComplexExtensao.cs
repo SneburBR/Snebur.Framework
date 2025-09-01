@@ -1,20 +1,17 @@
-﻿using System.Drawing;
+using System.Drawing;
 using Snebur.Dominio;
 
-namespace Snebur
+namespace Snebur;
+
+public static class TiposComplexExtensao
 {
-    public static class TiposComplexExtensao
+    public static Size RetornarDimensaoDrawing(this Dimensao dimensao)
     {
-        public static Size RetornarDimensaoDrawing(this Dimensao dimensao)
-        {
-            return new Size((int)dimensao.Largura, (int)dimensao.Altura);
-        }
+        return new Size((int)dimensao.Largura, (int)dimensao.Altura);
+    }
 
-        public static Size RetornarDimensaoVisualizacaoDrawing(this Dimensao dimensao)
-        {
-            return new Size(dimensao.LarguraVisualizacao, dimensao.AlturaVisualizacao);
-        }
-
-       
+    public static Size RetornarDimensaoVisualizacaoDrawing(this Dimensao dimensao)
+    {
+        return new Size(dimensao.LarguraVisualizacao, dimensao.AlturaVisualizacao);
     }
 }

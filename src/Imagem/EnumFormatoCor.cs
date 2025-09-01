@@ -1,12 +1,10 @@
-﻿namespace Snebur.Imagens
-{
-    public enum EnumFormatoCor
-    {
-        Rgb,
-        Cmyk,
-        Indexed,
-        Grayscale,
-        Desconhecido
-    }
+namespace Snebur.Imagens;
 
+public enum EnumFormatoCor
+{
+    Rgb,
+    Cmyk,
+    Indexed,
+    Grayscale,
+    Desconhecido
 }

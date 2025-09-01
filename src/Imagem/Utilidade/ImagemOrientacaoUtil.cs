@@ -1,4 +1,4 @@
-﻿
+
 namespace Snebur.Utilidade
 {
     using System;
@@ -69,7 +69,6 @@ namespace Snebur.Utilidade
                 cache.Freeze();
                 return cache;
             }
-
         }
 
         private static double RetornarScalar(BitmapSource frame, double larguraMaxima, double alturaMaxima, bool isDentro)
@@ -170,7 +169,4 @@ namespace Snebur.Utilidade
 
 namespace Snebur.Imagens
 {
-    using System.Diagnostics;
-    using System.Runtime.InteropServices;
-
 }

@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+namespace Snebur.Imagens;
 
-namespace Snebur.Imagens
+public interface ImageData
 {
-    public interface ImageData
-    {
-        int width { get; set; }
-        int height { get; set; }
-        byte[] data { get; set; }
-    }
+    int width { get; }
+    int height { get; }
+    byte[] data { get; }
+}
 
-    public class ImagemDataInstancia : ImageData
-    {
-        public int width { get; set; }
-        public int height { get; set; }
-        public byte[] data { get; set; }
-    }
+public class ImagemDataInstancia : ImageData
+{
+    public required int width { get; init; }
+    public required int height { get; init; }
+    public required byte[] data { get; init; }
 }

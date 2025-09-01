@@ -1,25 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+namespace Snebur.Imagens;
 
-namespace Snebur.Imagens
+public class ConfiguracaoTeste
 {
-    public class ConfiguracaoTeste
-    {
-        private static bool _salvarImagemTemporaria = false;
+    private static bool _salvarImagemTemporaria = false;
 
-        public static bool SalvarImagemTemporaria
+    public static bool SalvarImagemTemporaria
+    {
+        get
         {
-            get
-            {
 #if DEBUG
-                return ConfiguracaoTeste._salvarImagemTemporaria;
+            return ConfiguracaoTeste._salvarImagemTemporaria;
 #else
-                return false;
+            return false;
 #endif
 
-            }
         }
     }
 }
