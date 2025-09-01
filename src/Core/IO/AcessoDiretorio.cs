@@ -10,16 +10,13 @@ public class AcessoDiretorio : IAcessoDiretorio
 
     public string? Dominio { get; set; }
 
-    public string? Usuario { get; set; }
+    public string Usuario { get; set; }
 
-    public string? Senha { get; set; }
+    public string Senha { get; set; }
 
-    public AcessoDiretorio()
-    {
-    }
 
     public AcessoDiretorio(bool isAutenticar,
-                           string dominio,
+                           string? dominio,
                            string usuario,
                            string senha)
     {
@@ -28,6 +25,7 @@ public class AcessoDiretorio : IAcessoDiretorio
         this.Usuario = usuario;
         this.Senha = senha;
     }
+
     public string NomeComputador
     {
         get

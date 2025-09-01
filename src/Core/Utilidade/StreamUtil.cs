@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -43,6 +43,7 @@ public static class StreamUtil
         Action<StreamProgressEventArgs>? callbackProgresso = null,
         long contentLenght = 0)
     {
+
         if (streamOrigem.CanSeek)
         {
             streamOrigem.Seek(0, SeekOrigin.Begin);

@@ -170,12 +170,12 @@ public partial class DiretorioUtil
         }
     }
 
-    public static void ExcluirDiretorio(string caminho)
+    public static void ExcluirDiretorio(string? caminho)
     {
         ExcluirDiretorio(caminho, true, false);
     }
 
-    public static void ExcluirDiretorio(string caminho,
+    public static void ExcluirDiretorio(string? caminho,
                                         bool isExcluirTodosArquivos,
                                         bool ignorarErro,
                                         bool isForcar = false)
@@ -183,14 +183,14 @@ public partial class DiretorioUtil
         if (isExcluirTodosArquivos)
         {
             ExcluirTodosArquivo(caminho,
-                                              true,
-                                              ignorarErro,
-                                              isForcar);
+                true,
+                ignorarErro,
+                isForcar);
         }
         ExcluirDiretorioInterno(caminho, true, ignorarErro);
     }
 
-    private static bool ExcluirDiretorioInterno(string caminho, bool recursivo, bool ignorarErro)
+    private static bool ExcluirDiretorioInterno(string? caminho, bool recursivo, bool ignorarErro)
     {
         if (File.Exists(caminho))
         {
@@ -293,7 +293,7 @@ public partial class DiretorioUtil
                                           false);
     }
 
-    public static void ExcluirTodosArquivo(string caminhoDiretorio,
+    public static void ExcluirTodosArquivo(string? caminhoDiretorio,
                                            bool isIncluirSubDiretorios,
                                            bool isIgnorarErro,
                                            bool isForcar = false,

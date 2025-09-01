@@ -1,4 +1,5 @@
-﻿using System.Net.NetworkInformation;
+using Newtonsoft.Json.Linq;
+using System.Net.NetworkInformation;
 
 namespace Snebur.Utilidade;
 
@@ -78,6 +79,15 @@ public static class RedeUtil
         {
             var posicao = nomeComputador.IndexOf(@"\");
             return nomeComputador.Substring(0, posicao);
+        }
+        return nomeComputador;
+    }
+
+    public static string NormalizarNomeComputadorParaUnc(string nomeComputador)
+    {
+        if (!nomeComputador.StartsWith(@"\\"))
+        {
+            return @"\\" + nomeComputador;
         }
         return nomeComputador;
     }
