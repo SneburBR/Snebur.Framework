@@ -7,21 +7,23 @@
 		<RootNamespace>Snebur.Computador</RootNamespace>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-		<Nullable>disable</Nullable>
+		<Nullable>enable</Nullable>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<LangVersion>preview</LangVersion>
 	</PropertyGroup>
-   
-	  
+
+
 	<ItemGroup>
-	  <PackageReference Include="System.DirectoryServices" Version="9.0.7" />
-	  <PackageReference Include="System.DirectoryServices.AccountManagement" Version="9.0.7" />
-	  <PackageReference Include="System.Management" Version="9.0.7" />
+		<PackageReference Include="System.DirectoryServices" Version="9.0.7" />
+		<PackageReference Include="System.DirectoryServices.AccountManagement" Version="9.0.7" />
+		<PackageReference Include="System.Management" Version="9.0.7" />
 	</ItemGroup>
-	  
+
 	<ItemGroup>
-	  <ProjectReference Include="..\Core\Snebur.csproj" />
+		<ProjectReference Include="..\Core\Snebur.csproj" />
 	</ItemGroup>
-	
-	 
+
+
 
 
 
