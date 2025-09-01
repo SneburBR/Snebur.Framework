@@ -1,9 +1,8 @@
-﻿namespace Snebur.Depuracao
+namespace Snebur.Depuracao;
+
+public enum EnumTipoMensagem
 {
-    public enum EnumTipoMensagem
-    {
-        Ping =1,
-        AtualizarEstiloCss = 2,
-        AtualizarControle =3
-    }
+    Ping =1,
+    AtualizarEstiloCss = 2,
+    AtualizarControle =3
 }

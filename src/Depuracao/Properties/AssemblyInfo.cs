@@ -1,6 +1,5 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
 
 [assembly: AssemblyTitle("Snebur.Depuracao")]
 [assembly: AssemblyConfiguration("")]

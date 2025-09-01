@@ -1,17 +1,20 @@
-﻿
-namespace Snebur.Depuracao
+
+namespace Snebur.Depuracao;
+
+public class MensagemEstiloCssAlterado : Mensagem
 {
-    public class MensagemEstiloCssAlterado : Mensagem
+
+    #region Campos Privados
+
+    private string _nomeArquivo;
+
+    #endregion
+
+    public MensagemEstiloCssAlterado(string nomeArquivo)
     {
-
-		#region Campos Privados
-
-        private string _nomeArquivo;
-
-		#endregion
-
-        public string NomeArquivo { get => this.RetornarValorPropriedade(this._nomeArquivo); set => this.NotificarValorPropriedadeAlterada(this._nomeArquivo, this._nomeArquivo = value); }
-
-
+        this._nomeArquivo = nomeArquivo;
     }
+
+    public string NomeArquivo { get => this.GetPropertyValue(this._nomeArquivo); set => this.SetProperty(this._nomeArquivo, this._nomeArquivo = value); }
+
 }

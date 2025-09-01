@@ -1,12 +1,8 @@
-﻿using Snebur.Dominio;
+namespace Snebur.Depuracao;
 
-namespace Snebur.Depuracao
+public abstract class Mensagem : BaseDominio
 {
-    public abstract class Mensagem : BaseDominio
-    {
-        #region Campos Privados
+    #region Campos Privados
 
-
-        #endregion
-    }
+    #endregion
 }
