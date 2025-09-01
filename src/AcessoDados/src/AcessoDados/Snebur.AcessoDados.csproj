@@ -21,6 +21,4 @@
 		<Compile Remove="Contexto\BaseContextoDados.cs" />
 	</ItemGroup>
 
-
-
 </Project>

@@ -182,4 +182,14 @@ public static class EnumUtil
         var flags = RetornarFlags<TEnum>((Enum)attributes);
         return flags.Contains(flag);
     }
+
+    public static bool IsDefined<TEnum>(TEnum value)
+       where TEnum : struct, Enum
+    {
+        if (!Enum.IsDefined(value))
+        {
+            return false;
+        }
+        return false;
+    }
 }

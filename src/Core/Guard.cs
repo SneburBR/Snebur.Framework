@@ -1,4 +1,5 @@
 using Snebur.Helpers;
+using Snebur.Utilidade;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -87,6 +88,19 @@ public static class Guard
 
         if (value.Count > 0)
             throw new ArgumentException($"{paramName} must be empty.", paramName);
+    }
+
+    public static void EnumDefined<TEnum>(
+        [NotNull] TEnum value,
+        [CallerArgumentExpression(nameof(value))] string paramName = "")
+        where TEnum : struct, Enum
+    {
+        if (!EnumUtil.IsDefined(value))
+        {
+            throw new ArgumentException(
+                $"Parameter '{paramName}' with value '{value}' is not defined into enum '{typeof(TEnum).Name}'. Please provide a valid enum value.",
+                paramName);
+        }
     }
 }
 

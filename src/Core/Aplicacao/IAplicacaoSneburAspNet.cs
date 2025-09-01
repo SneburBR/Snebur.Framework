@@ -1,4 +1,4 @@
-﻿using Snebur.Comunicacao;
+using Snebur.Comunicacao;
 using Snebur.Dominio.Atributos;
 
 namespace Snebur;
@@ -8,7 +8,7 @@ public interface IAplicacaoSneburAspNet
 {
     bool IsPossuiRequisicaoAspNetAtiva { get; }
     string RetornarValueCabecalho(string chave);
-    T GetHttpContext<T>();
+    T? GetHttpContext<T>();
 
     //string RetornarUrlRequisicao();
 
@@ -24,10 +24,10 @@ public interface IAplicacaoSneburAspNet
     //string IdentificadorProprietarioRequisicaoAtual { get; }
 
     //[EditorBrowsable(EditorBrowsableState.Never)]
-    string UserAgent { get; }
-    string IpRequisicao { get; }
+    string? UserAgent { get; }
+    string? IpRequisicao { get; }
 
-    InfoRequisicao RetornarInfoRequisicao();
+    InfoRequisicao? RetornarInfoRequisicao();
 
     //string RetornarIpDaRequisicao();
 }

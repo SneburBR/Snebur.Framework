@@ -259,7 +259,7 @@ public abstract class BaseDominio : IBaseDominio, IBaseDominioReferencia, INotif
     //    this.NotificarValorPropriedadeAlterada(antigoValor, novoValor, nomePropriedade);
     //}
 
-    internal protected virtual T? GetPropertyValue<T>(T? valor, [CallerMemberName] string nomePropriedade = "")
+    internal protected virtual T GetPropertyValue<T>(T valor, [CallerMemberName] string nomePropriedade = "")
     {
         return valor;
     }

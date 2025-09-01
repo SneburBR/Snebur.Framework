@@ -198,8 +198,8 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntidadeIntern
         return this.Get(valor, nomePropriedade);
     }
 
-    protected internal override T? GetPropertyValue<T>(
-        T? valor,
+    protected internal override T GetPropertyValue<T>(
+        T valor,
         [CallerMemberName] string nomePropriedade = "") where T : default
     {
         throw new InvalidOperationException($"Use Get<T> method instead");
@@ -900,7 +900,7 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntidadeIntern
     //Isso deve ser implementado apenas no domino do lado do cliente.
     //deve IsAplicacaoCliente ser true
 
-   
+
     internal protected string? RetornarDescricaoComDeletado(
         [NotNullIfNotNull(nameof(descricao))]
         string? descricao)
