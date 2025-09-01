@@ -1,21 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
- 
+
 	<PropertyGroup>
 		<TargetFrameworks>net9.0</TargetFrameworks>
 		<RootNamespace>Snebur.ServicoArquivo</RootNamespace>
 		<Version>2.0.0</Version>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-		<Nullable>disable</Nullable>
 		<AssemblyName>Snebur.ServicoArquivo.Cliente</AssemblyName>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<Nullable>enable</Nullable>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<LangVersion>preview</LangVersion>
 	</PropertyGroup>
-   
+
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\Comunicacao\src\Comunicacao\Snebur.Comunicacao.csproj" />
-	  <ProjectReference Include="..\..\..\Core\Snebur.csproj" />
-	  <ProjectReference Include="..\..\..\Seguranca\Snebur.Seguranca.csproj" />
-	  <ProjectReference Include="..\ServicoArquivo\Snebur.ServicoArquivo.csproj" />
+		<ProjectReference Include="..\..\..\Comunicacao\src\Comunicacao\Snebur.Comunicacao.csproj" />
+		<ProjectReference Include="..\..\..\Core\Snebur.csproj" />
+		<ProjectReference Include="..\..\..\Seguranca\Snebur.Seguranca.csproj" />
+		<ProjectReference Include="..\ServicoArquivo\Snebur.ServicoArquivo.csproj" />
 	</ItemGroup>
- 
+
 
 </Project>
