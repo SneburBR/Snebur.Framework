@@ -153,7 +153,9 @@ public abstract class BaseEnviadorArquivo<TArquivo> : IDisposable where TArquivo
         var parametros = this.RetornarParametros(pacote.Length);
         var urlEnviarImagem = this.RetornarUrlEnviarArquivo();
 
+#pragma warning disable SYSLIB0014 // Type or member is obsolete
         var requisicao = (HttpWebRequest)WebRequest.Create(urlEnviarImagem);
+#pragma warning restore SYSLIB0014 // Type or member is obsolete
 
         //ServicePointManager.Expect100Continue = true;
         //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 |

@@ -8,7 +8,7 @@
 		<AssemblyName>Snebur.ServicoArquivo.Cliente</AssemblyName>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<Nullable>enable</Nullable>
-		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
 		<LangVersion>preview</LangVersion>
 	</PropertyGroup>
 

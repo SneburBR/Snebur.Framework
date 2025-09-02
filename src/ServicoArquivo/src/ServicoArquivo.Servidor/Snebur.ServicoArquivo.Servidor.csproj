@@ -17,14 +17,12 @@
 		<ProjectReference Include="..\..\..\AspNet\Snebur.AspNet.csproj" />
 		<ProjectReference Include="..\..\..\Computador\Snebur.Computador.csproj" />
 	</ItemGroup>
-
-	 
+ 
 	<!--<ItemGroup Condition="'$(TargetFramework)' == 'net9.0' ">
 
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>-->
-
-  
+ 
 	<ItemGroup>
 	  <Compile Include="..\ServicoArquivo.Comunicacao\Seguranca\CredencialComunicacaoServicoArquivo.cs" Link="Comunicacao\Seguranca\CredencialComunicacaoServicoArquivo.cs" />
 	  <Compile Include="..\ServicoArquivo.Comunicacao\Seguranca\CredencialUsuarioComunicacaoServicoArquivo.cs" Link="Comunicacao\Seguranca\CredencialUsuarioComunicacaoServicoArquivo.cs" />
@@ -32,7 +30,5 @@
 	<ItemGroup>
 	  <Folder Include="Comunicacao\Seguranca\" />
 	</ItemGroup>
-
-
-
+ 
 </Project>
