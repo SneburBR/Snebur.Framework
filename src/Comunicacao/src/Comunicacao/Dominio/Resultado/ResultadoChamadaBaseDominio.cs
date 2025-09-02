@@ -1,11 +1,10 @@
-﻿namespace Snebur.Comunicacao.Dominio.Resultado
+namespace Snebur.Comunicacao.Dominio;
+
+public class ResultadoChamadaBaseDominio : ResultadoChamada
 {
-    public class ResultadoChamadaBaseDominio : ResultadoChamada
-    {
-        #region Campos Privados
+    #region Campos Privados
 
-        #endregion
+    #endregion
 
-        public BaseDominio? BaseDominio { get; set; }
-    }
+    public BaseDominio? BaseDominio { get; set; }
 }

@@ -1,10 +1,9 @@
-﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Atributos;
 
-namespace Snebur.Comunicacao.Dominio.ServicoRegrasNegocio
+namespace Snebur.Comunicacao.Dominio;
+
+[IgnorarInterfaceTS]
+public interface IAplicacaoServicoRegraNegocio
 {
-    [IgnorarInterfaceTS]
-    public interface IAplicacaoServicoRegraNegocio
-    {
-        IServicoRegrasNegocioCliente ServicoRegrasNegocio { get; }
-    }
+    IServicoRegrasNegocioCliente ServicoRegrasNegocio { get; }
 }

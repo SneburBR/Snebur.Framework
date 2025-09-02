@@ -1,12 +1,11 @@
-﻿namespace Snebur.Comunicacao.Dominio.Chamada
+namespace Snebur.Comunicacao.Dominio;
+
+
+public class ParametroChamadaNulo : ParametroChamada
 {
 
-    public class ParametroChamadaNulo : ParametroChamada
-    {
+    #region Campos Privados
 
-        #region Campos Privados
+    #endregion
 
-        #endregion
-
-    }
 }

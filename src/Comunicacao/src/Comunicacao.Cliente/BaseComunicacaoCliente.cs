@@ -1,9 +1,4 @@
-﻿using Snebur.AcessoDados;
-using Snebur.Dominio;
-using Snebur.Seguranca;
-using Snebur.Utilidade;
-using System;
-using System.Collections.Generic;
+using Snebur.AcessoDados;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
@@ -170,7 +165,7 @@ namespace Snebur.Comunicacao
 
             var nomeMetodo = this.RetornarNomeMetodo(metodoChamada, isAsync);
             var operacao = nomeMetodo;
-            
+
             var cabecalho = new Cabecalho
             {
                 IdentificadorProprietario = identificadorPropriedade,
@@ -188,7 +183,7 @@ namespace Snebur.Comunicacao
                 Operacao = operacao,
                 DataHora = DateTime.UtcNow,
             };
-             
+
             var parametrosChamada = this.RetornarParametrosChamada(metodoChamada, metodoParametros, isAsync, valoresParametro);
             contrato.Parametros.AddRange(parametrosChamada);
             return contrato;
@@ -231,16 +226,16 @@ namespace Snebur.Comunicacao
                 var valorPametro = valoresParametro[i];
                 var parametro = parametros[i];
 
-                if (valorPametro != null && 
+                if (valorPametro != null &&
                     !ReflexaoUtil.IsTipoIgualOuHerda(valorPametro.GetType(), parametro.ParameterType))
                 {
-                     throw new Exception($"O tipo do parâmetro {parametro.Name} '{parametro.ParameterType.Name}' é diferente do valor '{valorPametro.GetType().Name}'");
+                    throw new Exception($"O tipo do parâmetro {parametro.Name} '{parametro.ParameterType.Name}' é diferente do valor '{valorPametro.GetType().Name}'");
                 }
                 parametrosChamada.Add(this.RetornarParametroChamada(parametro, valorPametro));
             }
             return parametrosChamada;
         }
-         
+
         #endregion
 
         #region IBaseServico
@@ -256,7 +251,7 @@ namespace Snebur.Comunicacao
             object[] parametros = { };
             return this.ChamarServico<DateTime>(MethodBase.GetCurrentMethod(), parametros);
         }
-         
+
         #endregion
 
     }

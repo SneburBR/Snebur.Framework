@@ -1,11 +1,10 @@
-﻿namespace Snebur.Comunicacao.Dominio.Resultado
+namespace Snebur.Comunicacao.Dominio;
+
+public class ResultadoChamadaErroInternoServidor : ResultadoChamadaErro
 {
-    public class ResultadoChamadaErroInternoServidor : ResultadoChamadaErro
-    {
 
-        #region Campos Privados
+    #region Campos Privados
 
-        #endregion
+    #endregion
 
-    }
 }

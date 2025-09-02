@@ -1,19 +1,18 @@
-namespace Snebur.Comunicacao.Dominio.Chamada
+namespace Snebur.Comunicacao.Dominio;
+
+
+public class ParametroChamadaListaEnum : ParametroChamadaLista
 {
+    #region Campos Privados
 
-    public class ParametroChamadaListaEnum : ParametroChamadaLista
-    {
-        #region Campos Privados
+    private string? _nomeTipoEnum;
+    private string? _namespaceEnum;
 
-        private string? _nomeTipoEnum;
-        private string? _namespaceEnum;
+    #endregion
 
-        #endregion
+    public string? NomeTipoEnum { get => this.GetPropertyValue(this._nomeTipoEnum); set => this.SetProperty(this._nomeTipoEnum, this._nomeTipoEnum = value); }
 
-        public string? NomeTipoEnum { get => this.GetPropertyValue(this._nomeTipoEnum); set => this.SetProperty(this._nomeTipoEnum, this._nomeTipoEnum = value); }
+    public string? NamespaceEnum { get => this.GetPropertyValue(this._namespaceEnum); set => this.SetProperty(this._namespaceEnum, this._namespaceEnum = value); }
 
-        public string? NamespaceEnum { get => this.GetPropertyValue(this._namespaceEnum); set => this.SetProperty(this._namespaceEnum, this._namespaceEnum = value); }
-
-        public List<int> Valores { get; set; } = new();
-    }
+    public List<int> Valores { get; set; } = new();
 }

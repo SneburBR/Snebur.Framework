@@ -1,19 +1,18 @@
-﻿using System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
 
-namespace Snebur.Comunicacao
+namespace Snebur.Comunicacao;
+
+[Serializable]
+public class ErroDeserializarContrato : ErroComunicacao
 {
-    [Serializable]
-    public class ErroDeserializarContrato : ErroComunicacao
-    {
-        public string Json { get; set; }
+    public string Json { get; set; }
 
-        public ErroDeserializarContrato(string json, Exception erroInterno,
-                                      [CallerMemberName] string nomeMetodo = "",
-                                      [CallerFilePath] string caminhoArquivo = "",
-                                      [CallerLineNumber] int linhaDoErro = 0) :
-                                       base("Não foi possivel deserializar o conteudo", erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
-        {
-            this.Json = json;
-        }
+    public ErroDeserializarContrato(string json, Exception erroInterno,
+                                  [CallerMemberName] string nomeMetodo = "",
+                                  [CallerFilePath] string caminhoArquivo = "",
+                                  [CallerLineNumber] int linhaDoErro = 0) :
+                                   base("Não foi possivel deserializar o conteudo", erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
+    {
+        this.Json = json;
     }
 }

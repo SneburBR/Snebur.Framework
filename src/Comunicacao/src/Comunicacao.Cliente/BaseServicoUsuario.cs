@@ -1,7 +1,4 @@
-﻿using Snebur.AcessoDados;
-using Snebur.Dominio;
-using Snebur.Seguranca;
-using System;
+using Snebur.AcessoDados;
 using System.Reflection;
 using System.Threading.Tasks;
 

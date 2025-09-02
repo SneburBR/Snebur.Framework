@@ -1,5 +1,3 @@
-﻿using System;
-
 namespace Snebur.Comunicacao
 {
     public class ArgsResultadoChamadaServico : System.ComponentModel.AsyncCompletedEventArgs

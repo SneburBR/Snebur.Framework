@@ -1,9 +1,8 @@
-﻿namespace Snebur.Comunicacao.Dominio
-{
-    //public class ErroServico : BaseTipoComunicao
-    //{
-    //	public string NomeServico { get; set; }
+namespace Snebur.Comunicacao.Dominio;
 
-    //	public string MensagemErro { get; set; }
-    //}
-}
+//public class ErroServico : BaseTipoComunicao
+//{
+//	public string NomeServico { get; set; }
+
+//	public string MensagemErro { get; set; }
+//}

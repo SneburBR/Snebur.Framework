@@ -1,17 +1,16 @@
 using Snebur.Reflexao;
 
-namespace Snebur.Comunicacao.Dominio.Resultado
+namespace Snebur.Comunicacao.Dominio;
+
+public class ResultadoChamadaListaTipoPrimario : ResultadoChamadaLista
 {
-    public class ResultadoChamadaListaTipoPrimario : ResultadoChamadaLista
-    {
-        #region Campos Privados
+    #region Campos Privados
 
-        private EnumTipoPrimario _tipoPrimarioEnum;
+    private EnumTipoPrimario _tipoPrimarioEnum;
 
-        #endregion
+    #endregion
 
-        public List<object> Valores { get; set; } = new();
+    public List<object> Valores { get; set; } = new();
 
-        public EnumTipoPrimario TipoPrimarioEnum { get => this.GetPropertyValue(this._tipoPrimarioEnum); set => this.SetProperty(this._tipoPrimarioEnum, this._tipoPrimarioEnum = value); }
-    }
+    public EnumTipoPrimario TipoPrimarioEnum { get => this.GetPropertyValue(this._tipoPrimarioEnum); set => this.SetProperty(this._tipoPrimarioEnum, this._tipoPrimarioEnum = value); }
 }

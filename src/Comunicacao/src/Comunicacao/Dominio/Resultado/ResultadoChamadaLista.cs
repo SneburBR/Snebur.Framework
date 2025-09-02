@@ -1,13 +1,12 @@
-namespace Snebur.Comunicacao.Dominio.Resultado
+namespace Snebur.Comunicacao.Dominio;
+
+public abstract class ResultadoChamadaLista : ResultadoChamada
 {
-    public abstract class ResultadoChamadaLista : ResultadoChamada
-    {
-        #region Campos Privados
+    #region Campos Privados
 
-        private string? _assemblyQualifiedName;
+    private string? _assemblyQualifiedName;
 
-        #endregion
+    #endregion
 
-        public string? AssemblyQualifiedName { get => this.GetPropertyValue(this._assemblyQualifiedName); set => this.SetProperty(this._assemblyQualifiedName, this._assemblyQualifiedName = value); }
-    }
+    public string? AssemblyQualifiedName { get => this.GetPropertyValue(this._assemblyQualifiedName); set => this.SetProperty(this._assemblyQualifiedName, this._assemblyQualifiedName = value); }
 }

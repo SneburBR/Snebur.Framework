@@ -1,0 +1,9 @@
+global using Snebur.Comunicacao.Dominio;
+global using Snebur.Comunicacao.Utilidade;
+global using Snebur.Dominio;
+global using Snebur.Seguranca;
+global using Snebur.Utilidade;
+global using System;
+global using System.Collections;
+global using System.Collections.Generic;
+global using System.Net;

@@ -1,12 +1,11 @@
-﻿namespace Snebur.Comunicacao.Dominio.Mensageiro
+namespace Snebur.Comunicacao.Dominio;
+
+public class Remetente : BaseDominio
 {
-    public class Remetente : BaseDominio
-    {
 
-        #region Campos Privados
+    #region Campos Privados
 
-        #endregion
+    #endregion
 
-        private IUsuario? Usuario { get; set; }
-    }
+    private IUsuario? Usuario { get; set; }
 }

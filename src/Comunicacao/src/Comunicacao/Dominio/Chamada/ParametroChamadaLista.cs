@@ -1,9 +1,8 @@
-﻿namespace Snebur.Comunicacao.Dominio.Chamada
-{
-    public abstract class ParametroChamadaLista : ParametroChamada
-    {
-        #region Campos Privados
+namespace Snebur.Comunicacao.Dominio;
 
-        #endregion
-    }
+public abstract class ParametroChamadaLista : ParametroChamada
+{
+    #region Campos Privados
+
+    #endregion
 }

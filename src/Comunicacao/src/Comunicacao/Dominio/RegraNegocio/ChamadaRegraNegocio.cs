@@ -1,17 +1,16 @@
-namespace Snebur.Comunicacao.Dominio.RegraNegocio
+namespace Snebur.Comunicacao.Dominio;
+
+public class ChamadaRegraNegocio : BaseComunicao
 {
-    public class ChamadaRegraNegocio : BaseComunicao
-    {
 
-        #region Campos Privados
+    #region Campos Privados
 
-        private string? _assemblyQualifiedName;
-        private string? _nomeMetodo;
+    private string? _assemblyQualifiedName;
+    private string? _nomeMetodo;
 
-        #endregion
+    #endregion
 
-        public string? AssemblyQualifiedName { get => this.GetPropertyValue(this._assemblyQualifiedName); set => this.SetProperty(this._assemblyQualifiedName, this._assemblyQualifiedName = value); }
+    public string? AssemblyQualifiedName { get => this.GetPropertyValue(this._assemblyQualifiedName); set => this.SetProperty(this._assemblyQualifiedName, this._assemblyQualifiedName = value); }
 
-        public string? NomeMetodo { get => this.GetPropertyValue(this._nomeMetodo); set => this.SetProperty(this._nomeMetodo, this._nomeMetodo = value); }
-    }
+    public string? NomeMetodo { get => this.GetPropertyValue(this._nomeMetodo); set => this.SetProperty(this._nomeMetodo, this._nomeMetodo = value); }
 }
