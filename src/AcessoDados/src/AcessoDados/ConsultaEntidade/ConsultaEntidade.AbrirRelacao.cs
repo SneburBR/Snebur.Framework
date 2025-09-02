@@ -20,7 +20,7 @@ public partial class ConsultaEntidade<TEntidade> where TEntidade : IEntidade
         return this.AbrirRelacao(this.EstruturaConsulta, caminhoPropriedade, false);
     }
 
-    public ConsultaEntidade<TEntidade> AbrirRelacao<TRelacao>(Expression<Func<TEntidade, TRelacao>> expressao) where TRelacao : IEntidade
+    public ConsultaEntidade<TEntidade> AbrirRelacao<TRelacao>(Expression<Func<TEntidade, TRelacao?>> expressao) where TRelacao : IEntidade
     {
         var expressaoBase = (Expression)expressao;
         return this.AbrirRelacao(this.EstruturaConsulta, expressaoBase, false);

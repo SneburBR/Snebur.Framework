@@ -6,20 +6,20 @@ public static class ContextoDadosExtensao
 {
     public static ResultadoSalvar SalvarPropriedade<TEntidade>(this IContextoDados contexto,
                                                      TEntidade entidade,
-                                                     Expression<Func<TEntidade, object>> expressaoPropriedad) where TEntidade : Entidade
+                                                     Expression<Func<TEntidade, object?>> expressaoPropriedade) where TEntidade : Entidade
     {
-        return SalvarPropriedades(contexto, entidade, expressaoPropriedad);
+        return SalvarPropriedades(contexto, entidade, expressaoPropriedade);
     }
     public static ResultadoSalvar SalvarPropriedade<TEntidade>(this IContextoDados contexto,
                                                     IEnumerable<TEntidade> entidades,
-                                                    Expression<Func<TEntidade, object>> expressaoProprieda) where TEntidade : Entidade
+                                                    Expression<Func<TEntidade, object?>> expressaoProprieda) where TEntidade : Entidade
     {
         return SalvarPropriedades(contexto, entidades, expressaoProprieda);
     }
 
     public static ResultadoSalvar SalvarPropriedades<TEntidade>(this IContextoDados contexto,
                                                                 TEntidade entidade,
-                                                                params Expression<Func<TEntidade, object>>[] expressoesPropriedade) where TEntidade : Entidade
+                                                                params Expression<Func<TEntidade, object?>>[] expressoesPropriedade) where TEntidade : Entidade
     {
         if (!entidade.__IsIdentity)
         {
@@ -63,7 +63,7 @@ public static class ContextoDadosExtensao
 
     public static ResultadoSalvar SalvarPropriedades<TEntidade>(this IContextoDados contexto,
                                                      IEnumerable<TEntidade> entidades,
-                                                     params Expression<Func<TEntidade, object>>[] expressoesPropriedade) where TEntidade : Entidade
+                                                     params Expression<Func<TEntidade, object?>>[] expressoesPropriedade) where TEntidade : Entidade
     {
         var entidadesSalvar = new List<TEntidade>();
         var propriedadesAbertas = new List<PropertyInfo>();
@@ -110,8 +110,6 @@ public static class ContextoDadosExtensao
         }
         return resultado;
     }
-
-
 
     public static void RecuperarPropriedade<TEntidade>(this IContextoDados contexto,
                                                       TEntidade entidade,
@@ -167,7 +165,7 @@ public static class ContextoDadosExtensao
         AbrirRelacoes(contexto, entidade, expressaoRelacao);
     }
     public static void AbrirRelacao<TEntidade, TRelacao>(this IContextoDados contexto,
-                                                IEnumerable<TEntidade> entidade, Expression<Func<TEntidade, TRelacao>> expressaoRelacao) where TEntidade : Entidade where TRelacao : Entidade
+                                                IEnumerable<TEntidade> entidade, Expression<Func<TEntidade, TRelacao>> expressaoRelacao) where TEntidade : Entidade where TRelacao : Entidade?
     {
         AbrirRelacoes(contexto, entidade, expressaoRelacao);
     }
@@ -204,7 +202,7 @@ public static class ContextoDadosExtensao
 
     public static void AbrirRelacoes<TEntidade, TRelacao>(this IContextoDados contexto,
                                                          IEnumerable<TEntidade> entidades,
-                                                          params Expression<Func<TEntidade, TRelacao>>[] expressoesRelacao) where TEntidade : Entidade where TRelacao : Entidade
+                                                          params Expression<Func<TEntidade, TRelacao>>[] expressoesRelacao) where TEntidade : Entidade where TRelacao : Entidade?
     {
         var ids = entidades.Select(x => x.Id).ToList();
         var consulta = contexto.RetornarConsulta<TEntidade>(typeof(TEntidade)).

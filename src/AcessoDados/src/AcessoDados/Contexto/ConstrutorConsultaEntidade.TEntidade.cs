@@ -137,7 +137,7 @@ internal class ConstrutorConsultaEntidade<TEntidade> : ConstrutorConsultaEntidad
         return new ConsultaEntidade<TEntidade>(this.ContextoDados, this.TipoEntidade).AbrirRelacao(caminhoPropriedade);
     }
 
-    public ConsultaEntidade<TEntidade> AbrirRelacao<TRelacao>(Expression<Func<TEntidade, TRelacao>> expressao) where TRelacao : IEntidade
+    public ConsultaEntidade<TEntidade> AbrirRelacao<TRelacao>(Expression<Func<TEntidade, TRelacao?>> expressao) where TRelacao : IEntidade
     {
         return new ConsultaEntidade<TEntidade>(this.ContextoDados, this.TipoEntidade).AbrirRelacao(expressao);
     }

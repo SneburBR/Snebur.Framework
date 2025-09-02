@@ -1,4 +1,4 @@
-﻿namespace Snebur.AcessoDados;
+namespace Snebur.AcessoDados;
 
 [IgnorarInterfaceTS]
 public interface IConsultaEntidade
@@ -51,7 +51,7 @@ public interface IConsultaEntidade<TEntidade> : IConsultaEntidade where TEntidad
 
     ConsultaEntidade<TEntidade> OrderByDescending(Expression<Func<TEntidade, object>> expressaoPropriedade);
 
-    ConsultaEntidade<TEntidade> AbrirRelacao<TRelacao>(Expression<Func<TEntidade, TRelacao>> expressao) where TRelacao : IEntidade;
+    ConsultaEntidade<TEntidade> AbrirRelacao<TRelacao>(Expression<Func<TEntidade, TRelacao?>> expressao) where TRelacao : IEntidade;
 
     ConsultaEntidade<TEntidade> AbrirRelacao(List<PropertyInfo> propriedades);
 
