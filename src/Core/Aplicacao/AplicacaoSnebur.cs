@@ -6,6 +6,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.Net;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Threading;
@@ -31,6 +32,8 @@ public abstract partial class AplicacaoSnebur
 
     #region Propriedades 
 
+#pragma warning disable IDE0032
+
     protected Dictionary<string, string> UrlsServico { get; } = new Dictionary<string, string>();
     private string? _identificadorAplicacao;
     private string? _nomeAplicacao;
@@ -40,12 +43,15 @@ public abstract partial class AplicacaoSnebur
     private CultureInfo? _cultura;
     private string? _ipPublico;
 
+    // Use auto property
     private IServicoLogErro? _servicoLogErro;
+
     private IServicoLogSeguranca? _servicoLogSeguranca;
     private IServicoLogAplicacao? _servicoLogAplicacao;
     private IServicoLogDesempenho? _servicoLogDesempenho;
     private IServicoUsuario? _servicoUsuario;
 
+#pragma warning restore IDE0032
     private readonly System.Timers.Timer TimerAplicacaoAtiva;
 
     private TimeSpan? _diferencaDataHoraServidor;
