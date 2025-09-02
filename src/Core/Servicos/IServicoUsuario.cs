@@ -1,4 +1,4 @@
-﻿using Snebur.Seguranca;
+using Snebur.Seguranca;
 
 namespace Snebur.Comunicacao;
 
@@ -13,11 +13,11 @@ public interface IServicoUsuario : IBaseServico
 
     bool SessaoUsuarioAtiva(CredencialUsuario credencial, Guid identificadorSessaoUsuario);
 
-    IUsuario RetornarUsuario(CredencialUsuario credencial);
+    IUsuario? RetornarUsuario(CredencialUsuario credencial);
 
     ResultadoAutenticacao Autenticar(CredencialUsuario credencial);
 
-    ISessaoUsuario RetornarSessaoUsuario(Guid identificadorSessaoUsuario);
+    ISessaoUsuario? RetornarSessaoUsuario(Guid identificadorSessaoUsuario);
 
     IUsuario CadastrarNovoUsuario(NovoUsuario novoUsuario, bool isAlterarSenhaProximoAcesso);
 

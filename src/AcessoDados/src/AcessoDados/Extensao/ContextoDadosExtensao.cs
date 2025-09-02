@@ -30,6 +30,7 @@ public static class ContextoDadosExtensao
         {
             var clone = entidade.CloneSomenteId<TEntidade>(null);
             (clone as IBaseDominioControladorPropriedade).DestivarControladorPropriedadeAlterada();
+
             var propriedadesAbertas = new List<string>();
             foreach (var expressao in expressoesPropriedade)
             {
@@ -76,6 +77,8 @@ public static class ContextoDadosExtensao
 
         foreach (var entidade in entidades)
         {
+            Guard.NotNull(entidade);
+
             if (entidade.__IsExisteAlteracao)
             {
                 var clone = entidade.CloneSomenteId<TEntidade>(null);
@@ -160,7 +163,7 @@ public static class ContextoDadosExtensao
     }
 
     public static void AbrirRelacao<TEntidade, TRelacao>(this IContextoDados contexto,
-                                                TEntidade entidade, Expression<Func<TEntidade, TRelacao>> expressaoRelacao) where TEntidade : Entidade where TRelacao : Entidade
+                                                TEntidade entidade, Expression<Func<TEntidade, TRelacao>> expressaoRelacao) where TEntidade : Entidade where TRelacao : Entidade?
     {
         AbrirRelacoes(contexto, entidade, expressaoRelacao);
     }
@@ -172,7 +175,7 @@ public static class ContextoDadosExtensao
 
     public static void AbrirRelacoes<TEntidade, TRelacao>(this IContextoDados contexto,
                                                 TEntidade entidade,
-                                                params Expression<Func<TEntidade, TRelacao>>[] expressoesRelacao) where TEntidade : Entidade where TRelacao : Entidade
+                                                params Expression<Func<TEntidade, TRelacao>>[] expressoesRelacao) where TEntidade : Entidade where TRelacao : Entidade?
     {
 
         var consulta = contexto.RetornarConsulta<TEntidade>(entidade.GetType()).

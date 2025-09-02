@@ -104,7 +104,9 @@ namespace Snebur.Comunicacao
 
             var urlServico = UriUtil.CombinarCaminhos(this.UrlServico, nomeArquivo);
 
+#pragma warning disable SYSLIB0014 // Type or member is obsolete
             var requisicaoHttp = HttpWebRequest.Create(urlServico);
+#pragma warning restore SYSLIB0014 // Type or member is obsolete
 
             var identificadorUsuario = CriptografiaUtil.Criptografar(token, this.ContratoChamada.Cabecalho.CredencialUsuario.IdentificadorUsuario);
             var identifcadorProprietario = this.ContratoChamada.Cabecalho.IdentificadorProprietario;
@@ -197,10 +199,5 @@ namespace Snebur.Comunicacao
             return PacoteUtil.CompactarPacote(jsonString);
         }
 
-        private static void DefinirExpect100Continue()
-        {
-            ServicePointManager.Expect100Continue = false;
-            System.Net.ServicePointManager.DefaultConnectionLimit = 1000;
-        }
     }
 }

@@ -129,7 +129,10 @@ public class BaixarArquivoUtil
         parametros.Add(ConstantesCabecalho.IDENTIFICADOR_PROPRIETARIO, identificadorProprietario);
 
         var urlBaixaArquivo = ServicoArquivoClienteUtil.RetornarEnderecoBaixarArquivo(urlServico);
+
+#pragma warning disable SYSLIB0014 // Type or member is obsolete
         var requisicao = (HttpWebRequest)WebRequest.Create(urlBaixaArquivo);
+#pragma warning restore SYSLIB0014 // Type or member is obsolete
 
         foreach (var item in parametros)
         {
