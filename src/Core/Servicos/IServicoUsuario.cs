@@ -19,7 +19,7 @@ public interface IServicoUsuario : IBaseServico
 
     ISessaoUsuario? RetornarSessaoUsuario(Guid identificadorSessaoUsuario);
 
-    IUsuario CadastrarNovoUsuario(NovoUsuario novoUsuario, bool isAlterarSenhaProximoAcesso);
+    IUsuario? CadastrarNovoUsuario(NovoUsuario novoUsuario, bool isAlterarSenhaProximoAcesso);
 
     ResultadoEnviarCodigoRecuperarSenha EnviarCodigoRecuperarSenha(string identificadorAmigavel);
 

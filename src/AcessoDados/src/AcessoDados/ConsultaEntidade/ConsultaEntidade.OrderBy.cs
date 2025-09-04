@@ -1,15 +1,15 @@
-﻿using Snebur.AcessoDados.Ajudantes;
+using Snebur.AcessoDados.Ajudantes;
 
 namespace Snebur.AcessoDados;
 
 public partial class ConsultaEntidade<TEntidade> where TEntidade : IEntidade
 {
-    public ConsultaEntidade<TEntidade> OrderBy(Expression<Func<TEntidade, object>> expressaoCaminhoPropriedade)
+    public ConsultaEntidade<TEntidade> OrderBy(Expression<Func<TEntidade, object?>> expressaoCaminhoPropriedade)
     {
         return this.Ordernar(this.EstruturaConsulta, expressaoCaminhoPropriedade, EnumSentidoOrdenacao.Crescente);
     }
 
-    public ConsultaEntidade<TEntidade> OrderByDescending(Expression<Func<TEntidade, object>> expressaoCaminhoPropriedade)
+    public ConsultaEntidade<TEntidade> OrderByDescending(Expression<Func<TEntidade, object?>> expressaoCaminhoPropriedade)
     {
         return this.Ordernar(this.EstruturaConsulta, expressaoCaminhoPropriedade, EnumSentidoOrdenacao.Decrescente);
     }

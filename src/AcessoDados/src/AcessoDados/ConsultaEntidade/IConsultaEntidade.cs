@@ -47,9 +47,9 @@ public interface IConsultaEntidade<TEntidade> : IConsultaEntidade where TEntidad
 
     ConsultaEntidade<TEntidade> WhereIn(Expression<Func<TEntidade, Enum>> expressaoPropriedade, IEnumerable<int> lista);
 
-    ConsultaEntidade<TEntidade> OrderBy(Expression<Func<TEntidade, object>> expressaoPropriedade);
+    ConsultaEntidade<TEntidade> OrderBy(Expression<Func<TEntidade, object?>> expressaoPropriedade);
 
-    ConsultaEntidade<TEntidade> OrderByDescending(Expression<Func<TEntidade, object>> expressaoPropriedade);
+    ConsultaEntidade<TEntidade> OrderByDescending(Expression<Func<TEntidade, object?>> expressaoPropriedade);
 
     ConsultaEntidade<TEntidade> AbrirRelacao<TRelacao>(Expression<Func<TEntidade, TRelacao?>> expressao) where TRelacao : IEntidade;
 
