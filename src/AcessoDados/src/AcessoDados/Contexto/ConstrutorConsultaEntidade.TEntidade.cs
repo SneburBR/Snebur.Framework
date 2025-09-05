@@ -110,12 +110,12 @@ internal class ConstrutorConsultaEntidade<TEntidade> : ConstrutorConsultaEntidad
         return new ConsultaEntidade<TEntidade>(this.ContextoDados, this.TipoEntidade).WhereOr(filtro);
     }
 
-    public ConsultaEntidade<TEntidade> OrderBy(Expression<Func<TEntidade, object>> expressaCaminhoPropriedade)
+    public ConsultaEntidade<TEntidade> OrderBy(Expression<Func<TEntidade, object?>> expressaCaminhoPropriedade)
     {
         return new ConsultaEntidade<TEntidade>(this.ContextoDados, this.TipoEntidade).OrderBy(expressaCaminhoPropriedade);
     }
 
-    public ConsultaEntidade<TEntidade> OrderByDescending(Expression<Func<TEntidade, object>> expressaCaminhoPropriedade)
+    public ConsultaEntidade<TEntidade> OrderByDescending(Expression<Func<TEntidade, object?>> expressaCaminhoPropriedade)
     {
         return new ConsultaEntidade<TEntidade>(this.ContextoDados, this.TipoEntidade).OrderByDescending(expressaCaminhoPropriedade);
     }
