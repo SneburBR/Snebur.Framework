@@ -38,12 +38,12 @@ public static class Util
         return false;
     }
 
-    public static string RetornarRelacoesAbertas<T>(Expression<Func<T, object>> expressao)
+    public static string RetornarRelacoesAbertas<T>(Expression<Func<T, object?>> expressao)
     {
         return ReflexaoUtil.RetornarCaminhoPropriedade(expressao);
     }
 
-    public static string RetornarRelacoesAbertas<T>(params Expression<Func<T, object>>[] expressoes)
+    public static string RetornarRelacoesAbertas<T>(params Expression<Func<T, object?>>[] expressoes)
     {
         return String.Join(", ", expressoes.Select(x => ReflexaoUtil.RetornarCaminhoPropriedade(x)));
     }

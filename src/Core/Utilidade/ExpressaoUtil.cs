@@ -242,12 +242,12 @@ public static class ExpressaoUtil
         throw new ErroNaoSuportado(mensagemExpressaoNaoSuportado);
     }
 
-    public static Expression[] RetornarExpressoes<TEntidade>(params Expression<Func<TEntidade, object>>[] expressoes)
+    public static Expression[] RetornarExpressoes<TEntidade>(params Expression<Func<TEntidade, object?>>[] expressoes)
     {
         return expressoes;
     }
 
-    public static Expression RetornarExpressao<T>(Expression<Func<T, object>> expressao)
+    public static Expression RetornarExpressao<T>(Expression<Func<T, object?>> expressao)
     {
         return expressao;
     }

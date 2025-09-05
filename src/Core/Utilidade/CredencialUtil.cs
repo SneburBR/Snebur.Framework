@@ -1,10 +1,12 @@
-﻿namespace Snebur.Utilidade;
+namespace Snebur.Utilidade;
 
 public class CredencialUtil
 {
-    public static bool ValidarCredencial(ICredencial credencial1, ICredencial credencial2)
+    public static bool ValidarCredencial(
+        ICredencial? credencial1,
+        ICredencial? credencial2)
     {
-        if (credencial1 != null && credencial2 != null && credencial1.IdentificadorUsuario != null)
+        if (credencial1 is not null && credencial2 is not null && credencial1.IdentificadorUsuario != null)
         {
             return credencial1.IdentificadorUsuario.Equals(credencial2.IdentificadorUsuario, StringComparison.InvariantCultureIgnoreCase) &&
                credencial1.Senha == credencial2.Senha;

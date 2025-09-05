@@ -1,4 +1,4 @@
-﻿using System.Data;
+using System.Data;
 using System.Globalization;
 
 namespace Snebur.Utilidade;
@@ -48,9 +48,9 @@ public static class SqlUtil
         }
     }
 
-    public static SqlDbType GetBetterSqlDbType(object value)
+    public static SqlDbType GetBetterSqlDbType(object? value)
     {
-        if (value == null)
+        if (value is null)
         {
             return SqlDbType.Variant;
         }

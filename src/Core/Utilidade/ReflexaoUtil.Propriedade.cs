@@ -6,7 +6,7 @@ namespace Snebur.Utilidade;
 
 public static partial class ReflexaoUtil
 {
-    public static List<string> RetornarCaminhosPropriedade<T>(params Expression<Func<T, object>>[] expressoesCaminhoPropriedade)
+    public static List<string> RetornarCaminhosPropriedade<T>(params Expression<Func<T, object?>>[] expressoesCaminhoPropriedade)
     {
         var caminhos = new List<string>();
         foreach (var expressao in expressoesCaminhoPropriedade)
@@ -16,30 +16,30 @@ public static partial class ReflexaoUtil
         return caminhos;
     }
 
-    public static List<string> RetornarNomesPropriedade<T>(params Expression<Func<T, object>>[] expressoesPropriedade)
+    public static List<string> RetornarNomesPropriedade<T>(params Expression<Func<T, object?>>[] expressoesPropriedade)
     {
         var propriedades = RetornarPropriedades(expressoesPropriedade);
         return propriedades.Select(x => x.Name).ToList();
     }
 
-    public static string RetornarNomePropriedade<T>(Expression<Func<T, object>> expressaoPropriedade)
+    public static string RetornarNomePropriedade<T>(Expression<Func<T, object?>> expressaoPropriedade)
     {
         return RetornarPropriedade(expressaoPropriedade).Name;
     }
 
-    public static string RetornarCaminhoPropriedade<T>(Expression<Func<T, object>> expressaoCaminhoPropriedade)
+    public static string RetornarCaminhoPropriedade<T>(Expression<Func<T, object?>> expressaoCaminhoPropriedade)
     {
         var propriedades = RetornarTodasPropriedades(expressaoCaminhoPropriedade);
         return String.Join(".", propriedades.Select(x => x.Name));
     }
 
-    public static PropertyInfo RetornarPropriedade<T>(Expression<Func<T, object>> expressaoCaminhoPropriedade)
+    public static PropertyInfo RetornarPropriedade<T>(Expression<Func<T, object?>> expressaoCaminhoPropriedade)
     {
         var expressao = (Expression)expressaoCaminhoPropriedade;
         return ExpressaoUtil.RetornarPropriedades(expressao).Last();
     }
 
-    public static PropertyInfo? RetornarPropriedade<T>(Expression<Func<T, object>> expressaoCaminhoPropriedade, Type tipo)
+    public static PropertyInfo? RetornarPropriedade<T>(Expression<Func<T, object?>> expressaoCaminhoPropriedade, Type tipo)
     {
         var nomePropriedade = RetornarNomePropriedade(expressaoCaminhoPropriedade);
         return tipo.GetProperty(nomePropriedade);
@@ -79,13 +79,13 @@ public static partial class ReflexaoUtil
         return propriedades.Where(x => x.GetCustomAttribute<TAttribute>() != null).ToList();
     }
 
-    public static List<PropertyInfo> RetornarTodasPropriedades<T>(Expression<Func<T, object>> expressaoCaminhoPropriedade)
+    public static List<PropertyInfo> RetornarTodasPropriedades<T>(Expression<Func<T, object?>> expressaoCaminhoPropriedade)
     {
         var expressao = (Expression)expressaoCaminhoPropriedade;
         return ExpressaoUtil.RetornarPropriedades(expressao);
     }
 
-    public static List<PropertyInfo> RetornarPropriedades<T>(params Expression<Func<T, object>>[] expressoesCaminhoPropriedade)
+    public static List<PropertyInfo> RetornarPropriedades<T>(params Expression<Func<T, object?>>[] expressoesCaminhoPropriedade)
     {
         var propriedades = new List<PropertyInfo>();
         foreach (var expressao in expressoesCaminhoPropriedade)
@@ -262,7 +262,7 @@ public static partial class ReflexaoUtil
     }
 
     public static object? RetornarValorPropriedade<T>(
-        Expression<Func<T, object>> expressaoPropriedade,
+        Expression<Func<T, object?>> expressaoPropriedade,
         object objeto)
     {
         var propriedade = RetornarPropriedade(expressaoPropriedade, objeto.GetType());
