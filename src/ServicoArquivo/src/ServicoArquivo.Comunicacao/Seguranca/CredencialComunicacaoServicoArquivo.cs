@@ -1,4 +1,4 @@
-﻿/* Unmerged change from project 'Snebur.ServicoArquivo.Servidor'
+/* Unmerged change from project 'Snebur.ServicoArquivo.Servidor'
 Before:
 using System;
 using System.Collections.Generic;
@@ -48,26 +48,23 @@ using System.Text;
 using System.Threading.Seguranca;
 */
 
-using Snebur.Seguranca;
+namespace Snebur.ServicoArquivo;
 
-namespace Snebur.ServicoArquivo
+public class CredencialComunicacaoServicoArquivo
 {
-    public class CredencialComunicacaoServicoArquivo
+    public static CredencialServico ServicoArquivo
     {
-        public static CredencialServico ServicoArquivo
+        get
         {
-            get
+            return new CredencialServico
             {
-                return new CredencialServico
-                {
-                    IdentificadorUsuario = CredencialComunicacaoServicoArquivo.IDENTIFICADOR_USUARIO,
-                    Senha = CredencialComunicacaoServicoArquivo.SENHA
-                };
-            }
+                IdentificadorUsuario = CredencialComunicacaoServicoArquivo.IDENTIFICADOR_USUARIO,
+                Senha = CredencialComunicacaoServicoArquivo.SENHA
+            };
         }
-
-        private const string IDENTIFICADOR_USUARIO = "ComunicacaoServicoArquivo";
-
-        private const string SENHA = "7070b942-231b-4d46-aefb-1c176449e846";
     }
+
+    private const string IDENTIFICADOR_USUARIO = "ComunicacaoServicoArquivo";
+
+    private const string SENHA = "7070b942-231b-4d46-aefb-1c176449e846";
 }

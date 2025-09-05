@@ -8,11 +8,11 @@
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 	</PropertyGroup>
-  
+
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\AcessoDados\src\AcessoDados.Servidor\Snebur.AcessoDados.Servidor.csproj" />
 		<ProjectReference Include="..\..\..\AcessoDados\src\AcessoDados\Snebur.AcessoDados.csproj" />
-	
+
 		<ProjectReference Include="..\..\..\Comunicacao\src\Comunicacao.Servidor\Snebur.Comunicacao.Servidor.csproj" />
 		<ProjectReference Include="..\..\..\Comunicacao\src\Comunicacao\Snebur.Comunicacao.csproj" />
 		<ProjectReference Include="..\..\..\Core\Snebur.csproj" />
@@ -20,5 +20,5 @@
 		<ProjectReference Include="..\ServicoArquivo\Snebur.ServicoArquivo.csproj" />
 		<ProjectReference Include="..\..\..\AspNet\Snebur.AspNet.csproj" />
 	</ItemGroup>
-  
+
 </Project>
