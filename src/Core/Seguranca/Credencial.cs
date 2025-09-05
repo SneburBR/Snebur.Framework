@@ -25,7 +25,7 @@ public abstract class Credencial : BaseDominio, ICredencial
     }
 
     [IgnorarConstrutorTS]
-    public Credencial(string identificadorUsuario, string senha)
+    public Credencial(string? identificadorUsuario, string? senha)
     {
         this.IdentificadorUsuario = identificadorUsuario;
         this.Senha = senha;

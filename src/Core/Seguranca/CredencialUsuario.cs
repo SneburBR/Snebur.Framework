@@ -8,14 +8,13 @@ public class CredencialUsuario : Credencial
 
     public string? IdentificadorAmigavel { get; set; }
 
-    //public bool IsAnonimo => this.Validar(CredencialAnonimo.Anonimo);
 
     public CredencialUsuario()
     {
     }
 
     [IgnorarConstrutorTS]
-    public CredencialUsuario(string identificadorUsuario, string senha) : base(identificadorUsuario, senha)
+    public CredencialUsuario(string? identificadorUsuario, string? senha) : base(identificadorUsuario, senha)
     {
         this.Nome = identificadorUsuario;
         this.IdentificadorAmigavel = identificadorUsuario;

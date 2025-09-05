@@ -11,7 +11,7 @@ public class ErroSessaoUsuarioExpirada : Erro
 
     public ErroSessaoUsuarioExpirada(
         EnumStatusSessaoUsuario status,
-        Guid identificadorSessaoUsuario,
+        Guid? identificadorSessaoUsuario,
         string mensagem = "",
         Exception? erroInterno = null,
         [CallerMemberName] string nomeMetodo = "",
