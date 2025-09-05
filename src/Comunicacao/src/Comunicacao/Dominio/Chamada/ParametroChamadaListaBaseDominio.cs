@@ -13,5 +13,5 @@ public class ParametroChamadaListaBaseDominio : ParametroChamadaLista
 
     public string? NomeNamespaceTipoBaseDominio { get => this.GetPropertyValue(this._nomeNamespaceTipoBaseDominio); set => this.SetProperty(this._nomeNamespaceTipoBaseDominio, this._nomeNamespaceTipoBaseDominio = value); }
 
-    public List<BaseDominio> BasesDominio { get; set; } = new();
+    public List<BaseDominio?> BasesDominio { get; set; } = new();
 }

@@ -1,53 +1,50 @@
 using System.Threading.Tasks;
 
-namespace Snebur.Comunicacao
+namespace Snebur.Comunicacao;
+
+public class ChamadaServicoAsync : BaseChamadaServico
 {
+    private Action<ArgsResultadoChamadaServico>? _callback;
+    private object? _userState;
 
-    public class ChamadaServicoAsync : BaseChamadaServico
+    public ChamadaServicoAsync(string nomeManipulador,
+                               ContratoChamada informacaoChamada,
+                               string urlServico,
+                               Type tipoRetorno,
+                               Dictionary<string, string>? parametrosCabeacalhoAdicionais) :
+                               base(nomeManipulador, informacaoChamada, urlServico, tipoRetorno, parametrosCabeacalhoAdicionais)
     {
-
-        public Action<ArgsResultadoChamadaServico> Callback { get; set; }
-        public object UserState { get; set; }
-
-        public ChamadaServicoAsync(string nomeManipulador,
-                                   ContratoChamada informacaoChamada,
-                                   string urlServico,
-                                   Type tipoRetorno,
-                                   Dictionary<string, string> parametrosCabeacalhoAdicionais) :
-                                   base(nomeManipulador, informacaoChamada, urlServico, tipoRetorno, parametrosCabeacalhoAdicionais)
-        {
-        }
-
-        public void ExecutarChamaraAsync(Action<ArgsResultadoChamadaServico> callback, object userState = null)
-        {
-            this.Callback = callback;
-            this.UserState = userState;
-            Task.Factory.StartNew(this.ExecutarChamada);
-        }
-
-        private void ExecutarChamada()
-        {
-            object resultado = null;
-            Exception erro = null;
-            try
-            {
-                resultado = this.RetornarValorChamada();
-            }
-            catch (Exception ex)
-            {
-                erro = ex;
-            }
-            finally
-            {
-                if (this.Callback != null)
-                {
-                    ArgsResultadoChamadaServico args = new ArgsResultadoChamadaServico(erro, resultado, this.UserState);
-                    this.Callback.Invoke(args);
-                    this.Callback = null;
-                }
-            }
-        }
-
     }
 
+    public void ExecutarChamaraAsync(
+        Action<ArgsResultadoChamadaServico>? callback,
+        object? userState = null)
+    {
+        this._callback = callback;
+        this._userState = userState;
+        Task.Factory.StartNew(this.ExecutarChamada);
+    }
+
+    private void ExecutarChamada()
+    {
+        object? resultado = null;
+        Exception? erro = null;
+        try
+        {
+            resultado = this.RetornarValorChamada();
+        }
+        catch (Exception ex)
+        {
+            erro = ex;
+        }
+        finally
+        {
+            if (this._callback != null)
+            {
+                var args = new ArgsResultadoChamadaServico(erro, resultado, this._userState);
+                this._callback.Invoke(args);
+                this._callback = null;
+            }
+        }
+    }
 }

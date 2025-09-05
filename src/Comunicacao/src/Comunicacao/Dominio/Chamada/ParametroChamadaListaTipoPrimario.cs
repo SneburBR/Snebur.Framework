@@ -2,7 +2,6 @@ using Snebur.Reflexao;
 
 namespace Snebur.Comunicacao.Dominio;
 
-
 public class ParametroChamadaListaTipoPrimario : ParametroChamadaLista
 {
     #region Campos Privados
@@ -11,7 +10,7 @@ public class ParametroChamadaListaTipoPrimario : ParametroChamadaLista
 
     #endregion
 
-    public List<object> Lista { get; set; } = new();
+    public List<object?> Lista { get; set; } = new();
 
     public EnumTipoPrimario TipoPrimarioEnum { get => this.GetPropertyValue(this._tipoPrimarioEnum); set => this.SetProperty(this._tipoPrimarioEnum, this._tipoPrimarioEnum = value); }
 }
