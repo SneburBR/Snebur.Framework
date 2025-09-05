@@ -1,5 +1,4 @@
-﻿using Snebur.AcessoDados.Estrutura;
-using System.Reflection;
+using Snebur.AcessoDados.Estrutura;
 
 namespace Snebur.AcessoDados.Mapeamento
 {

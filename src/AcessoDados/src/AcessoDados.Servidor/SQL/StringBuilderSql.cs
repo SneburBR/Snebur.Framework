@@ -1,5 +1,3 @@
-﻿using Snebur.Utilidade;
-using System;
 using System.Text;
 
 namespace Snebur.AcessoDados

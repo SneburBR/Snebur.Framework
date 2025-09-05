@@ -1,5 +1,3 @@
-﻿using Snebur.Dominio;
-
 namespace Snebur.AcessoDados
 {
     internal interface IContextoDadosSemNotificar

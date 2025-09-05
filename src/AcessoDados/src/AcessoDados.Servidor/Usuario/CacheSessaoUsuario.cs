@@ -1,7 +1,4 @@
-using Snebur.Dominio;
 using Snebur.Seguranca;
-using Snebur.Utilidade;
-using System;
 using System.Timers;
 
 namespace Snebur.AcessoDados
@@ -99,9 +96,9 @@ namespace Snebur.AcessoDados
             }
         }
 
-        internal IUsuario RetornarUsuarioAvalista(Credencial credencialAvalista)
+        internal IUsuario? RetornarUsuarioAvalista(Credencial? credencialAvalista)
         {
-            if (credencialAvalista == null)
+            if (credencialAvalista is null)
             {
                 return null;
             }
@@ -129,8 +126,8 @@ namespace Snebur.AcessoDados
             }
             this.SessaoUsuario = this.AjudanteSessaoUsuario
                                      .RetornarSessaoUsuario(this.Contexto,
-                                                            this.Usuario, 
-                                                            this.IdentificadorSessaoUsuario, 
+                                                            this.Usuario,
+                                                            this.IdentificadorSessaoUsuario,
                                                             this.InformacaoSessaoUsuario);
 
             this.NotificarSessaoUsuarioAtivaInterno();
@@ -171,10 +168,10 @@ namespace Snebur.AcessoDados
             this.DataHoraUltimoAcesso = DateTime.Now;
             if (this.IsNoticacaoStatusPendente)
             {
-                this.NotificarSessaoUsuarioAtivaInterno( );
+                this.NotificarSessaoUsuarioAtivaInterno();
             }
         }
-        private void NotificarSessaoUsuarioAtivaInterno( )
+        private void NotificarSessaoUsuarioAtivaInterno()
         {
             var statusSessaoUsuario = this.RetornarStatusSessaoUsuario();
             if (statusSessaoUsuario == EnumStatusSessaoUsuario.Ativo ||

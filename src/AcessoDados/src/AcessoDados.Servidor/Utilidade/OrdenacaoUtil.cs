@@ -1,10 +1,3 @@
-﻿using Snebur.Dominio;
-using Snebur.Dominio.Atributos;
-using Snebur.Utilidade;
-using System;
-using System.Linq;
-using System.Reflection;
-
 namespace Snebur.AcessoDados
 {
     internal class OrdenacaoUtil

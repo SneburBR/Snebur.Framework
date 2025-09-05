@@ -1,18 +1,17 @@
-﻿using Snebur.AcessoDados.Estrutura;
-using System;
-using System.Linq;
+using Snebur.AcessoDados.Estrutura;
 
 namespace Snebur.AcessoDados.Mapeamento
 {
     internal abstract partial class BaseMapeamentoEntidade
     {
 
-        private EstruturaEntidadeApelido RetornarEstruturaEntidadeApelido(EstruturaEntidade estruturaEntidade,
-                                                                         string caminhoBancoParcial,
-                                                                         string caminhoPropriedadeParcial,
-                                                                         EstruturaEntidadeApelido estruturaEntidadeApelidoOrigem = null,
-                                                                         EstruturaRelacao estruturaRelacao = null,
-                                                                         EstruturaCampoApelido estruturaCampoChaveEstrangeiraApelido = null)
+        private EstruturaEntidadeApelido RetornarEstruturaEntidadeApelido(
+            EstruturaEntidade estruturaEntidade,
+            string caminhoBancoParcial,
+            string caminhoPropriedadeParcial,
+            EstruturaEntidadeApelido? estruturaEntidadeApelidoOrigem = null,
+            EstruturaRelacao? estruturaRelacao = null,
+            EstruturaCampoApelido? estruturaCampoChaveEstrangeiraApelido = null)
         {
             if (ConfiguracaoAcessoDados.TipoBancoDadosEnum == EnumTipoBancoDados.PostgreSQLImob)
             {
@@ -24,14 +23,15 @@ namespace Snebur.AcessoDados.Mapeamento
             }
         }
 
-        private EstruturaEntidadeApelido RetornarEstruturaEntidadeApelidoPadrao(EstruturaEntidade estruturaEntidade,
-                                                                               string caminhoBancoParcial,
-                                                                               string caminhoPropriedadeParcial,
-                                                                               EstruturaEntidadeApelido estruturaEntidadeApelidoOrigem = null,
-                                                                               EstruturaRelacao estruturaRelacao = null,
-                                                                               EstruturaCampoApelido estruturaCampoChaveEstrangeiraApelido = null)
+        private EstruturaEntidadeApelido RetornarEstruturaEntidadeApelidoPadrao(
+            EstruturaEntidade estruturaEntidade,
+            string caminhoBancoParcial,
+            string caminhoPropriedadeParcial,
+            EstruturaEntidadeApelido? estruturaEntidadeApelidoOrigem = null,
+            EstruturaRelacao? estruturaRelacao = null,
+            EstruturaCampoApelido? estruturaCampoChaveEstrangeiraApelido = null)
         {
-            EstruturaEntidadeApelido estruturaEntidadeApelido = null;
+            EstruturaEntidadeApelido? estruturaEntidadeApelido = null;
 
             var apelidoEntidade = (estruturaEntidade == this.EstruturaEntidade) ? caminhoBancoParcial : String.Format("{0}_{1}", caminhoBancoParcial, estruturaEntidade.TipoEntidade.Name);
             var estruturaCampoChavePrimaria = estruturaEntidade.EstruturaCampoChavePrimaria;
@@ -39,7 +39,11 @@ namespace Snebur.AcessoDados.Mapeamento
 
             if (estruturaEntidadeApelidoOrigem == null)
             {
-                estruturaEntidadeApelidoOrigem = this.RetornarNovaEstruturaEntidadeApelido(apelidoEntidade, estruturaEntidade, estruturaRelacao, estruturaCampoChaveEstrangeiraApelido);
+                estruturaEntidadeApelidoOrigem = this.RetornarNovaEstruturaEntidadeApelido(
+                    apelidoEntidade,
+                    estruturaEntidade,
+                    estruturaRelacao,
+                    estruturaCampoChaveEstrangeiraApelido);
 
                 var estruturaCampoApelidoChavePrimaria = this.RetornarEstruturaCampoApelido(estruturaCampoChavePrimaria, caminhoPropriedadeParcial, estruturaEntidadeApelidoOrigem);
 
@@ -90,8 +94,8 @@ namespace Snebur.AcessoDados.Mapeamento
             return estruturaEntidadeApelidoOrigem;
         }
 
-        private EstruturaCampoApelido RetornarEstruturaCampoApelido(EstruturaCampo estruturaCampo, 
-                                                                    string caminhoPropriedadeParcial, 
+        private EstruturaCampoApelido RetornarEstruturaCampoApelido(EstruturaCampo estruturaCampo,
+                                                                    string caminhoPropriedadeParcial,
                                                                     EstruturaEntidadeApelido estruturaEntidadeApelido)
         {
             var ponto = String.IsNullOrWhiteSpace(caminhoPropriedadeParcial) ? "" : ".";
@@ -102,10 +106,11 @@ namespace Snebur.AcessoDados.Mapeamento
             return new EstruturaCampoApelido(this.MapeamentoConsulta, caminhoPropriedade, estruturaCampo, estruturaEntidadeApelido, apelidoCampo, caminhoBanco);
         }
 
-        private EstruturaEntidadeApelido RetornarNovaEstruturaEntidadeApelido(string apelidoEntidadeMapeada,
-                                                                              EstruturaEntidade estruturaEntidade,
-                                                                              EstruturaRelacao estruturaRelacao,
-                                                                              EstruturaCampoApelido estruturaCampoChaveEstrangeiraMapeado)
+        private EstruturaEntidadeApelido RetornarNovaEstruturaEntidadeApelido(
+            string apelidoEntidadeMapeada,
+            EstruturaEntidade estruturaEntidade,
+            EstruturaRelacao? estruturaRelacao,
+            EstruturaCampoApelido? estruturaCampoChaveEstrangeiraMapeado)
         {
             if (estruturaRelacao == null)
             {
@@ -115,11 +120,12 @@ namespace Snebur.AcessoDados.Mapeamento
             }
             if (estruturaRelacao is EstruturaRelacaoPai)
             {
-                return new EstruturaEntidadeApelidoRelacaoPai(this.MapeamentoConsulta,
-                                                              apelidoEntidadeMapeada,
-                                                              estruturaEntidade,
-                                                              estruturaRelacao,
-                                                              estruturaCampoChaveEstrangeiraMapeado);
+                return new EstruturaEntidadeApelidoRelacaoPai(
+                    this.MapeamentoConsulta,
+                    apelidoEntidadeMapeada,
+                    estruturaEntidade,
+                    estruturaRelacao,
+                    estruturaCampoChaveEstrangeiraMapeado);
             }
             throw new NotImplementedException();
         }

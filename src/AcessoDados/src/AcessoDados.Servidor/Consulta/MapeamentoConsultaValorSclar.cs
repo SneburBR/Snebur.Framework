@@ -1,5 +1,4 @@
-﻿using Snebur.AcessoDados.Estrutura;
-using System.Linq;
+using Snebur.AcessoDados.Estrutura;
 
 namespace Snebur.AcessoDados.Mapeamento
 {
@@ -10,7 +9,10 @@ namespace Snebur.AcessoDados.Mapeamento
                                                EstruturaBancoDados estruturaBancoDados,
                                                BaseConexao ConexaoDB,
                                                BaseContextoDados contexto) :
-                                               base(estruturaConsulta, estruturaBancoDados, ConexaoDB, contexto)
+                                               base(estruturaConsulta,
+                                                   estruturaBancoDados,
+                                                   ConexaoDB,
+                                                   contexto)
         {
         }
 
@@ -19,14 +21,14 @@ namespace Snebur.AcessoDados.Mapeamento
             var tipoEntidade = this.EstruturaConsulta.RetornarTipoEntidade();
             var estruturaEntidade = this.EstruturaBancoDados.EstruturasEntidade[tipoEntidade.Name];
 
-            using (var mapeamento = new MapeamentoEntidadeValorScalar(this, 
-                                                                      estruturaEntidade, 
-                                                                      this.EstruturaBancoDados, 
+            using (var mapeamento = new MapeamentoEntidadeValorScalar(this,
+                                                                      estruturaEntidade,
+                                                                      this.EstruturaBancoDados,
                                                                       this.ConexaoDB,
                                                                       this.Contexto))
             {
                 mapeamento.EstruturaConsulta.Take = 1;
-                var sqlValorScalar = mapeamento.RetornarSql( new FiltroMapeamentoVazio(), isIncluirOrdenacaoPaginacao: false);
+                var sqlValorScalar = mapeamento.RetornarSql(new FiltroMapeamentoVazio(), isIncluirOrdenacaoPaginacao: false);
                 return this.ConexaoDB.RetornarValorScalar(sqlValorScalar,
                                                           mapeamento.ParametrosInfo);
             }

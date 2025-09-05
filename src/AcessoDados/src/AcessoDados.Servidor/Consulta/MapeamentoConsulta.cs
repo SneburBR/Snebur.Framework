@@ -1,11 +1,6 @@
-﻿using Snebur.AcessoDados.Consulta;
+using Snebur.AcessoDados.Consulta;
 using Snebur.AcessoDados.Estrutura;
-using Snebur.Dominio;
-using Snebur.Utilidade;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace Snebur.AcessoDados.Mapeamento
 {
@@ -25,10 +20,6 @@ namespace Snebur.AcessoDados.Mapeamento
         {
             this.Entidades = new Dictionary<long, Entidade>();
             this.MapeamentosRelacaoAberta = new DicionarioEstrutura<MapeamentoConsultaRelacaoAberta>();
-
-            this.TipoEntidade = this.EstruturaConsulta.RetornarTipoEntidade();
-            this.EstruturaEntidade = this.EstruturaBancoDados.EstruturasEntidade[this.TipoEntidade.Name];
-
             this.MontarMapamentosConsultaRelacaoAberta();
         }
 
@@ -114,7 +105,7 @@ namespace Snebur.AcessoDados.Mapeamento
                                                                      .Select(x => x.NomeTipoEntidade)
                                                                      .ToList();
 
-                        if(nomesTipoEntidadesNaoEncontrados.Count > 0)
+                        if (nomesTipoEntidadesNaoEncontrados.Count > 0)
                         {
                             throw new Erro($"Não foi encontrada a entidade do tipo {String.Join(", ", nomesTipoEntidadesNaoEncontrados)} herdade de {this.EstruturaEntidade.TipoEntidade.Name}");
                         }

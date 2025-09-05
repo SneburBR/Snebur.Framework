@@ -1,7 +1,4 @@
-﻿using Snebur.AcessoDados.Estrutura;
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
+using Snebur.AcessoDados.Estrutura;
 
 namespace Snebur.AcessoDados.Mapeamento
 {

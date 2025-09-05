@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Data.Common;
 using System.Diagnostics;
-using System.Linq;
-using Snebur.Utilidade;
 using System.Threading.Tasks;
 using Snebur.Linq;
 
@@ -24,7 +19,7 @@ namespace Snebur.AcessoDados
                                            DbParameterCollection collection,
                                           string sql)
         {
-            if(DebugUtil.IsAttached && ConfiguracaoUtil.IsLogDebugOutputSql)
+            if (DebugUtil.IsAttached && ConfiguracaoUtil.IsLogDebugOutputSql)
             {
                 var parametros = new List<ParametroInfo>();
 
@@ -34,17 +29,18 @@ namespace Snebur.AcessoDados
                     {
                         SqlDbType = parametro.SqlDbType,
                         ParameterName = parametro.ParameterName,
-                        Value = parametro.Value
+                        Value = parametro.Value,
+                        Size = parametro.Size
                     });
                 }
                 EscreverSaida(contexto, parametros, sql);
             }
-            
         }
 
-        internal static void EscreverSaida(BaseContextoDados contexto,
-                                           List<ParametroInfo> parametros,
-                                           string sql)
+        internal static void EscreverSaida(
+            BaseContextoDados contexto,
+            List<ParametroInfo>? parametros,
+            string sql)
         {
             if (DebugUtil.IsAttached && ConfiguracaoUtil.IsLogDebugOutputSql)
             {
@@ -55,14 +51,13 @@ namespace Snebur.AcessoDados
                                          sql);
                 });
             }
-
         }
 
-        private static void EscreverSaidaInterno(BaseContextoDados contexto,
-                                                  List<ParametroInfo> parametros,
-                                                  string sql)
+        private static void EscreverSaidaInterno(
+            BaseContextoDados contexto,
+            List<ParametroInfo>? parametros,
+            string sql)
         {
- 
 
 #if DEBUG
             if (DebugUtil.IsAttached && ConfiguracaoUtil.IsLogDebugOutputSql)

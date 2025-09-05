@@ -1,26 +1,22 @@
-﻿using Snebur.AcessoDados.Estrutura;
-using System;
-using System.Collections.Generic;
+using Snebur.AcessoDados.Estrutura;
 
 namespace Snebur.AcessoDados.Mapeamento
 {
     internal class BaseMapeamentoConsulta : IDisposable
     {
         #region Propriedades 
+        internal int _contadorApelido;
+        internal EstruturaBancoDados EstruturaBancoDados { get; }
 
-        internal EstruturaBancoDados EstruturaBancoDados { get; set; }
+        internal BaseConexao ConexaoDB { get; }
 
-        internal BaseConexao ConexaoDB { get; set; }
+        internal Dictionary<string, BaseEstruturaApelido> EstruturasApelido { get; } = new();
 
-        internal int ContadorApelido { get; set; }
+        internal Type TipoEntidade { get; }
 
-        internal Dictionary<String, BaseEstruturaApelido> EstruturasApelido { get; set; }
+        internal EstruturaEntidade EstruturaEntidade { get; }
 
-        internal Type TipoEntidade { get; set; }
-
-        internal EstruturaEntidade EstruturaEntidade { get; set; }
-
-        internal EstruturaConsulta EstruturaConsulta { get; set; }
+        internal EstruturaConsulta EstruturaConsulta { get; }
 
         internal BaseContextoDados Contexto { get; }
 
@@ -33,18 +29,20 @@ namespace Snebur.AcessoDados.Mapeamento
                                         BaseConexao ConexaoDB,
                                         BaseContextoDados contexto)
         {
+            var tipoEntidade = consulta.RetornarTipoEntidade();
             this.EstruturaConsulta = consulta;
             this.EstruturaBancoDados = estruturaBancoDados;
             this.ConexaoDB = ConexaoDB;
             this.Contexto = contexto;
-            this.EstruturasApelido = new Dictionary<String, BaseEstruturaApelido>();
+            this.EstruturaEntidade = estruturaBancoDados.EstruturasEntidade[tipoEntidade.Name];
+            this.TipoEntidade = tipoEntidade;
         }
         #endregion
 
         internal int RetornarContadorApelido()
         {
-            this.ContadorApelido += 1;
-            return this.ContadorApelido;
+            this._contadorApelido += 1;
+            return this._contadorApelido;
         }
         #region IDisposable
 

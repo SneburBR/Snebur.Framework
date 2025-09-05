@@ -1,9 +1,4 @@
-﻿using Snebur.Dominio;
 using Snebur.Servicos;
-using Snebur.Utilidade;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Snebur.AcessoDados.Seguranca
@@ -12,7 +7,10 @@ namespace Snebur.AcessoDados.Seguranca
     {
         #region Leitura
 
-        internal static void LogAlteracaoEntidade(IUsuario usuario, IUsuario usuarioAvalista, List<AutorizacaoEntidade> autorizacoes)
+        internal static void LogAlteracaoEntidade(
+            IUsuario usuario,
+            IUsuario? usuarioAvalista,
+            List<AutorizacaoEntidade> autorizacoes)
         {
             if (autorizacoes.Count > 0)
             {
@@ -20,7 +18,10 @@ namespace Snebur.AcessoDados.Seguranca
             }
         }
 
-        internal static void LogAvalistaRequerido(IUsuario usuario, IUsuario usuarioAvalista, List<AutorizacaoEntidade> autorizacoes)
+        internal static void LogAvalistaRequerido(
+            IUsuario usuario,
+            IUsuario? usuarioAvalista,
+            List<AutorizacaoEntidade> autorizacoes)
         {
             if (autorizacoes.Count > 0)
             {
@@ -28,17 +29,26 @@ namespace Snebur.AcessoDados.Seguranca
             }
         }
 
-        internal static void LogSeguranca(IUsuario usuario, IUsuario usuarioAvalista, List<AutorizacaoEntidade> autorizacoes)
+        internal static void LogSeguranca(
+            IUsuario usuario,
+            IUsuario? usuarioAvalista,
+            List<AutorizacaoEntidade> autorizacoes)
         {
             LogSegurancaUtil.SalvarLogSegurancaAsync(usuario, usuarioAvalista, autorizacoes);
         }
 
-        internal static void LogPermissaoNegada(IUsuario usuario, IUsuario usuarioAvalista, List<AutorizacaoEntidade> autorizacoes)
+        internal static void LogPermissaoNegada(
+            IUsuario usuario,
+            IUsuario? usuarioAvalista,
+            List<AutorizacaoEntidade> autorizacoes)
         {
             LogSegurancaUtil.SalvarLogSegurancaAsync(usuario, usuarioAvalista, autorizacoes);
         }
         #endregion
-        private static void SalvarLogSegurancaAsync(IUsuario usuario, IUsuario usuarioAvalista, List<AutorizacaoEntidade> autorizacoes)
+        private static void SalvarLogSegurancaAsync(
+            IUsuario usuario,
+            IUsuario? usuarioAvalista,
+            List<AutorizacaoEntidade> autorizacoes)
         {
             ThreadUtil.ExecutarAsync(() =>
             {
@@ -47,14 +57,19 @@ namespace Snebur.AcessoDados.Seguranca
             }, true);
         }
 
-        private static void SalvarLogSeguranca(IUsuario usuario, IUsuario usuarioAvalista, List<AutorizacaoEntidade> autorizacoes)
+        private static void SalvarLogSeguranca(
+            IUsuario usuario,
+            IUsuario? usuarioAvalista,
+            List<AutorizacaoEntidade> autorizacoes)
         {
+
             var sb = new StringBuilder();
             sb.Append($"Usuário: {usuario.IdentificadorUsuario},");
-            if (usuarioAvalista != null)
+            if (usuarioAvalista is not null)
             {
                 sb.Append($" Avalista: {usuarioAvalista.IdentificadorUsuario}");
             }
+
             //sb.AppendLine("");
             foreach (var autorizacao in autorizacoes)
             {

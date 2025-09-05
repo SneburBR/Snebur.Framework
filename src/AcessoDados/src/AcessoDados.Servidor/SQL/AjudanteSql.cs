@@ -1,6 +1,3 @@
-﻿using Snebur.Utilidade;
-using System;
-
 namespace Snebur.AcessoDados
 {
     internal class AjudanteSql

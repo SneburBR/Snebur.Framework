@@ -1,5 +1,3 @@
-﻿using System.Collections.Generic;
-
 namespace Snebur.AcessoDados
 {
     public abstract partial class BaseContextoDados

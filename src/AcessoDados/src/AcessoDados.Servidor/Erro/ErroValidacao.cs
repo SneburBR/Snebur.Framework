@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
 
 namespace Snebur.AcessoDados
 {
@@ -11,7 +7,7 @@ namespace Snebur.AcessoDados
     {
 
         public ErroValidacao(List<Snebur.Dominio.ErroValidacao> erros,
-                             Exception erroInterno = null,
+                             Exception? erroInterno = null,
                              [CallerMemberName] string nomeMetodo = "",
                              [CallerFilePath] string caminhoArquivo = "",
                              [CallerLineNumber] int linhaDoErro = 0) :
@@ -32,7 +28,7 @@ namespace Snebur.AcessoDados
         public ErroValidacao()
         {
         }
-         
+
         #endregion
     }
 }

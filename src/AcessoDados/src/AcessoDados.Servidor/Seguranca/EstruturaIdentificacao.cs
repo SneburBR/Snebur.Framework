@@ -1,6 +1,3 @@
-﻿using Snebur.Dominio;
-using System.Collections.Generic;
-
 namespace Snebur.AcessoDados.Seguranca
 {
     internal class EstruturaIdentificacao

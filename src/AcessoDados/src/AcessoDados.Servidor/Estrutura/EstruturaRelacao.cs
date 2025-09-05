@@ -1,7 +1,3 @@
-﻿using Snebur.Dominio.Atributos;
-using System;
-using System.Reflection;
-
 namespace Snebur.AcessoDados.Estrutura
 {
     internal abstract class EstruturaRelacao : EstruturaPropriedade

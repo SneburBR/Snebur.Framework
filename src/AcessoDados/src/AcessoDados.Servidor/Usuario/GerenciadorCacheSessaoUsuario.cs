@@ -1,10 +1,5 @@
-﻿using Snebur.Dominio;
 using Snebur.Seguranca;
-using Snebur.Utilidade;
-using System;
-using System.Collections;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 
 namespace Snebur.AcessoDados
 {

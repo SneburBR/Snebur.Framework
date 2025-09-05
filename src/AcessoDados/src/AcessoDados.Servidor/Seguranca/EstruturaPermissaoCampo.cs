@@ -1,6 +1,3 @@
-using Snebur.Dominio;
-using Snebur.Utilidade;
-
 namespace Snebur.AcessoDados.Seguranca
 {
     internal class EstruturaPermissaoCampo

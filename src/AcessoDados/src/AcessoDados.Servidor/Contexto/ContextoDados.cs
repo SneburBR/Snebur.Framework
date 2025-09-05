@@ -1,20 +1,16 @@
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Linq.Expressions;
 using Snebur.AcessoDados.Estrutura;
 using Snebur.AcessoDados.Manutencao;
 using Snebur.AcessoDados.Mapeamento;
 using Snebur.AcessoDados.Seguranca;
 using Snebur.AcessoDados.Servidor.Salvar;
-using Snebur.Dominio;
 using Snebur.Seguranca;
 using Snebur.Servicos;
-using Snebur.Utilidade;
 using Snebur.Linq;
 using System.Threading.Tasks;
- 
+using System.Diagnostics;
+
+
 #if NET6_0_OR_GREATER
 using Microsoft.Data.SqlClient;
 #else
@@ -26,7 +22,7 @@ namespace Snebur.AcessoDados
     public abstract partial class BaseContextoDados : __BaseContextoDados, IServicoDados, IContextoDadosSemNotificar, IDisposable
     {
 
-        private CredencialUsuario _credencialAvalista;
+        private CredencialUsuario? _credencialAvalista;
 
         #region Propriedades
         public BancoDadosSuporta SqlSuporte { get; }
@@ -45,12 +41,15 @@ namespace Snebur.AcessoDados
 
         //public Credencial CredencialUsuario { get; }
 
-        public CacheSessaoUsuario CacheSessaoUsuario { get; }
-        public bool IsCacheSessaoUsuarioInicializado => this.CacheSessaoUsuario != null;
-        public override IUsuario UsuarioLogado => this.CacheSessaoUsuario?.Usuario;
-        public ISessaoUsuario SessaoUsuarioLogado => this.CacheSessaoUsuario?.SessaoUsuario;
+        public CacheSessaoUsuario? CacheSessaoUsuario { get; }
+        public bool IsCacheSessaoUsuarioInicializado
+            => this.CacheSessaoUsuario != null;
+        public override IUsuario? UsuarioLogado
+            => this.CacheSessaoUsuario?.Usuario;
+        public ISessaoUsuario? SessaoUsuarioLogado
+            => this.CacheSessaoUsuario?.SessaoUsuario;
 
-        public IUsuario UsuarioAvalista { get; private set; }
+        public IUsuario? UsuarioAvalista { get; private set; }
 
         internal SeguracaContextoDados SeguracaContextoDados { get; }
 
@@ -58,7 +57,7 @@ namespace Snebur.AcessoDados
 
         internal BaseConexao Conexao { get; }
 
-        internal protected BaseContextoDados ContextoSessaoUsuario { get; }
+        internal protected BaseContextoDados? ContextoSessaoUsuario { get; }
 
         public bool IsContextoSessaoUsuario => this.ContextoSessaoUsuario == this;
 
@@ -88,23 +87,23 @@ namespace Snebur.AcessoDados
             {
                 if (this.SqlSuporte.IsSessaoUsuario)
                 {
-                    return this.SessaoUsuarioLogado.Status == EnumStatusSessaoUsuario.Ativo;
+                    return this.SessaoUsuarioLogado?.Status == EnumStatusSessaoUsuario.Ativo;
                 }
                 return true;
             }
         }
 
-        public CredencialUsuario CredencialAvalista
+        public CredencialUsuario? CredencialAvalista
         {
-            get => this._credencialAvalista;
+            get => field;
             set
             {
-                this._credencialAvalista = value;
+                field = value;
                 this.IsValidarUsuarioSessaoUsuario = false;
-                this.UsuarioAvalista = this.CacheSessaoUsuario.RetornarUsuarioAvalista(this._credencialAvalista);
+                this.UsuarioAvalista = this.CacheSessaoUsuario?.RetornarUsuarioAvalista(this._credencialAvalista);
                 this.IsValidarUsuarioSessaoUsuario = true;
 
-                if (this.ContextoSessaoUsuario != this)
+                if (this.ContextoSessaoUsuario != null && this.ContextoSessaoUsuario != this)
                 {
                     this.ContextoSessaoUsuario.CredencialAvalista = value;
                 }
@@ -118,15 +117,16 @@ namespace Snebur.AcessoDados
 
         #region Construtor
 
-        private BaseContextoDados(BaseContextoDados contextoSessaoUsuario,
-                                  string configuracaoAcessoDados,
-                                  string identificadorProprietario,
-                                  EnumFlagBancoNaoSuportado flagsNaoSuporta)
+        private BaseContextoDados(
+            BaseContextoDados? contextoSessaoUsuario,
+            string configuracaoAcessoDados,
+            string identificadorProprietario,
+            EnumFlagBancoNaoSuportado flagsNaoSuporta)
         {
             ErroUtil.ValidarReferenciaNula(configuracaoAcessoDados, nameof(configuracaoAcessoDados));
 
             this.SqlSuporte = new BancoDadosSuporta(flagsNaoSuporta);
-            this.ConectionString = AplicacaoSnebur.Atual.ConnectionStrings[configuracaoAcessoDados]
+            this.ConectionString = AplicacaoSnebur.AtualRequired.ConnectionStrings[configuracaoAcessoDados]
                     ?? throw new ErroNaoDefinido($"Não foi encontrada o String de conexão '{configuracaoAcessoDados}' no arquivo de configuração da aplicação ConnectionStrings App.Config ou Web.Config ");
 
             if (String.IsNullOrWhiteSpace(identificadorProprietario))
@@ -152,7 +152,6 @@ namespace Snebur.AcessoDados
                 {
                     GerenciadorManutencao.Inicializar(this);
                 }
-
             }
 
             this.IsAtivarSeguranca = false;
@@ -200,17 +199,19 @@ namespace Snebur.AcessoDados
         {
 
         }
-        private BaseContextoDados(BaseContextoDados contextoSessaoUsuario,
-                                  string configuracaoAcessoDados,
-                                  CredencialUsuario credencial,
-                                  Guid identificadorSessaoUsario,
-                                  InformacaoSessao informacaoSessaoUsuario,
-                                  string identificadorProprietario,
-                                  EnumFlagBancoNaoSuportado sqlNaoSuporta,
-                                  bool isValidarUsuarioGlobal) : this(contextoSessaoUsuario,
-                                                                      configuracaoAcessoDados,
-                                                                      identificadorProprietario,
-                                                                      sqlNaoSuporta)
+        private BaseContextoDados(
+            BaseContextoDados? contextoSessaoUsuario,
+            string configuracaoAcessoDados,
+            CredencialUsuario credencial,
+            Guid identificadorSessaoUsario,
+            InformacaoSessao informacaoSessaoUsuario,
+            string identificadorProprietario,
+            EnumFlagBancoNaoSuportado sqlNaoSuporta,
+            bool isValidarUsuarioGlobal)
+            : this(contextoSessaoUsuario,
+                   configuracaoAcessoDados,
+                   identificadorProprietario,
+                   sqlNaoSuporta)
         {
             ErroUtil.ValidarReferenciaNula(credencial, nameof(credencial));
 
@@ -239,7 +240,6 @@ namespace Snebur.AcessoDados
                 {
                     this.VerificarAutorizacaoUsuarioIdentificadorGlobal();
                 }
-
             }
 
             this.IsContextoInicializado = !isValidarUsuarioGlobal;
@@ -304,7 +304,9 @@ namespace Snebur.AcessoDados
 
             if (this.SqlSuporte.IsSessaoUsuarioHerdada)
             {
-                return this.ContextoSessaoUsuario.CacheSessaoUsuario;
+                return this.ContextoSessaoUsuario?.CacheSessaoUsuario ??
+                    throw new Exception(
+                        $" O contexto da sessão do usuário não foi definido para o contexto de dados {this.GetType().Name} ");
             }
             throw new InvalidOperationException("O banco de dados não suporta sessão de usuário");
         }
@@ -384,7 +386,14 @@ namespace Snebur.AcessoDados
             {
                 return EnumPermissao.Autorizado;
             }
-            return this.SeguracaContextoDados.PermissaoLeitura(this.UsuarioLogado, this.UsuarioAvalista, estruturaConsulta);
+
+            Guard.NotNull(this.UsuarioLogado);
+            Guard.NotNull(this.UsuarioAvalista);
+
+            return this.SeguracaContextoDados.PermissaoLeitura(
+                this.UsuarioLogado,
+                this.UsuarioAvalista,
+                estruturaConsulta);
         }
 
         internal ResultadoConsulta RetornarResultadoConsultaInterno(EstruturaConsulta estruturaConsulta)
@@ -445,19 +454,27 @@ namespace Snebur.AcessoDados
 
         private ResultadoSalvar SalvarPermissao(IEnumerable<IEntidade> entidades)
         {
-            var permissao = this.SeguracaContextoDados?.PermissaoSalvar(this.UsuarioLogado,
-                                                                        this.UsuarioAvalista,
-                                                                        entidades) ?? EnumPermissao.Autorizado;
-            if (permissao == EnumPermissao.Autorizado)
+            if (this.SeguracaContextoDados is not null)
             {
-                return this.SalvarInterno(entidades);
+                Guard.NotNull(this.UsuarioLogado);
+
+                var permissao = this.SeguracaContextoDados
+                    .PermissaoSalvar(this.UsuarioLogado,
+                                     this.UsuarioAvalista,
+                                     entidades);
+                if (permissao != EnumPermissao.Autorizado)
+                {
+                    return new ResultadoSalvar
+                    {
+                        Permissao = permissao,
+                        Erro = new ErroPermissao(permissao, $"Permissão {EnumUtil.RetornarDescricao(permissao)} ")
+                    };
+                }
             }
 
-            return new ResultadoSalvar
-            {
-                Permissao = permissao,
-                Erro = new ErroPermissao(permissao, $"Permissão {EnumUtil.RetornarDescricao(permissao)} ")
-            };
+            return this.SalvarInterno(entidades);
+
+
         }
 
         private ResultadoSalvar SalvarInterno(IEnumerable<IEntidade> entidades)
@@ -494,11 +511,14 @@ namespace Snebur.AcessoDados
             }
         }
 
-        public Task<int> ExecutarSqlAsync(string sql, List<ParametroInfo> parametroInfos = null)
+        public Task<int> ExecutarSqlAsync(
+            string sql,
+            List<ParametroInfo>? parametroInfos = null)
         {
             return Task.Run(() => this.ExecutarSql(sql, parametroInfos));
         }
-        public int ExecutarSql(string sql, List<ParametroInfo> parametroInfos = null)
+
+        public int ExecutarSql(string sql, List<ParametroInfo>? parametroInfos = null)
         {
             this.ValidarSessaoUsuario();
             //if (!Debugger.IsAttached)
@@ -509,7 +529,9 @@ namespace Snebur.AcessoDados
             return this.Conexao.ExecutarComando(sql, parametroInfos);
         }
 
-        public T ExecutarSqlScalar<T>(string sql, List<ParametroInfo> parametroInfos = null)
+        public T ExecutarSqlScalar<T>(
+            string sql,
+            List<ParametroInfo>? parametroInfos = null)
         {
             this.ValidarSessaoUsuario();
             //if (!Debugger.IsAttached)
@@ -566,7 +588,9 @@ namespace Snebur.AcessoDados
             return (this as IContextoDadosSemNotificar).SalvarInternoSemNotificacao(new IEntidade[] { entidade }, ignorarValidacao);
         }
 
-        ResultadoSalvar IContextoDadosSemNotificar.SalvarInternoSemNotificacao(IEntidade[] p_entidades, bool ignorarValidacao)
+        ResultadoSalvar IContextoDadosSemNotificar.SalvarInternoSemNotificacao(
+            IEntidade[] p_entidades,
+            bool ignorarValidacao)
         {
             var entidades = p_entidades.Cast<Entidade>().ToList();
             using (var salvarEntidades = new SalvarEntidades(this, entidades.ToHashSet(false), EnumOpcaoSalvar.Salvar, false))
@@ -587,7 +611,14 @@ namespace Snebur.AcessoDados
                 {
                     throw resultado.Erro;
                 }
-                return resultado as ResultadoSalvar;
+
+                if (resultado is ResultadoSalvar resultadoSalvar)
+                {
+                    return resultadoSalvar;
+                }
+
+                throw new Exception($"O tipo do resultado {resultado?.GetType().Name ?? "null"}  é diferente do esperado {typeof(ResultadoSalvar).Name}");
+
             }
         }
 
@@ -616,7 +647,14 @@ namespace Snebur.AcessoDados
         {
             if (this.IsValidarUsuarioSessaoUsuario)
             {
-                Guard.NotNull(this.CacheSessaoUsuario);
+                if (this.CacheSessaoUsuario is null)
+                {
+                    if (Debugger.IsAttached)
+                    {
+                        throw new Erro("O cache da sessão do usuário não foi inicializado");
+                    }
+                    return;
+                }
 
                 if (this.CacheSessaoUsuario.StatusSessaoUsuario != EnumStatusSessaoUsuario.Ativo)
                 {
@@ -637,9 +675,10 @@ namespace Snebur.AcessoDados
                             return;
                         }
                     }
-                    throw new ErroSessaoUsuarioExpirada(this.CacheSessaoUsuario.StatusSessaoUsuario,
-                                                        this.CacheSessaoUsuario.SessaoUsuario.IdentificadorSessaoUsuario,
-                                                        $"O status da sessão '{this.CacheSessaoUsuario.SessaoUsuario.IdentificadorSessaoUsuario}' não é valido {this.CacheSessaoUsuario.StatusSessaoUsuario.ToString()} ");
+                    throw new ErroSessaoUsuarioExpirada(
+                        this.CacheSessaoUsuario.StatusSessaoUsuario,
+                        this.CacheSessaoUsuario.SessaoUsuario?.IdentificadorSessaoUsuario,
+                        $"O status da sessão '{this.CacheSessaoUsuario.SessaoUsuario?.IdentificadorSessaoUsuario}' não é valido {this.CacheSessaoUsuario.StatusSessaoUsuario.ToString()} ");
                 }
             }
         }
@@ -682,7 +721,7 @@ namespace Snebur.AcessoDados
         internal protected abstract int IdNamespace { get; }
 
         #endregion
-         
+
         #region Transação
 
         internal SqlTransaction TransacaoAtual { get; private set; }
@@ -781,7 +820,7 @@ namespace Snebur.AcessoDados
                 {
                     if (DebugUtil.IsAttached)
                     {
-                        throw new Exception($"A propriedade {propriedade.Name} declarada  {propriedade.DeclaringType.Name} não possui o atributo somente leitura");
+                        throw new Exception($"A propriedade {propriedade.Name} declarada  {propriedade.DeclaringType?.Name} não possui o atributo somente leitura");
                     }
                 }
                 this.__estruturasCamposSomenteLeituraSobreEscrever.Value.Add(estruturCampo);
@@ -846,5 +885,4 @@ namespace Snebur.AcessoDados
         }
         #endregion
     }
-
 }

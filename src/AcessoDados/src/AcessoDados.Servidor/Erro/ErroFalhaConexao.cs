@@ -1,6 +1,4 @@
-using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
 
 namespace Snebur.AcessoDados
 {
@@ -9,7 +7,7 @@ namespace Snebur.AcessoDados
     {
 
         public ErroFalhaConexao(string mensagem = "",
-                              Exception erroInterno = null,
+                              Exception? erroInterno = null,
                               [CallerMemberName] string nomeMetodo = "",
                               [CallerFilePath] string caminhoArquivo = "",
                               [CallerLineNumber] int linhaDoErro = 0) :
@@ -21,7 +19,7 @@ namespace Snebur.AcessoDados
         public ErroFalhaConexao()
         {
         }
-         
+
         protected override EnumNivelErro RetornarNivelErro()
         {
             return EnumNivelErro.Critico;

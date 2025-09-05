@@ -1,16 +1,16 @@
-﻿using Snebur.AcessoDados.Estrutura;
-using Snebur.Utilidade;
-using System;
+using Snebur.AcessoDados.Estrutura;
 
 namespace Snebur.AcessoDados.Servidor.Salvar
 {
     internal class CampoComputado
     {
-        internal EstruturaCampo EstruturaCampo { get; set; }
+        internal EstruturaCampo EstruturaCampo { get; }
 
-        internal object Valor { get; set; }
+        internal object? Valor { get; }
 
-        internal CampoComputado(EstruturaCampo estruturaCampo, object valor)
+        internal CampoComputado(
+            EstruturaCampo estruturaCampo,
+            object? valor)
         {
             this.EstruturaCampo = estruturaCampo;
 

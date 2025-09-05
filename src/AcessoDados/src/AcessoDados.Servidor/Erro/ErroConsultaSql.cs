@@ -1,4 +1,3 @@
-using System;
 using System.Runtime.CompilerServices;
 
 namespace Snebur.AcessoDados
@@ -8,7 +7,7 @@ namespace Snebur.AcessoDados
     {
 
         public ErroConsultaSql(string mensagem = "",
-                              Exception erroInterno = null,
+                              Exception? erroInterno = null,
                               [CallerMemberName] string nomeMetodo = "",
                               [CallerFilePath] string caminhoArquivo = "",
                               [CallerLineNumber] int linhaDoErro = 0) :
@@ -21,7 +20,7 @@ namespace Snebur.AcessoDados
         public ErroConsultaSql()
         {
         }
- 
+
         #endregion
     }
 }

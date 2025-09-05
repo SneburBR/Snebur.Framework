@@ -1,10 +1,5 @@
-﻿using Snebur.Dominio;
 using Snebur.Linq;
-using Snebur.Utilidade;
-using System;
-using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
 
 namespace Snebur.AcessoDados.Servidor.Salvar
 {
@@ -85,6 +80,8 @@ namespace Snebur.AcessoDados.Servidor.Salvar
 
         private void SalvarAlteracoesGenericas()
         {
+            Guard.NotNull(this.Contexto.ContextoSessaoUsuario);
+
             var conexao = this.Contexto.ContextoSessaoUsuario.Conexao;
             var fila = this.FilaAlteracoesGenericas;
             this.SalvarNormal(conexao, fila, true);
@@ -455,7 +452,7 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             var entidadesAlterada = new List<EntidadeAlterada>();
             foreach (var entidade in entidadesNormalizada)
             {
-                if (entidade != null)
+                if (entidade is not null)
                 {
                     var estruturaEntidade = this.Contexto.EstruturaBancoDados.EstruturasEntidade[entidade.GetType().Name];
                     var entidadeAlterada = new EntidadeAlterada(this.Contexto,
@@ -472,13 +469,16 @@ namespace Snebur.AcessoDados.Servidor.Salvar
         private List<EntidadeAlterada> RetornarEntidadesAlteracoesPropriedadeGenericas(HashSet<Entidade> entidadesNormalizada)
         {
             var contextoSessaoUsuario = this.Contexto.ContextoSessaoUsuario;
+
+            Guard.NotNull(contextoSessaoUsuario);
+
             var entidadesNotificacaoPropriedadeAlteradaGenerica = this.RetornarEntidadesAlteracaoPropriedadeGenericas(entidadesNormalizada);
             entidadesNotificacaoPropriedadeAlteradaGenerica = NormalizarEntidade.RetornarEntidadesNormalizada(contextoSessaoUsuario, entidadesNotificacaoPropriedadeAlteradaGenerica);
             var entidadesAlterada = new List<EntidadeAlterada>();
 
             foreach (var entidade in entidadesNotificacaoPropriedadeAlteradaGenerica)
             {
-                if (entidade != null)
+                if (entidade is not null)
                 {
                     var estruturaEntidade = contextoSessaoUsuario.EstruturaBancoDados.EstruturasEntidade[entidade.GetType().Name];
                     var entidadeAlterada = new EntidadeAlterada(contextoSessaoUsuario,
@@ -522,11 +522,6 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             this.EntidadesAlteradas?.Clear();
             this.EntidadesAlteradasAlteracoesGenericas?.Clear();
 
-            this.FilaEntidades = null;
-            this.FilaAlteracoesGenericas = null;
-            this.EntidadesAlteradas = null;
-            this.EntidadesAlteradasAlteracoesGenericas = null;
-            this.Contexto = null;
         }
         #endregion
     }

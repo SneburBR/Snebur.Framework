@@ -1,8 +1,3 @@
-﻿using Snebur.Utilidade;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Snebur.AcessoDados.Servidor.Salvar
 {
     internal partial class FilaEntidadeAlterada : IDisposable

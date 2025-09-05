@@ -1,14 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
 using Snebur.AcessoDados.Estrutura;
-using Snebur.Dominio;
-using Snebur.Dominio.Atributos;
 using Snebur.Seguranca;
 using Snebur.Servicos;
-using Snebur.Utilidade;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Threading;
 
 namespace Snebur.AcessoDados
@@ -297,7 +289,6 @@ namespace Snebur.AcessoDados
                     Thread.Sleep(200);
                     return this.RetornarIpInformacao(contexto, tentativa += 1);
                 }
-
             }
 
             private IIPInformacao RetornarIpInformacao(BaseContextoDados contexto,

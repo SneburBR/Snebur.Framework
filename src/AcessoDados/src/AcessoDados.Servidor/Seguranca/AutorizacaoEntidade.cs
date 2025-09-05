@@ -1,8 +1,3 @@
-﻿using Snebur.Dominio;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Snebur.AcessoDados.Seguranca
 {
     internal abstract class AutorizacaoEntidade

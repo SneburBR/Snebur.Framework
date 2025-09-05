@@ -1,6 +1,4 @@
-using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
 
 namespace Snebur.AcessoDados
 {
@@ -9,7 +7,7 @@ namespace Snebur.AcessoDados
     {
         protected override bool IsParaDepuracaoAtachada => false;
         public ErroAcessoDados(string mensagem = "",
-                               Exception erroInterno = null,
+                               Exception? erroInterno = null,
                                [CallerMemberName] string nomeMetodo = "",
                                [CallerFilePath] string caminhoArquivo = "",
                                [CallerLineNumber] int linhaDoErro = 0) : base(mensagem, erroInterno)
@@ -21,8 +19,7 @@ namespace Snebur.AcessoDados
         public ErroAcessoDados()
         {
         }
-         
+
         #endregion
     }
-
 }

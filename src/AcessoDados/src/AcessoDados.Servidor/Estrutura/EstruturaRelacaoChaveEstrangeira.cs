@@ -1,5 +1,3 @@
-﻿using System.Reflection;
-
 namespace Snebur.AcessoDados.Estrutura
 {
     internal abstract class EstruturaRelacaoChaveEstrangeira : EstruturaRelacao

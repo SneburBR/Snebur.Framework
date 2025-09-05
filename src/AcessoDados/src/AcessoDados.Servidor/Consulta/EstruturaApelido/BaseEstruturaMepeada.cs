@@ -1,5 +1,3 @@
-﻿using System;
-
 namespace Snebur.AcessoDados.Mapeamento
 {
     internal abstract class BaseEstruturaApelido

@@ -1,8 +1,3 @@
-﻿using Snebur.Dominio;
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-
 namespace Snebur
 {
     public static class SessaoUsuarioExtensao
@@ -30,7 +25,5 @@ namespace Snebur
             }
             return _bloqueios[identificador];
         }
-
     }
-
 }

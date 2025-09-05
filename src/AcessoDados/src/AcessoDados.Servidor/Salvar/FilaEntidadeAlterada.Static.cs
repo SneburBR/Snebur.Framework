@@ -1,5 +1,3 @@
-﻿using System.Collections.Generic;
-
 namespace Snebur.AcessoDados.Servidor.Salvar
 {
     internal partial class FilaEntidadeAlterada

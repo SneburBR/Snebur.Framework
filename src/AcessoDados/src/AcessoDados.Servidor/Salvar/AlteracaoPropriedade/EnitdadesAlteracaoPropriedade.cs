@@ -1,12 +1,3 @@
-﻿using Snebur.AcessoDados.Estrutura;
-using Snebur.Dominio;
-using Snebur.Dominio.Atributos;
-using Snebur.Utilidade;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-
 namespace Snebur.AcessoDados.Servidor.Salvar
 {
     internal class EntidadesAlteracaoPropriedade : BaseEnitdadesAlteracaoPropriedade
@@ -67,6 +58,5 @@ namespace Snebur.AcessoDados.Servidor.Salvar
             var ultimaAlteracao = consulta.FirstOrDefault();
             return ultimaAlteracao;
         }
-
     }
 }

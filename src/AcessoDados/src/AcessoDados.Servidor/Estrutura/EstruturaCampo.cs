@@ -1,10 +1,5 @@
-﻿using Snebur.Dominio;
-using Snebur.Dominio.Atributos;
 using Snebur.Reflexao;
-using Snebur.Utilidade;
-using System;
 using System.Data;
-using System.Reflection;
 
 namespace Snebur.AcessoDados.Estrutura
 {
@@ -13,7 +8,7 @@ namespace Snebur.AcessoDados.Estrutura
         internal string NomeCampo { get; }
         internal string NomeCampoSensivel { get; }
         internal string NomeParametro { get; }
-        internal string NomeParametroOuValorFuncaoServidor
+        internal string? NomeParametroOuValorFuncaoServidor
         {
             get
             {
@@ -28,22 +23,23 @@ namespace Snebur.AcessoDados.Estrutura
         internal EnumTipoPrimario TipoPrimarioEnum { get; }
         internal DateTimeKind? DateTimeKind { get; set; }
         internal SqlDbType TipoSql { get; }
-        internal EstruturaRelacaoChaveEstrangeira EstruturaRelacaoChaveEstrangeira { get; set; } = null;
-        internal PropertyInfo PropriedadeTipoComplexo { get; } = null;
+        internal EstruturaRelacaoChaveEstrangeira? EstruturaRelacaoChaveEstrangeira { get; set; } = null;
+        internal PropertyInfo? PropriedadeTipoComplexo { get; } = null;
         internal bool IsTipoComplexo { get; } = false;
         internal OpcoesSomenteLeitura OpcoesSomenteLeitura { get; }
         internal bool IsValorFuncaoServidor { get; private set; }
         internal bool IsFormatarSomenteNumero { get; }
-        internal string ValorFuncaoServidor { get; }
+        internal string? ValorFuncaoServidor { get; }
         internal bool IsRelacaoChaveEstrangeira => this.EstruturaRelacaoChaveEstrangeira != null;
         internal bool IsPossuiIndiceTextoCompleto { get; }
         internal bool IsNotificarAlteracaoPropriedade { get; }
         public bool IsAutorizarAlteracaoPropriedade { get; }
         public bool IsValorPadrao { get; }
 
-        internal IBaseValorPadrao AtributoValorPadrao { get; }
+        internal IBaseValorPadrao? AtributoValorPadrao { get; }
 
         public EnumTipoValorPadrao TipoValorPadrao { get; }
+        public int? TamanhoMaximo { get; }
 
         /// <summary>
         /// Construtor campo do TipoComplexo
@@ -51,7 +47,7 @@ namespace Snebur.AcessoDados.Estrutura
         /// <param name="propriedadeTipoComplexo"></param>
         /// <param name="propriedadeCampo"></param>
         /// <param name="estruturaEntidade"></param>
-        internal EstruturaCampo(PropertyInfo propriedadeTipoComplexo, 
+        internal EstruturaCampo(PropertyInfo propriedadeTipoComplexo,
                                 PropertyInfo propriedadeCampo,
                                 EstruturaEntidade estruturaEntidade) : this(propriedadeCampo, estruturaEntidade)
         {
@@ -82,6 +78,7 @@ namespace Snebur.AcessoDados.Estrutura
 
             this.AtributoValorPadrao = this.RetornarAtributoValorPadrao();
             this.TipoValorPadrao = this.RetornarTipoValorPadrao();
+            this.TamanhoMaximo = this.RetornarTamanhoMaximo();
 
             this.IsPossuiIndiceTextoCompleto = this.RetornarIsPossuiIndiceTextoCompleto();
             this.IsNotificarAlteracaoPropriedade = this.RetornarIsNotificarAlteracaoPropriedade();
@@ -98,13 +95,20 @@ namespace Snebur.AcessoDados.Estrutura
             {
                 if (this.Tipo.IsValueType && !this.IsTipoNullable)
                 {
-                    this.Alertas.Add($"O propriedade {this.Propriedade.Name} da entidade {this.Propriedade.DeclaringType.Name} por valor padrão, altere o tipo da propriedade para Nullble<{this.Tipo.Name}> para o valor padrao seja inserido quando valor nullo");
+                    this.Alertas.Add($"O propriedade {this.Propriedade.Name} da entidade {this.Propriedade.DeclaringType?.Name} por valor padrão, altere o tipo da propriedade para Nullble<{this.Tipo.Name}> para o valor padrao seja inserido quando valor nullo");
                 }
             }
             if (this.IsPossuiIndiceTextoCompleto)
             {
                 this.EstruturaEntidade.EstruturasCamposIndiceTextoCompleto.Add(this);
             }
+        }
+
+        private int? RetornarTamanhoMaximo()
+        {
+            return this.Propriedade
+                .GetCustomAttribute<ValidacaoTextoTamanhoAttribute>()?
+                .TamanhoMaximo;
         }
 
         private OpcoesSomenteLeitura RetornarOpcoesSomenteLeitura()
@@ -117,7 +121,7 @@ namespace Snebur.AcessoDados.Estrutura
             return new OpcoesSomenteLeitura(false);
         }
 
-        private string RetornarValorParametroServidor()
+        private string? RetornarValorParametroServidor()
         {
             if (this.TipoSql == SqlDbType.DateTime)
             {
@@ -133,7 +137,7 @@ namespace Snebur.AcessoDados.Estrutura
             return null;
         }
 
-        private IBaseValorPadrao RetornarAtributoValorPadrao()
+        private IBaseValorPadrao? RetornarAtributoValorPadrao()
         {
             return EntidadeUtil.RetornarAtributoImplementaInterface<IBaseValorPadrao>(this.Propriedade);
         }
@@ -156,7 +160,7 @@ namespace Snebur.AcessoDados.Estrutura
                 {
                     return EnumTipoValorPadrao.IndentificadorProprietario;
                 }
-                if(atributo is ValorPadraoAttribute valorPadrao)
+                if (atributo is ValorPadraoAttribute valorPadrao)
                 {
                     return valorPadrao.TipoValorPadrao;
                 }
@@ -172,7 +176,7 @@ namespace Snebur.AcessoDados.Estrutura
         {
             if (this.IsTipoComplexo)
             {
-                return String.Format("{0}_{1}", this.PropriedadeTipoComplexo.Name, this.Propriedade.Name);
+                return String.Format("{0}_{1}", this.PropriedadeTipoComplexo?.Name, this.Propriedade.Name);
             }
             else
             {
@@ -305,6 +309,4 @@ namespace Snebur.AcessoDados.Estrutura
 
         #endregion
     }
-
-   
 }

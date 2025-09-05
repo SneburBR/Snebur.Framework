@@ -1,8 +1,4 @@
-﻿using Snebur.Reflexao;
-using Snebur.Utilidade;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Snebur.Reflexao;
 using System.Text;
 
 namespace Snebur.AcessoDados.Mapeamento
@@ -305,7 +301,6 @@ namespace Snebur.AcessoDados.Mapeamento
                         throw new ErroNaoSuportado($"O operador  {EnumUtil.RetornarDescricao(filtroPropriedade.Operador)}  não é suportado com valor da propriedade nulo  'null'  ");
 
                 }
-
             }
             switch (filtroPropriedade.TipoPrimarioEnum)
             {
@@ -368,7 +363,6 @@ namespace Snebur.AcessoDados.Mapeamento
             {
                 return ConverterUtil.ConverterTipoPrimario(filtroPropriedade.Valor, filtroPropriedade.TipoPrimarioEnum);
             }
-
         }
 
         private string RetornarValorPropriedadeFiltro(FiltroPropriedade filtroPropriedade)

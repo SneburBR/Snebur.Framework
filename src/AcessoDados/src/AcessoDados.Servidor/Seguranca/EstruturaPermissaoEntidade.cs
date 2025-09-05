@@ -1,8 +1,3 @@
-using Snebur.Dominio;
-using Snebur.Utilidade;
-using System;
-using System.Collections.Generic;
-
 namespace Snebur.AcessoDados.Seguranca
 {
     internal class EstruturaPermissaoEntidade

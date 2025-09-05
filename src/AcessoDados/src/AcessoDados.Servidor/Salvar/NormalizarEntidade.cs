@@ -1,8 +1,3 @@
-﻿using Snebur.Dominio;
-using System.Linq;
-using System;
-using System.Collections.Generic;
-
 namespace Snebur.AcessoDados.Servidor.Salvar
 {
     internal partial class NormalizarEntidade : IDisposable
@@ -118,7 +113,6 @@ namespace Snebur.AcessoDados.Servidor.Salvar
                     {
                         //throw new ErroNaoImplementado();
                     }
-
                 }
                 foreach (var estruturaRelacaoNn in estruturasRelacoesNn)
                 {

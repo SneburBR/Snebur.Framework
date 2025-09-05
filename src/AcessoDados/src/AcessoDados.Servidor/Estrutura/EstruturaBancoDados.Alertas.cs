@@ -1,13 +1,5 @@
-using Snebur.Dominio;
-using Snebur.Dominio.Atributos;
 using Snebur.Linq;
-using Snebur.Utilidade;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
 
 namespace Snebur.AcessoDados.Estrutura
 {
@@ -135,7 +127,6 @@ namespace Snebur.AcessoDados.Estrutura
                     {
                         this.Alertas.Add(String.Format("O tipo entidade '{0}' não é abstrato e possui classes especializadas, Configura como Abstrato", estruturaEntidade.TipoEntidade.Name));
                     }
-
                 }
                 if (estruturaEntidade.IsAbstrata && !this.AssemblyEntidades.GetTypes().Any(x => x.IsSubclassOf(estruturaEntidade.TipoEntidade)))
                 {
@@ -178,7 +169,6 @@ namespace Snebur.AcessoDados.Estrutura
                             {
                                 this.Alertas.Add(String.Format(" A propriedade {0}  ('TipoComplexo')   não foi instancia na declaração em {1} ", propriedade.Name, propriedade.DeclaringType.Name));
                             }
-
                         }
                     }
                 }
@@ -255,6 +245,5 @@ namespace Snebur.AcessoDados.Estrutura
                 }
             }
         }
-
     }
 }

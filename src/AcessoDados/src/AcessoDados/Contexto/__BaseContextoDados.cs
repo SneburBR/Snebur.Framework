@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Threading.Tasks;
 
 namespace Snebur.AcessoDados;
@@ -9,7 +9,7 @@ public abstract partial class __BaseContextoDados : IContextoDados
 
     public bool IsValidarNomeTabelaEntidade { get; set; } = true;
 
-    public abstract IUsuario UsuarioLogado { get; }
+    public abstract IUsuario? UsuarioLogado { get; }
 
     public bool IsDispensado { get; private set; }
 

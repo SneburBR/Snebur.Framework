@@ -1,9 +1,9 @@
-﻿namespace Snebur.AcessoDados;
+namespace Snebur.AcessoDados;
 
 [IgnorarInterfaceTS]
 public interface IContextoDados : IServicoDados/*, IDisposable*/
 {
-    IUsuario UsuarioLogado { get; }
+    IUsuario? UsuarioLogado { get; }
 
     T RetornarValorScalar<T>(EstruturaConsulta estruturaConsulta);
 

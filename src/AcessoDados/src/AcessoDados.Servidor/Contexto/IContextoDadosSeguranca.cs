@@ -1,7 +1,3 @@
-﻿using Snebur.Dominio;
-using System;
-using System.Collections.Generic;
-
 namespace Snebur.AcessoDados
 {
     public interface IContextoDadosSeguranca : IDisposable
@@ -14,7 +10,7 @@ namespace Snebur.AcessoDados
 
         //IUsuario UsuarioLogado { get; }
 
-        ISessaoUsuario SessaoUsuarioLogado { get; }
+        ISessaoUsuario? SessaoUsuarioLogado { get; }
 
         ResultadoSalvar SalvarSeguranca(IEntidade entidade);
 

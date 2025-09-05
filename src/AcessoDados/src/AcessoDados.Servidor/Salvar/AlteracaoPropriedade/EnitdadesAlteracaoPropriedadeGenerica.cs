@@ -1,10 +1,5 @@
-﻿using Snebur.AcessoDados.Estrutura;
-using Snebur.Dominio;
-using Snebur.Reflexao;
+using Snebur.AcessoDados.Estrutura;
 using Snebur.Serializacao;
-using Snebur.Utilidade;
-using System;
-using System.Collections.Generic;
 
 namespace Snebur.AcessoDados.Servidor.Salvar
 {

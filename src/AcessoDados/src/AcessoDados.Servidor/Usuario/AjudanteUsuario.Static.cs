@@ -1,5 +1,3 @@
-﻿using System;
-
 namespace Snebur.AcessoDados
 {
     public partial class CacheSessaoUsuario : IDisposable
@@ -26,7 +24,6 @@ namespace Snebur.AcessoDados
                 //_ajudanteSessaoUsuario.Contexto = contexto;
                 return _ajudanteSessaoUsuario;
             }
-
         }
 
         public static void FinalizarSessaoUsuario(Guid identificadorSessaoUsuario)

@@ -1,11 +1,5 @@
-﻿using Snebur.AcessoDados.Estrutura;
-using Snebur.Dominio;
-using Snebur.Dominio.Atributos;
+using Snebur.AcessoDados.Estrutura;
 using Snebur.Linq;
-using Snebur.Utilidade;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Snebur.AcessoDados.Seguranca
 {
@@ -20,33 +14,39 @@ namespace Snebur.AcessoDados.Seguranca
         private SeguracaContextoDados(IContextoDadosSeguranca contexto)
         {
             this.ContextoDados = contexto;
-            this.EstruturaBancoDados = (contexto as BaseContextoDados).EstruturaBancoDados;
 
-            var relacoesAberta = ReflexaoUtil.RetornarNomesPropriedade<IPermissaoEntidade>(x => x.Adicionar,
-                                                                                           x => x.Atualizar,
-                                                                                           x => x.Leitura,
-                                                                                           x => x.Deletar,
-                                                                                           x => x.Identificacao);
+            var contextoDados = contexto as BaseContextoDados ??
+                throw new Exception($" O contexto deve ser do tipo {typeof(BaseContextoDados).FullName}");
+
+            this.EstruturaBancoDados = contextoDados.EstruturaBancoDados;
+
+            var relacoesAberta = ReflexaoUtil.RetornarNomesPropriedade<IPermissaoEntidade>(
+                x => x.Adicionar,
+                x => x.Atualizar,
+                x => x.Leitura,
+                x => x.Deletar,
+                x => x.Identificacao);
 
             var colecoesAberta = ReflexaoUtil.RetornarNomesPropriedade<IPermissaoEntidade>(x => x.PermissoesCampo,
                                                                                            x => x.RestricoesEntidade);
 
             var expressoesReleacoesAbertaPermissaoCampo = ExpressaoUtil.RetornarExpressoes<IPermissaoEntidade>(
-                                                                    x => x.PermissoesCampo.Incluir().Leitura,
-                                                                    x => x.PermissoesCampo.Incluir().Atualizar);
+                                                                    x => x.PermissoesCampo!.Incluir()!.Leitura,
+                                                                    x => x.PermissoesCampo!.Incluir()!.Atualizar);
 
-            var consultaPermissoesEntidade = contexto.RetornarConsulta<IPermissaoEntidade>(contexto.TiposSeguranca.TipoPermissaoEntidade).
-                                                                                          AbrirRelacoes(relacoesAberta.ToArray()).
-                                                                                          AbrirColecoes(colecoesAberta.ToArray()).
-                                                                                          AbrirRelacoes(expressoesReleacoesAbertaPermissaoCampo);
+            var consultaPermissoesEntidade = contexto.RetornarConsulta<IPermissaoEntidade>(contexto.TiposSeguranca.TipoPermissaoEntidade)
+                .AbrirRelacoes(relacoesAberta.ToArray())
+                .AbrirColecoes(colecoesAberta.ToArray())
+                .AbrirRelacoes(expressoesReleacoesAbertaPermissaoCampo);
 
-            var resultadoConsulta = (contexto as BaseContextoDados).RetornarResultadoConsultaInterno(consultaPermissoesEntidade.EstruturaConsulta);
+            var resultadoConsulta = contextoDados.RetornarResultadoConsultaInterno(consultaPermissoesEntidade.EstruturaConsulta);
 
             var permissoesEntidade = resultadoConsulta.Entidades.Cast<IPermissaoEntidade>().ToList();
 
             foreach (var grupo in permissoesEntidade.GroupBy(x => x.Identificacao))
             {
                 var identificacao = grupo.Key;
+                Guard.NotNull(identificacao);
                 this.EstruturasIdentificacao.Add(identificacao.Identificador, new EstruturaIdentificacao(identificacao, grupo.ToList()));
             }
         }
@@ -54,7 +54,11 @@ namespace Snebur.AcessoDados.Seguranca
         internal EnumPermissao PermissaoLeitura(IUsuario usuario, IUsuario usuarioAvalista, EstruturaConsulta estruturaConsulta)
         {
             var nomesTipoEntidade = this.RetornarNomesTipoEntidade(estruturaConsulta);
-            var autorizacoes = this.RetornarAutorizacoes(usuario, EnumOperacao.Leitura, nomesTipoEntidade, null, estruturaConsulta);
+            var autorizacoes = this.RetornarAutorizacoes(usuario,
+                EnumOperacao.Leitura,
+                nomesTipoEntidade,
+                entidades: null,
+                estruturaConsulta);
 
             var permissao = this.RetornarPermissao(usuario, usuarioAvalista, autorizacoes);
             if ((permissao == EnumPermissao.Autorizado) ||
@@ -79,7 +83,10 @@ namespace Snebur.AcessoDados.Seguranca
             return permissao;
         }
 
-        internal EnumPermissao PermissaoSalvar(IUsuario usuario, IUsuario usuarioAvalista, IEnumerable<IEntidade> entidades)
+        internal EnumPermissao PermissaoSalvar(
+            IUsuario usuario,
+            IUsuario? usuarioAvalista,
+            IEnumerable<IEntidade> entidades)
         {
             var dicionarioEntidadesAdicionar = this.RetornarTodosEntidades(entidades, EnumOperacao.Adicionar);
             var dicionarioEntidadesSalvar = this.RetornarTodosEntidades(entidades, EnumOperacao.Atualizar);
@@ -87,8 +94,17 @@ namespace Snebur.AcessoDados.Seguranca
             var nomesTipoEntidadesAdicionar = dicionarioEntidadesAdicionar.Keys.ToHashSet();
             var nomesTipoEntidadesSalvar = dicionarioEntidadesSalvar.Keys.ToHashSet();
 
-            var autorizacoesAdicionar = this.RetornarAutorizacoes(usuario, EnumOperacao.Adicionar, nomesTipoEntidadesAdicionar, dicionarioEntidadesAdicionar, null);
-            var autorizacoesAtualizar = this.RetornarAutorizacoes(usuario, EnumOperacao.Atualizar, nomesTipoEntidadesSalvar, dicionarioEntidadesSalvar, null);
+            var autorizacoesAdicionar = this.RetornarAutorizacoes(usuario,
+                EnumOperacao.Adicionar,
+                nomesTipoEntidadesAdicionar,
+                dicionarioEntidadesAdicionar,
+                estruturaConsutla: null);
+
+            var autorizacoesAtualizar = this.RetornarAutorizacoes(usuario,
+                EnumOperacao.Atualizar,
+                nomesTipoEntidadesSalvar,
+                dicionarioEntidadesSalvar,
+                estruturaConsutla: null);
 
             var autorizacoes = new List<AutorizacaoEntidade>();
             autorizacoes.AddRange(autorizacoesAdicionar);
@@ -100,6 +116,7 @@ namespace Snebur.AcessoDados.Seguranca
             {
                 this.AplicarRestricoesFiltro(autorizacoes, entidades);
             }
+
             if (permissao == EnumPermissao.AvalistaRequerido)
             {
                 if (usuarioAvalista != null)
@@ -136,9 +153,10 @@ namespace Snebur.AcessoDados.Seguranca
             return EnumPermissao.Negado;
         }
 
-        internal EnumPermissao PermissaoDeletar(IUsuario usuario, 
-                                                IUsuario usuarioAvalista, 
-                                                List<Entidade> entidades)
+        internal EnumPermissao PermissaoDeletar(
+            IUsuario usuario,
+            IUsuario? usuarioAvalista,
+            List<Entidade> entidades)
         {
             var dicionarioEntidades = this.RetornarTodosEntidades(entidades, EnumOperacao.Deletar);
             var nomesTipoEntidade = dicionarioEntidades.Keys.ToHashSet();
@@ -153,11 +171,12 @@ namespace Snebur.AcessoDados.Seguranca
             return this.RetornarPermissao(usuario, usuarioAvalista, autorizacoes);
         }
 
-        private List<AutorizacaoEntidade> RetornarAutorizacoes(IIdentificacao identificacao,
-                                                               EnumOperacao operacao,
-                                                               HashSet<string> nomesTipoEntidade,
-                                                               Dictionary<string, List<Entidade>> entidades,
-                                                               EstruturaConsulta estruturaConsutla)
+        private List<AutorizacaoEntidade> RetornarAutorizacoes(
+            IIdentificacao identificacao,
+            EnumOperacao operacao,
+            HashSet<string> nomesTipoEntidade,
+            Dictionary<string, List<Entidade>>? entidades,
+            EstruturaConsulta? estruturaConsutla)
         {
             var estruturasIdentificacao = this.RetornarEstruturasIdentificacao(identificacao);
             var autorizacoes = new List<AutorizacaoEntidade>();
@@ -169,11 +188,16 @@ namespace Snebur.AcessoDados.Seguranca
                 {
                     continue;
                 }
-                var autorizacao = this.RetornarNovaAutorizacao(nomeTipoEntidade, operacao, entidades, estruturaConsutla);
+                var autorizacao = this.RetornarNovaAutorizacao(
+                    nomeTipoEntidade,
+                    operacao,
+                    entidades,
+                    estruturaConsutla);
+
                 foreach (var estruturaIdentificacao in estruturasIdentificacao)
                 {
                     if (estruturaIdentificacao.PermissoesEntidade.TryGetValue(nomeTipoEntidade,
-                        out EstruturaPermissaoEntidade estruturaRegraEntidade))
+                        out EstruturaPermissaoEntidade? estruturaRegraEntidade))
                     {
                         var regraOperacao = estruturaRegraEntidade.RetornarRegraOperacao(operacao);
                         var permisao = regraOperacao.RetornarPermisao();
@@ -191,10 +215,11 @@ namespace Snebur.AcessoDados.Seguranca
             return autorizacoes;
         }
 
-        private AutorizacaoEntidade RetornarNovaAutorizacao(string nomeTipoEntidade,
-                                                            EnumOperacao operacao,
-                                                            Dictionary<string, List<Entidade>> dicionario,
-                                                            EstruturaConsulta estruturaConsutla)
+        private AutorizacaoEntidade RetornarNovaAutorizacao(
+            string nomeTipoEntidade,
+            EnumOperacao operacao,
+            Dictionary<string, List<Entidade>>? dicionario,
+            EstruturaConsulta? estruturaConsutla)
         {
             switch (operacao)
             {
@@ -206,12 +231,19 @@ namespace Snebur.AcessoDados.Seguranca
                 case EnumOperacao.Atualizar:
                 case EnumOperacao.Deletar:
 
-                    var entidades = dicionario[nomeTipoEntidade];
-                    return new AutorizacaoEntidadeSalvar(nomeTipoEntidade, operacao, entidades);
+                    if (dicionario?.ContainsKey(nomeTipoEntidade) == true)
+                    {
+                        var entidades = dicionario[nomeTipoEntidade];
+                        return new AutorizacaoEntidadeSalvar(nomeTipoEntidade, operacao, entidades);
+                    }
+
+                    throw new Exception(
+                        $"Para a operação {operacao.ToString()} é necessário informar as entidades. nomeTipoEntidade: {nomeTipoEntidade}");
+
 
                 default:
 
-                    throw new ErroNaoSuportado($"a operacao {operacao.ToString()} não é suportada");
+                    throw new ErroNaoSuportado($"a operação {operacao.ToString()} não é suportada");
             }
         }
 
@@ -244,14 +276,18 @@ namespace Snebur.AcessoDados.Seguranca
 
         private bool AutorizacaoEspecialPadrao(IUsuario usuario, IEnumerable<IEntidade> entidades)
         {
-            if (entidades.Count() == 1 && entidades.Single().GetType().IsSubclassOf(this.ContextoDados.TiposSeguranca.TipoUsuario))
+            if (entidades.Count() == 1 &&
+                entidades.Single() is IUsuario usuarioTipado &&
+                usuarioTipado.GetType().IsSubclassOf(this.ContextoDados.TiposSeguranca.TipoUsuario))
             {
-                return this.PermissaoAlterarUsuario(usuario, entidades.Single() as IUsuario) == EnumPermissao.Autorizado;
+                return this.PermissaoAlterarUsuario(usuario, usuarioTipado) == EnumPermissao.Autorizado;
             }
             return false;
         }
 
-        private EnumPermissao RetornarPermissao(IUsuario usuario, IUsuario usuarioAvalista, List<AutorizacaoEntidade> autorizacoes)
+        private EnumPermissao RetornarPermissao(
+            IUsuario usuario,
+            IUsuario? usuarioAvalista, List<AutorizacaoEntidade> autorizacoes)
         {
             var permissao = this.RetornarResultadoPermissao(autorizacoes);
             if (permissao == EnumPermissao.Autorizado)
@@ -263,6 +299,7 @@ namespace Snebur.AcessoDados.Seguranca
                 LogSegurancaUtil.LogSeguranca(usuario, usuarioAvalista, autorizacoesLogSeguranca);
                 return EnumPermissao.Autorizado;
             }
+
             if (permissao == EnumPermissao.Negado)
             {
                 var autorizacoesNegada = autorizacoes.Where(x => x.Permissao == EnumPermissao.Negado).ToList();
@@ -349,8 +386,8 @@ namespace Snebur.AcessoDados.Seguranca
                 }
                 else if (!entidade.__IsNewEntity)
                 {
-                    if (operacao == EnumOperacao.Atualizar || 
-                        operacao == EnumOperacao.Deletar || 
+                    if (operacao == EnumOperacao.Atualizar ||
+                        operacao == EnumOperacao.Deletar ||
                         operacao == EnumOperacao.Leitura)
                     {
                         return true;
@@ -362,17 +399,34 @@ namespace Snebur.AcessoDados.Seguranca
 
         private HashSet<string> RetornarNomesTipoEntidade(EstruturaConsulta estruturaConsulta)
         {
-            var nomesTipoEntidade = new HashSet<string>();
-            nomesTipoEntidade.Add(estruturaConsulta.NomeTipoEntidade);
+            if (string.IsNullOrWhiteSpace(estruturaConsulta.NomeTipoEntidade))
+            {
+                throw new ErroOperacaoInvalida($"A propriedade NomeTipoEntidadeda EstruturaConsulta não foi definida.");
+            }
+
+            var nomesTipoEntidade = new HashSet<string>
+            {
+                estruturaConsulta.NomeTipoEntidade
+            };
 
             foreach (var relacaoAberta in estruturaConsulta.RelacoesAberta.Values)
             {
-                nomesTipoEntidade.Add(relacaoAberta.NomeTipoEntidade);
+                if (!string.IsNullOrWhiteSpace(relacaoAberta.NomeTipoEntidade))
+                {
+                    nomesTipoEntidade.Add(relacaoAberta.NomeTipoEntidade);
+                }
             }
             foreach (var colecaoAberta in estruturaConsulta.ColecoesAberta.Values)
             {
-                nomesTipoEntidade.Add(colecaoAberta.NomeTipoEntidade);
-                nomesTipoEntidade.AddRange(this.RetornarNomesTipoEntidade(colecaoAberta.EstruturaConsulta));
+                if (!string.IsNullOrWhiteSpace(colecaoAberta.NomeTipoEntidade))
+                {
+                    if (colecaoAberta.EstruturaConsulta is null)
+                    {
+                        throw new ErroOperacaoInvalida($"A propriedade EstruturaConsulta da ColeçãoAberta '{colecaoAberta.CaminhoPropriedade}' não foi definida.");
+                    }
+                    nomesTipoEntidade.Add(colecaoAberta.NomeTipoEntidade);
+                    nomesTipoEntidade.AddRange(this.RetornarNomesTipoEntidade(colecaoAberta.EstruturaConsulta));
+                }
             }
             return nomesTipoEntidade;
         }

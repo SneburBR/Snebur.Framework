@@ -1,8 +1,4 @@
-﻿using Snebur.AcessoDados.Estrutura;
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
+using Snebur.AcessoDados.Estrutura;
 
 namespace Snebur.AcessoDados.Mapeamento
 {
@@ -63,8 +59,6 @@ namespace Snebur.AcessoDados.Mapeamento
             this.MontarEstruturasRelacoesAbertasFiltro();
         }
 
-      
-         
         #region Mapeamentos das Estruturas
 
         private void MontarEstruturasRelacoesAbertasFiltro()
@@ -166,12 +160,7 @@ namespace Snebur.AcessoDados.Mapeamento
             this.TodasEstruturaCampoApelidoMapeado?.Clear();
             this.EstruturasCampoApelidoChaveEstrangeiraRelacoesAberta?.Clear();
             this.RelacoesAberta?.Clear();
-            // this.EstruturasEntidadeMapeadaRelacao?.Clear();
 
-            this.TodasEstruturaCampoApelidoMapeado = null;
-            this.RelacoesAberta = null;
-            this.EstruturasCampoApelidoChaveEstrangeiraRelacoesAberta = null;
-            //  this.EstruturasEntidadeMapeadaRelacao = null;
         }
         #endregion
     }

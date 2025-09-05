@@ -1,10 +1,3 @@
-﻿using Snebur.Dominio;
-using Snebur.Dominio.Atributos;
-using Snebur.Utilidade;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Snebur.AcessoDados.Mapeamento
 {
     internal partial class BaseSqlBuilder
@@ -116,7 +109,6 @@ namespace Snebur.AcessoDados.Mapeamento
 
                     sb.AppendLine($" {operadorFiltro} ( {sqlFiltros} ) ");
                 }
-
             }
 
             if (isIncluirOrdenacaoPaginacao)
@@ -209,7 +201,6 @@ namespace Snebur.AcessoDados.Mapeamento
                 {
                     sb.AppendLine(this.RetornarSqlOrdenacaoChavePrimaria(filtroMapeamento));
                 }
-
             }
             return sb.ToString();
         }
@@ -268,6 +259,5 @@ namespace Snebur.AcessoDados.Mapeamento
             return String.Empty;
 
         }
-
     }
 }

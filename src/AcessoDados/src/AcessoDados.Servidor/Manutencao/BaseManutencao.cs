@@ -1,10 +1,5 @@
-﻿using Snebur.AcessoDados.Estrutura;
-using Snebur.Dominio;
-using System;
-using System.Collections.Generic;
+using Snebur.AcessoDados.Estrutura;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Common;
-using System.Reflection;
 
 namespace Snebur.AcessoDados.Manutencao
 {
@@ -90,7 +85,5 @@ namespace Snebur.AcessoDados.Manutencao
         {
             this.Contexto = contexto;
         }
-
     }
-
 }

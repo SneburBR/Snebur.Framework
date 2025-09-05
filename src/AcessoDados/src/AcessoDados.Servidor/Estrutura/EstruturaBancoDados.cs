@@ -1,21 +1,16 @@
-using Snebur.AcessoDados.Mapeamento;
-using Snebur.Dominio;
 using Snebur.Extensao;
-using Snebur.Utilidade;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Snebur.AcessoDados.Estrutura
 {
+
     internal partial class EstruturaBancoDados
     {
         public object _bloqueio = new object();
 
         internal bool IsEstruturasEntidadeMontada { get; private set; }
-        internal DicionarioEstrutura<EstruturaEntidade> EstruturasEntidade { get; } = new DicionarioEstrutura<EstruturaEntidade>();
+        internal DicionarioEstrutura<EstruturaEntidade> EstruturasEntidade { get; } = new();
         internal DicionarioEstrutura<Type> TiposEntidade { get; } = new DicionarioEstrutura<Type>();
         internal DicionarioEstrutura<PropertyInfo> TodasPropriedades { get; } = new DicionarioEstrutura<PropertyInfo>();
         internal Dictionary<Type, IntercepetadorModel> Interceptadores { get; } = new Dictionary<Type, IntercepetadorModel>();
@@ -33,7 +28,7 @@ namespace Snebur.AcessoDados.Estrutura
 
         internal DateTimeKind DateTimeKindPadrao { get; }
 
-        internal bool IsDateTimeUtc => this.DateTimeKindPadrao == DateTimeKind.Utc; 
+        internal bool IsDateTimeUtc => this.DateTimeKindPadrao == DateTimeKind.Utc;
 
         internal int IdNamespace { get; }
 
@@ -63,7 +58,7 @@ namespace Snebur.AcessoDados.Estrutura
         }
         #endregion
 
-        internal Type RetornarTipoConsultaImplementaInterface<TIInterface>(bool ignorarNaoEncontrado = false)
+        internal Type? RetornarTipoConsultaImplementaInterface<TIInterface>(bool ignorarNaoEncontrado = false)
         {
             var tipoInterface = typeof(TIInterface);
             var tiposInterface = new List<Type>();
@@ -100,17 +95,13 @@ namespace Snebur.AcessoDados.Estrutura
 
         #region Métodos internos
 
-        internal EstruturaEntidade RetornarEstruturaEntidade(string chave, bool isValidar = true)
+        internal EstruturaEntidade? RetornarEstruturaEntidade(
+            string chave,
+            bool isValidar = true)
         {
             if (this.EstruturasEntidade.ContainsKey(chave))
             {
                 return this.EstruturasEntidade[chave];
-            }
-
-            var estruturasEntidade = this.EstruturasEntidade.Where(x => x.Key.Equals(chave, StringComparison.InvariantCultureIgnoreCase)).ToList();
-            if (estruturasEntidade.Count == 1)
-            {
-                return estruturasEntidade.Single().Value;
             }
 
             if (isValidar)
@@ -146,7 +137,6 @@ namespace Snebur.AcessoDados.Estrutura
                 {
                     this.AnalisarAlertasEstruturaEntidade();
                 }
-
             }
         }
 
@@ -318,7 +308,7 @@ namespace Snebur.AcessoDados.Estrutura
                 .Where(x => typeof(IInterceptador).IsAssignableFrom(x))
                 .ToList();
 
-            if(tipos.Count> 0)
+            if (tipos.Count > 0)
             {
                 var grupos = tipos.GroupBy(x => getTipoEntidade(x));
                 foreach (var grupo in grupos)
@@ -343,7 +333,6 @@ namespace Snebur.AcessoDados.Estrutura
                     throw new Exception($"O tipo {type.Name} não implementa a interface IInterceptador<,>");
                 }
             }
-           
         }
 
         #endregion
@@ -372,7 +361,7 @@ namespace Snebur.AcessoDados.Estrutura
 
         private Type RetornarTipoEntidadeNotificaoPropriedadeAlteradaGenerica(BaseContextoDados contextoDados)
         {
-            if(contextoDados.IsContextoSessaoUsuario)
+            if (contextoDados.IsContextoSessaoUsuario)
             {
                 return this.RetornarTipoConsultaImplementaInterface<IAlteracaoPropriedadeGenerica>(true);
             }

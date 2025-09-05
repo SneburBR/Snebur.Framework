@@ -1,6 +1,4 @@
-﻿using Snebur.AcessoDados.Estrutura;
-using Snebur.Dominio.Atributos;
-using System.Collections.Generic;
+using Snebur.AcessoDados.Estrutura;
 
 namespace Snebur.AcessoDados
 {

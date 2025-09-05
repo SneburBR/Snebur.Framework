@@ -1,5 +1,3 @@
-﻿using Snebur.Dominio;
-
 namespace Snebur.AcessoDados.Mapeamento
 {
     internal class IdTipoEntidade : INomeTipoEntidade

@@ -1,9 +1,3 @@
-﻿using Snebur.Dominio;
-using Snebur.Utilidade;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Snebur.AcessoDados.Mapeamento
 {
     internal partial class MapeamentoConsulta

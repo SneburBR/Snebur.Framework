@@ -1,10 +1,5 @@
-﻿using Snebur.AcessoDados.Servidor.Salvar;
-using Snebur.Dominio;
-using Snebur.Dominio.Atributos;
+using Snebur.AcessoDados.Servidor.Salvar;
 using Snebur.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Snebur.AcessoDados
 {

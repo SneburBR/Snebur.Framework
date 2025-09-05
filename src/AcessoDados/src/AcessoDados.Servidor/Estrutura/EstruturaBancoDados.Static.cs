@@ -1,6 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-
 namespace Snebur.AcessoDados.Estrutura
 {
     internal partial class EstruturaBancoDados

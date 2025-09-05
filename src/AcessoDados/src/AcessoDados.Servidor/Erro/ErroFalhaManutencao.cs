@@ -1,6 +1,4 @@
-using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
 
 namespace Snebur.AcessoDados
 {
@@ -8,11 +6,11 @@ namespace Snebur.AcessoDados
     public class ErroFalhaManutencao : ErroAcessoDados
     {
         public ErroFalhaManutencao(string mensagem = "",
-                                  Exception erroInterno = null,
-                             [CallerMemberName] string nomeMetodo = "",
-                             [CallerFilePath] string caminhoArquivo = "",
-                             [CallerLineNumber] int linhaDoErro = 0) :
-                              base(mensagem, erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
+            Exception? erroInterno = null,
+            [CallerMemberName] string nomeMetodo = "",
+            [CallerFilePath] string caminhoArquivo = "",
+            [CallerLineNumber] int linhaDoErro = 0) :
+            base(mensagem, erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
         {
         }
         #region Serializacao 
@@ -20,7 +18,7 @@ namespace Snebur.AcessoDados
         public ErroFalhaManutencao()
         {
         }
-         
+
         #endregion
     }
 }

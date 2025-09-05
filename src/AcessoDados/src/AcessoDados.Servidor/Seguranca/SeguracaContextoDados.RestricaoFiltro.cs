@@ -1,7 +1,3 @@
-﻿using Snebur.Dominio;
-using System;
-using System.Collections.Generic;
-
 namespace Snebur.AcessoDados.Seguranca
 {
     internal partial class SeguracaContextoDados

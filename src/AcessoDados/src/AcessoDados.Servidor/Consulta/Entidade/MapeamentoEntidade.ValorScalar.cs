@@ -1,6 +1,4 @@
-﻿using Snebur.AcessoDados.Estrutura;
-using Snebur.Utilidade;
-using System;
+using Snebur.AcessoDados.Estrutura;
 
 namespace Snebur.AcessoDados.Mapeamento
 {

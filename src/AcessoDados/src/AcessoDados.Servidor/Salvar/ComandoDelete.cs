@@ -1,5 +1,4 @@
-﻿using Snebur.AcessoDados.Estrutura;
-using System;
+using Snebur.AcessoDados.Estrutura;
 
 namespace Snebur.AcessoDados.Servidor.Salvar
 {
@@ -38,7 +37,5 @@ namespace Snebur.AcessoDados.Servidor.Salvar
         {
             throw new ErroNaoImplementado();
         }
-
-        
     }
 }

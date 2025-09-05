@@ -1,18 +1,13 @@
-﻿using Snebur.Utilidade;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Snebur.AcessoDados.Estrutura
 {
     internal partial class EstruturaEntidade
     {
 
-        internal EstruturaRelacao RetornarEstruturaRelacao(string chave,
+        internal EstruturaRelacao? RetornarEstruturaRelacao(string chave,
                                                            bool incluirEstruuraBase = true,
                                                            bool ignorarErro = false)
         {
-            EstruturaRelacao estruturaRelacao;
+            EstruturaRelacao? estruturaRelacao;
 
             if (this.EstruturasRelacoes.TryGetValue(chave, out estruturaRelacao))
             {
@@ -32,7 +27,7 @@ namespace Snebur.AcessoDados.Estrutura
             }
         }
 
-        internal EstruturaRelacao RetornarEstruturaRelacao(string chave,
+        internal EstruturaRelacao? RetornarEstruturaRelacao(string chave,
                                                           EnumOpcaoRetornarRelacao opcoes,
                                                           bool ignorarErro,
                                                           BaseRelacaoAberta relacaoAberta)
@@ -58,7 +53,7 @@ namespace Snebur.AcessoDados.Estrutura
             }
         }
 
-        private EstruturaRelacao RetornarEstruturaRelacaoEstruturasEspecializadas(string chave, bool ignorarErro, BaseRelacaoAberta relacaoAberta)
+        private EstruturaRelacao? RetornarEstruturaRelacaoEstruturasEspecializadas(string chave, bool ignorarErro, BaseRelacaoAberta relacaoAberta)
         {
             var estruturaRelacao = this.RetornarEstruturaRelacao(chave, true, true);
             if (estruturaRelacao != null)
@@ -107,7 +102,6 @@ namespace Snebur.AcessoDados.Estrutura
                     }
                     return null;
                 }
-
             }
         }
 

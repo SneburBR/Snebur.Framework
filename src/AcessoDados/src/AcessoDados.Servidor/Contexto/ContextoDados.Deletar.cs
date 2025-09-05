@@ -1,13 +1,5 @@
-﻿using Snebur.AcessoDados.Servidor.Salvar;
-using Snebur.Dominio;
+using Snebur.AcessoDados.Servidor.Salvar;
 using Snebur.Linq;
-using Snebur.Utilidade;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 
 namespace Snebur.AcessoDados
 {
@@ -167,7 +159,6 @@ namespace Snebur.AcessoDados
                     {
                         retorno.AddRange(this.RetornarTodasEntidades(entidadesTipada));
                     }
-
                 }
             }
             return retorno;

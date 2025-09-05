@@ -1,5 +1,3 @@
-﻿using System;
-
 namespace Snebur.AcessoDados
 {
     public class IntercepetadorModel

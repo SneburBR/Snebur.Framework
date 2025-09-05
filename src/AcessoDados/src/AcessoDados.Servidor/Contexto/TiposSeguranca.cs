@@ -1,38 +1,35 @@
-﻿using Snebur.AcessoDados.Estrutura;
-using Snebur.Dominio;
-using System;
-using System.Linq;
+using Snebur.AcessoDados.Estrutura;
 
 namespace Snebur.AcessoDados
 {
     public class TiposSeguranca
     {
 
-        public Type TipoIdentificacao { get; }
+        public Type? TipoIdentificacao { get; }
 
-        public Type TipoUsuario { get; }
+        public Type? TipoUsuario { get; }
 
-        public Type TipoSessaoUsuario { get; }
+        public Type? TipoSessaoUsuario { get; }
 
-        public Type TipoIpInformacao { get; }
+        public Type? TipoIpInformacao { get; }
 
-        public Type TipoGrupoUsuario { get; }
+        public Type? TipoGrupoUsuario { get; }
 
-        public Type TipoPermissaoEntidade { get; }
+        public Type? TipoPermissaoEntidade { get; }
 
-        public Type TipoPermissaoCampo { get; }
+        public Type? TipoPermissaoCampo { get; }
 
-        public Type TipoRegraOperacao { get; }
+        public Type? TipoRegraOperacao { get; }
 
-        public Type TipoUsuarioAdicionarGrupo { get; }
+        public Type? TipoUsuarioAdicionarGrupo { get; }
 
-        public Type TipoLogAlteracao { get; }
+        public Type? TipoLogAlteracao { get; }
 
-        public Type TipoRelacaoIdentificacaoGrupoUsuario { get; set; }
+        public Type? TipoRelacaoIdentificacaoGrupoUsuario { get; set; }
 
-        public Type TipoRelacaoTipoUsuarioAdicionarGrupoUsuarioGrupoUsuario { get; }
+        public Type? TipoRelacaoTipoUsuarioAdicionarGrupoUsuarioGrupoUsuario { get; }
 
-        public Type TipoRestricaoEntidade { get; }
+        public Type? TipoRestricaoEntidade { get; }
 
         public bool AtivarSeguranca { get; }
 
@@ -53,6 +50,7 @@ namespace Snebur.AcessoDados
             this.TipoRestricaoEntidade = estrutura.RetornarTipoConsultaImplementaInterface<IRestricaoEntidade>(true);
             this.AtivarSeguranca = this.RetornarAtivaSeguranca();
         }
+
         /// <summary>
         /// Verificando se todos os tipos não estão nulos
         /// </summary>

@@ -1,6 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-
 namespace Snebur.AcessoDados
 {
     public static class ConsultaAcessoDadosExtensao

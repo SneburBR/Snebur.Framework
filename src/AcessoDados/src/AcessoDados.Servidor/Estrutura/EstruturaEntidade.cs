@@ -1,13 +1,6 @@
-using Snebur.Dominio;
-using Snebur.Dominio.Atributos;
 using Snebur.Linq;
-using Snebur.Utilidade;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
 
 namespace Snebur.AcessoDados.Estrutura
 {
@@ -578,8 +571,6 @@ namespace Snebur.AcessoDados.Estrutura
             throw new Exception($"Não existe o campo {nomePropriedadeChaveEstrageira} em {this.TipoEntidade.Name} ");
         }
 
-
-
         private void AdicionarEstruturaRelacaoUmUmReversa(PropertyInfo propriedade,
                                                             DicionarioEstrutura<EstruturaEntidade> estruturasEntidade)
         {
@@ -887,7 +878,7 @@ namespace Snebur.AcessoDados.Estrutura
             return EstruturaEntidade.MAXIMO_REGISTRO_POR_CONSULTA;
         }
 
-        private EstruturaCampo RetornarEstruturaCampoOrdenacao()
+        private EstruturaCampo? RetornarEstruturaCampoOrdenacao()
         {
             if (ReflexaoUtil.IsTipoImplementaInterface(this.TipoEntidade, typeof(IOrdenacao), true))
             {
@@ -900,7 +891,7 @@ namespace Snebur.AcessoDados.Estrutura
             return null;
         }
 
-        private EstruturaCampo RetornarEstruturaCampoDeletado()
+        private EstruturaCampo? RetornarEstruturaCampoDeletado()
         {
             if (ReflexaoUtil.IsTipoImplementaInterface(this.TipoEntidade, typeof(IDeletado), true))
             {
@@ -910,7 +901,7 @@ namespace Snebur.AcessoDados.Estrutura
             return null;
         }
 
-        private IInterceptador RetornarInterceptador(EstruturaBancoDados estruturaBancoDados,
+        private IInterceptador? RetornarInterceptador(EstruturaBancoDados estruturaBancoDados,
                                                      EstruturaEntidade estruturaEntidadeBase)
         {
             var interceptorBase = estruturaEntidadeBase?.Interceptador;
@@ -942,5 +933,4 @@ namespace Snebur.AcessoDados.Estrutura
             return Math.Min(take, this.MaximoRegistroPorConsulta);
         }
     }
-
 }

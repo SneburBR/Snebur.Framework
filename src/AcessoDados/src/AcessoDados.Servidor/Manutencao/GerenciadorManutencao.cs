@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Reflection;
 using System.Text;
-using Snebur.Dominio;
-using Snebur.Dominio.Atributos;
 
 #if NET6_0_OR_GREATER
-using Microsoft.Data.SqlClient;
 #else
 using System.Data.SqlClient;
 #endif
@@ -28,8 +21,7 @@ namespace Snebur.AcessoDados.Manutencao
 
         private BaseContextoDados Contexto { get; }
         public BaseConexao Conexao { get; }
-        private Dictionary<string, List<Type>> TiposManutencao { get; set; }
-        private string NomeMigracaoAtual { get; set; }
+        private Dictionary<string, List<Type>> TiposManutencao { get; }
 
         public GerenciadorManutencao(BaseContextoDados contexto)
         {
@@ -118,19 +110,24 @@ namespace Snebur.AcessoDados.Manutencao
             foreach (var grupo in grupos)
             {
                 var nomesTipoManutecao = String.Join(", ", grupo.ToList().Select(x => x.GetType().Name));
-                sb.Append($"As manuteções  '{nomesTipoManutecao}' possuem a memsagem prioridade '{grupo.Key}'");
+                sb.Append($"As manutenções  '{nomesTipoManutecao}' possuem a mensagem prioridade '{grupo.Key}'");
             }
             sb.AppendLine("Sobre escreva a Prioridade Prioridade");
             return sb.ToString();
         }
 
-        private void SalvarHistoricoManutencao(HistoricoMigracao historicoMigracao, BaseManutencao manutencao, Exception erro = null)
+        private void SalvarHistoricoManutencao(
+            HistoricoMigracao historicoMigracao,
+            BaseManutencao manutencao,
+            Exception? erro = null)
         {
             var historicoManutencao = this.RetornarHistoricoManutencao(historicoMigracao, manutencao);
             if (historicoManutencao == null)
             {
-                historicoManutencao = (IHistoricoManutencao)Activator.CreateInstance(this.Contexto.TipoEntidadeHistoricoMenutencao);
+                historicoManutencao = Activator.CreateInstance(this.Contexto.TipoEntidadeHistoricoMenutencao) as IHistoricoManutencao
+                    ?? throw new Exception($"Não foi possível criar a instância do tipo {this.Contexto.TipoEntidadeHistoricoMenutencao.Name}");
             }
+
             historicoManutencao.MigrationId = historicoMigracao.MigrationId;
             historicoManutencao.IsSucesso = erro == null;
             historicoManutencao.NumeroTentativa += 1;
@@ -142,11 +139,15 @@ namespace Snebur.AcessoDados.Manutencao
             this.Contexto.Salvar(historicoManutencao);
         }
 
-        private IHistoricoManutencao RetornarHistoricoManutencao(HistoricoMigracao historico, BaseManutencao manutencao)
+        private IHistoricoManutencao? RetornarHistoricoManutencao(
+            HistoricoMigracao historico,
+            BaseManutencao manutencao)
         {
-            return this.Contexto.RetornarConsulta<IHistoricoManutencao>(this.Contexto.TipoEntidadeHistoricoMenutencao).
-                                Where(x => x.MigrationId == historico.MigrationId &&
-                                           x.Prioridade == manutencao.Prioridade).SingleOrDefault();
+            return this.Contexto.RetornarConsulta<IHistoricoManutencao>(
+                this.Contexto.TipoEntidadeHistoricoMenutencao).
+                    Where(x => x.MigrationId == historico.MigrationId &&
+                               x.Prioridade == manutencao.Prioridade)
+                    .SingleOrDefault();
         }
 
         private List<BaseManutencao> RetornarManutencoes(HistoricoMigracao historico)
@@ -157,7 +158,9 @@ namespace Snebur.AcessoDados.Manutencao
                 var tipos = this.TiposManutencao[historico.MigrationId];
                 foreach (var tipo in tipos)
                 {
-                    var manutencao = (BaseManutencao)Activator.CreateInstance(tipo, new object[] { this.Contexto });
+                    var manutencao = Activator.CreateInstance(tipo, [this.Contexto]) as BaseManutencao
+                        ?? throw new Exception($"Não foi possível criar a instância do tipo {tipo.Name}");
+
                     manutencao.HistoricoMigracao = historico;
                     manutencoes.Add(manutencao);
                 }
@@ -178,10 +181,14 @@ namespace Snebur.AcessoDados.Manutencao
                 var historicos = new List<HistoricoMigracao>();
                 foreach (DataRow row in dataTable.Rows)
                 {
-                    historicos.Add(new HistoricoMigracao
+                    var migrationId = row[nameof(HistoricoMigracao.MigrationId)].ToString();
+                    if (!String.IsNullOrWhiteSpace(migrationId))
                     {
-                        MigrationId = row[nameof(HistoricoMigracao.MigrationId)].ToString()
-                    });
+                        historicos.Add(new HistoricoMigracao
+                        {
+                            MigrationId = migrationId
+                        });
+                    }
                 }
                 return historicos.OrderBy(x => x.MigrationId).ToList();
             }
@@ -233,13 +240,12 @@ namespace Snebur.AcessoDados.Manutencao
         public void Dispose()
         {
             this.TiposManutencao.Clear();
-            this.TiposManutencao = null;
         }
     }
 
     public class HistoricoMigracao
     {
-        public string MigrationId { get; set; }
+        public required string MigrationId { get; init; }
 
         public override string ToString()
         {

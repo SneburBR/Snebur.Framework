@@ -1,11 +1,4 @@
-﻿using Microsoft.VisualBasic;
 using Snebur.AcessoDados.Estrutura;
-using Snebur.Dominio;
-using Snebur.Dominio.Atributos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 
 namespace Snebur.AcessoDados.Servidor.Salvar
 {

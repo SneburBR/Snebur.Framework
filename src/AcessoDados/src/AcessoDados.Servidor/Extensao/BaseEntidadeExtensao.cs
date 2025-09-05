@@ -1,5 +1,3 @@
-﻿using System;
-
 namespace Snebur.Dominio
 {
     public static class BaseEntidadeExtensao

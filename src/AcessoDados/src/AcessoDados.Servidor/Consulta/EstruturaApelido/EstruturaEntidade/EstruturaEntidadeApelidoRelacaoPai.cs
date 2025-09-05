@@ -1,22 +1,25 @@
-﻿using Snebur.AcessoDados.Estrutura;
+using Snebur.AcessoDados.Estrutura;
 
 namespace Snebur.AcessoDados.Mapeamento
 {
     internal class EstruturaEntidadeApelidoRelacaoPai : EstruturaEntidadeApelidoRelacao
     {
 
-        internal EstruturaRelacao EstruturaRelacaoPai { get { return this.EstruturaRelacao; } }
+        internal EstruturaRelacao EstruturaRelacaoPai
+            => this.EstruturaRelacao;
 
-        internal EstruturaCampoApelido EstruturaCampoChaveEstrangeiraMapeado { get; set; }
+        internal EstruturaCampoApelido? EstruturaCampoChaveEstrangeiraMapeado { get; }
 
-        internal EstruturaEntidadeApelidoRelacaoPai(BaseMapeamentoConsulta mapeamentoConsulta,
-                                                    string apelidoEntidadeMapeada, EstruturaEntidade estruturaEntidade,
-                                                    EstruturaRelacao estruturaRelacao,
-                                                    EstruturaCampoApelido estruturaCampoChaveEstrangeiraMapeado) :
-                                                    base(mapeamentoConsulta,
-                                                        apelidoEntidadeMapeada,
-                                                        estruturaEntidade,
-                                                        estruturaRelacao)
+        internal EstruturaEntidadeApelidoRelacaoPai(
+            BaseMapeamentoConsulta mapeamentoConsulta,
+            string apelidoEntidadeMapeada,
+            EstruturaEntidade estruturaEntidade,
+            EstruturaRelacao estruturaRelacao,
+            EstruturaCampoApelido? estruturaCampoChaveEstrangeiraMapeado) :
+            base(mapeamentoConsulta,
+                 apelidoEntidadeMapeada,
+                 estruturaEntidade,
+                 estruturaRelacao)
         {
             this.EstruturaCampoChaveEstrangeiraMapeado = estruturaCampoChaveEstrangeiraMapeado;
         }

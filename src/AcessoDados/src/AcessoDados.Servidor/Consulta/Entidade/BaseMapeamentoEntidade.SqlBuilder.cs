@@ -1,9 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Snebur.AcessoDados.Mapeamento
 {
     internal abstract partial class BaseMapeamentoEntidade : IDisposable

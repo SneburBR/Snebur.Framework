@@ -1,5 +1,3 @@
-﻿using Snebur.Dominio;
-
 namespace Snebur.AcessoDados.Consulta
 {
     internal class ResultadoConsultaMapeamento

@@ -1,8 +1,3 @@
-﻿using Snebur.Utilidade;
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-
 namespace Snebur.AcessoDados.Estrutura
 {
     internal abstract class EstruturaPropriedade
