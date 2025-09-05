@@ -1,6 +1,5 @@
 using Snebur.AcessoDados;
 using System.ComponentModel;
-using System.Linq;
 using System.Reflection;
 
 namespace Snebur.Comunicacao;

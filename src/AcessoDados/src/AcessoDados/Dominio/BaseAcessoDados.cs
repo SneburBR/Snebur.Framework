@@ -24,5 +24,4 @@ public abstract class BaseAcessoDados : BaseDominio
     public BaseAcessoDados()
     {
     }
-
 }

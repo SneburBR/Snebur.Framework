@@ -6,7 +6,6 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
-using System.Net;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Threading;
@@ -409,6 +408,8 @@ public abstract partial class AplicacaoSnebur
 
     public bool IsAplicacaoAspNet { get; }
     public IAplicacaoSneburAspNet? AspNet { get; }
+    public IAplicacaoSneburAspNet AspNetRequired
+        => AspNet ?? throw new InvalidOperationException("A aplicação não é do tipo ASP.NET");
 
     #endregion
 

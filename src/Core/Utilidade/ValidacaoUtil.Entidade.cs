@@ -291,4 +291,9 @@ public static partial class ValidacaoUtil
                 progresso >= 0 &&
                 progresso <= 100;
     }
+
+    public static bool IsNullOrEmpy(Guid? informacaoSessaoUsuario)
+    {
+        return !informacaoSessaoUsuario.HasValue || informacaoSessaoUsuario == Guid.Empty;
+    }
 }

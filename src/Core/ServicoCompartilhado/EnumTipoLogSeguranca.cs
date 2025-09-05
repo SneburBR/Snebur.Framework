@@ -1,4 +1,4 @@
-﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Atributos;
 
 namespace Snebur.Servicos;
 
@@ -82,4 +82,5 @@ public enum EnumTipoLogSeguranca
 
     [Rotulo("Tentativa de executar sql")]
     TentativaExecutarSql = 28,
+    ManipuladorNaoDefinido = 29,
 }

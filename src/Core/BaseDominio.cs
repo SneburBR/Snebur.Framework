@@ -210,7 +210,7 @@ public abstract class BaseDominio : IBaseDominio, IBaseDominioReferencia, INotif
         {
             return;
         }
-        Guard.NotEmpty(nomePropriedade);
+        Guard.NotNullOrWhiteSpace(nomePropriedade);
 
         if (this.__IsControladorPropriedadesAlteradaAtivo)
         {

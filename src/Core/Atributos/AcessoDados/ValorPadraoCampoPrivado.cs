@@ -1,5 +1,3 @@
-using Newtonsoft.Json.Linq;
-
 namespace Snebur.Dominio.Atributos;
 
 [IgnorarAtributoTS]

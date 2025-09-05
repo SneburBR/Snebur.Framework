@@ -1,6 +1,5 @@
 using Snebur.IO;
 using Snebur.Utilidade;
-using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 

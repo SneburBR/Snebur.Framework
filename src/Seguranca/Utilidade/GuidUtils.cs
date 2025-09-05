@@ -29,5 +29,4 @@ public class GuidUtil
     {
         return new Guid(Md5Util.RetornarHash(value));
     }
-
 }

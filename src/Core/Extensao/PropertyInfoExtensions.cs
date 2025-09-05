@@ -9,7 +9,7 @@ public static class PropertyInfoExtensions
     public static PropertyInfo GetRequiredOneToOneNavigationProperty(this PropertyInfo propertyInfo)
     {
         var declaringType = propertyInfo.DeclaringType;
-        Guard.NotEmpty(declaringType);
+        Guard.NotNull(declaringType);
         var proprities = declaringType.GetProperties()
             .Where(p => p.GetCustomAttribute<ForeignKeyAttribute>(false)?.Name == propertyInfo.Name)
             .ToArray();
@@ -36,7 +36,7 @@ public static class PropertyInfoExtensions
         where TInterface : class
     {
         var attributes = propertyInfo.GetCustomAttributes(typeof(TAttribute), inherit);
-        if ( attributes?.Length > 0)
+        if (attributes?.Length > 0)
         {
             foreach (var attribute in attributes)
             {
@@ -53,7 +53,7 @@ public static class PropertyInfoExtensions
     {
         if (property is null && other is null)
             return true;
-        
+
 
         if (property is null || other is null)
             return false;

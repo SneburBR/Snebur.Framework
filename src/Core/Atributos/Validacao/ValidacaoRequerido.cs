@@ -113,7 +113,7 @@ public class ValidacaoRequeridoAttribute : RequiredAttribute, IAtributoValidacao
             {
                 var valorPropriedadeAuxiliar = this.RetornarValorPropriedadeAuxilizar(paiPropriedade);
 
-                Guard.NotEmpty(this.PropriedadeAuxiliar);
+                Guard.NotNull(this.PropriedadeAuxiliar);
                 var rotutloPropriedadeAuxiliar = ReflexaoUtil.RetornarRotulo(this.PropriedadeAuxiliar);
 
                 switch (opcao.Value)

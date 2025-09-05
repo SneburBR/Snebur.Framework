@@ -13,7 +13,9 @@ namespace Snebur.Utilidade;
 public static class JsonUtil
 {
 
+#pragma warning disable IDE0032 // Use auto property
     private static IReferenceResolver? _referenceResolver;
+#pragma warning restore IDE0032 // Use auto property
 
     public static IReferenceResolver ReferenceResolver
         => LazyUtil.RetornarValorLazyComBloqueio(ref _referenceResolver, () => new ResolverReferencia());
@@ -71,11 +73,11 @@ public static class JsonUtil
         }
     }
 
-    public static T? Deserializar<T>(string json, EnumTipoSerializacao tipoSerializacao)
+    public static T? Deserializar<T>(string? json, EnumTipoSerializacao tipoSerializacao)
     {
         return Deserializar<T>(json, tipoSerializacao, CultureInfo.InvariantCulture);
     }
-    public static T? Deserializar<T>(string json,
+    public static T? Deserializar<T>(string? json,
                                     EnumTipoSerializacao tipoSerializacao,
                                     CultureInfo culture)
     {
@@ -143,15 +145,15 @@ public static class JsonUtil
                                     EnumTipoSerializacao tipoSerializacao)
     {
         return Serializar(objeto,
-                                   tipoSerializacao,
-                                   cultureInfo: CultureInfo.InvariantCulture,
-                                   isIdentar: DebugUtil.IsAttached,
-                                   isPrepararSerializacao: true);
+               tipoSerializacao,
+               cultureInfo: CultureInfo.InvariantCulture,
+               isIdentar: DebugUtil.IsAttached,
+               isPrepararSerializacao: true);
     }
 
     public static string Serializar(object? objeto,
         EnumTipoSerializacao tipoSerializacao,
-        CultureInfo cultureInfo,
+        CultureInfo? cultureInfo,
         bool isIdentar,
         bool isPrepararSerializacao = true)
     {

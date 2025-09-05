@@ -175,7 +175,6 @@ public partial class Token
         {
             return null;
         }
-
     }
 
     private static int RetornarTamanhoTipo(Type tipo)
@@ -211,7 +210,6 @@ public partial class Token
                 throw new ErroNaoSuportado(String.Format("O tipo não é suportado {0}", tipo.Name));
 
         }
-
     }
 
     private static object RetornarValor(Type tipo, byte[] bytes)

@@ -22,7 +22,7 @@ public class Erro : Exception, ISerializable
 
     public bool IsExisteLinhaDoErro => this.LinhaDoErro > 0;
 
-    public Erro(string mensagem = "",
+    public Erro(string? mensagem = "",
                 Exception? erroInterno = null,
                 [CallerMemberName] string nomeMetodo = "",
                 [CallerFilePath] string caminhoArquivo = "",

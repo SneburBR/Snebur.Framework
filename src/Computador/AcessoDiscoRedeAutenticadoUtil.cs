@@ -1,9 +1,7 @@
 using Microsoft.Win32.SafeHandles;
-using System;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Security.Permissions;
 using System.Security.Principal;
 
 namespace Snebur.Computador;

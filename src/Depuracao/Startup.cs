@@ -224,7 +224,6 @@ public class Program
                     return porta;
                 }
             }
-
         }
         catch { }
         return 0;

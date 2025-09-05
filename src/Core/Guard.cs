@@ -1,5 +1,4 @@
-using Snebur.Helpers;
-using Snebur.Utilidade;
+using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -38,6 +37,7 @@ public static class Guard
             throw new FileNotFoundException($"Project file not found. {filePath}", filePath);
         }
     }
+
     public static void DirectoryExits(
          [NotNull] string? filePath)
     {
@@ -59,25 +59,42 @@ public static class Guard
     }
 
     public static void NotEmpty<T>(
-           [NotNull] ICollection<T> value,
+           [NotNull] T? value,
            [CallerArgumentExpression(nameof(value))] string paramName = "")
+          where T : ICollection
     {
+
+        if (value is null)
+            throw new ArgumentNullException(paramName, $"{paramName} cannot be null.");
+
         if (value.Count == 0)
             throw new ArgumentException($"{paramName} cannot be empty.", paramName);
     }
 
     public static void NotEmpty<T>(
-      [NotNull] T value,
-      [CallerArgumentExpression(nameof(value))] string paramName = "")
+           [NotNull] ICollection<T>? value,
+           [CallerArgumentExpression(nameof(value))] string paramName = "")
     {
+
         if (value is null)
             throw new ArgumentNullException(paramName, $"{paramName} cannot be null.");
 
-        var underlyingDefaultValue = TypeHelper.GetUnderlyingDefaultValue<T>();
-
-        if (EqualityComparer<T>.Default.Equals(value, underlyingDefaultValue))
+        if (value.Count == 0)
             throw new ArgumentException($"{paramName} cannot be empty.", paramName);
     }
+
+    //public static void NotEmpty<T>(
+    //  [NotNull] T value,
+    //  [CallerArgumentExpression(nameof(value))] string paramName = "")
+    //{
+    //    if (value is null)
+    //        throw new ArgumentNullException(paramName, $"{paramName} cannot be null.");
+
+    //    var underlyingDefaultValue = TypeHelper.GetUnderlyingDefaultValue<T>();
+
+    //    if (EqualityComparer<T>.Default.Equals(value, underlyingDefaultValue))
+    //        throw new ArgumentException($"{paramName} cannot be empty.", paramName);
+    //}
 
     public static void MustBeEmpty<T>(
         [NotNull] ICollection<T> value,

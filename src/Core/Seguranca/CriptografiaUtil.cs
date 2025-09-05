@@ -6,8 +6,15 @@ namespace Snebur.Utilidade;
 
 public class CriptografiaUtil
 {
-    public static string Criptografar(string chave, string conteudo)
+    public static string Criptografar(string chave, string? conteudo)
     {
+        if (string.IsNullOrEmpty(conteudo))
+        {
+            return "";
+        }
+
+        Guard.NotNullOrWhiteSpace(chave);
+
         ValidarChave(chave);
         chave = chave.Substring(0, 16);
 

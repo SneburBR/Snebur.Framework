@@ -1,4 +1,3 @@
-using System;
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 

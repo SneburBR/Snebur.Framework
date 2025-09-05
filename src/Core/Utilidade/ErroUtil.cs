@@ -9,8 +9,8 @@ public static class ErroUtil
     private static List<string> ReferenciasIgnorar = new List<string> { "System", "Microsoft", "mscorlib", "DotNetZip", "App_Web" };
 
     public static string RetornarDescricaoCompletaErro(Exception erro,
-                                                       string nomeMetodo,
-                                                       string caminhoArquivo,
+                                                       string? nomeMetodo,
+                                                       string? caminhoArquivo,
                                                        int linhaDoErro,
                                                        bool incluirReferencias = false)
     {

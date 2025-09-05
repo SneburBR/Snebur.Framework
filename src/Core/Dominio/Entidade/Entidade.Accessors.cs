@@ -10,5 +10,4 @@ public abstract partial class Entidade
     {
         throw new NotImplementedException();
     }
-
 }

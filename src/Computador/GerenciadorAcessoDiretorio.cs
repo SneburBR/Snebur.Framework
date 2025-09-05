@@ -1,5 +1,4 @@
 using Snebur.IO;
-using System;
 
 namespace Snebur.Computador;
 

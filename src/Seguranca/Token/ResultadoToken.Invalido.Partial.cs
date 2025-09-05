@@ -75,7 +75,6 @@ public partial class ResultadoToken<T1, T2, T3> : ResultadoToken where T1 : stru
             };
         }
     }
-
 }
 
 public partial class ResultadoToken<T1, T2, T3, T4> : ResultadoToken where T1 : struct

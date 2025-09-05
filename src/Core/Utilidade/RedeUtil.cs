@@ -1,4 +1,3 @@
-using Newtonsoft.Json.Linq;
 using System.Net.NetworkInformation;
 
 namespace Snebur.Utilidade;

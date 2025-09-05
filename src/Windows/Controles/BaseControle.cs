@@ -19,5 +19,4 @@ public abstract class BaseControle : UserControl, INotifyPropertyChanged
     {
         this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nomePropriedade));
     }
-
 }

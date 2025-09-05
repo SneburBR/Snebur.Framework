@@ -52,8 +52,8 @@ internal partial class AjudanteFiltroPropriedade
         if (propriedade is not null)
         {
             Guard.NotNull(propriedade.DeclaringType);
-            Guard.NotEmpty(estruturaConsulta);
-            Guard.NotEmpty(estruturaConsulta.TipoEntidadeConsulta);
+            Guard.NotNull(estruturaConsulta);
+            Guard.NotNull(estruturaConsulta.TipoEntidadeConsulta);
 
             if (propriedade.DeclaringType.IsInterface == true)
             {

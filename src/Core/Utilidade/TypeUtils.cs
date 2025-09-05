@@ -30,6 +30,5 @@ public static class TypeUtils
             default:
                 return false;
         }
-
     }
 }

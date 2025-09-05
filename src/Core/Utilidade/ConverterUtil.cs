@@ -1,5 +1,6 @@
 using Snebur.Helpers;
 using Snebur.Reflexao;
+using System.Collections;
 using System.Globalization;
 
 namespace Snebur.Utilidade;
@@ -589,5 +590,32 @@ public class ConverterUtil
         }
 
         throw new ErroNaoSuportado($"Não foi possível converter o valor {valor} para Dimensão");
+    }
+
+    public static List<TItem> ToList<TItem>(object? valor)
+    {
+        var items = new List<TItem>();
+        if (valor == null)
+            return items;
+
+        if (!(valor is IEnumerable enumerable))
+        {
+            throw new Exception("O valor não é uma coleção");
+        }
+
+        foreach (var item in enumerable)
+        {
+            if (item is TItem typedItem)
+            {
+                items.Add(typedItem);
+            }
+        }
+        return items;
+    }
+
+    public static TItem[] ToArray<TItem>(object? valor)
+    {
+        var lista = ToList<TItem>(valor);
+        return lista.ToArray();
     }
 }

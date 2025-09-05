@@ -1,7 +1,6 @@
 using Snebur.Utilidade;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Text;
 
 #if NET40

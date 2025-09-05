@@ -38,5 +38,4 @@ public abstract class BaseJanela : Window, INotifyPropertyChanged
     {
         this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nomePropriedade));
     }
-
 }

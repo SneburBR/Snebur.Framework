@@ -16,5 +16,4 @@ public class MensagemEstiloCssAlterado : Mensagem
     }
 
     public string NomeArquivo { get => this.GetPropertyValue(this._nomeArquivo); set => this.SetProperty(this._nomeArquivo, this._nomeArquivo = value); }
-
 }

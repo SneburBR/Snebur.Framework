@@ -5,11 +5,11 @@ namespace Snebur.Comunicacao;
 [Serializable]
 public class ErroComunicacao : Erro
 {
-    public ErroComunicacao(string mensagem = "",
-                              Exception? erroInterno = null,
-                              [CallerMemberName] string nomeMetodo = "",
-                              [CallerFilePath] string caminhoArquivo = "",
-                              [CallerLineNumber] int linhaDoErro = 0) :
+    public ErroComunicacao(string? mensagem = "",
+                           Exception? erroInterno = null,
+                           [CallerMemberName] string nomeMetodo = "",
+                           [CallerFilePath] string caminhoArquivo = "",
+                           [CallerLineNumber] int linhaDoErro = 0) :
                                     base(mensagem, erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
     {
     }

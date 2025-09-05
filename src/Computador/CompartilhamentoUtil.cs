@@ -1,5 +1,4 @@
 using Snebur.Utilidade;
-using System;
 using System.Management;
 using System.Security.AccessControl;
 using System.Security.Principal;

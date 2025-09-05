@@ -9,7 +9,7 @@ namespace Snebur;
 
 public static class HttpContextExtensao
 {
-    public static void AdicionrItem(this HttpContext context, string chave, object item)
+    public static void AdicionrItem(this HttpContext context, string chave, object? item)
     {
         if (!context.Items.ContainsKey(chave))
         {
@@ -40,5 +40,4 @@ public static class HttpContextExtensao
         return context.Server.MapPath(path);
 #endif
     }
-
 }
