@@ -1,11 +1,9 @@
-﻿using Snebur.Dominio.Atributos;
-using System;
+using Snebur.Dominio.Atributos;
 
-namespace Snebur.Comunicacao
+namespace Snebur.Comunicacao;
+
+[IgnorarAtributoTS]
+[AttributeUsage(AttributeTargets.Method)]
+public class IgnorarCacheAttribute : Attribute
 {
-    [IgnorarAtributoTS]
-    [AttributeUsage(AttributeTargets.Method)]
-    public class IgnorarCacheAttribute : Attribute
-    {
-    }
 }

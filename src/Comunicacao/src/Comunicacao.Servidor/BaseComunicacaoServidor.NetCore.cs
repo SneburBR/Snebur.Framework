@@ -1,109 +1,107 @@
-﻿#if NET6_0_OR_GREATER
+#if NET6_0_OR_GREATER
 
-namespace Snebur.Comunicacao
+namespace Snebur.Comunicacao;
+
+using Microsoft.AspNetCore.Http;
+using Snebur.Servicos;
+using Snebur.Utilidade;
+using System;
+using System.Net;
+using System.Threading.Tasks;
+
+public abstract partial class BaseComunicacaoServidor
 {
-    using Microsoft.AspNetCore.Http;
-    using Snebur.Servicos;
-    using Snebur.Utilidade;
-    using System;
-    using System.Net;
-    using System.Text;
-    using System.Threading.Tasks;
+    public HttpContext? HttpContext { get; private set; }
 
-    public abstract partial class BaseComunicacaoServidor
+    public async Task ProcessRequestAsync(HttpContext httpContext)
     {
-        public HttpContext HttpContext { get; private set; }
-
-        public async Task ProcessRequestAsync(HttpContext httpContext)
+        this.HttpContext = httpContext;
+        var response = httpContext.Response;
+        try
         {
-            this.HttpContext = httpContext; 
-            var response = httpContext.Response;
-            try
+            this.AntesProcessRequest(httpContext);
+
+            response.Headers.Append("Cache-Control", "no-cache, no-store, must-revalidate");
+            response.Headers.Append("Pragma", "no-cache");
+            response.Headers.Append("Expires", "0");
+
+
+            using (var requisicao = new Requisicao(httpContext,
+                                                   this.CredencialServico,
+                                                   this.IdentificadorProprietario,
+                                                   this.GetType().Name))
             {
-                this.AntesProcessRequest(httpContext);
+                await requisicao.ProcessarRequisicaoAsync();
 
-                response.Headers.Append("Cache-Control", "no-cache, no-store, must-revalidate");
-                response.Headers.Append("Pragma", "no-cache");
-                response.Headers.Append("Expires", "0");
-
-                
-                using (var requisicao = new Requisicao(httpContext,
-                                                       this.CredencialServico,
-                                                       this.IdentificadorProprietario,
-                                                       this.GetType().Name))
+                if (requisicao.IsRequsicaoValida)
                 {
-                    await requisicao.ExtrairDadosRequisicaoAsync();
+                    this.InformacaoSessao = requisicao.InformacaoSessaoUsuario;
+                    this.CredencialUsuario = requisicao.CredencialUsuario;
+                    this.IdentificadorSessaoUsuario = requisicao.IdentificadorSessaoUsuario;
+                    this.Inicializar(requisicao);
 
-                    if (requisicao.CredencialServicoValida())
+                    try
                     {
-                        this.InformacaoSessao = requisicao.InformacaoSessaoUsuario;
-                        this.CredencialUsuario = requisicao.CredencialUsuario;
-                        this.IdentificadorSessaoUsuario = requisicao.IdentificadorSessaoUsuario;
-                        this.Inicializar(requisicao);
+                        var resultadoSerializado = this.RetornarResultadoChamadaSerializado(requisicao, httpContext);
+                        httpContext.Response.StatusCode = (int)HttpStatusCode.OK;
 
-                        try
+                        if (!requisicao.ContratoChamada.Async && requisicao.IsSerializarJavascript)
                         {
-                            var resultadoSerializado = this.RetornarResultadoChamadaSerializado(requisicao, httpContext);
-                            httpContext.Response.StatusCode = (int)HttpStatusCode.OK;
-
-                            if (!requisicao.ContratoChamada.Async && requisicao.IsSerializarJavascript)
-                            {
-                                response.ContentType = "text/json; charset=utf-8";
-                                await response.WriteAsync(resultadoSerializado);
-                            }
-                            else
-                            {
-                                var conteudo = PacoteUtil.CompactarPacote(resultadoSerializado);
-                                await response.Body.WriteAsync(conteudo);
-                            }
+                            response.ContentType = "text/json; charset=utf-8";
+                            await response.WriteAsync(resultadoSerializado);
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            throw new ErroRequisicao(ex, requisicao);
+                            var conteudo = PacoteUtil.CompactarPacote(resultadoSerializado);
+                            await response.Body.WriteAsync(conteudo);
                         }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        var mensagemSeguranca = String.Format("A credencial do serviço não autorizada '{0}' '{1}' - '{2}' ", this.GetType().Name, this.CredencialServico.IdentificadorUsuario, this.CredencialServico.Senha);
-                        if (DebugUtil.IsAttached)
-                        {
-                            throw new Exception(mensagemSeguranca);
-                        }
-
-                        response.StatusCode = (int)HttpStatusCode.BadRequest;
-
-                        //response.SubStatusCode = Convert.ToInt32(EnumTipoLogSeguranca.CredencialServicoNaoAutorizada);
-
-                        LogUtil.SegurancaAsync(mensagemSeguranca, EnumTipoLogSeguranca.CredencialServicoNaoAutorizada);
+                        throw new ErroRequisicao(ex, requisicao);
                     }
                 }
-            }
-            catch (ErroDeserializarContrato)
-            {
-                response.StatusCode = (int)HttpStatusCode.BadRequest;
-                //response.SubStatusCode = Convert.ToInt32(EnumTipoLogSeguranca.ContratoInvalido);
+                else
+                {
+                    var mensagemSeguranca =
+                        $"Contrato invalido ou credencial do serviço não autorizada '{this.GetType().Name}' '{this.CredencialServico.IdentificadorUsuario} <> {requisicao.CredencialServico?.IdentificadorUsuario ?? "null"}' - '{this.CredencialServico.Senha} <> {requisicao.CredencialServico?.Senha ?? "null"}'";
+                    if (DebugUtil.IsAttached)
+                    {
+                        throw new Exception(mensagemSeguranca);
+                    }
 
-                var mensagemSeguranca = String.Format("O contrato da chamada é invalido '{0}' '{1}' - '{2}' ", this.GetType().Name, this.CredencialServico.IdentificadorUsuario, this.CredencialServico.Senha);
-                LogUtil.SegurancaAsync(mensagemSeguranca, EnumTipoLogSeguranca.ContratoInvalido);
-            }
-            catch (ErroMetodoOperacaoNaoFoiEncontrado erro)
-            {
-                response.StatusCode = (int)HttpStatusCode.BadRequest;
-                //response.SubStatusCode = Convert.ToInt32(EnumTipoLogSeguranca.MetodoOperacaoNaoEncontrado);
+                    response.StatusCode = (int)HttpStatusCode.BadRequest;
 
-                var mensagemSeguranca = String.Format("O método '{0}' não foi encontrado no serviço '{1}'", erro.NomeMetodo, this.GetType().Name);
-                LogUtil.SegurancaAsync(mensagemSeguranca, EnumTipoLogSeguranca.MetodoOperacaoNaoEncontrado);
-            }
-            catch (ErroRequisicao)
-            {
-                throw;
-            }
-            catch (Exception )
-            {
-                throw;
+                    //response.SubStatusCode = Convert.ToInt32(EnumTipoLogSeguranca.CredencialServicoNaoAutorizada);
+
+                    LogUtil.SegurancaAsync(mensagemSeguranca, EnumTipoLogSeguranca.CredencialServicoNaoAutorizada);
+                }
             }
         }
+        catch (ErroDeserializarContrato)
+        {
+            response.StatusCode = (int)HttpStatusCode.BadRequest;
+            //response.SubStatusCode = Convert.ToInt32(EnumTipoLogSeguranca.ContratoInvalido);
 
+            var mensagemSeguranca = String.Format("O contrato da chamada é invalido '{0}' '{1}' - '{2}' ", this.GetType().Name, this.CredencialServico.IdentificadorUsuario, this.CredencialServico.Senha);
+            LogUtil.SegurancaAsync(mensagemSeguranca, EnumTipoLogSeguranca.ContratoInvalido);
+        }
+        catch (ErroMetodoOperacaoNaoFoiEncontrado erro)
+        {
+            response.StatusCode = (int)HttpStatusCode.BadRequest;
+            //response.SubStatusCode = Convert.ToInt32(EnumTipoLogSeguranca.MetodoOperacaoNaoEncontrado);
+
+            var mensagemSeguranca = String.Format("O método '{0}' não foi encontrado no serviço '{1}'", erro.NomeMetodo, this.GetType().Name);
+            LogUtil.SegurancaAsync(mensagemSeguranca, EnumTipoLogSeguranca.MetodoOperacaoNaoEncontrado);
+        }
+        catch (ErroRequisicao)
+        {
+            throw;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 }
 #endif

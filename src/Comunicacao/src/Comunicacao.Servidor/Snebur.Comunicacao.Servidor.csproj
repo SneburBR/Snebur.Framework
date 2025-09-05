@@ -5,11 +5,13 @@
 		<RootNamespace>Snebur.Comunicacao.Servidor</RootNamespace>
 		<Version>2.0.0</Version>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-		<Nullable>disable</Nullable>
 		<AssemblyName>Snebur.Comunicacao.Servidor</AssemblyName>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<Nullable>enable</Nullable>
+		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+		<LangVersion>preview</LangVersion>
 	</PropertyGroup>
- 
+
 	<ItemGroup>
 		<Compile Remove="Mensageiro\**" />
 		<Compile Remove="ServicoDados\**" />
@@ -22,7 +24,7 @@
 		<Compile Remove="Manipulador.cs" />
 		<Compile Remove="Manipulador.NetCore.cs" />
 	</ItemGroup>
-  
+
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Core\Snebur.csproj" />
@@ -30,6 +32,6 @@
 		<ProjectReference Include="..\..\..\Seguranca\Snebur.Seguranca.csproj" />
 		<ProjectReference Include="..\Comunicacao\Snebur.Comunicacao.csproj" />
 	</ItemGroup>
- 
+
 </Project>
 

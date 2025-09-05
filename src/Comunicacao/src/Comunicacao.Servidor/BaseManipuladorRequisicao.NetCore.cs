@@ -1,304 +1,288 @@
-﻿
+
 #if NET6_0_OR_GREATER
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Snebur.Utilidade;
-using System;
+using Snebur.Servicos;
 using System.IO;
-using System.Net;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace Snebur.Comunicacao
-{
-    public abstract partial class BaseManipuladorRequisicao : IHttpModule, IDisposable
-    {
-        public bool IsWebSocket { get; protected set; }
-         
-        public IConfigurationRoot Configuration => throw new NotImplementedException();
+namespace Snebur.Comunicacao;
 
-        public void ConfigureServices(IServiceCollection services)
+public abstract partial class BaseManipuladorRequisicao : IHttpModule, IDisposable
+{
+    public bool IsWebSocket { get; protected set; }
+
+    public IConfigurationRoot Configuration => throw new NotImplementedException();
+
+    public void ConfigureServices(IServiceCollection services)
+    {
+        Startup.ConfigureServicesInterno(services);
+    }
+
+    public async Task ProcessarRequisicaoAsync(HttpContext context)
+    {
+        if (CrossDomainUtil.VerificarContratoCrossDomain(context))
         {
-            Startup.ConfigureServicesInterno(services);
+            await context.CompleteRequestAsync();
+            return;
         }
-         
-        public async Task ProcessarRequisicaoAsync(HttpContext context)
+        this.AntesProcessarRequisicao(context);
+
+        var request = context.Request;
+        var response = context.Response;
+
+        if (await this.IsExecutarServicoAsync(context))
         {
-            if (CrossDomainUtil.VerificarContratoCrossDomain(context))
+            response.StatusCode = 0;
+            try
             {
+                await this.ExecutarServicoAsync(context);
+                //Chamadas do cross domain do ajax serão implementas aqui
+            }
+            catch (Exception ex)
+            {
+
+                response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                if (DebugUtil.IsAttached)
+                {
+                    throw;
+                }
+                LogUtil.ErroAsync(ex);
+            }
+            finally
+            {
+                if (response.StatusCode == 0)
+                {
+                    response.StatusCode = (int)HttpStatusCode.Conflict;
+                }
                 await context.CompleteRequestAsync();
+            }
+        }
+    }
+
+    private async Task ExecutarServicoAsync(HttpContext httpContext)
+    {
+        var request = httpContext.Request;
+
+        if (this.IsRequicaoValida(request, true))
+        {
+            var identificadorProprietario = this.RetornarIdentificadorProprietario(request);
+            if (!request.Headers.TryGetValue(ParametrosComunicacao.MANIPULADOR, out var manipuladorValues) ||
+                manipuladorValues.Count == 0 || String.IsNullOrWhiteSpace(manipuladorValues))
+            {
+                this.NotificarLogSeguranca(request, EnumTipoLogSeguranca.ManipuladorNaoDefinido);
+                httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return;
             }
-            this.AntesProcessarRequisicao(context);
 
-            var request = context.Request;
-            var response = context.Response;
-
-            if (await this.IsExecutarServicoAsync(context))
+            string nomeManipulador = manipuladorValues.ToString();
+            var tipoManipulador = this.RetornarTipoServico(nomeManipulador);
+            if (tipoManipulador is null)
             {
-                response.StatusCode = 0;
+                this.NotificarServicoNaoEncontado(httpContext, nomeManipulador);
+                return;
+            }
+
+            var comicacaoServidor = Activator.CreateInstance(tipoManipulador) as BaseComunicacaoServidor
+                ?? throw new ErroComunicacao($"O manipulador {nomeManipulador} não é um {nameof(BaseComunicacaoServidor)} válido.");
+
+            using (var servico = comicacaoServidor)
+            {
                 try
                 {
-                    await this.ExecutarServicoAsync(context);
-                    //Chamadas do cross domain do ajax serão implementas aqui
+                    servico.IdentificadorProprietario = identificadorProprietario;
+                    await servico.ProcessRequestAsync(httpContext);
+                }
+                catch (ErroRequisicao)
+                {
+                    throw;
                 }
                 catch (Exception ex)
                 {
-
-                    response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    if (DebugUtil.IsAttached)
-                    {
-                        throw;
-                    }
-                    LogUtil.ErroAsync(ex);
-                }
-                finally
-                {
-                    if (response.StatusCode == 0)
-                    {
-                        response.StatusCode = (int)HttpStatusCode.Conflict;
-                    }
-                    await context.CompleteRequestAsync();
+                    throw new ErroWebService(ex, nomeManipulador ?? "manipulador não definido");
                 }
             }
         }
+    }
 
-        private async Task TesteHttpRequestAsync(HttpContext context)
+    private async Task<bool> IsExecutarServicoAsync(HttpContext httpContext)
+    {
+        var request = httpContext.Request;
+        var response = httpContext.Response;
+
+        var caminho = Path.GetFileName(request.RetornarUrlRequisicao().LocalPath).ToLower();
+
+        if (CrossDomainUtil.VerificarContratoCrossDomain(httpContext))
         {
-            await Task.Delay(500);
-            ThreadUtil.ExecutarStaAsync(() =>
-            {
-                var httpCtx = AplicacaoSnebur.Atual.AspNet.GetHttpContext<HttpContext>();
-                if (httpCtx != context)
-                {
-                    throw new Exception("Falha ao obter o HttpContext");
-                }
-            }, "ThreadTESTEHttpContext");
-            await Task.Delay(500);
-            await Task.Factory.StartNew(() =>
-             {
-                 var httpCtx = AplicacaoSnebur.Atual.AspNet.GetHttpContext<HttpContext>();
-                 if (httpCtx != context)
-                 {
-                     throw new Exception("Falha ao obter o HttpContext");
-                 }
-             });
-            await Task.Delay(500);
+            await httpContext.CompleteRequestAsync();
+            return false;
         }
 
-        private async Task ExecutarServicoAsync(HttpContext httpContext)
+        if (caminho == "/" || caminho == "")
         {
-            var request = httpContext.Request;
-
-            if (this.IsRequicaoValida(request, true))
-            {
-                var identificadorProprietario = this.RetornarIdentificadorProprietario(request);
-                var nomeManipulador = request.Headers[ParametrosComunicacao.MANIPULADOR];
-                var tipoManipulador = this.RetornarTipoServico(nomeManipulador);
-                if (tipoManipulador == null)
-                {
-                    this.NotificarServicoNaoEncontado(httpContext, nomeManipulador);
-                    return;
-                }
-
-                using (var servico = (BaseComunicacaoServidor)Activator.CreateInstance(tipoManipulador))
-                {
-                    try
-                    {
-                        servico.IdentificadorProprietario = identificadorProprietario;
-                        await servico.ProcessRequestAsync(httpContext);
-                    }
-                    catch (ErroRequisicao)
-                    {
-                        throw;
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new ErroWebService(ex, nomeManipulador);
-                    }
-                }
-            }
+            await this.ResponderAgoraAsync(response);
+            await httpContext.CompleteRequestAsync();
+            return false;
         }
 
-        private async Task<bool> IsExecutarServicoAsync(HttpContext httpContext)
+        if (caminho.Equals("agora", StringComparison.InvariantCultureIgnoreCase))
         {
-            var request = httpContext.Request;
-            var response = httpContext.Response;
+            await this.ResponderAgoraAsync(response);
+            await httpContext.CompleteRequestAsync();
+            return false;
+        }
 
-            var caminho = Path.GetFileName(request.RetornarUrlRequisicao().LocalPath).ToLower();
+        if (caminho.Equals("ping", StringComparison.InvariantCultureIgnoreCase))
+        {
+            await response.WriteAsync("True", Encoding.UTF8);
+            await httpContext.CompleteRequestAsync();
+            return false;
+        }
 
-            if (CrossDomainUtil.VerificarContratoCrossDomain(httpContext))
+        var caminhoManipulador = Path.GetFileNameWithoutExtension(caminho);
+        if (this.ManipuladoresGenericos.ContainsKey(caminhoManipulador))
+        {
+            var isValidarToken = this.ManipuladoresGenericos[caminhoManipulador].isValidarToken;
+            if (isValidarToken && !this.IsRequicaoValida(request, false))
             {
+                response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 await httpContext.CompleteRequestAsync();
                 return false;
             }
 
-            if (caminho == "/" || caminho == "")
-            {
-                await this.ResponderAgoraAsync(response);
-                await httpContext.CompleteRequestAsync();
-                return false;
-            }
+            await this.ExecutarManipuladorGenericoAsync(httpContext, caminhoManipulador);
+            await httpContext.CompleteRequestAsync();
+            return false;
+        }
 
-            if (caminho.Equals("agora", StringComparison.InvariantCultureIgnoreCase))
+        if (this.ArquivosAutorizados.ContainsKey(caminho))
+        {
+            var isIgnorarValidacaoTokenAplicacao = this.ArquivosAutorizados[caminho];
+            if (!isIgnorarValidacaoTokenAplicacao)
             {
-                await this.ResponderAgoraAsync(response);
-                await httpContext.CompleteRequestAsync();
-                return false;
-            }
-
-            if (caminho.Equals("ping", StringComparison.InvariantCultureIgnoreCase))
-            {
-                await response.WriteAsync("True", Encoding.UTF8);
-                await httpContext.CompleteRequestAsync();
-                return false;
-            }
-
-            var caminhoManipulador = Path.GetFileNameWithoutExtension(caminho);
-            if (this.ManipuladoresGenericos.ContainsKey(caminhoManipulador))
-            {
-                var isValidarToken = this.ManipuladoresGenericos[caminhoManipulador].isValidarToken;
-                if (isValidarToken && !this.IsRequicaoValida(request, false))
+                if (!this.IsRequicaoValida(request, false))
                 {
                     response.StatusCode = (int)HttpStatusCode.Unauthorized;
                     await httpContext.CompleteRequestAsync();
                     return false;
                 }
-
-                await this.ExecutarManipuladorGenericoAsync(httpContext, caminhoManipulador);
-                await httpContext.CompleteRequestAsync();
-                return false;
             }
-
-            if (this.ArquivosAutorizados.ContainsKey(caminho))
-            {
-                var isIgnorarValidacaoTokenAplicacao = this.ArquivosAutorizados[caminho];
-                if (!isIgnorarValidacaoTokenAplicacao)
-                {
-                    if (!this.IsRequicaoValida(request, false))
-                    {
-                        response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                        await httpContext.CompleteRequestAsync();
-                        return false;
-                    }
-                }
-                return false;
-            }
-
-            if ((request.Headers.ContainsKey(ParametrosComunicacao.TOKEN) &&
-                !request.Headers.ContainsKey("TOKEN")))
-            {
-                throw new Exception("Invalida case insensitive");
-                //await httpContext.CompleteRequestAsync();
-                //return false;
-            }
-
-            if (!request.Headers.ContainsKey(ParametrosComunicacao.TOKEN) ||
-                !request.Headers.ContainsKey(ParametrosComunicacao.MANIPULADOR))
-            {
-
-                LogUtil.SegurancaAsync($"A URL '{request.RetornarUrlRequisicao().AbsoluteUri}' foi chamada incorretamente.", Servicos.EnumTipoLogSeguranca.CabecalhoInvalido);
-                response.StatusCode = (int)HttpStatusCode.BadRequest;
-                await httpContext.CompleteRequestAsync();
-                return false;
-            }
-            return true;
+            return false;
         }
 
-        private async Task ResponderAgoraAsync(HttpResponse response)
+        if ((request.Headers.ContainsKey(ParametrosComunicacao.TOKEN) &&
+            !request.Headers.ContainsKey("TOKEN")))
         {
-            var agora = DateTime.UtcNow.AddSeconds(-10);
-            await this.ResponderAsync(response, agora.Ticks.ToString());
+            throw new Exception("Invalida case insensitive");
+            //await httpContext.CompleteRequestAsync();
+            //return false;
         }
 
-        private async Task ResponderAsync(HttpResponse response, string conteuto)
+        if (!request.Headers.ContainsKey(ParametrosComunicacao.TOKEN) ||
+            !request.Headers.ContainsKey(ParametrosComunicacao.MANIPULADOR))
         {
-            response.ContentType = "text/text; charset=UTF-8";
-            if (!response.HasStarted)
-            {
-                response.StatusCode = 200;
-            }
-            await response.WriteAsync(conteuto, Encoding.UTF8);
+
+            LogUtil.SegurancaAsync($"A URL '{request.RetornarUrlRequisicao().AbsoluteUri}' foi chamada incorretamente.", Servicos.EnumTipoLogSeguranca.CabecalhoInvalido);
+            response.StatusCode = (int)HttpStatusCode.BadRequest;
+            await httpContext.CompleteRequestAsync();
+            return false;
         }
-        private async Task ExecutarManipuladorGenericoAsync(HttpContext httpContext, string caminho)
+        return true;
+    }
+
+    private async Task ResponderAgoraAsync(HttpResponse response)
+    {
+        var agora = DateTime.UtcNow.AddSeconds(-10);
+        await this.ResponderAsync(response, agora.Ticks.ToString());
+    }
+
+    private async Task ResponderAsync(HttpResponse response, string conteuto)
+    {
+        response.ContentType = "text/text; charset=UTF-8";
+        if (!response.HasStarted)
         {
-            var tipo = this.ManipuladoresGenericos[caminho].tipo;
-            var manipualador = Activator.CreateInstance(tipo) as IHttpHandler;
-            if (manipualador != null)
-            {
-                await manipualador.ProcessRequestAsync(httpContext);
-            }
+            response.StatusCode = 200;
         }
-
-        private static async Task Echo(WebSocket webSocket)
+        await response.WriteAsync(conteuto, Encoding.UTF8);
+    }
+    private async Task ExecutarManipuladorGenericoAsync(HttpContext httpContext, string caminho)
+    {
+        var tipo = this.ManipuladoresGenericos[caminho].tipo;
+        var manipualador = Activator.CreateInstance(tipo) as IHttpHandler;
+        if (manipualador != null)
         {
-            var buffer = new byte[1024 * 4];
+            await manipualador.ProcessRequestAsync(httpContext);
+        }
+    }
 
-            var receiveResult = await webSocket.ReceiveAsync(
-                new ArraySegment<byte>(buffer), CancellationToken.None);
+    private static async Task Echo(WebSocket webSocket)
+    {
+        var buffer = new byte[1024 * 4];
 
-            while (!receiveResult.CloseStatus.HasValue)
-            {
-                await webSocket.SendAsync(
-                    new ArraySegment<byte>(buffer, 0, receiveResult.Count),
-                    receiveResult.MessageType,
-                    receiveResult.EndOfMessage,
-                    CancellationToken.None);
+        var receiveResult = await webSocket.ReceiveAsync(
+            new ArraySegment<byte>(buffer), CancellationToken.None);
 
-                receiveResult = await webSocket.ReceiveAsync(
-                    new ArraySegment<byte>(buffer), CancellationToken.None);
-            }
-
-            await webSocket.CloseAsync(
-                receiveResult.CloseStatus.Value,
-                receiveResult.CloseStatusDescription,
+        while (!receiveResult.CloseStatus.HasValue)
+        {
+            await webSocket.SendAsync(
+                new ArraySegment<byte>(buffer, 0, receiveResult.Count),
+                receiveResult.MessageType,
+                receiveResult.EndOfMessage,
                 CancellationToken.None);
-        }
-    }
 
-    public class AshxHandlerMiddleware
+            receiveResult = await webSocket.ReceiveAsync(
+                new ArraySegment<byte>(buffer), CancellationToken.None);
+        }
+
+        await webSocket.CloseAsync(
+            receiveResult.CloseStatus.Value,
+            receiveResult.CloseStatusDescription,
+            CancellationToken.None);
+    }
+}
+
+public class AshxHandlerMiddleware
+{
+    private readonly RequestDelegate _next;
+
+    public AshxHandlerMiddleware(RequestDelegate next)
     {
-        private readonly RequestDelegate _next;
-
-        public AshxHandlerMiddleware(RequestDelegate next)
-        {
-            _next = next;
-        }
-
-        public async Task Invoke(HttpContext context)
-        {
-            if (context.Request.Path.Value.EndsWith(".ashx"))
-            {
-                await HandleAshxRequest(context);
-            }
-            else
-            {
-                await _next(context);
-            }
-        }
-
-        private Task HandleAshxRequest(HttpContext context)
-        {
-            // Lógica do seu handler .ashx aqui
-            context.Response.ContentType = "text/plain";
-            return context.Response.WriteAsync("Hello from .ashx handler!");
-        }
+        this._next = next;
     }
 
-    public static class AshxHandlerMiddlewareExtensions
+    public async Task Invoke(HttpContext context)
     {
-        public static IApplicationBuilder UseAshxHandler(this IApplicationBuilder builder)
+        if (context.Request.Path.Value?.EndsWith(".ashx") == true)
         {
-            return builder.UseMiddleware<AshxHandlerMiddleware>();
+            await HandleAshxRequest(context);
+        }
+        else
+        {
+            await this._next(context);
         }
     }
 
+    private Task HandleAshxRequest(HttpContext context)
+    {
+        // Lógica do seu handler .ashx aqui
+        context.Response.ContentType = "text/plain";
+        return context.Response.WriteAsync("Hello from .ashx handler!");
+    }
+}
+
+public static class AshxHandlerMiddlewareExtensions
+{
+    public static IApplicationBuilder UseAshxHandler(this IApplicationBuilder builder)
+    {
+        return builder.UseMiddleware<AshxHandlerMiddleware>();
+    }
 }
 
 #endif
