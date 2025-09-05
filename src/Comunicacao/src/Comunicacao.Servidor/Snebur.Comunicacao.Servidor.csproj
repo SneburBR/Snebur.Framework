@@ -8,7 +8,7 @@
 		<AssemblyName>Snebur.Comunicacao.Servidor</AssemblyName>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<Nullable>enable</Nullable>
-		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<LangVersion>preview</LangVersion>
 	</PropertyGroup>
 

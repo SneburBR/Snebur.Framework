@@ -50,12 +50,12 @@ public abstract partial class BaseComunicacaoCliente : IBaseServico
         }
     }
 
-    protected T ChamarServico<T>(MethodBase? metodo, object[] valoresParametro)
+    protected T ChamarServico<T>(MethodBase? metodo, object?[] valoresParametro)
     {
         return this.ChamarServico<T>(metodo, metodo, valoresParametro);
     }
 
-    protected T ChamarServico<T>(MethodBase? metodo, MethodBase? metodoParametros, object[] valoresParametro)
+    protected T ChamarServico<T>(MethodBase? metodo, MethodBase? metodoParametros, object?[] valoresParametro)
     {
 
         Guard.NotNull(metodo);
@@ -82,11 +82,11 @@ public abstract partial class BaseComunicacaoCliente : IBaseServico
         {
             AplicacaoSnebur.AtualRequired.IniciarNovaSessaoAnonima();
 
-            throw new ErroSessaoUsuarioExpirada(resultadoSessaoUsuarioInvalida.StatusSessaoUsuario,
-                                                resultadoSessaoUsuarioInvalida.IdentificadorSessaoUsuario,
-                                                "Sessão do usuário foi finalizada");
+            throw new ErroSessaoUsuarioExpirada(
+                resultadoSessaoUsuarioInvalida.StatusSessaoUsuario,
+                resultadoSessaoUsuarioInvalida.IdentificadorSessaoUsuario,
+                "Sessão do usuário foi finalizada");
         }
-
         return resultado;
     }
 
@@ -165,7 +165,7 @@ public abstract partial class BaseComunicacaoCliente : IBaseServico
         return AplicacaoSnebur.AtualRequired.IdentificadorSessaoUsuario;
     }
 
-    protected virtual string IdentificadorProprietarioRequisicaoAtual()
+    protected virtual string? IdentificadorProprietarioRequisicaoAtual()
     {
         return AplicacaoSnebur.AtualRequired.IdentificadorProprietario;
     }

@@ -115,7 +115,8 @@ public abstract class BaseChamadaServico
         var cabecalho = this.ContratoChamada.Cabecalho;
 
         Guard.NotNull(cabecalho);
-        Guard.NotNull(cabecalho.CredencialUsuario);
+        Guard.NotNull(cabecalho.CredencialUsuario?.IdentificadorUsuario);
+        Guard.NotNull(cabecalho.CredencialServico?.IdentificadorUsuario);
 
         var nomeAssembly = AplicacaoSnebur.AtualRequired.NomeAplicacao;
         var identificadorAplicacao = AplicacaoSnebur.AtualRequired.IdentificadorAplicacao;
@@ -129,7 +130,7 @@ public abstract class BaseChamadaServico
         var requisicaoHttp = HttpWebRequest.Create(urlServico);
 #pragma warning restore SYSLIB0014 // Type or member is obsolete
 
-        var identificadorUsuario = CriptografiaUtil.Criptografar(token, cabecalho.CredencialUsuario.IdentificadorUsuario!);
+        var identificadorUsuario = CriptografiaUtil.Criptografar(token, cabecalho.CredencialUsuario.IdentificadorUsuario);
         var identifcadorProprietario = cabecalho.IdentificadorProprietario;
 
         requisicaoHttp.Headers[ConstantesCabecalho.IDENTIFICADOR_USUARIO] = identificadorUsuario;
