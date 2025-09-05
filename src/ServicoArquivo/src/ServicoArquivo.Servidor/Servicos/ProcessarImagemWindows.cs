@@ -1,6 +1,5 @@
-﻿namespace Snebur.ServicoArquivo
+namespace Snebur.ServicoArquivo;
+
+internal class ProcessarImagemWindows
 {
-    internal class ProcessarImagemWindows
-    {
-    }
 }

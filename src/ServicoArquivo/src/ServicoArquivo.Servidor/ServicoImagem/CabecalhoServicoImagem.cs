@@ -1,34 +1,31 @@
-﻿using Snebur.Dominio;
-using System;
 #if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Http;
 #else
 using System.Web;
 #endif  
 
-namespace Snebur.ServicoArquivo
+namespace Snebur.ServicoArquivo;
+
+public class CabecalhoServicoImagem : CabecalhoServicoArquivo, IInformacaoRepositorioImagem
 {
-    public class CabecalhoServicoImagem : CabecalhoServicoArquivo, IInformacaoRepositorioImagem
+    public EnumTamanhoImagem TamanhoImagem { get; }
+
+    public EnumFormatoImagem Formato { get; }
+
+    public CabecalhoServicoImagem(HttpContext context, bool enviarArquivo = false) : base(context, enviarArquivo)
     {
-        public EnumTamanhoImagem TamanhoImagem { get; }
+        this.TamanhoImagem = (EnumTamanhoImagem)this.RetornarInteger(ConstantesServicoImagem.TAMANHO_IMAGEM);
+        this.Formato = (EnumFormatoImagem)this.RetornarInteger(ConstantesServicoImagem.FORMATO_IMAGEM);
 
-        public EnumFormatoImagem Formato { get; }
-
-        public CabecalhoServicoImagem(HttpContext context, bool enviarArquivo = false) : base(context, enviarArquivo)
+        if (!Enum.IsDefined(typeof(EnumFormatoImagem), this.Formato))
         {
-            this.TamanhoImagem = (EnumTamanhoImagem)this.RetornarInteger(ConstantesServicoImagem.TAMANHO_IMAGEM);
-            this.Formato = (EnumFormatoImagem)this.RetornarInteger(ConstantesServicoImagem.FORMATO_IMAGEM);
-
-            if (!Enum.IsDefined(typeof(EnumFormatoImagem), this.Formato))
-            {
-                this.Formato = EnumFormatoImagem.JPEG;
-            }
+            this.Formato = EnumFormatoImagem.JPEG;
         }
-
-        //#region IInformacaoRepositorioImagem
-
-        //long IInformacaoRepositorioImagem.IdImagem => this.IdArquivo;
-
-        //#endregion
     }
+
+    //#region IInformacaoRepositorioImagem
+
+    //long IInformacaoRepositorioImagem.IdImagem => this.IdArquivo;
+
+    //#endregion
 }

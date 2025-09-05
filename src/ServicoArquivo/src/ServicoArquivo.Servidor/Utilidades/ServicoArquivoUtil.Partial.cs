@@ -1,6 +1,5 @@
-﻿namespace Snebur.ServicoArquivo
+namespace Snebur.ServicoArquivo;
+
+public partial class ServicoArquivoUtil
 {
-    public partial class ServicoArquivoUtil
-    {
-    }
 }

@@ -1,43 +1,34 @@
-﻿using Snebur.Utilidade;
-using System;
-using System.IO;
-using System.Threading.Tasks;
+namespace Snebur.ServicoArquivo.Servidor;
 
-namespace Snebur.ServicoArquivo.Servidor
+public class ManutencaoPastaTemp
 {
-    public class ManutencaoPastaTemp
+    private static bool Inicializado;
+    public static string? CaminhoTemp { get; private set; }
+
+    private static object bloqueio = new object();
+    public static void IncializarAsync(string caminhoTemp)
     {
-        private static bool Inicializado;
-        public static string CaminhoTemp { get; set; }
+        Task.Factory.StartNew(() => Inicializar(caminhoTemp));
+    }
 
-        private static object bloqueio = new object();
-        public static void IncializarAsync(string caminhoTemp)
+    public static void Inicializar(string caminhoTemp)
+    {
+        lock (bloqueio)
         {
-            Task.Factory.StartNew(() => Inicializar(caminhoTemp));
-        }
-
-        public static void Inicializar(string caminhoTemp)
-        {
-            lock (bloqueio)
+            if (!Inicializado)
             {
-                if (!Inicializado)
-                {
-                    ManutencaoPastaTemp.CaminhoTemp = caminhoTemp;
-                    var pastaTemp = new DirectoryInfo(caminhoTemp);
+                ManutencaoPastaTemp.CaminhoTemp = caminhoTemp;
+                var pastaTemp = new DirectoryInfo(caminhoTemp);
 
-                    foreach (var arquivo in pastaTemp.GetFiles())
+                foreach (var arquivo in pastaTemp.GetFiles())
+                {
+                    if (arquivo.Extension.ToLower() == ".tmp" && arquivo.CreationTime.AddDays(2) < DateTime.Now)
                     {
-                        if (arquivo.Extension.ToLower() == ".tmp" && arquivo.CreationTime.AddDays(2) < DateTime.Now)
-                        {
-                            ArquivoUtil.DeletarArquivo(arquivo.FullName, true);
-                        }
+                        ArquivoUtil.DeletarArquivo(arquivo.FullName, true);
                     }
-                    Inicializado = true;
                 }
+                Inicializado = true;
             }
-        }
-        static ManutencaoPastaTemp()
-        {
         }
     }
 }

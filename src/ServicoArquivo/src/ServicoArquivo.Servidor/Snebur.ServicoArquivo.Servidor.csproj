@@ -5,10 +5,13 @@
 		<Nullable>disable</Nullable>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<Nullable>enable</Nullable>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<LangVersion>preview</LangVersion>
 	</PropertyGroup>
- 
+
 	<ItemGroup>
-		
+
 		<ProjectReference Include="..\..\..\Comunicacao\src\Comunicacao.Cliente\Snebur.Comunicacao.Cliente.csproj" />
 		<ProjectReference Include="..\..\..\Comunicacao\src\Comunicacao\Snebur.Comunicacao.csproj" />
 		<ProjectReference Include="..\..\..\Core\Snebur.csproj" />
@@ -17,18 +20,18 @@
 		<ProjectReference Include="..\..\..\AspNet\Snebur.AspNet.csproj" />
 		<ProjectReference Include="..\..\..\Computador\Snebur.Computador.csproj" />
 	</ItemGroup>
- 
+
 	<!--<ItemGroup Condition="'$(TargetFramework)' == 'net9.0' ">
 
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>-->
- 
+
 	<ItemGroup>
-	  <Compile Include="..\ServicoArquivo.Comunicacao\Seguranca\CredencialComunicacaoServicoArquivo.cs" Link="Comunicacao\Seguranca\CredencialComunicacaoServicoArquivo.cs" />
-	  <Compile Include="..\ServicoArquivo.Comunicacao\Seguranca\CredencialUsuarioComunicacaoServicoArquivo.cs" Link="Comunicacao\Seguranca\CredencialUsuarioComunicacaoServicoArquivo.cs" />
+		<Compile Include="..\ServicoArquivo.Comunicacao\Seguranca\CredencialComunicacaoServicoArquivo.cs" Link="Comunicacao\Seguranca\CredencialComunicacaoServicoArquivo.cs" />
+		<Compile Include="..\ServicoArquivo.Comunicacao\Seguranca\CredencialUsuarioComunicacaoServicoArquivo.cs" Link="Comunicacao\Seguranca\CredencialUsuarioComunicacaoServicoArquivo.cs" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Comunicacao\Seguranca\" />
+		<Folder Include="Comunicacao\Seguranca\" />
 	</ItemGroup>
- 
+
 </Project>

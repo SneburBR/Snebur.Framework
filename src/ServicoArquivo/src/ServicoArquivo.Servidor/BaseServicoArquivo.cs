@@ -1,288 +1,288 @@
-﻿using Snebur.ServicoArquivo.Servidor;
-using Snebur.Utilidade;
-using System;
-using System.IO;
+using Snebur.ServicoArquivo.Servidor;
 
 #if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
 #endif
 
-namespace Snebur.ServicoArquivo
+namespace Snebur.ServicoArquivo;
+
+
+public abstract class BaseServicoArquivo<TCabecalhoServicoArquivo, TInformacaoRepositorio> : IHttpHandler, IDisposable
+    where TCabecalhoServicoArquivo : CabecalhoServicoArquivo
+    where TInformacaoRepositorio : IInformacaoRepositorioArquivo
 {
+    #region Construtores
 
-    public abstract class BaseServicoArquivo<TCabecalhoServicoArquivo, TInformacaoRepositorio> : IHttpHandler, IDisposable where TCabecalhoServicoArquivo : CabecalhoServicoArquivo
-                                                                                                                           where TInformacaoRepositorio : IInformacaoRepositorioArquivo
+    public virtual bool IsReponserJson => true;
+
+    public BaseServicoArquivo()
     {
-        #region Construtores
+        AplicacaoSnebur.AtualRequired.AplicacaoServicoArquivo().AcessarRede();
+    }
 
-        public virtual bool IsReponserJson => true;
+    #endregion
 
-        public BaseServicoArquivo()
-        {
-            (AplicacaoSnebur.Atual as BaseAplicacaoServicoArquivo).AcessarRede();
-        }
-
-        #endregion
-
-        #region IHttpHandler
+    #region IHttpHandler
 
 #if NET6_0_OR_GREATER
-     
-        public async Task ProcessRequestAsync(HttpContext context)
+
+    public async Task ProcessRequestAsync(HttpContext context)
+    {
+        Exception? erro = null;
+        var tipoErro = EnumTipoErroServicoArquivo.Desconhecido;
+        try
         {
-            Exception erro = null;
-            var tipoErro = EnumTipoErroServicoArquivo.Desconhecido;
-            try
+            var cabecalho = this.RetornarCabecalhoServicoArquivo(context);
+            if (cabecalho.IsCabecalhoValido())
             {
-                var cabecalho = this.RetornarCabecalhoServicoArquivo(context);
-                if (cabecalho.IsCabecalhoValido())
-                {
-                    this.ServicoArquivoCliente = this.RetornarServicoArquivoCliente(cabecalho);
-                    var inputStream = await this.RetornarInputStreamAsync(context);
-                    await this.IniciarAsync(context, cabecalho, inputStream);
-                }
-            }
-            catch (Exception ex)
-            {
-                erro = ex;
-                tipoErro = this.RetornarTipoErro(ex);
-
-            }
-            finally
-            {
-
-                if (tipoErro == EnumTipoErroServicoArquivo.ArquivoNaoEncontrado)
-                {
-                    throw erro;
-                }
-
-                if (this.IsReponserJson)
-                {
-                    var resposta = new ResultadoServicoArquivo()
-                    {
-                        IsSucesso = erro == null
-                    };
-                    if ((erro != null))
-                    {
-                        resposta.MensagemErro = erro.Message;
-                        resposta.TipoErroServicoArquivo = tipoErro;
-                    }
-                    //context.Response.AddHeader("Access-Control-Allow-Origin", "*")
-                    //context.Response.AddHeader("Access-Control-Allow-Methods", "POST")
-                    context.Response.ContentType = "text/json; charset=UTF-8";
-                    var respostaString = JsonUtil.Serializar(resposta, EnumTipoSerializacao.Javascript);
-                    await context.Response.WriteAsync(respostaString);
-                }
+                this._servicoArquivoCliente = this.RetornarServicoArquivoCliente(cabecalho);
+                var inputStream = await this.RetornarInputStreamAsync(context);
+                await this.IniciarAsync(context, cabecalho, inputStream);
             }
         }
+        catch (Exception ex)
+        {
+            erro = ex;
+            tipoErro = this.RetornarTipoErro(ex);
+
+        }
+        finally
+        {
+            if (tipoErro == EnumTipoErroServicoArquivo.ArquivoNaoEncontrado)
+            {
+                throw erro ?? new Exception($"Erro não identificado. TipoErro {tipoErro}");
+            }
+
+            if (this.IsReponserJson)
+            {
+                var resposta = new ResultadoServicoArquivo()
+                {
+                    IsSucesso = erro == null
+                };
+                if ((erro != null))
+                {
+                    resposta.MensagemErro = erro.Message;
+                    resposta.TipoErroServicoArquivo = tipoErro;
+                }
+                //context.Response.AddHeader("Access-Control-Allow-Origin", "*")
+                //context.Response.AddHeader("Access-Control-Allow-Methods", "POST")
+                context.Response.ContentType = "text/json; charset=UTF-8";
+                var respostaString = JsonUtil.Serializar(resposta, EnumTipoSerializacao.Javascript);
+                await context.Response.WriteAsync(respostaString);
+            }
+        }
+    }
 #else
 
-        public void ProcessRequest(HttpContext context)
+    public void ProcessRequest(HttpContext context)
+    {
+        Exception erro = null;
+        var tipoErro = EnumTipoErroServicoArquivo.Desconhecido;
+        try
         {
-            Exception erro = null;
-            var tipoErro = EnumTipoErroServicoArquivo.Desconhecido;
-            try
+            var cabecalho = this.RetornarCabecalhoServicoArquivo(context);
+            if (cabecalho.IsCabecalhoValido())
             {
-                var cabecalho = this.RetornarCabecalhoServicoArquivo(context);
-                if (cabecalho.IsCabecalhoValido())
-                {
-                    this.ServicoArquivoCliente = this.RetornarServicoArquivoCliente(cabecalho);
-                    var inputStream = this.RetornarInputStream(context);
-                    this.Iniciar(context, cabecalho, inputStream);
-                }
-            }
-            catch (Exception ex)
-            {
-                erro = ex;
-                tipoErro = this.RetornarTipoErro(ex);
-            }
-            finally
-            {
-
-                if (tipoErro == EnumTipoErroServicoArquivo.ArquivoNaoEncontrado)
-                {
-                    throw erro;
-                }
-
-                if (this.IsReponserJson)
-                {
-                    var resposta = new ResultadoServicoArquivo()
-                    {
-                        IsSucesso = erro == null
-                    };
-                    if ((erro != null))
-                    {
-                        resposta.MensagemErro = erro.Message;
-                        resposta.TipoErroServicoArquivo = tipoErro;
-                    }
-
-                    //context.Response.AddHeader("Access-Control-Allow-Origin", "*.grafis.com.br, *.photosapp.com.br")
-                    //context.Response.AddHeader("Access-Control-Allow-Origin", "*")
-                    //context.Response.AddHeader("Access-Control-Allow-Methods", "POST")
-
-                    context.Response.ContentType = "text/json";
-                    context.Response.ContentEncoding = Encoding.UTF8;
-
-
-                    var respostaString = JsonUtil.Serializar(resposta, EnumTipoSerializacao.Javascript);
-                    context.Response.Write(respostaString);
-                }
+                this.ServicoArquivoCliente = this.RetornarServicoArquivoCliente(cabecalho);
+                var inputStream = this.RetornarInputStream(context);
+                this.Iniciar(context, cabecalho, inputStream);
             }
         }
+        catch (Exception ex)
+        {
+            erro = ex;
+            tipoErro = this.RetornarTipoErro(ex);
+        }
+        finally
+        {
+
+            if (tipoErro == EnumTipoErroServicoArquivo.ArquivoNaoEncontrado)
+            {
+                throw erro;
+            }
+
+            if (this.IsReponserJson)
+            {
+                var resposta = new ResultadoServicoArquivo()
+                {
+                    IsSucesso = erro == null
+                };
+                if ((erro != null))
+                {
+                    resposta.MensagemErro = erro.Message;
+                    resposta.TipoErroServicoArquivo = tipoErro;
+                }
+
+                //context.Response.AddHeader("Access-Control-Allow-Origin", "*.grafis.com.br, *.photosapp.com.br")
+                //context.Response.AddHeader("Access-Control-Allow-Origin", "*")
+                //context.Response.AddHeader("Access-Control-Allow-Methods", "POST")
+
+                context.Response.ContentType = "text/json";
+                context.Response.ContentEncoding = Encoding.UTF8;
+
+
+                var respostaString = JsonUtil.Serializar(resposta, EnumTipoSerializacao.Javascript);
+                context.Response.Write(respostaString);
+            }
+        }
+    }
 
 #endif
 
-        private EnumTipoErroServicoArquivo RetornarTipoErro(Exception erro)
+    private EnumTipoErroServicoArquivo RetornarTipoErro(Exception erro)
+    {
+        switch (erro)
         {
-            switch (erro)
-            {
-                case ErroChecksumArquivo erroChecksumArquivo:
+            case ErroChecksumArquivo erroChecksumArquivo:
 
-                    return EnumTipoErroServicoArquivo.ChecksumArquivoDiferente;
+                return EnumTipoErroServicoArquivo.ChecksumArquivoDiferente;
 
-                case ErroChecksumPacote erroChecksumPacote:
+            case ErroChecksumPacote erroChecksumPacote:
 
-                    return EnumTipoErroServicoArquivo.ChecksumPacoteDiferente;
+                return EnumTipoErroServicoArquivo.ChecksumPacoteDiferente;
 
-                case ErroTotalBytesDiferente erroTotalBytesDiferente:
+            case ErroTotalBytesDiferente erroTotalBytesDiferente:
 
-                    return EnumTipoErroServicoArquivo.TotalBytesDiferente;
+                return EnumTipoErroServicoArquivo.TotalBytesDiferente;
 
-                case ErroArquivoEmUso erroArquivoEmUso:
+            case ErroArquivoEmUso erroArquivoEmUso:
 
-                    return EnumTipoErroServicoArquivo.ArquivoTempEmUso;
+                return EnumTipoErroServicoArquivo.ArquivoTempEmUso;
 
-                case ErroArquivoNaoEncontrado erroArquivoNaoEncontrado:
+            case ErroArquivoNaoEncontrado erroArquivoNaoEncontrado:
 
-                    return EnumTipoErroServicoArquivo.ArquivoNaoEncontrado;
+                return EnumTipoErroServicoArquivo.ArquivoNaoEncontrado;
 
-                case ErroIdArquivoNaoExiste erroArquivoNaoEncontrado:
+            case ErroIdArquivoNaoExiste erroArquivoNaoEncontrado:
 
-                    return EnumTipoErroServicoArquivo.IdArquivoNaoExiste;
+                return EnumTipoErroServicoArquivo.IdArquivoNaoExiste;
 
-                default:
+            default:
 
-                    LogUtil.ErroAsync(erro);
-                    return EnumTipoErroServicoArquivo.Desconhecido;
-            }
+                LogUtil.ErroAsync(erro);
+                return EnumTipoErroServicoArquivo.Desconhecido;
         }
+    }
 
-        public bool IsReusable
+    public bool IsReusable
+    {
+        get
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            throw new NotImplementedException();
         }
+    }
 
-        #endregion
+    #endregion
 
-        #region Metodos protegidos
+    #region Metodos protegidos
 
-        protected ComunicacaoServicoArquivoCliente ServicoArquivoCliente { get; set; }
+#pragma warning disable IDE0032 // Use auto property
+    private ComunicacaoServicoArquivoCliente? _servicoArquivoCliente;
+#pragma warning restore IDE0032 // Use auto property
+    protected ComunicacaoServicoArquivoCliente ServicoArquivoCliente
+        => this._servicoArquivoCliente ?? throw new InvalidOperationException($"O {nameof(ServicoArquivoCliente)} não foi inicializado. Chame {nameof(RetornarServicoArquivoCliente)} primeiro.");
 
-        protected virtual string RetornarCaminhoCompletoArquivo(TInformacaoRepositorio cabecalho)
-        {
-            return ServicoArquivoUtil.RetornarCaminhoCompletoArquivo(this.RetornarDiretorioArquivo(cabecalho), cabecalho.IdArquivo);
-        }
+    protected virtual string RetornarCaminhoCompletoArquivo(TInformacaoRepositorio cabecalho)
+    {
+        return ServicoArquivoUtil.RetornarCaminhoCompletoArquivo(this.RetornarDiretorioArquivo(cabecalho), cabecalho.IdArquivo);
+    }
 
-        protected virtual string RetornarDiretorioArquivo(TInformacaoRepositorio cabecalho)
-        {
-            return ServicoArquivoUtil.RetornarCaminhoDiretorioArquivo(this.RetornarRepositoArquivo(cabecalho), cabecalho.IdArquivo);
-        }
+    protected virtual string RetornarDiretorioArquivo(TInformacaoRepositorio cabecalho)
+    {
+        return ServicoArquivoUtil.RetornarCaminhoDiretorioArquivo(this.RetornarRepositoArquivo(cabecalho), cabecalho.IdArquivo);
+    }
 
-        protected virtual TCabecalhoServicoArquivo RetornarCabecalhoServicoArquivo(HttpContext httpContext)
-        {
-            return new CabecalhoServicoArquivo(httpContext) as TCabecalhoServicoArquivo;
-        }
+    protected virtual TCabecalhoServicoArquivo RetornarCabecalhoServicoArquivo(HttpContext httpContext)
+    {
+        return (TCabecalhoServicoArquivo)new CabecalhoServicoArquivo(httpContext);
+    }
 
-        protected virtual ComunicacaoServicoArquivoCliente RetornarServicoArquivoCliente(TCabecalhoServicoArquivo cabecalho)
-        {
-            var urlServicoArquivoCliente = this.RetornarUrlServicoArquivoCliente();
-            return new ComunicacaoServicoArquivoCliente(urlServicoArquivoCliente,
-                                                        cabecalho.CredencialRequisicao,
-                                                        cabecalho.IdentificadorSessaoUsuario,
-                                                        cabecalho.IdentificadorProprietario,
-                                                        this.NormalizarOrigem);
-        }
-        #endregion
+    protected virtual ComunicacaoServicoArquivoCliente RetornarServicoArquivoCliente(TCabecalhoServicoArquivo cabecalho)
+    {
+        var urlServicoArquivoCliente = this.RetornarUrlServicoArquivoCliente();
+        return new ComunicacaoServicoArquivoCliente(
+            urlServicoArquivoCliente,
+            cabecalho.CredencialRequisicao,
+            cabecalho.IdentificadorSessaoUsuario,
+            cabecalho.IdentificadorProprietario,
+            this.NormalizarOrigem);
+    }
+    #endregion
 
-        #region Métodos abstratos
+    #region Métodos abstratos
 
 #if NET6_0_OR_GREATER
-        protected abstract Task IniciarAsync(HttpContext context, TCabecalhoServicoArquivo cabecalho, MemoryStream inputStream);
+    protected abstract Task IniciarAsync(HttpContext context, TCabecalhoServicoArquivo cabecalho, MemoryStream inputStream);
 #else
-        protected abstract void Iniciar(HttpContext context, TCabecalhoServicoArquivo cabecalho, MemoryStream inputStream);
+    protected abstract void Iniciar(HttpContext context, TCabecalhoServicoArquivo cabecalho, MemoryStream inputStream);
 #endif
-        protected abstract string RetornarRepositoArquivo(TInformacaoRepositorio informacaoRepositorio);
+    protected abstract string RetornarRepositoArquivo(TInformacaoRepositorio informacaoRepositorio);
 
-        protected abstract string RetornarUrlServicoArquivoCliente();
+    protected abstract string RetornarUrlServicoArquivoCliente();
 
-        protected abstract string NormalizarOrigem(string origem);
+    protected abstract string NormalizarOrigem(string origem);
 
-#endregion
+    #endregion
 
-        #region Métodos privados
+    #region Métodos privados
 
 #if NET6_0_OR_GREATER == false
-        private MemoryStream RetornarInputStream(HttpContext httpContext)
-        {
-            var buffer = new byte[16 * 1024];
-            var msPacote = new MemoryStream();
+    private MemoryStream RetornarInputStream(HttpContext httpContext)
+    {
+        var buffer = new byte[16 * 1024];
+        var msPacote = new MemoryStream();
 
-            while (true)
+        while (true)
+        {
+            var lidos = httpContext.Request.InputStream.Read(buffer, 0, buffer.Length);
+            if (lidos == 0)
             {
-                var lidos = httpContext.Request.InputStream.Read(buffer, 0, buffer.Length);
+                break;
+            }
+            msPacote.Write(buffer, 0, lidos);
+        }
+        return msPacote;
+
+    }
+#endif
+
+#if NET6_0_OR_GREATER
+    private async Task<MemoryStream> RetornarInputStreamAsync(HttpContext httpContext)
+    {
+        try
+        {
+            var cancellationToken = httpContext.RequestAborted;
+            var reader = httpContext.Request.Body;
+            var ms = new MemoryStream();
+            var buffer = new byte[32 * 1024];
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                var lidos = await reader.ReadAsync(buffer, 0, buffer.Length);
                 if (lidos == 0)
                 {
                     break;
                 }
-                msPacote.Write(buffer, 0, lidos);
+
+                ms.Write(buffer, 0, lidos);
             }
-            return msPacote;
+            return ms;
 
         }
-#endif
-
-#if NET6_0_OR_GREATER
-        private async Task<MemoryStream> RetornarInputStreamAsync(HttpContext httpContext)
+        catch
         {
-            try
-            {
-                var cancellationToken = httpContext.RequestAborted;
-                var reader = httpContext.Request.Body;
-                var ms = new MemoryStream();
-                var buffer = new byte[32 * 1024];
-                while (!cancellationToken.IsCancellationRequested)
-                {
-                    var lidos = await reader.ReadAsync(buffer, 0, buffer.Length);
-                    if (lidos == 0)
-                    {
-                        break;
-                    }
-
-                    ms.Write(buffer, 0, lidos);
-                }
-                return ms;
-
-            }
-            catch
-            {
-                throw new Erro("Erro ao receber a stream bufferizada, a conexão foi fechada pelo cliente");
-            }
+            throw new Erro("Erro ao receber a stream bufferizada, a conexão foi fechada pelo cliente");
         }
-#endif
-
-        #endregion
-
-        #region IDisposable
-
-        public void Dispose()
-        {
-            //ZyonHttpContext.Current?.Dispose();
-        }
-
-        #endregion
     }
+#endif
+
+    #endregion
+
+    #region IDisposable
+
+    public void Dispose()
+    {
+        //ZyonHttpContext.Current?.Dispose();
+    }
+
+    #endregion
 }

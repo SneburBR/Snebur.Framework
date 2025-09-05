@@ -1,5 +1,5 @@
-﻿namespace Snebur.ServicoArquivo
-{
+namespace Snebur.ServicoArquivo;
+
 
 //    internal class IpUtilLocal
 //    {
@@ -23,4 +23,3 @@
 //            return ip;
 //        }
 //    }
-}
