@@ -6,7 +6,7 @@ namespace Snebur.Comunicacao.Dominio;
 public interface IServicoRegrasNegocio : IBaseServico
 {
     [IgnorarMetodoTS]
-    object ChamarRegra(ChamadaRegraNegocio chamadaRegraNegocio, object[] parametros);
+    object? ChamarRegra(ChamadaRegraNegocio chamadaRegraNegocio, object[] parametros);
 }
 
 [IgnorarInterfaceTS]
@@ -14,5 +14,5 @@ public interface IServicoRegrasNegocioCliente : IBaseServico
 {
 
     [IgnorarMetodoTS]
-    object ChamarRegra(MethodBase metodo, ChamadaRegraNegocio chamadaRegra, object[] parametros);
+    object? ChamarRegra(MethodBase metodo, ChamadaRegraNegocio chamadaRegra, object[] parametros);
 }
