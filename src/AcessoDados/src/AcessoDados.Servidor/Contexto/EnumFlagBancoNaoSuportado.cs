@@ -1,14 +1,13 @@
-﻿namespace Snebur.AcessoDados
+namespace Snebur.AcessoDados;
+
+public enum EnumFlagBancoNaoSuportado
 {
-    public enum EnumFlagBancoNaoSuportado
-    {
-        SemRestricao = 0,
-        OffsetFetch = 2,
-        ColunaNomeTipoEntidade = 4,
-        SessaoUsuario = 8,
-        Migracao = 16,
-        DataHoraUtc = 32,
-        SessaoUsuarioHerdada = 64,
-        DatabaseGeneratedOptionIdentityPadrao = 128
-    }
+    SemRestricao = 0,
+    OffsetFetch = 2,
+    ColunaNomeTipoEntidade = 4,
+    SessaoUsuario = 8,
+    Migracao = 16,
+    DataHoraUtc = 32,
+    SessaoUsuarioHerdada = 64,
+    DatabaseGeneratedOptionIdentityPadrao = 128
 }

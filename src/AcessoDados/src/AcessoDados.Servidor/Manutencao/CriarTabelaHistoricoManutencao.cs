@@ -1,4 +1,1 @@
-﻿namespace Snebur.AcessoDados.Manutencao
-{
-
-}
+namespace Snebur.AcessoDados.Manutencao;

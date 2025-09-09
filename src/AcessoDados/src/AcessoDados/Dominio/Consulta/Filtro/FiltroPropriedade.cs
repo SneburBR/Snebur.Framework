@@ -2,7 +2,6 @@ using Snebur.Reflexao;
 
 namespace Snebur.AcessoDados;
 
-
 public class FiltroPropriedade : BaseFiltro
 {
     #region Campos Privados

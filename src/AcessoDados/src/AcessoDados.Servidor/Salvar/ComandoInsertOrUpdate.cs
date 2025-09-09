@@ -3,101 +3,98 @@ using Snebur.Linq;
 using Snebur.Servicos;
 using System.Diagnostics;
 
-namespace Snebur.AcessoDados.Servidor.Salvar
+namespace Snebur.AcessoDados.Servidor.Salvar;
+
+internal class ComandoInsertOrUpdate : Comando, IComandoUpdate
 {
-    internal class ComandoInsertOrUpdate : Comando, IComandoUpdate
+    internal override bool IsAdiconarParametrosChavePrimaria => false;
+    public Dictionary<string, PropriedadeAlterada> PropriedadesAlterada { get; private set; }
+
+    internal ComandoInsertOrUpdate(EntidadeAlterada entidadeAlterada,
+                                   EstruturaEntidade estruturaEntidade) : base(entidadeAlterada, estruturaEntidade)
     {
-        internal override bool IsAdiconarParametrosChavePrimaria => false;
-        public Dictionary<string, PropriedadeAlterada> PropriedadesAlterada { get; private set; }
+        this.PropriedadesAlterada = entidadeAlterada.RetornarPropriedadesAlteradas();
 
-        internal ComandoInsertOrUpdate(EntidadeAlterada entidadeAlterada,
-                                       EstruturaEntidade estruturaEntidade ) : base(entidadeAlterada, estruturaEntidade)
+        this.EstruturasCampoParametro.Clear();
+
+        this.EstruturasCampoParametro.Add(this.EstruturaEntidade.EstruturaCampoChavePrimaria);
+        this.EstruturasCampoParametro.AddRange(this.EstruturaEntidade.EstruturasCampos.Values);
+    }
+
+    protected override string RetornarSqlComando()
+    {
+        if (this.EstruturaEntidade.IsChavePrimariaAutoIncrimento)
         {
-            this.PropriedadesAlterada = entidadeAlterada.RetornarPropriedadesAlteradas();
-
-            this.EstruturasCampoParametro.Clear();
-
-            this.EstruturasCampoParametro.Add(this.EstruturaEntidade.EstruturaCampoChavePrimaria);
-            this.EstruturasCampoParametro.AddRange(this.EstruturaEntidade.EstruturasCampos.Values);
-
-            this.SqlCommando = this.RetornarSqlCommando();
+            throw new Exception("Não é permitido inserir ou atualizar uma entidade com chave primária auto incremento");
         }
 
-        private string RetornarSqlCommando()
+        var estrutraChavePrimaria = this.EstruturaEntidade.EstruturaCampoChavePrimaria;
+        var estruturasCamposAlterados = this.RetornarEstruturasCamposAlterados();
+        var camposUpdate = estruturasCamposAlterados.Select(x => $" {x.NomeCampoSensivel} = {x.NomeParametroOuValorFuncaoServidor} ").ToList();
+        var camposInsert = this.EstruturasCampoParametro.Select(x => x.NomeCampoSensivel).ToList();
+        var parametrosInsert = this.EstruturasCampoParametro.Select(x => x.NomeParametroOuValorFuncaoServidor).ToList();
+
+        var sb = new StringBuilderSql();
+
+        if (estruturasCamposAlterados.Count > 0)
         {
-            if (this.EstruturaEntidade.IsChavePrimariaAutoIncrimento)
-            {
-                throw new Exception("Não é permitido inserir ou atualizar uma entidade com chave primária auto incremento");
-            }
-
-            var estrutraChavePrimaria = this.EstruturaEntidade.EstruturaCampoChavePrimaria;
-            var estruturasCamposAlterados = this.RetornarEstruturasCamposAlterados();
-            var camposUpdate = estruturasCamposAlterados.Select(x => $" {x.NomeCampoSensivel} = {x.NomeParametroOuValorFuncaoServidor} ").ToList();
-            var camposInsert = this.EstruturasCampoParametro.Select(x => x.NomeCampoSensivel).ToList();
-            var parametrosInsert = this.EstruturasCampoParametro.Select(x => x.NomeParametroOuValorFuncaoServidor).ToList();
-
-            var sb = new StringBuilderSql();
-
-            if(estruturasCamposAlterados.Count> 0)
-            {
-                sb.AppendLine($" UPDATE [{this.EstruturaEntidade.Schema}].[{this.EstruturaEntidade.NomeTabela}]  ");
-                sb.AppendLine($"    SET");
-                sb.AppendLine($"\t\t\t{String.Join(",\r\n\t\t\t", camposUpdate)}  ");
-                sb.AppendLine($"    WHERE {estrutraChavePrimaria.NomeCampoSensivel} = {estrutraChavePrimaria.NomeParametro}");
-                sb.AppendLine(" IF @@ROWCOUNT = 0 ");
-            }
-            else
-            {
-                sb.AppendLine($" IF NOT EXISTS (SELECT 1 FROM  [{this.EstruturaEntidade.Schema}].[{this.EstruturaEntidade.NomeTabela}] WHERE {estrutraChavePrimaria.NomeCampoSensivel} = {estrutraChavePrimaria.NomeParametro} ) ");
-            }
-            
-            sb.AppendLine(" BEGIN ");
-
-            sb.AppendLine($"     INSERT INTO [{this.EstruturaEntidade.Schema}].[{this.EstruturaEntidade.NomeTabela}] ");
-            sb.AppendLine($"\t\t( ");
-            sb.AppendLine($"\t\t\t{String.Join(",\r\n\t\t\t", camposInsert)} ");
-            sb.AppendLine("\t\t) ");
-            sb.AppendLine("     VALUES ");
-            sb.AppendLine($"\t\t(");
-            sb.AppendLine($"\t\t\t {String.Join(",\r\n\t\t\t", parametrosInsert)} ");
-            sb.AppendLine($"\t\t) ; ");
-
-            sb.AppendLine(" END ");
-
-            return sb.ToString();
+            sb.AppendLine($" UPDATE [{this.EstruturaEntidade.Schema}].[{this.EstruturaEntidade.NomeTabela}]  ");
+            sb.AppendLine($"    SET");
+            sb.AppendLine($"\t\t\t{String.Join(",\r\n\t\t\t", camposUpdate)}  ");
+            sb.AppendLine($"    WHERE {estrutraChavePrimaria.NomeCampoSensivel} = {estrutraChavePrimaria.NomeParametro}");
+            sb.AppendLine(" IF @@ROWCOUNT = 0 ");
         }
-        private List<EstruturaCampo> RetornarEstruturasCamposAlterados()
+        else
         {
-             var propriedadesAlterada = this.EntidadeAlterada.RetornarPropriedadesAlteradas();
-            var estruturasCamposAlterados = this.EstruturaEntidade.EstruturasCampos.
-                                                            Where(x => propriedadesAlterada.Keys.Contains(x.Key)).
-                                                            Select(x => x.Value).ToList();
+            sb.AppendLine($" IF NOT EXISTS (SELECT 1 FROM  [{this.EstruturaEntidade.Schema}].[{this.EstruturaEntidade.NomeTabela}] WHERE {estrutraChavePrimaria.NomeCampoSensivel} = {estrutraChavePrimaria.NomeParametro} ) ");
+        }
 
-            var estruturasCamposSomenteLeitura = estruturasCamposAlterados.Where(x => x.OpcoesSomenteLeitura.IsSomenteLeitura).ToList();
+        sb.AppendLine(" BEGIN ");
 
-            if (estruturasCamposSomenteLeitura.Count > 0)
+        sb.AppendLine($"     INSERT INTO [{this.EstruturaEntidade.Schema}].[{this.EstruturaEntidade.NomeTabela}] ");
+        sb.AppendLine($"\t\t( ");
+        sb.AppendLine($"\t\t\t{String.Join(",\r\n\t\t\t", camposInsert)} ");
+        sb.AppendLine("\t\t) ");
+        sb.AppendLine("     VALUES ");
+        sb.AppendLine($"\t\t(");
+        sb.AppendLine($"\t\t\t {String.Join(",\r\n\t\t\t", parametrosInsert)} ");
+        sb.AppendLine($"\t\t) ; ");
+
+        sb.AppendLine(" END ");
+
+        return sb.ToString();
+    }
+    private List<EstruturaCampo> RetornarEstruturasCamposAlterados()
+    {
+        var propriedadesAlterada = this.EntidadeAlterada.RetornarPropriedadesAlteradas();
+        var estruturasCamposAlterados = this.EstruturaEntidade.EstruturasCampos.
+                                                        Where(x => propriedadesAlterada.Keys.Contains(x.Key)).
+                                                        Select(x => x.Value).ToList();
+
+        var estruturasCamposSomenteLeitura = estruturasCamposAlterados.Where(x => x.OpcoesSomenteLeitura.IsSomenteLeitura).ToList();
+
+        if (estruturasCamposSomenteLeitura.Count > 0)
+        {
+            foreach (var estruturaCampoSomenteLeitura in estruturasCamposSomenteLeitura)
             {
-                foreach (var estruturaCampoSomenteLeitura in estruturasCamposSomenteLeitura)
+                if (!this.EntidadeAlterada.Contexto.IsPodeSobreEscrever(estruturaCampoSomenteLeitura))
                 {
-                    if (!this.EntidadeAlterada.Contexto.IsPodeSobreEscrever(estruturaCampoSomenteLeitura))
+                    estruturasCamposAlterados.Remove(estruturaCampoSomenteLeitura);
+                    var mensagem = $"Não é autorizado alterar valores das propriedades somente leitura" +
+                                    $" '{estruturaCampoSomenteLeitura.Propriedade.Name}' na entidade '{estruturaCampoSomenteLeitura.EstruturaEntidade.TipoEntidade.Name}'";
+
+                    if (DebugUtil.IsAttached)
                     {
-                        estruturasCamposAlterados.Remove(estruturaCampoSomenteLeitura);
-                        var mensagem = $"Não é autorizado alterar valores das propriedades somente leitura" +
-                                        $" '{estruturaCampoSomenteLeitura.Propriedade.Name}' na entidade '{estruturaCampoSomenteLeitura.EstruturaEntidade.TipoEntidade.Name}'";
+                        Trace.TraceWarning(mensagem);
+                    }
 
-                        if (DebugUtil.IsAttached)
-                        {
-                            Trace.TraceWarning(mensagem);
-                        }
-
-                        if (estruturaCampoSomenteLeitura.OpcoesSomenteLeitura.IsNotificarSeguranca)
-                        {
-                            LogUtil.ErroAsync(new ErroSeguranca(mensagem, EnumTipoLogSeguranca.AlterarandoPropriedadeSomenteLeitura));
-                        }
+                    if (estruturaCampoSomenteLeitura.OpcoesSomenteLeitura.IsNotificarSeguranca)
+                    {
+                        LogUtil.ErroAsync(new ErroSeguranca(mensagem, EnumTipoLogSeguranca.AlterarandoPropriedadeSomenteLeitura));
                     }
                 }
             }
-            return estruturasCamposAlterados;
         }
+        return estruturasCamposAlterados;
     }
 }

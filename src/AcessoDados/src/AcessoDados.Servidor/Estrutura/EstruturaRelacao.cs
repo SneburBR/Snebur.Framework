@@ -1,60 +1,59 @@
-namespace Snebur.AcessoDados.Estrutura
+namespace Snebur.AcessoDados.Estrutura;
+
+internal abstract class EstruturaRelacao : EstruturaPropriedade
 {
-    internal abstract class EstruturaRelacao : EstruturaPropriedade
+    internal bool IsColecao { get; }
+
+    internal EnumTipoRelacao TipoRelacao { get; }
+
+    internal EstruturaRelacao(PropertyInfo propriedade, EstruturaEntidade estruturaEntidade) : base(propriedade, estruturaEntidade)
     {
-        internal bool IsColecao { get; }
+        this.TipoRelacao = this.RetornarTipoRelacao();
+        this.IsColecao = this.RetornarIsColecao();
+    }
 
-        internal EnumTipoRelacao TipoRelacao { get; }
-
-        internal EstruturaRelacao(PropertyInfo propriedade, EstruturaEntidade estruturaEntidade) : base(propriedade, estruturaEntidade)
+    private bool RetornarIsColecao()
+    {
+        switch (this.TipoRelacao)
         {
-            this.TipoRelacao = this.RetornarTipoRelacao();
-            this.IsColecao = this.RetornarIsColecao();
+            case EnumTipoRelacao.RelacaoFilhos:
+            case EnumTipoRelacao.RelacaoNn:
+            case EnumTipoRelacao.RelacaoNnEspecializada:
+
+                return true;
+
+            default:
+                return false;
         }
+    }
 
-        private bool RetornarIsColecao()
+    private EnumTipoRelacao RetornarTipoRelacao()
+    {
+        switch (this)
         {
-            switch (this.TipoRelacao)
-            {
-                case EnumTipoRelacao.RelacaoFilhos:
-                case EnumTipoRelacao.RelacaoNn:
-                case EnumTipoRelacao.RelacaoNnEspecializada:
+            case EstruturaRelacaoPai estruturaPai:
 
-                    return true;
+                return EnumTipoRelacao.RelacaoPai;
 
-                default:
-                    return false;
-            }
-        }
+            case EstruturaRelacaoUmUm estruturaRelacaoUmUm:
 
-        private EnumTipoRelacao RetornarTipoRelacao()
-        {
-            switch (this)
-            {
-                case EstruturaRelacaoPai estruturaPai:
+                return EnumTipoRelacao.RelacaoUmUm;
 
-                    return EnumTipoRelacao.RelacaoPai;
+            case EstruturaRelacaoUmUmReversa estruturaRelacaoUmUm:
 
-                case EstruturaRelacaoUmUm estruturaRelacaoUmUm:
+                return EnumTipoRelacao.RelacaoUmUmReversa;
 
-                    return EnumTipoRelacao.RelacaoUmUm;
+            case EstruturaRelacaoFilhos estruturaRelacaoFilhos:
 
-                case EstruturaRelacaoUmUmReversa estruturaRelacaoUmUm:
+                return EnumTipoRelacao.RelacaoFilhos;
 
-                    return EnumTipoRelacao.RelacaoUmUmReversa;
+            case EstruturaRelacaoNn estruturaRelacaoNn:
 
-                case EstruturaRelacaoFilhos estruturaRelacaoFilhos:
+                return EnumTipoRelacao.RelacaoNn; ;
 
-                    return EnumTipoRelacao.RelacaoFilhos;
+            default:
 
-                case EstruturaRelacaoNn estruturaRelacaoNn:
-
-                    return EnumTipoRelacao.RelacaoNn; ;
-
-                default:
-
-                    throw new ErroNaoSuportado($"A tipo da estrutura relação {this.GetType().Name} não é suportado");
-            }
+                throw new ErroNaoSuportado($"A tipo da estrutura relação {this.GetType().Name} não é suportado");
         }
     }
 }

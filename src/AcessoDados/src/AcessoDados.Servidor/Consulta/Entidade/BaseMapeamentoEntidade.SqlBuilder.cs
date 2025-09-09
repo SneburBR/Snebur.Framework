@@ -1,27 +1,26 @@
-namespace Snebur.AcessoDados.Mapeamento
+namespace Snebur.AcessoDados.Mapeamento;
+
+internal abstract partial class BaseMapeamentoEntidade : IDisposable
 {
-    internal abstract partial class BaseMapeamentoEntidade : IDisposable
+
+    protected string MontarSql(BaseFiltroMapeamento filtroMapeamento,
+                               string sqlCampos,
+                               bool isIncluirOrdenacaoPaginacao)
     {
+        var isRelacaoFilhos = this.MapeamentoConsulta is MapeamentoConsultaRelacaoAbertaFilhos;
+        var builder = this.RetornarSqlBuilder();
+        return builder.MontarSql(filtroMapeamento, 
+                                 sqlCampos,
+                                 isIncluirOrdenacaoPaginacao,
+                                 isRelacaoFilhos);
+    }
 
-        protected string MontarSql(BaseFiltroMapeamento filtroMapeamento,
-                                   string sqlCampos,
-                                   bool isIncluirOrdenacaoPaginacao)
+    private BaseSqlBuilder RetornarSqlBuilder()
+    {
+        if (this.Contexto.SqlSuporte.IsOffsetFetch)
         {
-            var isRelacaoFilhos = this.MapeamentoConsulta is MapeamentoConsultaRelacaoAbertaFilhos;
-            var builder = this.RetornarSqlBuilder();
-            return builder.MontarSql(filtroMapeamento, 
-                                     sqlCampos,
-                                     isIncluirOrdenacaoPaginacao,
-                                     isRelacaoFilhos);
+            return new SqlBuilder(this);
         }
-
-        private BaseSqlBuilder RetornarSqlBuilder()
-        {
-            if (this.Contexto.SqlSuporte.IsOffsetFetch)
-            {
-                return new SqlBuilder(this);
-            }
-            return new SqlBuilder2008(this);
-        }
+        return new SqlBuilder2008(this);
     }
 }

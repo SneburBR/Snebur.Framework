@@ -1,263 +1,266 @@
-namespace Snebur.AcessoDados.Mapeamento
+namespace Snebur.AcessoDados.Mapeamento;
+
+internal partial class BaseSqlBuilder
 {
-    internal partial class BaseSqlBuilder
+
+    protected string RetornarSqlConsulta(BaseFiltroMapeamento filtroMapeamento,
+                                        bool isIncluirOrdenacaoPaginacao,
+                                        bool isRelacaoFilhos)
     {
+        Guard.NotNull(filtroMapeamento);
 
-        protected string RetornarSqlConsulta(BaseFiltroMapeamento filtroMapeamento,
-                                            bool isIncluirOrdenacaoPaginacao,
-                                            bool isRelacaoFilhos)
+        var sb = new StringBuilderSql();
+        var isOperadorWhereAdicionado = false;
+
+        //Entidade
+
+        if (this.EstruturaEntidadeApelido.EstruturasEntidadeMapeadaBase.Count > 0)
         {
-            ErroUtil.ValidarReferenciaNula(filtroMapeamento, nameof(filtroMapeamento));
+            sb.AppendLine(" ( ");
+        }
 
-            var sb = new StringBuilderSql();
-            var isOperadorWhereAdicionado = false;
+        sb.AppendLine($"  {this.EstruturaEntidadeApelido.CaminhoBanco} As {this.EstruturaEntidadeApelido.Apelido}  ");
 
-            //Entidade
+        if (this.EstruturaEntidadeApelido.EstruturasEntidadeMapeadaBase.Count > 0)
+        {
+            sb.Append($" {Environment.NewLine} \t  INNER JOIN  ");
+            sb.AppendLine($" \t {this.EstruturaEntidadeApelido.RetornarSqlInnerJoinTabelasEntidadeBase()} ");
+        }
 
-            if (this.EstruturaEntidadeApelido.EstruturasEntidadeMapeadaBase.Count > 0)
+        if (this.EstruturaEntidadeApelido.EstruturasEntidadeMapeadaBase.Count > 0)
+        {
+            sb.AppendLine(" ) ");
+        }
+
+        sb.AppendLine(" ");
+        sb.AppendLine(this.RetornarSqlsJoinRelacao(this.EstruturaEntidadeApelido));
+
+        //Outras relações  implementar aqui - RelacaoFilho
+
+        sb.AppendLine("  ");
+
+        if (this.Contexto.IsFiltrarIdentificadorProprietario && this.Contexto.IdentificadorProprietario != null &&
+                !this.Contexto.IsIdentificadorProprietarioGlobal)
+        {
+            var estrutaCampoIdentificadorProprietario = this.EstruturaEntidade.EstruturaCampoIdentificadorProprietario;
+            if (estrutaCampoIdentificadorProprietario != null)
             {
-                sb.AppendLine(" ( ");
-            }
+                var identificadorProprietario = this.Contexto.IdentificadorProprietario;
 
-            sb.AppendLine($"  {this.EstruturaEntidadeApelido.CaminhoBanco} As {this.EstruturaEntidadeApelido.Apelido}  ");
+                var atributoIdentificadorPropriedade = estrutaCampoIdentificadorProprietario.AtributoValorPadrao as PropriedadeIdentificadorProprietarioAttribute;
 
-            if (this.EstruturaEntidadeApelido.EstruturasEntidadeMapeadaBase.Count > 0)
-            {
-                sb.Append($" {Environment.NewLine} \t  INNER JOIN  ");
-                sb.AppendLine($" \t {this.EstruturaEntidadeApelido.RetornarSqlInnerJoinTabelasEntidadeBase()} ");
-            }
+                var estruturaApelido = this.TodasEstruturaCampoApelidoMapeado[estrutaCampoIdentificadorProprietario.Propriedade.Name];
+                sb.AppendLine(" WHERE ( ");
 
-            if (this.EstruturaEntidadeApelido.EstruturasEntidadeMapeadaBase.Count > 0)
-            {
+                sb.AppendLine($"{estruturaApelido.CaminhoBanco} = {identificadorProprietario.ToString()} ");
+
+                if (atributoIdentificadorPropriedade?.IsPermitirValorGlboal == true)
+                {
+                    sb.AppendLine($" OR {estruturaApelido.CaminhoBanco} = {atributoIdentificadorPropriedade.ValorGlobal} ");
+                }
+
                 sb.AppendLine(" ) ");
-            }
 
-            sb.AppendLine(" ");
-            sb.AppendLine(this.RetornarSqlsJoinRelacao(this.EstruturaEntidadeApelido));
-
-            //Outras relações  implementar aqui - RelacaoFilho
-
-            sb.AppendLine("  ");
-
-            if (this.Contexto.IsFiltrarIdentificadorProprietario && this.Contexto.IdentificadorProprietario != null &&
-                    !this.Contexto.IsIdentificadorProprietarioGlobal)
-            {
-                var estrutaCampoIdentificadorProprietario = this.EstruturaEntidade.EstruturaCampoIdentificadorProprietario;
-                if (estrutaCampoIdentificadorProprietario != null)
-                {
-                    var identificadorProprietario = this.Contexto.IdentificadorProprietario;
-
-                    var atributoIdentificadorPropriedade = estrutaCampoIdentificadorProprietario.AtributoValorPadrao as PropriedadeIdentificadorProprietarioAttribute;
-
-                    var estruturaApelido = this.TodasEstruturaCampoApelidoMapeado[estrutaCampoIdentificadorProprietario.Propriedade.Name];
-                    sb.AppendLine(" WHERE ( ");
-
-                    sb.AppendLine($"{estruturaApelido.CaminhoBanco} = {identificadorProprietario.ToString()} ");
-
-                    if (atributoIdentificadorPropriedade?.IsPermitirValorGlboal == true)
-                    {
-                        sb.AppendLine($" OR {estruturaApelido.CaminhoBanco} = {atributoIdentificadorPropriedade.ValorGlobal} ");
-                    }
-
-                    sb.AppendLine(" ) ");
-
-                    isOperadorWhereAdicionado = true;
-                }
-            }
-
-            if (!(filtroMapeamento is FiltroMapeamentoIds) || isRelacaoFilhos)
-            {
-                if (!this.EstruturaConsulta.IsIncluirDeletados &&
-                     this.EstruturaEntidade.EstruturaCampoDelatado != null)
-                {
-                    if (!isOperadorWhereAdicionado)
-                    {
-                        sb.AppendLine(" WHERE ");
-                    }
-                    else
-                    {
-                        sb.AppendLine(" AND ");
-                    }
-                    var estruturaApelido = this.TodasEstruturaCampoApelidoMapeado[this.EstruturaEntidade.EstruturaCampoDelatado.Propriedade.Name];
-
-                    sb.AppendLine($" {estruturaApelido.CaminhoBanco} = 0 ");
-                    isOperadorWhereAdicionado = true;
-                }
-            }
-
-            if (!(filtroMapeamento is FiltroMapeamentoVazio))
-            {
-                var sqlFiltros = this.RetornarSqlFiltroMapeamento(filtroMapeamento);
-                if (!String.IsNullOrWhiteSpace(sqlFiltros))
-                {
-                    var operadorFiltro = !isOperadorWhereAdicionado ? " WHERE " :
-                                                                      " AND ";
-
-                    sb.AppendLine($" {operadorFiltro} ( {sqlFiltros} ) ");
-                }
                 isOperadorWhereAdicionado = true;
             }
-
-            if (this.EstruturaConsulta.FiltroGrupoE?.Filtros.Count > 0 ||
-                this.EstruturaConsulta.FiltroGrupoOU?.Filtros.Count > 0)
-            {
-                var sqlFiltros = this.RetornarSqlFiltros();
-                if (!String.IsNullOrWhiteSpace(sqlFiltros))
-                {
-                    var operadorFiltro = !isOperadorWhereAdicionado ? " WHERE " :
-                                                                      " AND ";
-
-                    sb.AppendLine($" {operadorFiltro} ( {sqlFiltros} ) ");
-                }
-            }
-
-            if (isIncluirOrdenacaoPaginacao)
-            {
-                sb.AppendLine(this.RetornarSqlOrdenacao(filtroMapeamento));
-            }
-
-            if (isIncluirOrdenacaoPaginacao)
-            {
-                if (filtroMapeamento is FiltroMapeamentoVazio)
-                {
-                    sb.AppendLine(this.RetornarSqlLimite());
-                }
-            }
-            return sb.ToString();
         }
 
-        private string RetornarSqlsJoinRelacao(EstruturaEntidadeApelido estruturaEntidadeMapeada)
+        if (!(filtroMapeamento is FiltroMapeamentoIds) || isRelacaoFilhos)
         {
-            var sb = new StringBuilderSql();
-
-            var estrurasEntidadeMapeadaRelacaoPai = estruturaEntidadeMapeada.EstruturasEntidadeRelacaoMapeadaInterna.OfType<EstruturaEntidadeApelidoRelacaoPai>().ToList();
-
-            foreach (var estruturaEntidadeMapeadaRelacao in estrurasEntidadeMapeadaRelacaoPai)
+            if (!this.EstruturaConsulta.IsIncluirDeletados &&
+                 this.EstruturaEntidade.EstruturaCampoDelatado != null)
             {
-                sb.AppendLine("");
-                sb.AppendLine(this.RetornarSqlJoinRelacaoPai(estruturaEntidadeMapeadaRelacao));
-                sb.AppendLine("");
-            }
-            return sb.ToString();
-        }
-
-        private string RetornarSqlJoinRelacaoPai(EstruturaEntidadeApelidoRelacaoPai estruturaEntidadeMapeadaRelacao)
-        {
-            var sb = new StringBuilderSql();
-
-            var ligacaoJoin = estruturaEntidadeMapeadaRelacao.EstruturaRelacao.IsRequerido
-                                ? " INNER JOIN "
-                                : " LEFT OUTER JOIN ";
-
-            sb.Append($" \r\n \t  {ligacaoJoin}  ");
-
-            if (estruturaEntidadeMapeadaRelacao.EstruturasEntidadeMapeadaBase.Count > 0)
-            {
-                sb.AppendLine(" ( ");
-            }
-            sb.AppendLine($"  {estruturaEntidadeMapeadaRelacao.CaminhoBanco} As {estruturaEntidadeMapeadaRelacao.Apelido}  ");
-
-            if (estruturaEntidadeMapeadaRelacao.EstruturasEntidadeMapeadaBase.Count > 0)
-            {
-                sb.Append($"\r\n \t  INNER JOIN  ");
-
-                sb.AppendLine(estruturaEntidadeMapeadaRelacao.RetornarSqlInnerJoinTabelasEntidadeBase());
-            }
-
-            if (estruturaEntidadeMapeadaRelacao.EstruturasEntidadeMapeadaBase.Count > 0)
-            {
-                sb.AppendLine(" ) ");
-            }
-
-            sb.AppendLine($" ON {estruturaEntidadeMapeadaRelacao.EstruturaCampoApelidoChavePrimaria.CaminhoBanco} = {estruturaEntidadeMapeadaRelacao.EstruturaCampoChaveEstrangeiraMapeado.CaminhoBanco} ");
-
-            if (estruturaEntidadeMapeadaRelacao.EstruturasEntidadeRelacaoMapeadaInterna.Count > 0)
-            {
-                sb.AppendLine("");
-
-                sb.AppendLine(this.RetornarSqlsJoinRelacao(estruturaEntidadeMapeadaRelacao));
-
-                sb.AppendLine("");
-            }
-            return sb.ToString();
-        }
-
-        protected string RetornarSqlOrdenacao(BaseFiltroMapeamento filtroMapeamento)
-        {
-            var sb = new StringBuilderSql();
-            if (this.EstruturaConsulta.Ordenacoes.Count > 0)
-            {
-                sb.AppendLine(this.RetornarSqlOrdenacaoInterno());
-            }
-            else
-            {
-                if (!this.EstruturaConsulta.IsDesativarOrdenacao &&
-                    this.EstruturaEntidade.EstruturaCampoOrdenacao != null)
+                if (!isOperadorWhereAdicionado)
                 {
-                    var campoApelido = this.TodasEstruturaCampoApelidoMapeado[this.EstruturaEntidade.EstruturaCampoOrdenacao.Propriedade.Name];
-                    sb.AppendLine($" \r\n \t ORDER BY {campoApelido.CaminhoBanco} ");
+                    sb.AppendLine(" WHERE ");
                 }
                 else
                 {
-                    sb.AppendLine(this.RetornarSqlOrdenacaoChavePrimaria(filtroMapeamento));
+                    sb.AppendLine(" AND ");
                 }
+                var estruturaApelido = this.TodasEstruturaCampoApelidoMapeado[this.EstruturaEntidade.EstruturaCampoDelatado.Propriedade.Name];
+
+                sb.AppendLine($" {estruturaApelido.CaminhoBanco} = 0 ");
+                isOperadorWhereAdicionado = true;
             }
-            return sb.ToString();
         }
 
-        private string RetornarSqlOrdenacaoInterno()
+        if (!(filtroMapeamento is FiltroMapeamentoVazio))
         {
-            var ordenacoes = new List<string>();
-            foreach (var ordenacao in this.EstruturaConsulta.Ordenacoes.Values)
+            var sqlFiltros = this.RetornarSqlFiltroMapeamento(filtroMapeamento);
+            if (!String.IsNullOrWhiteSpace(sqlFiltros))
             {
-                var estruturaCampoApelido = this.TodasEstruturaCampoApelidoMapeado[ordenacao.CaminhoPropriedade];
-                var sqlOrdenacao = (ordenacao.SentidoOrdenacaoEnum == EnumSentidoOrdenacao.Decrescente)
-                                    ? $" {estruturaCampoApelido.CaminhoBanco} DESC "
-                                    : estruturaCampoApelido.CaminhoBanco;
+                var operadorFiltro = !isOperadorWhereAdicionado ? " WHERE " :
+                                                                  " AND ";
 
-                ordenacoes.Add(sqlOrdenacao);
+                sb.AppendLine($" {operadorFiltro} ( {sqlFiltros} ) ");
             }
-            return " ORDER BY " + String.Join(", ", ordenacoes);
+            isOperadorWhereAdicionado = true;
         }
 
-        private string RetornarSqlOrdenacaoChavePrimaria(BaseFiltroMapeamento filtro)
+        if (this.EstruturaConsulta.FiltroGrupoE?.Filtros.Count > 0 ||
+            this.EstruturaConsulta.FiltroGrupoOU?.Filtros.Count > 0)
         {
-            if (filtro.IsIdTipoEntidade)
+            var sqlFiltros = this.RetornarSqlFiltros();
+            if (!String.IsNullOrWhiteSpace(sqlFiltros))
             {
-                return " ORDER BY [Id]";
+                var operadorFiltro = !isOperadorWhereAdicionado ? " WHERE " :
+                                                                  " AND ";
+
+                sb.AppendLine($" {operadorFiltro} ( {sqlFiltros} ) ");
+            }
+        }
+
+        if (isIncluirOrdenacaoPaginacao)
+        {
+            sb.AppendLine(this.RetornarSqlOrdenacao(filtroMapeamento));
+        }
+
+        if (isIncluirOrdenacaoPaginacao)
+        {
+            if (filtroMapeamento is FiltroMapeamentoVazio)
+            {
+                sb.AppendLine(this.RetornarSqlLimite());
+            }
+        }
+        return sb.ToString();
+    }
+
+    private string RetornarSqlsJoinRelacao(EstruturaEntidadeApelido estruturaEntidadeMapeada)
+    {
+        var sb = new StringBuilderSql();
+
+        var estrurasEntidadeMapeadaRelacaoPai = estruturaEntidadeMapeada.EstruturasEntidadeRelacaoMapeadaInterna.OfType<EstruturaEntidadeApelidoRelacaoPai>().ToList();
+
+        foreach (var estruturaEntidadeMapeadaRelacao in estrurasEntidadeMapeadaRelacaoPai)
+        {
+            sb.AppendLine("");
+            sb.AppendLine(this.RetornarSqlJoinRelacaoPai(estruturaEntidadeMapeadaRelacao));
+            sb.AppendLine("");
+        }
+        return sb.ToString();
+    }
+
+    private string RetornarSqlJoinRelacaoPai(EstruturaEntidadeApelidoRelacaoPai estruturaEntidadeMapeadaRelacao)
+    {
+        var sb = new StringBuilderSql();
+
+        var ligacaoJoin = estruturaEntidadeMapeadaRelacao.EstruturaRelacao.IsRequerido
+                            ? " INNER JOIN "
+                            : " LEFT OUTER JOIN ";
+
+        sb.Append($" \r\n \t  {ligacaoJoin}  ");
+
+        if (estruturaEntidadeMapeadaRelacao.EstruturasEntidadeMapeadaBase.Count > 0)
+        {
+            sb.AppendLine(" ( ");
+        }
+        sb.AppendLine($"  {estruturaEntidadeMapeadaRelacao.CaminhoBanco} As {estruturaEntidadeMapeadaRelacao.Apelido}  ");
+
+        if (estruturaEntidadeMapeadaRelacao.EstruturasEntidadeMapeadaBase.Count > 0)
+        {
+            sb.Append($"\r\n \t  INNER JOIN  ");
+
+            sb.AppendLine(estruturaEntidadeMapeadaRelacao.RetornarSqlInnerJoinTabelasEntidadeBase());
+        }
+
+        if (estruturaEntidadeMapeadaRelacao.EstruturasEntidadeMapeadaBase.Count > 0)
+        {
+            sb.AppendLine(" ) ");
+        }
+
+        Guard.NotNull(estruturaEntidadeMapeadaRelacao.EstruturaCampoApelidoChavePrimaria);
+        sb.AppendLine($" ON {estruturaEntidadeMapeadaRelacao.EstruturaCampoApelidoChavePrimaria.CaminhoBanco} = {estruturaEntidadeMapeadaRelacao.EstruturaCampoChaveEstrangeiraMapeado.CaminhoBanco} ");
+
+        if (estruturaEntidadeMapeadaRelacao.EstruturasEntidadeRelacaoMapeadaInterna.Count > 0)
+        {
+            sb.AppendLine("");
+
+            sb.AppendLine(this.RetornarSqlsJoinRelacao(estruturaEntidadeMapeadaRelacao));
+
+            sb.AppendLine("");
+        }
+        return sb.ToString();
+    }
+
+    protected string RetornarSqlOrdenacao(BaseFiltroMapeamento filtroMapeamento)
+    {
+        var sb = new StringBuilderSql();
+        if (this.EstruturaConsulta.Ordenacoes.Count > 0)
+        {
+            sb.AppendLine(this.RetornarSqlOrdenacaoInterno());
+        }
+        else
+        {
+            if (!this.EstruturaConsulta.IsDesativarOrdenacao &&
+                this.EstruturaEntidade.EstruturaCampoOrdenacao != null)
+            {
+                var campoApelido = this.TodasEstruturaCampoApelidoMapeado[this.EstruturaEntidade.EstruturaCampoOrdenacao.Propriedade.Name];
+                sb.AppendLine($" \r\n \t ORDER BY {campoApelido.CaminhoBanco} ");
             }
             else
             {
-                var estruturaCampoApelidoChavePrimaria = this.EstruturaEntidadeApelido.EstruturaCampoApelidoChavePrimaria;
-                return " ORDER BY " + estruturaCampoApelidoChavePrimaria.CaminhoBanco;
+                sb.AppendLine(this.RetornarSqlOrdenacaoChavePrimaria(filtroMapeamento));
             }
         }
+        return sb.ToString();
+    }
 
-        private string RetornarSqlLimite()
+    private string RetornarSqlOrdenacaoInterno()
+    {
+        var ordenacoes = new List<string>();
+        foreach (var ordenacao in this.EstruturaConsulta.Ordenacoes.Values)
         {
-            var skip = this.Skip;
-            if (this.Contexto.SqlSuporte.IsOffsetFetch)
-            {
-                string sqlLimite = "";
-                sqlLimite += " OFFSET  " + skip;
+            Guard.NotNullOrWhiteSpace(ordenacao.CaminhoPropriedade);
 
-                if (ConfiguracaoAcessoDados.TipoBancoDadosEnum == EnumTipoBancoDados.SQL_SERVER)
-                {
-                    sqlLimite += " ROWS ";
-                }
-                if (this.Take > 0)
-                {
-                    sqlLimite += String.Format("  FETCH NEXT {0} ROWS ONLY  ", this.Take);
-                }
-                return sqlLimite;
-            }
+            var estruturaCampoApelido = this.TodasEstruturaCampoApelidoMapeado[ordenacao.CaminhoPropriedade];
+            var sqlOrdenacao = (ordenacao.SentidoOrdenacaoEnum == EnumSentidoOrdenacao.Decrescente)
+                                ? $" {estruturaCampoApelido.CaminhoBanco} DESC "
+                                : estruturaCampoApelido.CaminhoBanco;
 
-            if (skip > 0)
-            {
-                throw new Exception("O banco da deados não tem suporte ao OFFSET FETCH");
-            }
-            return String.Empty;
-
+            ordenacoes.Add(sqlOrdenacao);
         }
+        return " ORDER BY " + String.Join(", ", ordenacoes);
+    }
+
+    private string RetornarSqlOrdenacaoChavePrimaria(BaseFiltroMapeamento filtro)
+    {
+        if (filtro.IsIdTipoEntidade)
+        {
+            return " ORDER BY [Id]";
+        }
+        else
+        {
+            var estruturaCampoApelidoChavePrimaria = this.EstruturaEntidadeApelido.EstruturaCampoApelidoChavePrimaria;
+            Guard.NotNull(estruturaCampoApelidoChavePrimaria);
+            return " ORDER BY " + estruturaCampoApelidoChavePrimaria.CaminhoBanco;
+        }
+    }
+
+    private string RetornarSqlLimite()
+    {
+        var skip = this.Skip;
+        if (this.Contexto.SqlSuporte.IsOffsetFetch)
+        {
+            string sqlLimite = "";
+            sqlLimite += " OFFSET  " + skip;
+
+            if (ConfiguracaoAcessoDados.TipoBancoDadosEnum == EnumTipoBancoDados.SQL_SERVER)
+            {
+                sqlLimite += " ROWS ";
+            }
+            if (this.Take > 0)
+            {
+                sqlLimite += String.Format("  FETCH NEXT {0} ROWS ONLY  ", this.Take);
+            }
+            return sqlLimite;
+        }
+
+        if (skip > 0)
+        {
+            throw new Exception("O banco da deados não tem suporte ao OFFSET FETCH");
+        }
+        return String.Empty;
+
     }
 }

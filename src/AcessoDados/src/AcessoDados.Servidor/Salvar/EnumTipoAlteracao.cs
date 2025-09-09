@@ -1,11 +1,10 @@
-﻿namespace Snebur.AcessoDados.Servidor.Salvar
+namespace Snebur.AcessoDados.Servidor.Salvar;
+
+internal enum EnumTipoAlteracao
 {
-    internal enum EnumTipoAlteracao
-    {
-        Insert = 1,
-        Update = 2,
-        Delete = 3,
-        InsertOrUpdate = 4,
-        Nenhuma = 5
-    }
+    Insert = 1,
+    Update = 2,
+    Delete = 3,
+    InsertOrUpdate = 4,
+    Nenhuma = 5
 }

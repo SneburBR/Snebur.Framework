@@ -27,11 +27,11 @@ public abstract partial class __BaseContextoDados : IContextoDados
         return assemblyEntidades.GetAccessibleTypes().Where(x => ReflexaoUtil.IsTipoImplementaInterface(x, tipoInterface, true)).Single();
     }
 
-    public abstract object RetornarValorScalar(EstruturaConsulta estruturaConsulta);
+    public abstract object? RetornarValorScalar(EstruturaConsulta estruturaConsulta);
 
     #region Métodos públicos
 
-    public T RetornarValorScalar<T>(EstruturaConsulta estruturaConsulta)
+    public T? RetornarValorScalar<T>(EstruturaConsulta estruturaConsulta)
     {
         var valorScalar = this.RetornarValorScalar(estruturaConsulta);
         return ConverterUtil.Converter<T>(valorScalar);

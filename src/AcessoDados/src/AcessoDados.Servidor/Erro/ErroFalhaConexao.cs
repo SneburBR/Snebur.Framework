@@ -1,29 +1,28 @@
 using System.Runtime.CompilerServices;
 
-namespace Snebur.AcessoDados
+namespace Snebur.AcessoDados;
+
+[Serializable]
+public class ErroFalhaConexao : ErroAcessoDados
 {
-    [Serializable]
-    public class ErroFalhaConexao : ErroAcessoDados
+
+    public ErroFalhaConexao(string mensagem = "",
+                          Exception? erroInterno = null,
+                          [CallerMemberName] string nomeMetodo = "",
+                          [CallerFilePath] string caminhoArquivo = "",
+                          [CallerLineNumber] int linhaDoErro = 0) :
+                          base(mensagem, erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
     {
-
-        public ErroFalhaConexao(string mensagem = "",
-                              Exception? erroInterno = null,
-                              [CallerMemberName] string nomeMetodo = "",
-                              [CallerFilePath] string caminhoArquivo = "",
-                              [CallerLineNumber] int linhaDoErro = 0) :
-                              base(mensagem, erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
-        {
-        }
-        #region Serializacao 
-
-        public ErroFalhaConexao()
-        {
-        }
-
-        protected override EnumNivelErro RetornarNivelErro()
-        {
-            return EnumNivelErro.Critico;
-        }
-        #endregion
     }
+    #region Serializacao 
+
+    public ErroFalhaConexao()
+    {
+    }
+
+    protected override EnumNivelErro RetornarNivelErro()
+    {
+        return EnumNivelErro.Critico;
+    }
+    #endregion
 }

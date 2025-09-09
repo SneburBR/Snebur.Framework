@@ -1,167 +1,173 @@
 using Snebur.AcessoDados.Estrutura;
 
-namespace Snebur.AcessoDados.Mapeamento
+namespace Snebur.AcessoDados.Mapeamento;
+
+internal abstract partial class BaseMapeamentoEntidade : IDisposable
 {
-    internal abstract partial class BaseMapeamentoEntidade : IDisposable
+    #region Propriedades
+
+    internal List<ParametroInfo> ParametrosInfo { get; } = new List<ParametroInfo>();
+
+    internal BaseMapeamentoConsulta MapeamentoConsulta { get; }
+
+    internal EstruturaConsulta EstruturaConsulta { get; }
+
+    internal EstruturaEntidade EstruturaEntidade { get; }
+
+    internal EstruturaBancoDados EstruturaBancoDados { get; }
+
+    internal BaseConexao ConexaoDB { get; }
+
+    internal BaseContextoDados Contexto { get; }
+
+    internal Type TipoEntidade { get; }
+
+    internal Dictionary<string, string?> RelacoesAberta { get; } = new Dictionary<string, string?>();
+    internal DicionarioEstrutura<EstruturaCampoApelido> TodasEstruturaCampoApelidoMapeado { get; } = new DicionarioEstrutura<EstruturaCampoApelido>();
+    internal HashSet<EstruturaCampoApelido> EstruturasCampoApelidoChaveEstrangeiraRelacoesAberta { get; } = new HashSet<EstruturaCampoApelido>();
+    internal EstruturaCampoApelido EstruturaCampoApelidoChavePrimaria { get; private set; }
+    public EstruturaEntidadeApelido EstruturaEntidadeApelido { get; }
+
+    //public Dictionary<string, EstruturaEntidadeMapeadaRelacao> EstruturasEntidadeMapeadaRelacao { get; set; }
+
+    #endregion
+
+    internal BaseMapeamentoEntidade(
+        BaseMapeamentoConsulta mapeamentoConsulta,
+        EstruturaEntidade estruturaEntidade,
+        EstruturaBancoDados estruturaBancoDados,
+        BaseConexao conexaoDB,
+        BaseContextoDados contexto)
     {
-        #region Propriedades
+        this.MapeamentoConsulta = mapeamentoConsulta;
+        this.EstruturaConsulta = this.MapeamentoConsulta.EstruturaConsulta;
+        this.EstruturaEntidade = estruturaEntidade;
+        this.EstruturaBancoDados = estruturaBancoDados;
+        this.ConexaoDB = conexaoDB;
+        this.Contexto = contexto;
 
-        internal List<ParametroInfo> ParametrosInfo { get; } = new List<ParametroInfo>();
+        this.TipoEntidade = estruturaEntidade.TipoEntidade;
 
-        internal BaseMapeamentoConsulta MapeamentoConsulta { get; set; }
+        //this.EstruturasEntidadeMapeadaRelacao = new Dictionary<string, EstruturaEntidadeMapeadaRelacao>();
+        //var (estruturaEntidadeApelido, estruturaCampoApelidoChavePrimaria) = ;
+        //this.EstruturaEntidadeApelido = this.RetornarEstruturaEntidadeApelido(this.EstruturaEntidade, this.TipoEntidade.Name, String.Empty);
 
-        internal EstruturaConsulta EstruturaConsulta { get; }
+        this.EstruturaEntidadeApelido = this.RetornarEstruturaEntidadeApelido(
+            estruturaEntidade,
+            this.TipoEntidade.Name,
+            String.Empty);
 
-        internal EstruturaEntidade EstruturaEntidade { get; }
+        Guard.NotNull(this.EstruturaCampoApelidoChavePrimaria);
+        //this.EstruturaCampoApelidoChavePrimaria = estruturaCampoApelidoChavePrimaria;
 
-        internal EstruturaBancoDados EstruturaBancoDados { get; }
+        this.MontarEstruturasRelacoesAbertasFiltro();
+    }
 
-        internal BaseConexao ConexaoDB { get; }
+    #region Mapeamentos das Estruturas
 
-        internal BaseContextoDados Contexto { get; }
+    private void MontarEstruturasRelacoesAbertasFiltro()
+    {
+        var estruturaEntidade = this.EstruturaEntidade;
+        var apelidoEntidade = this.TipoEntidade.Name;
 
-        internal Type TipoEntidade { get; }
+        var relacoesAbertaEntidade = this.EstruturaConsulta.RelacoesAbertaFiltro.Select(x => x.Value).ToList();
 
-        internal Dictionary<string, string> RelacoesAberta { get; private set; }
+        EstruturaEntidadeApelido mapeamentoEntidadeAtual = this.EstruturaEntidadeApelido;
 
-        internal EstruturaCampoApelido EstruturaCampoApelidoChavePrimaria { get; private set; }
-
-        internal DicionarioEstrutura<EstruturaCampoApelido> TodasEstruturaCampoApelidoMapeado { get; private set; }
-
-        internal HashSet<EstruturaCampoApelido> EstruturasCampoApelidoChaveEstrangeiraRelacoesAberta { get; private set; } = new HashSet<EstruturaCampoApelido>();
-
-        public EstruturaEntidadeApelido EstruturaEntidadeApelido { get; set; }
-
-        //public Dictionary<string, EstruturaEntidadeMapeadaRelacao> EstruturasEntidadeMapeadaRelacao { get; set; }
-
-        #endregion
-
-        internal BaseMapeamentoEntidade(BaseMapeamentoConsulta mapeamentoConsulta,
-                                        EstruturaEntidade estruturaEntidade,
-                                        EstruturaBancoDados estruturaBancoDados,
-                                        BaseConexao conexaoDB,
-                                        BaseContextoDados contexto)
+        foreach (var relacaoAbertaEntidade in relacoesAbertaEntidade)
         {
-            this.MapeamentoConsulta = mapeamentoConsulta;
-            this.EstruturaConsulta = this.MapeamentoConsulta.EstruturaConsulta;
-            this.EstruturaEntidade = estruturaEntidade;
-            this.EstruturaBancoDados = estruturaBancoDados;
-            this.ConexaoDB = conexaoDB;
-            this.Contexto = contexto;
+            Guard.NotNullOrWhiteSpace(relacaoAbertaEntidade.CaminhoPropriedade);
 
-            this.TipoEntidade = estruturaEntidade.TipoEntidade;
+            var estruturaEntidadeAtual = estruturaEntidade;
+            var apelidorRelacaoEntidadeAtual = apelidoEntidade;
+            var nomesProprieadades = relacaoAbertaEntidade.CaminhoPropriedade.Split('.').ToList();
+            var nomesPropriedadesAcessado = new List<string>();
 
-            this.RelacoesAberta = new Dictionary<string, string>();
-            this.TodasEstruturaCampoApelidoMapeado = new DicionarioEstrutura<EstruturaCampoApelido>();
-            //this.EstruturasEntidadeMapeadaRelacao = new Dictionary<string, EstruturaEntidadeMapeadaRelacao>();
-
-            this.EstruturaEntidadeApelido = this.RetornarEstruturaEntidadeApelido(this.EstruturaEntidade, this.TipoEntidade.Name, String.Empty);
-            this.MontarEstruturasRelacoesAbertasFiltro();
-        }
-
-        #region Mapeamentos das Estruturas
-
-        private void MontarEstruturasRelacoesAbertasFiltro()
-        {
-            var estruturaEntidade = this.EstruturaEntidade;
-            var apelidoEntidade = this.TipoEntidade.Name;
-
-            var relacoesAbertaEntidade = this.EstruturaConsulta.RelacoesAbertaFiltro.Select(x => x.Value).ToList();
-
-            EstruturaEntidadeApelido mapeamentoEntidadeAtual = this.EstruturaEntidadeApelido;
-
-            foreach (var relacaoAbertaEntidade in relacoesAbertaEntidade)
+            foreach (var nomePropriedade in nomesProprieadades)
             {
-                var estruturaEntidadeAtual = estruturaEntidade;
-                var apelidorRelacaoEntidadeAtual = apelidoEntidade;
-                var nomesProprieadades = relacaoAbertaEntidade.CaminhoPropriedade.Split('.').ToList();
-                var nomesPropriedadesAcessado = new List<string>();
+                var estruturaRelacao = estruturaEntidadeAtual.RetornarEstruturaRelacao(nomePropriedade);
 
-                foreach (var nomePropriedade in nomesProprieadades)
+                // Será vazio caso ja primeiro nivel da Relacao Cliente.Endereco;
+                // Caso Cliente.Endereco.Cidade - o caminho Relacao Endereco
+                var caminhoPropriedadeEntidadePai = String.Join(".", nomesPropriedadesAcessado);
+
+                nomesPropriedadesAcessado.Add(nomePropriedade);
+
+                var caminhoRelacaoAberta = String.Join(".", nomesPropriedadesAcessado);
+
+                switch (estruturaRelacao)
                 {
-                    var estruturaRelacao = estruturaEntidadeAtual.RetornarEstruturaRelacao(nomePropriedade);
+                    case EstruturaRelacaoChaveEstrangeira estruturaRelacaoChaveEstrangeira:
 
-                    // Será vazio caso ja primeiro nivel da Relacao Cliente.Endereco;
-                    // Caso Cliente.Endereco.Cidade - o caminho Relacao Endereco
-                    var caminhoPropriedadeEntidadePai = String.Join(".", nomesPropriedadesAcessado);
+                        {
+                            var estruturaEntidadeRelacaoChaveEstrangeira = estruturaRelacaoChaveEstrangeira.EstruturaEntidadeChaveEstrangeiraDeclarada;
+                            var pontoSeparador = String.IsNullOrWhiteSpace(caminhoPropriedadeEntidadePai) ? String.Empty : ".";
+                            var caminhoCampoChaveEstrangeira = String.Format("{0}{1}{2}", caminhoPropriedadeEntidadePai, pontoSeparador, estruturaRelacaoChaveEstrangeira.EstruturaCampoChaveEstrangeira.Propriedade.Name);
+                            var estruturaCampoChaveEstrangeiraAberta = this.TodasEstruturaCampoApelidoMapeado[caminhoCampoChaveEstrangeira];
 
-                    nomesPropriedadesAcessado.Add(nomePropriedade);
+                            this.EstruturasCampoApelidoChaveEstrangeiraRelacoesAberta.Add(estruturaCampoChaveEstrangeiraAberta);
 
-                    var caminhoRelacaoAberta = String.Join(".", nomesPropriedadesAcessado);
+                            var apelidoRelacao = String.Format("{0}_{1}", apelidoEntidade, String.Join("_", nomesPropriedadesAcessado));
 
-                    switch (estruturaRelacao)
-                    {
-                        case EstruturaRelacaoChaveEstrangeira estruturaRelacaoChaveEstrangeira:
-
+                            if (!this.RelacoesAberta.ContainsKey(caminhoRelacaoAberta))
                             {
-                                var estruturaEntidadeRelacaoChaveEstrangeira = estruturaRelacaoChaveEstrangeira.EstruturaEntidadeChaveEstrangeiraDeclarada;
-                                var pontoSeparador = String.IsNullOrWhiteSpace(caminhoPropriedadeEntidadePai) ? String.Empty : ".";
-                                var caminhoCampoChaveEstrangeira = String.Format("{0}{1}{2}", caminhoPropriedadeEntidadePai, pontoSeparador, estruturaRelacaoChaveEstrangeira.EstruturaCampoChaveEstrangeira.Propriedade.Name);
-                                var estruturaCampoChaveEstrangeiraAberta = this.TodasEstruturaCampoApelidoMapeado[caminhoCampoChaveEstrangeira];
+                                this.RelacoesAberta.Add(caminhoRelacaoAberta, null);
 
-                                this.EstruturasCampoApelidoChaveEstrangeiraRelacoesAberta.Add(estruturaCampoChaveEstrangeiraAberta);
+                                var mapeamentoEntidade = this.RetornarEstruturaEntidadeApelido(estruturaEntidadeRelacaoChaveEstrangeira, apelidoRelacao, caminhoRelacaoAberta, null, estruturaRelacaoChaveEstrangeira, estruturaCampoChaveEstrangeiraAberta);
 
-                                var apelidoRelacao = String.Format("{0}_{1}", apelidoEntidade, String.Join("_", nomesPropriedadesAcessado));
+                                //if (mapeamentoEntidadeAtual == null)
+                                //{
+                                //    this.EstruturasEntidadeMapeadaRelacao.Add(mapeamentoEntidade.Apelido, (EstruturaEntidadeMapeadaRelacao)mapeamentoEntidade);
+                                //}
+                                //else
+                                //{
+                                //    mapeamentoEntidadeAtual.EstruturasEntidadeRelacaoMapeada.Add(mapeamentoEntidade);
+                                //}
 
-                                if (!this.RelacoesAberta.ContainsKey(caminhoRelacaoAberta))
-                                {
-                                    this.RelacoesAberta.Add(caminhoRelacaoAberta, null);
-                                    var mapeamentoEntidade = this.RetornarEstruturaEntidadeApelido(estruturaEntidadeRelacaoChaveEstrangeira, apelidoRelacao, caminhoRelacaoAberta, null, estruturaRelacaoChaveEstrangeira, estruturaCampoChaveEstrangeiraAberta);
+                                mapeamentoEntidadeAtual.EstruturasEntidadeRelacaoMapeadaInterna.Add(mapeamentoEntidade);
 
-                                    //if (mapeamentoEntidadeAtual == null)
-                                    //{
-                                    //    this.EstruturasEntidadeMapeadaRelacao.Add(mapeamentoEntidade.Apelido, (EstruturaEntidadeMapeadaRelacao)mapeamentoEntidade);
-                                    //}
-                                    //else
-                                    //{
-                                    //    mapeamentoEntidadeAtual.EstruturasEntidadeRelacaoMapeada.Add(mapeamentoEntidade);
-                                    //}
-
-                                    mapeamentoEntidadeAtual.EstruturasEntidadeRelacaoMapeadaInterna.Add(mapeamentoEntidade);
-
-                                    mapeamentoEntidadeAtual = mapeamentoEntidade;
-                                }
-                                estruturaEntidadeAtual = estruturaEntidadeRelacaoChaveEstrangeira;
-
-                                break;
+                                mapeamentoEntidadeAtual = mapeamentoEntidade;
                             }
-                        case EstruturaRelacaoUmUmReversa estruturaRelacaoUmUmReversa:
+                            estruturaEntidadeAtual = estruturaEntidadeRelacaoChaveEstrangeira;
 
-                            throw new Exception("Não implementado");
+                            break;
+                        }
+                    case EstruturaRelacaoUmUmReversa estruturaRelacaoUmUmReversa:
 
-                        default:
+                        throw new Exception("Não implementado");
 
-                            throw new ErroNaoSuportado($"Estrutura relacao não suportada {estruturaRelacao}");
-                    }
+                    default:
+
+                        throw new ErroNaoSuportado($"Estrutura relacao não suportada {estruturaRelacao}");
                 }
             }
         }
-        #endregion
-
-        #region Métodos internos
-
-        internal string RetornarSql(BaseFiltroMapeamento filtroMapeamento,
-                                     bool isIncluirOrdenacaoPaginacao)
-        {
-            var sqlCampos = this.RetornarSqlCampos();
-            return this.MontarSql(filtroMapeamento,
-                                  sqlCampos,
-                                  isIncluirOrdenacaoPaginacao);
-        }
-
-        internal protected abstract string RetornarSqlCampos();
-
-        #endregion
-
-        #region IDisposable
-
-        public void Dispose()
-        {
-            this.TodasEstruturaCampoApelidoMapeado?.Clear();
-            this.EstruturasCampoApelidoChaveEstrangeiraRelacoesAberta?.Clear();
-            this.RelacoesAberta?.Clear();
-
-        }
-        #endregion
     }
+    #endregion
+
+    #region Métodos internos
+
+    internal string RetornarSql(BaseFiltroMapeamento filtroMapeamento,
+                                 bool isIncluirOrdenacaoPaginacao)
+    {
+        var sqlCampos = this.RetornarSqlCampos();
+        return this.MontarSql(filtroMapeamento,
+                              sqlCampos,
+                              isIncluirOrdenacaoPaginacao);
+    }
+
+    internal protected abstract string RetornarSqlCampos();
+
+    #endregion
+
+    #region IDisposable
+
+    public void Dispose()
+    {
+        this.TodasEstruturaCampoApelidoMapeado?.Clear();
+        this.EstruturasCampoApelidoChaveEstrangeiraRelacoesAberta?.Clear();
+        this.RelacoesAberta?.Clear();
+
+    }
+    #endregion
 }

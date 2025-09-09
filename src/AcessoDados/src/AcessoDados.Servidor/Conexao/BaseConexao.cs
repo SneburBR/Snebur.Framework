@@ -79,7 +79,7 @@ internal abstract class BaseConexao
     #region IConexaoBancoDados
 
     internal DataTable RetornarDataTable(string sql,
-                                         List<ParametroInfo> parametros)
+                                         List<ParametroInfo>? parametros)
     {
         if (this.ContextoDados.IsExisteTransacao)
         {
@@ -91,7 +91,7 @@ internal abstract class BaseConexao
         }
     }
 
-    internal DataTable RetornarDataTableNormal(string sql, List<ParametroInfo> parametros)
+    internal DataTable RetornarDataTableNormal(string sql, List<ParametroInfo>? parametros)
     {
         this.EscreverSaida(parametros, sql);
 
@@ -229,7 +229,14 @@ internal abstract class BaseConexao
 
         var conexao = this.ContextoDados.ConexaoAtual;
         var transacao = this.ContextoDados.TransacaoAtual;
-        using (var cmd = this.RetornarNovoComando(sql, parametrosInfo, conexao, transacao))
+
+        Guard.NotNull(conexao);
+        Guard.NotNull(transacao);
+
+        using (var cmd = this.RetornarNovoComando(sql,
+            parametrosInfo,
+            conexao,
+            transacao))
         {
             return cmd.ExecuteNonQuery();
         }
@@ -248,6 +255,9 @@ internal abstract class BaseConexao
         var dt = new DataTable();
         var conexao = this.ContextoDados.ConexaoAtual;
         var transacao = this.ContextoDados.TransacaoAtual;
+
+        Guard.NotNull(conexao);
+        Guard.NotNull(transacao);
 
         using (var cmd = this.RetornarNovoComando(sql, parametros, conexao, transacao))
         {
@@ -270,6 +280,10 @@ internal abstract class BaseConexao
 
         var conexao = this.ContextoDados.ConexaoAtual;
         var transacao = this.ContextoDados.TransacaoAtual;
+
+        Guard.NotNull(conexao);
+        Guard.NotNull(transacao);
+
         using (var cmd = this.RetornarNovoComando(sql, parametros, conexao, transacao))
         {
             var valorEscalar = cmd.ExecuteScalar();

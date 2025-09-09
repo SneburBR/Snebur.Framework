@@ -1,40 +1,39 @@
-namespace Snebur.AcessoDados.Seguranca
+namespace Snebur.AcessoDados.Seguranca;
+
+internal partial class SeguracaContextoDados
 {
-    internal partial class SeguracaContextoDados
+
+    private void AplicarRestricoesFiltro(List<AutorizacaoEntidade> autorizacoes, IEnumerable<IEntidade> entidades)
     {
-
-        private void AplicarRestricoesFiltro(List<AutorizacaoEntidade> autorizacoes, IEnumerable<IEntidade> entidades)
+        foreach (var autorizacao in autorizacoes)
         {
-            foreach (var autorizacao in autorizacoes)
-            {
-                this.AplicarRestricoesFiltro(autorizacao, entidades);
-            }
+            this.AplicarRestricoesFiltro(autorizacao, entidades);
         }
+    }
 
-        private void AplicarRestricoesFiltro(AutorizacaoEntidade autorizacao, IEnumerable<IEntidade> entidades)
+    private void AplicarRestricoesFiltro(AutorizacaoEntidade autorizacao, IEnumerable<IEntidade> entidades)
+    {
+        var restricoes = autorizacao.RetornarRestricoesFiltro();
+        if (restricoes.Count > 0)
         {
-            var restricoes = autorizacao.RetornarRestricoesFiltro();
-            if (restricoes.Count > 0)
-            {
-                throw new ErroNaoImplementado();
-            }
+            throw new ErroNaoImplementado();
         }
+    }
 
-        private void AplicarRestricoesFiltro(List<AutorizacaoEntidade> autorizacoes, EstruturaConsulta estruturaConsulta)
+    private void AplicarRestricoesFiltro(List<AutorizacaoEntidade> autorizacoes, EstruturaConsulta estruturaConsulta)
+    {
+        foreach (var autorizacao in autorizacoes)
         {
-            foreach (var autorizacao in autorizacoes)
-            {
-                this.AplicarRestricoesFiltro(autorizacao, estruturaConsulta);
-            }
+            this.AplicarRestricoesFiltro(autorizacao, estruturaConsulta);
         }
+    }
 
-        private void AplicarRestricoesFiltro(AutorizacaoEntidade autorizacao, EstruturaConsulta estruturaConsulta)
+    private void AplicarRestricoesFiltro(AutorizacaoEntidade autorizacao, EstruturaConsulta estruturaConsulta)
+    {
+        var restricoes = autorizacao.RetornarRestricoesFiltro();
+        if (restricoes.Count > 0)
         {
-            var restricoes = autorizacao.RetornarRestricoesFiltro();
-            if (restricoes.Count > 0)
-            {
-                throw new ErroNaoImplementado();
-            }
+            throw new ErroNaoImplementado();
         }
     }
 }

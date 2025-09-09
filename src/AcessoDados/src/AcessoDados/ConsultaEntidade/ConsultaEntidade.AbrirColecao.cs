@@ -1,4 +1,4 @@
-﻿using Snebur.AcessoDados.Ajudantes;
+using Snebur.AcessoDados.Ajudantes;
 
 namespace Snebur.AcessoDados;
 
@@ -98,16 +98,19 @@ public partial class ConsultaEntidade<TEntidade> where TEntidade : IEntidade
             propriedadesCaminho.Add(propriedade);
             var caminhoPropriedade = AjudanteConsultaEntidade.RetornarCaminhoPropriedade(propriedadesCaminho);
 
-            ErroUtil.ValidarStringVazia(caminhoPropriedade, nameof(caminhoPropriedade));
+            Guard.NotNullOrWhiteSpace(caminhoPropriedade);
+            //ErroUtil.ValidarStringVazia(caminhoPropriedade, nameof(caminhoPropriedade));
 
             if (ReflexaoUtil.IsPropriedadeRetornaTipoPrimario(propriedade))
             {
                 continue;
             }
+
             if (propriedade.PropertyType.IsSubclassOf(typeof(Entidade)))
             {
                 continue;
             }
+
             if (AjudanteConsultaEntidade.IsPropriedadeRetornarListaEntidade(propriedade))
             {
                 if (!estruturaConsultaAtual.ColecoesAberta.ContainsKey(caminhoPropriedade))
@@ -121,4 +124,4 @@ public partial class ConsultaEntidade<TEntidade> where TEntidade : IEntidade
         }
         return estruturaConsultaAtual;
     }
-}
+};

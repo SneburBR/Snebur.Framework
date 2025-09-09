@@ -1,13 +1,12 @@
-﻿namespace Snebur.AcessoDados.Seguranca
+namespace Snebur.AcessoDados.Seguranca;
+
+public enum EnumOperacao
 {
-    public enum EnumOperacao
-    {
-        Leitura = 1,
+    Leitura = 1,
 
-        Adicionar = 2,
+    Adicionar = 2,
 
-        Atualizar = 3,
+    Atualizar = 3,
 
-        Deletar = 4
-    }
+    Deletar = 4
 }

@@ -1,10 +1,9 @@
-﻿namespace Snebur.AcessoDados
+namespace Snebur.AcessoDados;
+
+public static class ConsultaEntidadeExtensao
 {
-    public static class ConsultaEntidadeExtensao
+    public static string RetornarSql(this BaseConsultaEntidade consultaEntidade)
     {
-        public static string RetornarSql(this BaseConsultaEntidade consultaEntidade)
-        {
-            return ((BaseContextoDados)consultaEntidade.ContextoDados).RetornarSql(consultaEntidade.EstruturaConsulta);
-        }
+        return ((BaseContextoDados)consultaEntidade.ContextoDados).RetornarSql(consultaEntidade.EstruturaConsulta);
     }
 }

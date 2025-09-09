@@ -1,60 +1,64 @@
-namespace Snebur.AcessoDados.Seguranca
+namespace Snebur.AcessoDados.Seguranca;
+
+internal class EstruturaPermissaoEntidade
 {
-    internal class EstruturaPermissaoEntidade
+    //internal IIdentificacao? Identificacao { get; }
+
+    internal IPermissaoEntidade PermissaoEntidade { get; }
+
+    internal Dictionary<string, EstruturaPermissaoCampo> PermissoesCampo { get; } = new();
+
+    internal Dictionary<string, EstruturaRestricaoFiltro> RestricoesFiltro { get; } = new();
+
+    internal IRegraOperacao RetornarRegraOperacao(EnumOperacao operacao)
     {
-        internal IIdentificacao Identificacao { get; }
+        return RetornarRegraOperacaoInterna(operacao) ?? throw new Exception($"A operação não está configurada {EnumUtil.RetornarDescricao(operacao)}");
+    }
 
-        internal IPermissaoEntidade PermissaoEntidade { get; }
-
-        internal Dictionary<string, EstruturaPermissaoCampo> PermissoesCampo { get; } = new Dictionary<string, EstruturaPermissaoCampo>();
-
-        internal Dictionary<string, EstruturaRestricaoFiltro> RestricoesFiltro { get; } = new Dictionary<string, EstruturaRestricaoFiltro>();
-
-        internal IRegraOperacao RetornarRegraOperacao(EnumOperacao operacao)
+    internal IRegraOperacao? RetornarRegraOperacaoInterna(EnumOperacao operacao)
+    {
+        switch (operacao)
         {
-            switch (operacao)
-            {
-                case EnumOperacao.Leitura:
+            case EnumOperacao.Leitura:
 
-                    return this.PermissaoEntidade.Leitura;
+                return this.PermissaoEntidade.Leitura;
 
-                case EnumOperacao.Adicionar:
+            case EnumOperacao.Adicionar:
 
-                    return this.PermissaoEntidade.Adicionar;
+                return this.PermissaoEntidade.Adicionar;
 
-                case EnumOperacao.Atualizar:
+            case EnumOperacao.Atualizar:
 
-                    return this.PermissaoEntidade.Atualizar;
+                return this.PermissaoEntidade.Atualizar;
 
-                case EnumOperacao.Deletar:
+            case EnumOperacao.Deletar:
 
-                    return this.PermissaoEntidade.Deletar;
+                return this.PermissaoEntidade.Deletar;
 
-                default:
+            default:
 
-                    throw new Erro(String.Format("A operação não é suportada {0}", EnumUtil.RetornarDescricao(operacao)));
-            }
+                throw new Erro(String.Format("A operação não é suportada {0}", EnumUtil.RetornarDescricao(operacao)));
+        }
+    }
+
+    internal EstruturaPermissaoEntidade(IPermissaoEntidade permissaoEntidade)
+    {
+        Guard.NotNull(permissaoEntidade);
+        Guard.NotNull(permissaoEntidade.Leitura);
+        Guard.NotNull(permissaoEntidade.Atualizar);
+        Guard.NotNull(permissaoEntidade.Adicionar);
+        Guard.NotNull(permissaoEntidade.Deletar);
+
+        this.PermissaoEntidade = permissaoEntidade;
+
+        foreach (var permissaoCampo in this.PermissaoEntidade.PermissoesCampo)
+        {
+            this.PermissoesCampo.Add(permissaoCampo.NomeCampo, new EstruturaPermissaoCampo(permissaoCampo));
         }
 
-        internal EstruturaPermissaoEntidade(IPermissaoEntidade permissaoEntidade)
+        foreach (var restricao in this.PermissaoEntidade.RestricoesEntidade)
         {
-            Guard.NotNull(permissaoEntidade);
-            Guard.NotNull(permissaoEntidade.Leitura);
-            Guard.NotNull(permissaoEntidade.Atualizar);
-            Guard.NotNull(permissaoEntidade.Adicionar);
-            Guard.NotNull(permissaoEntidade.Deletar);
-             
-            this.PermissaoEntidade = permissaoEntidade;
-             
-            foreach (var permissaoCampo in this.PermissaoEntidade.PermissoesCampo)
-            {
-                this.PermissoesCampo.Add(permissaoCampo.NomeCampo, new EstruturaPermissaoCampo(permissaoCampo));
-            }
-
-            foreach (var restricao in this.PermissaoEntidade.RestricoesEntidade)
-            {
-                throw new NotImplementedException();
-            }
+            throw new NotImplementedException();
         }
     }
 }

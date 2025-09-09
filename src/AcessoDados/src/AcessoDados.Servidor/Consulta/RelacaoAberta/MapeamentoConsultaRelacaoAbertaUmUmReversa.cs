@@ -1,33 +1,32 @@
-﻿using Snebur.AcessoDados.Estrutura;
+using Snebur.AcessoDados.Estrutura;
 
-namespace Snebur.AcessoDados.Mapeamento
+namespace Snebur.AcessoDados.Mapeamento;
+
+internal class MapeamentoConsultaRelacaoAbertaUmUmReversa : MapeamentoConsultaRelacaoAberta
 {
-    internal class MapeamentoConsultaRelacaoAbertaUmUmReversa : MapeamentoConsultaRelacaoAberta
+
+    internal EstruturaRelacaoUmUmReversa EstruturaRelacaoUmUmReversa
     {
-
-        internal EstruturaRelacaoUmUmReversa EstruturaRelacaoUmUmReversa
+        get
         {
-            get
-            {
-                return (EstruturaRelacaoUmUmReversa)this.EstruturaRelacao;
-            }
+            return (EstruturaRelacaoUmUmReversa)this.EstruturaRelacao;
         }
+    }
 
-        internal MapeamentoConsultaRelacaoAbertaUmUmReversa(EstruturaConsulta estruturaConsulta,
-                                                            EstruturaBancoDados estruturaBancoDados,
-                                                            BaseConexao conexaoDB,
-                                                            MapeamentoConsulta mapeamentoConsultaPai,
-                                                            EstruturaRelacaoUmUmReversa estruturaRelacaoUmUmReversa,
-                                                            BaseRelacaoAberta relacaoAberta,
-                                                             BaseContextoDados contexto) :
-                                                            base(estruturaConsulta,
-                                                                 estruturaBancoDados,
-                                                                 conexaoDB,
-                                                                 mapeamentoConsultaPai,
-                                                                 estruturaRelacaoUmUmReversa,
-                                                                 relacaoAberta,
-                                                                 contexto)
-        {
-        }
+    internal MapeamentoConsultaRelacaoAbertaUmUmReversa(EstruturaConsulta estruturaConsulta,
+                                                        EstruturaBancoDados estruturaBancoDados,
+                                                        BaseConexao conexaoDB,
+                                                        MapeamentoConsulta mapeamentoConsultaPai,
+                                                        EstruturaRelacaoUmUmReversa estruturaRelacaoUmUmReversa,
+                                                        BaseRelacaoAberta relacaoAberta,
+                                                         BaseContextoDados contexto) :
+                                                        base(estruturaConsulta,
+                                                             estruturaBancoDados,
+                                                             conexaoDB,
+                                                             mapeamentoConsultaPai,
+                                                             estruturaRelacaoUmUmReversa,
+                                                             relacaoAberta,
+                                                             contexto)
+    {
     }
 }

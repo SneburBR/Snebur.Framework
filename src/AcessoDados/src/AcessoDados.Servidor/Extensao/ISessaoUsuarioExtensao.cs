@@ -1,29 +1,28 @@
-namespace Snebur
+namespace Snebur;
+
+public static class SessaoUsuarioExtensao
 {
-    public static class SessaoUsuarioExtensao
+    public static readonly Dictionary<Guid, object> _bloqueios = new Dictionary<Guid, object>();
+    private readonly static object _bloqueio = new object();
+
+    public static object RetornarBloqueio(this ISessaoUsuario sessaoUsuario)
     {
-        public static readonly Dictionary<Guid, object> _bloqueios = new Dictionary<Guid, object>();
-        private readonly static object _bloqueio = new object();
+        var identificador = sessaoUsuario.IdentificadorSessaoUsuario;
+        return RetornarBloqueio(identificador);
+    }
 
-        public static object RetornarBloqueio(this ISessaoUsuario sessaoUsuario)
+    internal static object RetornarBloqueio(Guid identificador)
+    {
+        if (!_bloqueios.ContainsKey(identificador))
         {
-            var identificador = sessaoUsuario.IdentificadorSessaoUsuario;
-            return RetornarBloqueio(identificador);
-        }
-
-        internal static object RetornarBloqueio(Guid identificador)
-        {
-            if (!_bloqueios.ContainsKey(identificador))
+            lock (_bloqueio)
             {
-                lock (_bloqueio)
+                if (!_bloqueios.ContainsKey(identificador))
                 {
-                    if (!_bloqueios.ContainsKey(identificador))
-                    {
-                        _bloqueios.Add(identificador, new object());
-                    }
+                    _bloqueios.Add(identificador, new object());
                 }
             }
-            return _bloqueios[identificador];
         }
+        return _bloqueios[identificador];
     }
 }

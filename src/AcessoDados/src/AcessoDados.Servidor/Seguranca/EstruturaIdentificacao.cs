@@ -1,19 +1,18 @@
-namespace Snebur.AcessoDados.Seguranca
+namespace Snebur.AcessoDados.Seguranca;
+
+internal class EstruturaIdentificacao
 {
-    internal class EstruturaIdentificacao
+    internal IIdentificacao Identificacao { get; set; }
+
+    internal Dictionary<string, EstruturaPermissaoEntidade> PermissoesEntidade { get; set; } = new Dictionary<string, EstruturaPermissaoEntidade>();
+
+    internal EstruturaIdentificacao(IIdentificacao identificacao, List<IPermissaoEntidade> permissoes)
     {
-        internal IIdentificacao Identificacao { get; set; }
+        this.Identificacao = identificacao;
 
-        internal Dictionary<string, EstruturaPermissaoEntidade> PermissoesEntidade { get; set; } = new Dictionary<string, EstruturaPermissaoEntidade>();
-
-        internal EstruturaIdentificacao(IIdentificacao identificacao, List<IPermissaoEntidade> permissoes)
+        foreach (var permissao in permissoes)
         {
-            this.Identificacao = identificacao;
-
-            foreach (var permissao in permissoes)
-            {
-                this.PermissoesEntidade.Add(permissao.NomeTipoEntidadePermissao, new EstruturaPermissaoEntidade(permissao));
-            }
+            this.PermissoesEntidade.Add(permissao.NomeTipoEntidadePermissao, new EstruturaPermissaoEntidade(permissao));
         }
     }
 }

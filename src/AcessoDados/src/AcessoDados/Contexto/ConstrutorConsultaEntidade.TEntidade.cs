@@ -219,22 +219,22 @@ internal class ConstrutorConsultaEntidade<TEntidade> : ConstrutorConsultaEntidad
 
     #region Abrir Propriedade
 
-    public ConsultaEntidade<TEntidade> AbrirPropriedade<TPropriedade>(Expression<Func<TEntidade, TPropriedade>> expresssao)
+    public ConsultaEntidade<TEntidade> AbrirPropriedade<TPropriedade>(Expression<Func<TEntidade, TPropriedade?>> expresssao)
     {
         return new ConsultaEntidade<TEntidade>(this.ContextoDados, this.TipoEntidade).AbrirPropriedade(expresssao);
     }
 
-    public ConsultaEntidade<TEntidade> AbrirPropriedade(Expression<Func<TEntidade, string>> expresssao)
+    public ConsultaEntidade<TEntidade> AbrirPropriedade(Expression<Func<TEntidade, string?>> expresssao)
     {
         return new ConsultaEntidade<TEntidade>(this.ContextoDados, this.TipoEntidade).AbrirPropriedade(expresssao);
     }
 
-    public ConsultaEntidade<TEntidade> AbrirPropriedades<TPropriedade>(params Expression<Func<TEntidade, TPropriedade>>[] expressoes)
+    public ConsultaEntidade<TEntidade> AbrirPropriedades<TPropriedade>(params Expression<Func<TEntidade, TPropriedade?>>[] expressoes)
     {
         return new ConsultaEntidade<TEntidade>(this.ContextoDados, this.TipoEntidade).AbrirPropriedades(expressoes);
     }
 
-    public ConsultaEntidade<TEntidade> AbrirPropriedades(params Expression<Func<TEntidade, string>>[] expressoes)
+    public ConsultaEntidade<TEntidade> AbrirPropriedades(params Expression<Func<TEntidade, string?>>[] expressoes)
     {
         return new ConsultaEntidade<TEntidade>(this.ContextoDados, this.TipoEntidade).AbrirPropriedades(expressoes);
     }

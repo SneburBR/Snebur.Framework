@@ -1,122 +1,135 @@
-namespace Snebur.AcessoDados.Mapeamento
+namespace Snebur.AcessoDados.Mapeamento;
+
+internal partial class MapeamentoConsulta
 {
-    internal partial class MapeamentoConsulta
+
+    private void AbrirRelacaoNn(MapeamentoConsultaRelacaoAbertaNn mapeamento)
     {
+        var estruturaIds = this.RetornarEstruturaIdEntidadeIdChaveEstrangeira(mapeamento);
+        var idsChaveEstrangeiraFilho = new SortedSet<long>(estruturaIds.SelectMany(x => x.Value));
 
-        private void AbrirRelacaoNn(MapeamentoConsultaRelacaoAbertaNn mapeamento)
+        if (idsChaveEstrangeiraFilho.Count == 0)
         {
-            var estruturaIds = this.RetornarEstruturaIdEntidadeIdChaveEstrangeira(mapeamento);
-            var idsChaveEstrangeiraFilho = new SortedSet<long>(estruturaIds.SelectMany(x => x.Value));
-
-            if (idsChaveEstrangeiraFilho.Count == 0)
-            {
-                idsChaveEstrangeiraFilho.Add(0L);
-            }
-             
-            var filtro = new FiltroMapeamentoIds(mapeamento.EstruturaEntidade.EstruturaCampoChavePrimaria, 
-                                                 idsChaveEstrangeiraFilho);
-            var entidadesNn = mapeamento.RetornarEntidades(filtro);
-
-            this.MapearRelacaoAbertaNn(entidadesNn, mapeamento, estruturaIds);
+            idsChaveEstrangeiraFilho.Add(0L);
         }
 
-        private void MapearRelacaoAbertaNn(Dictionary<long, Entidade> entidadesFilho,
-                                           MapeamentoConsultaRelacaoAbertaNn mapeamentoNn,
-                                           Dictionary<long, SortedSet<long>> estruturaIds)
+        var filtro = new FiltroMapeamentoIds(mapeamento.EstruturaEntidade.EstruturaCampoChavePrimaria,
+                                             idsChaveEstrangeiraFilho);
+        var entidadesNn = mapeamento.RetornarEntidades(filtro);
+
+        this.MapearRelacaoAbertaNn(entidadesNn, mapeamento, estruturaIds);
+    }
+
+    private void MapearRelacaoAbertaNn(Dictionary<long, Entidade> entidadesFilho,
+                                       MapeamentoConsultaRelacaoAbertaNn mapeamentoNn,
+                                       Dictionary<long, SortedSet<long>> estruturaIds)
+    {
+        var gruposEntidadeFilhos = new Dictionary<long, List<Entidade>>();
+        var propriedadeRelacaoNn = mapeamentoNn.EstruturaRelacaoNn.Propriedade;
+
+        //if (DebugUtil.IsAttached)
+        //{
+        //    var entidadesPossuiPropriedade = this.Entidades.Values.Where(x => ReflexaoUtil.TipoPossuiPropriedade(x.GetType(), propriedadeRelacaoNn)).ToList();
+        //    if (entidadesPossuiPropriedade.Count != this.Entidades.Count)
+        //    {
+        //        var xxx = "testar";
+        //    }
+        //}
+
+        foreach (var entidade in this.Entidades)
         {
-            var gruposEntidadeFilhos = new Dictionary<long, List<Entidade>>();
-            var propriedadeRelacaoNn = mapeamentoNn.EstruturaRelacaoNn.Propriedade;
-
-            //if (DebugUtil.IsAttached)
-            //{
-            //    var entidadesPossuiPropriedade = this.Entidades.Values.Where(x => ReflexaoUtil.TipoPossuiPropriedade(x.GetType(), propriedadeRelacaoNn)).ToList();
-            //    if (entidadesPossuiPropriedade.Count != this.Entidades.Count)
-            //    {
-            //        var xxx = "testar";
-            //    }
-            //}
-
-            foreach (var entidade in this.Entidades)
+            if (ReflexaoUtil.TipoPossuiPropriedade(entidade.Value.GetType(), propriedadeRelacaoNn))
             {
-                if (ReflexaoUtil.TipoPossuiPropriedade(entidade.Value.GetType(), propriedadeRelacaoNn))
-                {
-                    gruposEntidadeFilhos.Add(entidade.Key, new List<Entidade>());
-                }
-            }
-
-            var tipoEntidadeFilho = ReflexaoUtil.RetornarTipoGenericoColecao(propriedadeRelacaoNn.PropertyType);
-            var estruturaCampoChaveEstrangeiraFilho = mapeamentoNn.EstruturaRelacaoNn.EstruturaCampoChaveEstrangeiraFilho;
-            //var propriedadeChaveEstrangeira = estruturaCampoChaveEstrangeiraFilho.Propriedade;
-
-            foreach (var item in estruturaIds)
-            {
-                var idEntidade = item.Key;
-                var idsEntidadeFilhos = item.Value;
-
-                foreach (var idEntidadeFilho in idsEntidadeFilhos)
-                {
-                    var entidadeFilho = entidadesFilho[idEntidadeFilho];
-                    gruposEntidadeFilhos[idEntidade].Add(entidadeFilho);
-                }
-            }
-
-            foreach (var grupoEntidadeFilhos in gruposEntidadeFilhos)
-            {
-                var entidade = this.Entidades[grupoEntidadeFilhos.Key];
-                var tipoListaEntidade = typeof(ListaEntidades<>).MakeGenericType(tipoEntidadeFilho);
-                var listaEntidadeFilhos = (IListaEntidades)Activator.CreateInstance(tipoListaEntidade);
-                listaEntidadeFilhos.AdicionarEntidades(grupoEntidadeFilhos.Value);
-                listaEntidadeFilhos.IsAberta = true;
-                propriedadeRelacaoNn.SetValue(entidade, listaEntidadeFilhos);
-
+                gruposEntidadeFilhos.Add(entidade.Key, new List<Entidade>());
             }
         }
 
-        private Dictionary<long, SortedSet<long>> RetornarEstruturaIdEntidadeIdChaveEstrangeira(MapeamentoConsultaRelacaoAbertaNn mapeamento)
+        var tipoEntidadeFilho = ReflexaoUtil.RetornarTipoGenericoColecao(propriedadeRelacaoNn.PropertyType);
+        var estruturaCampoChaveEstrangeiraFilho = mapeamentoNn.EstruturaRelacaoNn.EstruturaCampoChaveEstrangeiraFilho;
+        //var propriedadeChaveEstrangeira = estruturaCampoChaveEstrangeiraFilho.Propriedade;
+
+        foreach (var item in estruturaIds)
         {
-            var resultado = new Dictionary<long, SortedSet<long>>();
-            if (this.Entidades.Count == 0)
+            var idEntidade = item.Key;
+            var idsEntidadeFilhos = item.Value;
+
+            foreach (var idEntidadeFilho in idsEntidadeFilhos)
             {
-                return resultado;
+                var entidadeFilho = entidadesFilho[idEntidadeFilho];
+                gruposEntidadeFilhos[idEntidade].Add(entidadeFilho);
             }
+        }
 
-            var idsChavePrimara = new SortedSet<long>(this.Entidades.Keys);
-            var estruturaCampoChaveEstrangeiraNn = mapeamento.EstruturaRelacaoNn.EstruturaCampoChaveEstrangeiraPai;
-            var estruturaCampoChaveEstrangeiraFilho = mapeamento.EstruturaRelacaoNn.EstruturaCampoChaveEstrangeiraFilho;
+        foreach (var grupoEntidadeFilhos in gruposEntidadeFilhos)
+        {
+            var entidade = this.Entidades[grupoEntidadeFilhos.Key];
+            var tipoListaEntidade = typeof(ListaEntidades<>).MakeGenericType(tipoEntidadeFilho);
+            var listaEntidadeFilhos = (Activator.CreateInstance(tipoListaEntidade) as IListaEntidades)
+                ?? throw new Erro($"Erro ao abrir relação N-N. Não foi possível instanciar a lista de entidades do tipo {tipoListaEntidade.Name}.");
 
-            var propriedadeEntidade = estruturaCampoChaveEstrangeiraNn.Propriedade;
-            var propriedadeChaveEstrangeiraFilho = estruturaCampoChaveEstrangeiraFilho.Propriedade;
-             
-            var filtro = new FiltroMapeamentoIds(estruturaCampoChaveEstrangeiraNn,
-                                                 idsChavePrimara);
+            listaEntidadeFilhos.AdicionarEntidades(grupoEntidadeFilhos.Value);
+            listaEntidadeFilhos.IsAberta = true;
+            propriedadeRelacaoNn.SetValue(entidade, listaEntidadeFilhos);
+        }
+    }
 
-            var tipoEntidade = mapeamento.TipoEntidade;
-            var estruturaEntidadeNn = mapeamento.EstruturaRelacaoNn.EstruturaEntidadeRelacaoNn;
-
-   
-            foreach (var idChavePrimaria in idsChavePrimara)
-            {
-                resultado.Add(idChavePrimaria, new SortedSet<long>());
-            }
-            using (var mapeamentoEntidade = new MapeamentoEntidade(mapeamento, estruturaEntidadeNn, this.EstruturaBancoDados, this.ConexaoDB, this.Contexto))
-            {
-                var entidadesNn = mapeamentoEntidade.RetornarEntidades(filtro);
-                foreach (var entidadeNn in entidadesNn)
-                {
-                    var idEntidade = (long)propriedadeEntidade.GetValue(entidadeNn);
-                    var idEntidadeChaveEstrangeira = (long)propriedadeChaveEstrangeiraFilho.GetValue(entidadeNn);
-                    resultado[idEntidade].Add(idEntidadeChaveEstrangeira);
-                }
-            }
+    private Dictionary<long, SortedSet<long>> RetornarEstruturaIdEntidadeIdChaveEstrangeira(MapeamentoConsultaRelacaoAbertaNn mapeamento)
+    {
+        var resultado = new Dictionary<long, SortedSet<long>>();
+        if (this.Entidades.Count == 0)
+        {
             return resultado;
         }
+
+        var idsChavePrimara = new SortedSet<long>(this.Entidades.Keys);
+        var estruturaCampoChaveEstrangeiraNn = mapeamento.EstruturaRelacaoNn.EstruturaCampoChaveEstrangeiraPai;
+        var estruturaCampoChaveEstrangeiraFilho = mapeamento.EstruturaRelacaoNn.EstruturaCampoChaveEstrangeiraFilho;
+
+        var propriedadeEntidade = estruturaCampoChaveEstrangeiraNn.Propriedade;
+        var propriedadeChaveEstrangeiraFilho = estruturaCampoChaveEstrangeiraFilho.Propriedade;
+
+        var filtro = new FiltroMapeamentoIds(estruturaCampoChaveEstrangeiraNn,
+                                             idsChavePrimara);
+
+        var tipoEntidade = mapeamento.TipoEntidade;
+        var estruturaEntidadeNn = mapeamento.EstruturaRelacaoNn.EstruturaEntidadeRelacaoNn;
+
+        foreach (var idChavePrimaria in idsChavePrimara)
+        {
+            resultado.Add(idChavePrimaria, new());
+        }
+
+        using (var mapeamentoEntidade = new MapeamentoEntidade(mapeamento,
+            estruturaEntidadeNn,
+            this.EstruturaBancoDados,
+            this.ConexaoDB,
+            this.Contexto))
+        {
+            var entidadesNn = mapeamentoEntidade.RetornarEntidades(filtro);
+            foreach (var entidadeNn in entidadesNn)
+            {
+                var idEntidade = Convert.ToInt64(propriedadeEntidade.GetValue(entidadeNn));
+                var idEntidadeChaveEstrangeira = Convert.ToInt64(propriedadeChaveEstrangeiraFilho.GetValue(entidadeNn));
+
+                if (!resultado.ContainsKey(idEntidade))
+                {
+                    throw new Erro($"Erro ao abrir relação N-N. A entidade {tipoEntidade.Name} com Id {idEntidade} não foi encontrada no conjunto de entidades pai.");
+                }
+
+                if (idEntidadeChaveEstrangeira <= 0)
+                {
+                    throw new Erro($"Erro ao abrir relação N-N. A entidade {tipoEntidade.Name} com Id {idEntidade} possui uma chave estrangeira inválida ({idEntidadeChaveEstrangeira}).");
+                }
+                resultado[idEntidade].Add(idEntidadeChaveEstrangeira);
+            }
+        }
+        return resultado;
     }
+}
 
-    public class EstruturaEntidadesFilhoRalacaoNn
-    {
+public record EstruturaEntidadesFilhoRalacaoNn
+{
+    public required long IdEntidade { get; init; }
 
-        public long IdEntidade { get; set; }
-
-        public SortedSet<long> IdsChaveEstrangeira { get; set; }
-    }
+    public required SortedSet<long> IdsChaveEstrangeira { get; init; }
 }

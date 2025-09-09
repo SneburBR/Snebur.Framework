@@ -1,52 +1,51 @@
 using System.Data;
 
-namespace Snebur.AcessoDados
+namespace Snebur.AcessoDados;
+
+public static class ConfiguracaoAcessoDados
 {
-    public static class ConfiguracaoAcessoDados
+    public static string IdentificadorProprietarioGlobal => ConfiguracaoUtil.IDENTIFICADOR_PROPRIETARIO_GLOBAL;
+
+    internal static bool ApelidoUnicoCurto { get; set; } = true;
+
+    private static EnumTipoBancoDados? _tipoBancoDadosEnum;
+
+    internal static EnumTipoBancoDados TipoBancoDadosEnum
     {
-        public static string IdentificadorProprietarioGlobal => ConfiguracaoUtil.IDENTIFICADOR_PROPRIETARIO_GLOBAL;
-
-        internal static bool ApelidoUnicoCurto { get; set; } = true;
-
-        private static EnumTipoBancoDados? _tipoBancoDadosEnum;
-
-        internal static EnumTipoBancoDados TipoBancoDadosEnum
+        get
         {
-            get
+            if (!_tipoBancoDadosEnum.HasValue)
             {
-                if (!_tipoBancoDadosEnum.HasValue)
-                {
-                    _tipoBancoDadosEnum = EnumTipoBancoDados.SQL_SERVER;
-                    //throw new Erro("O banco dados não definido");
-                }
-                return _tipoBancoDadosEnum.Value;
+                _tipoBancoDadosEnum = EnumTipoBancoDados.SQL_SERVER;
+                //throw new Erro("O banco dados não definido");
             }
-            set
-            {
-                if (_tipoBancoDadosEnum.HasValue && (_tipoBancoDadosEnum.Value != value))
-                {
-                    throw new Erro("O tipo de banco dados ja foi definido com um valor diferente");
-                }
-                _tipoBancoDadosEnum = value;
-            }
+            return _tipoBancoDadosEnum.Value;
         }
-
-        public static IsolationLevel IsolamentoLevelSalvarPadrao
+        set
         {
-            get
+            if (_tipoBancoDadosEnum.HasValue && (_tipoBancoDadosEnum.Value != value))
             {
-                return IsolationLevel.ReadCommitted;
-                //return IsolationLevel.Snapshot;
+                throw new Erro("O tipo de banco dados ja foi definido com um valor diferente");
             }
+            _tipoBancoDadosEnum = value;
         }
+    }
 
-        public static IsolationLevel IsolamentoLevelConsultaPadrao
+    public static IsolationLevel IsolamentoLevelSalvarPadrao
+    {
+        get
         {
-            get
-            {
-                //return IsolationLevel.ReadCommitted;
-                return IsolationLevel.Snapshot;
-            }
+            return IsolationLevel.ReadCommitted;
+            //return IsolationLevel.Snapshot;
+        }
+    }
+
+    public static IsolationLevel IsolamentoLevelConsultaPadrao
+    {
+        get
+        {
+            //return IsolationLevel.ReadCommitted;
+            return IsolationLevel.Snapshot;
         }
     }
 }

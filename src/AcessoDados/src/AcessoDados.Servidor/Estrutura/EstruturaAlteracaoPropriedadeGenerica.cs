@@ -1,4 +1,2 @@
-namespace Snebur.AcessoDados.Estrutura
-{
-    
-}
+namespace Snebur.AcessoDados.Estrutura;
+

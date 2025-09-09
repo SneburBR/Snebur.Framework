@@ -1,4 +1,4 @@
-﻿namespace Snebur.AcessoDados;
+namespace Snebur.AcessoDados;
 
 
 public partial class ConsultaEntidade<TEntidade> where TEntidade : IEntidade
@@ -54,7 +54,7 @@ public partial class ConsultaEntidade<TEntidade> where TEntidade : IEntidade
         return this.RetonrarValorAverage<DateTime?>(propriedade);
     }
 
-    private T RetonrarValorAverage<T>(Expression expressao)
+    private T? RetonrarValorAverage<T>(Expression expressao)
     {
         return this.RetornarValorFuncao<T>(EnumTipoFuncao.Media, expressao);
     }

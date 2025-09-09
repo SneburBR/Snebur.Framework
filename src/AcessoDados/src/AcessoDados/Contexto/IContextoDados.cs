@@ -5,7 +5,7 @@ public interface IContextoDados : IServicoDados/*, IDisposable*/
 {
     IUsuario? UsuarioLogado { get; }
 
-    T RetornarValorScalar<T>(EstruturaConsulta estruturaConsulta);
+    T? RetornarValorScalar<T>(EstruturaConsulta estruturaConsulta);
 
     IConsultaEntidade<TEntidade> RetornarConsulta<TEntidade>() where TEntidade : IEntidade;
 

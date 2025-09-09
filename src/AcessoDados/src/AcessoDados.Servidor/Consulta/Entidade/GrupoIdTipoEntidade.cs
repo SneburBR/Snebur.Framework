@@ -1,14 +1,13 @@
-namespace Snebur.AcessoDados.Mapeamento
+namespace Snebur.AcessoDados.Mapeamento;
+
+internal class IdTipoEntidade : INomeTipoEntidade
 {
-    internal class IdTipoEntidade : INomeTipoEntidade
-    {
 
-        public long Id { get; set; }
+    public long Id { get; set; }
 
-        public string __NomeTipoEntidade { get; set; }
+    public string? __NomeTipoEntidade { get; set; }
 
-        public long CampoFiltro { get; set; }
+    public long CampoFiltro { get; set; }
 
-        //string INomeTipoEntidade.__NomeTipoEntidade => throw new NotImplementedException();
-    }
+    //string INomeTipoEntidade.__NomeTipoEntidade => throw new NotImplementedException();
 }

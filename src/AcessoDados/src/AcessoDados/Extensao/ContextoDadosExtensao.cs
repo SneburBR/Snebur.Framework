@@ -116,7 +116,7 @@ public static class ContextoDadosExtensao
 
     public static void RecuperarPropriedade<TEntidade>(this IContextoDados contexto,
                                                       TEntidade entidade,
-                                                      Expression<Func<TEntidade, object>> expressaoPropriedade) where TEntidade : Entidade
+                                                      Expression<Func<TEntidade, object?>> expressaoPropriedade) where TEntidade : Entidade
     {
         RecuperarPropriedades(contexto,
                               new List<TEntidade> { entidade },
@@ -125,7 +125,7 @@ public static class ContextoDadosExtensao
 
     public static void RecuperarPropriedade<TEntidade>(this IContextoDados contexto,
                                                        List<TEntidade> entidades,
-                                                       Expression<Func<TEntidade, object>> expressaoPropriedade) where TEntidade : Entidade
+                                                       Expression<Func<TEntidade, object?>> expressaoPropriedade) where TEntidade : Entidade
     {
         RecuperarPropriedades(contexto,
                               entidades,
@@ -134,7 +134,7 @@ public static class ContextoDadosExtensao
 
     public static void RecuperarPropriedades<TEntidade>(this IContextoDados contexto,
                                                         TEntidade entidade,
-                                                        params Expression<Func<TEntidade, object>>[] expressoesPropriedade) where TEntidade : Entidade
+                                                        params Expression<Func<TEntidade, object?>>[] expressoesPropriedade) where TEntidade : Entidade
     {
         RecuperarPropriedades(contexto,
                               new List<TEntidade> { entidade },
@@ -142,7 +142,7 @@ public static class ContextoDadosExtensao
     }
     public static void RecuperarPropriedades<TEntidade>(this IContextoDados contexto,
                                                     List<TEntidade> entidades,
-                                                    params Expression<Func<TEntidade, object>>[] expressoesPropriedade) where TEntidade : Entidade
+                                                    params Expression<Func<TEntidade, object?>>[] expressoesPropriedade) where TEntidade : Entidade
     {
         var ids = entidades.Select(x => x.Id).ToList();
         var entidadesRecuperada = contexto.RetornarConsulta<TEntidade>(typeof(TEntidade))

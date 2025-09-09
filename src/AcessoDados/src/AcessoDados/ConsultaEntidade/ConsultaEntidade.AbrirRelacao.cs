@@ -103,7 +103,9 @@ public partial class ConsultaEntidade<TEntidade> where TEntidade : IEntidade
             var caminhoPropriedadeCompleto = AjudanteConsultaEntidade.RetornarCaminhoPropriedade(propriedadesCaminhoComplemento);
             var caminhoPropriedade = AjudanteConsultaEntidade.RetornarCaminhoPropriedade(propriedadesCaminhoParcial);
 
-            ErroUtil.ValidarStringVazia(caminhoPropriedadeParcial, nameof(caminhoPropriedadeParcial));
+            //ErroUtil.ValidarStringVazia(caminhoPropriedadeParcial, nameof(caminhoPropriedadeParcial));
+
+            Guard.NotNullOrWhiteSpace(caminhoPropriedadeParcial);
 
             //if (!consultaAcessoDadosAtual.RelacoesAberta.ContainsKey(caminhoPropriedadeParcial))
             if (this.IsExisteRelacaoAberta(estruturaConsultaAtual, caminhoPropriedadeParcial, isFiltro))

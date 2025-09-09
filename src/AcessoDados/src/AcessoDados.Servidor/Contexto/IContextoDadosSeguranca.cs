@@ -1,31 +1,30 @@
-namespace Snebur.AcessoDados
+namespace Snebur.AcessoDados;
+
+public interface IContextoDadosSeguranca : IDisposable
 {
-    public interface IContextoDadosSeguranca : IDisposable
-    {
-        bool IsAnonimo { get; }
+    bool IsAnonimo { get; }
 
-        bool IsContextoInicializado { get; }
+    bool IsContextoInicializado { get; }
 
-        TiposSeguranca TiposSeguranca { get; }
+    TiposSeguranca TiposSeguranca { get; }
 
-        //IUsuario UsuarioLogado { get; }
+    //IUsuario UsuarioLogado { get; }
 
-        ISessaoUsuario? SessaoUsuarioLogado { get; }
+    ISessaoUsuario? SessaoUsuarioLogado { get; }
 
-        ResultadoSalvar SalvarSeguranca(IEntidade entidade);
+    ResultadoSalvar SalvarSeguranca(IEntidade entidade);
 
-        ResultadoSalvar SalvarSeguranca(List<IEntidade> entidades);
+    ResultadoSalvar SalvarSeguranca(List<IEntidade> entidades);
 
-        ResultadoDeletar DeletarSeguranca(IEntidade entidade);
+    ResultadoDeletar DeletarSeguranca(IEntidade entidade);
 
-        ResultadoDeletar DeletarSeguranca(List<IEntidade> entidades);
+    ResultadoDeletar DeletarSeguranca(List<IEntidade> entidades);
 
-        IConsultaEntidade<TEntidade> RetornarConsulta<TEntidade>() where TEntidade : IEntidade;
+    IConsultaEntidade<TEntidade> RetornarConsulta<TEntidade>() where TEntidade : IEntidade;
 
-        IConsultaEntidade<TEntidade> RetornarConsulta<TEntidade>(Type tipoConsulta) where TEntidade : IEntidade;
+    IConsultaEntidade<TEntidade> RetornarConsulta<TEntidade>(Type tipoConsulta) where TEntidade : IEntidade;
 
-        //List<IEntidade> RetornarResultadoConsulta(EstruturaConsulta estruturaConsulta);
+    //List<IEntidade> RetornarResultadoConsulta(EstruturaConsulta estruturaConsulta);
 
-        IUsuario RetornarUsuarioAnonimo();
-    }
+    IUsuario? RetornarUsuarioAnonimo();
 }

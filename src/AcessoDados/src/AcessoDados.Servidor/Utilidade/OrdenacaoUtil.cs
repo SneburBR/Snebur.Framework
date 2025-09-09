@@ -1,36 +1,41 @@
-namespace Snebur.AcessoDados
+namespace Snebur.AcessoDados;
+
+internal class OrdenacaoUtil
 {
-    internal class OrdenacaoUtil
+    internal static (PropertyInfo, OrdenacaoOpcoesAttribute) RetornarPropriedadeOrdenacao(Type tipoEntidade)
     {
-        internal static (PropertyInfo, OrdenacaoOpcoesAttribute) RetornarPropriedadeOrdenacao(Type tipoEntidade)
+        var nomePropriedade = nameof(IOrdenacao.Ordenacao);
+        var propriedade = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nomePropriedade, true);
+        if (propriedade is not null)
         {
-            var nomePropriedade = nameof(IOrdenacao.Ordenacao);
-            var propriedade = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nomePropriedade, true);
-            if (propriedade != null)
-            {
-                var atributo = propriedade.GetCustomAttribute<OrdenacaoOpcoesAttribute>();
-                return (propriedade, atributo);
-            }
+            var atributo = propriedade.GetCustomAttribute<OrdenacaoOpcoesAttribute>() ??
+                throw new Exception(
+                    $"A propriedade {nomePropriedade} da entidade {tipoEntidade.Name} não possui o atributo {nameof(OrdenacaoOpcoesAttribute)}");
 
-            var metodos = tipoEntidade.GetInterfaceMap(typeof(IOrdenacao)).TargetMethods;
-            propriedade = tipoEntidade.GetProperties(BindingFlags.NonPublic | BindingFlags.Instance)
-                                                    .Where(p => metodos.Contains(p.GetGetMethod(true)))
-                                                    .Where(prop => metodos.Contains(prop.GetSetMethod(true)))
-                                                    .FirstOrDefault();
+            return (propriedade, atributo);
+        }
 
-            if (propriedade != null)
+        var metodos = tipoEntidade.GetInterfaceMap(typeof(IOrdenacao)).TargetMethods;
+        propriedade = tipoEntidade.GetProperties(BindingFlags.NonPublic | BindingFlags.Instance)
+                                                .Where(p => metodos.Contains(p.GetGetMethod(true)))
+                                                .Where(prop => metodos.Contains(prop.GetSetMethod(true)))
+                                                .FirstOrDefault();
+
+        if (propriedade != null)
+        {
+            var atributo = propriedade.GetCustomAttribute<OrdenacaoOpcoesAttribute>() ??
+                throw new Exception(
+                    $"A propriedade {nomePropriedade} da entidade {tipoEntidade.Name} não possui o atributo {nameof(OrdenacaoOpcoesAttribute)}");
+
+            if (!String.IsNullOrWhiteSpace(atributo.NomePropriedadeMapeada))
             {
-                var atributo = propriedade.GetCustomAttribute<OrdenacaoOpcoesAttribute>();
-                if (!String.IsNullOrWhiteSpace(atributo.NomePropriedadeMapeada))
+                var propriedadeMapeada = ReflexaoUtil.RetornarPropriedade(tipoEntidade, atributo.NomePropriedadeMapeada, true);
+                if (propriedadeMapeada != null)
                 {
-                    var propriedadeMapeada = ReflexaoUtil.RetornarPropriedade(tipoEntidade, atributo.NomePropriedadeMapeada, true);
-                    if (propriedadeMapeada != null)
-                    {
-                        return (propriedadeMapeada, atributo);
-                    }
+                    return (propriedadeMapeada, atributo);
                 }
             }
-            throw new Erro($"Não foi possível encontrar a propriedade {nomePropriedade} na entidade {tipoEntidade.Name}");
         }
+        throw new Erro($"Não foi possível encontrar a propriedade {nomePropriedade} na entidade {tipoEntidade.Name}");
     }
 }

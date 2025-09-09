@@ -1,41 +1,40 @@
-namespace Snebur.AcessoDados.Estrutura
+namespace Snebur.AcessoDados.Estrutura;
+
+internal abstract class EstruturaPropriedade
 {
-    internal abstract class EstruturaPropriedade
+    internal Type Tipo { get; }
+    internal protected PropertyInfo Propriedade { get; protected set; }
+    internal bool IsRequerido { get; set; }
+    internal bool IsAceitaNulo { get;  set; }
+    internal bool IsAceitarZero { get;  set; }
+    internal bool IsTipoNullable { get; }
+
+    internal EstruturaEntidade EstruturaEntidade { get; }
+
+    internal List<string> Alertas = new List<string>();
+
+    internal EstruturaPropriedade(PropertyInfo propriedade, 
+                                 EstruturaEntidade estruturaEntidade)
     {
-        internal Type Tipo { get; }
-        internal protected PropertyInfo Propriedade { get; protected set; }
-        internal bool IsRequerido { get; set; }
-        internal bool IsAceitaNulo { get;  set; }
-        internal bool IsAceitarZero { get;  set; }
-        internal bool IsTipoNullable { get; }
+        this.EstruturaEntidade = estruturaEntidade;
+        this.Propriedade = propriedade;
+        this.Tipo = propriedade.PropertyType;
+        this.IsRequerido = AjudanteEstruturaBancoDados.PropriedadeRequerida(this.Propriedade);
+        this.IsTipoNullable = ReflexaoUtil.IsTipoNullable(this.Propriedade.PropertyType);
+        this.IsAceitaNulo = this.RetornarAceitarNulo();
+    }
 
-        internal EstruturaEntidade EstruturaEntidade { get; }
-
-        internal List<string> Alertas = new List<string>();
-
-        internal EstruturaPropriedade(PropertyInfo propriedade, 
-                                     EstruturaEntidade estruturaEntidade)
+    private bool RetornarAceitarNulo()
+    {
+        if (ValidacaoUtil.IsPropriedadeRequerida(this.Propriedade))
         {
-            this.EstruturaEntidade = estruturaEntidade;
-            this.Propriedade = propriedade;
-            this.Tipo = propriedade.PropertyType;
-            this.IsRequerido = AjudanteEstruturaBancoDados.PropriedadeRequerida(this.Propriedade);
-            this.IsTipoNullable = ReflexaoUtil.IsTipoNullable(this.Propriedade.PropertyType);
-            this.IsAceitaNulo = this.RetornarAceitarNulo();
+            return false;
         }
+        return !this.Propriedade.PropertyType.IsValueType || this.IsTipoNullable;
+    }
 
-        private bool RetornarAceitarNulo()
-        {
-            if (ValidacaoUtil.IsPropriedadeRequerida(this.Propriedade))
-            {
-                return false;
-            }
-            return !this.Propriedade.PropertyType.IsValueType || this.IsTipoNullable;
-        }
-
-        public override string ToString()
-        {
-            return String.Format("{0} - {1}", this.Propriedade.Name, base.ToString());
-        }
+    public override string ToString()
+    {
+        return String.Format("{0} - {1}", this.Propriedade.Name, base.ToString());
     }
 }

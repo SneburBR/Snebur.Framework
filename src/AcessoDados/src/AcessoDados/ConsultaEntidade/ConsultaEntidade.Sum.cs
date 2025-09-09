@@ -1,4 +1,4 @@
-﻿namespace Snebur.AcessoDados;
+namespace Snebur.AcessoDados;
 
 
 public partial class ConsultaEntidade<TEntidade> where TEntidade : IEntidade
@@ -53,7 +53,7 @@ public partial class ConsultaEntidade<TEntidade> where TEntidade : IEntidade
     //    return this.RetonrarValorSum<DateTime?>(propriedade);
     //}
 
-    private T RetonrarValorSum<T>(Expression expressao)
+    private T? RetonrarValorSum<T>(Expression expressao)
     {
         return this.RetornarValorFuncao<T>(EnumTipoFuncao.Somar, expressao);
     }

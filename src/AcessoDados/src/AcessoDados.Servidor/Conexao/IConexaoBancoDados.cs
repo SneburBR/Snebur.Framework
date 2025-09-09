@@ -1,11 +1,10 @@
-﻿namespace Snebur.AcessoDados
-{
-    //public interface IConexaoBancoDados
-    //{
+namespace Snebur.AcessoDados;
 
-    //    DataTable RetornarDataTable(string sql);
+//public interface IConexaoBancoDados
+//{
 
-    //    object RetornarValorScalar(string sql);
+//    DataTable RetornarDataTable(string sql);
 
-    //}
-}
+//    object RetornarValorScalar(string sql);
+
+//}

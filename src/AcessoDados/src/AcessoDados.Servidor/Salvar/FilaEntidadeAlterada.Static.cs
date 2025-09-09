@@ -1,13 +1,12 @@
-namespace Snebur.AcessoDados.Servidor.Salvar
+namespace Snebur.AcessoDados.Servidor.Salvar;
+
+internal partial class FilaEntidadeAlterada
 {
-    internal partial class FilaEntidadeAlterada
+    public static Queue<EntidadeAlterada> RetornarFila(List<EntidadeAlterada> entidadesAlterada)
     {
-        public static Queue<EntidadeAlterada> RetornarFila(List<EntidadeAlterada> entidadesAlterada)
+        using (var construtor = new FilaEntidadeAlterada(entidadesAlterada))
         {
-            using (var construtor = new FilaEntidadeAlterada(entidadesAlterada))
-            {
-                return construtor.RetornarFila();
-            }
+            return construtor.RetornarFila();
         }
     }
 }

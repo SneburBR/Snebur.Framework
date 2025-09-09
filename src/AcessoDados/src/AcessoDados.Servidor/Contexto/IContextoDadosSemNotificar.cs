@@ -1,13 +1,12 @@
-namespace Snebur.AcessoDados
+namespace Snebur.AcessoDados;
+
+internal interface IContextoDadosSemNotificar
 {
-    internal interface IContextoDadosSemNotificar
-    {
-        void NotificarSessaoUsuarioAtiva(IUsuario usuario, ISessaoUsuario sessaoUsuario);
-        ResultadoSalvar SalvarInternoSemNotificacao(IEntidade entidade);
+    void NotificarSessaoUsuarioAtiva(IUsuario usuario, ISessaoUsuario sessaoUsuario);
+    ResultadoSalvar SalvarInternoSemNotificacao(IEntidade entidade);
 
-        ResultadoSalvar SalvarInternoSemNotificacao(IEntidade entidade, bool ignorarValidacao);
+    ResultadoSalvar SalvarInternoSemNotificacao(IEntidade entidade, bool ignorarValidacao);
 
-        ResultadoSalvar SalvarInternoSemNotificacao(IEntidade[] entidades, bool ignorarValidacao);
+    ResultadoSalvar SalvarInternoSemNotificacao(IEntidade[] entidades, bool ignorarValidacao);
 
-    }
 }

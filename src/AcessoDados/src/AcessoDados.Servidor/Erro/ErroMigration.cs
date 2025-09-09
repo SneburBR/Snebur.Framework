@@ -1,24 +1,23 @@
 using System.Runtime.CompilerServices;
 
-namespace Snebur.AcessoDados
+namespace Snebur.AcessoDados;
+
+[Serializable]
+public class ErroMigracao : ErroAcessoDados
 {
-    [Serializable]
-    public class ErroMigracao : ErroAcessoDados
+    public ErroMigracao(string mensagem = "",
+        Exception? erroInterno = null,
+        [CallerMemberName] string nomeMetodo = "",
+        [CallerFilePath] string caminhoArquivo = "",
+        [CallerLineNumber] int linhaDoErro = 0) :
+         base(mensagem, erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
     {
-        public ErroMigracao(string mensagem = "",
-            Exception? erroInterno = null,
-            [CallerMemberName] string nomeMetodo = "",
-            [CallerFilePath] string caminhoArquivo = "",
-            [CallerLineNumber] int linhaDoErro = 0) :
-             base(mensagem, erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
-        {
-        }
-        #region Serializacao 
-
-        public ErroMigracao()
-        {
-        }
-
-        #endregion
     }
+    #region Serializacao 
+
+    public ErroMigracao()
+    {
+    }
+
+    #endregion
 }

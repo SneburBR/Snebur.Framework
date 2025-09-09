@@ -1,24 +1,23 @@
-﻿namespace Snebur.AcessoDados.Estrutura
-{
-    //internal class EstruturaRelacaoNnEspecializada : EstruturaRelacaoNn
-    //{
+namespace Snebur.AcessoDados.Estrutura;
 
-    //    Type TipoClassEspecializada { get; set; }
+//internal class EstruturaRelacaoNnEspecializada : EstruturaRelacaoNn
+//{
 
-    //    internal EstruturaRelacaoNnEspecializada(PropertyInfo propriedade,
-    //                                             EstruturaEntidade estruturaEntidade,
-    //                                             EstruturaEntidade estruturaEntidadeRelacaoNn,
-    //                                             EstruturaEntidade estruturaEntidadeFilho,
-    //                                             EstruturaCampo estruturaCampoEntidade,
-    //                                             EstruturaCampo estruturaCampoFilho) : 
-    //                                                base(propriedade,
-    //                                                     estruturaEntidade,
-    //                                                     estruturaEntidadeRelacaoNn, 
-    //                                                     estruturaEntidadeFilho,
-    //                                                     estruturaCampoEntidade,
-    //                                                     estruturaCampoFilho)
-    //    {
+//    Type TipoClassEspecializada { get; set; }
 
-    //    }
-    //}
-}
+//    internal EstruturaRelacaoNnEspecializada(PropertyInfo propriedade,
+//                                             EstruturaEntidade estruturaEntidade,
+//                                             EstruturaEntidade estruturaEntidadeRelacaoNn,
+//                                             EstruturaEntidade estruturaEntidadeFilho,
+//                                             EstruturaCampo estruturaCampoEntidade,
+//                                             EstruturaCampo estruturaCampoFilho) : 
+//                                                base(propriedade,
+//                                                     estruturaEntidade,
+//                                                     estruturaEntidadeRelacaoNn, 
+//                                                     estruturaEntidadeFilho,
+//                                                     estruturaCampoEntidade,
+//                                                     estruturaCampoFilho)
+//    {
+
+//    }
+//}

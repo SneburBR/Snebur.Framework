@@ -1,99 +1,98 @@
 using Snebur.Seguranca;
 using System.Collections.Concurrent;
 
-namespace Snebur.AcessoDados
+namespace Snebur.AcessoDados;
+
+public class GerenciadorCacheSessaoUsuario
 {
-    public class GerenciadorCacheSessaoUsuario
+
+    private const int MAXIMO_TENTATIVA_RETORNAR_SESSAO_USUARIO = 10;
+    //private Dictionary<Guid, CacheSessaoUsuario> CachesSessaoUsuario { get; } = new Dictionary<Guid, CacheSessaoUsuario>();
+    private ConcurrentDictionary<Guid, CacheSessaoUsuario> CachesSessaoUsuario { get; } = new ConcurrentDictionary<Guid, CacheSessaoUsuario>();
+    private GerenciadorCacheSessaoUsuario()
     {
 
-        private const int MAXIMO_TENTATIVA_RETORNAR_SESSAO_USUARIO = 10;
-        //private Dictionary<Guid, CacheSessaoUsuario> CachesSessaoUsuario { get; } = new Dictionary<Guid, CacheSessaoUsuario>();
-        private ConcurrentDictionary<Guid, CacheSessaoUsuario> CachesSessaoUsuario { get; } = new ConcurrentDictionary<Guid, CacheSessaoUsuario>();
-        private GerenciadorCacheSessaoUsuario()
+    }
+
+    public static GerenciadorCacheSessaoUsuario Instancia { get; } = new GerenciadorCacheSessaoUsuario();
+
+    public void RemoverCacheSessaoUsuario(Guid identificadorSessaoUsuario)
+    {
+        lock (SessaoUsuarioExtensao.RetornarBloqueio(identificadorSessaoUsuario))
         {
-
-        }
-
-        public static GerenciadorCacheSessaoUsuario Instancia { get; } = new GerenciadorCacheSessaoUsuario();
-
-        public void RemoverCacheSessaoUsuario(Guid identificadorSessaoUsuario)
-        {
-            lock (SessaoUsuarioExtensao.RetornarBloqueio(identificadorSessaoUsuario))
+            if (this.CachesSessaoUsuario.TryGetValue(identificadorSessaoUsuario, out var cache))
             {
-                if (this.CachesSessaoUsuario.TryGetValue(identificadorSessaoUsuario, out var cache))
-                {
-                    this.CachesSessaoUsuario.TryRemove(identificadorSessaoUsuario, out var xxx);
-                    cache.Dispose();
-                }
+                this.CachesSessaoUsuario.TryRemove(identificadorSessaoUsuario, out var xxx);
+                cache.Dispose();
+            }
+        }
+    }
+
+    public CacheSessaoUsuario RetornarCacheSessaoUsuario(BaseContextoDados contexto,
+                                                        Credencial credencial,
+                                                        Guid identificadorSessaoUsuario,
+                                                        InformacaoSessao? informacaoSessaoUsuario)
+    {
+        return this.RetornarCacheSessaoUsuarioInterno(contexto, credencial, identificadorSessaoUsuario, informacaoSessaoUsuario);
+    }
+
+    public CacheSessaoUsuario? RetornarCacheSessaoUsuario(Guid identificadorSessaoUsuario,
+                                                         bool isIgnorarErro = false)
+    {
+        lock (SessaoUsuarioExtensao.RetornarBloqueio(identificadorSessaoUsuario))
+        {
+            if (this.CachesSessaoUsuario.TryGetValue(identificadorSessaoUsuario, out var cacheSssaoUsuario))
+            {
+                cacheSssaoUsuario.NotificarSessaoAtivaAsync();
+                return cacheSssaoUsuario;
             }
         }
 
-        public CacheSessaoUsuario RetornarCacheSessaoUsuario(BaseContextoDados contexto,
-                                                            Credencial credencial,
-                                                            Guid identificadorSessaoUsuario,
-                                                            InformacaoSessao informacaoSessaoUsuario)
-        {
-            return this.RetornarCacheSessaoUsuarioInterno(contexto, credencial, identificadorSessaoUsuario, informacaoSessaoUsuario);
-        }
+        //return this.CachesSessaoUsuario[identificadorSessaoUsuario];
 
-        public CacheSessaoUsuario RetornarCacheSessaoUsuario(Guid identificadorSessaoUsuario,
-                                                             bool isIgnorarErro = false)
+        if (isIgnorarErro)
         {
-            lock (SessaoUsuarioExtensao.RetornarBloqueio(identificadorSessaoUsuario))
+            return null;
+        }
+        throw new Erro($"O identificador sessão do usuário não foi encontrado{identificadorSessaoUsuario} em {nameof(CacheSessaoUsuario)}");
+    }
+
+    private CacheSessaoUsuario RetornarCacheSessaoUsuarioInterno(
+        BaseContextoDados contexto,
+        Credencial credencial,
+        Guid identificadorSessaoUsuario,
+        InformacaoSessao? informacaoSessaoUsuario)
+    {
+        lock (SessaoUsuarioExtensao.RetornarBloqueio(identificadorSessaoUsuario))
+        {
+            if (this.CachesSessaoUsuario.TryGetValue(identificadorSessaoUsuario,
+                                                     out var cacheSssaoUsuario))
             {
-                if (this.CachesSessaoUsuario.TryGetValue(identificadorSessaoUsuario, out var cacheSssaoUsuario))
+                if (cacheSssaoUsuario.IsInicializado &&
+                    cacheSssaoUsuario.Usuario != null ||
+                    cacheSssaoUsuario.SessaoUsuario != null)
                 {
+                    cacheSssaoUsuario.Contexto = contexto;
                     cacheSssaoUsuario.NotificarSessaoAtivaAsync();
                     return cacheSssaoUsuario;
                 }
+                this.RemoverCacheSessaoUsuario(identificadorSessaoUsuario);
             }
-           
 
-            //return this.CachesSessaoUsuario[identificadorSessaoUsuario];
+            var novoCacheSessaoUsuario = new CacheSessaoUsuario(contexto,
+                                                               credencial,
+                                                               identificadorSessaoUsuario,
+                                                               informacaoSessaoUsuario);
 
-            if (isIgnorarErro)
+            if (this.CachesSessaoUsuario.TryAdd(identificadorSessaoUsuario, novoCacheSessaoUsuario))
             {
-                return null;
+                return novoCacheSessaoUsuario;
             }
-            throw new Erro($"O identificador sessão do usuário não foi encontrado{identificadorSessaoUsuario} em {nameof(CacheSessaoUsuario)}");
-        }
+            return this.RetornarCacheSessaoUsuarioInterno(contexto,
+                                                          credencial,
+                                                          identificadorSessaoUsuario,
+                                                          informacaoSessaoUsuario);
 
-        private CacheSessaoUsuario RetornarCacheSessaoUsuarioInterno(BaseContextoDados contexto,
-                                                                      Credencial credencial,
-                                                                      Guid identificadorSessaoUsuario,
-                                                                      InformacaoSessao informacaoSessaoUsuario)
-        {
-            lock (SessaoUsuarioExtensao.RetornarBloqueio(identificadorSessaoUsuario))
-            {
-                if (this.CachesSessaoUsuario.TryGetValue(identificadorSessaoUsuario,
-                                                         out var cacheSssaoUsuario))
-                {
-                    if (cacheSssaoUsuario.IsInicializado &&
-                        cacheSssaoUsuario.Usuario != null ||
-                        cacheSssaoUsuario.SessaoUsuario != null)
-                    {
-                        cacheSssaoUsuario.Contexto = contexto;
-                        cacheSssaoUsuario.NotificarSessaoAtivaAsync();
-                        return cacheSssaoUsuario;
-                    }
-                    this.RemoverCacheSessaoUsuario(identificadorSessaoUsuario);
-                }
-
-                var novoCacheSessaoUsuario = new CacheSessaoUsuario(contexto,
-                                                                   credencial,
-                                                                   identificadorSessaoUsuario,
-                                                                   informacaoSessaoUsuario);
-                novoCacheSessaoUsuario.Inicializar();
-                if (this.CachesSessaoUsuario.TryAdd(identificadorSessaoUsuario, novoCacheSessaoUsuario))
-                {
-                    return novoCacheSessaoUsuario;
-                }
-                return this.RetornarCacheSessaoUsuarioInterno(contexto,
-                                                              credencial,
-                                                              identificadorSessaoUsuario,
-                                                              informacaoSessaoUsuario);
-
-            }
         }
     }
 }

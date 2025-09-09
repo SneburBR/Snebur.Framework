@@ -71,13 +71,13 @@ public interface IConsultaEntidade<TEntidade> : IConsultaEntidade where TEntidad
 
     ConsultaEntidade<TEntidade> AbrirColecoes(params Expression<Func<TEntidade, IEnumerable>>[] expressoes);
 
-    ConsultaEntidade<TEntidade> AbrirPropriedade<TPropriedade>(Expression<Func<TEntidade, TPropriedade>> expresssao);
+    ConsultaEntidade<TEntidade> AbrirPropriedade<TPropriedade>(Expression<Func<TEntidade, TPropriedade?>> expresssao);
 
-    ConsultaEntidade<TEntidade> AbrirPropriedade(Expression<Func<TEntidade, string>> expresssao);
+    ConsultaEntidade<TEntidade> AbrirPropriedade(Expression<Func<TEntidade, string?>> expresssao);
 
-    ConsultaEntidade<TEntidade> AbrirPropriedades<TPropriedade>(params Expression<Func<TEntidade, TPropriedade>>[] expresssao);
+    ConsultaEntidade<TEntidade> AbrirPropriedades<TPropriedade>(params Expression<Func<TEntidade, TPropriedade?>>[] expresssao);
 
-    ConsultaEntidade<TEntidade> AbrirPropriedades(params Expression<Func<TEntidade, string>>[] expresssao);
+    ConsultaEntidade<TEntidade> AbrirPropriedades(params Expression<Func<TEntidade, string?>>[] expresssao);
 
     ConsultaEntidade<TEntidade> AbrirPropriedadeTipoComplexo<TTipoComplexo>(Expression<Func<TEntidade, TTipoComplexo>> expresssao) where TTipoComplexo : BaseTipoComplexo;
 

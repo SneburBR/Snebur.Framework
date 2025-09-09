@@ -1,23 +1,24 @@
-﻿namespace Snebur.AcessoDados;
+namespace Snebur.AcessoDados;
 
 public partial class ConsultaEntidade<TEntidade> where TEntidade : IEntidade
 {
-    public ConsultaEntidade<TEntidade> AbrirPropriedade<TPropriedade>(Expression<Func<TEntidade, TPropriedade>> expresssao)
+    public ConsultaEntidade<TEntidade> AbrirPropriedade<TPropriedade>(
+        Expression<Func<TEntidade, TPropriedade?>> expresssao)
     {
         return this.AbrirPropriedade((Expression)expresssao);
     }
 
-    public ConsultaEntidade<TEntidade> AbrirPropriedade(Expression<Func<TEntidade, string>> expresssao)
+    public ConsultaEntidade<TEntidade> AbrirPropriedade(Expression<Func<TEntidade, string?>> expresssao)
     {
         return this.AbrirPropriedade((Expression)expresssao);
     }
 
-    public ConsultaEntidade<TEntidade> AbrirPropriedades<TPropriedade>(params Expression<Func<TEntidade, TPropriedade>>[] expressoes)
+    public ConsultaEntidade<TEntidade> AbrirPropriedades<TPropriedade>(params Expression<Func<TEntidade, TPropriedade?>>[] expressoes)
     {
         return this.AbrirPropriedades(expressoes.Cast<Expression>());
     }
 
-    public ConsultaEntidade<TEntidade> AbrirPropriedades(params Expression<Func<TEntidade, string>>[] expressoes)
+    public ConsultaEntidade<TEntidade> AbrirPropriedades(params Expression<Func<TEntidade, string?>>[] expressoes)
     {
         return this.AbrirPropriedades(expressoes.Cast<Expression>());
     }

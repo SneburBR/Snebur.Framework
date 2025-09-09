@@ -1,26 +1,25 @@
 using System.Runtime.CompilerServices;
 
-namespace Snebur.AcessoDados
+namespace Snebur.AcessoDados;
+
+[Serializable]
+public class ErroExecutarSql : ErroAcessoDados
 {
-    [Serializable]
-    public class ErroExecutarSql : ErroAcessoDados
+
+    public ErroExecutarSql(string mensagem = "",
+                           Exception? erroInterno = null,
+                           [CallerMemberName] string nomeMetodo = "",
+                           [CallerFilePath] string caminhoArquivo = "",
+                           [CallerLineNumber] int linhaDoErro = 0) :
+                           base(mensagem, erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
     {
-
-        public ErroExecutarSql(string mensagem = "",
-                               Exception? erroInterno = null,
-                               [CallerMemberName] string nomeMetodo = "",
-                               [CallerFilePath] string caminhoArquivo = "",
-                               [CallerLineNumber] int linhaDoErro = 0) :
-                               base(mensagem, erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
-        {
-        }
-
-        #region Serializacao 
-
-        public ErroExecutarSql()
-        {
-        }
-
-        #endregion
     }
+
+    #region Serializacao 
+
+    public ErroExecutarSql()
+    {
+    }
+
+    #endregion
 }

@@ -1,115 +1,117 @@
 using Snebur.AcessoDados.Estrutura;
 using System.Data.Common;
 
-namespace Snebur.AcessoDados.Servidor.Salvar
+namespace Snebur.AcessoDados.Servidor.Salvar;
+
+internal abstract class Comando : IDisposable
 {
-    internal abstract class Comando : IDisposable
+    internal EntidadeAlterada EntidadeAlterada { get; }
+    internal EstruturaEntidade EstruturaEntidade { get; }
+    internal Entidade Entidade { get; }
+    internal string SqlCommando
+        => field ??= this.RetornarSqlComando()!;
+    protected abstract string? RetornarSqlComando();
+
+    protected List<EstruturaCampo> EstruturasCampoParametro { get; } = new();
+
+    internal abstract bool IsAdiconarParametrosChavePrimaria { get; }
+
+    internal Comando(EntidadeAlterada entidadeAlterada, EstruturaEntidade estruturaEntidade)
     {
-        internal EntidadeAlterada EntidadeAlterada { get; }
-        internal EstruturaEntidade EstruturaEntidade { get; }
-        internal DbCommand DbCommand { get; }
-        internal Entidade Entidade { get; }
-        internal string SqlCommando { get; set; }
-        protected List<EstruturaCampo> EstruturasCampoParametro { get; } = new List<EstruturaCampo>();
+        this.EntidadeAlterada = entidadeAlterada;
+        this.Entidade = this.EntidadeAlterada.Entidade;
+        this.EstruturaEntidade = estruturaEntidade;
+    }
 
-        internal abstract bool IsAdiconarParametrosChavePrimaria { get; }
+    internal virtual List<ParametroCampo> RetornarParametros()
+    {
+        var parametros = new List<ParametroCampo>();
 
-        internal Comando(EntidadeAlterada entidadeAlterada, EstruturaEntidade estruturaEntidade)
+        foreach (var estruturaCampo in this.EstruturasCampoParametro)
         {
-            this.EntidadeAlterada = entidadeAlterada;
-            this.Entidade = this.EntidadeAlterada.Entidade;
-            this.EstruturaEntidade = estruturaEntidade;
+            var valor = this.RetornarValorCampo(estruturaCampo);
+            var pametro = new ParametroCampo(estruturaCampo, valor);
+            parametros.Add(pametro);
         }
 
-        internal virtual List<ParametroCampo> RetornarParametros()
+        if (this.IsAdiconarParametrosChavePrimaria)
         {
-            var parametros = new List<ParametroCampo>();
-
-            foreach (var estruturaCampo in this.EstruturasCampoParametro)
-            {
-                var valor = this.RetornarValorCampo(estruturaCampo);
-                var pametro = new ParametroCampo(estruturaCampo, valor);
-                parametros.Add(pametro);
-            }
-
-            if (this.IsAdiconarParametrosChavePrimaria)
-            {
-                var estruturaCampoChavePrimaria = this.EstruturaEntidade.EstruturaCampoChavePrimaria;
-                var pametro = new ParametroCampo(estruturaCampoChavePrimaria, this.Entidade.Id);
-                parametros.Add(pametro);
-            }
-            return parametros;
+            var estruturaCampoChavePrimaria = this.EstruturaEntidade.EstruturaCampoChavePrimaria;
+            var pametro = new ParametroCampo(estruturaCampoChavePrimaria, this.Entidade.Id);
+            parametros.Add(pametro);
         }
+        return parametros;
+    }
 
-        private object RetornarValorCampo(EstruturaCampo estruturaCampo)
+    private object? RetornarValorCampo(EstruturaCampo estruturaCampo)
+    {
+        if (estruturaCampo.IsRelacaoChaveEstrangeira)
         {
-            if (estruturaCampo.IsRelacaoChaveEstrangeira)
+            var idRelacaoChaveEstrangeira = this.RetornarValorIdRelacaoChaveEstrangeira(estruturaCampo);
+            if (idRelacaoChaveEstrangeira == 0)
             {
-                var idRelacaoChaveEstrangeira = this.RetornarValorIdRelacaoChaveEstrangeira(estruturaCampo);
-                if (idRelacaoChaveEstrangeira == 0)
-                {
-                    return null;
-                }
-                return idRelacaoChaveEstrangeira;
+                return null;
             }
-            var valorProprieade = this.RetornarValorCampoPrimario(estruturaCampo);
-            if (valorProprieade is Double valorTipado)
-            {
-                if (Double.IsNaN(valorTipado))
-                {
-                    return 0d;
-                }
-            }
-            return this.RetornarValorCampoPrimario(estruturaCampo);
+            return idRelacaoChaveEstrangeira;
         }
-
-        private long RetornarValorIdRelacaoChaveEstrangeira(EstruturaCampo estruturaCampo)
+        var valorProprieade = this.RetornarValorCampoPrimario(estruturaCampo);
+        if (valorProprieade is Double valorTipado)
         {
-            var entidadeRelacao = (Entidade)estruturaCampo.EstruturaRelacaoChaveEstrangeira.Propriedade.GetValue(this.Entidade);
-            if (entidadeRelacao != null)
+            if (Double.IsNaN(valorTipado))
             {
-                return entidadeRelacao.Id;
+                return 0d;
             }
-            return Convert.ToInt64(this.RetornarValorCampoPrimario(estruturaCampo));
-
         }
+        return this.RetornarValorCampoPrimario(estruturaCampo);
+    }
 
-        private object RetornarValorCampoPrimario(EstruturaCampo estruturaCampo)
+    private long RetornarValorIdRelacaoChaveEstrangeira(EstruturaCampo estruturaCampo)
+    {
+        Guard.NotNull(estruturaCampo.EstruturaRelacaoChaveEstrangeira);
+        var entidadeRelacao = estruturaCampo.EstruturaRelacaoChaveEstrangeira.Propriedade.GetValue(this.Entidade) as Entidade;
+        if (entidadeRelacao is not null)
         {
-            if (estruturaCampo.IsTipoComplexo)
-            {
-                var propriedadeTipoComplexo = estruturaCampo.PropriedadeTipoComplexo;
-                var valorTipoComplexao = ReflexaoUtil.RetornarValorPropriedade(this.Entidade, propriedadeTipoComplexo);
-                if (valorTipoComplexao == null)
-                {
-                    throw new ErroNaoDefinido(String.Format("O valor do tipo complexo não pode ser nulo {0}.{1} ", propriedadeTipoComplexo.DeclaringType.Name, propriedadeTipoComplexo.Name));
-                }
-                var valorPropriedade = ReflexaoUtil.RetornarValorPropriedade(valorTipoComplexao, estruturaCampo.Propriedade);
-                if (estruturaCampo.Tipo.IsEnum)
-                {
-                    return Convert.ToInt32(valorPropriedade);
-                }
-                return valorPropriedade;
-            }
+            return entidadeRelacao.Id;
+        }
+        return Convert.ToInt64(this.RetornarValorCampoPrimario(estruturaCampo));
 
+    }
+
+    private object? RetornarValorCampoPrimario(EstruturaCampo estruturaCampo)
+    {
+        if (estruturaCampo.IsTipoComplexo)
+        {
+            var propriedadeTipoComplexo = estruturaCampo.PropriedadeTipoComplexo;
+            var valorTipoComplexao = ReflexaoUtil.RetornarValorPropriedade(this.Entidade, propriedadeTipoComplexo);
+            if (valorTipoComplexao == null)
+            {
+                throw new ErroNaoDefinido(String.Format("O valor do tipo complexo não pode ser nulo {0}.{1} ", propriedadeTipoComplexo.DeclaringType?.Name, propriedadeTipoComplexo.Name));
+            }
+            var valorPropriedade = ReflexaoUtil.RetornarValorPropriedade(valorTipoComplexao, estruturaCampo.Propriedade);
             if (estruturaCampo.Tipo.IsEnum)
             {
-                var valorPropriedade = ReflexaoUtil.RetornarValorPropriedade(this.Entidade, estruturaCampo.Propriedade);
                 return Convert.ToInt32(valorPropriedade);
             }
-            return ReflexaoUtil.RetornarValorPropriedade(this.Entidade, estruturaCampo.Propriedade);
+            return valorPropriedade;
         }
 
-        public override string ToString()
+        if (estruturaCampo.Tipo.IsEnum)
         {
-            return this.SqlCommando;
+            var valorPropriedade = ReflexaoUtil.RetornarValorPropriedade(this.Entidade, estruturaCampo.Propriedade);
+            return Convert.ToInt32(valorPropriedade);
         }
-
-        #region IDisposable 
-
-        public void Dispose()
-        {
-        }
-        #endregion
+        return ReflexaoUtil.RetornarValorPropriedade(this.Entidade, estruturaCampo.Propriedade);
     }
+
+    public override string ToString()
+    {
+        return this.SqlCommando;
+    }
+
+    #region IDisposable 
+
+    public void Dispose()
+    {
+    }
+    #endregion
 }

@@ -74,6 +74,7 @@ public class EstruturaConsulta : BaseAcessoDados, IEstruturaConsultaSeguranca
     [IgnorarPropriedade]
     [IgnorarPropriedadeTSReflexao]
     List<string>? IEstruturaConsultaSeguranca.PropriedadesAutorizadas { get => this._propriedadesAutorizadas; }
+    List<string>? IEstruturaConsultaSeguranca.PropriedadesAbertas { get => this.PropriedadesAbertas; }
 
     public bool ContarRegistros { get => this.GetPropertyValue(this._contarRegistros); set => this.SetProperty(this._contarRegistros, this._contarRegistros = value); }
 

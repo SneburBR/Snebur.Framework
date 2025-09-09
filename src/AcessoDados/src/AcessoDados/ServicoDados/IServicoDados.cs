@@ -1,10 +1,10 @@
-﻿using Snebur.Comunicacao;
+using Snebur.Comunicacao;
 
 namespace Snebur.AcessoDados;
 
 public interface IServicoDados : IBaseServico
 {
-    object RetornarValorScalar(EstruturaConsulta estruturaConsulta);
+    object? RetornarValorScalar(EstruturaConsulta estruturaConsulta);
 
     ResultadoConsulta RetornarResultadoConsulta(EstruturaConsulta estruturaConsulta);
 

@@ -1,11 +1,10 @@
-﻿namespace System.Timers
+namespace System.Timers;
+
+public static class TimerExensao
 {
-    public static class TimerExensao
+    public static void Reiniciar(this Timer timer)
     {
-        public static void Reiniciar(this Timer timer)
-        {
-            timer.Stop();
-            timer.Start();
-        }
+        timer.Stop();
+        timer.Start();
     }
 }

@@ -1,9 +1,8 @@
-﻿namespace Snebur.AcessoDados.Mapeamento
+namespace Snebur.AcessoDados.Mapeamento;
+
+internal class FiltroMapeamentoVazio : BaseFiltroMapeamento
 {
-    internal class FiltroMapeamentoVazio : BaseFiltroMapeamento
+    public FiltroMapeamentoVazio() : base(null)
     {
-        public FiltroMapeamentoVazio() : base(null)
-        {
-        }
     }
 }

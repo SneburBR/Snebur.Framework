@@ -1,18 +1,17 @@
-﻿using Snebur.AcessoDados.Estrutura;
+using Snebur.AcessoDados.Estrutura;
 
-namespace Snebur.AcessoDados.Mapeamento
+namespace Snebur.AcessoDados.Mapeamento;
+
+internal abstract class BaseFiltroMapeamento
 {
-    internal abstract class BaseFiltroMapeamento
+    internal bool IsIdTipoEntidade { get; set; } = false;
+
+    internal protected EstruturaCampo? EstruturaCampoFiltro { get; protected set; }
+
+    internal protected BaseFiltroMapeamento? FiltroMapeamentoBase { get; protected set; }
+
+    internal BaseFiltroMapeamento(BaseFiltroMapeamento? filtroMapaementoBase)
     {
-        internal bool IsIdTipoEntidade { get; set; } = false;
-
-        public EstruturaCampo EstruturaCampoFiltro { get; set; }
-
-        internal BaseFiltroMapeamento FiltroMapeamentoBase { get; set; }
-
-        internal BaseFiltroMapeamento(BaseFiltroMapeamento filtroMapaementoBase)
-        {
-            this.FiltroMapeamentoBase = filtroMapaementoBase;
-        }
+        this.FiltroMapeamentoBase = filtroMapaementoBase;
     }
 }

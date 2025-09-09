@@ -1,22 +1,21 @@
-﻿namespace Snebur.AcessoDados.Manutencao
-{
-    internal partial class GerenciadorManutencao
-    {
-        private static bool Inicializado { get; set; }
-        private static object Bloqueio { get; set; } = new object();
+namespace Snebur.AcessoDados.Manutencao;
 
-        internal static void Inicializar(BaseContextoDados contexto)
+internal partial class GerenciadorManutencao
+{
+    private static bool Inicializado { get; set; }
+    private static object Bloqueio { get; set; } = new object();
+
+    internal static void Inicializar(BaseContextoDados contexto)
+    {
+        lock (Bloqueio)
         {
-            lock (GerenciadorManutencao.Bloqueio)
+            if (!Inicializado)
             {
-                if (!GerenciadorManutencao.Inicializado)
+                using (var manutencao = new GerenciadorManutencao(contexto))
                 {
-                    using (var manutencao = new GerenciadorManutencao(contexto))
-                    {
-                        manutencao.Executar();
-                    }
-                    GerenciadorManutencao.Inicializado = true;
+                    manutencao.Executar();
                 }
+                Inicializado = true;
             }
         }
     }

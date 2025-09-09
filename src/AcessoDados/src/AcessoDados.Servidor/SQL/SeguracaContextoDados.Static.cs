@@ -1,24 +1,23 @@
-﻿namespace Snebur.AcessoDados.Seguranca
+namespace Snebur.AcessoDados.Seguranca;
+
+internal partial class SeguracaContextoDados
 {
-    internal partial class SeguracaContextoDados
+    private static SeguracaContextoDados? _seguracaContextoDados;
+
+    internal static object Bloquerio = new object();
+
+    public static SeguracaContextoDados RetornarSegurancaoContextoDados(IContextoDadosSeguranca contexto)
     {
-        private static SeguracaContextoDados _seguracaContextoDados;
-
-        internal static object Bloquerio = new object();
-
-        public static SeguracaContextoDados RetornarSegurancaoContextoDados(IContextoDadosSeguranca contexto)
+        if (_seguracaContextoDados == null)
         {
-            if (_seguracaContextoDados == null)
+            lock (Bloquerio)
             {
-                lock (Bloquerio)
+                if (_seguracaContextoDados == null)
                 {
-                    if (_seguracaContextoDados == null)
-                    {
-                        _seguracaContextoDados = new SeguracaContextoDados(contexto);
-                    }
+                    _seguracaContextoDados = new SeguracaContextoDados(contexto);
                 }
             }
-            return _seguracaContextoDados;
         }
+        return _seguracaContextoDados;
     }
 }

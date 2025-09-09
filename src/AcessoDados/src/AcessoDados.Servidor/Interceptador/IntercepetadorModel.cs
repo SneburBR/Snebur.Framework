@@ -1,24 +1,26 @@
-namespace Snebur.AcessoDados
+namespace Snebur.AcessoDados;
+
+public class IntercepetadorModel
 {
-    public class IntercepetadorModel
+    public Type TipoEntidade { get; }
+    public Type[] TiposInterceptador { get; }
+    public IInterceptador Instancia { get; }
+
+    public IntercepetadorModel(
+        Type tipoEntidade,
+        Type[] types)
     {
-        public Type TipoEntidade { get; }
-        public Type[] TiposInterceptador { get; }
-        public IInterceptador Instancia { get; }
+        this.TipoEntidade = tipoEntidade;
+        this.TiposInterceptador = types;
+        this.Instancia = Activator.CreateInstance(this.TiposInterceptador[0]) as IInterceptador ??
+                            throw new InvalidOperationException("Não foi possível criar a instância do interceptador.");
 
-        public IntercepetadorModel(Type tipoEntidade, 
-                                   Type[] types)
+        for (var i = 1; i < this.TiposInterceptador.Length; i++)
         {
-            this.TipoEntidade = tipoEntidade;
-            this.TiposInterceptador = types;
-            this.Instancia = (IInterceptador)Activator.CreateInstance(this.TiposInterceptador[0]);
-            
-            for(var i = 1; i < this.TiposInterceptador.Length; i++)
-            {
-                var intaciaBase = (IInterceptador)Activator.CreateInstance(this.TiposInterceptador[i]);
-                this.Instancia.SetInterceptadorBase(intaciaBase);
+            var intaciaBase = Activator.CreateInstance(this.TiposInterceptador[i]) as IInterceptador ??
+                                throw new InvalidOperationException("Não foi possível criar a instância do interceptador.");
 
-            }
+            this.Instancia.SetInterceptadorBase(intaciaBase);
         }
     }
 }

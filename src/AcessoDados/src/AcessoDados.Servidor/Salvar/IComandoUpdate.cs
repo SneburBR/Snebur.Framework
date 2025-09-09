@@ -1,7 +1,6 @@
-namespace Snebur.AcessoDados.Servidor.Salvar
+namespace Snebur.AcessoDados.Servidor.Salvar;
+
+public interface IComandoUpdate
 {
-    public interface IComandoUpdate
-    {
-        Dictionary<string, PropriedadeAlterada> PropriedadesAlterada { get;   }
-    }
+    Dictionary<string, PropriedadeAlterada> PropriedadesAlterada { get;   }
 }

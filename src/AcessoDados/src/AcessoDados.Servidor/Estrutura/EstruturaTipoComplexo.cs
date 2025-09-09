@@ -1,40 +1,39 @@
-namespace Snebur.AcessoDados.Estrutura
+namespace Snebur.AcessoDados.Estrutura;
+
+internal class EstruturaTipoComplexo : EstruturaPropriedade
 {
-    internal class EstruturaTipoComplexo : EstruturaPropriedade
+
+    internal DicionarioEstrutura<EstruturaCampo> EstruturasCampo { get; set; }
+
+    internal EstruturaTipoComplexo(PropertyInfo propriedade, EstruturaEntidade estruturaEntidade) : base(propriedade, estruturaEntidade)
     {
+        this.EstruturasCampo = this.RetornarEstruturasCampo();
+        this.IsAceitaNulo = false;
+    }
 
-        internal DicionarioEstrutura<EstruturaCampo> EstruturasCampo { get; set; }
-
-        internal EstruturaTipoComplexo(PropertyInfo propriedade, EstruturaEntidade estruturaEntidade) : base(propriedade, estruturaEntidade)
+    private DicionarioEstrutura<EstruturaCampo> RetornarEstruturasCampo()
+    {
+        var estruturasCampos = new DicionarioEstrutura<EstruturaCampo>();
+        var tipoNormalizado = this.RetornarTipoNormalizado(this.Tipo);
+        var propriedadesCampo = AjudanteEstruturaBancoDados.RetornarPropriedadesCampos(tipoNormalizado);
+        foreach (var propriedadeCampo in propriedadesCampo)
         {
-            this.EstruturasCampo = this.RetornarEstruturasCampo();
-            this.IsAceitaNulo = false;
+            estruturasCampos.Add(propriedadeCampo.Name, new EstruturaCampo(this.Propriedade, propriedadeCampo, this.EstruturaEntidade));
         }
+        return estruturasCampos;
+    }
 
-        private DicionarioEstrutura<EstruturaCampo> RetornarEstruturasCampo()
+    private Type RetornarTipoNormalizado(Type tipo)
+    {
+        if (tipo.BaseType?.IsGenericType == true)
         {
-            var estruturasCampos = new DicionarioEstrutura<EstruturaCampo>();
-            var tipoNormalizado = this.RetornarTipoNormalizado(this.Tipo);
-            var propriedadesCampo = AjudanteEstruturaBancoDados.RetornarPropriedadesCampos(tipoNormalizado);
-            foreach (var propriedadeCampo in propriedadesCampo)
+            if (tipo.BaseType.GetGenericTypeDefinition() == typeof(BaseListaTipoComplexo<>))
             {
-                estruturasCampos.Add(propriedadeCampo.Name, new EstruturaCampo(this.Propriedade, propriedadeCampo, this.EstruturaEntidade));
+                return tipo.BaseType;
             }
-            return estruturasCampos;
+            throw new Exception("O tipo não é suportado");
         }
+        return tipo;
 
-        private Type RetornarTipoNormalizado(Type tipo)
-        {
-            if (tipo.BaseType.IsGenericType)
-            {
-                if (tipo.BaseType.GetGenericTypeDefinition() == typeof(BaseListaTipoComplexo<>))
-                {
-                    return tipo.BaseType;
-                }
-                throw new Exception("O tipo não é suportado");
-            }
-            return tipo;
-
-        }
     }
 }

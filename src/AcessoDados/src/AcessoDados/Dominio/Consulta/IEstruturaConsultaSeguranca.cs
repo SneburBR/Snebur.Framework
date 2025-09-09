@@ -1,10 +1,10 @@
-﻿namespace Snebur.AcessoDados.Seguranca;
+namespace Snebur.AcessoDados.Seguranca;
 
 public interface IEstruturaConsultaSeguranca
 {
     //[IgnorarPropriedadeTS]
     //[IgnorarPropriedadeTSReflexao]
-    List<string> PropriedadesAbertas { get; set; }
+    List<string>? PropriedadesAbertas { get; }
 
     [IgnorarPropriedade]
     [IgnorarPropriedadeTSReflexao]

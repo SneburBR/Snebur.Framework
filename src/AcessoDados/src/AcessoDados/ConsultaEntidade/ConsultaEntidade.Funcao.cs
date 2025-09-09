@@ -15,7 +15,7 @@ public partial class ConsultaEntidade<TEntidade> where TEntidade : IEntidade
         return this.RetornarValorFuncao<bool>(EnumTipoFuncao.Existe, null);
     }
 
-    private T RetornarValorFuncao<T>(EnumTipoFuncao tipoFuncaoEnum, Expression? expressao)
+    private T? RetornarValorFuncao<T>(EnumTipoFuncao tipoFuncaoEnum, Expression? expressao)
     {
         var estruturaConsultaEscalar = new EstruturaConsulta
         {

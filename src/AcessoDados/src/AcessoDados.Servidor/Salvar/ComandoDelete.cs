@@ -1,41 +1,36 @@
 using Snebur.AcessoDados.Estrutura;
 
-namespace Snebur.AcessoDados.Servidor.Salvar
+namespace Snebur.AcessoDados.Servidor.Salvar;
+
+internal class ComandoDelete : Comando
 {
-    internal class ComandoDelete : Comando
+    internal override bool IsAdiconarParametrosChavePrimaria => true;
+
+    internal ComandoDelete(EntidadeAlterada entidadeAlterada,
+        EstruturaEntidade estruturaEntidade) : base(entidadeAlterada, estruturaEntidade)
     {
-        internal override bool IsAdiconarParametrosChavePrimaria => true;
-        internal bool IsComandoUpdade { get; set; }
 
-        internal string SqlCommandoIDeletado { get; set; }
-
-        internal ComandoDelete(EntidadeAlterada entidadeAlterada,
-            EstruturaEntidade estruturaEntidade) : base(entidadeAlterada, estruturaEntidade)
+        if (this.EstruturaEntidade.IsSomenteLeitura)
         {
-            this.SqlCommando = this.RetornarSqlCommando();
-
-            if (this.EstruturaEntidade.IsSomenteLeitura)
-            {
-                throw new ErroSeguranca("Não é autorizado deletar uma entidade somente leitura", Servicos.EnumTipoLogSeguranca.AlterarandoEntidadeSomenteLeitura);
-            }
+            throw new ErroSeguranca("Não é autorizado deletar uma entidade somente leitura", Servicos.EnumTipoLogSeguranca.AlterarandoEntidadeSomenteLeitura);
         }
+    }
 
-        private string RetornarSqlCommando()
-        {
-            return this.RetornarSqlCommnadoDelete();
-        }
+    protected override string RetornarSqlComando()
+    {
+        return this.RetornarSqlCommnadoDelete();
+    }
 
-        private string RetornarSqlCommnadoDelete()
-        {
-            var estruturaChavePrimaria = this.EstruturaEntidade.EstruturaCampoChavePrimaria;
-            var sb = new StringBuilderSql();
-            sb.Append($" DELETE FROM [{this.EstruturaEntidade.Schema}].[{this.EstruturaEntidade.NomeTabela}] WHERE {estruturaChavePrimaria.NomeCampoSensivel} = {estruturaChavePrimaria.NomeParametro}");
-            return sb.ToString();
-        }
+    private string RetornarSqlCommnadoDelete()
+    {
+        var estruturaChavePrimaria = this.EstruturaEntidade.EstruturaCampoChavePrimaria;
+        var sb = new StringBuilderSql();
+        sb.Append($" DELETE FROM [{this.EstruturaEntidade.Schema}].[{this.EstruturaEntidade.NomeTabela}] WHERE {estruturaChavePrimaria.NomeCampoSensivel} = {estruturaChavePrimaria.NomeParametro}");
+        return sb.ToString();
+    }
 
-        internal string RetornarSqlCommandoUpdate()
-        {
-            throw new ErroNaoImplementado();
-        }
+    internal string RetornarSqlCommandoUpdate()
+    {
+        throw new ErroNaoImplementado();
     }
 }

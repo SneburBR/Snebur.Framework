@@ -1,32 +1,31 @@
-﻿using Snebur.AcessoDados.Estrutura;
+using Snebur.AcessoDados.Estrutura;
 
-namespace Snebur.AcessoDados.Mapeamento
+namespace Snebur.AcessoDados.Mapeamento;
+
+internal class MapeamentoConsultaRelacaoAbertaNn : MapeamentoConsultaRelacaoAberta
 {
-    internal class MapeamentoConsultaRelacaoAbertaNn : MapeamentoConsultaRelacaoAberta
+    internal EstruturaRelacaoNn EstruturaRelacaoNn
     {
-        internal EstruturaRelacaoNn EstruturaRelacaoNn
+        get
         {
-            get
-            {
-                return (EstruturaRelacaoNn)this.EstruturaRelacao;
-            }
+            return (EstruturaRelacaoNn)this.EstruturaRelacao;
         }
+    }
 
-        internal MapeamentoConsultaRelacaoAbertaNn(EstruturaConsulta estruturaConsulta,
-                                                   EstruturaBancoDados estruturaBancoDados,
-                                                   BaseConexao conexaoDB,
-                                                   MapeamentoConsulta mapeamentoConsultaPai,
-                                                   EstruturaRelacaoNn estruturaReleacaoNn,
-                                                   BaseRelacaoAberta relacaoAberta,
-                                                   BaseContextoDados contexto) :
-                                                   base(estruturaConsulta,
-                                                        estruturaBancoDados,
-                                                        conexaoDB,
-                                                        mapeamentoConsultaPai,
-                                                        estruturaReleacaoNn,
-                                                        relacaoAberta,
-                                                        contexto)
-        {
-        }
+    internal MapeamentoConsultaRelacaoAbertaNn(EstruturaConsulta estruturaConsulta,
+                                               EstruturaBancoDados estruturaBancoDados,
+                                               BaseConexao conexaoDB,
+                                               MapeamentoConsulta mapeamentoConsultaPai,
+                                               EstruturaRelacaoNn estruturaReleacaoNn,
+                                               BaseRelacaoAberta relacaoAberta,
+                                               BaseContextoDados contexto) :
+                                               base(estruturaConsulta,
+                                                    estruturaBancoDados,
+                                                    conexaoDB,
+                                                    mapeamentoConsultaPai,
+                                                    estruturaReleacaoNn,
+                                                    relacaoAberta,
+                                                    contexto)
+    {
     }
 }
