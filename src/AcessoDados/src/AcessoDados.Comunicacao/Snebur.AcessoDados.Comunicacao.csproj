@@ -5,12 +5,14 @@
 		<TargetFrameworks>net9.0</TargetFrameworks>
 		<RootNamespace>Snebur.AcessoDados</RootNamespace>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-		<Nullable>disable</Nullable>
 		<AssemblyName>Snebur.AcessoDados.Comunicacao</AssemblyName>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<Nullable>enable</Nullable>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<LangVersion>preview</LangVersion>
 
 	</PropertyGroup>
-  
+
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\AspNet\Snebur.AspNet.csproj" />
 		<ProjectReference Include="..\..\..\Comunicacao\src\Comunicacao.Servidor\Snebur.Comunicacao.Servidor.csproj" />
