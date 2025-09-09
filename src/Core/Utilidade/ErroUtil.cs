@@ -109,26 +109,26 @@ public static class ErroUtil
         return false;
     }
 
-    public static void ValidarReferenciaNula(object referencia, string nomeReferencia,
-                                            [CallerMemberName] string nomeMetodo = "",
-                                            [CallerFilePath] string caminhoArquivo = "",
-                                            [CallerLineNumber] int linhaDoErro = 0)
-    {
-        if (referencia == null)
-        {
-            var mensagem = String.Format("A referencia '{0}' não foi definida", nomeReferencia);
-            throw new ErroNaoDefinido(mensagem, null, nomeMetodo, caminhoArquivo, linhaDoErro);
-        }
-    }
+    //public static void ValidarReferenciaNula(object referencia, string nomeReferencia,
+    //                                        [CallerMemberName] string nomeMetodo = "",
+    //                                        [CallerFilePath] string caminhoArquivo = "",
+    //                                        [CallerLineNumber] int linhaDoErro = 0)
+    //{
+    //    if (referencia == null)
+    //    {
+    //        var mensagem = String.Format("A referencia '{0}' não foi definida", nomeReferencia);
+    //        throw new ErroNaoDefinido(mensagem, null, nomeMetodo, caminhoArquivo, linhaDoErro);
+    //    }
+    //}
 
-    public static void ValidarStringVazia(string texto, string nomeReferencia, [CallerMemberName] string nomeMetodo = "", [CallerFilePath] string caminhoArquivo = "", [CallerLineNumber] int linhaDoErro = 0)
-    {
-        if (String.IsNullOrEmpty(texto))
-        {
-            var mensagem = String.Format("A referencia '{0}' não foi definida", nomeReferencia);
-            throw new ErroNaoDefinido(mensagem, null, nomeMetodo, caminhoArquivo, linhaDoErro);
-        }
-    }
+    //public static void ValidarStringVazia(string texto, string nomeReferencia, [CallerMemberName] string nomeMetodo = "", [CallerFilePath] string caminhoArquivo = "", [CallerLineNumber] int linhaDoErro = 0)
+    //{
+    //    if (String.IsNullOrEmpty(texto))
+    //    {
+    //        var mensagem = String.Format("A referencia '{0}' não foi definida", nomeReferencia);
+    //        throw new ErroNaoDefinido(mensagem, null, nomeMetodo, caminhoArquivo, linhaDoErro);
+    //    }
+    //}
 
     public static bool IsErroSessaoInvalida(Exception ex)
     {

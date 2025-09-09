@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -118,6 +119,18 @@ public static class Guard
                 $"Parameter '{paramName}' with value '{value}' is not defined into enum '{typeof(TEnum).Name}'. Please provide a valid enum value.",
                 paramName);
         }
+    }
+
+    public static void InstanceOf<T>(
+         [NotNull] object? value,
+         [CallerArgumentExpression(nameof(value))] string paramName = "")
+    {
+        if (value is null)
+            throw new ArgumentNullException(nameof(value), $"{nameof(value)} cannot be null.");
+
+        if (value is not T _)
+            throw new ArgumentException($"{nameof(value)} must be of type {typeof(T).Name}.", nameof(value));
+
     }
 }
 

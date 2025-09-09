@@ -12,10 +12,12 @@ public static partial class ReflexaoUtil
         }
         return null;
     }
+
     public static EnumTipoPrimario RetornarTipoPrimarioEnum(Type tipo)
     {
 #if DEBUG
-        ErroUtil.ValidarReferenciaNula(tipo, nameof(tipo));
+        Guard.NotNull(tipo);
+
 #endif
         tipo = RetornarTipoSemNullable(tipo);
 
@@ -166,7 +168,8 @@ public static partial class ReflexaoUtil
     public static bool TipoRetornaTipoPrimario(Type tipo, bool removerNullable = false)
     {
 #if DEBUG
-        ErroUtil.ValidarReferenciaNula(tipo, nameof(tipo));
+
+        Guard.NotNull(tipo);
 #endif
         if (removerNullable)
         {
@@ -179,7 +182,7 @@ public static partial class ReflexaoUtil
     public static Type RetornarTipoSemNullable(Type tipo)
     {
 #if DEBUG
-        ErroUtil.ValidarReferenciaNula(tipo, nameof(tipo));
+        Guard.NotNull(tipo);
 #endif
         if (IsTipoNullable(tipo))
         {
@@ -222,7 +225,6 @@ public static partial class ReflexaoUtil
         //}
     }
 
-
     public static bool IsTipoRetornaColecaoEntidade(Type tipo)
     {
         if (IsTipoRetornaColecao(tipo))
@@ -249,7 +251,7 @@ public static partial class ReflexaoUtil
     public static bool IsTipoEntidade(Type tipoEntidade)
     {
 #if DEBUG
-        ErroUtil.ValidarReferenciaNula(tipoEntidade, nameof(tipoEntidade));
+        Guard.NotNull(tipoEntidade);
 #endif
         if (tipoEntidade.IsSubclassOf(typeof(Entidade)) ||
             IsTipoImplementaInterface(tipoEntidade, typeof(IEntidade)))
@@ -266,7 +268,7 @@ public static partial class ReflexaoUtil
     public static Type RetornarTipoGenericoColecao(Type tipo)
     {
 #if DEBUG
-        ErroUtil.ValidarReferenciaNula(tipo, nameof(tipo));
+        Guard.NotNull(tipo);
 #endif
         if (!IsTipoRetornaColecao(tipo))
         {
@@ -295,7 +297,7 @@ public static partial class ReflexaoUtil
     public static bool IsTipoAbstrato(Type tipo)
     {
 #if DEBUG
-        ErroUtil.ValidarReferenciaNula(tipo, nameof(tipo));
+        Guard.NotNull(tipo);
 #endif
         if (tipo == null)
         {
@@ -308,8 +310,8 @@ public static partial class ReflexaoUtil
     public static bool IsTipoPossuiAtributo(Type tipo, Type tipoAtributo, bool herdado = true)
     {
 #if DEBUG
-        ErroUtil.ValidarReferenciaNula(tipo, nameof(tipo));
-        ErroUtil.ValidarReferenciaNula(tipoAtributo, nameof(tipoAtributo));
+        Guard.NotNull(tipo);
+        Guard.NotNull(tipoAtributo);
 #endif
         return tipo.GetCustomAttributes(tipoAtributo, herdado).FirstOrDefault() != null;
     }
@@ -317,8 +319,8 @@ public static partial class ReflexaoUtil
     public static bool IsTipoImplementaInterface(Type tipo, Type tipoInterface, bool ignorarTipoBase = true)
     {
 #if DEBUG
-        ErroUtil.ValidarReferenciaNula(tipo, nameof(tipo));
-        ErroUtil.ValidarReferenciaNula(tipoInterface, nameof(tipoInterface));
+        Guard.NotNull(tipo);
+        Guard.NotNull(tipoInterface);
 #endif
         var tipoInterfaceInterno = tipo.GetInterface(tipoInterface.Name, true);
         if (tipoInterfaceInterno != null)
@@ -341,10 +343,14 @@ public static partial class ReflexaoUtil
         return false;
     }
 
-    public static bool IsTipoIgualOuHerda(Type tipo, Type tipoBase)
+    public static bool IsTipoIgualOuHerda(Type tipo, Type? tipoBase)
     {
         Guard.NotNull(tipo);
-        Guard.NotNull(tipoBase);
+
+        if (tipoBase is null)
+        {
+            return false;
+        }
 
         if (tipo == tipoBase || tipo.IsSubclassOf(tipoBase))
         {

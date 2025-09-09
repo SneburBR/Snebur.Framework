@@ -70,44 +70,44 @@ public static partial class TextoUtil
         private const string PONTOS_SINAIS = "+-.,()";
         private const string PONTOS_SINAIS_SIMBOLOS = ",.;:?!|+-_.,@~^`´&$#*/\\§%|(){}[]<>";
 
-        private static HashSet<char>? _numeros;
-        private static HashSet<char>? _letras;
-        private static HashSet<char>? _letrasNumeros;
-        private static HashSet<char>? _caracteresPadrao;
-        private static HashSet<char>? _linhasTabulacoes;
-        private static HashSet<char>? _pontosSinais;
-        private static HashSet<char>? _numerosPontosSinais;
-        private static Dictionary<char, char>? _acentosMapeado;
+        //private static HashSet<char>? _numeros;
+        //private static HashSet<char>? _letras;
+        //private static HashSet<char>? _letrasNumeros;
+        //private static HashSet<char>? _caracteresPadrao;
+        //private static HashSet<char>? _linhasTabulacoes;
+        //private static HashSet<char>? _pontosSinais;
+        //private static HashSet<char>? _numerosPontosSinais;
+        //private static Dictionary<char, char>? _acentosMapeado;
 
         internal static HashSet<char> Numeros => LazyUtil.RetornarValorLazy(
-                ref _numeros,
+                ref field,
                 () => NUMEROS.ToArray().ToHashSet());
         internal static HashSet<char> PontosSinais => LazyUtil.RetornarValorLazy(
-                ref _pontosSinais,
+                ref field,
                 () => PONTOS_SINAIS.ToArray().ToHashSet());
 
         internal static HashSet<char> NumerosPontosSinais => LazyUtil.RetornarValorLazy(
-                ref _numerosPontosSinais,
+                ref field,
                 () => (NUMEROS + PONTOS_SINAIS).ToArray().ToHashSet());
 
         internal static HashSet<char> NumerosPontosSinaisSimbolos => LazyUtil.RetornarValorLazy(
-                ref _numerosPontosSinais,
+                ref field,
                 () => (NUMEROS + PONTOS_SINAIS_SIMBOLOS).ToArray().ToHashSet());
 
         internal static HashSet<char> Letras => LazyUtil.RetornarValorLazy(
-                 ref _letras,
+                 ref field,
                  () => LETRAS.ToArray().ToHashSet());
 
         internal static HashSet<char> LetrasNumeros => LazyUtil.RetornarValorLazy(
-                ref _letrasNumeros,
+                ref field,
                 () => String.Concat(LETRAS, NUMEROS).ToArray().ToHashSet());
 
         internal static HashSet<char> CaracteresPadrao => LazyUtil.RetornarValorLazy(
-                ref _caracteresPadrao,
+                ref field,
                 () => CARACTERES_PADRAO.ToArray().ToHashSet());
 
         internal static HashSet<char> LinhasTabulacoes => LazyUtil.RetornarValorLazy(
-                ref _linhasTabulacoes,
+                ref field,
                 () =>
                 {
                     var retorno = new HashSet<char>();
@@ -121,7 +121,7 @@ public static partial class TextoUtil
                 });
 
         internal static Dictionary<char, char> AcentosMapeado => LazyUtil.RetornarValorLazy(
-                ref _acentosMapeado,
+                ref field,
                 () =>
                 {
                     if (ACENTOS.Length != ACENTOS_MAPEADOS.Length)

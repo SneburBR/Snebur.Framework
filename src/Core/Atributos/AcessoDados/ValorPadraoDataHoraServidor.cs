@@ -20,9 +20,10 @@ public class ValorPadraoDataHoraServidorAttribute : SomenteLeituraAttribute, IVa
 
     public bool IsTipoNullableRequerido { get; } = false;
 
-    public object? RetornarValorPadrao(object contexto,
-                                      Entidade entidadeCorrente,
-                                     object valorPropriedade)
+    public object? RetornarValorPadrao(
+        object contexto,
+        Entidade entidadeCorrente,
+        object? valorPropriedade)
     {
         if (!entidadeCorrente.__IsNewEntity)
         {

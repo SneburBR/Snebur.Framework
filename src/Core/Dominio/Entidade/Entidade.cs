@@ -756,7 +756,7 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntidadeIntern
         this.__isNewEntity__ = false;
     }
 
-    void IEntidadeInterna.AtribuirPropriedadesAbertas(List<string> propriedadesAberta)
+    void IEntidadeInterna.AtribuirPropriedadesAbertas(List<string>? propriedadesAberta)
     {
         //if (this.__ControlarPropriedadesAlterada || this.__propriedadesAbertas != null)
         //{
@@ -771,7 +771,7 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntidadeIntern
             this.__propriedadesAbertas = propriedadesAberta;
         }
     }
-    void IEntidadeInterna.AtribuirPropriedadesAutorizadas(List<string> propriedadesAutorizadas)
+    void IEntidadeInterna.AtribuirPropriedadesAutorizadas(List<string>? propriedadesAutorizadas)
     {
         if (this.__IsControladorPropriedadesAlteradaAtivo || this.__propriedadesAutorizadas != null)
         {
@@ -899,7 +899,6 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntidadeIntern
 
     //Isso deve ser implementado apenas no domino do lado do cliente.
     //deve IsAplicacaoCliente ser true
-
 
     internal protected string? RetornarDescricaoComDeletado(
         [NotNullIfNotNull(nameof(descricao))]

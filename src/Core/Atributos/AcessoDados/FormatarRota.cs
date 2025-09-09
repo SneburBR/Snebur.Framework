@@ -6,7 +6,7 @@ public class FormatarRotaAttribute : Attribute, IValorPadrao
     public bool IsValorPadraoOnUpdate => true;
     public object? RetornarValorPadrao(object contexto,
                                       Entidade entidadeCorrente,
-                                      object valorPropriedade)
+                                      object? valorPropriedade)
     {
         if (valorPropriedade is string rota)
         {

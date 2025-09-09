@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
 
@@ -9,7 +9,8 @@ public class PropriedadeIndexar
     public bool IsIgrnorarZero { get; }
     public string? NomeIndice { get; }
 
-    public PropriedadeIndexar(PropertyInfo propriedade, string nomeIndice) : this(propriedade, false, false)
+    public PropriedadeIndexar(PropertyInfo propriedade, string? nomeIndice)
+        : this(propriedade, false, false)
     {
         this.NomeIndice = nomeIndice;
     }

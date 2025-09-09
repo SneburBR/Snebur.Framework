@@ -42,9 +42,10 @@ public class ValorPadraoConverterAttribute : Attribute, IValorPadrao
 
     public bool IsTipoNullableRequerido { get; } = false;
 
-    public object? RetornarValorPadrao(object contexto,
-                                      Entidade entidadeCorrente,
-                                      object valorPropriedade)
+    public object? RetornarValorPadrao(
+        object contexto,
+        Entidade entidadeCorrente,
+        object? valorPropriedade)
     {
         return this.InstanciaConverter.RetornarValorPadrao(contexto,
                                                            entidadeCorrente,

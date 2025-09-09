@@ -1,4 +1,4 @@
-﻿namespace Snebur.Utilidade;
+namespace Snebur.Utilidade;
 
 public static class LazyUtil
 {
@@ -49,12 +49,30 @@ public static class LazyUtil
         return valor.Value;
     }
 
-    public static T RetornarValorLazy<T>(ref T? valor, Func<T> retornarValor) where T : class
+    public static T RetornarValorLazy<T>(
+        ref T? valor,
+        Func<T> retornarValor) where T : class
     {
-        if (valor == null)
+        if (valor is null)
         {
             var novoValor = retornarValor.Invoke();
-            if (valor == null)
+            if (valor is null)
+            {
+                Guard.NotNull(novoValor);
+                valor = novoValor;
+            }
+        }
+        return valor;
+    }
+
+    public static T? RetornarValorLazyTalvezNulo<T>(
+        ref T? valor,
+        Func<T?> retornarValor) where T : class
+    {
+        if (valor is null)
+        {
+            var novoValor = retornarValor.Invoke();
+            if (valor is null)
             {
                 valor = novoValor;
             }

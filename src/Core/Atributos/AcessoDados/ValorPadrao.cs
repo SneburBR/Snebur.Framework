@@ -67,7 +67,7 @@ public class ValorPadraoAttribute : Attribute, IValorPadrao
 
     public object RetornarValorPadrao(object contexto,
                                       Entidade entidade,
-                                      object valorPropriedade)
+                                      object? valorPropriedade)
     {
         return this.ValorPadrao;
     }

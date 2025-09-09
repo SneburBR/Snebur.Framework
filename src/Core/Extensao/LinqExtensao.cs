@@ -34,7 +34,7 @@ public static class LinqExtensao
         return null;
     }
 
-    public static void AddIsNotNull<T>(this ICollection<T> colecao, T item)
+    public static void AddIsNotNull<T>(this ICollection<T> colecao, T? item)
     {
         if (item != null)
         {
@@ -131,7 +131,7 @@ public static class LinqExtensao
         }
     }
 
-    public static void AddRangeNotNull<T>(this ICollection<T> colecao, IEnumerable<T> itens)
+    public static void AddRangeNotNull<T>(this ICollection<T> colecao, IEnumerable<T?>? itens)
     {
         if (itens == null)
         {
@@ -500,7 +500,9 @@ public static class LinqExtensao
     }
     #endregion
 
-    public static HashSet<T?> ToHashSet<T>(this IEnumerable<T?> colecao, bool aceitarNull) where T : class
+    public static HashSet<T?> ToHashSet<T>(
+        this IEnumerable<T?> colecao,
+        bool aceitarNull) where T : class
     {
         var hashSet = colecao.ToHashSet();
         if (aceitarNull)

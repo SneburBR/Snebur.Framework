@@ -1,6 +1,6 @@
-﻿namespace Snebur.Dominio;
+namespace Snebur.Dominio;
 
 public interface INomeTipoEntidade
 {
-    string __NomeTipoEntidade { get; }
+    string? __NomeTipoEntidade { get; }
 }

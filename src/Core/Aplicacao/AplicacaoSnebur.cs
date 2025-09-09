@@ -806,7 +806,7 @@ public abstract partial class AplicacaoSnebur
         //return IpUtil.RetornarIPInformacaoRequisicao(isRetornarNullNaoEncotnrado).IP;
     }
 
-    public virtual bool IsCredencialAvalistaPermirteContinuarSessaoInvalido(CredencialUsuario crendencial)
+    public virtual bool IsCredencialAvalistaPermirteContinuarSessaoInvalido(CredencialUsuario? crendencial)
     {
         return false;
     }

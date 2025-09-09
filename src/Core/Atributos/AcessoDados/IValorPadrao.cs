@@ -11,7 +11,7 @@ public interface IConverterValorPadrao
 {
     object? RetornarValorPadrao(object contexto,
                                Entidade entidadeCorrente,
-                               object valorPropriedade);
+                               object? valorPropriedade);
 }
 
 [IgnorarInterfaceTS]

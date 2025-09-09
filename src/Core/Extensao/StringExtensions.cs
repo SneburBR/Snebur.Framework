@@ -136,7 +136,7 @@ public static class StringExtensions
         if (value.Length == 0)
             return string.Empty;
 
-        if(value == value.ToUpperInvariant())
+        if (value == value.ToUpperInvariant())
         {
             return value.ToLowerInvariant();
         }
@@ -149,5 +149,28 @@ public static class StringExtensions
             return false;
 
         return char.IsUpper(value[0]);
+    }
+}
+
+public static class CharExtensions
+{
+    public static char ToUpper(this char ch)
+    {
+        return char.ToUpper(ch);
+    }
+
+    public static char ToUpperInvariant(this char ch)
+    {
+        return char.ToUpperInvariant(ch);
+    }
+
+    public static char ToLower(this char ch)
+    {
+        return char.ToLower(ch);
+    }
+
+    public static char ToLowerInvariant(this char ch)
+    {
+        return char.ToLowerInvariant(ch);
     }
 }

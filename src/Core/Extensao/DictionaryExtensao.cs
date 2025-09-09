@@ -206,4 +206,20 @@ public static class DictionaryExtensao
         }
         return dicionarioBloqueio[hashChave];
     }
+
+    public static void AddRange<TKey, TValue>(
+        this IDictionary<TKey, TValue> dicionario,
+        ICollection<KeyValuePair<TKey, TValue>> itens)
+    {
+        lock (dicionario.SyncLock())
+        {
+            foreach (var item in itens)
+            {
+                if (!dicionario.ContainsKey(item.Key))
+                {
+                    dicionario.Add(item.Key, item.Value);
+                }
+            }
+        }
+    }
 }

@@ -264,9 +264,8 @@ public static partial class ValidacaoUtil
 
     public static bool IsTipoNullable(Type tipo)
     {
-#if DEBUG
-        ErroUtil.ValidarReferenciaNula(tipo, nameof(tipo));
-#endif
+        Guard.NotNull(tipo);
+
         return Nullable.GetUnderlyingType(tipo) != null;
         //return (tipo.IsGenericType && tipo.GetGenericTypeDefinition() == typeof(Nullable<>));
     }

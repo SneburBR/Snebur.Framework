@@ -11,7 +11,7 @@ public class ValorPadraoIPAttribute : SomenteLeituraAttribute, IValorPadrao
 
     public object? RetornarValorPadrao(object contexto,
                                       Entidade entidade,
-                                      object valorPropriedade)
+                                      object? valorPropriedade)
     {
 
         return AplicacaoSnebur.AtualRequired.IpPublico;

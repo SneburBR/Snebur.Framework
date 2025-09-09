@@ -28,10 +28,10 @@ public static class SerializacaoUtil
         return propriedades;
     }
 
-    public static string? SerializarTipoSimples(object valor,
+    public static string? SerializarTipoSimples(object? valor,
                                                bool isNotNumericWithinSingleQuotes = false)
     {
-        if (valor == null)
+        if (valor is null)
         {
             return null;
         }

@@ -11,9 +11,9 @@ public interface IEntidadeInterna : IEntidade
 
     //void AtivarControladorPropriedadeAlterada();
 
-    void AtribuirPropriedadesAbertas(List<string> PropriedadesAberta);
+    void AtribuirPropriedadesAbertas(List<string>? PropriedadesAberta);
 
-    void AtribuirPropriedadesAutorizadas(List<string> PropriedadesAutorizadas);
+    void AtribuirPropriedadesAutorizadas(List<string>? PropriedadesAutorizadas);
 
     void AdicionarProprieadeAberta(string nomePropriedade);
 

@@ -150,7 +150,7 @@ public class ConverterUtil
         }
     }
 
-    private static Guid ParaGuid(object valor)
+    private static Guid ParaGuid(object? valor)
     {
         Guid.TryParse(valor?.ToString(), out var resultado);
         return resultado;
@@ -258,7 +258,7 @@ public class ConverterUtil
         return (T)ConverterTipoPrimario(valor, tipoPrimario)!;
     }
 
-    public static int ParaInt32(object valor, IFormatProvider? provider = null)
+    public static int ParaInt32(object? valor, IFormatProvider? provider = null)
     {
         if (valor is int)
         {
@@ -276,7 +276,7 @@ public class ConverterUtil
         return 0;
     }
 
-    public static long ParaInt64(object valor, IFormatProvider? provider = null)
+    public static long ParaInt64(object? valor, IFormatProvider? provider = null)
     {
         if (valor is long lvalor)
         {
@@ -293,7 +293,7 @@ public class ConverterUtil
         return 0L;
     }
 
-    public static decimal ParaDecimal(object valor, IFormatProvider? provider = null)
+    public static decimal ParaDecimal(object? valor, IFormatProvider? provider = null)
     {
         if (valor is decimal d)
         {
@@ -310,7 +310,7 @@ public class ConverterUtil
         return 0m;
     }
 
-    public static double ParaSingle(object valor, IFormatProvider? provider = null)
+    public static double ParaSingle(object? valor, IFormatProvider? provider = null)
     {
         if (valor is float d)
         {
@@ -327,7 +327,7 @@ public class ConverterUtil
         return 0f;
     }
 
-    public static double ParaDouble(object valor, IFormatProvider? provider = null)
+    public static double ParaDouble(object? valor, IFormatProvider? provider = null)
     {
         if (valor is double d)
         {
@@ -363,7 +363,7 @@ public class ConverterUtil
         return 0d;
     }
 
-    public static DateTime ParaDateTime(object valor, IFormatProvider? provider = null)
+    public static DateTime ParaDateTime(object? valor, IFormatProvider? provider = null)
     {
         if (valor is DateTime d)
         {
@@ -441,9 +441,9 @@ public class ConverterUtil
         return DateTime.MinValue;
     }
 
-    private static bool IsValorVazioOuNull(object valor)
+    private static bool IsValorVazioOuNull(object? valor)
     {
-        return valor == null ||
+        return valor is null ||
                valor == DBNull.Value ||
                String.IsNullOrWhiteSpace(valor.ToString());
     }
@@ -567,9 +567,9 @@ public class ConverterUtil
         return $"rgba({red},{green},{blue},{Math.Round(alphaDecimal, 2)})";
     }
 
-    internal static Dimensao ParaDimensao(object valor)
+    internal static Dimensao ParaDimensao(object? valor)
     {
-        if (valor == null)
+        if (valor is null)
         {
             return Dimensao.Empty;
         }

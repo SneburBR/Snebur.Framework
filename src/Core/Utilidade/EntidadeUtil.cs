@@ -72,6 +72,11 @@ public class EntidadeUtil
         }
         throw new Erro($"Foi encontrado mais de uma propriedade do tipo {tipoEntidade.Name} em {tipoEntidadeRelacao.Name} ");
     }
+    public static PropertyInfo RetornarPropriedadeChaveEstrangeira(Type tipoEntidade,
+                                                                  PropertyInfo propriedade)
+    {
+        return RetornarPropriedadeChaveEstrangeira(tipoEntidade, propriedade, false)!;
+    }
 
     public static PropertyInfo? RetornarPropriedadeChaveEstrangeira(Type tipoEntidade,
                                                                    PropertyInfo propriedade,

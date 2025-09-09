@@ -49,7 +49,7 @@ public static class EnumUtil
 
     public static Enum[] RetornarValoresEnum(Type tipoEnum)
     {
-        ErroUtil.ValidarReferenciaNula(tipoEnum, nameof(tipoEnum));
+        Guard.NotNull(tipoEnum);
         if (!tipoEnum.IsEnum)
         {
             throw new Erro(String.Format("O tipo {0} não suportado, esperado Enum", tipoEnum.Name));
@@ -64,7 +64,7 @@ public static class EnumUtil
 
     public static string RetornarDescricao(Enum valor)
     {
-        ErroUtil.ValidarReferenciaNula(valor, nameof(valor));
+        Guard.NotNull(valor);
 
         var fi = valor.GetType().GetField(valor.ToString());
         if (fi != null)
@@ -115,7 +115,7 @@ public static class EnumUtil
 
     public static string RetornarNome(Enum valor)
     {
-        ErroUtil.ValidarReferenciaNula(valor, nameof(valor));
+        Guard.NotNull(valor);
 
         var nome = Enum.GetName(valor.GetType(), valor);
         if (!String.IsNullOrEmpty(nome))

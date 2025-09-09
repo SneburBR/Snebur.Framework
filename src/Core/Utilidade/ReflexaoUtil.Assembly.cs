@@ -76,7 +76,8 @@ public static partial class ReflexaoUtil
 
     public static Tuple<string, Version> RetornarNomeVersaoAssembly(Assembly assembly)
     {
-        ErroUtil.ValidarReferenciaNula(assembly, nameof(assembly));
+        Guard.NotNull(assembly);
+
         var version = assembly.RetornarVersaoAssembly();
         var assemblyName = assembly.GetName().Name ?? $"Assembly sem nome {assembly.FullName}";
 

@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
 
@@ -6,7 +6,7 @@ public class FiltroPropriedadeIndexar
 {
     public PropertyInfo Propriedade { get; private set; }
     public EnumOperadorComparacao Operador { get; }
-    public string Valor { get; }
+    public string? Valor { get; }
     public string OperadoprString
     {
         get
@@ -33,7 +33,7 @@ public class FiltroPropriedadeIndexar
 
     public FiltroPropriedadeIndexar(PropertyInfo propriedade,
                                     EnumOperadorComparacao operadopr,
-                                    string valor)
+                                    string? valor)
     {
         this.Propriedade = propriedade;
         this.Operador = operadopr;

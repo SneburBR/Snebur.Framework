@@ -330,6 +330,7 @@ public static partial class TextoUtil
         }
         return quant;
     }
+
     //public static string RetornarPrimeiroNome(string nomeCompleto)
     //{
     //    var nomes = nomeCompleto.Trim().Split(" ".ToCharArray());
@@ -733,9 +734,8 @@ public static partial class TextoUtil
 
     private static readonly object _bloqueio = new object();
 
-    private static Dictionary<string, HashSet<char>>? _cacheFiltros;
     public static Dictionary<string, HashSet<char>> CacheFiltros
-        => LazyUtil.RetornarValorLazyComBloqueio(ref _cacheFiltros, () => new Dictionary<string, HashSet<char>>());
+        => LazyUtil.RetornarValorLazyComBloqueio(ref field, () => new Dictionary<string, HashSet<char>>());
     private static HashSet<char> RetoranrFiltroCache(HashSet<char> filtroBase,
                                                       IEnumerable<char> caractesExtras)
     {
@@ -766,7 +766,7 @@ public static partial class TextoUtil
             return String.Empty;
         }
 
-        ErroUtil.ValidarReferenciaNula(caracterPermitidos, nameof(caracterPermitidos));
+        Guard.NotNull(caracterPermitidos);
 
         var sb = new StringBuilder();
         for (int i = 0; i < texto.Length; i++)
