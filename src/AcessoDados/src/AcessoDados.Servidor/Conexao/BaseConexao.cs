@@ -331,18 +331,23 @@ public class ParametroInfo
 
     }
 
+    [SetsRequiredMembers]
     public ParametroInfo(string nomeParametro, object? value)
         : this(nomeParametro, SqlUtil.GetBetterSqlDbType(value), value)
     {
-
+        this.Size = SqlUtil.GetBetterSize(value);
     }
+
+    [SetsRequiredMembers]
     public ParametroInfo(string nomeParametro,
                          SqlDbType sqlType,
-                         object? value) : this(nomeParametro, sqlType, null, value)
+                         object? value)
+        : this(nomeParametro, sqlType, null, value)
     {
 
     }
 
+    [SetsRequiredMembers]
     public ParametroInfo(string nomeParametro,
                          SqlDbType sqlType,
                          int? size,

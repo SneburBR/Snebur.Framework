@@ -810,7 +810,7 @@ public abstract partial class BaseContextoDados : __BaseContextoDados, IServicoD
         = new Lazy<HashSet<EstruturaCampo>>(() => new HashSet<EstruturaCampo>());
 
     public void PermitirSobreSomenteLeitura<TEntidade>(
-                params Expression<Func<TEntidade, object>>[] expressoes)
+                params Expression<Func<TEntidade, object?>>[] expressoes)
     {
         var tipoEntidade = typeof(TEntidade);
         var estruturaEntidaes = this.EstruturaBancoDados.EstruturasEntidade;
