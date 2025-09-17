@@ -158,9 +158,10 @@ public class EntidadeUtil
         return propriedade;
     }
 
-    public static long? RetornarValorIdChaveEstrangeira(Entidade entidade,
-                                                       PropertyInfo propriedade,
-                                                       bool isPreferirCampoPrivado = false)
+    public static long? RetornarValorIdChaveEstrangeira(
+        Entidade entidade,
+        PropertyInfo propriedade,
+        bool isPreferirCampoPrivado = false)
     {
         if (isPreferirCampoPrivado)
         {
@@ -179,10 +180,11 @@ public class EntidadeUtil
         else
         {
             var propriedadeChaveEstrangeira = RetornarPropriedadeChaveEstrangeira(entidade.GetType(), propriedade, true);
-            if (propriedadeChaveEstrangeira == null)
+            if (propriedadeChaveEstrangeira is null)
             {
                 return null;
             }
+
             var valorPropriedade = propriedadeChaveEstrangeira.GetValue(entidade);
             return ConverterUtil.Para<long?>(valorPropriedade);
         }

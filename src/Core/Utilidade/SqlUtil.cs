@@ -98,4 +98,13 @@ public static class SqlUtil
                 throw new Exception($"The type {type.Name} is not supported");
         }
     }
+
+    public static int? GetBetterSize(object? value)
+    {
+        if (value is string str)
+        {
+            return str.Length;
+        }
+        return null;
+    }
 }

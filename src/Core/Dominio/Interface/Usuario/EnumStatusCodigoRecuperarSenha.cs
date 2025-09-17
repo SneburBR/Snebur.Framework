@@ -1,4 +1,4 @@
-﻿namespace Snebur.Dominio;
+namespace Snebur.Dominio;
 
 public enum EnumStatusCodigoRecuperarSenha
 {
@@ -10,5 +10,6 @@ public enum EnumStatusCodigoRecuperarSenha
     Expirado = 4,
     MaximoTentativaAtingido = 5,
     SenhaRecuperada = 6,
-    TempoMaximoTentativaExpirado = 7
+    TempoMaximoTentativaExpirado = 7,
+    UsuarioNaoEncontrado = 8
 }
