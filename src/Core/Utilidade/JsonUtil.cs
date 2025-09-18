@@ -135,13 +135,13 @@ public static class JsonUtil
         }
     }
 
-    public static void Serializar(object objeto,
+    public static void Serializar(object? objeto,
                                   EnumTipoSerializacao tipoSerializacao,
                                   string caminhoArquivo)
     {
         SalvarSerializacao(objeto, tipoSerializacao, caminhoArquivo);
     }
-    public static string Serializar(object objeto,
+    public static string Serializar(object? objeto,
                                     EnumTipoSerializacao tipoSerializacao)
     {
         return Serializar(objeto,
@@ -209,7 +209,7 @@ public static class JsonUtil
         return JsonConvert.SerializeObject(obj, serializerSettings);
     }
 
-    public static void SalvarSerializacao(object objecto,
+    public static void SalvarSerializacao(object? objecto,
                                          EnumTipoSerializacao tipoSerializacao,
                                          string caminhoDestino,
                                          bool isIdentar = true)

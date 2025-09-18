@@ -30,7 +30,7 @@ public partial class PerfilIccUtil
 
     private const string NOME_ARQUIVO_PERFIL_SGRAY = "sgray.icc";
 
-    private const string NOME_PERFIL_SGRAY = "sGray";
+    //private const string NOME_PERFIL_SGRAY = "sGray";
 
     public static string[] ExtencoesPerfilIcc = { ".icm", ".icc" };
 

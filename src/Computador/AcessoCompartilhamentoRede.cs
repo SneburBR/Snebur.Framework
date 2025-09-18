@@ -5,18 +5,17 @@ using System.Runtime.InteropServices;
 
 namespace Snebur.Computador;
 
-
 /// <summary>
 /// Acessar caminho compartilha na rede  
 /// </summary>
 public class AcessoCompartilhamentoRede : IDisposable
 {
+
     private string _nomeComptuadorUnc;
-    private string _nomeComputador;
     private const int USUARIO_JA_CONECTADO = 1219;
 
-    public string NomeComputador
-        => this._nomeComputador;
+    public string NomeComputador { get; }
+
     //    {
     //        get
     //        {
@@ -39,6 +38,8 @@ public class AcessoCompartilhamentoRede : IDisposable
     public string? Usuario { get; set; }
 
     public string? Senha { get; set; }
+
+#pragma warning disable CA1823
 
     #region Contantes
 
@@ -72,12 +73,13 @@ public class AcessoCompartilhamentoRede : IDisposable
     #endregion
 
     #region Erros
+    // Avoid unused private fields
 
     private const int NO_ERROR = 0;
 
     private const int ERROR_USER_PASSWORD_INVALID = 1326;
-
     private const int ERROR_ACCESS_DENIED = 5;
+
     private const int ERROR_ALREADY_ASSIGNED = 85;
     private const int ERROR_BAD_DEVICE = 1200;
     private const int ERROR_BAD_NET_NAME = 67;
@@ -99,6 +101,8 @@ public class AcessoCompartilhamentoRede : IDisposable
     private const int ERROR_OPEN_FILES = 2401;
 
     #endregion
+
+#pragma warning restore CA1823 // Avoid unused private fields
 
     #region PInvoke Signatures
 
@@ -160,7 +164,7 @@ public class AcessoCompartilhamentoRede : IDisposable
 
     public AcessoCompartilhamentoRede(string nomeComputador)
     {
-        this._nomeComputador = nomeComputador;
+        this.NomeComputador = nomeComputador;
         this._nomeComptuadorUnc = RedeUtil.NormalizarNomeComputadorParaUnc(nomeComputador);
         this.ConectarCompartilhamento(this._nomeComptuadorUnc, null, null, true);
     }
@@ -171,7 +175,7 @@ public class AcessoCompartilhamentoRede : IDisposable
         Guard.NotNull(usuario);
         Guard.NotNull(senha);
 
-        this._nomeComputador = nomeComputador;
+        this.NomeComputador = nomeComputador;
         this._nomeComptuadorUnc = RedeUtil.NormalizarNomeComputadorParaUnc(nomeComputador);
         this.Usuario = usuario;
         this.Senha = senha;

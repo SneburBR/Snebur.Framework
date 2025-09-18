@@ -1,7 +1,7 @@
 using Snebur.Comunicacao;
+using Snebur.Net;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Text;
 
 namespace Snebur.ServicoArquivo.Cliente;
@@ -153,9 +153,7 @@ public abstract class BaseEnviadorArquivo<TArquivo> : IDisposable where TArquivo
         var parametros = this.RetornarParametros(pacote.Length);
         var urlEnviarImagem = this.RetornarUrlEnviarArquivo();
 
-#pragma warning disable SYSLIB0014 // Type or member is obsolete
-        var requisicao = (HttpWebRequest)WebRequest.Create(urlEnviarImagem);
-#pragma warning restore SYSLIB0014 // Type or member is obsolete
+        var requisicao = HttpClientProxy.Create(urlEnviarImagem);
 
         //ServicePointManager.Expect100Continue = true;
         //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 |
@@ -172,7 +170,6 @@ public abstract class BaseEnviadorArquivo<TArquivo> : IDisposable where TArquivo
         requisicao.Headers.Add(ParametrosComunicacao.TOKEN, Uri.EscapeDataString(token));
 
         requisicao.Timeout = Int32.MaxValue;
-        requisicao.Proxy = null;
         requisicao.ContentType = "application/octet-stream";
         requisicao.ContentLength = pacote.Length;
         requisicao.Method = "POST";
@@ -182,7 +179,7 @@ public abstract class BaseEnviadorArquivo<TArquivo> : IDisposable where TArquivo
             streamRequisicao.Write(pacote, 0, pacote.Length);
         }
 
-        using (var resposta = (HttpWebResponse)requisicao.GetResponse())
+        using (var resposta = requisicao.GetResponse())
         {
             using (var streamResposta = resposta.GetResponseStream())
             {

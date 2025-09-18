@@ -150,6 +150,13 @@ public static class StringExtensions
 
         return char.IsUpper(value[0]);
     }
+
+    public static string? FallbackIfNullOrWhiteSpace(this string? value, string? fallback)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return fallback;
+        return value;
+    }
 }
 
 public static class CharExtensions

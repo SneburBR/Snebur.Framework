@@ -57,7 +57,6 @@
 		<Compile Remove="Compatibilidade\**" />
 		<Compile Remove="Configuracao\**" />
 		<Compile Remove="Net40\**" />
-		<Compile Remove="Net\**" />
 		<Compile Remove="Properties\**" />
 		<Compile Remove="WebHostingWpf\**" />
 		<Compile Remove="x64\**" />
@@ -65,7 +64,6 @@
 		<EmbeddedResource Remove="Compatibilidade\**" />
 		<EmbeddedResource Remove="Configuracao\**" />
 		<EmbeddedResource Remove="Net40\**" />
-		<EmbeddedResource Remove="Net\**" />
 		<EmbeddedResource Remove="Properties\**" />
 		<EmbeddedResource Remove="WebHostingWpf\**" />
 		<EmbeddedResource Remove="x64\**" />
@@ -73,7 +71,6 @@
 		<None Remove="Compatibilidade\**" />
 		<None Remove="Configuracao\**" />
 		<None Remove="Net40\**" />
-		<None Remove="Net\**" />
 		<None Remove="Properties\**" />
 		<None Remove="WebHostingWpf\**" />
 		<None Remove="x64\**" />

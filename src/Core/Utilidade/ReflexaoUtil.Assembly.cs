@@ -5,11 +5,11 @@ namespace Snebur.Utilidade;
 public static partial class ReflexaoUtil
 {
     private const string NOME_EMPRESA_PADRAO = "Snebur Sistemas";
-    private const string NOME_SNEBUR = "Snebur";
-    private static Assembly? _assemblyEntrada;
+    //private const string NOME_SNEBUR = "Snebur";
+    //private static Assembly? _assemblyEntrada;
 
     public static Assembly AssemblyEntrada => LazyUtil.RetornarValorLazyComBloqueio(
-        ref _assemblyEntrada,
+        ref field,
         RetornarAssemblyEntradaInterno);
 
     private static Assembly RetornarAssemblyEntradaInterno()

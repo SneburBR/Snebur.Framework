@@ -212,7 +212,7 @@ public static partial class FormatacaoUtil
     {
         return FormatacaoNomeUtil.FormatarNome(nome);
     }
-    public static (string, string) FormatarNomeSobreNome(string nomeCompleto)
+    public static (string, string) FormatarNomeSobreNome(string? nomeCompleto)
     {
         return FormatacaoNomeUtil.FormatarNomeSobrenome(nomeCompleto);
     }

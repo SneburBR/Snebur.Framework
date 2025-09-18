@@ -6,13 +6,8 @@ namespace Snebur.Utilidade;
 
 public static class SistemaUtil
 {
-    private const string NOME_QUALIFICADO_TIPO_TESTCLASSATTRIBUTE = "Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute, Microsoft.VisualStudio.TestPlatform.TestFramework";
 
-    private static Version? _versaoAplicacao;
-    private static string? _versaoAplicacaoString;
     private static Dimensao? _resolucao;
-    private static SistemaOperacional? _sistemaOperacional;
-
     public static string CaminhoAplicacao
     {
         get
@@ -42,7 +37,7 @@ public static class SistemaUtil
     {
         get
         {
-            return LazyUtil.RetornarValorLazyComBloqueio(ref _sistemaOperacional,
+            return LazyUtil.RetornarValorLazyComBloqueio(ref field,
                                                         RetornarSistemaOperacional);
 
         }
@@ -52,7 +47,7 @@ public static class SistemaUtil
     {
         get
         {
-            return LazyUtil.RetornarValorLazyComBloqueio(ref _resolucao,
+            return LazyUtil.RetornarValorLazyComBloqueio(ref field,
                                                         RetornarResolucao);
 
         }
@@ -71,9 +66,9 @@ public static class SistemaUtil
         }
     }
 
-    public static string VersaoAplicacaoString => LazyUtil.RetornarValorLazyComBloqueio(ref _versaoAplicacaoString,
+    public static string VersaoAplicacaoString => LazyUtil.RetornarValorLazyComBloqueio(ref field,
                                                                                   () => VersaoAplicacao.ToString());
-    public static Version VersaoAplicacao => LazyUtil.RetornarValorLazyComBloqueio(ref _versaoAplicacao,
+    public static Version VersaoAplicacao => LazyUtil.RetornarValorLazyComBloqueio(ref field,
                                                                              ReflexaoUtil.RetornarVersaoEntrada);
     public static bool IsAplicacao64Bits => Environment.Is64BitProcess;
 

@@ -6,9 +6,9 @@ namespace Snebur.Imagens.Decoder;
 
 public class BmpDecoder : IDisposable
 {
-    private const int POSICAO_TAMANHO = 2;
-    private const int POSICAO_LARGURA = 18;
-    private const int POSICAO_ALTURA = 23;
+    //private const int POSICAO_TAMANHO = 2;
+    //private const int POSICAO_LARGURA = 18;
+    //private const int POSICAO_ALTURA = 23;
     private const int POSICAO_INICIO_PIXELS = 54;
 
     public int TotalBytes { get; private set; }

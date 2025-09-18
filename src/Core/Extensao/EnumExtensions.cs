@@ -13,4 +13,22 @@ public static class EnumExtensions
         var attribute = field.GetCustomAttribute<DescriptionAttribute>();
         return attribute != null ? attribute.Description : value.ToString();
     }
+
+    public static TEnum FallbackIfNotDefined<TEnum>(this TEnum value, TEnum fallback) where TEnum : struct, Enum
+    {
+        if (!Enum.IsDefined(typeof(TEnum), value))
+            return fallback;
+
+        return value;
+    }
+    public static TEnum? FallbackIfNotDefined<TEnum>(this TEnum? value, TEnum? fallback) where TEnum : struct, Enum
+    {
+        if (value == null)
+            return fallback;
+
+        if (!Enum.IsDefined(typeof(TEnum), value))
+            return fallback;
+
+        return value;
+    }
 }

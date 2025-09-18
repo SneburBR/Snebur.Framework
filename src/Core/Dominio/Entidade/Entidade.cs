@@ -205,7 +205,7 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntidadeIntern
         throw new InvalidOperationException($"Use Get<T> method instead");
     }
 
-    private T RetornarValorPropriedade<T>(
+    private T RetornarValorPropriedadeInterno<T>(
         T valor,
         [CallerMemberName] string nomePropriedade = "")
     {
@@ -246,7 +246,7 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntidadeIntern
     internal protected virtual T Get<T>(T valor, [CallerMemberName] string nomePropriedade = "")
     {
         //RetornarValorPropriedade(
-        return this.RetornarValorPropriedade(valor, nomePropriedade);
+        return this.RetornarValorPropriedadeInterno(valor, nomePropriedade);
     }
 
     internal protected virtual long Get(long valor, Entidade? relacao, [CallerMemberName] string nomePropriedade = "")

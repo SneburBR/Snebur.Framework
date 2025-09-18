@@ -16,7 +16,7 @@ public static class FormatacaoNomeUtil
         return String.Join(" ", partes);
     }
 
-    public static (string, string) FormatarNomeSobrenome(string nomeCompleto)
+    public static (string, string) FormatarNomeSobrenome(string? nomeCompleto)
     {
         var partesNomeCompleto = RetornarPartes(nomeCompleto);
 
@@ -58,13 +58,13 @@ public static class FormatacaoNomeUtil
         return (primeiroNome.Trim() + " " + sobrenome.Trim()).Trim();
     }
 
-    public static string FormatarNomeCompleto(string nome, string sobrenome)
+    public static string FormatarNomeCompleto(string? nome, string? sobrenome)
     {
         var nomeCompleto = $"{nome} {sobrenome}";
         var partes = RetornarPartes(nomeCompleto);
         return UnirPartes(partes);
     }
-    private static List<string> RetornarPartes(string nome)
+    private static List<string> RetornarPartes(string? nome)
     {
         if (!String.IsNullOrWhiteSpace(nome))
         {

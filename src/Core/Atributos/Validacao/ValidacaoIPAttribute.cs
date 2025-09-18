@@ -6,7 +6,7 @@ namespace Snebur.Dominio.Atributos;
 [AttributeUsage(AttributeTargets.Property)]
 public class ValidacaoIPAttribute : BaseAtributoValidacao, IAtributoValidacao
 {
-    const string IP_REG_EX = @"^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
+    //const string IP_REG_EX = @"^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
 
     [MensagemValidacao]
     public static string MensagemValidacao { get; set; } = "O ip {0} é invalido.";

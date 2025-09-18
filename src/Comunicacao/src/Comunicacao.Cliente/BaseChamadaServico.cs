@@ -1,3 +1,5 @@
+using Snebur.Net;
+
 namespace Snebur.Comunicacao;
 
 public abstract class BaseChamadaServico
@@ -126,9 +128,8 @@ public abstract class BaseChamadaServico
 
         var urlServico = UriUtil.CombinarCaminhos(this.UrlServico, nomeArquivo);
 
-#pragma warning disable SYSLIB0014 // Type or member is obsolete
-        var requisicaoHttp = HttpWebRequest.Create(urlServico);
-#pragma warning restore SYSLIB0014 // Type or member is obsolete
+        //var requisicaoHttp = HttpWebRequest.Create(urlServico);
+        var requisicaoHttp = HttpWebRequestProxy.Create(urlServico);
 
         var identificadorUsuario = CriptografiaUtil.Criptografar(token, cabecalho.CredencialUsuario.IdentificadorUsuario);
         var identifcadorProprietario = cabecalho.IdentificadorProprietario;
@@ -184,12 +185,13 @@ public abstract class BaseChamadaServico
                 streamRequisicao.Write(conteudo, 0, conteudo.Length);
             }
 
-            using (var resposta = (HttpWebResponse)requisicaoHttp.GetResponse())
+            using (var resposta = requisicaoHttp.GetResponse())
             {
-                if (!(resposta is HttpWebResponse httpWebResponse && httpWebResponse.StatusCode == HttpStatusCode.OK))
+                if (!resposta.IsStatusCodeOk)
                 {
                     throw new ErroComunicacao("Falha de comunicação com servidor");
                 }
+
                 using (var streamResposta = resposta.GetResponseStream())
                 {
                     InternetUtil.FecharMensagemSemInternet();

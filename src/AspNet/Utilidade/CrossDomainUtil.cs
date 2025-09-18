@@ -12,7 +12,7 @@ public static class CrossDomainUtil
 {
     private const string ACCESS_CONTROL_REQUEST_METHOD = "Access-Control-Request-Method";
     private const string ACCESS_CONTROL_REQUEST_HEADERS = "Access-Control-Request-Headers";
-    private const string ORIGIN = "Origin";
+    //private const string ORIGIN = "Origin";
 
     private const string ACCESS_CONTROL_ALLOW_ORIGIN = "Access-Control-Allow-Origin";
     private const string ACCESS_CONTROL_ALLOW_METHODS = "Access-Control-Allow-Methods";
@@ -24,7 +24,7 @@ public static class CrossDomainUtil
         resposta.Headers.Append(ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         var requisicao = context.Request;
         var method = requisicao.GetMethod();
-        if(method != "OPTIONS")
+        if (method != "OPTIONS")
         {
             return false;
         }
@@ -39,11 +39,11 @@ public static class CrossDomainUtil
         //{
         //    resposta.Headers.Append(ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         //}
-     
+
 
         var metodosRequisicao = requisicao.Headers.GetValues(ACCESS_CONTROL_REQUEST_METHOD);
         var cabecalhosRequisicao = requisicao.Headers.GetValues(ACCESS_CONTROL_REQUEST_HEADERS);
-         
+
         if (metodosRequisicao != null)
         {
             resposta.Headers.Append(ACCESS_CONTROL_ALLOW_METHODS, String.Join(", ", metodosRequisicao));

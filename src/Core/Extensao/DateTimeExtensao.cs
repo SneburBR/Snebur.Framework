@@ -1,4 +1,4 @@
-﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Atributos;
 
 namespace Snebur.Utilidade;
 
@@ -15,6 +15,28 @@ public static class DateTimeExtensao
     public static DateTime RetornarDataComHoraZerada(this DateTime dataHora)
     {
         return new DateTime(dataHora.Year, dataHora.Month, dataHora.Day, 0, 0, 0);
+    }
+
+    public static bool IsValidDate(this DateTime? data)
+    {
+        if (data.HasValue)
+        {
+            return data.Value.IsValidDate();
+        }
+        return false;
+    }
+
+    public static bool IsValidDate(this DateTime data)
+    {
+        if (data.Year < 1930)
+        {
+            return false;
+        }
+        if (data.Year > (DateTime.Now.Year + 50))
+        {
+            return false;
+        }
+        return true;
     }
 
     public static long RetornarMilisegundosJavascript(this DateTime dataHora, bool isUtc = false)

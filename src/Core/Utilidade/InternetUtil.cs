@@ -5,7 +5,7 @@ namespace Snebur.Utilidade;
 
 public static class InternetUtil
 {
-    private const int INTERVALO_MENSAGEM = 30;
+    //private const int INTERVALO_MENSAGEM = 30;
     private static bool _mensagemAtiva = false;
     private static object _bloqueio = new object();
     //private static DateTime? _dataHoraUltimaVisualizacao;

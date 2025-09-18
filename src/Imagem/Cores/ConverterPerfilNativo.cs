@@ -29,7 +29,7 @@ public class ConverterPerfilNativo : ConverterPerfil
 
     }
 
-    private static object bloqueio = new object();
+    //private static readonly object _bloqueio = new object();
 
     public BitmapSource RetornarBitmapSourceConvertido(BitmapFrame frame)
     {

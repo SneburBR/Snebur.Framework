@@ -385,4 +385,21 @@ public abstract class BaseDominio : IBaseDominio, IBaseDominioReferencia, INotif
 
     #endregion
 
+    ///*RetornarValorPropriedade
+    [Obsolete]
+    internal protected T RetornarValorPropriedade<T>(T valor, [CallerMemberName] string nomePropriedade = "")
+    {
+        return this.GetPropertyValue(valor, nomePropriedade);
+    }
+
+    [Obsolete]
+    internal protected void RetornarValorPropriedade<T>(
+        T? antigoValor,
+        T? novoValor,
+        [CallerMemberName] string nomePropriedade = "")
+    {
+
+        this.SetProperty(antigoValor, novoValor, nomePropriedade, null, null);
+    }
 }
+

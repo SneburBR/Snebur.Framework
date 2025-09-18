@@ -2,7 +2,7 @@ namespace Snebur.AcessoDados;
 
 internal partial class GerenciadorMigracao
 {
-    private static readonly HashSet<Type> Inicializados = new HashSet<Type>();
+    //private static readonly HashSet<Type> Inicializados = new HashSet<Type>();
     private static object Bloqueio { get; set; } = new object();
 
     internal static void Inicializar(BaseContextoDados contexto)

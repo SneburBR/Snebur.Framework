@@ -69,7 +69,7 @@ public static partial class ValidacaoUtil
         return IsValorPropriedadeRequerido(propriedade, valorPropriedade);
     }
 
-    public static bool IsJson(string json)
+    public static bool IsJson(string? json)
     {
         if (!String.IsNullOrWhiteSpace(json))
         {

@@ -1,5 +1,4 @@
 using Snebur.AcessoDados;
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Snebur.Utilidade;

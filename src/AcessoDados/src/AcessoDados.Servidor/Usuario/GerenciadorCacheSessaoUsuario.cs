@@ -6,7 +6,7 @@ namespace Snebur.AcessoDados;
 public class GerenciadorCacheSessaoUsuario
 {
 
-    private const int MAXIMO_TENTATIVA_RETORNAR_SESSAO_USUARIO = 10;
+    //private const int MAXIMO_TENTATIVA_RETORNAR_SESSAO_USUARIO = 10;
     //private Dictionary<Guid, CacheSessaoUsuario> CachesSessaoUsuario { get; } = new Dictionary<Guid, CacheSessaoUsuario>();
     private ConcurrentDictionary<Guid, CacheSessaoUsuario> CachesSessaoUsuario { get; } = new ConcurrentDictionary<Guid, CacheSessaoUsuario>();
     private GerenciadorCacheSessaoUsuario()

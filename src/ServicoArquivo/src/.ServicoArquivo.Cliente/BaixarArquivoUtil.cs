@@ -1,3 +1,4 @@
+using Snebur.Net;
 using System.Collections.Generic;
 using System.Net;
 
@@ -130,9 +131,7 @@ public class BaixarArquivoUtil
 
         var urlBaixaArquivo = ServicoArquivoClienteUtil.RetornarEnderecoBaixarArquivo(urlServico);
 
-#pragma warning disable SYSLIB0014 // Type or member is obsolete
-        var requisicao = (HttpWebRequest)WebRequest.Create(urlBaixaArquivo);
-#pragma warning restore SYSLIB0014 // Type or member is obsolete
+        var requisicao = HttpClientProxy.Create(urlBaixaArquivo);
 
         foreach (var item in parametros)
         {
@@ -142,7 +141,7 @@ public class BaixarArquivoUtil
         requisicao.Headers.Add(ConstantesCabecalho.TOKEN, Uri.EscapeDataString(token));
 
         requisicao.Timeout = (int)timeout.TotalMilliseconds;
-        requisicao.Proxy = null;
+
         requisicao.ContentType = "application/octet-stream";
         requisicao.Method = "POST";
 
@@ -154,7 +153,7 @@ public class BaixarArquivoUtil
             streamRequisicao.Write(bytes, 0, bytes.Length);
         }
 
-        using (var resposta = (HttpWebResponse)requisicao.GetResponse())
+        using (var resposta = requisicao.GetResponse())
         {
 
             using (var streamResposta = resposta.GetResponseStream())
