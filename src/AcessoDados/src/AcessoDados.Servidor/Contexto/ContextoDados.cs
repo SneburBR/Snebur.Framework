@@ -189,7 +189,7 @@ public abstract partial class BaseContextoDados : __BaseContextoDados, IServicoD
     protected BaseContextoDados(string configuracaoAcessoDados,
                                 CredencialUsuario credencial,
                                 Guid identificadorSessaoUsario,
-                                InformacaoSessao informacaoSessaoUsuario,
+                                InformacaoSessao? informacaoSessaoUsuario,
                                 string identificadorProprietario,
                                 EnumFlagBancoNaoSuportado sqlNaoSuporta) : this(null,
                                                                                 configuracaoAcessoDados,
@@ -265,9 +265,9 @@ public abstract partial class BaseContextoDados : __BaseContextoDados, IServicoD
 
     protected BaseContextoDados(string configuracaoAcessoDados,
                                 CredencialUsuario credencialUsuario,
-                                CredencialUsuario credencialAvalista,
+                                CredencialUsuario? credencialAvalista,
                                 Guid identificadorSessaoUsuario,
-                                InformacaoSessao informacaoSessaoUsuario,
+                                InformacaoSessao? informacaoSessaoUsuario,
                                 string identificadorProprietario,
                                 EnumFlagBancoNaoSuportado sqlNaoSuporta = EnumFlagBancoNaoSuportado.SemRestricao) :
                                 this(null,

@@ -56,8 +56,8 @@ public static class ConfiguracaoUtil
                                               DebugUtil.IsAttached;
 
     public static CultureInfo CulturaPortuguesBrasil { get; } = new CultureInfo("pt-BR");
-    public static NameValueCollection? AppSettings
-        => AplicacaoSnebur.Atual?.AppSettings;
+    public static NameValueCollection AppSettings
+        => AplicacaoSnebur.AtualRequired.AppSettings;
     public static NameValueCollection ConnectionStrings
         => AplicacaoSnebur.AtualRequired.ConnectionStrings;
     public static string CaminhoAppDataAplicacao

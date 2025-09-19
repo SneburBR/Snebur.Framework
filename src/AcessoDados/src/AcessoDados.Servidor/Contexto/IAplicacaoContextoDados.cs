@@ -8,9 +8,10 @@ namespace Snebur.AcessoDados;
 //    BaseContextoDados RetornarContextoDadoAtual();
 //}
 
-public interface IAplicacaoContextoDados  
+public interface IAplicacaoContextoDados
 {
     void NovoConexaoDados(BaseContextoDados baseContextoDados);
     void ConexaoDadosDispensado(BaseContextoDados baseContextoDados);
-    TBaseContextoDados RetornarContextoDadoAtual<TBaseContextoDados>() where TBaseContextoDados: BaseContextoDados;
+    TBaseContextoDados? RetornarContextoDadoAtual<TBaseContextoDados>()
+        where TBaseContextoDados : BaseContextoDados;
 }
