@@ -4,27 +4,29 @@ namespace System.Linq;
 
 public static class ListaEntidades
 {
+#pragma warning disable CS8603 
+    public static TEntidade Incluir<TEntidade>(this ListaEntidades<TEntidade> source) where TEntidade : IEntidade
+    {
 
-    public static TEntidade? Incluir<TEntidade>(this ListaEntidades<TEntidade> source) where TEntidade : IEntidade
+        return default;
+        // Possible null reference return.
+    }
+
+    public static TEntidade Incluir<TEntidade>(this IListaEntidades<TEntidade> source) where TEntidade : IEntidade
     {
         return default;
     }
 
-    public static TEntidade? Incluir<TEntidade>(this IListaEntidades<TEntidade> source) where TEntidade : IEntidade
+    public static TEntidade Incluir<TEntidade>(this IEnumerable<TEntidade?> source) where TEntidade : IEntidade
     {
         return default;
     }
 
-    public static TEntidade? Incluir<TEntidade>(this IEnumerable<TEntidade> source) where TEntidade : IEntidade
+    public static TEntidadeEspecializar IncluirTipado<TEntidadeEspecializar>(this IListaEntidades source) where TEntidadeEspecializar : IEntidade
     {
         return default;
     }
-
-    public static TEntidadeEspecializar? IncluirTipado<TEntidadeEspecializar>(this IListaEntidades source) where TEntidadeEspecializar : IEntidade
-    {
-        return default;
-    }
-
+#pragma warning restore CS8603
     public static void Add<TEntidade>(this IEnumerable<TEntidade> colecao, IEntidade entidade) where TEntidade : IEntidade
     {
         var lista = colecao as IListaEntidades;

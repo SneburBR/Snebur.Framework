@@ -1,4 +1,4 @@
-﻿namespace Snebur.Utilidade;
+namespace Snebur.Utilidade;
 
 public static class FormatarByteUtil
 {
@@ -7,6 +7,14 @@ public static class FormatarByteUtil
     public const double TOTAL_BYTES_GB = TOTAL_BYTES_MB * 1024;
     public const double TOTAL_BYTES_TB = TOTAL_BYTES_GB * 1024;
 
+    public static string Formatar(long? totalBytes)
+    {
+        if (totalBytes.HasValue)
+        {
+            return Formatar(totalBytes.Value, 2);
+        }
+        return "0 bytes";
+    }
     public static string Formatar(long totalBytes)
     {
         return Formatar(totalBytes, 2);

@@ -58,8 +58,8 @@ public static class ConfiguracaoUtil
     public static CultureInfo CulturaPortuguesBrasil { get; } = new CultureInfo("pt-BR");
     public static NameValueCollection? AppSettings
         => AplicacaoSnebur.Atual?.AppSettings;
-    public static NameValueCollection? ConnectionStrings
-        => AplicacaoSnebur.Atual?.ConnectionStrings;
+    public static NameValueCollection ConnectionStrings
+        => AplicacaoSnebur.AtualRequired.ConnectionStrings;
     public static string CaminhoAppDataAplicacao
     {
         get

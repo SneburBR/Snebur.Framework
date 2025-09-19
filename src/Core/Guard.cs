@@ -49,10 +49,24 @@ public static class Guard
 
     public static void MustBeGreaterThanZero<T>(
         IComparable<T> value,
-        [CallerMemberName] string memberName = "")
+        [CallerMemberName] string? memberName = "")
         where T : struct
     {
         if (value.CompareTo(default) <= 0)
+        {
+            throw new ArgumentOutOfRangeException($"{memberName} deve ser maior que zero.");
+        }
+    }
+
+    public static void MustBeGreaterThanZero<T>(
+       T? value,
+       [CallerMemberName] string? memberName = "")
+        where T : struct, IComparable<T>
+    {
+        if (value is null)
+            throw new ArgumentNullException($"{memberName} não pode ser nulo.");
+
+        if (value.Value.CompareTo(default) <= 0)
         {
             throw new ArgumentOutOfRangeException($"{memberName} deve ser maior que zero.");
         }
