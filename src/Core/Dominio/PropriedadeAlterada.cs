@@ -1,6 +1,4 @@
-﻿
 using Snebur.Dominio.Atributos;
-using System.Text.Json.Serialization;
 
 namespace Snebur.Dominio;
 

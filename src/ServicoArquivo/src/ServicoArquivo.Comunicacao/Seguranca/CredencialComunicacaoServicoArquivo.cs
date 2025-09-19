@@ -48,6 +48,8 @@ using System.Text;
 using System.Threading.Seguranca;
 */
 
+
+
 namespace Snebur.ServicoArquivo;
 
 public class CredencialComunicacaoServicoArquivo

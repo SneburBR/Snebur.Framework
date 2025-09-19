@@ -120,7 +120,7 @@ public static partial class ValidacaoUtil
         return NormalizacaoUtil.NormlizarHost(host) == ConstantesPublicacao.LOCALHOST;
     }
 
-    public static bool IsUrl(string? caminho)
+    public static bool IsUrl([NotNullWhen(true)] string? caminho)
     {
         if (String.IsNullOrWhiteSpace(caminho))
         {

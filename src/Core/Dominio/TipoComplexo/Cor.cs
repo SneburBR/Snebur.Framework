@@ -1,7 +1,6 @@
 using Snebur.Dominio.Atributos;
 using System.Drawing;
 using System.Globalization;
-using System.Text.Json.Serialization;
 
 namespace Snebur.Dominio;
 

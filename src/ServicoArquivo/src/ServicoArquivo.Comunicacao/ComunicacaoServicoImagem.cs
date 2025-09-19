@@ -1,4 +1,4 @@
-﻿using Snebur.Dominio;
+using Snebur.Dominio;
 using Snebur.Utilidade;
 using System;
 
@@ -12,7 +12,7 @@ namespace Snebur.ServicoArquivo.Comunicacao
         {
             using (var contexto = this.RetornarContextoDados())
             {
-                var imagem = contexto.RetornarConsulta<IImagem>(contexto.TipoEntidadeArquivo).Where(x => x.Id == idImagem).SingleOrDefault();
+                var imagem = contexto.RetornarConsulta<IImagem>(contexto.TipoEntidadeArquivoRequired).Where(x => x.Id == idImagem).SingleOrDefault();
                 if (imagem != null)
                 {
                     switch (tamanhoImagem)
@@ -51,7 +51,9 @@ namespace Snebur.ServicoArquivo.Comunicacao
         {
             using (var contexto = this.RetornarContextoDados())
             {
-                var imagem = contexto.RetornarConsulta<IImagem>(contexto.TipoEntidadeImagem).Where(x => x.Id == idImagem).SingleOrDefault();
+                var imagem = contexto.RetornarConsulta<IImagem>(contexto.TipoEntidadeArquivoRequired)
+                    .Where(x => x.Id == idImagem)
+                    .SingleOrDefault();
                 if (imagem != null)
                 {
                     switch (tamanhoImagem)

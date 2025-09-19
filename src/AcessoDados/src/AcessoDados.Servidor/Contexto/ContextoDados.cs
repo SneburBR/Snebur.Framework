@@ -74,6 +74,10 @@ public abstract partial class BaseContextoDados : __BaseContextoDados, IServicoD
     public Type? TipoEntidadeArquivo
         => this.EstruturaBancoDados.TipoEntidadeArquivo;
 
+    public Type TipoEntidadeArquivoRequired
+        => this.EstruturaBancoDados.TipoEntidadeArquivo
+        ?? throw new ErroNaoDefinido("O tipo de entidade arquivo não foi definido na estrutura do banco de dados");
+
     public Type? TipoEntidadeImagem
         => this.EstruturaBancoDados.TipoEntidadeImagem;
 

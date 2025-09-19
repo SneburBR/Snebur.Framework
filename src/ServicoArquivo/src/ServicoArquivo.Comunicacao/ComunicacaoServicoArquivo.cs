@@ -1,4 +1,4 @@
-﻿using Snebur.AcessoDados;
+using Snebur.AcessoDados;
 using Snebur.Comunicacao;
 using Snebur.Dominio;
 using Snebur.Seguranca;
@@ -14,7 +14,11 @@ namespace Snebur.ServicoArquivo.Comunicacao
         {
             using (var contexto = this.RetornarContextoDados())
             {
-                var arquivo = contexto.RetornarConsulta<IArquivo>(contexto.TipoEntidadeArquivo).Where(x => x.Id == idArquivo).SingleOrDefault();
+                var tipoEntidadeArquivo = contexto.TipoEntidadeArquivo ??
+                    throw new ErroOperacaoInvalida("O contexto de dados não possui o tipo de entidade arquivo definido.");
+
+                var arquivo = contexto.RetornarConsulta<IArquivo>(tipoEntidadeArquivo)
+                    .Where(x => x.Id == idArquivo).SingleOrDefault();
                 if (arquivo != null)
                 {
                     return arquivo.IsExisteArquivo;
@@ -27,7 +31,8 @@ namespace Snebur.ServicoArquivo.Comunicacao
         {
             using (var contexto = this.RetornarContextoDados())
             {
-                var arquivo = contexto.RetornarConsulta<IArquivo>(contexto.TipoEntidadeArquivo).
+                var tipoEntidadeArquivo = contexto.TipoEntidadeArquivoRequired;
+                var arquivo = contexto.RetornarConsulta<IArquivo>(tipoEntidadeArquivo).
                                        Where(x => x.Id == idArquivo).SingleOrDefault();
                 return arquivo != null;
             }
@@ -37,7 +42,7 @@ namespace Snebur.ServicoArquivo.Comunicacao
         {
             using (var contexto = this.RetornarContextoDados())
             {
-                var arquivo = contexto.RetornarConsulta<IArquivo>(contexto.TipoEntidadeArquivo).Where(x => x.Id == idArquivo).SingleOrDefault();
+                var arquivo = contexto.RetornarConsulta<IArquivo>(contexto.TipoEntidadeArquivoRequired).Where(x => x.Id == idArquivo).SingleOrDefault();
                 if (arquivo == null)
                 {
                     throw new ErroOperacaoInvalida(String.Format("Não foi encontrado o arquivo com ID : {0}", idArquivo));
@@ -57,7 +62,7 @@ namespace Snebur.ServicoArquivo.Comunicacao
         {
             using (var contexto = this.RetornarContextoDados())
             {
-                var arquivo = contexto.RetornarConsulta<IArquivo>(contexto.TipoEntidadeArquivo).Where(x => x.Id == idArquivo).SingleOrDefault();
+                var arquivo = contexto.RetornarConsulta<IArquivo>(contexto.TipoEntidadeArquivoRequired).Where(x => x.Id == idArquivo).SingleOrDefault();
                 if (arquivo == null)
                 {
                     throw new ErroOperacaoInvalida(String.Format("Não foi encontrado o arquivo com ID : {0}", idArquivo));
@@ -75,7 +80,7 @@ namespace Snebur.ServicoArquivo.Comunicacao
         {
             using (var contexto = this.RetornarContextoDados())
             {
-                var arquivo = contexto.RetornarConsulta<IArquivo>(contexto.TipoEntidadeArquivo).Where(x => x.Id == idArquivo).SingleOrDefault();
+                var arquivo = contexto.RetornarConsulta<IArquivo>(contexto.TipoEntidadeArquivoRequired).Where(x => x.Id == idArquivo).SingleOrDefault();
                 if (arquivo == null)
                 {
                     throw new ErroOperacaoInvalida(String.Format("Não foi encontrado o arquivo com ID : {0}", idArquivo));
@@ -90,7 +95,7 @@ namespace Snebur.ServicoArquivo.Comunicacao
         {
             using (var contexto = this.RetornarContextoDados())
             {
-                var arquivo = contexto.RetornarConsulta<IArquivo>(contexto.TipoEntidadeArquivo).Where(x => x.Id == idArquivo).SingleOrDefault();
+                var arquivo = contexto.RetornarConsulta<IArquivo>(contexto.TipoEntidadeArquivoRequired).Where(x => x.Id == idArquivo).SingleOrDefault();
                 if (arquivo == null)
                 {
                     throw new ErroOperacaoInvalida(String.Format("Não foi encontrado o arquivo com ID : {0}", idArquivo));
