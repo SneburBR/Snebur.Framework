@@ -2,7 +2,6 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Snebur.AcessoDados.Estrutura;
 
-
 internal class BaseEstruturaAlteracaoPropriedade<TAtributo> : EstruturaPropriedade, IEstruturaAlteracaoPropriedade where TAtributo : INotificarAlteracaoPropriedade
 {
 

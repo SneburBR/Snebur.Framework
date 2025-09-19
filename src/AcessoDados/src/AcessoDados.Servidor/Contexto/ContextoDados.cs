@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
-
 #if NET6_0_OR_GREATER
 using Microsoft.Data.SqlClient;
 #else
@@ -553,7 +552,7 @@ public abstract partial class BaseContextoDados : __BaseContextoDados, IServicoD
         return this.MapearSql<TMapeamento>(sql, new List<ParametroInfo>());
     }
     public List<TMapeamento> MapearSql<TMapeamento>(string sql,
-                                            List<ParametroInfo> parametros)
+                                            List<ParametroInfo>? parametros)
     {
         this.ValidarSessaoUsuario();
 
@@ -786,7 +785,6 @@ public abstract partial class BaseContextoDados : __BaseContextoDados, IServicoD
         {
             throw new Erro("Não existe nenhum transação aberta");
         }
-
     }
 
     private void DispensarTransacaoAtual()

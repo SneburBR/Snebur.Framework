@@ -5,7 +5,6 @@ namespace Snebur.AcessoDados;
 internal class TipoEntidadeUtil
 {
 
-
     private static object Bloqueio = new object();
     /// <summary>
     /// Chave, String.Formar("{0}.{1}", Namespace, NomeTipoEntidade

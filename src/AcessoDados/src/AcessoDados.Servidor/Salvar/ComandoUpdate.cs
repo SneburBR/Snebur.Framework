@@ -41,8 +41,6 @@ internal class ComandoUpdate : Comando, IComandoUpdate
                                                         Where(x => this.PropriedadesAlterada.Keys.Contains(x.Key)).
                                                         Select(x => x.Value).ToList();
 
-
-
         var estruturasCamposSomenteLeitura = estruturasCamposAlterados.Where(x => x.OpcoesSomenteLeitura.IsSomenteLeitura).ToList();
 
         if (estruturasCamposSomenteLeitura.Count > 0)
@@ -84,7 +82,6 @@ internal class ComandoUpdate : Comando, IComandoUpdate
         }
         return String.Empty;
     }
-
 
     //this.EstruturasCampoParametro.AddRange(this.EstruturaEntidade.EstruturasCampos.Values);
 }

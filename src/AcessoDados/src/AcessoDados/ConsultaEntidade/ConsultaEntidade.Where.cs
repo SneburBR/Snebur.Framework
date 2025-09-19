@@ -6,17 +6,19 @@ public partial class ConsultaEntidade<TEntidade> where TEntidade : IEntidade
 {
     public TEntidade Find(long id)
     {
-        return this.Where(x => x.Id == id).Single();
+        return this.Where(x => x.Id == id)
+            .FirstOrDefault()
+            ?? throw new Erro($"Entidade do tipo {typeof(TEntidade).Name} com id {id} não encontrada.");
     }
 
     public TEntidade? FindOrDefault(long id)
     {
-        return this.Where(x => x.Id == id).SingleOrDefault();
+        return this.Where(x => x.Id == id).FirstOrDefault();
     }
 
     public bool Exists(long id)
     {
-        return this.Where(x => x.Id == id).SingleOrDefault() != null;
+        return this.Where(x => x.Id == id).FirstOrDefault() != null;
     }
 
     public ConsultaEntidade<TEntidade> Where(Expression<Func<TEntidade, bool>> filtro)

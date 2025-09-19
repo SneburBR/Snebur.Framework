@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Snebur.AcessoDados.Estrutura;
 
-
 internal partial class EstruturaBancoDados
 {
     public object _bloqueio = new object();

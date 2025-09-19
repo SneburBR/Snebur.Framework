@@ -11,7 +11,6 @@ internal class ComandoInsert : Comando
                            EstruturaEntidade estruturaEntidade) : base(entidadeAlterada, estruturaEntidade)
     {
 
-
     }
 
     protected override string RetornarSqlComando()
