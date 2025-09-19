@@ -5,8 +5,13 @@ namespace Snebur.Dominio.Atributos;
 public class SqlDbTypeAttribute : Attribute
 {
     public SqlDbType SqlDbType { get; }
-    public SqlDbTypeAttribute( SqlDbType sqlDbType)
+    public SqlDbTypeAttribute(SqlDbType sqlDbType)
     {
         this.SqlDbType = sqlDbType;
     }
+}
+
+public class SqlDbTypeNullableAttribute : Attribute
+{
+
 }
