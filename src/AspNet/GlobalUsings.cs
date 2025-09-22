@@ -1,4 +1,5 @@
 global using Snebur;
 global using Snebur.Dominio;
+global using Snebur.Extensao;
 global using System;
 global using System.Linq;

@@ -14,7 +14,6 @@ public class AcessoDiretorio : IAcessoDiretorio
 
     public string Senha { get; set; }
 
-
     public AcessoDiretorio(bool isAutenticar,
                            string? dominio,
                            string usuario,

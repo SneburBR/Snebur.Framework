@@ -3,10 +3,10 @@ using System.Runtime.CompilerServices;
 namespace Snebur;
 
 [Serializable]
-public class ErroNaoDefinido : Erro
+public class ErroNaoEncontrado : Erro
 {
 
-    public ErroNaoDefinido(string mensagem = "",
+    public ErroNaoEncontrado(string mensagem = "",
         Exception? erroInterno = null,
         [CallerMemberName] string nomeMetodo = "",
         [CallerFilePath] string caminhoArquivo = "",
@@ -18,7 +18,7 @@ public class ErroNaoDefinido : Erro
 
     #region Serializacao 
 
-    public ErroNaoDefinido()
+    public ErroNaoEncontrado()
     {
     }
 

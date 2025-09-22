@@ -5,12 +5,12 @@ namespace Snebur.Imagens;
 
 public class BitmapSourceUtil
 {
-    public static BitmapSource? AjustarDpi(BitmapSource origem, double dpi)
+    public static BitmapSource AjustarDpi(BitmapSource origem, double dpi)
     {
         return AjustarDpi(origem, origem.Format, dpi);
     }
 
-    public static BitmapSource? AjustarDpi(BitmapSource origem, PixelFormat formato, double dpi)
+    public static BitmapSource AjustarDpi(BitmapSource origem, PixelFormat formato, double dpi)
     {
         //var stride = origem.PixelWidth * 4;
         //var size = origem.PixelHeight * stride;
@@ -28,12 +28,13 @@ public class BitmapSourceUtil
         return BitmapSourceUtil.CopiarImagem(origem, dpi);
     }
 
-    public static BitmapSource? CopiarImagem(BitmapSource origem, double dpi = 0)
+    public static BitmapSource CopiarImagem(BitmapSource origem, double dpi = 0)
     {
         if (origem == null)
         {
-            return null;
+            throw new ArgumentNullException(nameof(origem));
         }
+
         if (dpi == 0)
         {
             dpi = origem.DpiX;

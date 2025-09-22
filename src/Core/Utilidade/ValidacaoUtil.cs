@@ -54,7 +54,8 @@ public static partial class ValidacaoUtil
         return RegexValidacaoEmail.IsMatch(email.Trim());
     }
 
-    public static bool IsCep(string? cep)
+    public static bool IsCep(
+        [NotNullWhen(true)] string? cep)
     {
         cep = cep?.Trim();
         if (!String.IsNullOrEmpty(cep))

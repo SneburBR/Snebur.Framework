@@ -85,4 +85,16 @@ public static class TypeExtensions
         }
         return type.Name;
     }
+
+    public static PropertyInfo GetRequiredProperty(this Type type, string name)
+    {
+        var property = type.GetProperty(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+        if (property is null)
+        {
+            throw new InvalidOperationException(
+                $"The property '{name}' was not found in type '{type.FullName}'.");
+        }
+        return property;
+
+    }
 }

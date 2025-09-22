@@ -89,4 +89,12 @@ public abstract class BaseMedidaTipoComplexo : BaseTipoComplexo, IDpiVisualizaca
     }
     [NaoMapear]
     public abstract bool IsEmpty { get; }
+
+    public void EnsureDpiVisualizacao()
+    {
+        if (this.FuncaoNormalizarDpiVisualizacao is null)
+        {
+            throw new InvalidOperationException("A função para normalizar o DPI de visualização não foi definida");
+        }
+    }
 }

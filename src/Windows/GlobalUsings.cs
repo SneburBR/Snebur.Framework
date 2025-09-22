@@ -1,3 +1,4 @@
 global using System;
 global using System.Threading.Tasks;
 global using System.Windows.Threading;
+global using Snebur.Extensao;

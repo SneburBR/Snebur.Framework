@@ -28,12 +28,11 @@ public static class SerializacaoUtil
         return propriedades;
     }
 
-    public static string? SerializarTipoSimples(object? valor,
-                                               bool isNotNumericWithinSingleQuotes = false)
+    public static string SerializarTipoSimples(object? valor, bool isNotNumericWithinSingleQuotes = false)
     {
         if (valor is null)
         {
-            return null;
+            return "null";
         }
 
         if (valor is BaseTipoComplexo tipoComplexto)
@@ -110,9 +109,14 @@ public static class SerializacaoUtil
 
                 if (!tipo.IsValueType)
                 {
-                    throw new Erro("Tipo não suportado");
+                    throw new Erro($"Tipo {tipo.Name} não suportado, somente tipos primitivos");
                 }
+
                 var valorString = Convert.ToString(valor, CultureInfo.InvariantCulture);
+                if (valorString is null)
+                {
+                    throw new Erro($"Não foi possível converter o valor do tipo {tipo.Name}, ValueType para string");
+                }
                 return isNotNumericWithinSingleQuotes
                         ? $"\'{EscapeSingleQuote(valorString)}\'"
                         : valorString;

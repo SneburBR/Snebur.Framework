@@ -1,6 +1,7 @@
 using Snebur.Helpers;
 using Snebur.Reflexao;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 namespace Snebur.Utilidade;
@@ -518,7 +519,9 @@ public class ConverterUtil
         }
     }
 
-    public static string? ParaString(object? valorTipado, bool isAceitarNulo = false)
+    public static string? ParaString(
+        object? valorTipado,
+        bool isAceitarNulo = false)
     {
         if (valorTipado is null)
         {

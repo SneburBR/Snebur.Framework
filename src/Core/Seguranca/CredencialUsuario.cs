@@ -8,7 +8,6 @@ public class CredencialUsuario : Credencial
 
     public string? IdentificadorAmigavel { get; set; }
 
-
     public CredencialUsuario()
     {
     }

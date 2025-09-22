@@ -12,6 +12,7 @@ public static class EntidadeExtensao
         where TEntidade : IEntidade
         where TResut : IEntidade
     {
+        Debugger.Break();
         return entidade.GetRequired(relationFactory);
     }
 
@@ -41,12 +42,20 @@ public static class EntidadeExtensao
         {
             var expression = ToExpression(relationFactory);
             var propertyInfo = ExpressaoUtil.RetornarPropriedade(expression);
+            var idChaveEstrangeira = EntidadeUtil.RetornarValorIdChaveEstrangeira(
+                entidadeTipada,
+                propertyInfo);
 
-            var idChaveEstrangeira = EntidadeUtil.RetornarValorIdChaveEstrangeira(entidadeTipada, propertyInfo);
+            var mensagemErro = idChaveEstrangeira > 0
+                ? $" A entidade {entidade.GetType().Name}{entidade} possui a relação aberta {relationFactory}, " +
+                  $"porém a chave estrangeira {propertyInfo.Name} está com valor {idChaveEstrangeira}."
+                : $" A entidade {entidade.GetType().Name}{entidade} não possui a relação aberta {relationFactory}, " +
+                  $"e a chave estrangeira {propertyInfo.Name} = '{idChaveEstrangeira}' não está definida.";
+
             if (idChaveEstrangeira > 0)
             {
                 throw new ErroOperacaoInvalida(
-                    $" A entidade {entidade.GetType().Name}{entidade} não possui a relação aberta {relationFactory}. A chave estrangeira {propertyInfo.Name} possui o valor {idChaveEstrangeira}, mas a relação não foi carregada. Utilize o método AbrirRelacao para carregar a relação.",
+                    mensagemErro,
                     null,
                     nomeMetodo,
                     caminhoArquivo,
@@ -57,9 +66,9 @@ public static class EntidadeExtensao
         throw new ErroOperacaoInvalida(
               $" A entidade {entidade.GetType().Name}{entidade} não possui a relação aberta {relationFactory}.",
               null,
-                    nomeMetodo,
-                    caminhoArquivo,
-                    linhaDoErro); ;
+              nomeMetodo,
+              caminhoArquivo,
+              linhaDoErro); ;
     }
 
     private static Expression<Func<TEntidade, object?>> ToExpression<TEntidade, TResut>(

@@ -17,7 +17,7 @@ public partial class Margem : BaseMedidaTipoComplexo, IMargem
     public double? Direita { get => this._direita; set => this.SetProperty(this._direita, this._direita = value); }
 
     public double? Inferior { get => this._inferior; set => this.SetProperty(this._inferior, this._inferior = value); }
-     
+
     public Margem()
     {
     }
@@ -112,4 +112,6 @@ public partial class Margem : BaseMedidaTipoComplexo, IMargem
     {
         return new Margem(this.Esquerda, this.Superior, this.Direita, this.Inferior);
     }
+
+
 }

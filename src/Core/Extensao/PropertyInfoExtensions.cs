@@ -54,7 +54,6 @@ public static class PropertyInfoExtensions
         if (property is null && other is null)
             return true;
 
-
         if (property is null || other is null)
             return false;
 
@@ -65,4 +64,17 @@ public static class PropertyInfoExtensions
                property.Name == other.Name;
 
     }
+
+    public static Type GetRequiredDeclaringType(this PropertyInfo propertyInfo)
+    {
+        var declaringType = propertyInfo.DeclaringType;
+        if (declaringType is null)
+        {
+            throw new InvalidOperationException(
+                $"The property '{propertyInfo.Name}' does not have a declaring type.");
+        }
+        return declaringType;
+    }
+
 }
+

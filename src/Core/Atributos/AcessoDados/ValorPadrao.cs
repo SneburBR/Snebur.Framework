@@ -4,9 +4,6 @@ namespace Snebur.Dominio.Atributos;
 [AttributeUsage(AttributeTargets.Property)]
 public class ValorPadraoAttribute : Attribute, IValorPadrao
 {
-    private bool _isValorPadraoOnUpdate;
-    private EnumTipoValorPadrao _tipoValorPadrao = EnumTipoValorPadrao.Comum;
-
     public object ValorPadrao { get; set; }
     public bool IsValorPadraoQuandoNullOrDefault { get; set; } = true;
     public bool IsValorPadraoQuandoNullOrWhiteSpace { get; set; }
@@ -18,16 +15,16 @@ public class ValorPadraoAttribute : Attribute, IValorPadrao
             return this.IsValorPadraoQuandoNullOrDefault
                    ? EnumTipoValorPadrao.ValorPropriedadeNullOrDefault
                    : this.IsValorPadraoQuandoNullOrWhiteSpace ? EnumTipoValorPadrao.ValorPropriedadeNullOrWhiteSpace
-                                                                 : this._tipoValorPadrao;
+                                                                 : field;
 
         }
-        set => this._tipoValorPadrao = value;
+        set => field = value;
     }
 
     public bool IsValorPadraoOnUpdate
     {
-        get => this.IsValorPadraoQuandoNullOrDefault || this._isValorPadraoOnUpdate;
-        set => this._isValorPadraoOnUpdate = value;
+        get => this.IsValorPadraoQuandoNullOrDefault || field;
+        set => field = value;
     }
 
     public ValorPadraoAttribute(Enum valorPadrao)

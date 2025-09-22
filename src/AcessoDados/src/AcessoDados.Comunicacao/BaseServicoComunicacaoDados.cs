@@ -9,7 +9,11 @@ public abstract class BaseServicoComunicacaoDados<TContextoDados> : BaseComunica
 
     private Exception? _erroInicializacao;
 
-    public TContextoDados? ContextoDados { get; private set; }
+    public TContextoDados ContextoDados
+    {
+        get => field ?? throw new InvalidOperationException($"ContextoDados {typeof(TContextoDados).Name} não inicializado");
+        private set => field = value;
+    }
     public IsolationLevel IsolamentoTransacao { get; protected set; } = ConfiguracaoAcessoDados.IsolamentoLevelSalvarPadrao;
     public virtual bool IsPermitirIdentificadorProprietarioGlobal { get; protected set; } = false;
 
