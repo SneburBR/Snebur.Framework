@@ -306,12 +306,22 @@ public class ParametroInfo
     public required string ParameterName { get; init; }
     public required int? Size;
     public required object? Value { get; set; }
-
     public required SqlDbType SqlDbType { get; init; }
     internal EstruturaCampo? EstruturaCampo { get; set; }
 
     public ParametroInfo()
     {
+    }
+
+    public static ParametroInfo Create<TEntidade>(
+       BaseContextoDados contextoDados,
+       Expression<Func<TEntidade, object?>> expressaoPropriedade)
+       where TEntidade : IEntidade
+    {
+        var estruturaEntidade = contextoDados.EstruturaBancoDados.RetornarEstruturaEntidade(typeof(TEntidade));
+        var propriedade = ExpressaoUtil.RetornarPropriedade(expressaoPropriedade);
+        var estruturaCampo = estruturaEntidade.RetornarEstruturaCampo(propriedade.Name);
+        return Create(contextoDados.Conexao, estruturaCampo, null);
     }
 
     internal static ParametroInfo Create(
@@ -328,7 +338,6 @@ public class ParametroInfo
             BaseConexao = baseConexao,
             EstruturaCampo = estruturaCampo
         };
-
     }
 
     [SetsRequiredMembers]

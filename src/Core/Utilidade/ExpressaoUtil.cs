@@ -275,7 +275,7 @@ public static class ExpressaoUtil
         return texto;
     }
 
-    public static PropertyInfo? RetornarPropriedade2<T>(
+    public static PropertyInfo? RetornarPropriedades<T>(
         this T obj, Expression<Func<T, object?>> expressao)
     {
         var propriedades = RetornarPropriedades(expressao, false);

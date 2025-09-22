@@ -86,6 +86,26 @@ public static class Guard
     }
 
     public static void NotEmpty<T>(
+         [NotNull] Guid? guid,
+         [CallerArgumentExpression(nameof(guid))] string paramName = "")
+    {
+
+        if (guid is null)
+            throw new ArgumentNullException(paramName, $"{paramName} cannot be null.");
+
+        if (guid == Guid.Empty)
+            throw new ArgumentException($"{paramName} cannot be empty.", paramName);
+    }
+
+    public static void NotEmpty<T>(
+        [NotNull] Guid guid,
+        [CallerArgumentExpression(nameof(guid))] string paramName = "")
+    {
+        if (guid == Guid.Empty)
+            throw new ArgumentException($"{paramName} cannot be empty.", paramName);
+    }
+
+    public static void NotEmpty<T>(
            [NotNull] ICollection<T>? value,
            [CallerArgumentExpression(nameof(value))] string paramName = "")
     {

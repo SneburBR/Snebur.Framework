@@ -555,8 +555,9 @@ public abstract partial class BaseContextoDados : __BaseContextoDados, IServicoD
     {
         return this.MapearSql<TMapeamento>(sql, new List<ParametroInfo>());
     }
-    public List<TMapeamento> MapearSql<TMapeamento>(string sql,
-                                            List<ParametroInfo>? parametros)
+    public List<TMapeamento> MapearSql<TMapeamento>(
+        string sql,
+        List<ParametroInfo>? parametros)
     {
         this.ValidarSessaoUsuario();
 

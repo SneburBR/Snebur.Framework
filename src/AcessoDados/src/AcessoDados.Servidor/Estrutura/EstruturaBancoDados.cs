@@ -116,6 +116,11 @@ internal partial class EstruturaBancoDados
         }
         return null;
     }
+
+    internal EstruturaEntidade RetornarEstruturaEntidade(Type tipoEntidade)
+    {
+        return this.RetornarEstruturaEntidade(tipoEntidade.Name, true)!;
+    }
     #endregion
 
     #region  Métodos privados
