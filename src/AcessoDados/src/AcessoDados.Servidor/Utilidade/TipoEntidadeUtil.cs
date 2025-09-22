@@ -1,5 +1,3 @@
-using Snebur.Extensao;
-
 namespace Snebur.AcessoDados;
 
 internal class TipoEntidadeUtil

@@ -27,7 +27,7 @@ public interface IInformacaoRepositorioArquivo
 {
     long IdArquivo { get; }
 
-    string? NomeTipoArquivo { get; }
+    string NomeTipoArquivo { get; }
 }
 
 public interface IInformacaoRepositorioImagem : IInformacaoRepositorioArquivo

@@ -1,6 +1,5 @@
 global using Snebur.Comunicacao;
 global using Snebur.Comunicacao.Dominio;
-global using Snebur.Extensao;
 global using Snebur.Dominio;
 global using Snebur.Servicos;
 global using Snebur.Utilidade;

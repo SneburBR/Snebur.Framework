@@ -6,7 +6,6 @@ using System.Web;
 
 namespace Snebur.ServicoArquivo;
 
-
 public abstract partial class BaseEnviarArquivo<TCabecalhoServicoArquivo, TInformacaoReposotiroArquivo> : BaseServicoArquivo<TCabecalhoServicoArquivo, TInformacaoReposotiroArquivo> where TCabecalhoServicoArquivo : CabecalhoServicoArquivo, TInformacaoReposotiroArquivo
                                                                                                                                                                                      where TInformacaoReposotiroArquivo : IInformacaoRepositorioArquivo
 {

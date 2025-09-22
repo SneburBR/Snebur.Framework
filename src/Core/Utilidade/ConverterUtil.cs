@@ -1,7 +1,6 @@
 using Snebur.Helpers;
 using Snebur.Reflexao;
 using System.Collections;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 namespace Snebur.Utilidade;

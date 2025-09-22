@@ -1,6 +1,5 @@
 namespace Snebur.Comunicacao.Dominio;
 
-
 public class ParametroChamadaListaEnum : ParametroChamadaLista
 {
     #region Campos Privados

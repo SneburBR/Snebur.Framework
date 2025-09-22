@@ -1,9 +1,7 @@
 using Snebur.Servicos;
 using System.Web;
-
-#if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Http;
-#endif
+
 
 namespace Snebur.Comunicacao;
 

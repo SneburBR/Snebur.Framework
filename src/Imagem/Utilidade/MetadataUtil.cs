@@ -125,7 +125,7 @@ public class MetadataUtil
         try
         {
             var metadata = new BitmapMetadata(metadataOrigem.Format);
-            AutoMapearUtil.Mapear<BitmapMetadata>(metadataOrigem, metadata, true,
+            AutoMapearUtil.Mapear(metadataOrigem, metadata, true,
                                                   x => x.Format,
                                                   x => x.DateTaken,
                                                   x => x.IsFrozen);

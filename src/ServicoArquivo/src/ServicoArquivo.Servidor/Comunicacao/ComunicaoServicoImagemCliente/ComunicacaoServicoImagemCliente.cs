@@ -1,6 +1,5 @@
 namespace Snebur.ServicoArquivo;
 
-
 public class ComunicacaoServicoImagemCliente : ComunicacaoServicoArquivoCliente, IComunicacaoServicoImagem
 {
 

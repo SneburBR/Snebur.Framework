@@ -1,5 +1,4 @@
 using Snebur.AcessoDados.Estrutura;
-using System.Diagnostics.Metrics;
 
 namespace Snebur.AcessoDados.Mapeamento;
 

@@ -1,13 +1,8 @@
-#if NET6_0_OR_GREATER
-#else
-using System.Data.SqlClient;
-#endif
-
 namespace Snebur.AcessoDados;
 
 public class BancoDadosSuporta
 {
-     public bool IsOffsetFetch { get; }
+    public bool IsOffsetFetch { get; }
     public bool IsColunaNomeTipoEntidade { get; }
     public bool IsSessaoUsuario { get; }
     public bool IsSessaoUsuarioHerdada { get; }
@@ -20,7 +15,7 @@ public class BancoDadosSuporta
     /// </summary>
     public bool IsDatabaseGeneratedOptionIdentityPadrao { get; }
 
-    internal BancoDadosSuporta(  EnumFlagBancoNaoSuportado flags)
+    internal BancoDadosSuporta(EnumFlagBancoNaoSuportado flags)
     {
         this.IsOffsetFetch = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.OffsetFetch);
         this.IsColunaNomeTipoEntidade = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.ColunaNomeTipoEntidade);
@@ -29,7 +24,7 @@ public class BancoDadosSuporta
         this.IsDataHoraUtc = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.DataHoraUtc);
         this.IsDatabaseGeneratedOptionIdentityPadrao = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.DatabaseGeneratedOptionIdentityPadrao);
 
-       
+
         this.IsSessaoUsuarioContextoAtual = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.SessaoUsuario) &&
                                             this.IsSuporta(flags, EnumFlagBancoNaoSuportado.SessaoUsuarioHerdada);
         if (!this.IsSessaoUsuarioContextoAtual)

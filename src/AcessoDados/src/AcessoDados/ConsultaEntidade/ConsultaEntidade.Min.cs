@@ -1,6 +1,5 @@
 namespace Snebur.AcessoDados;
 
-
 public partial class ConsultaEntidade<TEntidade> where TEntidade : IEntidade
 {
 

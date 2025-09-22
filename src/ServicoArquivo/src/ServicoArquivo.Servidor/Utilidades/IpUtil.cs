@@ -1,6 +1,5 @@
 namespace Snebur.ServicoArquivo;
 
-
 //    internal class IpUtilLocal
 //    {
 //        public static string RetornarIp(HttpContext context)

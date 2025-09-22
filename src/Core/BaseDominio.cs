@@ -1,7 +1,7 @@
-using Newtonsoft.Json;
 using Snebur.Dominio.Atributos;
 using Snebur.Serializacao;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
@@ -190,27 +190,37 @@ public abstract class BaseDominio : IBaseDominio, IBaseDominioReferencia, INotif
        T? novoValor,
        [CallerMemberName] string nomePropriedade = "")
     {
+        Guard.NotNullOrWhiteSpace(nomePropriedade);
 
         if (EqualityComparer<T>.Default.Equals(antigoValor, novoValor))
         {
             return;
         }
 
-        this.SetProperty(antigoValor, novoValor, nomePropriedade, null, null);
+        this.SetProperty(antigoValor,
+            novoValor,
+            nomePropriedade: nomePropriedade,
+            nomePropriedadeEntidade: null,
+            nomePropriedadeTipoComplexo: null);
     }
 
     internal virtual void SetProperty<T>(
         T? antigoValor,
         T? novoValor,
-        string? nomePropriedade,
         string? nomePropriedadeEntidade,
-        string? nomePropriedadeTipoComplexo)
+        string? nomePropriedadeTipoComplexo,
+        [CallerMemberName] string nomePropriedade = "")
     {
         if (this.IsSerializando)
         {
             return;
         }
         Guard.NotNullOrWhiteSpace(nomePropriedade);
+
+        if (Debugger.IsAttached)
+        {
+            Guard.PropertyMustExists(this, nomePropriedade);
+        }
 
         if (this.__IsControladorPropriedadesAlteradaAtivo)
         {
@@ -399,7 +409,7 @@ public abstract class BaseDominio : IBaseDominio, IBaseDominioReferencia, INotif
         [CallerMemberName] string nomePropriedade = "")
     {
 
-        this.SetProperty(antigoValor, novoValor, nomePropriedade, null, null);
+        this.SetProperty(antigoValor, novoValor, null, null, nomePropriedade);
     }
 }
 

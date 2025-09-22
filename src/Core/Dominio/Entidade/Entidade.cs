@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using Snebur.Dominio.Atributos;
 using System.Collections;
 using System.ComponentModel;
@@ -268,14 +267,16 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntidadeIntern
           T? novoValor,
           string? nomePropriedadeEntidade,
           string? nomePropriedadeTipoComplexo,
-          [CallerMemberName] string? nomePropriedade = "") where T : default
+          [CallerMemberName] string nomePropriedade = "") where T : default
     {
-        this.SetProperty(
+        Guard.NotNullOrWhiteSpace(nomePropriedade);
+
+        base.SetProperty(
             antigoValor: antigoValor,
             novoValor: novoValor,
-            nomePropriedade: nomePropriedade,
             nomePropriedadeEntidade: nomePropriedadeEntidade,
-            nomePropriedadeTipoComplexo: nomePropriedadeTipoComplexo);
+            nomePropriedadeTipoComplexo: nomePropriedadeTipoComplexo,
+            nomePropriedade: nomePropriedade);
     }
 
     //NotificarValorPropriedadeAlteradaTipoCompleto
@@ -344,7 +345,7 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntidadeIntern
             return;
         }
 
-        this.Set<Entidade>(antigoValor, novoValor, nomePropriedade);
+        this.Set(antigoValor, novoValor, nomePropriedade);
         if (this.__IsControladorPropriedadesAlteradaAtivo &&
             this is Entidade _)
         {

@@ -12,7 +12,7 @@ public class HttpWebRequestProxy : HttpClientProxy
     public HttpWebRequestProxy(string url)
     {
 #pragma warning disable SYSLIB0014
-        this._request = (HttpWebRequest)HttpWebRequest.Create(url);
+        this._request = (HttpWebRequest)WebRequest.Create(url);
         this._request.Proxy = null;
 #pragma warning restore SYSLIB0014
     }

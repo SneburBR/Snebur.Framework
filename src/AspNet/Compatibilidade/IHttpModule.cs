@@ -1,6 +1,4 @@
 
-#if NET6_0_OR_GREATER
-
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,5 +16,3 @@ public interface IHttpModule
     //               IServiceProvider svp);
 
 }
-
-#endif

@@ -353,7 +353,7 @@ internal partial class EstruturaEntidade
             throw new Exception("A  estrutura do banco de dados não foi montada");
         }
 
-        Debugger.Break();
+        // Debugger.Break();
 
         if (valoresRef is not null)
         {
@@ -385,7 +385,7 @@ internal partial class EstruturaEntidade
         {
             throw new Exception("A  estrutura do banco de dados não foi montada");
         }
-        Debugger.Break();
+        //Debugger.Break();
 
         if (valoresRef is not null)
         {

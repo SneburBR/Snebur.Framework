@@ -3,11 +3,7 @@ using System.Data;
 using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
 
-#if NET6_0_OR_GREATER
 using Microsoft.Data.SqlClient;
-#else
-using System.Data.SqlClient;
-#endif
 
 namespace Snebur.AcessoDados;
 
@@ -72,7 +68,7 @@ internal abstract class BaseConexao
                                                  string nomeParametro,
                                                  object? valor)
     {
-        return ParametroInfo.Create(this, estruturaCampo, valor);
+        return ParametroInfo.Create(this, estruturaCampo, nomeParametro, valor);
 
     }
 
@@ -321,17 +317,20 @@ public class ParametroInfo
         var estruturaEntidade = contextoDados.EstruturaBancoDados.RetornarEstruturaEntidade(typeof(TEntidade));
         var propriedade = ExpressaoUtil.RetornarPropriedade(expressaoPropriedade);
         var estruturaCampo = estruturaEntidade.RetornarEstruturaCampo(propriedade.Name);
-        return Create(contextoDados.Conexao, estruturaCampo, null);
+        return Create(contextoDados.Conexao, estruturaCampo, estruturaCampo.NomeParametro, null);
     }
 
     internal static ParametroInfo Create(
         BaseConexao baseConexao,
         EstruturaCampo estruturaCampo,
+        string nomeParametro,
         object? valor)
     {
+        Guard.NotNullOrWhiteSpace(nomeParametro);
+
         return new ParametroInfo
         {
-            ParameterName = estruturaCampo.NomeParametro,
+            ParameterName = nomeParametro,
             SqlDbType = estruturaCampo.TipoSql,
             Size = estruturaCampo.TamanhoMaximo,
             Value = valor,

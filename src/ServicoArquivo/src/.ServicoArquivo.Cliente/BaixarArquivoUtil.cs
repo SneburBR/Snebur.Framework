@@ -1,6 +1,5 @@
 using Snebur.Net;
 using System.Collections.Generic;
-using System.Net;
 
 namespace Snebur.ServicoArquivo.Cliente;
 

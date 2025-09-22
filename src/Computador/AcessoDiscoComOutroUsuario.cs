@@ -18,10 +18,6 @@ public class AcessoDiscoComOutroUsuario : IDisposable
     private WindowsIdentity? WindowsIdentity;
     private SafeTokenHandle? SafeTokenHandle;
 
-#if NET6_0_OR_GREATER == false
-    private WindowsImpersonationContext WindowsImpersonationContext { get; set; }
-#endif
-
     public AcessoDiscoComOutroUsuario(string usuario, string senha) : this(null, usuario, senha)
     {
 
@@ -63,10 +59,6 @@ public class AcessoDiscoComOutroUsuario : IDisposable
                     if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                     {
                         this.WindowsIdentity = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-
-#if NET6_0_OR_GREATER == false
-                    this.WindowsImpersonationContext = this.WindowsIdentity.Impersonate();
-#endif
                     }
 
                     this.IsAutorizado = true;
@@ -81,9 +73,6 @@ public class AcessoDiscoComOutroUsuario : IDisposable
 
     public void Dispose()
     {
-#if NET6_0_OR_GREATER == false
-        this.WindowsImpersonationContext?.Dispose();
-#endif
         this.WindowsIdentity?.Dispose();
         this.SafeTokenHandle?.Dispose();
     }

@@ -98,6 +98,6 @@ public class BitmapUtil
 
     internal static MemoryStream RetornarStreamImagemVazia()
     {
-        return BitmapUtil.SalvarBitmap(new System.Drawing.Bitmap(1, 1), 1);
+        return BitmapUtil.SalvarBitmap(new Bitmap(1, 1), 1);
     }
 }

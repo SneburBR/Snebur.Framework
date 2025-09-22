@@ -1,5 +1,3 @@
-#if NET6_0_OR_GREATER
-
 namespace Snebur.Comunicacao;
 
 using Microsoft.AspNetCore.Http;
@@ -24,7 +22,6 @@ public abstract partial class BaseComunicacaoServidor
             response.Headers.Append("Cache-Control", "no-cache, no-store, must-revalidate");
             response.Headers.Append("Pragma", "no-cache");
             response.Headers.Append("Expires", "0");
-
 
             using (var requisicao = new Requisicao(httpContext,
                                                    this.CredencialServico,
@@ -104,4 +101,3 @@ public abstract partial class BaseComunicacaoServidor
         }
     }
 }
-#endif

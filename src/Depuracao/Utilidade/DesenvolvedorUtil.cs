@@ -87,7 +87,7 @@ public static class DesenvolvedorUtil
         return DesenvolvedorUtil.Random.Next(10000000, 99999999).ToString();
     }
 
-    public static TEnum RandowEnum<TEnum>() where TEnum : System.Enum
+    public static TEnum RandowEnum<TEnum>() where TEnum : Enum
     {
         return EnumUtil.RetornarValoresEnum<TEnum>().Random();
     }

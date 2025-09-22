@@ -2,12 +2,8 @@ using System.Data.Common;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Snebur.Linq;
-
-#if NET6_0_OR_GREATER
 using Microsoft.Data.SqlClient;
-#else
-using System.Data.SqlClient;
-#endif
+
 
 namespace Snebur.AcessoDados;
 

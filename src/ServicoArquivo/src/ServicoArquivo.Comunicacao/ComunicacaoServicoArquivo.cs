@@ -1,8 +1,4 @@
 using Snebur.AcessoDados;
-using Snebur.Comunicacao;
-using Snebur.Dominio;
-using Snebur.Seguranca;
-using System;
 
 namespace Snebur.ServicoArquivo.Comunicacao
 {

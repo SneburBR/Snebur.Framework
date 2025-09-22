@@ -1,6 +1,8 @@
+using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace Snebur;
@@ -159,10 +161,21 @@ public static class Guard
          [CallerArgumentExpression(nameof(value))] string paramName = "")
     {
         if (value is null)
-            throw new ArgumentNullException(nameof(value), $"{nameof(value)} cannot be null.");
+            throw new ArgumentNullException(paramName, $"{nameof(paramName)} cannot be null.");
 
         if (value is not T _)
-            throw new ArgumentException($"{nameof(value)} must be of type {typeof(T).Name}.", nameof(value));
+            throw new ArgumentException($"{paramName} must be of type {typeof(T).Name}.", paramName);
+
+    }
+
+    internal static void PropertyMustExists(object obj,
+        string propertyName,
+        [CallerArgumentExpression(nameof(obj))] string paramName = "")
+    {
+        if (obj is null)
+            throw new ArgumentNullException(nameof(obj), $"{paramName} cannot be null.");
+
+        _ = Extensao.TypeExtensions.GetRequiredProperty(obj.GetType(), propertyName);
 
     }
 }

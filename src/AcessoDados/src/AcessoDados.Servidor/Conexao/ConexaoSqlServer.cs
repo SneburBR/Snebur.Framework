@@ -1,15 +1,9 @@
 using System.Data.Common;
 using Snebur.AcessoDados.Estrutura;
 using System.Data;
-
-#if NET6_0_OR_GREATER
 using Microsoft.Data.SqlClient;
-#else
-using System.Data.SqlClient;
-#endif
 
 namespace Snebur.AcessoDados;
-
 internal class ConexaoSqlServer : BaseConexao
 {
 

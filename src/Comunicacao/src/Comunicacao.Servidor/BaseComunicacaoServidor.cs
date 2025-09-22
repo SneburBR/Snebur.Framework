@@ -2,13 +2,10 @@ using Snebur.AcessoDados;
 using Snebur.Servicos;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
-
-#if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Http;
-#endif
+
 
 namespace Snebur.Comunicacao;
 

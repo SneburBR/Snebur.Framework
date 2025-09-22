@@ -113,5 +113,4 @@ public partial class Margem : BaseMedidaTipoComplexo, IMargem
         return new Margem(this.Esquerda, this.Superior, this.Direita, this.Inferior);
     }
 
-
 }

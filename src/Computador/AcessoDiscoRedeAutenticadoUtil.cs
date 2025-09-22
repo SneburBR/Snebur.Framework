@@ -6,7 +6,6 @@ using System.Security.Principal;
 
 namespace Snebur.Computador;
 
-
 /// <summary>
 /// Acesso rede o disco local um autenticação do usuário existente no computador local
 /// </summary>
@@ -55,12 +54,12 @@ public class AcessoDiscoRedeAutenticadoUtil
             {
                 using (WindowsIdentity newId = new WindowsIdentity(safeTokenHandle.DangerousGetHandle()))
                 {
-#if NET6_0_OR_GREATER == false
-                    using (WindowsImpersonationContext impersonatedUser = newId.Impersonate())
-                    {
-                        callbackSucesso.Invoke();
-                    }
-#endif
+                    //#if NET6_0_OR_GREATER == false
+                    //                    using (WindowsImpersonationContext impersonatedUser = newId.Impersonate())
+                    //                    {
+                    //                        callbackSucesso.Invoke();
+                    //                    }
+                    //#endif
                 }
             }
         }

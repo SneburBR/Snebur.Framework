@@ -45,17 +45,13 @@ public static class CompactacaoUtil
         }
         else
         {
-#if NET6_0_OR_GREATER || NET40
             throw new NotSupportedException();
-#else
-
-            SevenZipBase.SetLibraryPath(CaminhoBilioteca7zip);
-            using (var sevenZip = new SevenZipExtractor(caminhoArquivo))
-            {
-                sevenZip.ExtractFiles(diretorioDestino, sevenZip.ArchiveFileNames.ToArray());
-                return Directory.GetFiles(diretorioDestino, "*.*", SearchOption.AllDirectories).ToList();
-            }
-#endif
+            //SevenZipBase.SetLibraryPath(CaminhoBilioteca7zip);
+            //using (var sevenZip = new SevenZipExtractor(caminhoArquivo))
+            //{
+            //    sevenZip.ExtractFiles(diretorioDestino, sevenZip.ArchiveFileNames.ToArray());
+            //    return Directory.GetFiles(diretorioDestino, "*.*", SearchOption.AllDirectories).ToList();
+            //}
         }
     }
 

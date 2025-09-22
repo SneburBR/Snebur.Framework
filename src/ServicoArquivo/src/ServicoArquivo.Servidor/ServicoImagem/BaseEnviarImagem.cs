@@ -6,7 +6,6 @@ using System.Web;
 
 namespace Snebur.ServicoArquivo;
 
-
 public abstract class BaseEnviarImagem : BaseEnviarArquivo<CabecalhoServicoImagem, IInformacaoRepositorioImagem>
 {
     private ComunicacaoServicoImagemCliente ServicoImagemCliente

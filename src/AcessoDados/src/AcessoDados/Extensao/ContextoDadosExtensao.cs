@@ -162,8 +162,10 @@ public static class ContextoDadosExtensao
         }
     }
 
-    public static void AbrirRelacao<TEntidade, TRelacao>(this IContextoDados contexto,
-                                                TEntidade entidade, Expression<Func<TEntidade, TRelacao>> expressaoRelacao) where TEntidade : Entidade where TRelacao : Entidade?
+    public static void AbrirRelacao<TEntidade, TRelacao>(
+        this IContextoDados contexto,
+        TEntidade entidade, Expression<Func<TEntidade, TRelacao?>> expressaoRelacao)
+        where TEntidade : Entidade where TRelacao : Entidade?
     {
         AbrirRelacoes(contexto, entidade, expressaoRelacao);
     }
@@ -175,7 +177,7 @@ public static class ContextoDadosExtensao
 
     public static void AbrirRelacoes<TEntidade, TRelacao>(this IContextoDados contexto,
                                                 TEntidade entidade,
-                                                params Expression<Func<TEntidade, TRelacao>>[] expressoesRelacao) where TEntidade : Entidade where TRelacao : Entidade?
+                                                params Expression<Func<TEntidade, TRelacao?>>[] expressoesRelacao) where TEntidade : Entidade where TRelacao : Entidade?
     {
 
         var consulta = contexto.RetornarConsulta<TEntidade>(entidade.GetType()).

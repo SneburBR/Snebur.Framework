@@ -1,5 +1,4 @@
-﻿namespace Snebur.AcessoDados;
-
+namespace Snebur.AcessoDados;
 
 public abstract class BaseFiltroGrupo : BaseFiltro
 {

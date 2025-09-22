@@ -1,33 +1,19 @@
-using Snebur.Comunicacao;
-using Snebur.Seguranca;
-using System.ComponentModel;
-using Snebur.Linq;
-
-#if NET6_0_OR_GREATER
-
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-
-#else
-using Snebur.Utilidade;
-using System.Web;
-#endif 
-#if NET8_0_OR_GREATER
-
-using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-#endif
+using Microsoft.Extensions.Hosting;
+using Snebur.Comunicacao;
+using Snebur.Linq;
+using Snebur.Seguranca;
+using System.ComponentModel;
+
 namespace Snebur;
 
 public class AplicacaoSneburAspNet : AplicacaoSnebur, IAplicacaoSneburAspNet
 {
     public const string PARAMETRO_IP_REQUISICAO = "IpRequisicao";
     public override EnumTipoAplicacao TipoAplicacao => EnumTipoAplicacao.DotNet_WebService;
-
-#if NET6_0_OR_GREATER  == false
-    public virtual HttpContext HttpContext => HttpContext.Current;
-#endif
 
     public string? IpRequisicao
     {
@@ -134,46 +120,6 @@ public class AplicacaoSneburAspNet : AplicacaoSnebur, IAplicacaoSneburAspNet
         }
     }
 
-#if NET6_0_OR_GREATER  == false
-
-    public override string IpPublico
-    {
-        get
-        {
-            var httpContext = this.HttpContext;
-            string ip = null;
-            if (httpContext != null)
-            {
-                if (httpContext.Request.Headers[PARAMETRO_IP_REQUISICAO] != null)
-                {
-                    var ipRequisicao = httpContext.Request.Headers[PARAMETRO_IP_REQUISICAO];
-                    if (IpUtil.IsIP(ipRequisicao))
-                    {
-                        return ipRequisicao;
-                    }
-                }
-                ip = httpContext.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
-                if (!ValidacaoUtil.IsIp(ip))
-                {
-                    ip = httpContext.Request.ServerVariables["REMOTE_ADDR"];
-                }
-                if (ip == ConstantesIP.IP6_LOCAL)
-                {
-                    return ConstantesIP.IP_LOCAL;
-                }
-                if (ValidacaoUtil.IsIp(ip))
-                {
-                    return ip;
-                }
-            }
-            return base.IpPublico;
-        }
-
-
-        //throw new Exception("Não foi possível retornar o IP da requisição");
-    }
-#endif
-
     //public static AplicacaoSneburAspNet AtualAspNet => AplicacaoSnebur.Atual as AplicacaoSneburAspNet;
 
     #region IAplicacaoSneburAspNet
@@ -184,13 +130,9 @@ public class AplicacaoSneburAspNet : AplicacaoSnebur, IAplicacaoSneburAspNet
         throw new NotImplementedException();
     }
 
-#if NET6_0_OR_GREATER  == false
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public string UserAgent => this.HttpContext?.Request?.UserAgent;
-#else
     [EditorBrowsable(EditorBrowsableState.Never)]
     public string? UserAgent => this.HttpContext?.Request?.UserAgent();
-#endif
+
     public T? GetHttpContext<T>()
     {
         if (this.HttpContext is null)
@@ -222,9 +164,6 @@ public class AplicacaoSneburAspNet : AplicacaoSnebur, IAplicacaoSneburAspNet
     }
 
     #endregion
-
-#if NET6_0_OR_GREATER
-
     #region IAplicacaoSneburAspNetCore
 
     private static IHttpContextAccessor? _httpContextAccessor;
@@ -244,10 +183,6 @@ public class AplicacaoSneburAspNet : AplicacaoSnebur, IAplicacaoSneburAspNet
     {
     }
 
-    #endregion
-#endif
-
-#if NET8_0_OR_GREATER
     public virtual void AddServices(
         IHostApplicationBuilder app,
         IWebHostBuilder webHost,
@@ -255,5 +190,6 @@ public class AplicacaoSneburAspNet : AplicacaoSnebur, IAplicacaoSneburAspNet
     {
 
     }
-#endif
+
+    #endregion
 }

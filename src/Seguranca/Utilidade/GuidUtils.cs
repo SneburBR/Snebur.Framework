@@ -1,7 +1,4 @@
-using System.Text.RegularExpressions;
-
 namespace Snebur.Utilidade;
-
 
 public class GuidUtil
 {

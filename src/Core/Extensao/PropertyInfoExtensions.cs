@@ -1,4 +1,3 @@
-using Snebur.Extensao;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 

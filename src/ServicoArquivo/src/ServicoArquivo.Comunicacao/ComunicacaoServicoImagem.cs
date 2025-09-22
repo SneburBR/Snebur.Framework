@@ -1,7 +1,3 @@
-using Snebur.Dominio;
-using Snebur.Utilidade;
-using System;
-
 namespace Snebur.ServicoArquivo.Comunicacao
 {
     public abstract class ComunicacaoServicoImagem : ComunicacaoServicoArquivo, IComunicacaoServicoImagem

@@ -1,6 +1,5 @@
 namespace Snebur.ServicoArquivo;
 
-
 public class ServicoImagemUtil
 {
     #region  Métodos

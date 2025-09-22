@@ -5,7 +5,6 @@ using Snebur.Linq;
 using Newtonsoft.Json;
 using System.Diagnostics.CodeAnalysis;
 
-
 #if NET6_0_OR_GREATER
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -26,7 +25,6 @@ public class Requisicao : IDisposable
     [XmlIgnore, JsonIgnore]
     public HttpContext HttpContext { get; }
     public string CaminhoAplicacao { get; }
-
 
     [MemberNotNullWhen(true,
         nameof(ContratoChamada),

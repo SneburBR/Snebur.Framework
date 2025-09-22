@@ -48,7 +48,7 @@ public static partial class TextoUtil
 
         for (int i = 0; i < letras.Length; i++)
         {
-            texto = System.Text.RegularExpressions.Regex.Replace(texto, acentos[i], letras[i]);
+            texto = Regex.Replace(texto, acentos[i], letras[i]);
         }
         return texto;
     }

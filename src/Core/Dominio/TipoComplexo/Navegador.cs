@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using Snebur.Dominio.Atributos;
 
 namespace Snebur.Dominio;

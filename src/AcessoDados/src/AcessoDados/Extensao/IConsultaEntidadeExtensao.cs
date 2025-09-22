@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 
 namespace Snebur.AcessoDados;
 
@@ -68,7 +68,7 @@ public static class IConsultaEntidadeExtensao
 
     public static Task<double> SumAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, double>> propriedade) where TEntidade : IEntidade
     {
-        return Task.Factory.StartNew<double>(() =>
+        return Task.Factory.StartNew(() =>
         {
             return consulta.Sum(propriedade);
         });
@@ -85,7 +85,7 @@ public static class IConsultaEntidadeExtensao
 
     public static Task<int> MaxAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, int>> propriedade) where TEntidade : IEntidade
     {
-        return Task.Factory.StartNew<int>(() =>
+        return Task.Factory.StartNew(() =>
         {
             return consulta.Max(propriedade);
         });
@@ -93,7 +93,7 @@ public static class IConsultaEntidadeExtensao
 
     public static Task<int?> MaxAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, int?>> propriedade) where TEntidade : IEntidade
     {
-        return Task.Factory.StartNew<int?>(() =>
+        return Task.Factory.StartNew(() =>
         {
             return consulta.Max(propriedade);
         });
@@ -101,7 +101,7 @@ public static class IConsultaEntidadeExtensao
 
     public static Task<long> MaxAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, long>> propriedade) where TEntidade : IEntidade
     {
-        return Task.Factory.StartNew<long>(() =>
+        return Task.Factory.StartNew(() =>
         {
             return consulta.Max(propriedade);
         });
@@ -109,7 +109,7 @@ public static class IConsultaEntidadeExtensao
 
     public static Task<decimal> MaxAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, decimal>> propriedade) where TEntidade : IEntidade
     {
-        return Task.Factory.StartNew<decimal>(() =>
+        return Task.Factory.StartNew(() =>
         {
             return consulta.Max(propriedade);
         });
@@ -117,7 +117,7 @@ public static class IConsultaEntidadeExtensao
 
     public static Task<decimal?> MaxAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, decimal?>> propriedade) where TEntidade : IEntidade
     {
-        return Task.Factory.StartNew<decimal?>(() =>
+        return Task.Factory.StartNew(() =>
         {
             return consulta.Max(propriedade);
         });
@@ -125,7 +125,7 @@ public static class IConsultaEntidadeExtensao
 
     public static Task<double> MaxAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, double>> propriedade) where TEntidade : IEntidade
     {
-        return Task.Factory.StartNew<double>(() =>
+        return Task.Factory.StartNew(() =>
         {
             return consulta.Max(propriedade);
         });
@@ -133,7 +133,7 @@ public static class IConsultaEntidadeExtensao
 
     public static Task<double?> MaxAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, double?>> propriedade) where TEntidade : IEntidade
     {
-        return Task.Factory.StartNew<double?>(() =>
+        return Task.Factory.StartNew(() =>
         {
             return consulta.Max(propriedade);
         });
@@ -145,7 +145,7 @@ public static class IConsultaEntidadeExtensao
 
     public static Task<int> Min<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, int>> propriedade) where TEntidade : IEntidade
     {
-        return Task.Factory.StartNew<int>(() =>
+        return Task.Factory.StartNew(() =>
         {
             return consulta.Min(propriedade);
         });
@@ -153,7 +153,7 @@ public static class IConsultaEntidadeExtensao
 
     public static Task<int?> MinAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, int?>> propriedade) where TEntidade : IEntidade
     {
-        return Task.Factory.StartNew<int?>(() =>
+        return Task.Factory.StartNew(() =>
         {
             return consulta.Min(propriedade);
         });
@@ -161,7 +161,7 @@ public static class IConsultaEntidadeExtensao
 
     public static Task<long> MinAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, long>> propriedade) where TEntidade : IEntidade
     {
-        return Task.Factory.StartNew<long>(() =>
+        return Task.Factory.StartNew(() =>
         {
             return consulta.Min(propriedade);
         });
@@ -177,7 +177,7 @@ public static class IConsultaEntidadeExtensao
 
     public static Task<decimal?> MinAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, decimal?>> propriedade) where TEntidade : IEntidade
     {
-        return Task.Factory.StartNew<decimal?>(() =>
+        return Task.Factory.StartNew(() =>
         {
             return consulta.Min(propriedade);
         });
@@ -185,7 +185,7 @@ public static class IConsultaEntidadeExtensao
 
     public static Task<double> MinAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, double>> propriedade) where TEntidade : IEntidade
     {
-        return Task.Factory.StartNew<double>(() =>
+        return Task.Factory.StartNew(() =>
         {
             return consulta.Min(propriedade);
         });
@@ -193,7 +193,7 @@ public static class IConsultaEntidadeExtensao
 
     public static Task<double?> MinAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, double?>> propriedade) where TEntidade : IEntidade
     {
-        return Task.Factory.StartNew<double?>(() =>
+        return Task.Factory.StartNew(() =>
         {
             return consulta.Min(propriedade);
         });
@@ -205,7 +205,7 @@ public static class IConsultaEntidadeExtensao
 
     public static Task<int> AverageAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, int>> propriedade) where TEntidade : IEntidade
     {
-        return Task.Factory.StartNew<int>(() =>
+        return Task.Factory.StartNew(() =>
         {
             return consulta.Average(propriedade);
         });
@@ -213,7 +213,7 @@ public static class IConsultaEntidadeExtensao
 
     public static Task<int?> AverageAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, int?>> propriedade) where TEntidade : IEntidade
     {
-        return Task.Factory.StartNew<int?>(() =>
+        return Task.Factory.StartNew(() =>
         {
             return consulta.Average(propriedade);
         });
@@ -221,7 +221,7 @@ public static class IConsultaEntidadeExtensao
 
     public static Task<long> AverageAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, long>> propriedade) where TEntidade : IEntidade
     {
-        return Task.Factory.StartNew<long>(() =>
+        return Task.Factory.StartNew(() =>
         {
             return consulta.Average(propriedade);
         });
@@ -229,7 +229,7 @@ public static class IConsultaEntidadeExtensao
 
     public static Task<decimal> AverageAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, decimal>> propriedade) where TEntidade : IEntidade
     {
-        return Task.Factory.StartNew<decimal>(() =>
+        return Task.Factory.StartNew(() =>
         {
             return consulta.Average(propriedade);
         });
@@ -237,7 +237,7 @@ public static class IConsultaEntidadeExtensao
 
     public static Task<decimal?> AverageAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, decimal?>> propriedade) where TEntidade : IEntidade
     {
-        return Task.Factory.StartNew<decimal?>(() =>
+        return Task.Factory.StartNew(() =>
         {
             return consulta.Average(propriedade);
         });
@@ -245,7 +245,7 @@ public static class IConsultaEntidadeExtensao
 
     public static Task<double> AverageAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, double>> propriedade) where TEntidade : IEntidade
     {
-        return Task.Factory.StartNew<double>(() =>
+        return Task.Factory.StartNew(() =>
         {
             return consulta.Average(propriedade);
         });
@@ -253,7 +253,7 @@ public static class IConsultaEntidadeExtensao
 
     public static Task<double?> AverageAsync<TEntidade>(this IConsultaEntidade<TEntidade> consulta, Expression<Func<TEntidade, double?>> propriedade) where TEntidade : IEntidade
     {
-        return Task.Factory.StartNew<double?>(() =>
+        return Task.Factory.StartNew(() =>
         {
             return consulta.Average(propriedade);
         });

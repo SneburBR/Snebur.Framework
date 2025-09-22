@@ -578,7 +578,7 @@ public partial class ImagemUtil
                 novaAltura = altura;
             }
         }
-        return new System.Windows.Size(novaLargura, novaAltura);
+        return new Size(novaLargura, novaAltura);
     }
 
     public static Size RetornarTamanhoUniformeParaPreencher(Size tamanhoImagem, Size tamanhoDestino)
@@ -641,7 +641,7 @@ public partial class ImagemUtil
                 novaAltura = altura;
             }
         }
-        return new System.Windows.Size(novaLargura, novaAltura);
+        return new Size(novaLargura, novaAltura);
     }
 
     public static Size RetornarTamanhoUnifiormeAlturaMaxima(double larguraImagem, double alturaImagem, double alturaMaxima)

@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 namespace Snebur.ServicoArquivo;
 
 [Serializable]
-public abstract class ErroServicoArquivo : Snebur.Erro
+public abstract class ErroServicoArquivo : Erro
 {
     public ErroServicoArquivo(string mensagem = "",
                                 Exception? erroInterno = null,

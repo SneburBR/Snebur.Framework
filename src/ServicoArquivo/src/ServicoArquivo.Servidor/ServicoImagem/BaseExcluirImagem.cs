@@ -1,11 +1,6 @@
-#if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Http;
-#else
-using System.Web;
-#endif  
 
 namespace Snebur.ServicoArquivo;
-
 
 public abstract class BaseExcluirImagem : BaseExcluirArquivo<CabecalhoServicoImagem, IInformacaoRepositorioImagem>
 {

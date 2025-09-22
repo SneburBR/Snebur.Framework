@@ -1,6 +1,4 @@
-using Snebur.Extensao;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Snebur.AcessoDados.Estrutura;
 

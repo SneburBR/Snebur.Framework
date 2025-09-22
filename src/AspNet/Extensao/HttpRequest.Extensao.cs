@@ -1,53 +1,32 @@
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-#if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Net.Http.Headers;
-#else
-using System.Web;
-#endif
 
 namespace Snebur;
-
 public static class HttpRequestExtensao
 {
     public static Uri RetornarUrlRequisicao(this HttpRequest request)
     {
-#if NET6_0_OR_GREATER
         return new Uri($"{request.Scheme}://{request.Host.Host}{request.GetEncodedPathAndQuery()}");
-#else
-        return request.Url ??
-               request.UrlReferrer;
-#endif
 
     }
 
     public static string GetMethod(this HttpRequest request)
     {
-#if NET6_0_OR_GREATER
         return request.Method;
-#else
-        return request.HttpMethod;
-#endif
     }
 
-#if NET6_0_OR_GREATER
     public static IFormFileCollection GetFiles(this HttpRequest request)
     {
         return request.Form.Files;
     }
-#else
-    public static HttpFileCollection GetFiles(this HttpRequest request)
-    {
-        return request.Files;
-    }
-#endif
+
 
     public static string? GetValue(this HttpRequest request, string key)
     {
-#if NET6_0_OR_GREATER
 
         if (request.HasFormContentType)
         {
@@ -71,9 +50,6 @@ public static class HttpRequestExtensao
         }
         return null;
 
-#else
-        return request[key];
-#endif
     }
 
     public static Uri GetUrl(this HttpRequest request)

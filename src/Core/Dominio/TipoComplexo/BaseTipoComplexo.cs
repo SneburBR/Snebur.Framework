@@ -72,7 +72,6 @@ public abstract class BaseTipoComplexo : BaseDominio, ICloneable
             this.__Entidade.SetProperty(
                 antigoValor,
                 novoValor,
-                caminhoPropriedade,
                 this.__NomePropriedadeEntidade,
                 nomePropriedadeTipoComplexo);
 

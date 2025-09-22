@@ -95,7 +95,7 @@ public abstract partial class BaseComunicacaoCliente : IBaseServico
         Action<T> callback,
         params object?[] valoresParametro)
     {
-        this.ChamarServicoAsync<T>(metodo, metodo, callback, valoresParametro);
+        this.ChamarServicoAsync(metodo, metodo, callback, valoresParametro);
     }
 
     protected void ChamarServicoAsync<T>(

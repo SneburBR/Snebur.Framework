@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 
 namespace Snebur.ServicoArquivo;
 
-
 public abstract class BaseServicoArquivo<TCabecalhoServicoArquivo, TInformacaoRepositorio> : IHttpHandler, IDisposable
     where TCabecalhoServicoArquivo : CabecalhoServicoArquivo
     where TInformacaoRepositorio : IInformacaoRepositorioArquivo

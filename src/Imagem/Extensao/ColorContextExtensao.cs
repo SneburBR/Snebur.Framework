@@ -175,7 +175,7 @@ public static class ColorContextExtensao
         if (valor != null)
         {
 
-            if (Enum.TryParse<StandardColorSpace>(valor.ToString(), out StandardColorSpace resultado))
+            if (Enum.TryParse(valor.ToString(), out StandardColorSpace resultado))
             {
                 return resultado;
             }

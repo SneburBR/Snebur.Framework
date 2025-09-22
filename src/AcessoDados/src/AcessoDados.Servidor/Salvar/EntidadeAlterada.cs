@@ -1,5 +1,4 @@
 using Snebur.AcessoDados.Estrutura;
-using Snebur.Linq;
 
 namespace Snebur.AcessoDados.Servidor.Salvar;
 

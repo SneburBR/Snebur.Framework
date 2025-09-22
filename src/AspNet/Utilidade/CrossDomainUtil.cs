@@ -1,10 +1,6 @@
 using System.Web;
-
-#if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Http;
-#else
-//using System.Web;
-#endif 
+
 
 namespace Snebur.Utilidade;
 
@@ -39,7 +35,6 @@ public static class CrossDomainUtil
         //{
         //    resposta.Headers.Append(ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         //}
-
 
         var metodosRequisicao = requisicao.Headers.GetValues(ACCESS_CONTROL_REQUEST_METHOD);
         var cabecalhosRequisicao = requisicao.Headers.GetValues(ACCESS_CONTROL_REQUEST_HEADERS);

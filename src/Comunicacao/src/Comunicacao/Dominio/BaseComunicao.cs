@@ -11,5 +11,4 @@ public class BaseComunicao : BaseDominio
 
     #endregion
 
-
 }

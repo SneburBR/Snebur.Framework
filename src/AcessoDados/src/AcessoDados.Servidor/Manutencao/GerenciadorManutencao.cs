@@ -2,10 +2,6 @@ using System.Data;
 using System.Data.Common;
 using System.Text;
 
-#if NET6_0_OR_GREATER
-#else
-using System.Data.SqlClient;
-#endif
 
 namespace Snebur.AcessoDados.Manutencao;
 

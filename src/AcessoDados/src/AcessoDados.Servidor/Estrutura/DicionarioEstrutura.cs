@@ -1,4 +1,3 @@
-using Newtonsoft.Json.Linq;
 using System.Diagnostics.CodeAnalysis;
 namespace Snebur.AcessoDados.Estrutura;
 

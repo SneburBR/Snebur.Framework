@@ -6,7 +6,6 @@ using System.Web;
 
 namespace Snebur.ServicoArquivo;
 
-
 public partial class CabecalhoServicoArquivo : Cabecalho, IInformacaoRepositorioArquivo
 {
     public long IdArquivo { get; }
@@ -28,7 +27,7 @@ public partial class CabecalhoServicoArquivo : Cabecalho, IInformacaoRepositorio
 
     public bool EnviarArquivo { get; }
 
-    public string? NomeTipoArquivo { get; }
+    public string NomeTipoArquivo { get; }
 
     public CredencialUsuario CredencialRequisicao { get; }
 
@@ -52,7 +51,7 @@ public partial class CabecalhoServicoArquivo : Cabecalho, IInformacaoRepositorio
         this.Senha = this.RetornarString(ConstantesCabecalho.SENHA);
         //this.IdSessaoUsuario = this.RetornarLong(ConstantesServicoArquivo.ID_SESSAO_USUARIO, context);
         this.AssemblyQualifiedName = this.RetornarString(ConstantesServicoArquivo.ASEMMBLY_QUALIFIED_NAME);
-        this.NomeTipoArquivo = this.RetornarString(ConstantesServicoArquivo.NOME_TIPO_ARQUIVO);
+        this.NomeTipoArquivo = this.RetornarString(ConstantesServicoArquivo.NOME_TIPO_ARQUIVO) ?? String.Empty;
         this.CredencialRequisicao = new CredencialUsuario(this.IdentificadorUsuario, this.Senha);
 
         if (this.CheckSumArquivo != null)
@@ -66,6 +65,7 @@ public partial class CabecalhoServicoArquivo : Cabecalho, IInformacaoRepositorio
         return !String.IsNullOrWhiteSpace(this.IdentificadorUsuario) &&
                !String.IsNullOrWhiteSpace(this.Senha) &&
                !String.IsNullOrWhiteSpace(this.AssemblyQualifiedName) &&
+               !String.IsNullOrWhiteSpace(this.NomeTipoArquivo) &&
                 GuidUtil.GuidValido(this.IdentificadorSessaoUsuario) &&
                (!this.EnviarArquivo ||
                (this.EnviarArquivo && this.IdArquivo > 0 &&

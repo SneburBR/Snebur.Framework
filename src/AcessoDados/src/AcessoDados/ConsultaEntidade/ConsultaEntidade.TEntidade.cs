@@ -110,7 +110,6 @@ public partial class ConsultaEntidade<TEntidade> : BaseConsultaEntidade, IConsul
         return this;
     }
 
-
     //public TEntidade RetornarPorId(long id)
     //{
     //    return this.Where(x => x.Id == id).Single();

@@ -17,16 +17,7 @@ public static class DictionaryExtensao
     //{
     //    return (dict as IEnumerable)?.SyncLock() ?? LinqExtensao.__lock;
     //}
-#if NET6_0_OR_GREATER == false
-    public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dicionario, TKey key)
-    {
-        if (dicionario.TryGetValue(key, out TValue valor))
-        {
-            return valor;
-        }
-        return default;
-    }
-#endif
+
 
     public static void RemoveAll<TKey, TValue>(this IDictionary<TKey, TValue> dicionario, IEnumerable<TKey> keys)
     {
