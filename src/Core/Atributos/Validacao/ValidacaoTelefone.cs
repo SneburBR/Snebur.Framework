@@ -16,7 +16,7 @@ public class ValidacaoTelefoneAttribute : BaseAtributoValidacao, IAtributoValida
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
-            return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
+            return true;
         }
         var telefone = Convert.ToString(valorPropriedade);
         return ValidacaoUtil.IsTelefone(telefone);

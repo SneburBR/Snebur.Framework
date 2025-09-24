@@ -14,7 +14,7 @@ public class ValidacaoCpfOuCnpjAttribute : BaseAtributoValidacao, IAtributoValid
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
-            return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
+            return true;
         }
         var cpfOuCnpj = Convert.ToString(valorPropriedade);
         return ValidacaoUtil.IsCpfOuCpj(cpfOuCnpj);

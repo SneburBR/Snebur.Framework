@@ -46,7 +46,7 @@ public class ValidacaoDataAttribute : BaseAtributoValidacao, IAtributoValidacao
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
-            return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
+            return true;
         }
         var dataComparar = Convert.ToDateTime(valorPropriedade);
         if (dataComparar >= this.DataMinima && dataComparar <= this.DataMaxima)

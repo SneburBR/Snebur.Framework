@@ -37,7 +37,7 @@ public class ValidacaoBase36Attribute : BaseAtributoValidacao
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
-            return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
+            return true;
         }
 
         return Base36Util.IsBase36(valorPropriedade.ToString(),

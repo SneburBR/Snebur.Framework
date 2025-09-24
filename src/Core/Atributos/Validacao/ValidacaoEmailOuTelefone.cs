@@ -14,7 +14,7 @@ public class ValidacaoEmailOuTelefoneAttribute : BaseAtributoValidacao, IAtribut
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
-            return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
+            return true;
         }
         var telefone = Convert.ToString(valorPropriedade);
 

@@ -19,7 +19,7 @@ public class ValidacaoUFAttribute : BaseAtributoValidacao, IAtributoValidacao
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
-            return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
+            return true;
         }
 
         throw new ErroNaoImplementado();

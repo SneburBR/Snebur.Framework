@@ -24,7 +24,7 @@ public class ValidacaoComparacaoAttribute : BaseAtributoValidacao, IAtributoVali
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
-            return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
+            return true;
         }
         switch (this.Operador)
         {

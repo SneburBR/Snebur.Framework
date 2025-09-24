@@ -14,7 +14,7 @@ public class ValidacaoIndentificador : BaseAtributoValidacao, IAtributoValidacao
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
-            return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
+            return true;
         }
         throw new NotImplementedException();
     }

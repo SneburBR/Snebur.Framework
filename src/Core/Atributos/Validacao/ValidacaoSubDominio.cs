@@ -14,7 +14,7 @@ public class ValidacaoSubDominio : BaseAtributoValidacao, IAtributoValidacao
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
-            return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
+            return true;
         }
         var subDominio = Convert.ToString(valorPropriedade);
 

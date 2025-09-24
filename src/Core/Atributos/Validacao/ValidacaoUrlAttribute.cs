@@ -22,7 +22,7 @@ public class ValidacaoUrlAttribute : BaseAtributoValidacao, IAtributoValidacao
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
-            return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
+            return true;
         }
         var url = Convert.ToString(valorPropriedade);
         return ValidacaoUtil.IsUrl(url);

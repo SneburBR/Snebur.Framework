@@ -14,7 +14,7 @@ public class ValidacaoQuantidadeAttribute : BaseAtributoValidacao, IAtributoVali
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
-            return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
+            return true;
         }
 
         if (valorPropriedade is int quantidade)
@@ -39,8 +39,8 @@ public class ValidacaoQuantidadeAttribute : BaseAtributoValidacao, IAtributoVali
         throw new ArgumentException($"O tipo '{valorPropriedade.GetType()}' não é suportado para validação de quantidade.");
     }
 
-    public override string RetornarMensagemValidacao(PropertyInfo propriedade, 
-        object? paiPropriedade, 
+    public override string RetornarMensagemValidacao(PropertyInfo propriedade,
+        object? paiPropriedade,
         object? valorPropriedade)
     {
         var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);

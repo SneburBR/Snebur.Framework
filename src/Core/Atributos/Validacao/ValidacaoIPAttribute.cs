@@ -24,7 +24,7 @@ public class ValidacaoIPAttribute : BaseAtributoValidacao, IAtributoValidacao
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
-            return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
+            return true;
         }
         var email = Convert.ToString(valorPropriedade);
         return ValidacaoUtil.IsIp(email);

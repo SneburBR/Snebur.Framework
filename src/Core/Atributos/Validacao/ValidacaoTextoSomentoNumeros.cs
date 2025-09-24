@@ -26,7 +26,7 @@ public class ValidacaoTextoSomentoNumerosAttribute : BaseAtributoValidacao, IAtr
         var texto = Convert.ToString(valorPropriedade);
         if (String.IsNullOrWhiteSpace(texto))
         {
-            return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
+            return true;
         }
 
         if (this.IsAceitarPontosSinais)

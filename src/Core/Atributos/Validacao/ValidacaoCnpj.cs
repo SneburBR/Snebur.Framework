@@ -14,7 +14,7 @@ public class ValidacaoCnpjAttribute : BaseAtributoValidacao, IAtributoValidacao
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
-            return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
+            return true;
         }
         var cnpj = Convert.ToString(valorPropriedade);
         return ValidacaoUtil.IsCnpj(cnpj);

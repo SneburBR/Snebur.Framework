@@ -21,7 +21,7 @@ public class ValidacaoConfirmacaoSenhaAttribute : BaseAtributoValidacao, IAtribu
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
-            return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
+            return true;
         }
         throw new NotImplementedException();
     }

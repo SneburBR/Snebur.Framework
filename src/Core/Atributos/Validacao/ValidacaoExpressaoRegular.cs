@@ -49,7 +49,7 @@ public class ValidacaoExpressaoRegularAttribute : RegularExpressionAttribute, IA
         var valorPropriedadeString = valorPropriedade?.ToString();
         if (!ValidacaoUtil.IsDefinido(valorPropriedadeString))
         {
-            return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
+            return true;
         }
         var match = Regex.Match(valorPropriedadeString, this.ExpressaoRegular);
         return match.Success;

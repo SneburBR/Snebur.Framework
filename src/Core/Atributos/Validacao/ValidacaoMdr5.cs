@@ -19,7 +19,7 @@ public class ValidacaoMdr5Attribute : BaseAtributoValidacao, IAtributoValidacao
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
-            return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
+            return true;
         }
         var md5 = Convert.ToString(valorPropriedade);
         return ValidacaoUtil.IsMd5(md5);

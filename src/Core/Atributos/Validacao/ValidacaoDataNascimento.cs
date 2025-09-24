@@ -19,7 +19,7 @@ public class ValidacaoDataNascimentoAttribute : BaseAtributoValidacao, IAtributo
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
-            return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
+            return true;
         }
         var dataNascimento = Convert.ToDateTime(valorPropriedade);
         return ValidacaoUtil.IsDataNascimentoValida(dataNascimento);

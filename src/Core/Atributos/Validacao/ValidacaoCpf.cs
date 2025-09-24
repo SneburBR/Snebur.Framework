@@ -14,7 +14,7 @@ public class ValidacaoCpfAttribute : BaseAtributoValidacao, IAtributoValidacao
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
-            return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
+            return true;
         }
         var cpf = Convert.ToString(valorPropriedade);
         return ValidacaoUtil.IsCpf(cpf);

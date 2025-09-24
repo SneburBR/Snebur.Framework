@@ -18,7 +18,7 @@ public class ValidacaoCepAttribute : BaseAtributoValidacao, IAtributoValidacao
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
-            return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
+            return true;
         }
         var cep = Convert.ToString(valorPropriedade);
         return ValidacaoUtil.IsCep(cep);

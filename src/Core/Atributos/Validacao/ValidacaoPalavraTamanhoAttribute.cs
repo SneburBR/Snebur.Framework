@@ -42,7 +42,7 @@ public class ValidacaoPalavraTamanhoAttribute : BaseAtributoValidacao, IAtributo
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
-            return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
+            return true;
         }
 
         var texto = Convert.ToString(valorPropriedade);

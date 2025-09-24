@@ -19,7 +19,7 @@ public class ValidacaoGuidAttribute : BaseAtributoValidacao, IAtributoValidacao
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
-            return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
+            return true;
         }
         var value = Convert.ToString(valorPropriedade);
         return ValidacaoUtil.IsGuid(value);

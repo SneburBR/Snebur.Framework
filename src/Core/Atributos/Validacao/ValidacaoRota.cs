@@ -15,7 +15,7 @@ public class ValidacaoRotaAttribute : BaseAtributoValidacao
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
-            return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
+            return true;
         }
         return ValidacaoUtil.IsRota(Convert.ToString(valorPropriedade));
     }

@@ -14,7 +14,7 @@ public class ValidacaoDominioDNSAttribute : ValidacaoDominioAttribute, IAtributo
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
-            return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
+            return true;
         }
         return ValidacaoUtil.IsDominioDns(Convert.ToString(valorPropriedade));
     }

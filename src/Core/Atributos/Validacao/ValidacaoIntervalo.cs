@@ -53,7 +53,7 @@ public class ValidacaoIntervaloAttribute : RangeAttribute, IAtributoValidacao
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
-            return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
+            return true;
         }
         var valorTipado = Convert.ToDouble(valorPropriedade);
         if (this.Minimo > 0 && this.Maximo > 0)

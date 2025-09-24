@@ -63,7 +63,8 @@ public class ValidacaoTextoTamanhoAttribute : StringLengthAttribute, IAtributoVa
         var texto = Convert.ToString(valorPropriedade);
         if (String.IsNullOrWhiteSpace(texto))
         {
-            return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
+            return true;
+
         }
 
         if (this.TamanhoMinimo > 0 && this.TamanhoMaximo > 0)
