@@ -177,7 +177,24 @@ public static partial class ValidacaoUtil
         var atributos = propriedade.GetCustomAttributes();
         var tipoIAtributoValidacao = typeof(IAtributoValidacao);
         var atributosValidacao = atributos.Where(x => ReflexaoUtil.IsTipoImplementaInterface(x.GetType(), tipoIAtributoValidacao, false));
-        return atributosValidacao.Cast<IAtributoValidacao>().ToList();
+        return atributosValidacao
+            .Cast<IAtributoValidacao>()
+            .OrderBy(x => GetAttributeValidacaoRank(x))
+            .ToList();
+    }
+
+    private static object GetAttributeValidacaoRank(IAtributoValidacao atributo)
+    {
+        if (atributo is ValidacaoRequeridoAttribute _)
+        {
+            return -1;
+        }
+        if (atributo is IAtributoValidacaoAsync)
+        {
+            return 1;
+        }
+        return 0;
+        throw new NotImplementedException();
     }
 
     public static List<BaseValidacaoEntidadeAttribute> RetornarAtributosValidacaoEntidade(Type tipoEntidade)

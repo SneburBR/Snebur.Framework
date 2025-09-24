@@ -135,30 +135,37 @@ public static class EnumUtil
         return (Enum)Enum.ToObject(tipoEnum, valorEnum);
     }
 
-    public static TEnum RetornarValorEnum<TEnum>(string descricao,
-                                                  bool isValidarEnumDefino = false)
+    public static TEnum? TryRetornarValorEnum<TEnum>(string descricao)
+        where TEnum : struct
     {
         var valor = RetornarValorEnum(typeof(TEnum), descricao);
-        if (isValidarEnumDefino)
+        if (!Enum.IsDefined(typeof(TEnum), valor))
         {
-            if (Enum.IsDefined(typeof(TEnum), valor))
-            {
-                throw new Erro($"O valor {descricao} não está defino no enum {typeof(TEnum).Name}");
-            }
+            return null;
         }
         return (TEnum)(valor as object);
     }
 
-    public static TEnum RetornarValorEnum<TEnum>(int valorInt,
-                                                 bool isValidarEnumDefino = false)
+    public static TEnum RetornarValorEnum<TEnum>(
+        string descricao)
+        where TEnum : Enum
+    {
+        var valor = RetornarValorEnum(typeof(TEnum), descricao);
+        if (!Enum.IsDefined(typeof(TEnum), valor))
+        {
+            throw new Erro($"O valor {descricao} não está defino no enum {typeof(TEnum).Name}");
+        }
+        return (TEnum)(valor as object);
+    }
+
+    public static TEnum RetornarValorEnum<TEnum>(
+        int valorInt)
+        where TEnum : Enum
     {
         var valor = RetornarValorEnum(typeof(TEnum), valorInt);
-        if (isValidarEnumDefino)
+        if (!Enum.IsDefined(typeof(TEnum), valor))
         {
-            if (!Enum.IsDefined(typeof(TEnum), valor))
-            {
-                throw new Erro($"O valor {valorInt} não está defino no enum {typeof(TEnum).Name}");
-            }
+            throw new Erro($"O valor {valorInt} não está defino no enum {typeof(TEnum).Name}");
         }
         return (TEnum)(valor as object);
     }

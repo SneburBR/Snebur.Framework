@@ -77,6 +77,20 @@ public static class Util
         return Equals(objeto1, objeto2);
     }
 
+    public static bool SaoIgual(string? str, string? str2, StringComparison stringComparison)
+    {
+        if (str is null && str2 is null)
+        {
+            return true;
+        }
+
+        if (str is null || str2 is null)
+        {
+            return false;
+        }
+        return str.Equals(str2, stringComparison);
+    }
+
     public static T? RetornarSeVerdadeiro<T>(bool condicao, T? valor)
     {
         if (condicao)
@@ -145,5 +159,19 @@ public static class Util
         }
         return text;
 
+    }
+
+    public static bool SaoSemelhante(long? val1, long? val2)
+    {
+        if (val1.HasValue && val2.HasValue)
+        {
+            return val1.Value == val2.Value;
+        }
+
+        if (val1 is null && val2 is null)
+        {
+            return true;
+        }
+        return val1.GetValueOrDefault() == val2.GetValueOrDefault();
     }
 }

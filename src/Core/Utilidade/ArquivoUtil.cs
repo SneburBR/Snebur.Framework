@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Snebur.Utilidade;
@@ -630,4 +631,35 @@ public static class ArquivoUtil
     }
 
     #endregion
+
+    public static async Task DeleteWithRetriesAsync(string path, CancellationToken token)
+    {
+        if (!File.Exists(path))
+            return;
+
+        for (int i = 0; i < 10; i++)
+        {
+            try
+            {
+                ArquivoUtil.DeletarArquivo(path);
+                return;
+            }
+            catch (IOException)
+            {
+                await Task.Delay(80, token);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                await Task.Delay(80, token);
+            }
+        }
+
+        // Final attempt with FileShare adjustments
+        using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
+        {
+            // Open and close to poke the handle table, then try again
+        }
+
+        ArquivoUtil.DeletarArquivo(path);
+    }
 }
