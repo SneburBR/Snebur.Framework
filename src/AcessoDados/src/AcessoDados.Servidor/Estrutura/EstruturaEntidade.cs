@@ -417,8 +417,11 @@ internal partial class EstruturaEntidade
         {
             if (this.TipoEntidade.GetInterface(tipoInterface.Name) != null)
             {
-                var enumInterface = EnumUtil.RetornarValorEnum<EnumInterfaceEntidade>(tipoInterface.Name);
-                interfaces = interfaces | enumInterface;
+                var enumInterface = EnumUtil.TryRetornarValorEnum<EnumInterfaceEntidade>(tipoInterface.Name);
+                if (enumInterface.HasValue)
+                {
+                    interfaces = interfaces | enumInterface.Value;
+                }
             }
         }
         return interfaces;

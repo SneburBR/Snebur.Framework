@@ -40,6 +40,7 @@ internal enum EnumInterfaceEntidade : long
     IUsuario = 17179869184,
     IVideo = 34359738368,
     IAlteracaoPropriedadeGenerica = 68719476736,
-    IHistoricoManutencao = 137438953472
+    IHistoricoManutencao = 137438953472,
+    IEntityLifecycle = 274877906944
 
 }

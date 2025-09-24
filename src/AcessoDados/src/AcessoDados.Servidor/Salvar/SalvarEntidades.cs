@@ -15,6 +15,10 @@ internal partial class SalvarEntidades : IDisposable
     internal bool IsNotificarAlteracaoPropriedade { get; }
     internal EnumOpcaoSalvar OpcaoSalvar { get; }
 
+    private bool IsDeleting
+        => this.OpcaoSalvar == EnumOpcaoSalvar.Deletar
+         || this.OpcaoSalvar == EnumOpcaoSalvar.DeletarRegistro;
+
     internal SalvarEntidades(BaseContextoDados contexto,
                              HashSet<Entidade> entidades,
                              EnumOpcaoSalvar opcaoDeletar,
@@ -37,8 +41,7 @@ internal partial class SalvarEntidades : IDisposable
         this.FilaEntidades = FilaEntidadeAlterada.RetornarFila(this.EntidadesAlteradas);
         this.FilaAlteracoesGenericas = FilaEntidadeAlterada.RetornarFila(this.EntidadesAlteradasAlteracoesGenericas);
 
-        if (opcaoDeletar == EnumOpcaoSalvar.Deletar ||
-            opcaoDeletar == EnumOpcaoSalvar.DeletarRegistro)
+        if (this.IsDeleting)
         {
             this.FilaEntidades = new Queue<EntidadeAlterada>(this.FilaEntidades.Reverse());
         }
@@ -46,6 +49,8 @@ internal partial class SalvarEntidades : IDisposable
 
     internal Resultado Salvar(bool ignorarValidacao = false)
     {
+        NotifyOnSaving();
+
         if (this.OpcaoSalvar == EnumOpcaoSalvar.Salvar && !ignorarValidacao)
         {
             var entidades = Enumerable.Reverse(this.FilaEntidades).Select(x => x.Entidade).ToList();
@@ -59,13 +64,92 @@ internal partial class SalvarEntidades : IDisposable
         var conexao = this.Contexto.Conexao;
         var fila = this.FilaEntidades;
         var resultado = this.SalvarEntidadesInterno(conexao, fila);
-        if (resultado.IsSucesso && this.FilaAlteracoesGenericas.Count > 0)
+
+        if (resultado.IsSucesso)
         {
             this.SalvarAlteracoesGenericas();
+            this.NotifyOnSaved();
         }
         return resultado;
     }
 
+    private void NotifyOnSaving()
+    {
+        if (IsDeleting)
+        {
+            ForEachLifecycle(e => e.Deleting());
+            return;
+        }
+
+        ForEachLifecycle(e =>
+        {
+            if (e.__IsNewEntity) e.Creating();
+            e.Saving();
+        });
+    }
+
+    private void NotifyOnSaved()
+    {
+        if (IsDeleting)
+        {
+            ForEachLifecycle(e => e.Deleted());
+            return;
+        }
+
+        ForEachLifecycle(e => e.Saved());
+    }
+
+    private void ForEachLifecycle(Action<IEntityLifecycle> action)
+    {
+        foreach (var item in this.EntidadesAlteradas)
+        {
+            if (item?.Entidade is IEntityLifecycle e)
+            {
+                action(e);
+            }
+        }
+    }
+    private void NotitfyOnSaving()
+    {
+        var isDeleting = this.OpcaoSalvar == EnumOpcaoSalvar.Deletar ||
+                         this.OpcaoSalvar == EnumOpcaoSalvar.DeletarRegistro;
+        foreach (var item in this.FilaEntidades)
+        {
+            if (item.Entidade is IEntityLifecycle entidade)
+            {
+                if (isDeleting)
+                {
+                    entidade.Deleting();
+                    continue;
+                }
+
+                if (entidade.__IsNewEntity)
+                    entidade.Creating();
+
+                entidade.Saving();
+            }
+        }
+    }
+
+    private void NotitfyOnSaved()
+    {
+        var isDeleting = this.OpcaoSalvar == EnumOpcaoSalvar.Deletar ||
+                 this.OpcaoSalvar == EnumOpcaoSalvar.DeletarRegistro;
+        foreach (var item in this.FilaEntidades)
+        {
+            if (item.Entidade is IEntityLifecycle entidade)
+            {
+                if (isDeleting)
+                {
+                    entidade.Deleted();
+                }
+                else
+                {
+                    entidade.Saved();
+                }
+            }
+        }
+    }
     private Resultado SalvarEntidadesInterno(BaseConexao conexao,
                                               Queue<EntidadeAlterada> fila)
     {
@@ -81,8 +165,12 @@ internal partial class SalvarEntidades : IDisposable
 
     private void SalvarAlteracoesGenericas()
     {
-        Guard.NotNull(this.Contexto.ContextoSessaoUsuario);
+        if (this.FilaAlteracoesGenericas.Count == 0)
+        {
+            return;
+        }
 
+        Guard.NotNull(this.Contexto.ContextoSessaoUsuario);
         var conexao = this.Contexto.ContextoSessaoUsuario.Conexao;
         var fila = this.FilaAlteracoesGenericas;
         this.SalvarNormal(conexao, fila, true);
