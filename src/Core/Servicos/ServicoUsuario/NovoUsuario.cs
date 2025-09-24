@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Snebur.Dominio;
 
-public class NovoUsuario : BaseDominio
+public abstract class NovoUsuario : BaseDominio
 {
     [IgnorarPropriedade]
     [IgnorarPropriedadeTSReflexao]
@@ -24,8 +24,6 @@ public class NovoUsuario : BaseDominio
     [ValidacaoRequerido]
     [ValidacaoSenha]
     public string? Senha { get; set; }
-
-    public bool IsMaster { get; set; }
 
     [MemberNotNullWhen(true, nameof(Nome))]
     [MemberNotNullWhen(true, nameof(Email))]
@@ -56,4 +54,13 @@ public class NovoUsuario : BaseDominio
             return String.Empty;
         }
     }
+}
+public class NovoUsuarioCliente : NovoUsuario
+{
+    public required long Cliente_Id { get; set; }
+}
+public class NovoUsuarioAdmin : NovoUsuario
+{
+    public bool IsMaster { get; set; }
+    public required long EmpresaAdmin_Id { get; set; }
 }

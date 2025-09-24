@@ -225,17 +225,30 @@ dotnet_style_object_initializer = true:suggestion
 #IDE 
 dotnet_diagnostic_IDE0009.severity = warning;
 dotnet_diagnostic_IDE0044.severity = warning;
+dotnet_diagnostic_IDE0051.severity = warning;
 
 
 # IDE0051: Remove unused private members
-dotnet_diagnostic_IDE0051.severity = error;
-dotnet_diagnostic.CA1823.severity = error
+dotnet_diagnostic_IDE0051.severity = warning;
+dotnet_diagnostic.CA1823.severity = warning
+dotnet_diagnostic.CA1822.severity = none
 
 # IDE0032: Use auto property
 dotnet_diagnostic_IDE0032.severity = silent;
 
-dotnet_diagnostic_IDE0003.severity = silent;
+dotnet_diagnostic_IDE0003.severity = silent;  
 dotnet_diagnostic_IDE0009.severity = silent;
+
+
+# IDE0032: Use auto property
+dotnet_diagnostic_IDE0032.severity = silent;
+
+ 
+#IDE 
+dotnet_diagnostic_IDE0009.severity = warning;
+dotnet_diagnostic_IDE0044.severity = warning;
+
+
 
 
  

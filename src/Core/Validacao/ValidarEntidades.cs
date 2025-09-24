@@ -11,9 +11,10 @@ public partial class ValidarEntidades : IDisposable
 
     public List<ErroValidacaoInfo> RetornarErroValidacao(object contextoDados)
     {
-        var erros = new List<ErroValidacaoInfo>();
+        var allErros = new List<ErroValidacaoInfo>();
         foreach (var entidade in this.Entidades)
         {
+            var entityErros = new List<ErroValidacaoInfo>();
             if (entidade is IDeletado deletado && deletado.IsDeletado)
             {
                 continue;
@@ -41,19 +42,21 @@ public partial class ValidarEntidades : IDisposable
                                                                                        atributoValidacao.RetornarMensagemValidacao(propriedade,
                                                                                                                                    entidade,
                                                                                                                                    valorPropriedade)),
-                                    NomeTipoValidacao = atributoValidacao.GetType().Name
+                                    NomeTipoValidacao = atributoValidacao.GetType().Name,
+                                    ValorPropriedade = valorPropriedade,
                                 };
 
                                 if (DebugUtil.IsAttached)
                                 {
                                     //throw new Erro(erroValidacao.Mensagem);
                                 }
-                                erros.Add(erroValidacao);
+                                entityErros.Add(erroValidacao);
                             }
                         }
                     }
                 }
             }
+
             //Entidades
             if (entidade.__IsExisteAlteracao)
             {
@@ -68,20 +71,34 @@ public partial class ValidarEntidades : IDisposable
                             NomeTipoEntidade = entidade.__NomeTipoEntidade,
                             NomePropriedade = "ValidacaoEntidade",
                             Mensagem = mensagem,
-                            NomeTipoValidacao = atributoEntidade.GetType().Name
+                            NomeTipoValidacao = atributoEntidade.GetType().Name,
                         };
 
                         if (DebugUtil.IsAttached)
                         {
                             throw new Erro(erroValidacao.Mensagem);
                         }
-                        erros.Add(erroValidacao);
+                        entityErros.Add(erroValidacao);
                     }
                 }
             }
+
+            if (entityErros.Count > 0)
+            {
+                var args = new EntityValidationEventArgs(entidade,
+                    entityErros,
+                    contextoDados);
+
+                entidade.OnValidating(args);
+                if (!args.Handled)
+                {
+                    allErros.AddRange(entityErros);
+                }
+            }
         }
-        return erros;
+        return allErros;
     }
+
     #region IDisposable
 
     public void Dispose()

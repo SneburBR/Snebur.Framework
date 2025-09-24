@@ -9,4 +9,5 @@ public class ErroValidacaoInfo : BaseDominio
     public required string NomeTipoValidacao { get; set; }
 
     public required string Mensagem { get; set; }
+    public object? ValorPropriedade { get; set; }
 }

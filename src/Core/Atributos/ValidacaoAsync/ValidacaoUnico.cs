@@ -67,10 +67,10 @@ public class ValidacaoUnicoAttribute : BaseAtributoValidacaoAsync, IAtributoVali
 
     public bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
     {
-        if (!ValidacaoUtil.IsDefinido(valorPropriedade))
-        {
-            return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
-        }
+        //if (!ValidacaoUtil.IsDefinido(valorPropriedade))
+        //{
+        //    return !ValidacaoUtil.IsPropriedadeRequerida(propriedade);
+        //}
         // throw new ErroNaoImplementado("Validacao unico não implementado");
         return true;
     }
@@ -86,4 +86,3 @@ public class ValidacaoUnicoAttribute : BaseAtributoValidacaoAsync, IAtributoVali
     #endregion
 }
 
- 
