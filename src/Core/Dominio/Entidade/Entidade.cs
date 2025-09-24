@@ -13,7 +13,7 @@ namespace Snebur.Dominio;
 
 [NaoCriarTabelaEntidade]
 [Plural("Entidades")]
-public abstract partial class Entidade : BaseDominio, IEntidade, IEntidadeInterna, IEquatable<Entidade>, INotifyPropertyChanged, INomeTipoEntidade, IDataErrorInfo
+public abstract partial class Entidade : BaseDominio, IEntidade, IEntityLifecycle, IEntidadeInterna, IEquatable<Entidade>, INotifyPropertyChanged, INomeTipoEntidade, IDataErrorInfo
 {
     private bool _isValidacaoPropriedadeAbertasDesativada = false;
     private bool __isExisteAlteracaoTipoCompleto;
@@ -79,7 +79,8 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntidadeIntern
     [NaoMapear]
     [EditorBrowsable(EditorBrowsableState.Never)]
     [IgnorarPropriedadeTSReflexao]
-    public bool __IsNewEntity => this.Id == 0 || (!this.__IsIdentity && this.__isNewEntity__);
+    public bool __IsNewEntity
+        => this.Id == 0 || (!this.__IsIdentity && this.__isNewEntity__);
 
     [NaoMapear]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -93,6 +94,8 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntidadeIntern
     [IgnorarPropriedadeTSReflexao]
     [PropriedadeProtegida]
     public virtual long IdEntidadeHistoricoGenerico => this.Id;
+
+    public event EventHandler<EntityValidationEventArgs>? Validating;
 
     #region Construtor
 
@@ -308,11 +311,11 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntidadeIntern
 
     //NotificarValorPropriedadeAlteradaChaveEstrangeiraAlterada
     private void SetForeignKeyProperty<T>(
-                                        T antigoValor,
-                                        T novoValor,
-                                        string nomePropriedadeRelacao,
-                                        Entidade? entidadeRelacao,
-                                        [CallerMemberName] string nomePropriedade = "")
+        T antigoValor,
+        T novoValor,
+        string nomePropriedadeRelacao,
+        Entidade? entidadeRelacao,
+        [CallerMemberName] string nomePropriedade = "")
     {
         this.Set(antigoValor, novoValor, nomePropriedade);
 
@@ -478,6 +481,67 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntidadeIntern
     {
         this.SetForeignKeyProperty(antigoValor,
            novoValor,
+           nomePropriedadeRelacao,
+           entidadeRelacao,
+           nomePropriedade);
+    }
+
+    internal protected void SetOwnerId(
+        long antigoValor,
+        long novoValor,
+        [CallerMemberName] string nomePropriedade = "")
+    {
+        if (antigoValor > 0 && novoValor != antigoValor)
+        {
+            throw new ErroOperacaoInvalida("Não é permitido alterar o Id do proprietário de uma entidade");
+        }
+        this.Set(antigoValor, novoValor, nomePropriedade);
+    }
+
+    internal protected void SetOwnerId(
+      long? antigoValor,
+      long? novoValor,
+      [CallerMemberName] string nomePropriedade = "")
+    {
+        if (antigoValor.HasValue && antigoValor > 0 && novoValor != antigoValor)
+        {
+            throw new ErroOperacaoInvalida("Não é permitido alterar o Id do proprietário de uma entidade");
+        }
+        this.Set(antigoValor, novoValor, nomePropriedade);
+    }
+
+    internal protected void SetOwnerId(
+       long? antigoValor,
+       long? novoValor,
+       string nomePropriedadeRelacao,
+       Entidade? entidadeRelacao,
+       [CallerMemberName] string nomePropriedade = "")
+    {
+
+        if (antigoValor.HasValue && antigoValor > 0 && novoValor != antigoValor)
+        {
+            throw new ErroOperacaoInvalida("Não é permitido alterar o Id do proprietário de uma entidade");
+        }
+        this.SetForeignKey(antigoValor,
+            novoValor,
+           nomePropriedadeRelacao,
+           entidadeRelacao,
+           nomePropriedade);
+    }
+
+    internal protected void SetOwnerId(
+        long antigoValor,
+        long novoValor,
+        string nomePropriedadeRelacao,
+        Entidade? entidadeRelacao,
+        [CallerMemberName] string nomePropriedade = "")
+    {
+        if (antigoValor > 0 && novoValor != antigoValor)
+        {
+            throw new ErroOperacaoInvalida("Não é permitido alterar o Id do proprietário de uma entidade");
+        }
+        this.SetForeignKey(antigoValor,
+            novoValor,
            nomePropriedadeRelacao,
            entidadeRelacao,
            nomePropriedade);
@@ -687,6 +751,32 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntidadeIntern
         return base.Equals(obj);
     }
     #endregion
+
+    internal protected virtual void OnCreating()
+    {
+
+    }
+
+    internal protected virtual void OnSaving()
+    {
+    }
+
+    internal protected virtual void OnSaved()
+    {
+    }
+
+    internal protected virtual void OnDeleting()
+    {
+    }
+
+    internal protected virtual void OnDeleted()
+    {
+    }
+
+    protected internal virtual void OnValidating(EntityValidationEventArgs args)
+    {
+        Validating?.Invoke(this, args);
+    }
 
     #region Métodos privados 
 
@@ -920,6 +1010,15 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntidadeIntern
         }
         return descricao;
     }
+
+    #endregion
+
+    #region IEntityLifecycle
+    void IEntityLifecycle.Creating() => OnCreating();
+    void IEntityLifecycle.Saving() => OnSaving();
+    void IEntityLifecycle.Saved() => OnSaved();
+    void IEntityLifecycle.Deleting() => OnDeleting();
+    void IEntityLifecycle.Deleted() => OnDeleted();
 
     #endregion
 }
