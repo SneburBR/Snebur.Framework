@@ -84,7 +84,7 @@ internal partial class EstruturaEntidade
                                                     x => x.EstruturaCampoUsuarioInterno);
     internal EstruturaCampo[] TodasEstruturasCamposValorPadraoInsert
              => this.RetornarEstruturasCamposRecursivo(ref field!,
-                x => x.EstruturasCamposValorPadraoUpdateInterno)!;
+                x => x.EstruturasCamposValorPadraoInsertInterno)!;
     internal EstruturaCampo[] TodasEstruturasCamposValorPadraoUpdate
              => this.RetornarEstruturasCamposRecursivo(ref field!,
                  x => x.EstruturasCamposValorPadraoUpdateInterno)!;

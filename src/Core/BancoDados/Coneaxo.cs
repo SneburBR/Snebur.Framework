@@ -14,6 +14,7 @@ public class Conexao : IDisposable
     private string _connectionString;
 
     public int? CommandTimeout { get; set; }
+    public string DatabaseName { get; }
 
     public Conexao(string nomeConnectionString)
     {
@@ -30,6 +31,7 @@ public class Conexao : IDisposable
             throw new Exception($"A string de conexão '{connectionString}' não é válida");
         }
         this._connectionString = connectionString;
+        this.DatabaseName = new SqlConnectionStringBuilder(connectionString).InitialCatalog;
     }
 
     private bool IsConnecionStringValida(string connectionString)
@@ -181,8 +183,12 @@ public class Conexao : IDisposable
             return false;
         }
     }
-    public int ExecutarComando(string sql,
-                               params SqlParameter[] parametros)
+    public int ExecutarComando(string sql, params SqlParameter[] parametros)
+    {
+        return this.ExecutarComando(sql, this.CommandTimeout, parametros);
+    }
+
+    public int ExecutarComando(string sql, int? timeout, params SqlParameter[] parametros)
     {
         using (var conexao = new SqlConnection(this._connectionString))
         {
@@ -191,9 +197,9 @@ public class Conexao : IDisposable
             {
                 using (var cmd = new SqlCommand(sql, conexao))
                 {
-                    if (this.CommandTimeout.HasValue)
+                    if (timeout.HasValue)
                     {
-                        cmd.CommandTimeout = this.CommandTimeout.Value;
+                        cmd.CommandTimeout = timeout.Value;
                     }
                     foreach (var parametro in parametros)
                     {

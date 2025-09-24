@@ -9,9 +9,9 @@ public partial class ValidarEntidades : IDisposable
         this.Entidades = entidades;
     }
 
-    public List<ErroValidacao> RetornarErroValidacao(object contextoDados)
+    public List<ErroValidacaoInfo> RetornarErroValidacao(object contextoDados)
     {
-        var erros = new List<ErroValidacao>();
+        var erros = new List<ErroValidacaoInfo>();
         foreach (var entidade in this.Entidades)
         {
             if (entidade is IDeletado deletado && deletado.IsDeletado)
@@ -33,7 +33,7 @@ public partial class ValidarEntidades : IDisposable
                         {
                             if (!atributoValidacao.IsValido(propriedade, entidade, valorPropriedade))
                             {
-                                var erroValidacao = new ErroValidacao
+                                var erroValidacao = new ErroValidacaoInfo
                                 {
                                     NomeTipoEntidade = entidade.__NomeTipoEntidade,
                                     NomePropriedade = propriedade.Name,
@@ -63,7 +63,7 @@ public partial class ValidarEntidades : IDisposable
                     if (!atributoEntidade.IsValido(contextoDados, this.Entidades, entidade))
                     {
                         var mensagem = String.Format("Entidade : '{0}' - {1}", entidade.__NomeTipoEntidade, atributoEntidade.RetornarMensagemValidacao(entidade));
-                        var erroValidacao = new ErroValidacao
+                        var erroValidacao = new ErroValidacaoInfo
                         {
                             NomeTipoEntidade = entidade.__NomeTipoEntidade,
                             NomePropriedade = "ValidacaoEntidade",

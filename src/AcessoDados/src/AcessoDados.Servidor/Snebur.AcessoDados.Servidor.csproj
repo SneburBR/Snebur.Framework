@@ -27,6 +27,9 @@
 		<None Remove="Recursos\SNAPSHOT.sql" />
 	</ItemGroup>
 	<ItemGroup>
+	  <Resource Include="Recursos\SNAPSHOT_SCRIPT.sql" />
+	</ItemGroup>
+	<ItemGroup>
 		<EmbeddedResource Include="Recursos\SNAPSHOT.sql" />
 	</ItemGroup>
 	<ItemGroup>

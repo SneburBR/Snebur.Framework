@@ -1,5 +1,7 @@
+using Snebur.BancoDados;
 using System.Collections;
 using System.Collections.Concurrent;
+using System.Runtime.CompilerServices;
 
 namespace Snebur.Linq;
 
@@ -7,8 +9,11 @@ public static class LinqExtensao
 {
     public static readonly object __lock = new object();
 
-    public static object SyncLock(this IEnumerable enumerable)
+    public static object SyncLock(this IEnumerable enumerable,
+        [CallerArgumentExpression(nameof(enumerable))] string? paramName = null)
     {
+        Guard.NotNull(enumerable, paramName);
+
         if (IsConcurrentCollection(enumerable))
         {
             return __lock;
@@ -16,8 +21,10 @@ public static class LinqExtensao
         return (enumerable as ICollection)?.SyncRoot ?? __lock;
     }
 
-    public static T? TryGet<T>(this IList<T> colecao, int index)
+    public static T? TryGet<T>(this IList<T> colecao, int index,
+        [CallerArgumentExpression(nameof(colecao))] string? paramName = null)
     {
+        Guard.NotNull(colecao, paramName);
         if (index < colecao.Count)
         {
             return colecao[index];
@@ -25,8 +32,11 @@ public static class LinqExtensao
         return default;
     }
 
-    public static string? TryGet(this string[] colecao, int index)
+    public static string? TryGet(this string[] colecao, int index,
+        [CallerArgumentExpression(nameof(colecao))] string? paramName = null)
     {
+        Guard.NotNull(colecao, paramName);
+
         if (index < colecao.Length)
         {
             return colecao[index];
@@ -34,17 +44,21 @@ public static class LinqExtensao
         return null;
     }
 
-    public static void AddIsNotNull<T>(this ICollection<T> colecao, T? item)
+    public static void AddIsNotNull<T>(this ICollection<T> colecao, T? item,
+        [CallerArgumentExpression(nameof(colecao))] string? paramName = null)
     {
+        Guard.NotNull(colecao, paramName);
         if (item != null)
         {
             colecao.Add(item);
         }
     }
 
-    public static T? Pop<T>(this IList<T> colecao)
+    public static T? Pop<T>(this IList<T> colecao,
+        [CallerArgumentExpression(nameof(colecao))] string? paramName = null)
     {
-        if (colecao?.Count > 0)
+        Guard.NotNull(colecao, paramName);
+        if (colecao.Count > 0)
         {
             lock (colecao.SyncLock())
             {
@@ -57,9 +71,12 @@ public static class LinqExtensao
     }
 
     //shift
-    public static T? Shift<T>(this IList<T> colecao)
+    public static T? Shift<T>(this IList<T> colecao,
+        [CallerArgumentExpression(nameof(colecao))] string? paramName = null)
     {
-        if (colecao?.Count > 0)
+        Guard.NotNull(colecao, paramName);
+
+        if (colecao.Count > 0)
         {
             lock (colecao.SyncLock())
             {
@@ -72,35 +89,49 @@ public static class LinqExtensao
 
     }
 
-    public static void AddIfTrue<T>(this ICollection<T> colecao, T item, bool isAdd)
+    public static void AddIfTrue<T>(this ICollection<T> colecao, T item, bool isAdd,
+        [CallerArgumentExpression(nameof(colecao))] string? paramName = null)
     {
+        Guard.NotNull(colecao, paramName);
         if (isAdd)
         {
             colecao.Add(item);
         }
     }
-    public static void AddIfNotExits<T>(this ICollection<T> colecao, T item)
+    public static void AddIfNotExits<T>(this ICollection<T> colecao, T item,
+        [CallerArgumentExpression(nameof(colecao))] string? paramName = null)
     {
+        Guard.NotNull(colecao, paramName);
         if (!colecao.Contains(item))
         {
             colecao.Add(item);
         }
     }
 
-    public static void AddRangeIfNotExits<T>(this ICollection<T> colecao, IEnumerable<T> itens)
+    public static void AddRangeIfNotExits<T>(
+        this ICollection<T> colecao,
+        IEnumerable<T> itens,
+        [CallerArgumentExpression(nameof(colecao))] string? paramName = null)
     {
+        Guard.NotNull(colecao, paramName);
+
         if (itens == null)
         {
             return;
         }
+
         foreach (var item in itens)
         {
             colecao.AddIfNotExits(item);
         }
     }
 
-    public static void AddRangeNew<T>(this ICollection<T> colecao, IEnumerable<T> itens)
+    public static void AddRangeNew<T>(this ICollection<T> colecao,
+        IEnumerable<T> itens,
+        [CallerArgumentExpression(nameof(colecao))] string? paramName = null)
     {
+        Guard.NotNull(paramName);
+
         if (itens == null)
         {
             return;
@@ -118,8 +149,11 @@ public static class LinqExtensao
 
     public static void AddRange<T>(
         this ICollection<T> colecao,
-        IEnumerable<T>? itens)
+        IEnumerable<T>? itens,
+        [CallerArgumentExpression(nameof(colecao))] string? paramName = null)
     {
+        Guard.NotNull(colecao, paramName);
+
         if (itens is null)
         {
             return;
@@ -131,8 +165,13 @@ public static class LinqExtensao
         }
     }
 
-    public static void AddRangeNotNull<T>(this ICollection<T> colecao, IEnumerable<T?>? itens)
+    public static void AddRangeNotNull<T>(
+        this ICollection<T> colecao,
+        IEnumerable<T?>? itens,
+        [CallerArgumentExpression(nameof(colecao))] string? paramName = null)
     {
+        Guard.NotNull(paramName);
+
         if (itens == null)
         {
             return;
@@ -144,8 +183,13 @@ public static class LinqExtensao
         }
     }
 
-    public static void RemoveRange<T>(this ICollection<T> colecao, IEnumerable<T> itens)
+    public static void RemoveRange<T>(
+        this ICollection<T> colecao,
+        IEnumerable<T> itens,
+        [CallerArgumentExpression(nameof(colecao))] string? paramName = null)
     {
+        Guard.NotNull(colecao, paramName);
+
         if (itens == null)
         {
             return;
@@ -157,28 +201,38 @@ public static class LinqExtensao
         }
     }
 
-    public static IEnumerable<T> Duplicados<T>(this IEnumerable<T> item)
+    public static IEnumerable<T> Duplicados<T>(this IEnumerable<T> item,
+        [CallerArgumentExpression(nameof(item))] string? paramName = null)
     {
+        Guard.NotNull(item, paramName);
         return item.GroupBy(x => x).
                     SelectMany(g => g.Skip(1)).
                     Distinct();
     }
 
-    public static ListaEntidades<TEntidade> ToList<TEntidade>(this ListaEntidades<TEntidade> colecao) where TEntidade : Entidade
+    public static ListaEntidades<TEntidade> ToList<TEntidade>(
+        this ListaEntidades<TEntidade> colecao,
+        [CallerArgumentExpression(nameof(colecao))] string? paramName = null) where TEntidade : Entidade
     {
+        Guard.NotNull(colecao, paramName);
         var lista = new ListaEntidades<TEntidade>();
         lista.AddRange(colecao);
         return lista;
     }
 
-    public static ListaEntidades<TEntidade> ToListaEntidades<TEntidade>(this IEnumerable<TEntidade> colecao) where TEntidade : IEntidade
+    public static ListaEntidades<TEntidade> ToListaEntidades<TEntidade>(
+        this IEnumerable<TEntidade> colecao,
+        [CallerArgumentExpression(nameof(colecao))] string? paramName = null) where TEntidade : IEntidade
     {
+        Guard.NotNull(colecao, paramName);
         var listaEntidades = new ListaEntidades<TEntidade>();
         listaEntidades.AddRange(colecao);
         return listaEntidades;
     }
-    public static Queue<T> ToQueue<T>(this IEnumerable<T> colecao)
+    public static Queue<T> ToQueue<T>(this IEnumerable<T> colecao,
+        [CallerArgumentExpression(nameof(colecao))] string? paramName = null)
     {
+        Guard.NotNull(colecao, paramName);
         var fila = new Queue<T>();
         foreach (var item in colecao)
         {
@@ -187,13 +241,17 @@ public static class LinqExtensao
         return fila;
     }
 
-    public static T Random<T>(this IList<T> colecao)
+    public static T Random<T>(this IList<T> colecao,
+        [CallerArgumentExpression(nameof(colecao))] string? paramName = null)
     {
+        Guard.NotNull(colecao, paramName);
         return colecao[new Random().Next(colecao.Count)];
     }
 
-    public static TSource? MinOrDefault<TSource>(this IEnumerable<TSource> colecao)
+    public static TSource? MinOrDefault<TSource>(this IEnumerable<TSource> colecao,
+        [CallerArgumentExpression(nameof(colecao))] string? paramName = null)
     {
+        Guard.NotNull(colecao, paramName);
         if (colecao.Count() > 0)
         {
             return colecao.Min();
@@ -201,8 +259,11 @@ public static class LinqExtensao
         return default;
     }
 
-    public static TResult? MinOrDefault<TSource, TResult>(this IEnumerable<TSource> colecao, Func<TSource, TResult> selector)
+    public static TResult? MinOrDefault<TSource, TResult>(
+        this IEnumerable<TSource> colecao, Func<TSource, TResult> selector,
+        [CallerArgumentExpression(nameof(colecao))] string? paramName = null)
     {
+        Guard.NotNull(colecao, paramName);
         if (colecao.Count() > 0)
         {
             return colecao.Min(selector);
@@ -210,8 +271,10 @@ public static class LinqExtensao
         return default;
     }
 
-    public static TSource? MaxOrDefault<TSource>(this ICollection<TSource> colecao)
+    public static TSource? MaxOrDefault<TSource>(this ICollection<TSource> colecao,
+        [CallerArgumentExpression(nameof(colecao))] string? paramName = null)
     {
+        Guard.NotNull(colecao, paramName);
         if (colecao.Count > 0)
         {
             return colecao.Max();
@@ -219,8 +282,12 @@ public static class LinqExtensao
         return default;
     }
 
-    public static TResult? MaxOrDefault<TSource, TResult>(this ICollection<TSource> colecao, Func<TSource, TResult> selector)
+    public static TResult? MaxOrDefault<TSource, TResult>(
+        this ICollection<TSource> colecao, Func<TSource, TResult> selector,
+        [CallerArgumentExpression(nameof(colecao))] string? paramName = null)
     {
+        Guard.NotNull(colecao, paramName);
+
         if (colecao.Count > 0)
         {
             return colecao.Max(selector);
@@ -228,8 +295,10 @@ public static class LinqExtensao
         return default(TResult);
     }
 
-    public static TSource Random<TSource>(this ICollection<TSource> colecao)
+    public static TSource Random<TSource>(this ICollection<TSource> colecao,
+        [CallerArgumentExpression(nameof(colecao))] string? paramName = null)
     {
+        Guard.NotNull(colecao, paramName);
         var count = colecao.Count;
         if (count > 0)
         {
@@ -247,8 +316,10 @@ public static class LinqExtensao
         throw new Erro("A coleção não possui nenhum elemento");
     }
 
-    public static TSource? RandomOrDefault<TSource>(this ICollection<TSource> colecao)
+    public static TSource? RandomOrDefault<TSource>(this ICollection<TSource> colecao,
+        [CallerArgumentExpression(nameof(colecao))] string? paramName = null)
     {
+        Guard.NotNull(colecao, paramName);
         var count = colecao.Count;
         if (count > 0)
         {
@@ -259,8 +330,11 @@ public static class LinqExtensao
 
     #region Sum
 
-    public static float SumOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, float> selector)
+    public static float SumOrDefault<TSource>(this IEnumerable<TSource> source,
+        Func<TSource, float> selector,
+        [CallerArgumentExpression(nameof(source))] string? paramName = null)
     {
+        Guard.NotNull(source, paramName);
         if (source.Count() > 0)
         {
             return source.Sum(selector);
@@ -268,8 +342,11 @@ public static class LinqExtensao
         return default;
     }
 
-    public static int SumOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, int> selector)
+    public static int SumOrDefault<TSource>(
+        this IEnumerable<TSource> source, Func<TSource, int> selector,
+        [CallerArgumentExpression(nameof(source))] string? paramName = null)
     {
+        Guard.NotNull(source, paramName);
         if (source.Count() > 0)
         {
             return source.Sum(selector);
@@ -277,8 +354,12 @@ public static class LinqExtensao
         return default;
     }
 
-    public static long SumOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, long> selector)
+    public static long SumOrDefault<TSource>(
+        this IEnumerable<TSource> source,
+        Func<TSource, long> selector,
+        [CallerArgumentExpression(nameof(source))] string? paramName = null)
     {
+        Guard.NotNull(source, paramName);
         if (source.Count() > 0)
         {
             return source.Sum(selector);
@@ -286,8 +367,12 @@ public static class LinqExtensao
         return default;
     }
 
-    public static decimal? SumOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, decimal?> selector)
+    public static decimal? SumOrDefault<TSource>(
+        this IEnumerable<TSource> source,
+        Func<TSource, decimal?> selector,
+        [CallerArgumentExpression(nameof(source))] string? paramName = null)
     {
+        Guard.NotNull(source, paramName);
         if (source.Count() > 0)
         {
             return source.Sum(selector);
@@ -295,8 +380,12 @@ public static class LinqExtensao
         return default;
     }
 
-    public static double SumOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, double> selector)
+    public static double SumOrDefault<TSource>(
+        this IEnumerable<TSource> source,
+        Func<TSource, double> selector,
+        [CallerArgumentExpression(nameof(source))] string? paramName = null)
     {
+        Guard.NotNull(source, paramName);
         if (source.Count() > 0)
         {
             return source.Sum(selector);
@@ -304,8 +393,12 @@ public static class LinqExtensao
         return default;
     }
 
-    public static int? SumOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, int?> selector)
+    public static int? SumOrDefault<TSource>(
+        this IEnumerable<TSource> source,
+        Func<TSource, int?> selector,
+        [CallerArgumentExpression(nameof(source))] string? paramName = null)
     {
+        Guard.NotNull(source, paramName);
         if (source.Count() > 0)
         {
             return source.Sum(selector);
@@ -313,8 +406,12 @@ public static class LinqExtensao
         return default;
     }
 
-    public static long? SumOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, long?> selector)
+    public static long? SumOrDefault<TSource>(
+        this IEnumerable<TSource> source,
+        Func<TSource, long?> selector,
+        [CallerArgumentExpression(nameof(source))] string? paramName = null)
     {
+        Guard.NotNull(source, paramName);
         if (source.Count() > 0)
         {
             return source.Sum(selector);
@@ -322,8 +419,12 @@ public static class LinqExtensao
         return default;
     }
 
-    public static float? SumOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, float?> selector)
+    public static float? SumOrDefault<TSource>(
+        this IEnumerable<TSource> source,
+        Func<TSource, float?> selector,
+        [CallerArgumentExpression(nameof(source))] string? paramName = null)
     {
+        Guard.NotNull(source, paramName);
         if (source.Count() > 0)
         {
             return source.Sum(selector);
@@ -331,8 +432,12 @@ public static class LinqExtensao
         return default;
     }
 
-    public static double? SumOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, double?> selector)
+    public static double? SumOrDefault<TSource>(
+        this IEnumerable<TSource> source,
+        Func<TSource, double?> selector,
+        [CallerArgumentExpression(nameof(source))] string? paramName = null)
     {
+        Guard.NotNull(source, paramName);
         if (source.Count() > 0)
         {
             return source.Sum(selector);
@@ -340,8 +445,12 @@ public static class LinqExtensao
         return default;
     }
 
-    public static decimal SumOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, decimal> selector)
+    public static decimal SumOrDefault<TSource>(
+        this IEnumerable<TSource> source,
+        Func<TSource, decimal> selector,
+        [CallerArgumentExpression(nameof(source))] string? paramName = null)
     {
+        Guard.NotNull(source, paramName);
         if (source.Count() > 0)
         {
             return source.Sum(selector);
@@ -349,8 +458,11 @@ public static class LinqExtensao
         return default;
     }
 
-    public static double? SumOrDefault(this IEnumerable<double?> source)
+    public static double? SumOrDefault(this IEnumerable<double?> source,
+        [CallerArgumentExpression(nameof(source))] string? paramName = null)
     {
+        Guard.NotNull(source, paramName);
+
         if (source.Count() > 0)
         {
             return source.Sum();
@@ -358,8 +470,10 @@ public static class LinqExtensao
         return default;
     }
 
-    public static float? SumOrDefault(this IEnumerable<float?> source)
+    public static float? SumOrDefault(this IEnumerable<float?> source,
+        [CallerArgumentExpression(nameof(source))] string? paramName = null)
     {
+        Guard.NotNull(source, paramName);
         if (source.Count() > 0)
         {
             return source.Sum();
@@ -367,8 +481,10 @@ public static class LinqExtensao
         return default;
     }
 
-    public static decimal SumOrDefault(this IEnumerable<decimal> source)
+    public static decimal SumOrDefault(this IEnumerable<decimal> source,
+        [CallerArgumentExpression(nameof(source))] string? paramName = null)
     {
+        Guard.NotNull(source, paramName);
         if (source.Count() > 0)
         {
             return source.Sum();
@@ -376,8 +492,10 @@ public static class LinqExtensao
         return default;
     }
 
-    public static double SumOrDefault(this IEnumerable<double> source)
+    public static double SumOrDefault(this IEnumerable<double> source,
+        [CallerArgumentExpression(nameof(source))] string? paramName = null)
     {
+        Guard.NotNull(source, paramName);
         if (source.Count() > 0)
         {
             return source.Sum();
@@ -385,8 +503,10 @@ public static class LinqExtensao
         return default;
     }
 
-    public static int SumOrDefault(this IEnumerable<int> source)
+    public static int SumOrDefault(this IEnumerable<int> source,
+        [CallerArgumentExpression(nameof(source))] string? paramName = null)
     {
+        Guard.NotNull(source, paramName);
         if (source.Count() > 0)
         {
             return source.Sum();
@@ -394,8 +514,10 @@ public static class LinqExtensao
         return default;
     }
     //     source is null.
-    public static float SumOrDefault(this IEnumerable<float> source)
+    public static float SumOrDefault(this IEnumerable<float> source,
+        [CallerArgumentExpression(nameof(source))] string? paramName = null)
     {
+        Guard.NotNull(source, paramName);
         if (source.Count() > 0)
         {
             return source.Sum();
@@ -403,8 +525,10 @@ public static class LinqExtensao
         return default;
     }
 
-    public static decimal? SumOrDefault(this IEnumerable<decimal?> source)
+    public static decimal? SumOrDefault(this IEnumerable<decimal?> source,
+        [CallerArgumentExpression(nameof(source))] string? paramName = null)
     {
+        Guard.NotNull(source, paramName);
         if (source.Count() > 0)
         {
             return source.Sum();
@@ -412,8 +536,10 @@ public static class LinqExtensao
         return default;
     }
 
-    public static int? SumOrDefault(this IEnumerable<int?> source)
+    public static int? SumOrDefault(this IEnumerable<int?> source,
+        [CallerArgumentExpression(nameof(source))] string? paramName = null)
     {
+        Guard.NotNull(source, paramName);
         if (source.Count() > 0)
         {
             return source.Sum();
@@ -421,8 +547,10 @@ public static class LinqExtensao
         return default;
     }
 
-    public static long? SumOrDefault(this IEnumerable<long?> source)
+    public static long? SumOrDefault(this IEnumerable<long?> source,
+        [CallerArgumentExpression(nameof(source))] string? paramName = null)
     {
+        Guard.NotNull(source, paramName);
         if (source.Count() > 0)
         {
             return source.Sum();
@@ -430,8 +558,10 @@ public static class LinqExtensao
         return default;
     }
 
-    public static long SumOrDefault(this IEnumerable<long> source)
+    public static long SumOrDefault(this IEnumerable<long> source,
+        [CallerArgumentExpression(nameof(source))] string? paramName = null)
     {
+        Guard.NotNull(source, paramName);
         if (source.Count() > 0)
         {
             return source.Sum();
@@ -443,18 +573,24 @@ public static class LinqExtensao
     #region String
 
     public static bool Contains(this List<string> source,
-        string value, StringComparison stringComparison)
+        string value, StringComparison stringComparison,
+        [CallerArgumentExpression(nameof(source))] string? paramName = null)
     {
+        Guard.NotNull(source, paramName);
         return source.IndexOf(value, stringComparison) >= 0;
     }
 
-    public static bool Contains(this string[] source, string value, StringComparison stringComparison)
+    public static bool Contains(this string[] source, string value, StringComparison stringComparison,
+        [CallerArgumentExpression(nameof(source))] string? paramName = null)
     {
+        Guard.NotNull(source, paramName);
         return source.IndexOf(value, stringComparison) >= 0;
     }
 
-    public static int IndexOf(this List<string> source, string value, StringComparison stringComparison)
+    public static int IndexOf(this List<string> source, string value, StringComparison stringComparison,
+        [CallerArgumentExpression(nameof(source))] string? paramName = null)
     {
+        Guard.NotNull(source, paramName);
         for (var i = 0; i < source.Count; i++)
         {
             var item = source[i];
@@ -476,8 +612,10 @@ public static class LinqExtensao
         return -1;
     }
 
-    public static int IndexOf(this string[] source, string value, StringComparison stringComparison)
+    public static int IndexOf(this string[] source, string value, StringComparison stringComparison,
+        [CallerArgumentExpression(nameof(source))] string? paramName = null)
     {
+        Guard.NotNull(source, paramName);
         for (var i = 0; i < source.Length; i++)
         {
             var item = source[i];
@@ -502,8 +640,10 @@ public static class LinqExtensao
 
     public static HashSet<T?> ToHashSet<T>(
         this IEnumerable<T?> colecao,
-        bool aceitarNull) where T : class
+        bool aceitarNull,
+        [CallerArgumentExpression(nameof(colecao))] string? paramName = null) where T : class
     {
+        Guard.NotNull(colecao, paramName);
         var hashSet = colecao.ToHashSet();
         if (aceitarNull)
         {
@@ -527,8 +667,10 @@ public static class LinqExtensao
         return false;
     }
 
-    public static T? PeekOrDefault<T>(this Queue<T> queue)
+    public static T? PeekOrDefault<T>(this Queue<T> queue,
+        [CallerArgumentExpression(nameof(queue))] string? paramName = null)
     {
+        Guard.NotNull(queue, paramName);
         if (queue.Count > 0)
         {
             return queue.Peek();

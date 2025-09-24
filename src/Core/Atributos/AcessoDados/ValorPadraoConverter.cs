@@ -4,31 +4,13 @@ namespace Snebur.Dominio.Atributos;
 [AttributeUsage(AttributeTargets.Property)]
 public class ValorPadraoConverterAttribute : Attribute, IValorPadrao
 {
-    private static readonly object _bloqueio = new();
-
-    private IConverterValorPadrao? _instancia;
-
     public bool IsValorPadraoOnUpdate { get; set; }
 
     public string CaminhoTipo { get; }
 
     public IConverterValorPadrao InstanciaConverter
-    {
-        get
-        {
-            if (this._instancia == null)
-            {
-                lock (_bloqueio)
-                {
-                    if (this._instancia == null)
-                    {
-                        this._instancia = this.RetornarNovaInstancia();
-                    }
-                }
-            }
-            return this._instancia;
-        }
-    }
+        => LazyUtil.RetornarValorLazyComBloqueio(ref field, RetornarNovaInstancia);
+
     public ValorPadraoConverterAttribute(string caminhoTipo)
     {
         this.CaminhoTipo = this.NormalizarCaminhoTipo(caminhoTipo);
@@ -65,7 +47,6 @@ public class ValorPadraoConverterAttribute : Attribute, IValorPadrao
 
     private object? RetornarNovaInstanciaInterno()
     {
-
         var tipo = Type.GetType(this.CaminhoTipo);
         if (tipo == null)
         {
@@ -77,7 +58,7 @@ public class ValorPadraoConverterAttribute : Attribute, IValorPadrao
         }
         catch (Exception ex)
         {
-            throw new Erro($"Não foi possivel instanciar o tipo {tipo.Name}", ex);
+            throw new Erro($"Não foi possível instanciar o tipo {tipo.Name}", ex);
         }
     }
 }

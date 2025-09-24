@@ -7,16 +7,16 @@ internal partial class GerenciadorManutencao
 
     internal static void Inicializar(BaseContextoDados contexto)
     {
-        lock (Bloqueio)
-        {
-            if (!Inicializado)
-            {
-                using (var manutencao = new GerenciadorManutencao(contexto))
-                {
-                    manutencao.Executar();
-                }
-                Inicializado = true;
-            }
-        }
+        //lock (Bloqueio)
+        //{
+        //    if (!Inicializado)
+        //    {
+        //        using (var manutencao = new GerenciadorManutencao(contexto))
+        //        {
+        //            manutencao.Executar();
+        //        }
+        //        Inicializado = true;
+        //    }
+        //}
     }
 }

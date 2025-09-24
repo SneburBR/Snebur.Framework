@@ -1,12 +1,12 @@
-﻿namespace Snebur.Dominio;
+namespace Snebur.Dominio;
 
-public class ErroValidacao : BaseDominio
+public class ErroValidacaoInfo : BaseDominio
 {
-    public string? NomeTipoEntidade { get; set; }
+    public required string NomeTipoEntidade { get; set; }
 
-    public string? NomePropriedade { get; set; }
+    public required string NomePropriedade { get; set; }
 
-    public string? NomeTipoValidacao { get; set; }
+    public required string NomeTipoValidacao { get; set; }
 
-    public string? Mensagem { get; set; }
+    public required string Mensagem { get; set; }
 }

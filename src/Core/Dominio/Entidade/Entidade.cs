@@ -101,9 +101,11 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntidadeIntern
         this.__TipoEntidade = this.GetType();
         this.__NomeTipoEntidade = this.__TipoEntidade.Name;
 
-        var propriedadesTipoComplexo = this.__TipoEntidade.GetProperties().
-                                                          Where(x => x.PropertyType.IsSubclassOf(typeof(BaseTipoComplexo))).
-                                                          ToList();
+        var propriedadesTipoComplexo = this.__TipoEntidade
+            .GetProperties()
+            .Where(x => x.PropertyType.IsSubclassOf(typeof(BaseTipoComplexo)))
+            .Where(x => x.GetMethod is not null && x.SetMethod is not null && x.GetCustomAttribute<NotMappedAttribute>(false) is null)
+            .ToList();
 
         foreach (var propriedadeTipoComplexo in propriedadesTipoComplexo)
         {
@@ -532,7 +534,7 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntidadeIntern
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public List<ErroValidacao> RetornarErrosValidacao(object contextoDados)
+    public List<ErroValidacaoInfo> RetornarErrosValidacao(object contextoDados)
     {
         return ValidarEntidades.Validar(contextoDados, this);
     }

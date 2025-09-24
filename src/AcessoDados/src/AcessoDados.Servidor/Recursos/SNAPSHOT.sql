@@ -1,4 +1,11 @@
 
+-- Verificar configurações (opcional)
+SELECT name, is_read_committed_snapshot_on, snapshot_isolation_state_desc
+FROM sys.databases
+WHERE name = 'DATABASE_NAME';
+GO
+
+-- IF snapshot_isolation_state_desc <> ON then
 
 -- Mudar para SINGLE_USER
 ALTER DATABASE [DATABASE_NAME]
@@ -21,8 +28,3 @@ ALTER DATABASE [DATABASE_NAME]
 SET MULTI_USER;
 GO
 
--- Verificar configurações (opcional)
-SELECT name, is_read_committed_snapshot_on, snapshot_isolation_state_desc
-FROM sys.databases
-WHERE name = '[DATABASE_NAME]';
-GO

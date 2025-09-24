@@ -13,7 +13,7 @@ public abstract class BaseAcessoDados : BaseDominio
 
     [IgnorarPropriedade]
     [IgnorarPropriedadeTSReflexao]
-    public Exception? Erro { get; set; } = null;
+    public ErroAcessoDados? Erro { get; set; } = null;
 
     public string? MensagemErro { get => this.GetPropertyValue(this._mensagemErro); set => this.SetProperty(this._mensagemErro, this._mensagemErro = value); }
 

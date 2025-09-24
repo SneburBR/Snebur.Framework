@@ -165,6 +165,11 @@ internal partial class EstruturaBancoDados
 
         foreach (var tipoEntidade in tiposEntidadeConsulta)
         {
+            if (tipoEntidade.IsObsolete())
+            {
+                throw new Erro($"Tipo {tipoEntidade.Name} genérico da consulta {tipoEntidade.Name} está obsoleto ");
+            }
+
             if (!tipoEntidade.IsSubclassOf(typeof(Entidade)))
             {
                 throw new Erro(String.Format("Tipo {0} genérico da consulta {1} não herda de BaseEntidade ", tipoEntidade.Name, tipoEntidade.Name));

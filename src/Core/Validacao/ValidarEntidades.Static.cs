@@ -2,7 +2,7 @@ namespace Snebur.Dominio;
 
 public partial class ValidarEntidades
 {
-    public static List<ErroValidacao> Validar(object contextoDados, List<Entidade> entidades)
+    public static List<ErroValidacaoInfo> Validar(object contextoDados, List<Entidade> entidades)
     {
         using (var validar = new ValidarEntidades(entidades))
         {
@@ -10,7 +10,7 @@ public partial class ValidarEntidades
         }
     }
 
-    public static List<ErroValidacao> Validar(object contextoDados, Entidade entidade)
+    public static List<ErroValidacaoInfo> Validar(object contextoDados, Entidade entidade)
     {
         var entidades = new List<Entidade> { entidade };
         return Validar(contextoDados, entidades);

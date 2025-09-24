@@ -25,15 +25,13 @@ public static class EntidadeExtensao
         where TEntidade : IEntidade
         where TResut : IEntidade
     {
-        Debugger.Break();
-
         if (entidade is null)
         {
             throw new ArgumentNullException(nameof(entidade));
         }
 
         var relation = relationFactory.Invoke(entidade);
-        if (relation != null)
+        if (relation is not null)
         {
             return relation;
         }

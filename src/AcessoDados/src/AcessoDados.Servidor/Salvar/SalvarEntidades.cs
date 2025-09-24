@@ -1,5 +1,6 @@
 using Snebur.Linq;
 using System.Data.Common;
+using System.Runtime.CompilerServices;
 
 namespace Snebur.AcessoDados.Servidor.Salvar;
 
@@ -344,16 +345,13 @@ internal partial class SalvarEntidades : IDisposable
     //Salvar
     private ResultadoSalvar RetornarResultadoSalvar(List<EntidadeAlterada> entidadesAlterada)
     {
-        var resultadoSalvar = new ResultadoSalvar
-        {
-            IsSucesso = true
-        };
+        var resultadoSalvar = ResultadoSalvar.Sucesso();
 
         foreach (var entidadeAlterada in entidadesAlterada)
         {
             //throw new NotImplementedException();
             var identificadorUnico = entidadeAlterada.Entidade.RetornarIdentificadorReferencia();
-            var entidadeSalva = new EntidadeSalva
+            var entidadeSalva = new EntidadeSalvaInfo
             {
                 IdentificadorUnicoEntidade = identificadorUnico,
                 Id = entidadeAlterada.Entidade.Id,
@@ -391,28 +389,19 @@ internal partial class SalvarEntidades : IDisposable
         return resultadoSalvar;
     }
 
-    private ResultadoSalvar RetornarResultadoSalvarErrosValidacao(List<Snebur.Dominio.ErroValidacao> erros)
+    private ResultadoSalvar RetornarResultadoSalvarErrosValidacao(List<ErroValidacaoInfo> erros)
     {
-        var resultado = new ResultadoSalvar
-        {
-            IsSucesso = false,
-            ErrosValidacao = erros,
-            MensagemErro = ErroValidacao.RetornarMensagemErro(erros),
-            Erro = new ErroValidacao(erros)
+        return ResultadoSalvar.CreateErroValidacao(erros);
 
-        };
-        return resultado;
     }
 
-    private ResultadoSalvar RetornarResultadoErroSalvar(Exception erro)
+    private ResultadoSalvar RetornarResultadoErroSalvar(Exception erro,
+        [CallerMemberName] string nomeMetodo = "",
+        [CallerFilePath] string caminhoArquivo = "",
+        [CallerLineNumber] int linhaDoErro = 0)
     {
-        var resultado = new ResultadoSalvar
-        {
-            IsSucesso = false,
-            MensagemErro = ErroUtil.RetornarDescricaoDetalhadaErro(erro),
-            Erro = erro
-        };
-        return resultado;
+        return ResultadoSalvar.CreateErro(erro, nomeMetodo, caminhoArquivo, linhaDoErro);
+
     }
     //Deletar
 
@@ -425,13 +414,8 @@ internal partial class SalvarEntidades : IDisposable
 
     private ResultadoDeletar RetornarResultadoErroDeletar(Exception erro)
     {
-        var resultado = new ResultadoDeletar
-        {
-            IsSucesso = false,
-            MensagemErro = ErroUtil.RetornarDescricaoDetalhadaErro(erro),
-            Erro = erro
-        };
-        return resultado;
+        return ResultadoDeletar.CreateErro(erro);
+
     }
     #endregion
 

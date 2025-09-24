@@ -55,11 +55,7 @@ public static class ContextoDadosExtensao
             return resultado;
         }
 
-        return new ResultadoSalvar
-        {
-            IsSucesso = true,
-            MensagemErro = "Nenhuma propriedade foi alterada"
-        };
+        return ResultadoSalvar.Sucesso();
     }
 
     public static ResultadoSalvar SalvarPropriedades<TEntidade>(this IContextoDados contexto,

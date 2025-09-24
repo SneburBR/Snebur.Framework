@@ -466,18 +466,13 @@ public abstract partial class BaseContextoDados : __BaseContextoDados, IServicoD
                 .PermissaoSalvar(this.UsuarioLogado,
                                  this.UsuarioAvalista,
                                  entidades);
+
             if (permissao != EnumPermissao.Autorizado)
             {
-                return new ResultadoSalvar
-                {
-                    Permissao = permissao,
-                    Erro = new ErroPermissao(permissao, $"Permissão {EnumUtil.RetornarDescricao(permissao)} ")
-                };
+                return ResultadoSalvar.CreateErroPermisao(permissao);
             }
         }
-
         return this.SalvarInterno(entidades);
-
     }
 
     private ResultadoSalvar SalvarInterno(IEnumerable<IEntidade> entidades)
@@ -487,6 +482,11 @@ public abstract partial class BaseContextoDados : __BaseContextoDados, IServicoD
                                                          EnumOpcaoSalvar.Salvar,
                                                          true))
         {
+            var resultado = salvarEntidades.Salvar();
+            if (resultado.Erro is not null)
+            {
+                throw resultado.Erro;
+            }
             return (ResultadoSalvar)salvarEntidades.Salvar();
         }
     }

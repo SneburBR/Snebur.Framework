@@ -12,7 +12,7 @@ public static class Guard
 
     public static void NotNull(
             [NotNull] object? value,
-            [CallerArgumentExpression(nameof(value))] string paramName = "")
+            [CallerArgumentExpression(nameof(value))] string? paramName = "")
     {
         if (value is null)
         {
