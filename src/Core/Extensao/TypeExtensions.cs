@@ -97,4 +97,60 @@ public static class TypeExtensions
         return property;
 
     }
+
+    public static bool IsNumberType(this Type type)
+    {
+        type = type.GetUnderlyingType();
+        switch (Type.GetTypeCode(type))
+        {
+            case TypeCode.Byte:
+            case TypeCode.SByte:
+            case TypeCode.UInt16:
+            case TypeCode.UInt32:
+            case TypeCode.UInt64:
+            case TypeCode.Int16:
+            case TypeCode.Int32:
+            case TypeCode.Int64:
+            case TypeCode.Decimal:
+            case TypeCode.Double:
+            case TypeCode.Single:
+                return true;
+            default:
+                return false;
+        }
+    }
+    //public static bool IsNumberType(this Type type)
+    //{
+    //    var underlyingType = type.GetUnderlyingType();
+    //    return underlyingType == typeof(byte)
+    //           || underlyingType == typeof(sbyte)
+    //           || underlyingType == typeof(short)
+    //           || underlyingType == typeof(ushort)
+    //           || underlyingType == typeof(int)
+    //           || underlyingType == typeof(uint)
+    //           || underlyingType == typeof(long)
+    //           || underlyingType == typeof(ulong)
+    //           || underlyingType == typeof(float)
+    //           || underlyingType == typeof(double)
+    //           || underlyingType == typeof(decimal);
+    //}
+
+    public static string GetDisplayName(this Type type, bool excludeNestedTypeNames = false)
+    {
+        Guard.NotNull(type);
+
+        if (type.IsGenericType)
+        {
+            var genericArguments = type.GetGenericArguments()
+                .Select(x => GetDisplayName(x, excludeNestedTypeNames));
+
+            return $"{type.Name.Split('`')[0]}<{string.Join(", ", genericArguments)}>";
+        }
+
+        if (!excludeNestedTypeNames && type.IsNested && type.DeclaringType is not null)
+        {
+            return $"{type.DeclaringType.Name}.{type.Name}";
+        }
+        return type.Name;
+    }
 }

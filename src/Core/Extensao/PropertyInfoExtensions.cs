@@ -5,20 +5,18 @@ namespace Snebur;
 
 public static class PropertyInfoExtensions
 {
-    public static PropertyInfo GetRequiredOneToOneNavigationProperty(this PropertyInfo propertyInfo)
+    public static PropertyInfo? GetOneToOneNavigationProperty(this PropertyInfo propertyInfo)
     {
         var declaringType = propertyInfo.DeclaringType;
         Guard.NotNull(declaringType);
+
         var proprities = declaringType.GetProperties()
             .Where(p => p.GetCustomAttribute<ForeignKeyAttribute>(false)?.Name == propertyInfo.Name)
             .ToArray();
 
         if (proprities.Length == 0)
-        {
-            throw new InvalidOperationException(
-                $"The property '{propertyInfo.Name}' that is was a foreign key " +
-                $"But the related property with {nameof(ForeignKeyAttribute)}(nameof({propertyInfo.Name})) one to one was not found ");
-        }
+            return null;
+
         if (proprities.Length > 1)
         {
             throw new InvalidOperationException(
@@ -26,6 +24,14 @@ public static class PropertyInfoExtensions
                 $"But more than one related property with {nameof(ForeignKeyAttribute)}(nameof({propertyInfo.Name})) one to one was found ");
         }
         return proprities[0];
+    }
+
+    public static PropertyInfo GetRequiredOneToOneNavigationProperty(this PropertyInfo propertyInfo)
+    {
+        return propertyInfo.GetOneToOneNavigationProperty()
+            ?? throw new InvalidOperationException(
+                $"The property '{propertyInfo.Name}' that is was a foreign key " +
+                $"But the related property with {nameof(ForeignKeyAttribute)}(nameof({propertyInfo.Name})) one to one was not found ");
     }
 
     public static TInterface? GetAttributeImplementingInterface<TAttribute, TInterface>(
@@ -74,6 +80,5 @@ public static class PropertyInfoExtensions
         }
         return declaringType;
     }
-
 }
 
