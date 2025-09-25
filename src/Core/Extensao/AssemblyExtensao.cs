@@ -68,7 +68,7 @@ public static class AssemblyExtensao
         return atributos.Any(x => x.GetType().Name == nameof(AssemblyEntidadesAttribute));
     }
 
-    public static IEnumerable<Type> GetLoadableTypes(this Assembly assembly)
+    public static Type[] GetLoadableTypes(this Assembly assembly)
     {
         if (assembly == null)
         {

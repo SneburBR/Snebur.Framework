@@ -153,4 +153,9 @@ public static class TypeExtensions
         }
         return type.Name;
     }
+
+    public static bool IsSubclassOf<T>(this Type type)
+    {
+        return type.IsSubclassOf(typeof(T));
+    }
 }

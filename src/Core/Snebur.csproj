@@ -35,13 +35,13 @@
 	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
 
 
-		<PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.7" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.1" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.9" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-		<PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.7" />
-		<PackageReference Include="System.Diagnostics.EventLog" Version="9.0.7" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.9" />
+		<PackageReference Include="System.Diagnostics.EventLog" Version="9.0.9" />
 		<PackageReference Include="System.IO.Compression" Version="4.3.0" />
 		<PackageReference Include="System.IO.FileSystem.AccessControl" Version="5.0.0">
 

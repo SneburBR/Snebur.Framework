@@ -52,9 +52,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Magick.NET-Q8-AnyCPU" Version="14.8.1" />
-		<PackageReference Include="Magick.NET.SystemDrawing" Version="8.0.7" />
-		<PackageReference Include="Magick.NET.SystemWindowsMedia" Version="8.0.7" />
+		<PackageReference Include="Magick.NET-Q8-AnyCPU" Version="14.8.2" />
+		<PackageReference Include="Magick.NET.SystemDrawing" Version="8.0.10" />
+		<PackageReference Include="Magick.NET.SystemWindowsMedia" Version="8.0.10" />
 	</ItemGroup>
 
 
