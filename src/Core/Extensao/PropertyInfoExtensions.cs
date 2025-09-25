@@ -80,5 +80,19 @@ public static class PropertyInfoExtensions
         }
         return declaringType;
     }
+
+    public static bool IsOverridden(this PropertyInfo property)
+    {
+        // Check one accessor (get or set) to see if it overrides
+        var accessor = property.GetMethod ?? property.SetMethod;
+        if (accessor == null)
+            return false;
+
+        // Get base definition of this method
+        var baseDef = accessor.GetBaseDefinition();
+
+        // If base definition declaring type is different, it's overridden
+        return baseDef.DeclaringType != accessor.DeclaringType;
+    }
 }
 
