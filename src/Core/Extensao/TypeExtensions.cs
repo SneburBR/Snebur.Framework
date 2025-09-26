@@ -158,4 +158,9 @@ public static class TypeExtensions
     {
         return type.IsSubclassOf(typeof(T));
     }
+
+    public static bool ImplementsInterface<T>(this Type type)
+    {
+        return type.GetInterfaces().Contains(typeof(T));
+    }
 }

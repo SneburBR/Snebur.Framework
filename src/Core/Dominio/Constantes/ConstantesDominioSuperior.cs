@@ -1,9 +1,9 @@
-﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Atributos;
 
 namespace Snebur;
 
 [ConstantesTS]
-public class ConstantesDominioSuperior
+public static class ConstantesDominioSuperior
 {
     public const string DOMIMIO_SUPERIOR_LOCALHOST = ".localhost";
     public const string DOMIMIO_SUPERIOR_INTERNO = ".int";

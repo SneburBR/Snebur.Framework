@@ -1,9 +1,9 @@
-﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Atributos;
 
 namespace Snebur;
 
 [ConstantesTS]
-public class ConstantesCabecalho
+public static class ConstantesCabecalho
 {
     public const string IDENTIFICADOR_USUARIO = "IdentificadorUsuario";
     public const string SENHA = "Senha";

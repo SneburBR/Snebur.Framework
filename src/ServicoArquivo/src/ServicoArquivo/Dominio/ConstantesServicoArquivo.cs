@@ -1,4 +1,4 @@
-﻿namespace Snebur.ServicoArquivo.Dominio;
+namespace Snebur.ServicoArquivo.Dominio;
 
 [ConstantesTS]
 public class ConstantesServicoArquivo
@@ -41,7 +41,7 @@ public class ConstantesServicoArquivo
 }
 
 [ConstantesTS]
-public class ConstantesServicoFonte
+public static class ConstantesServicoFonte
 {
     public const string NOME_FORMATO_FONTE = "formato_fonte";
     public const string NOME_ARQUVIVO_FONTE = "fonte";

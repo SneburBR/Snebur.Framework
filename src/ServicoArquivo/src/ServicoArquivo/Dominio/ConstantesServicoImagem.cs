@@ -1,7 +1,7 @@
-﻿namespace Snebur.ServicoArquivo.Dominio;
+namespace Snebur.ServicoArquivo.Dominio;
 
 [ConstantesTS]
-public class ConstantesServicoImagem
+public static class ConstantesServicoImagem
 {
     #region " Constantes "
 

@@ -3,7 +3,13 @@ using System.Reflection;
 namespace Snebur.Dominio.Atributos;
 
 [IgnorarInterfaceTS]
-public interface IAtributoValidacao
+public interface IDomainAtributo
+{
+
+}
+
+[IgnorarInterfaceTS]
+public interface IAtributoValidacao : IDomainAtributo
 {
     bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade);
 
@@ -11,7 +17,7 @@ public interface IAtributoValidacao
 }
 
 [IgnorarInterfaceTS]
-public interface IAtributoValidacaoEntidade
+public interface IAtributoValidacaoEntidade : IDomainAtributo
 {
     bool IsValido(object servico, List<Entidade> todasEntidades, Entidade entidade);
 

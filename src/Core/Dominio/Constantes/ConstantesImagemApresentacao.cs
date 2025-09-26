@@ -3,7 +3,7 @@ using Snebur.Dominio.Atributos;
 namespace Snebur.Imagens;
 
 [ConstantesTS]
-public class ConstantesImagemApresentacao
+public static class ConstantesImagemApresentacao
 {
     public const int LARGURA_ICONE = 178;
     public const int ALTURA_ICONE = 220;

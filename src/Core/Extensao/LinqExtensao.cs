@@ -687,6 +687,17 @@ public static class LinqExtensao
         return string.Join(separator, source);
     }
 
+    public static string StringJoin<T>(
+        this IEnumerable<T> source,
+        Func<T, string?> predictate, string separator)
+    {
+        if (source == null || !source.Any())
+        {
+            return string.Empty;
+        }
+        return string.Join(separator, source.Select(predictate));
+    }
+
 #if NET45 || NET40
     public static IEnumerable<T> Prepend<T>(this IEnumerable<T> source, T item)
     {
