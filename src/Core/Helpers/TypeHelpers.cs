@@ -1,6 +1,6 @@
-﻿namespace Snebur.Helpers;
+namespace Snebur.Helpers;
 
-public static class TypeHelper
+public static class TypeHelpers
 {
     public static T GetUnderlyingDefaultValue<T>()
     {
