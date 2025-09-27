@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace Snebur.ServicoArquivo.Dominio;
+namespace Snebur.ServicoArquivo;
 
 public enum EnumTipoErroServicoArquivo
 {

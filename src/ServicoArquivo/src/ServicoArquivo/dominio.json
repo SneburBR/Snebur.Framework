@@ -1,7 +1,7 @@
 ﻿{
   "CaminhoDominioTypeScript": "../../../../../Snebur.TS/src/Snebur.TS/src/ServicoArquivo/Dominio",
   "Globalizar": false,
-  "Namespace": "Snebur.ServicoArquivo",
+  "Namespace": "Snebur.ServicoArquivo.Dominio",
   "PrioridadeDominio": 2,
   "DominiosDepentendes": []
 
