@@ -1,12 +1,12 @@
-﻿
+
 using Snebur.Dominio.Atributos;
 
 namespace Snebur.Dominio;
 
 public enum EnumEfeitoImagem
 {
-    [Rotulo("Desconhecido")]
-    Desconhecido = -1,
+    [EnumValorNaoDefido]
+    Undefined = -1,
 
     [Rotulo("Nenhum")]
     Nenhum = 0,

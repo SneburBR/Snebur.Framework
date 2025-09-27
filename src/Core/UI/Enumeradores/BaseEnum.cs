@@ -1,9 +1,9 @@
-﻿using Snebur.Dominio.Atributos;
+using Snebur.Dominio.Atributos;
 
 namespace Snebur.UI;
 
 public enum BaseEnumApresentacao
 {
     [Rotulo("Vazio")]
-    Vazio = -1
+    Vazio = -100
 }

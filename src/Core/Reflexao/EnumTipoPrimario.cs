@@ -8,8 +8,11 @@ namespace Snebur.Reflexao;
 [IgnorarEnumTS]
 public enum EnumTipoPrimario
 {
-    [Description("Desconhecido")]
-    Desconhecido = -1,
+
+    [EnumValorNaoDefido]
+    Undefined = -1,
+
+    Desconhecido = -100,
 
     [Description("void")]
     Void = 0,

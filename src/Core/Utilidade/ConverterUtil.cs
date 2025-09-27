@@ -30,7 +30,7 @@ public class ConverterUtil
             {
                 if (ReflexaoUtil.IsTipoNullable(tipo))
                 {
-                    return TypeHelper.GetDefaultValue(tipo);
+                    return TypeHelpers.GetDefaultValue(tipo);
 
                 }
                 return RetornarValorNuloPadrao(ReflexaoUtil.RetornarTipoPrimarioEnum(tipo));

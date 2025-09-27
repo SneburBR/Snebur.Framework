@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Snebur.Extensao;
 
@@ -6,14 +8,27 @@ public static class TypeExtensions
 {
     public static Type GetUnderlyingType(this Type type)
     {
-
-        if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+        if (type.IsNullableType())
         {
             return Nullable.GetUnderlyingType(type)
                 ?? type;
         }
-        return type;
 
+        if (type.IsGenericType &&
+            type.GetGenericTypeDefinition() == typeof(Task<>))
+        {
+            return type.GetGenericArguments()[0];
+        }
+
+        if (type == typeof(Task))
+            return typeof(void);
+
+        return type;
+    }
+
+    public static bool IsSubclassOrEqualTo<T>(this Type type)
+    {
+        return type.IsSubclassOrEqualTo(typeof(T));
     }
 
     public static bool IsSubclassOrEqualTo(this Type type, Type baseType)
@@ -161,6 +176,96 @@ public static class TypeExtensions
 
     public static bool ImplementsInterface<T>(this Type type)
     {
-        return type.GetInterfaces().Contains(typeof(T));
+        var interfaceType = typeof(T);
+        if (type == interfaceType)
+            return true;
+
+        return type.GetInterfaces().Contains(interfaceType);
+    }
+    public static bool IsNullableType(this Type type)
+        => type.IsGenericType
+        && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+
+    public static bool IsCollectionType(this Type type)
+    {
+        type = type.GetUnderlyingType();
+        if (type.IsArray)
+        {
+            return true;
+        }
+
+        if (type.IsDictionaryType())
+        {
+            return false;
+        }
+        return type.IsEnumerableType();
+    }
+
+    public static bool IsDictionaryType(this Type type)
+    {
+        type = type.GetUnderlyingType();
+        return typeof(IDictionary).IsAssignableFrom(type) && type.IsGenericType;
+    }
+
+    public static bool IsEnumerableType(this Type type)
+    {
+        type = type.GetUnderlyingType();
+        if (type.IsArray)
+        {
+            return true;
+        }
+
+        if (type == typeof(string))
+        {
+            return false;
+        }
+        return typeof(IEnumerable).IsAssignableFrom(type) && type.IsGenericType;
+    }
+
+    public static Type GetCollectionItemType(this Type type)
+    {
+        if (type.IsArray)
+        {
+            return type.GetElementType()
+                ?? throw new InvalidOperationException($"Cannot get the element type of the array type '{type.FullName}'.");
+        }
+
+        if (type.IsGenericType && typeof(IEnumerable).IsAssignableFrom(type))
+        {
+            var arguments = type.GetGenericArguments();
+            if (arguments.Length == 1)
+                return arguments[0];
+
+            if (arguments.Length > 1)
+            {
+                throw new InvalidOperationException(
+                    $"The collection type '{type.FullName}' has more than one generic argument.\r\n" +
+                    $"Arguments : {string.Join(", ", arguments.Select(a => a.FullName))}");
+            }
+        }
+
+        throw new Exception($"The type '{type.FullName}' is not a collection type." +
+                            $"Use the method 'IsCollectionType' to check if the type is a collection type before calling this method.");
+    }
+
+    public static Type GetDictionaryValueType(this Type type)
+    {
+        if (type.IsGenericType && typeof(IDictionary).IsAssignableFrom(type))
+        {
+            var arguments = type.GetGenericArguments();
+            if (arguments.Length == 2)
+                return arguments[1];
+
+            if (arguments.Length > 2)
+            {
+                throw new InvalidOperationException(
+                    $"The dictionary type '{type.FullName}' has more than two generic arguments.\r\n" +
+                    $"Arguments : {string.Join(", ", arguments.Select(a => a.FullName))}");
+            }
+        }
+
+        throw new Exception($"The type '{type.FullName}' is not a dictionary type." +
+                            $"Use the method 'IsDictionaryType' to check if the type is a dictionary type before calling this method.");
+
     }
 }

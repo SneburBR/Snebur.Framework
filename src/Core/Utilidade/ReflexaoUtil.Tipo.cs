@@ -203,6 +203,11 @@ public static partial class ReflexaoUtil
             return true;
         }
 
+        if (tipo == typeof(string))
+        {
+            return false;
+        }
+
         if (typeof(IEnumerable).IsAssignableFrom(tipo) && tipo.IsGenericType)
         {
             return true;
