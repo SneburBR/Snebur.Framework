@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Snebur.Helpers;
 
 public static class TypeHelpers
@@ -26,5 +28,28 @@ public static class TypeHelpers
             return null;
         }
         return Activator.CreateInstance(tipo);
+    }
+
+    public static bool TryChangeType(
+        object? parsed,
+        Type underlying,
+        [NotNullWhen(true)]
+        out object? enumValue)
+    {
+        try
+        {
+            if (parsed is null)
+            {
+                enumValue = GetUnderlyingDefaultValue<object>();
+                return true;
+            }
+            enumValue = Convert.ChangeType(parsed, underlying);
+            return true;
+        }
+        catch
+        {
+            enumValue = null;
+            return false;
+        }
     }
 }

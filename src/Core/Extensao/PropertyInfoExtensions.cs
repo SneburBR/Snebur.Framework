@@ -1,3 +1,5 @@
+using Snebur.Dominio.Atributos;
+using Snebur.Extensao;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 
@@ -93,6 +95,123 @@ public static class PropertyInfoExtensions
 
         // If base definition declaring type is different, it's overridden
         return baseDef.DeclaringType != accessor.DeclaringType;
+    }
+
+    public static bool IsObsolete(this PropertyInfo property)
+    {
+        return property.GetCustomAttribute<ObsoleteAttribute>(true) != null;
+    }
+
+    public static bool IsNotMapped(this PropertyInfo property)
+    {
+        return property.GetCustomAttribute<NotMappedAttribute>(false) != null;
+    }
+
+    public static bool IsRelation(this PropertyInfo property)
+    {
+        var type = property.PropertyType;
+        return type.GetCustomAttribute<BaseRelacaoAttribute>() is not null ||
+               type.GetCustomAttribute<RelacaoPaiExternaAttribute>() is not null;
+    }
+
+    public static bool IsComputed(this PropertyInfo property)
+    {
+        return property.GetCustomAttribute<PropriedadeComputadaBancoAttribute>(false) != null;
+    }
+
+    public static int GetRankOrder(this PropertyInfo property)
+    {
+        if (property.IsNotMapped())
+        {
+            return 10 + GetRankOrder(property.PropertyType);
+        }
+        if (property.IsProxyProperty())
+        {
+            return 20 + GetRankOrder(property.PropertyType);
+        }
+
+        if (property.IsStaticProperty())
+        {
+            return 30 + GetRankOrder(property.PropertyType);
+        }
+        return GetRankOrder(property.PropertyType);
+    }
+
+    private static int GetRankOrder(Type type)
+    {
+        if (ReflexaoUtil.TipoRetornaTipoPrimario(type))
+        {
+            if (type.IsValueType)
+                return 1;
+            return 2;
+        }
+        if (type == typeof(Type))
+        {
+            return 3;
+        }
+
+        if (type.IsSubclassOf<BaseTipoComplexo>())
+        {
+            return 4;
+        }
+
+        if (type.IsCollectionType())
+        {
+            var itemType = type.GetCollectionItemType();
+            if (itemType.IsSubclassOf<Entidade>())
+                return 7;
+
+            return 5;
+        }
+
+        if (type.IsCollectionType())
+        {
+            var itemType = type.GetCollectionItemType();
+            if (itemType.IsSubclassOf<Entidade>())
+                return 9;
+            return 5;
+        }
+
+        if (type.IsDictionaryType())
+        {
+            var valueType = type.GetDictionaryValueType();
+            if (valueType.IsSubclassOf<Entidade>())
+                return 10;
+            return 6;
+        }
+
+        if (type.IsSubclassOf<Entidade>())
+        {
+            return 7;
+        }
+
+        if (type.ImplementsInterface<IEntidade>())
+        {
+            return 8;
+        }
+
+        if (type.IsInterface)
+        {
+            return 9;
+        }
+
+        return int.MaxValue;
+
+        //throw new NotSupportedException($"Property type '{type.Name}' is not supported for RankOrder");
+        //return 10;
+    }
+
+    public static bool IsStaticProperty(this PropertyInfo property)
+    {
+        var getMethod = property.GetMethod;
+        var setMethod = property.SetMethod;
+        return (getMethod != null && getMethod.IsStatic) ||
+               (setMethod != null && setMethod.IsStatic);
+    }
+
+    public static bool IsProxyProperty(this PropertyInfo property)
+    {
+        return property.GetCustomAttribute<PropriedadeInterfaceAttribute>(false) is not null;
     }
 }
 

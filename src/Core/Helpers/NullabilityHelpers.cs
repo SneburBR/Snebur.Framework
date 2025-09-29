@@ -13,11 +13,11 @@ public static class NullabilityHelpers
     {
         Guard.NotNull(property);
 
-        if (property.PropertyType.IsValueType)
-            return false;
-
         if (property.PropertyType.IsNullableType())
             return true;
+
+        if (property.PropertyType.IsValueType)
+            return false;
 
         return GetNullabilityInfo(property).IsMemberNullable;
     }
@@ -26,11 +26,11 @@ public static class NullabilityHelpers
     {
         Guard.NotNull(parameter);
 
-        if (parameter.ParameterType.IsValueType)
-            return false;
-
         if (parameter.ParameterType.IsNullableType())
             return true;
+
+        if (parameter.ParameterType.IsValueType)
+            return false;
 
         return GetNullabilityInfo(parameter).IsMemberNullable;
     }
@@ -38,11 +38,13 @@ public static class NullabilityHelpers
     public static bool IsReturnTypeNullable(this MethodInfo method)
     {
         Guard.NotNull(method);
-        if (method.ReturnType.IsValueType)
-            return false;
 
         if (method.ReturnType.IsNullableType())
             return true;
+
+        if (method.ReturnType.IsValueType)
+            return false;
+
 
         return GetNullabilityInfo(method).IsMemberNullable;
     }
@@ -51,11 +53,11 @@ public static class NullabilityHelpers
     {
         Guard.NotNull(field);
 
-        if (field.FieldType.IsValueType)
-            return false;
-
         if (field.FieldType.IsNullableType())
             return true;
+
+        if (field.FieldType.IsValueType)
+            return false;
 
         return GetNullabilityInfo(field).IsMemberNullable;
     }
@@ -66,6 +68,8 @@ public static class NullabilityHelpers
 
         var handlerType = eventInfo.EventHandlerType;
         if (handlerType is null)
+            return true;
+        if (handlerType.IsNullableType())
             return true;
 
         if (handlerType.IsValueType)

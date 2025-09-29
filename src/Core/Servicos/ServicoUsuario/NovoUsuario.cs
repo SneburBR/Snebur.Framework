@@ -55,12 +55,3 @@ public abstract class NovoUsuario : BaseDominio
         }
     }
 }
-public class NovoUsuarioCliente : NovoUsuario
-{
-    public required long Cliente_Id { get; set; }
-}
-public class NovoUsuarioAdmin : NovoUsuario
-{
-    public bool IsMaster { get; set; }
-    public required long EmpresaAdmin_Id { get; set; }
-}

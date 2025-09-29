@@ -26,12 +26,12 @@ public static class TypeExtensions
         return type;
     }
 
-    public static bool IsSubclassOrEqualTo<T>(this Type type)
+    public static bool IsSubclassOfOrEqual<T>(this Type type)
     {
-        return type.IsSubclassOrEqualTo(typeof(T));
+        return type.IsSubclassOfOrEqual(typeof(T));
     }
 
-    public static bool IsSubclassOrEqualTo(this Type type, Type baseType)
+    public static bool IsSubclassOfOrEqual(this Type type, Type baseType)
     {
         if (type is null || baseType is null)
         {
@@ -59,9 +59,13 @@ public static class TypeExtensions
 
     public static bool IsObsolete(this Type type)
     {
-        return type.GetCustomAttribute<ObsoleteAttribute>(false) != null;
+        return type.GetCustomAttribute<ObsoleteAttribute>(true) != null;
     }
 
+    public static bool IsEntityType(this Type type)
+    {
+        return type.IsSubclassOfOrEqual<Entidade>();
+    }
     public static bool IsSameType(this Type? type, Type? other)
     {
         if (type is null && other is null)

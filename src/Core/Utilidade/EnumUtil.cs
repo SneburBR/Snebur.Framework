@@ -1,5 +1,8 @@
 using Snebur.Dominio.Atributos;
+using Snebur.Helpers;
+using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Reflection;
 
 namespace Snebur.Utilidade;
@@ -125,8 +128,70 @@ public static class EnumUtil
         return valor.ToString();
     }
 
-    public static Enum RetornarValorEnum(Type tipoEnum,
-                                        int valorEnum)
+    public static TEnum? TryRetornarValorEnum<TEnum>(string enumName)
+        where TEnum : struct
+    {
+        var valor = RetornarValorEnum(typeof(TEnum), enumName);
+        if (!Enum.IsDefined(typeof(TEnum), valor))
+        {
+            return null;
+        }
+        return (TEnum)(valor as object);
+    }
+    public static TEnum? TryRetornarValorEnum<TEnum>(int intValue)
+       where TEnum : struct
+    {
+        var valor = RetornarValorEnum(typeof(TEnum), intValue);
+        if (!Enum.IsDefined(typeof(TEnum), valor))
+        {
+            return null;
+        }
+        return (TEnum)(valor as object);
+    }
+    public static TEnum RetornarValorEnum<TEnum>(
+        int valorInt)
+        where TEnum : Enum
+    {
+        var valor = RetornarValorEnum(typeof(TEnum), valorInt);
+        return (TEnum)(valor as object);
+    }
+
+
+    public static Enum GetEnumValue(Type tipoEnum, object? valueOrName)
+    {
+        if (valueOrName is null)
+        {
+            foreach (var fallback in new int[] { -1, 0 })
+            {
+                if (Enum.IsDefined(tipoEnum, fallback))
+                {
+                    return RetornarValorEnum(tipoEnum, fallback);
+                }
+            }
+        }
+
+        if (valueOrName is string enumName)
+        {
+            return RetornarValorEnum(tipoEnum, enumName);
+        }
+
+        if (valueOrName is int intValue)
+        {
+            return RetornarValorEnum(tipoEnum, intValue);
+        }
+        throw new Erro($"O valor {valueOrName} não é suportado para o enum {tipoEnum.Name}");
+    }
+
+    public static Enum RetornarValorEnum(Type tipoEnum, int valorEnum)
+    {
+        var valor = RetornarValorEnumInternal(tipoEnum, valorEnum);
+        if (!Enum.IsDefined(tipoEnum, valor))
+        {
+            throw new Erro($"O valor {valorEnum} não está defino no enum {tipoEnum.Name}");
+        }
+        return valor;
+    }
+    private static Enum RetornarValorEnumInternal(Type tipoEnum, int valorEnum)
     {
         if (!tipoEnum.IsEnum)
         {
@@ -135,48 +200,40 @@ public static class EnumUtil
         return (Enum)Enum.ToObject(tipoEnum, valorEnum);
     }
 
-    public static TEnum? TryRetornarValorEnum<TEnum>(string descricao)
-        where TEnum : struct
-    {
-        var valor = RetornarValorEnum(typeof(TEnum), descricao);
-        if (!Enum.IsDefined(typeof(TEnum), valor))
-        {
-            return null;
-        }
-        return (TEnum)(valor as object);
-    }
-
     public static TEnum RetornarValorEnum<TEnum>(
-        string descricao)
+        string enumName)
         where TEnum : Enum
     {
-        var valor = RetornarValorEnum(typeof(TEnum), descricao);
-        if (!Enum.IsDefined(typeof(TEnum), valor))
-        {
-            throw new Erro($"O valor {descricao} não está defino no enum {typeof(TEnum).Name}");
-        }
+        var valor = RetornarValorEnum(typeof(TEnum), enumName);
         return (TEnum)(valor as object);
     }
 
-    public static TEnum RetornarValorEnum<TEnum>(
-        int valorInt)
-        where TEnum : Enum
+    public static Enum RetornarValorEnum(Type enumType, string enumName)
     {
-        var valor = RetornarValorEnum(typeof(TEnum), valorInt);
-        if (!Enum.IsDefined(typeof(TEnum), valor))
+        var valor = GetEnumValueInternal(enumType, enumName);
+        if (!Enum.IsDefined(enumType, valor))
         {
-            throw new Erro($"O valor {valorInt} não está defino no enum {typeof(TEnum).Name}");
+            throw new Erro($"O enum Name {enumName} não está defino no enum {enumType.Name}");
         }
-        return (TEnum)(valor as object);
+        return valor;
     }
 
-    public static Enum RetornarValorEnum(Type tipoEnum, string descricao)
+    private static Enum GetEnumValueInternal(Type enumType, string enumName)
     {
-        if (!tipoEnum.IsEnum)
+        if (!enumType.IsEnum)
         {
-            throw new Erro($"O tipo {tipoEnum.Name} não é enum ");
+            throw new Erro($"O tipo {enumType.Name} não é enum ");
         }
-        return (Enum)Enum.Parse(tipoEnum, descricao);
+
+        if (Enum.TryParse(enumType, enumName, ignoreCase: true, out object? parsed))
+            return (Enum)parsed;
+
+        var underlying = Enum.GetUnderlyingType(enumType);
+        if (TypeHelpers.TryChangeType(parsed, underlying, out object? enumValue))
+        {
+            return (Enum)Enum.ToObject(enumType, enumValue);
+        }
+        return (Enum)Enum.Parse(enumType, enumName);
     }
 
     public static List<string> RetornarNomesEnum(Type tipoEnum)
