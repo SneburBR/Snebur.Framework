@@ -1,5 +1,6 @@
-﻿namespace Snebur.Dominio.Atributos;
+namespace Snebur.Dominio.Atributos;
 
+//TODO rename to ProxyPropertyAttribute
 [AttributeUsage(AttributeTargets.Property)]
 public class PropriedadeInterfaceAttribute : Attribute
 {

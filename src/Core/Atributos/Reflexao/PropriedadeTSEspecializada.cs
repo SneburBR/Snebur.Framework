@@ -1,5 +1,6 @@
-﻿namespace Snebur.Dominio.Atributos;
+namespace Snebur.Dominio.Atributos;
 
+//TODO: Rename to DomainPropyPropertyAttribute
 [AttributeUsage(AttributeTargets.Property)]
 public class PropriedadeTSEspecializadaAttribute : BaseAtributoDominio
 {
