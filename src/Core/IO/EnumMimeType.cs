@@ -1,10 +1,9 @@
-﻿using Snebur.Dominio.Atributos;
-
-namespace Snebur.Dominio;
+﻿namespace Snebur.Dominio;
 
 public enum EnumMimeType
 {
     [Rotulo("Desconhecido")]
+    [UndefinedEnumValue]
     Desconhecido = 0,
     [Rotulo("Arquivo de audio AAC")]
     Aac = 100,
@@ -166,7 +165,6 @@ public enum EnumMimeType
     _3g2 = 7100,
     [Rotulo("7-zip archive")]
     _7z = 7200,
-
     Dng = 7201,
     Cr2 = 7202,
     Nef = 7203,
@@ -181,5 +179,4 @@ public enum EnumMimeType
     GPR = 7212,
     Srw = 7213,
     Heic = 7214,
-
 }

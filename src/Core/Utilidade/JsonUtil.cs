@@ -1,5 +1,4 @@
 using Newtonsoft.Json.Serialization;
-using Snebur.Dominio.Atributos;
 using Snebur.Serializacao;
 using System.Globalization;
 using System.IO;
@@ -300,10 +299,4 @@ internal class ResolverReferencia : IReferenceResolver
     {
         throw new NotImplementedException();
     }
-}
-
-public enum EnumTipoSerializacao
-{
-    Javascript = 1,
-    DotNet = 2
 }

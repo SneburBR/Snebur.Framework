@@ -2,6 +2,7 @@
 
 public enum EnumTipoAlerta
 {
+    [UndefinedEnumValue]
     Atencao,
     Informacao,
     Sucesso,

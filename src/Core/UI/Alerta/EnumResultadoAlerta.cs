@@ -1,9 +1,8 @@
-﻿using Snebur.Dominio.Atributos;
-
-namespace Snebur.UI;
+﻿namespace Snebur.UI;
 
 public enum EnumResultadoAlerta
 {
+    [UndefinedEnumValue]
     Sim,
     Nao,
     Continuar,

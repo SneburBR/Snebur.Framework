@@ -1,4 +1,4 @@
-using Snebur.Dominio.Atributos;
+using Snebur.Helpers;
 using Snebur.Publicacao;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
@@ -241,7 +241,7 @@ public static partial class ValidacaoUtil
 
             case Enum _:
 
-                return Enum.IsDefined(ReflexaoUtil.RetornarTipoSemNullable(propriedade.PropertyType),
+                return EnumHelpers.IsDefined(ReflexaoUtil.RetornarTipoSemNullable(propriedade.PropertyType),
                                      (int)valorPropriedade);
             default:
                 break;
@@ -249,7 +249,7 @@ public static partial class ValidacaoUtil
         var tipoPropriedade = ReflexaoUtil.RetornarTipoSemNullable(propriedade.PropertyType);
         if (tipoPropriedade.IsEnum)
         {
-            return Enum.IsDefined(tipoPropriedade, (int)valorPropriedade);
+            return EnumHelpers.IsDefined(tipoPropriedade, (int)valorPropriedade);
         }
         throw new ErroNaoSuportado("O tipo de propriedade não é suportado");
     }

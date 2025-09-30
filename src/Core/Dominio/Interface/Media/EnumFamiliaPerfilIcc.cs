@@ -2,6 +2,7 @@
 
 public enum EnumFamiliaPerfilIcc
 {
+    [UndefinedEnumValue]
     Desconhecido = 0,
     Rgb = 1,
     Cmyk = 2,

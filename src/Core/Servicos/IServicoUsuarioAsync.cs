@@ -1,4 +1,3 @@
-using Snebur.Dominio.Atributos;
 using Snebur.Seguranca;
 using System.Threading.Tasks;
 

@@ -1,9 +1,9 @@
-﻿using Snebur.Dominio.Atributos;
-
-namespace Snebur.UI;
+﻿namespace Snebur.UI;
 
 public enum EnumTipoPainel
 {
+    [UndefinedEnumValue]
+    Undefined = -1,
     [Rotulo("Vazio")]
     Vazio = BaseEnumApresentacao.Vazio,
     Bloco = 1,

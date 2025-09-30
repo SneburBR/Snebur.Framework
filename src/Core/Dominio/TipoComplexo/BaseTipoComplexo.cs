@@ -1,4 +1,3 @@
-using Snebur.Dominio.Atributos;
 using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;

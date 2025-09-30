@@ -1,4 +1,3 @@
-using Snebur.Dominio.Atributos;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Snebur.Dominio;

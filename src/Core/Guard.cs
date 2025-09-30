@@ -1,8 +1,7 @@
-using Newtonsoft.Json.Linq;
+using Snebur.Helpers;
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace Snebur;
@@ -148,7 +147,7 @@ public static class Guard
         [CallerArgumentExpression(nameof(value))] string paramName = "")
         where TEnum : struct, Enum
     {
-        if (!EnumUtil.IsDefined(value))
+        if (!EnumHelpers.IsDefined(value))
         {
             throw new ArgumentException(
                 $"Parameter '{paramName}' with value '{value}' is not defined into enum '{typeof(TEnum).Name}'. Please provide a valid enum value.",

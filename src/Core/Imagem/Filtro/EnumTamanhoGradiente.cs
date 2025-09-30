@@ -1,10 +1,9 @@
-﻿using Snebur.Dominio.Atributos;
-
-namespace Snebur.Imagens;
+﻿namespace Snebur.Imagens;
 
 public enum EnumTamanhoGradiente
 {
     [Rotulo("closest-side")]
+    [UndefinedEnumValue]
     ClosestSide,
     [Rotulo("farthest-side")]
     FarthestSide,

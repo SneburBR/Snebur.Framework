@@ -1,5 +1,4 @@
 using Snebur.Comparer;
-using Snebur.Dominio.Atributos;
 using Snebur.Linq;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

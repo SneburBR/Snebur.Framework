@@ -173,17 +173,3 @@ public static class DnsUtil
         public string? Record { get; set; }
     }
 }
-
-public enum QueryType : byte
-{
-    A = 1,
-    MX = 15,
-    NS = 2,
-    CNAME = 5,
-    SOA = 6,
-    PTR = 12,
-    TXT = 16,
-    AAAA = 28,
-    SRV = 33,
-    ANY = 255
-}

@@ -79,10 +79,3 @@ public class CompararPropriedade : IEqualityComparer<PropertyInfo>
         return hash.GetHashCode();
     }
 }
-
-public enum EnumCompararPropriedade
-{
-    Igual = 1,
-    NomePropriedade = 2,
-    TipoPropriedade = 4,
-}

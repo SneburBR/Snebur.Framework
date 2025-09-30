@@ -1,8 +1,5 @@
-using Snebur.Dominio.Atributos;
 using Snebur.Helpers;
-using System;
 using System.ComponentModel;
-using System.Drawing;
 using System.Reflection;
 
 namespace Snebur.Utilidade;
@@ -138,6 +135,7 @@ public static class EnumUtil
         }
         return (TEnum)(valor as object);
     }
+
     public static TEnum? TryRetornarValorEnum<TEnum>(int intValue)
        where TEnum : struct
     {
@@ -154,32 +152,6 @@ public static class EnumUtil
     {
         var valor = RetornarValorEnum(typeof(TEnum), valorInt);
         return (TEnum)(valor as object);
-    }
-
-
-    public static Enum GetEnumValue(Type tipoEnum, object? valueOrName)
-    {
-        if (valueOrName is null)
-        {
-            foreach (var fallback in new int[] { -1, 0 })
-            {
-                if (Enum.IsDefined(tipoEnum, fallback))
-                {
-                    return RetornarValorEnum(tipoEnum, fallback);
-                }
-            }
-        }
-
-        if (valueOrName is string enumName)
-        {
-            return RetornarValorEnum(tipoEnum, enumName);
-        }
-
-        if (valueOrName is int intValue)
-        {
-            return RetornarValorEnum(tipoEnum, intValue);
-        }
-        throw new Erro($"O valor {valueOrName} não é suportado para o enum {tipoEnum.Name}");
     }
 
     public static Enum RetornarValorEnum(Type tipoEnum, int valorEnum)
@@ -245,15 +217,5 @@ public static class EnumUtil
     {
         var flags = RetornarFlags<TEnum>((Enum)attributes);
         return flags.Contains(flag);
-    }
-
-    public static bool IsDefined<TEnum>(TEnum value)
-       where TEnum : struct, Enum
-    {
-        if (!Enum.IsDefined(value))
-        {
-            return false;
-        }
-        return false;
     }
 }

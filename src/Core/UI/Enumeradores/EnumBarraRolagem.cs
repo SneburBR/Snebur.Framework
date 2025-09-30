@@ -2,6 +2,7 @@
 
 public enum EnumBarraRolagem
 {
+    [UndefinedEnumValue]
     NaoDefino = 0,
     Oculta = 1,
     Automatica = 2,

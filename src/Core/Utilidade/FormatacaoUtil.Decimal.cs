@@ -13,18 +13,18 @@ public static partial class FormatacaoUtil
         return FormatarDecimal(valor, CASAS_DECIMAL_PADRAO);
     }
     public static string FormatarDecimal(double? valor,
-                                         EnumDivisorDecimal divisorDecimal = EnumDivisorDecimal.CulturaAtual)
+        EnumDivisorDecimal divisorDecimal = EnumDivisorDecimal.CulturaAtual)
     {
         return FormatarDecimal(valor, CASAS_DECIMAL_PADRAO, divisorDecimal);
     }
     public static string FormatarDecimal(double valor,
-                                         EnumDivisorDecimal divisorDecimal = EnumDivisorDecimal.CulturaAtual)
+        EnumDivisorDecimal divisorDecimal = EnumDivisorDecimal.CulturaAtual)
     {
         return FormatarDecimal(valor, CASAS_DECIMAL_PADRAO, divisorDecimal);
     }
     public static string FormatarDecimal(double? valor,
-                                         int casasDecimal,
-                                         EnumDivisorDecimal divisorDecimal = EnumDivisorDecimal.CulturaAtual)
+        int casasDecimal,
+        EnumDivisorDecimal divisorDecimal = EnumDivisorDecimal.CulturaAtual)
     {
         if (valor == null)
         {
@@ -43,18 +43,18 @@ public static partial class FormatacaoUtil
         return FormatarDecimal(valor, CASAS_DECIMAL_PADRAO);
     }
     public static string FormatarDecimal(decimal? valor,
-                                         EnumDivisorDecimal divisorDecimal = EnumDivisorDecimal.CulturaAtual)
+        EnumDivisorDecimal divisorDecimal = EnumDivisorDecimal.CulturaAtual)
     {
         return FormatarDecimal(valor, CASAS_DECIMAL_PADRAO, divisorDecimal);
     }
     public static string FormatarDecimal(decimal valor,
-                                         EnumDivisorDecimal divisorDecimal = EnumDivisorDecimal.CulturaAtual)
+        EnumDivisorDecimal divisorDecimal = EnumDivisorDecimal.CulturaAtual)
     {
         return FormatarDecimal(valor, CASAS_DECIMAL_PADRAO, divisorDecimal);
     }
     public static string FormatarDecimal(decimal? valor,
-                                         int casasDecimal,
-                                         EnumDivisorDecimal divisorDecimal = EnumDivisorDecimal.CulturaAtual)
+        int casasDecimal,
+        EnumDivisorDecimal divisorDecimal = EnumDivisorDecimal.CulturaAtual)
     {
         if (valor == null)
         {
@@ -64,15 +64,15 @@ public static partial class FormatacaoUtil
     }
 
     public static string FormatarDecimal(double valor,
-                                         int casasDecimal,
-                                         EnumDivisorDecimal divisorDecimal = EnumDivisorDecimal.CulturaAtual)
+        int casasDecimal,
+        EnumDivisorDecimal divisorDecimal = EnumDivisorDecimal.CulturaAtual)
     {
         return FormatarDecimal(Convert.ToDecimal(valor), casasDecimal, divisorDecimal);
     }
 
     private static string FormatarDecimal(decimal valor,
-                                          int casasDecimal,
-                                          EnumDivisorDecimal divisorDecimal)
+        int casasDecimal,
+        EnumDivisorDecimal divisorDecimal)
     {
         var resultado = FormatarDecimalInterno(valor, casasDecimal);
         if (divisorDecimal == EnumDivisorDecimal.CulturaAtual)

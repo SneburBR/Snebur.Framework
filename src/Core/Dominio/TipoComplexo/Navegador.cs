@@ -1,11 +1,9 @@
-using Snebur.Dominio.Atributos;
-
 namespace Snebur.Dominio;
 
 //public class Navegador : BaseTipoComplexo<Navegador>
 public class Navegador : BaseTipoComplexo
 {
-    private EnumNavegador _navegadorEnum;
+    private EnumNavegador _navegadorEnum = EnumNavegador.Undefined;
     private string _nome = "";
     private string _codenome = "";
     private string _versao = "";

@@ -1,11 +1,9 @@
-using Snebur.Dominio.Atributos;
-
 namespace Snebur.Dominio;
 
 //public class SistemaOperacional : BaseTipoComplexo<SistemaOperacional>
 public class SistemaOperacional : BaseTipoComplexo
 {
-    private EnumSistemaOperacional _sistemaOperacionalEnum;
+    private EnumSistemaOperacional _sistemaOperacionalEnum = EnumSistemaOperacional.Undefined;
     private string _nome = "";
     private string _codenome = "";
     private string _versao = "";

@@ -321,10 +321,3 @@ public static partial class FormatacaoUtil
         throw new NotImplementedException();
     }
 }
-
-public enum EnumDivisorDecimal
-{
-    CulturaAtual,
-    Ponto,
-    Virgula
-}

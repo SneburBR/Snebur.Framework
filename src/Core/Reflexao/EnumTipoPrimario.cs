@@ -1,6 +1,5 @@
 using System.ComponentModel;
 #if !EXTENSAO_VISUALSTUDIO  
-using Snebur.Dominio.Atributos;
 #endif
 
 namespace Snebur.Reflexao;
@@ -9,7 +8,7 @@ namespace Snebur.Reflexao;
 public enum EnumTipoPrimario
 {
 
-    [EnumValorNaoDefido]
+    [UndefinedEnumValue]
     Undefined = -1,
 
     Desconhecido = -100,

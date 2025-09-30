@@ -1,4 +1,3 @@
-using Snebur.Dominio.Atributos;
 using System.Globalization;
 using System.Reflection;
 using System.Xml.Serialization;

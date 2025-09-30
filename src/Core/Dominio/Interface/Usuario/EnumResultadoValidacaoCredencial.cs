@@ -2,6 +2,8 @@
 
 public enum EnumResultadoValidacaoCredencial
 {
+    [UndefinedEnumValue]
+    Undefined = -1,
     Sucesso = 1,
     UsuarioNaoExiste = 2,
     SenhaIncorreta = 3,

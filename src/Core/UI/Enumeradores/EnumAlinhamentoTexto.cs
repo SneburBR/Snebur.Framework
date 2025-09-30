@@ -2,6 +2,7 @@
 
 public enum EnumAlinhamentoTexto
 {
+    [UndefinedEnumValue]
     Esquerda,
     Centro,
     Direita,

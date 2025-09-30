@@ -1,4 +1,3 @@
-using Snebur.Dominio.Atributos;
 using Snebur.Serializacao;
 using System.ComponentModel;
 using System.Diagnostics;

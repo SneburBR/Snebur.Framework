@@ -9,6 +9,4 @@ public static class TypeUtils
 
         return Nullable.GetUnderlyingType(type) ?? type;
     }
-
-
 }

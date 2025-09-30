@@ -90,12 +90,3 @@ public static class FormatarByteUtil
         return Convert.ToDouble(totalBytes / TOTAL_BYTES_TB);
     }
 }
-
-public enum EnumFormatacaoBytes
-{
-    Bytes = 1,
-    Kilobytes = 2,
-    Megabytes = 3,
-    Gigabytes = 4,
-    Terabytes = 5
-}

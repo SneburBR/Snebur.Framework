@@ -282,16 +282,3 @@ public class ValidacaoRequeridoAttribute : RequiredAttribute, IAtributoValidacao
 
     #endregion
 }
-
-public enum EnumOpcoesComparacaoAuxiliar
-{
-    Nenhuma,
-    True,
-    False,
-    Igual,
-    Diferente,
-    Maior,
-    Menor,
-    MaiorIgual,
-    MenorIgual
-}

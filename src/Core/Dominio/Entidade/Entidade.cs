@@ -1,4 +1,3 @@
-using Snebur.Dominio.Atributos;
 using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;

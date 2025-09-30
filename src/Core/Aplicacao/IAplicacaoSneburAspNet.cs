@@ -1,5 +1,4 @@
 using Snebur.Comunicacao;
-using Snebur.Dominio.Atributos;
 
 namespace Snebur;
 

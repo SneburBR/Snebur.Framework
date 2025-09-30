@@ -1,7 +1,6 @@
-using Snebur.Dominio.Atributos;
-using Snebur.Extensao;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace Snebur;
 
@@ -100,6 +99,11 @@ public static class PropertyInfoExtensions
     public static bool IsObsolete(this PropertyInfo property)
     {
         return property.GetCustomAttribute<ObsoleteAttribute>(true) != null;
+    }
+
+    public static bool IsRequired(this PropertyInfo property)
+    {
+        return property.GetCustomAttributes(typeof(RequiredMemberAttribute), inherit: false).Any();
     }
 
     public static bool IsNotMapped(this PropertyInfo property)

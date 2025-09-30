@@ -1,4 +1,3 @@
-using Snebur.Dominio.Atributos;
 using Snebur.Linq;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
@@ -396,13 +395,4 @@ public class EntidadeUtil
         var nomeCampo = "_" + nomePropriedade;
         return nomeCampo;
     }
-}
-
-public enum EnumFiltroPropriedadeCampo
-{
-    Todas = 1,
-    IgnorarTipoBase = 2,
-    IgnorarChavePrimaria = 4,
-    IgnorarPropriedadeProtegida = 8,
-    IgnorarChaveEstrangeira = 16
 }

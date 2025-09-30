@@ -1,119 +1,91 @@
-﻿using Snebur.Dominio.Atributos;
-
 namespace Snebur.Dne;
 
 public enum EnumUF
 {
+    [UndefinedEnumValue]
+    Undefined = -1,
     [Rotulo("Acre")]
     [ValorEnumString("AC")]
     Acre = 1,
-
     [Rotulo("Alagoas")]
     [ValorEnumString("AL")]
     Alagoas = 2,
-
     [Rotulo("Amapa")]
     [ValorEnumString("AP")]
     Amapa = 3,
-
     [Rotulo("Amazonas")]
     [ValorEnumString("AM")]
     Amazonas = 4,
-
     [Rotulo("Bahia")]
     [ValorEnumString("BH")]
     Bahia = 5,
-
     [Rotulo("Ceára")]
     [ValorEnumString("CE")]
     Ceara = 6,
-
     [Rotulo("Distrito Federal")]
     [ValorEnumString("DF")]
     DistritoFederal = 7,
-
     [Rotulo("Espírito Santo")]
     [ValorEnumString("ES")]
     EspiritoSanto = 8,
-
     [Rotulo("Goiás")]
     [ValorEnumString("GO")]
     Goias = 9,
-
     [Rotulo("Maranhão")]
     [ValorEnumString("MA")]
     Maranhao = 10,
-
     [Rotulo("Mato Grosso")]
     [ValorEnumString("MT")]
     MatoGrosso = 11,
-
     [Rotulo("Mato Grosso do Sul")]
     [ValorEnumString("MS")]
     MatoGrossoDoSul = 12,
-
     [Rotulo("Minas Gerais")]
     [ValorEnumString("MG")]
     MinasGerais = 13,
-
     [Rotulo("Pará")]
     [ValorEnumString("PA")]
     Para = 14,
-
     [Rotulo("Paraíba")]
     [ValorEnumString("PB")]
     Paraiba = 15,
-
     [Rotulo("Paraná")]
     [ValorEnumString("PR")]
     Parana = 16,
-
     [Rotulo("Pernambuco")]
     [ValorEnumString("PE")]
     Pernambuco = 17,
-
     [Rotulo("Piauí")]
     [ValorEnumString("PI")]
     Piaui = 18,
-
     [Rotulo("Rio de Janeiro")]
     [ValorEnumString("RJ")]
     RioDeJaneiro = 19,
-
     [Rotulo("Rio Grande do Norte")]
     [ValorEnumString("RN")]
     RioGrandeDoNorte = 20,
-
     [Rotulo("Rio Grande do Sul")]
     [ValorEnumString("RS")]
     RioGrandeDoSul = 21,
-
     [Rotulo("Rondônia")]
     [ValorEnumString("RO")]
     Rondonia = 22,
-
     [Rotulo("Roraima")]
     [ValorEnumString("RR")]
     Roraima = 23,
-
     [Rotulo("Santa Catarina")]
     [ValorEnumString("SC")]
     SantaCatarina = 24,
-
     [Rotulo("São Paulo")]
     [ValorEnumString("SP")]
     SaoPaulo = 25,
-
     [Rotulo("Sergipe")]
     [ValorEnumString("SE")]
     Sergipe = 26,
-
     [Rotulo("Tocantins")]
     [ValorEnumString("TO")]
     Tocantins = 27
-}
-
-//public enum EnumUFSigla
+}//public enum EnumUFSigla
 //{
 //    [Rotulo("AC")]
 //    Acre = 1,
@@ -170,4 +142,3 @@ public enum EnumUF
 //    [Rotulo("TO")]
 //    Tocantins = 27
 //}
-

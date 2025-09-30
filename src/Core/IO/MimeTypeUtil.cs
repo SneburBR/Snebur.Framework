@@ -1,4 +1,6 @@
-﻿namespace Snebur.Utilidade;
+using Snebur.Helpers;
+
+namespace Snebur.Utilidade;
 
 public static class MimeTypeUtil
 {
@@ -189,7 +191,7 @@ public static class MimeTypeUtil
 
         var descricao = TextoUtil.RetornarPrimeiraLetraMaiuscula(TextoUtil.RetornarSomentesLetrasNumeros(extensao));
         if (Enum.TryParse<EnumMimeType>(descricao, out var mimeTupe) &&
-            Enum.IsDefined(typeof(EnumMimeType), mimeTupe))
+            EnumHelpers.IsDefined(typeof(EnumMimeType), mimeTupe))
         {
             return mimeTupe;
         }

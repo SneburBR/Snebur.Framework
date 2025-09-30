@@ -67,12 +67,3 @@ public class CodigoUtil
     }
 }
 
-public enum EnumFormatacaoCodigo
-{
-    PascalCase,
-    CamelCase,
-    SnakeCase,
-    UpperCase,
-    KebabCase
-}
-

@@ -7,3 +7,4 @@ global using System.Linq;
 global using System.Text.RegularExpressions;
 global using System.Collections.Generic;
 global using Newtonsoft.Json;
+global using Snebur.Dominio.Atributos;

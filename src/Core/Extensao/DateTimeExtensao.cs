@@ -1,5 +1,3 @@
-using Snebur.Dominio.Atributos;
-
 namespace Snebur.Utilidade;
 
 public static class DateTimeExtensao
@@ -50,7 +48,7 @@ public static class DateTimeExtensao
 
     public static bool Equals(this DateTime? data,
                               DateTime? dataComparar,
-                              OpcoesCompararData opcoesData,
+                              EnumOpcoesCompararData opcoesData,
                               OpcoesCompararHora opcoesHora = OpcoesCompararHora.Ignorar)
     {
         if (data.HasValue && dataComparar.HasValue)
@@ -64,7 +62,7 @@ public static class DateTimeExtensao
     }
     public static bool Equals(this DateTime data,
                               DateTime? dataComparar,
-                              OpcoesCompararData opcoesData,
+                              EnumOpcoesCompararData opcoesData,
                               OpcoesCompararHora opcoesHora = OpcoesCompararHora.Ignorar)
     {
         if (dataComparar.HasValue)

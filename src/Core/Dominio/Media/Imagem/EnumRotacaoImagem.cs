@@ -2,6 +2,7 @@
 
 public enum EnumRotacaoImagem
 {
+    [UndefinedEnumValue]
     Normal = 0,
     Rotacao90 = 90,
     Rotacao180 = 180,

@@ -2,6 +2,7 @@
 
 public enum EnumAlinhamentoHorizontal
 {
+    [UndefinedEnumValue]
     Esquerda,
     Centro,
     Direita,

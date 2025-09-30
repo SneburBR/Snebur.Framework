@@ -1,4 +1,3 @@
-using Snebur.BancoDados;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;

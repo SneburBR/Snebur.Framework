@@ -1,10 +1,9 @@
-﻿using Snebur.Dominio.Atributos;
-
-namespace Snebur.Imagens;
+﻿namespace Snebur.Imagens;
 
 public enum EnumPosicaoGradiente
 {
     [Rotulo("left top")]
+    [UndefinedEnumValue]
     LeftTop,
     [Rotulo("center top")]
     CenterTop,

@@ -1,5 +1,3 @@
-﻿using Snebur.Dominio.Atributos;
-
 namespace Snebur.Dominio;
 
 public interface IArea : IMargem, IDimensao

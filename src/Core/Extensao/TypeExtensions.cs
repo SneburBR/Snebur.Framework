@@ -56,7 +56,12 @@ public static class TypeExtensions
         }
         return false;
     }
+    public static bool IsConcrete(this Type type)
+    {
+        Guard.NotNull(type);
 
+        return !type.IsAbstract && !type.IsInterface;
+    }
     public static bool IsObsolete(this Type type)
     {
         return type.GetCustomAttribute<ObsoleteAttribute>(true) != null;
@@ -186,6 +191,15 @@ public static class TypeExtensions
 
         return type.GetInterfaces().Contains(interfaceType);
     }
+
+    public static bool ImplementsGenericInterface(this Type type, Type genericType)
+    {
+        if (type.IsGenericType && type.GetGenericTypeDefinition() == genericType)
+            return true;
+
+        return type.GetInterfaces()
+                   .Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == genericType);
+    }
     public static bool IsNullableType(this Type type)
         => type.IsGenericType
         && type.GetGenericTypeDefinition() == typeof(Nullable<>);
@@ -202,7 +216,24 @@ public static class TypeExtensions
         {
             return false;
         }
-        return type.IsEnumerableType();
+        if (type == typeof(string))
+        {
+            return false;
+        }
+
+        if (typeof(ICollection).IsAssignableFrom(type))
+            return true;
+
+        if (ImplementsGenericInterface(type, typeof(ICollection<>)))
+            return true;
+
+        if (ImplementsGenericInterface(type, typeof(IReadOnlyCollection<>)))
+            return true;
+
+        if (ImplementsGenericInterface(type, typeof(IEnumerable<>)))
+            return true;
+
+        return false;
     }
 
     public static bool IsDictionaryType(this Type type)
@@ -251,6 +282,23 @@ public static class TypeExtensions
         throw new Exception($"The type '{type.FullName}' is not a collection type." +
                             $"Use the method 'IsCollectionType' to check if the type is a collection type before calling this method.");
     }
+    public static Type GetDictionaryKeyType(this Type type)
+    {
+        if (type.IsGenericType && typeof(IDictionary).IsAssignableFrom(type))
+        {
+            var arguments = type.GetGenericArguments();
+            if (arguments.Length == 2)
+                return arguments[0];
+            if (arguments.Length > 2)
+            {
+                throw new InvalidOperationException(
+                    $"The dictionary type '{type.FullName}' has more than two generic arguments.\r\n" +
+                    $"Arguments : {string.Join(", ", arguments.Select(a => a.FullName))}");
+            }
+        }
+        throw new Exception($"The type '{type.FullName}' is not a dictionary type." +
+                            $"Use the method 'IsDictionaryType' to check if the type is a dictionary type before calling this method.");
+    }
 
     public static Type GetDictionaryValueType(this Type type)
     {
@@ -270,6 +318,19 @@ public static class TypeExtensions
 
         throw new Exception($"The type '{type.FullName}' is not a dictionary type." +
                             $"Use the method 'IsDictionaryType' to check if the type is a dictionary type before calling this method.");
+
+    }
+    public static bool IsDomainAttribute(this Type type)
+    {
+        if (!type.IsClass ||
+            type.GetCustomAttribute<IgnorarAtributoTSAttribute>() is not null ||
+            type.Namespace?.StartsWith("System") == true)
+        {
+            return false;
+        }
+        return
+               type.IsSubclassOfOrEqual(typeof(BaseAtributoDominio)) ||
+               type.ImplementsInterface<IAtributoValidacao>();
 
     }
 }

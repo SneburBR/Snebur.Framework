@@ -1,5 +1,3 @@
-using Snebur.Dominio.Atributos;
-
 namespace System.Reflection;
 
 public static class ReflexaoExtension

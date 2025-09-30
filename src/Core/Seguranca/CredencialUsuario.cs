@@ -1,5 +1,3 @@
-using Snebur.Dominio.Atributos;
-
 namespace Snebur.Seguranca;
 
 public class CredencialUsuario : Credencial

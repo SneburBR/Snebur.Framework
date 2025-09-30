@@ -2,6 +2,8 @@
 
 public enum EnumFormatoArquivoFonte
 {
+    [UndefinedEnumValue]
+    Undefined = -1,
     Ttf = 1,
     Woff = 2,
     Woff2 = 3,

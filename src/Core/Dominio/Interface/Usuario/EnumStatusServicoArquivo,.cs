@@ -1,10 +1,8 @@
-using Snebur.Dominio.Atributos;
-
 namespace Snebur.Dominio;
 
 public enum EnumStatusServicoArquivo
 {
-    [EnumValorNaoDefido]
+    [UndefinedEnumValue]
     Undefined = -1,
     Aguardando = 0,
     EnvioIniciado = 1,

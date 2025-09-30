@@ -1,13 +1,9 @@
-﻿namespace Snebur.UI;
+namespace Snebur.UI;
 
 public enum EnumTipoCaixa
 {
+    [UndefinedEnumValue]
+    Undefined = -1,
     Padrao = 1,
     Delineada = 2
-}
-
-public enum EnumTipoPainelAba
-{
-    Padrao = 1,
-    MaterialDesign = 3
 }

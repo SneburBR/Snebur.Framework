@@ -1,4 +1,3 @@
-using Snebur.Dominio.Atributos;
 using System.IO;
 using System.Reflection;
 using System.Text;

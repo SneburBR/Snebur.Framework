@@ -397,9 +397,3 @@ public static class CaminhoUtil
     //    return Path.Combine(paths);
     //}
 }
-
-public enum EnumTipoCaminho
-{
-    CaminhoWeb = 1,
-    CaminhoWindows = 2,
-}
