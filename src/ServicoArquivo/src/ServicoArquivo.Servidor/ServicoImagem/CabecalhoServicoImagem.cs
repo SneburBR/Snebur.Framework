@@ -1,5 +1,6 @@
 #if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Http;
+using Snebur.Helpers;
 #else
 using System.Web;
 #endif  
@@ -17,7 +18,7 @@ public class CabecalhoServicoImagem : CabecalhoServicoArquivo, IInformacaoReposi
         this.TamanhoImagem = (EnumTamanhoImagem)this.RetornarInteger(ConstantesServicoImagem.TAMANHO_IMAGEM);
         this.Formato = (EnumFormatoImagem)this.RetornarInteger(ConstantesServicoImagem.FORMATO_IMAGEM);
 
-        if (!Enum.IsDefined(typeof(EnumFormatoImagem), this.Formato))
+        if (!EnumHelpers.IsDefined(typeof(EnumFormatoImagem), this.Formato))
         {
             this.Formato = EnumFormatoImagem.JPEG;
         }

@@ -1,4 +1,4 @@
-namespace Snebur.ServicoArquivo.Dominio;
+namespace Snebur.ServicoArquivo;
 
 [ConstantesTS]
 public class ConstantesServicoArquivo

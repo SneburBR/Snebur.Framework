@@ -7,7 +7,7 @@ public class Contrato : BaseDominio
 
     #endregion
 
-    public required Mensagem Mensagem { get; set; }
+    public required Mensagem? Mensagem { get; init; }
 
     [IgnorarConstrutorTS]
     public Contrato()

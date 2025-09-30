@@ -1,4 +1,4 @@
-namespace Snebur.ServicoArquivo.Dominio;
+namespace Snebur.ServicoArquivo;
 
 public class ResultadoServicoArquivo : BaseDominio
 {

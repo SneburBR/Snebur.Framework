@@ -20,12 +20,3 @@ public class MensagemLog : Mensagem
 
     public EnumTipoLog TipoLog { get => this.GetPropertyValue(this._tipoLog); set => this.SetProperty(this._tipoLog, this._tipoLog = value); }
 }
-
-public enum EnumTipoLog
-{
-    Normal,
-    Alerta,
-    Erro,
-    Sucesso,
-    Acao
-}

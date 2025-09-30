@@ -1,5 +1,6 @@
 #if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Http;
+using Snebur.Helpers;
 #endif
 
 namespace Snebur.ServicoArquivo;
@@ -87,7 +88,7 @@ public abstract class BaseFonteStream<TArquivoFonte> : IHttpHandler where TArqui
     private string RetornarMineTypeFonte(HttpContext httpContext)
     {
         var formatoFonte = (EnumFormatoArquivoFonte)Convert.ToInt32(this.RetornarValorParametro(ConstantesServicoFonte.NOME_FORMATO_FONTE, httpContext));
-        if (!Enum.IsDefined(typeof(EnumFormatoArquivoFonte), formatoFonte))
+        if (!EnumHelpers.IsDefined(typeof(EnumFormatoArquivoFonte), formatoFonte))
         {
             throw new Exception(String.Format("Parâmetro '{0}' não suportado.", ConstantesServicoFonte.NOME_FORMATO_FONTE));
         }

@@ -1,4 +1,6 @@
 using Snebur.ServicoArquivo.Servidor;
+using Snebur.Helpers;
+
 
 #if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Http;
@@ -120,7 +122,7 @@ public abstract class BaseVisualizarImagem : IHttpHandler
     protected virtual EnumTamanhoImagem RetornarTamanhoImagem(HttpContext zyonHttpContext)
     {
         var tamanhoImagem = (EnumTamanhoImagem)Convert.ToInt32(this.RetornarValorParametro(ConstantesServicoImagem.TAMANHO_IMAGEM, zyonHttpContext));
-        if (!Enum.IsDefined(typeof(EnumTamanhoImagem), tamanhoImagem))
+        if (!EnumHelpers.IsDefined(typeof(EnumTamanhoImagem), tamanhoImagem))
         {
             throw new Exception(String.Format("Parâmetro '{0}' não suportado.", ConstantesServicoImagem.TAMANHO_IMAGEM));
         }
