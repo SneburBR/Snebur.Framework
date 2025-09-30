@@ -1,4 +1,4 @@
-﻿namespace Snebur.Dominio.Atributos;
+namespace Snebur.Dominio.Atributos;
 
 public class FormatarDadosAttribute : Attribute
 {
@@ -8,12 +8,4 @@ public class FormatarDadosAttribute : Attribute
     {
         this.FormatadoDados = formatacao;
     }
-}
-
-public enum EnumFormatacaoDados
-{
-    SomenteNumeros,
-    SomenteLetras,
-    LetrasNumeros,
-    Personalizado
 }

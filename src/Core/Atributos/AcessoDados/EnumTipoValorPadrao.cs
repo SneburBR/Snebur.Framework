@@ -2,6 +2,7 @@
 
 public enum EnumTipoValorPadrao
 {
+    [UndefinedEnumValue]
     Nenhum,
     IndentificadorProprietario,
     SessaoUsuario_Id,

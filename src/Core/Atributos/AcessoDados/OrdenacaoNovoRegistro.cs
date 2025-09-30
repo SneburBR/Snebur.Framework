@@ -1,4 +1,4 @@
-﻿namespace Snebur.Dominio.Atributos;
+namespace Snebur.Dominio.Atributos;
 
 [IgnorarAtributoTS]
 [AttributeUsage(AttributeTargets.Property)]
@@ -20,12 +20,4 @@ public class OrdenacaoOpcoesAttribute : Attribute
     {
         this.OrdenacaoNovoRegistro = ordenacaoNovoRegistro;
     }
-}
-
-[IgnorarGlobalizacao]
-public enum EnumOrdenacaoNovoRegistro
-{
-    Inicio = 1,
-    Fim = 2,
-    Aleatorio = 3
 }
