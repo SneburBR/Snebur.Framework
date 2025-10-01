@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
@@ -7,23 +7,22 @@ namespace Snebur.Dominio.Atributos;
 public class ValidacaoUrlAttribute : BaseAtributoValidacao, IAtributoValidacao
 {
     [MensagemValidacao]
-    public static string MensagemValidacao { get; set; } = "A url {0} é invalido.";
+    public static string MensagemValidacao { get; } = "A url {0} é invalido.";
 
-    #region "Construtor"
-
+#region "Construtor"
     public ValidacaoUrlAttribute() : base()
     {
     }
-    #endregion
 
-    #region IAtributoValidacao
-
+#endregion
+#region IAtributoValidacao
     public override bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
             return true;
         }
+
         var url = Convert.ToString(valorPropriedade);
         return ValidacaoUtil.IsUrl(url);
     }
@@ -34,6 +33,5 @@ public class ValidacaoUrlAttribute : BaseAtributoValidacao, IAtributoValidacao
         var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
         return String.Format(MensagemValidacao, rotulo);
     }
-    #endregion
-
+#endregion
 }

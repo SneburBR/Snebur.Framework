@@ -1,12 +1,20 @@
-﻿namespace Snebur.Dominio.Atributos;
+namespace Snebur.Dominio.Atributos;
 
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
+[IgnorarAtributoTS]
 public class TipoTSAttribute : Attribute
 {
-    public string CaminhoTipoTS { get; set; }
+    //public string? CaminhoTipoTS { get; set; }
 
-    public TipoTSAttribute(string caminhoTipoTS)
+    public Type TsType { get; }
+
+    public TipoTSAttribute(Type type)
     {
-        this.CaminhoTipoTS = caminhoTipoTS;
+        TsType = type;
     }
+    //public TipoTSAttribute(string caminhoTipoTS)
+    //{
+    //    Guard.NotNullOrWhiteSpace(caminhoTipoTS);
+    //    this.CaminhoTipoTS = caminhoTipoTS;
+    //}
 }

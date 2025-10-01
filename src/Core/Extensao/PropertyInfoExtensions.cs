@@ -114,8 +114,8 @@ public static class PropertyInfoExtensions
     public static bool IsRelation(this PropertyInfo property)
     {
         var type = property.PropertyType;
-        return type.GetCustomAttribute<BaseRelacaoAttribute>() is not null ||
-               type.GetCustomAttribute<RelacaoPaiExternaAttribute>() is not null;
+        return CustomAttributeExtensions.GetCustomAttribute<BaseRelacaoAttribute>(type) is not null ||
+               CustomAttributeExtensions.GetCustomAttribute<RelacaoPaiExternaAttribute>(type) is not null;
     }
 
     public static bool IsComputed(this PropertyInfo property)

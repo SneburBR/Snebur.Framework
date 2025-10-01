@@ -3,12 +3,12 @@
 namespace Snebur.Dominio.Atributos;
 
 [AttributeUsage(AttributeTargets.Property)]
-public class ValidacaoLongoAttribute : BaseAtributoValidacao
+public class ValidacaoLongAttribute : BaseAtributoValidacao
 {
     [MensagemValidacao]
-    public static string MensagemValidacao { get; set; } = "O campo {0} é invalido";
+    public static string MensagemValidacao { get; } = "O campo {0} é invalido";
 
-    public ValidacaoLongoAttribute()
+    public ValidacaoLongAttribute()
     {
     }
 

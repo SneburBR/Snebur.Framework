@@ -9,7 +9,8 @@ public class ValorPadraoDataHoraServidorAttribute : SomenteLeituraAttribute, IVa
     public bool IsDataHoraUTC { get; set; } = true;
     public bool IsAceitarAtualizacao { get; set; } = false;
     public bool IsValorPadraoOnUpdate { get; set; }
-    public override OpcoesSomenteLeitura OpcoesSomenteLeitura => new OpcoesSomenteLeitura(!this.IsAceitarAtualizacao, this.IsNotificarSeguranca);
+    public override OpcoesSomenteLeitura OpcoesSomenteLeitura
+        => new OpcoesSomenteLeitura(!this.IsAceitarAtualizacao, this.IsNotificarSeguranca);
 
     public ValorPadraoDataHoraServidorAttribute()
     {

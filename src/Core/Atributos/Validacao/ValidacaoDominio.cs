@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
 
@@ -6,16 +6,16 @@ namespace Snebur.Dominio.Atributos;
 public class ValidacaoDominioAttribute : BaseAtributoValidacao, IAtributoValidacao
 {
     [MensagemValidacao]
-    public static string MensagemValidacao { get; set; } = "O campo {0} é invalido.";
+    public static string MensagemValidacao { get; } = "O campo {0} é invalido.";
 
-    #region IAtributoValidacao
-
+#region IAtributoValidacao
     public override bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
             return true;
         }
+
         throw new NotImplementedException();
     }
 
@@ -24,5 +24,5 @@ public class ValidacaoDominioAttribute : BaseAtributoValidacao, IAtributoValidac
         var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
         return String.Format(MensagemValidacao, rotulo);
     }
-    #endregion
+#endregion
 }

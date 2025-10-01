@@ -6,13 +6,13 @@ namespace Snebur.Dominio.Atributos;
 public class ValidacaoComparacaoAttribute : BaseAtributoValidacao, IAtributoValidacao
 {
     [MensagemValidacao]
-    public static string MensagemValidacao { get; set; } = "O {0} deve ser {1} à '{2}' ";
+    public static string MensagemValidacao { get; } = "O {0} deve ser {1} à '{2}' ";
 
-    public object Valor { set; get; }
+    public object? Valor { get; }
 
     public EnumOperadorComparacao Operador { get; set; }
 
-    public ValidacaoComparacaoAttribute(object valor, EnumOperadorComparacao operador)
+    public ValidacaoComparacaoAttribute(object? valor, EnumOperadorComparacao operador)
     {
         this.Valor = valor;
         this.Operador = operador;

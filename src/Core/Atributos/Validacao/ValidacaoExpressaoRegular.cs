@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
@@ -7,29 +7,22 @@ namespace Snebur.Dominio.Atributos;
 public class ValidacaoExpressaoRegularAttribute : RegularExpressionAttribute, IAtributoValidacao
 {
     [MensagemValidacao]
-    public static string MensagemValidacao { get; set; } = "O campo {0} é invalido.";
-
+    public static string MensagemValidacao { get; } = "O campo {0} é invalido.";
     public string ExpressaoRegular { get; set; }
 
-    #region " Construtor "
-
+#region " Construtor "
     public ValidacaoExpressaoRegularAttribute(string expressaoRegular) : base(expressaoRegular)
     {
         this.ExpressaoRegular = expressaoRegular;
     }
-    #endregion
 
-    protected override ValidationResult? IsValid(
-        object? value,
-        ValidationContext validationContext)
+#endregion
+    protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
         Guard.NotNull(validationContext.MemberName);
-
         var propriedade = validationContext.GetRequiredProperty();
-
         var paiPropriedade = validationContext.ObjectInstance;
         var valorPropriedade = value;
-
         if (this.IsValido(propriedade, paiPropriedade, valorPropriedade))
         {
             return ValidationResult.Success;
@@ -41,16 +34,15 @@ public class ValidacaoExpressaoRegularAttribute : RegularExpressionAttribute, IA
         }
     }
 
-    #region IAtributoValidacao
-
+#region IAtributoValidacao
     public bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
     {
-
         var valorPropriedadeString = valorPropriedade?.ToString();
         if (!ValidacaoUtil.IsDefinido(valorPropriedadeString))
         {
             return true;
         }
+
         var match = Regex.Match(valorPropriedadeString, this.ExpressaoRegular);
         return match.Success;
     }
@@ -60,5 +52,5 @@ public class ValidacaoExpressaoRegularAttribute : RegularExpressionAttribute, IA
         var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
         return String.Format(MensagemValidacao, rotulo);
     }
-    #endregion
+#endregion
 }

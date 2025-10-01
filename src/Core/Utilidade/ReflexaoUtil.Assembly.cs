@@ -93,7 +93,7 @@ public static partial class ReflexaoUtil
     public static string RetornarNomeAplicacao()
     {
         var assemblyEntrada = AssemblyEntrada;
-        var atributoTituloProduto = assemblyEntrada.GetCustomAttribute<AssemblyProductAttribute>();
+        var atributoTituloProduto = CustomAttributeExtensions.GetCustomAttribute<AssemblyProductAttribute>(assemblyEntrada);
 
         if (String.IsNullOrWhiteSpace(atributoTituloProduto?.Product))
         {
@@ -105,7 +105,7 @@ public static partial class ReflexaoUtil
     public static string RetornarNomeEmpresa()
     {
         var assemblyEntrada = AssemblyEntrada;
-        var atributoNomeEmpresa = assemblyEntrada.GetCustomAttribute<AssemblyCompanyAttribute>();
+        var atributoNomeEmpresa = CustomAttributeExtensions.GetCustomAttribute<AssemblyCompanyAttribute>(assemblyEntrada);
 
         if (String.IsNullOrWhiteSpace(atributoNomeEmpresa?.Company))
         {

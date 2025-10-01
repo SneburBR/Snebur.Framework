@@ -8,7 +8,7 @@ public static partial class ReflexaoUtil
     {
         var aceitaNulo = !propriedade.PropertyType.IsValueType || IsTipoNullable(propriedade.PropertyType);
 
-        var atributoValorPadrao = propriedade.GetCustomAttribute<ValorPadraoAttribute>();
+        var atributoValorPadrao = CustomAttributeExtensions.GetCustomAttribute<ValorPadraoAttribute>(propriedade);
         if (atributoValorPadrao != null)
         {
             return ConverterUtil.Converter(atributoValorPadrao.ValorPadrao, propriedade.PropertyType);
@@ -31,7 +31,7 @@ public static partial class ReflexaoUtil
             return string.Empty;
         }
 
-        var atributoRotulo = pi.GetCustomAttribute<RotuloAttribute>();
+        var atributoRotulo = CustomAttributeExtensions.GetCustomAttribute<RotuloAttribute>(pi);
         if (atributoRotulo is null)
         {
             return pi.Name;
@@ -72,7 +72,7 @@ public static partial class ReflexaoUtil
                                         x.GetGetMethod()?.IsPublic == true &&
                                         x.GetSetMethod()?.IsPublic == true)
                                     {
-                                        var atrituboNaoMapear = x.GetCustomAttribute<NaoMapearAttribute>();
+                                        var atrituboNaoMapear = CustomAttributeExtensions.GetCustomAttribute<NaoMapearAttribute>(x);
                                         return (atrituboNaoMapear == null);
                                     }
                                     return false;

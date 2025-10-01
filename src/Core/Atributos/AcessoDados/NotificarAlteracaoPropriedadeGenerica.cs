@@ -13,10 +13,12 @@ public class NotificarAlteracaoPropriedadeGenericaAttribute : BaseAtributoDomini
     public string? CaminhoTipoPropriedadeRelacao { get; set; }
     public bool IsEnum { get; set; }
 
-    public NotificarAlteracaoPropriedadeGenericaAttribute([TipoTS("string")] EnumFormatacao formatacao,
-                                                          Type tipoPropriedadeRelacao,
-                                                          string caminhoTipoPropriedadeRelacao,
-                                                          EnumOpcoesAlterarPropriedade opcoes)
+    public NotificarAlteracaoPropriedadeGenericaAttribute(
+        [TipoTS(typeof(string))]
+        EnumFormatacao formatacao,
+        Type tipoPropriedadeRelacao,
+        string caminhoTipoPropriedadeRelacao,
+        EnumOpcoesAlterarPropriedade opcoes)
     {
         this.TipoPropriedadeRelacao = tipoPropriedadeRelacao;
         this.CaminhoTipoPropriedadeRelacao = caminhoTipoPropriedadeRelacao;

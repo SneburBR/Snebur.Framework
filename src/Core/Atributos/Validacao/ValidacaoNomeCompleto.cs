@@ -1,16 +1,14 @@
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
 
 [AttributeUsage(AttributeTargets.Property)]
 public class ValidacaoNomeCompletoAttribute : BaseAtributoValidacao
 {
-
     [MensagemValidacao]
-    public static string MensagemValidacao { get; set; } = "Informe seu nome completo";
+    public static string MensagemValidacao { get; } = "Informe seu nome completo";
 
-    #region IAtributoValidacao
-
+#region IAtributoValidacao
     public override bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
     {
         return ValidacaoUtil.IsNomeCompleto(Convert.ToString(valorPropriedade));
@@ -21,5 +19,5 @@ public class ValidacaoNomeCompletoAttribute : BaseAtributoValidacao
         var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
         return String.Format(MensagemValidacao, rotulo);
     }
-    #endregion
+#endregion
 }

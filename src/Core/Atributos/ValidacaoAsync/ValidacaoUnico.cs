@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
 
@@ -6,7 +6,7 @@ namespace Snebur.Dominio.Atributos;
 public class ValidacaoUnicoAttribute : BaseAtributoValidacaoAsync, IAtributoValidacao, IAtributoMigracao, IIndexAttribute
 {
     [MensagemValidacao]
-    public static string MensagemValidacao { get; set; } = "O {0} '{1}' já existe.";
+    public static string MensagemValidacao { get; } = "O {0} '{1}' já existe.";
     public bool IsIgnorarNulo { get; set; } = true;
     public bool IsIgnorarZero { get; set; }
     public Type? TipoEntidade { get; }
@@ -24,26 +24,14 @@ public class ValidacaoUnicoAttribute : BaseAtributoValidacaoAsync, IAtributoVali
     [IgnorarConstrutorTS]
     public ValidacaoUnicoAttribute()
     {
-
     }
 
     [IgnorarConstrutorTS]
-    public ValidacaoUnicoAttribute(
-        Type tipoEntidade,
-        string nomePropriedadeFiltro,
-        object valorPropriedadeFiltro,
-        EnumOperadorComparacao operadorFiltro = EnumOperadorComparacao.Igual)
-        : this(tipoEntidade, false, false, nomePropriedadeFiltro, valorPropriedadeFiltro, operadorFiltro)
+    public ValidacaoUnicoAttribute(Type tipoEntidade, string nomePropriedadeFiltro, object valorPropriedadeFiltro, EnumOperadorComparacao operadorFiltro = EnumOperadorComparacao.Igual) : this(tipoEntidade, false, false, nomePropriedadeFiltro, valorPropriedadeFiltro, operadorFiltro)
     {
-
     }
 
-    public ValidacaoUnicoAttribute(Type tipoEntidade,
-                                   bool isIgnorarNulo,
-                                   bool isIgnorarZero,
-                                   string nomePropriedadeFiltro,
-                                   object valorPropriedadeFiltro,
-                                   EnumOperadorComparacao operadorFiltro)
+    public ValidacaoUnicoAttribute(Type tipoEntidade, bool isIgnorarNulo, bool isIgnorarZero, string nomePropriedadeFiltro, object valorPropriedadeFiltro, EnumOperadorComparacao operadorFiltro)
     {
         this.TipoEntidade = tipoEntidade;
         this.IsIgnorarNulo = isIgnorarNulo;
@@ -51,7 +39,6 @@ public class ValidacaoUnicoAttribute : BaseAtributoValidacaoAsync, IAtributoVali
         this.NomePropriedadeFiltro = nomePropriedadeFiltro;
         this.ValorPropriedadeFiltro = valorPropriedadeFiltro;
         this.OperadorFiltro = operadorFiltro;
-
         var propriedade = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nomePropriedadeFiltro, true);
         if (propriedade == null)
         {
@@ -63,8 +50,7 @@ public class ValidacaoUnicoAttribute : BaseAtributoValidacaoAsync, IAtributoVali
         this.Filtros.Add(filtro);
     }
 
-    #region IAtributoValidacao
-
+#region IAtributoValidacao
     public bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
     {
         //if (!ValidacaoUtil.IsDefinido(valorPropriedade))
@@ -82,7 +68,5 @@ public class ValidacaoUnicoAttribute : BaseAtributoValidacaoAsync, IAtributoVali
     }
 
     public bool IsUnique => throw new NotImplementedException();
-
-    #endregion
+#endregion
 }
-

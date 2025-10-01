@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
 
@@ -6,7 +6,7 @@ namespace Snebur.Dominio.Atributos;
 public class ValidacaoDataAttribute : BaseAtributoValidacao, IAtributoValidacao
 {
     [MensagemValidacao]
-    public static string MensagemValidacao { get; set; } = "O campo {0} é invalido.";
+    public static string MensagemValidacao { get; } = "O campo {0} é invalido.";
     public DateTime? DataMaxima { get; set; }
     public DateTime? DataMinima { get; set; }
     public EnumTipoData TipoData { get; set; }
@@ -18,14 +18,13 @@ public class ValidacaoDataAttribute : BaseAtributoValidacao, IAtributoValidacao
     public ValidacaoDataAttribute() : this(EnumTipoData.Normal, null, null)
     {
     }
+
     [IgnorarConstrutorTS]
     public ValidacaoDataAttribute(EnumTipoData dataTempoEnum) : this(dataTempoEnum, null, null)
     {
     }
 
-    public ValidacaoDataAttribute(EnumTipoData tipoData,
-                                  [ParametroOpcionalTS] DateTime? dataMinima,
-                                  [ParametroOpcionalTS] DateTime? dataMaxima)
+    public ValidacaoDataAttribute(EnumTipoData tipoData, [ParametroOpcionalTS] DateTime? dataMinima, [ParametroOpcionalTS] DateTime? dataMaxima)
     {
         this.TipoData = tipoData;
         this.DataMinima = dataMinima ?? DataHoraUtil.RetornarDataMinima(tipoData);
@@ -40,14 +39,14 @@ public class ValidacaoDataAttribute : BaseAtributoValidacao, IAtributoValidacao
         this.DataMaxima = new DateTime(anoFIm, 12, 31);
     }
 
-    #region IAtributoValidacao
-
+#region IAtributoValidacao
     public override bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
             return true;
         }
+
         var dataComparar = Convert.ToDateTime(valorPropriedade);
         if (dataComparar >= this.DataMinima && dataComparar <= this.DataMaxima)
         {
@@ -55,12 +54,15 @@ public class ValidacaoDataAttribute : BaseAtributoValidacao, IAtributoValidacao
             {
                 return dataComparar == dataComparar.DataPrimeiraHoraDia(dataComparar.Kind);
             }
+
             if (this.IsUltimaHoraDoDia)
             {
                 return dataComparar == dataComparar.DataUltimaHora(dataComparar.Kind);
             }
+
             return true;
         }
+
         return false;
     }
 
@@ -69,5 +71,5 @@ public class ValidacaoDataAttribute : BaseAtributoValidacao, IAtributoValidacao
         var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
         return String.Format(MensagemValidacao, rotulo);
     }
-    #endregion
+#endregion
 }

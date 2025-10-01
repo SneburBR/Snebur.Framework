@@ -1,4 +1,4 @@
-using Snebur.Linq;
+﻿using Snebur.Linq;
 using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
@@ -13,36 +13,31 @@ public class ValidacaoUnicoCompostaAttribute : BaseAtributoValidacaoAsync, IAtri
     [IgnorarPropriedade]
     [IgnorarPropriedadeTSReflexao]
     public List<FiltroPropriedadeIndexar> Filtros { get; } = new List<FiltroPropriedadeIndexar>();
-
     //[IgnorarPropriedadeTS]
     //[IgnorarPropriedadeTSReflexao]
     public Type TipoEntidade { get; }
 
     [MensagemValidacao]
-    public static string MensagemValidacao { get; set; } = "O {0} '{1}' já existe.";
+    public static string MensagemValidacao { get; } = "O {0} '{1}' já existe.";
 
     [IgnorarPropriedade]
     [IgnorarPropriedadeTSReflexao]
     public List<string> NomesPropriedade { get; } = new List<string>();
-
     public string[] ExpressoesPropriedadeFiltro { get; }
-
     public bool IsCriarIndicesNomeBanco { get; set; } = true;
 
     [IgnorarPropriedade, IgnorarPropriedadeTSReflexao]
     public bool IsIgnorarMigracao { get; set; }
     public bool IsUnique => true;
-    public ValidacaoUnicoCompostaAttribute(Type tipoEntidade,
-                                           params string[] expressoesPropriedadeFiltro)
+
+    public ValidacaoUnicoCompostaAttribute(Type tipoEntidade, params string[] expressoesPropriedadeFiltro)
     {
         this.TipoEntidade = tipoEntidade;
         this.ExpressoesPropriedadeFiltro = expressoesPropriedadeFiltro;
         //this.NomesPropriedade = nomesPropriedadeOuFiltro;
-
 #if EXTENSAO_VISUALSTUDIO
         return;
 #endif
-
         if (expressoesPropriedadeFiltro.Count() > 0)
         {
             foreach (var expressaoPropriedadeFiltro in expressoesPropriedadeFiltro)
@@ -50,42 +45,35 @@ public class ValidacaoUnicoCompostaAttribute : BaseAtributoValidacaoAsync, IAtri
                 this.AdicioanrFiltro(expressaoPropriedadeFiltro);
             }
         }
-         
+
         if (ReflexaoUtil.IsTipoImplementaInterface(tipoEntidade, typeof(IDeletado)))
         {
             var propriedadeIsDeletado = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nameof(IDeletado.IsDeletado), true);
             var propriedadeDataHoraDeletado = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nameof(IDeletado.DataHoraDeletado), true);
             if (propriedadeIsDeletado != null)
             {
-                this.Filtros.Add(new FiltroPropriedadeIndexar(propriedadeIsDeletado,
-                                                              EnumOperadorComparacao.Igual,
-                                                              "0"));
+                this.Filtros.Add(new FiltroPropriedadeIndexar(propriedadeIsDeletado, EnumOperadorComparacao.Igual, "0"));
             }
 
             if (propriedadeDataHoraDeletado != null)
             {
-                this.Filtros.Add(new FiltroPropriedadeIndexar(propriedadeDataHoraDeletado,
-                                 EnumOperadorComparacao.Igual,
-                                 "null"));
+                this.Filtros.Add(new FiltroPropriedadeIndexar(propriedadeDataHoraDeletado, EnumOperadorComparacao.Igual, "null"));
             }
         }
 
         if (this.Filtros.Count > 0)
         {
             var propriedadesFiltro = this.Filtros.Select(x => x.Propriedade).ToList();
-            var propriedadesEmConclito = this.Propriedades.Where(x => propriedadesFiltro.Contains(x.Propriedade)).
-                                                                                         Select(x => x.Propriedade);
+            var propriedadesEmConclito = this.Propriedades.Where(x => propriedadesFiltro.Contains(x.Propriedade)).Select(x => x.Propriedade);
             if (propriedadesEmConclito.Count() > 0)
             {
-                throw new Erro($"Remover as propriedades  em conflitos {String.Join(",", propriedadesEmConclito.Select(x => x.Name))}" +
-                               $" no  índice {nameof(ValidacaoUnicoCompostaAttribute)} em {tipoEntidade.Name} ");
+                throw new Erro($"Remover as propriedades  em conflitos {String.Join(",", propriedadesEmConclito.Select(x => x.Name))}" + $" no  índice {nameof(ValidacaoUnicoCompostaAttribute)} em {tipoEntidade.Name} ");
             }
 
             var duplicados = propriedadesFiltro.Duplicados();
             if (duplicados.Count() > 0)
             {
-                throw new Erro($"Remover as propriedades  em conflitos {String.Join(",", duplicados.Select(x => x.Name))}" +
-                               $" no  índice {nameof(ValidacaoUnicoCompostaAttribute)} em {tipoEntidade.Name} ");
+                throw new Erro($"Remover as propriedades  em conflitos {String.Join(",", duplicados.Select(x => x.Name))}" + $" no  índice {nameof(ValidacaoUnicoCompostaAttribute)} em {tipoEntidade.Name} ");
             }
         }
     }
@@ -101,6 +89,7 @@ public class ValidacaoUnicoCompostaAttribute : BaseAtributoValidacaoAsync, IAtri
             {
                 throw this.RetornarException(nomePropriedadeOuFiltro);
             }
+
             this.Filtros.Add(propriedadeFiltro);
         }
         else
@@ -111,6 +100,7 @@ public class ValidacaoUnicoCompostaAttribute : BaseAtributoValidacaoAsync, IAtri
             {
                 throw this.RetornarException(nomePropriedadeOuFiltro);
             }
+
             this.Propriedades.Add(propriedadeIndexar);
             this.NomesPropriedade.Add(nomePropriedade);
         }
@@ -119,7 +109,6 @@ public class ValidacaoUnicoCompostaAttribute : BaseAtributoValidacaoAsync, IAtri
     private PropriedadeIndexar? RetornarPropriedadeIndexar(string nomePropriedade)
     {
         var tipoEntidade = this.TipoEntidade;
-
         var isIgnorarZero = nomePropriedade.EndsWith("?");
         if (isIgnorarZero)
         {
@@ -131,6 +120,7 @@ public class ValidacaoUnicoCompostaAttribute : BaseAtributoValidacaoAsync, IAtri
         {
             return new PropriedadeIndexar(propriedade, isIgnorarZero, false);
         }
+
         return null;
     }
 
@@ -142,8 +132,7 @@ public class ValidacaoUnicoCompostaAttribute : BaseAtributoValidacaoAsync, IAtri
         return new Exception(memsagem);
     }
 
-    #region IAtributoValidacao
-
+#region IAtributoValidacao
     public bool IsValido(PropertyInfo propriedade, object paiPropriedade, object valorPropriedade)
     {
         //validação no lado cliente;
@@ -155,6 +144,5 @@ public class ValidacaoUnicoCompostaAttribute : BaseAtributoValidacaoAsync, IAtri
         var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
         return String.Format(MensagemValidacao, rotulo);
     }
-     
-    #endregion
+#endregion
 }

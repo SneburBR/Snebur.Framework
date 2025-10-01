@@ -6,7 +6,7 @@ namespace Snebur.Dominio.Atributos;
 public class ValidacaoConfirmacaoSenhaAttribute : BaseAtributoValidacao, IAtributoValidacao
 {
     [MensagemValidacao]
-    public static string MensagemValidacao { get; set; } = "A {0} é invalida.";
+    public static string MensagemValidacao { get; } = "A {0} é invalida.";
 
     public string NomePropriedadeSenha { get; set; }
 

@@ -1,20 +1,26 @@
 namespace Snebur.Dominio.Atributos;
 
 [AttributeUsage(AttributeTargets.Property)]
-public class RelacaoPaiAttribute : RelacaoChaveEstrangeiraAttribute, IIgnorarAlerta
+public abstract class BaseRelacaoPaiAttribute : RelacaoChaveEstrangeiraAttribute, IIgnorarAlerta
 {
     public bool IgnorarAlerta { get; set; }
+}
 
+[AttributeUsage(AttributeTargets.Property)]
+public class RelacaoPaiAttribute : BaseRelacaoPaiAttribute
+{
     public string? NomePropriedadeLinkNavegacao { get; set; }
 
     public EnumTipoExclusaoRelacao TipoExclusao { get; set; } = EnumTipoExclusaoRelacao.NaoDeletar;
 
     public RelacaoPaiAttribute(
-        string? nomePropriedadeNavegacao,
+        [ParametroOpcionalTS]
+        string? nomePropriedadeLinkNavegacao,
+        [ParametroOpcionalTS]
         EnumTipoExclusaoRelacao tipoExclusao)
     {
         this.TipoExclusao = tipoExclusao;
-        this.NomePropriedadeLinkNavegacao = nomePropriedadeNavegacao;
+        this.NomePropriedadeLinkNavegacao = nomePropriedadeLinkNavegacao;
     }
 
     [IgnorarConstrutorTS]

@@ -10,13 +10,13 @@ public class ValidacaoTextoTamanhoAttribute : StringLengthAttribute, IAtributoVa
     private const int ACRECIMO_DELETADO = 0;
 
     [MensagemValidacao]
-    public static string MensagemValidacaoMaximo { get; set; } = "O campo '{0}' deve ter no máximo {1} caracteres.";
+    public static string MensagemValidacaoMaximo { get; } = "O campo '{0}' deve ter no máximo {1} caracteres.";
 
     [MensagemValidacao]
-    public static string MensagemValidacaoMinimo { get; set; } = "O campo '{0}' deve ter no mínimo {1} caracteres.";
+    public static string MensagemValidacaoMinimo { get; } = "O campo '{0}' deve ter no mínimo {1} caracteres.";
 
     [MensagemValidacao]
-    public static string MensagemValidacaoIntervalo { get; set; } = "O campo '{0}' deve ter entre {1} e {2} caracteres.";
+    public static string MensagemValidacaoIntervalo { get; } = "O campo '{0}' deve ter entre {1} e {2} caracteres.";
 
     public int TamanhoMinimo { get { return this.MinimumLength; } set { this.MinimumLength = value; } }
 

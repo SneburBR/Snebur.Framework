@@ -1,22 +1,21 @@
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
 
 [AttributeUsage(AttributeTargets.Property)]
 public class ValidacaoRotaAttribute : BaseAtributoValidacao
 {
-
     [MensagemValidacao]
-    public static string MensagemValidacao { get; set; } = "Rota invalida";
+    public static string MensagemValidacao { get; } = "Rota invalida";
 
-    #region IAtributoValidacao
-
+#region IAtributoValidacao
     public override bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
             return true;
         }
+
         return ValidacaoUtil.IsRota(Convert.ToString(valorPropriedade));
     }
 
@@ -25,5 +24,5 @@ public class ValidacaoRotaAttribute : BaseAtributoValidacao
         var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
         return String.Format(MensagemValidacao, rotulo);
     }
-    #endregion
+#endregion
 }

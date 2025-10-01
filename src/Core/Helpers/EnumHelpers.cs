@@ -27,11 +27,11 @@ public static class EnumHelpers
         "Nada",
     };
     public static bool IsFlags(Type type)
-        => type.GetCustomAttribute<FlagsAttribute>() is not null;
+        => CustomAttributeExtensions.GetCustomAttribute<FlagsAttribute>(type) is not null;
 
     public static bool IsFlags<T>()
         where T : struct, Enum
-        => typeof(T).GetCustomAttribute<FlagsAttribute>() is not null;
+        => CustomAttributeExtensions.GetCustomAttribute<FlagsAttribute>(typeof(T)) is not null;
 
     public static Enum GetEnumValue(Type enumType, object? valueOrName)
     {

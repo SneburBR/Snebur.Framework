@@ -8,7 +8,7 @@ public static class AssemblyExtensao
 {
     public static bool IsVersaoTeste(this Assembly assembly)
     {
-        var atributoVersao = assembly.GetCustomAttribute<AssemblyFileVersionAttribute>();
+        var atributoVersao = CustomAttributeExtensions.GetCustomAttribute<AssemblyFileVersionAttribute>(assembly);
         if (atributoVersao != null)
         {
             var ultimaParte = atributoVersao.Version.Split('.').Last();
@@ -22,7 +22,7 @@ public static class AssemblyExtensao
 
     public static string RetornarVersao(this Assembly assembly)
     {
-        var atributoVersao = assembly.GetCustomAttribute<AssemblyFileVersionAttribute>();
+        var atributoVersao = CustomAttributeExtensions.GetCustomAttribute<AssemblyFileVersionAttribute>(assembly);
         if (atributoVersao != null)
         {
             return atributoVersao.Version;
@@ -50,7 +50,7 @@ public static class AssemblyExtensao
             return false;
         }
 
-        if (assembly.GetCustomAttribute<AssemblyEntidadesAttribute>() != null)
+        if (CustomAttributeExtensions.GetCustomAttribute<AssemblyEntidadesAttribute>(assembly) != null)
         {
             return true;
         }

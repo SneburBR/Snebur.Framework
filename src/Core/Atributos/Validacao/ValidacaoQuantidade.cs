@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
 
@@ -6,11 +6,9 @@ namespace Snebur.Dominio.Atributos;
 public class ValidacaoQuantidadeAttribute : BaseAtributoValidacao, IAtributoValidacao
 {
     [MensagemValidacao]
-    public static string MensagemValidacao { get; set; } = "O campo '{0}' deve ser um número não negativo.";
+    public static string MensagemValidacao { get; } = "O campo '{0}' deve ser um número não negativo.";
 
-    public override bool IsValido(PropertyInfo propriedade,
-        object? paiPropriedade,
-        object? valorPropriedade)
+    public override bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
@@ -21,6 +19,7 @@ public class ValidacaoQuantidadeAttribute : BaseAtributoValidacao, IAtributoVali
         {
             return quantidade >= 0;
         }
+
         if (valorPropriedade is long quantidadeLong)
         {
             return quantidadeLong >= 0;
@@ -39,9 +38,7 @@ public class ValidacaoQuantidadeAttribute : BaseAtributoValidacao, IAtributoVali
         throw new ArgumentException($"O tipo '{valorPropriedade.GetType()}' não é suportado para validação de quantidade.");
     }
 
-    public override string RetornarMensagemValidacao(PropertyInfo propriedade,
-        object? paiPropriedade,
-        object? valorPropriedade)
+    public override string RetornarMensagemValidacao(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
     {
         var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
         return String.Format(MensagemValidacao, rotulo);

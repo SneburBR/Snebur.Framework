@@ -6,7 +6,7 @@ namespace Snebur.Dominio.Atributos;
 public class ValidacaoCepAttribute : BaseAtributoValidacao, IAtributoValidacao
 {
     [MensagemValidacao]
-    public static string MensagemValidacao { get; set; } = "O campo {0} é invalido.";
+    public static string MensagemValidacao { get; } = "O campo {0} é invalido.";
 
     public ValidacaoCepAttribute() : base()
     {

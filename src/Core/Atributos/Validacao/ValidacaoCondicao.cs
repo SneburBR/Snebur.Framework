@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
 
@@ -10,7 +10,7 @@ namespace Snebur.Dominio.Atributos;
 public class ValidacaoCondicaoAttribute : BaseAtributoValidacao
 {
     [MensagemValidacao]
-    public static string MensagemValidacao { get; set; } = "Mensagem de validação não definida.";
+    public static string MensagemValidacao { get; } = "Mensagem de validação não definida.";
 
     public override bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
     {

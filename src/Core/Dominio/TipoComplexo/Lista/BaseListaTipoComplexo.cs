@@ -31,7 +31,8 @@ public abstract class BaseListaTipoComplexo<T> : BaseTipoComplexo /*, IEnumerabl
     [NaoSerializar]
     [NaoMapear]
     [IgnorarPropriedade]
-    public int Count => this.ListaInterna.Count;
+    public int Count
+        => this.ListaInterna.Count;
 
     //public bool IsReadOnly => throw new NotImplementedException();
 

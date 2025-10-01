@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
@@ -7,20 +7,20 @@ namespace Snebur.Dominio.Atributos;
 public class ValidacaoEmailAttribute : BaseAtributoValidacao, IAtributoValidacao
 {
     [MensagemValidacao]
-    public static string MensagemValidacao { get; set; } = "O campo {0} é invalido.";
+    public static string MensagemValidacao { get; } = "O campo {0} é invalido.";
 
     public ValidacaoEmailAttribute()
     {
     }
 
-    #region IAtributoValidacao
-
+#region IAtributoValidacao
     public override bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
             return true;
         }
+
         var email = Convert.ToString(valorPropriedade);
         return ValidacaoUtil.IsEmail(email);
     }
@@ -31,6 +31,5 @@ public class ValidacaoEmailAttribute : BaseAtributoValidacao, IAtributoValidacao
         var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
         return String.Format(MensagemValidacao, rotulo);
     }
-    #endregion
+#endregion
 }
-

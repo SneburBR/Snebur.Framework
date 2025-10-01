@@ -119,7 +119,7 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntityLifecycl
             }
             else
             {
-                var isValidarTipoComplexo = propriedadeTipoComplexo.GetCustomAttribute<IgnorarValidacaoTipoComplexo>() == null;
+                var isValidarTipoComplexo = CustomAttributeExtensions.GetCustomAttribute<IgnorarValidacaoTipoComplexo>(propriedadeTipoComplexo) == null;
                 if (isValidarTipoComplexo)
                 {
                     throw new Exception($"  A propriedade {propriedadeTipoComplexo.Name} do tipo complexo {propriedadeTipoComplexo.PropertyType.Name} " +
@@ -799,7 +799,7 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntityLifecycl
             return true;
         }
         var propriedadesRelacoesNn = this.GetType().GetProperties().
-                                                    Where(x => x.GetCustomAttribute<RelacaoNnAttribute>() != null);
+                                                    Where(x => CustomAttributeExtensions.GetCustomAttribute<RelacaoNnAttribute>(x) != null);
 
         foreach (var propriedade in propriedadesRelacoesNn)
         {

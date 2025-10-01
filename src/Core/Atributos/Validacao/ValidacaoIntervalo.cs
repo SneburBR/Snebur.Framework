@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
@@ -7,13 +7,11 @@ namespace Snebur.Dominio.Atributos;
 public class ValidacaoIntervaloAttribute : RangeAttribute, IAtributoValidacao
 {
     [MensagemValidacao]
-    public static string MensagemValidacao { get; set; } = "O campo {0} deve estar entre {1} e {2}.";
-
+    public static string MensagemValidacao { get; } = "O campo {0} deve estar entre {1} e {2}.";
     public double Minimo { get; set; }
     public double Maximo { get; set; }
 
-    #region Construtores
-
+#region Construtores
     [IgnorarConstrutorTS]
     public ValidacaoIntervaloAttribute(double maximo) : this(0, maximo)
     {
@@ -24,8 +22,8 @@ public class ValidacaoIntervaloAttribute : RangeAttribute, IAtributoValidacao
         this.Minimo = minimo;
         this.Maximo = maximo;
     }
-    #endregion
 
+#endregion
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
         var resultado = base.IsValid(value, validationContext);
@@ -34,7 +32,6 @@ public class ValidacaoIntervaloAttribute : RangeAttribute, IAtributoValidacao
             var propriedade = validationContext.GetRequiredProperty();
             var paiPropriedade = validationContext.ObjectInstance;
             var valorPropriedade = value;
-
             if (this.IsValido(propriedade, paiPropriedade, valorPropriedade))
             {
                 return ValidationResult.Success;
@@ -45,16 +42,18 @@ public class ValidacaoIntervaloAttribute : RangeAttribute, IAtributoValidacao
                 return new ValidationResult(this.ErrorMessage, new List<string>() { validationContext.MemberName! });
             }
         }
+
         return resultado;
     }
-    #region IAtributoValidacao
 
+#region IAtributoValidacao
     public bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
     {
         if (!ValidacaoUtil.IsDefinido(valorPropriedade))
         {
             return true;
         }
+
         var valorTipado = Convert.ToDouble(valorPropriedade);
         if (this.Minimo > 0 && this.Maximo > 0)
         {
@@ -63,14 +62,17 @@ public class ValidacaoIntervaloAttribute : RangeAttribute, IAtributoValidacao
                 return (valorTipado >= this.Minimo && valorTipado <= this.Maximo);
             }
         }
+
         if (this.Minimo > 0)
         {
             return (valorTipado >= this.Minimo);
         }
+
         if (this.Maximo > 0)
         {
             return (valorTipado <= this.Maximo);
         }
+
         return false;
     }
 
@@ -79,5 +81,5 @@ public class ValidacaoIntervaloAttribute : RangeAttribute, IAtributoValidacao
         var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
         return String.Format(MensagemValidacao, rotulo, this.Minimum.ToString(), this.Maximum.ToString());
     }
-    #endregion
+#endregion
 }

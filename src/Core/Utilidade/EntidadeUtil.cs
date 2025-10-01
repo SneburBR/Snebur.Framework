@@ -30,7 +30,7 @@ public class EntidadeUtil
     public static PropertyInfo RetornarPropriedadeChaveEstrangeiraRelacaoFilhos(Type tipoEntidade,
                                                                                 PropertyInfo propriedadeRelacoesFilhos)
     {
-        var atributoRelacaoFilhos = propriedadeRelacoesFilhos.GetCustomAttribute<RelacaoFilhosAttribute>();
+        var atributoRelacaoFilhos = CustomAttributeExtensions.GetCustomAttribute<RelacaoFilhosAttribute>(propriedadeRelacoesFilhos);
         if (atributoRelacaoFilhos == null)
         {
             throw new Erro($"Não foi encontrado o atributo RelacaoFilhosAttribute para a propriedade {propriedadeRelacoesFilhos.Name} em {propriedadeRelacoesFilhos.DeclaringType?.Name} ");
@@ -138,7 +138,7 @@ public class EntidadeUtil
     private static bool IsPropriedadeRelacaoExterna(PropertyInfo propriedade,
                                                 string nomePropriedadeChaveEstrangeira)
     {
-        var atributoChaveExterna = propriedade.GetCustomAttribute<RelacaoPaiExternaAttribute>();
+        var atributoChaveExterna = CustomAttributeExtensions.GetCustomAttribute<RelacaoPaiExternaAttribute>(propriedade);
         if (atributoChaveExterna != null)
         {
             return atributoChaveExterna.NomePropriedadeChaveEstrangeira == nomePropriedadeChaveEstrangeira;
@@ -280,8 +280,8 @@ public class EntidadeUtil
                                 {
                                     if (IsPropriedadeCampo(propriedade, isIncluirTipoComplexo))
                                     {
-                                        var atributoChavePrimaria = propriedade.GetCustomAttribute<KeyAttribute>();
-                                        var atributoPropriedadeProtegida = propriedade.GetCustomAttribute<PropriedadeProtegidaAttribute>();
+                                        var atributoChavePrimaria = CustomAttributeExtensions.GetCustomAttribute<KeyAttribute>(propriedade);
+                                        var atributoPropriedadeProtegida = CustomAttributeExtensions.GetCustomAttribute<PropriedadeProtegidaAttribute>(propriedade);
                                         var getMethod = propriedade.GetGetMethod();
                                         bool resultado = true;
 
@@ -321,8 +321,8 @@ public class EntidadeUtil
             return true;
         }
 
-        var atrituboNaoMapear = propriedade.GetCustomAttribute<NaoMapearAttribute>();
-        var atrituboNaoMapearInterno = propriedade.GetCustomAttribute<NaoMapearInternoAttribute>();
+        var atrituboNaoMapear = CustomAttributeExtensions.GetCustomAttribute<NaoMapearAttribute>(propriedade);
+        var atrituboNaoMapearInterno = CustomAttributeExtensions.GetCustomAttribute<NaoMapearInternoAttribute>(propriedade);
         if (atrituboNaoMapear == null && atrituboNaoMapearInterno == null)
         {
             if (propriedade.GetGetMethod()?.IsPublic == true &&
@@ -340,7 +340,7 @@ public class EntidadeUtil
 
     public static string RetornarNomeCampo(PropertyInfo propriedade)
     {
-        var atributoCampo = propriedade.GetCustomAttribute<CampoAttribute>();
+        var atributoCampo = CustomAttributeExtensions.GetCustomAttribute<CampoAttribute>(propriedade);
         if (atributoCampo != null)
         {
             return atributoCampo.NomeCampo ?? propriedade.Name;

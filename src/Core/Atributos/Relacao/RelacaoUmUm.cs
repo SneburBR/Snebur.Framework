@@ -1,7 +1,7 @@
 namespace Snebur.Dominio.Atributos;
 
 [AttributeUsage(AttributeTargets.Property)]
-public class RelacaoUmUmFilhoAttribute : RelacaoPaiAttribute, IIgnorarAlerta
+public class RelacaoUmUmFilhoAttribute : BaseRelacaoPaiAttribute, IIgnorarAlerta
 {
     public RelacaoUmUmFilhoAttribute()
     {
@@ -10,7 +10,7 @@ public class RelacaoUmUmFilhoAttribute : RelacaoPaiAttribute, IIgnorarAlerta
 }
 
 [AttributeUsage(AttributeTargets.Property)]
-public class RelacaoUmUmPaiAttribute : RelacaoPaiAttribute, IIgnorarAlerta
+public class RelacaoUmUmPaiAttribute : BaseRelacaoPaiAttribute, IIgnorarAlerta
 {
     public RelacaoUmUmPaiAttribute()
     {

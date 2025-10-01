@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Snebur.Dominio.Atributos;
 
@@ -13,7 +13,7 @@ public class ChaveEstrangeiraAttribute : ForeignKeyAttribute, IChaveEstrangeiraA
     }
 }
 
-public interface IChaveEstrangeiraAttribute
+public interface IChaveEstrangeiraAttribute : IDomainAtributo
 {
     string NomePropriedade { get; }
     [IgnorarPropriedade]

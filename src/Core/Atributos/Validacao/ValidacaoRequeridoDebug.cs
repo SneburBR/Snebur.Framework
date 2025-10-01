@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
@@ -7,7 +7,7 @@ namespace Snebur.Dominio.Atributos;
 public class ValidacaoRequeridoDebugAttribute : RequiredAttribute, IAtributoValidacao
 {
     [MensagemValidacao]
-    public static string MensagemValidacao { get; set; } = "O campo {0} deve ser preenchido.";
+    public static string MensagemValidacao { get; } = "O campo {0} deve ser preenchido.";
 
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
@@ -32,11 +32,11 @@ public class ValidacaoRequeridoDebugAttribute : RequiredAttribute, IAtributoVali
                 resultado.ErrorMessage = this.ErrorMessage;
             }
         }
+
         return resultado;
     }
 
-    #region IAtributoValidacao
-
+#region IAtributoValidacao
     public bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
     {
         return ValidacaoUtil.IsValidacaoRequerido(propriedade, valorPropriedade, paiPropriedade);
@@ -47,5 +47,5 @@ public class ValidacaoRequeridoDebugAttribute : RequiredAttribute, IAtributoVali
         var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
         return String.Format(MensagemValidacao, rotulo);
     }
-    #endregion
+#endregion
 }

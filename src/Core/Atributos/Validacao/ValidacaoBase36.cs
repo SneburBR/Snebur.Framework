@@ -6,7 +6,7 @@ namespace Snebur.Dominio.Atributos;
 public class ValidacaoBase36Attribute : BaseAtributoValidacao
 {
     [MensagemValidacao]
-    public static string MensagemValidacao { get; set; } = "O campo {0} deve conter apenas letras de A a Z e números de 0 a 9.";
+    public static string MensagemValidacao { get; } = "O campo {0} deve conter apenas letras de A a Z e números de 0 a 9.";
 
     public bool IsPermitirEspaco { get; set; }
     public bool IsIgnorarCase { get; set; }

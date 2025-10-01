@@ -1,15 +1,14 @@
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
 
 public class ValidacaoDataExpiracaoAttribute : BaseAtributoValidacao, IAtributoValidacao
 {
     [MensagemValidacao]
-    public static string MensagemValidacao { get; set; } = "A '{0}' deve ser superior a data de publicação.";
+    public static string MensagemValidacao { get; } = "A '{0}' deve ser superior a data de publicação.";
 
     [MensagemValidacao]
-    public static string MensagemValidacaoComposta { get; set; } = "A '{0}' deve ser superior à '{1}'.";
-
+    public static string MensagemValidacaoComposta { get; } = "A '{0}' deve ser superior à '{1}'.";
     public string NomePropriedadeDataPublicacao { get; set; }
 
     public ValidacaoDataExpiracaoAttribute(string nomePropriedadeDataPublicacao)
@@ -38,8 +37,10 @@ public class ValidacaoDataExpiracaoAttribute : BaseAtributoValidacao, IAtributoV
             {
                 return dataExpiracao.AddDays(1).RetornarDataComHoraZerada() > dataPublicaacaoTipada;
             }
+
             return false;
         }
+
         return true;
     }
 

@@ -19,12 +19,17 @@ public class SistemaOperacional : BaseTipoComplexo
     [ValidacaoTextoTamanho(255)]
     public string Versao { get => this._versao; set => this.SetProperty(this._versao, this._versao = value); }
 
+    [IgnorarConstrutorTS]
     public SistemaOperacional() : base()
     {
 
     }
 
-    public SistemaOperacional(EnumSistemaOperacional sistemaOperacionalEnum, string nome, string codenome, string versao) : base()
+    public SistemaOperacional(
+        EnumSistemaOperacional sistemaOperacionalEnum,
+        string nome,
+        string codenome,
+        string versao) : base()
     {
         this._sistemaOperacionalEnum = sistemaOperacionalEnum;
         this._nome = nome;

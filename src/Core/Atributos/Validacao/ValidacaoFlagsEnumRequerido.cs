@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
@@ -7,7 +7,7 @@ namespace Snebur.Dominio.Atributos;
 public class ValidacaoFlagsEnumRequeridoAttribute : RequiredAttribute, IAtributoValidacao
 {
     [MensagemValidacao]
-    public static string MensagemValidacao { get; set; } = "O campo {0} deve ser preenchido.";
+    public static string MensagemValidacao { get; } = "O campo {0} deve ser preenchido.";
 
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
@@ -27,34 +27,31 @@ public class ValidacaoFlagsEnumRequeridoAttribute : RequiredAttribute, IAtributo
                     }
                     else
                     {
-                        this.ErrorMessage = this.RetornarMensagemValidacao(propriedade,
-                            paiPropriedade,
-                            valorPropriedade);
+                        this.ErrorMessage = this.RetornarMensagemValidacao(propriedade, paiPropriedade, valorPropriedade);
                         resultado.ErrorMessage = this.ErrorMessage;
                     }
                 }
             }
         }
+
         return resultado;
     }
 
-    #region IAtributoValidacao
-
+#region IAtributoValidacao
     public bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
     {
         if (valorPropriedade is null)
         {
             return false;
         }
+
         return ValidacaoUtil.IsFlagsEnumDefinida(propriedade.PropertyType, (Enum)valorPropriedade);
     }
 
-    public string RetornarMensagemValidacao(PropertyInfo propriedade,
-        object? paiPropriedade,
-        object? valorPropriedade)
+    public string RetornarMensagemValidacao(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
     {
         var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
         return String.Format(MensagemValidacao, rotulo);
     }
-    #endregion
+#endregion
 }

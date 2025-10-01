@@ -323,14 +323,34 @@ public static class TypeExtensions
     public static bool IsDomainAttribute(this Type type)
     {
         if (!type.IsClass ||
-            type.GetCustomAttribute<IgnorarAtributoTSAttribute>() is not null ||
-            type.Namespace?.StartsWith("System") == true)
+            !type.IsSubclassOf<Attribute>() ||
+             CustomAttributeExtensions.GetCustomAttribute<IgnorarAtributoTSAttribute>(type) is not null ||
+             type.Namespace?.StartsWith("System") == true)
         {
             return false;
         }
-        return
-               type.IsSubclassOfOrEqual(typeof(BaseAtributoDominio)) ||
-               type.ImplementsInterface<IAtributoValidacao>();
 
+        //if (type == typeof(BaseAtributoValidacaoAsync))
+        //    return false;
+
+        return type.IsSubclassOf(typeof(BaseAtributoDominio)) ||
+               type.ImplementsInterface<IDomainAtributo>();
+
+    }
+
+    public static int GetAbstractLevel(this Type type)
+    {
+        if (!type.IsClass)
+        {
+            return 0;
+        }
+        var count = 0;
+        var current = type.BaseType;
+        while (current is not null && current != typeof(object))
+        {
+            count++;
+            current = current.BaseType;
+        }
+        return count;
     }
 }
