@@ -28,7 +28,7 @@ internal partial class AjudanteFiltroPropriedade
                     tipoEntidadeAtual = propriedade.PropertyType;
                 }
             }
-            var atributoProprieadeInterface = propriedade.GetCustomAttribute<PropriedadeInterfaceAttribute>();
+            var atributoProprieadeInterface = CustomAttributeExtensions.GetCustomAttribute<PropriedadeInterfaceAttribute>(propriedade);
             if (atributoProprieadeInterface != null)
             {
                 Guard.NotNull(propriedade.DeclaringType);

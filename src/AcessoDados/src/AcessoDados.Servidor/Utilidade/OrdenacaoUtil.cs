@@ -8,7 +8,7 @@ internal class OrdenacaoUtil
         var propriedade = ReflexaoUtil.RetornarPropriedade(tipoEntidade, nomePropriedade, true);
         if (propriedade is not null)
         {
-            var atributo = propriedade.GetCustomAttribute<OrdenacaoOpcoesAttribute>() ??
+            var atributo = CustomAttributeExtensions.GetCustomAttribute<OrdenacaoOpcoesAttribute>(propriedade) ??
                 throw new Exception(
                     $"A propriedade {nomePropriedade} da entidade {tipoEntidade.Name} não possui o atributo {nameof(OrdenacaoOpcoesAttribute)}");
 
@@ -23,7 +23,7 @@ internal class OrdenacaoUtil
 
         if (propriedade != null)
         {
-            var atributo = propriedade.GetCustomAttribute<OrdenacaoOpcoesAttribute>() ??
+            var atributo = CustomAttributeExtensions.GetCustomAttribute<OrdenacaoOpcoesAttribute>(propriedade) ??
                 throw new Exception(
                     $"A propriedade {nomePropriedade} da entidade {tipoEntidade.Name} não possui o atributo {nameof(OrdenacaoOpcoesAttribute)}");
 

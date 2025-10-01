@@ -31,7 +31,7 @@ internal partial class EstruturaBancoDados
                 var propriedade = estruturaCampo.Propriedade;
                 if (propriedade.PropertyType == typeof(string))
                 {
-                    var atributoValidacaoTextoTamanho = propriedade.GetCustomAttribute<ValidacaoTextoTamanhoAttribute>();
+                    var atributoValidacaoTextoTamanho = CustomAttributeExtensions.GetCustomAttribute<ValidacaoTextoTamanhoAttribute>(propriedade);
                     if (atributoValidacaoTextoTamanho == null)
                     {
                         this.Alertas.Add($" A propriedade {propriedade.Name} da entidade {estruturaEntidade.TipoEntidade.Name} do tipo {nameof(String)} não possui o atributo {nameof(ValidacaoTextoTamanhoAttribute)} ");
@@ -164,7 +164,7 @@ internal partial class EstruturaBancoDados
                     var valorPropridade = propriedade.GetValue(instanciaEntidade);
                     if (valorPropridade == null)
                     {
-                        var isValidarTipoComplexo = propriedade.GetCustomAttribute<IgnorarValidacaoTipoComplexo>() == null;
+                        var isValidarTipoComplexo = CustomAttributeExtensions.GetCustomAttribute<IgnorarValidacaoTipoComplexo>(propriedade) == null;
                         if (isValidarTipoComplexo)
                         {
                             this.Alertas.Add(String.Format(" A propriedade {0}  ('TipoComplexo')   não foi instancia na declaração em {1} ", propriedade.Name, propriedade.DeclaringType?.Name));
@@ -185,7 +185,7 @@ internal partial class EstruturaBancoDados
 
             foreach (var propriedade in propriedadesTipoEntidade)
             {
-                var atributoNaoMapear = propriedade.GetCustomAttribute<NaoMapearAttribute>();
+                var atributoNaoMapear = CustomAttributeExtensions.GetCustomAttribute<NaoMapearAttribute>(propriedade);
                 if (atributoNaoMapear == null)
                 {
                     continue;
@@ -214,7 +214,7 @@ internal partial class EstruturaBancoDados
 
             foreach (var propriedade in propriedadesTipoColecaEntidade)
             {
-                var atributoNaoMapear = propriedade.GetCustomAttribute<NaoMapearAttribute>();
+                var atributoNaoMapear = CustomAttributeExtensions.GetCustomAttribute<NaoMapearAttribute>(propriedade);
                 if (atributoNaoMapear == null && !propriedadesRelacaoColecacao.Contains(propriedade))
                 {
                     this.Alertas.Add(String.Format(" A propriedade {0} (RelacaoColecao') não foi encontrado em {1}. Conferir o atributo RelacaoFilhos ou RelacaoNn ", propriedade.Name, propriedade.DeclaringType?.Name));

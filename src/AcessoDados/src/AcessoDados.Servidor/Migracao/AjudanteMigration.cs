@@ -131,7 +131,7 @@ internal partial class GerenciadorMigracao : IDisposable
             var propriedadesValorPadraoDataHoraServidor = this.RetornarPropriedadesDataHoraServidor(tipoEntidade);
             foreach (var propriedade in propriedadesValorPadraoDataHoraServidor)
             {
-                var atributo = propriedade.GetCustomAttribute<ValorPadraoDataHoraServidorAttribute>();
+                var atributo = CustomAttributeExtensions.GetCustomAttribute<ValorPadraoDataHoraServidorAttribute>(propriedade);
                 Guard.NotNull(atributo);
                 sqlsMigration.Add(new SqlValorPadraoDataHoraServidor(estruturaEntidade, propriedade, atributo.IsDataHoraUTC));
             }
@@ -139,7 +139,7 @@ internal partial class GerenciadorMigracao : IDisposable
             var propriedadesIndexar = this.RetornarPropriedadesIndexar(tipoEntidade);
             foreach (var propriedade in propriedadesIndexar)
             {
-                var atributo = propriedade.GetCustomAttribute<IndexarAttribute>();
+                var atributo = CustomAttributeExtensions.GetCustomAttribute<IndexarAttribute>(propriedade);
                 Guard.NotNull(atributo);
                 if (!atributo.IsIgnorarMigracao)
                 {
@@ -150,7 +150,7 @@ internal partial class GerenciadorMigracao : IDisposable
             var propriedadesIndexarTextoCompleto = this.RetornarPropriedadesIndexarTextoCompleto(tipoEntidade);
             if (propriedadesIndexarTextoCompleto.Count > 0)
             {
-                var atributos = propriedadesIndexarTextoCompleto.Select(x => x.GetCustomAttribute<IndexarTextoCompletoAttribute>());
+                var atributos = propriedadesIndexarTextoCompleto.Select(CustomAttributeExtensions.GetCustomAttribute<IndexarTextoCompletoAttribute>);
                 if (!atributos.Any(x => x?.IsIgnorarMigracao == true))
                 {
                     sqlsMigration.Add(new SqlIndexarTextoCompleto(estruturaEntidade, propriedadesIndexarTextoCompleto));
@@ -184,7 +184,7 @@ internal partial class GerenciadorMigracao : IDisposable
         var propriedades = ReflexaoUtil.RetornarPropriedades(tipoEntidade, true);
         foreach (var propriedade in propriedades)
         {
-            var atributoValidacaoUnico = propriedade.GetCustomAttribute<ValidacaoUnicoAttribute>();
+            var atributoValidacaoUnico = CustomAttributeExtensions.GetCustomAttribute<ValidacaoUnicoAttribute>(propriedade);
             if (atributoValidacaoUnico != null && atributoValidacaoUnico.IsIgnorarMigracao == false)
             {
                 var propriedadesIndexar = new List<PropriedadeIndexar>();

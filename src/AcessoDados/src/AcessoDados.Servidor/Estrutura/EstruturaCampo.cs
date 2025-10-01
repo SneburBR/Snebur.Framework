@@ -129,7 +129,7 @@ internal class EstruturaCampo : EstruturaPropriedade
         if (this.TipoSql == SqlDbType.DateTime)
         {
 
-            var atributoDataHoraServidor = this.Propriedade.GetCustomAttribute<ValorPadraoDataHoraServidorAttribute>();
+            var atributoDataHoraServidor = CustomAttributeExtensions.GetCustomAttribute<ValorPadraoDataHoraServidorAttribute>(this.Propriedade);
             if (atributoDataHoraServidor != null)
             {
                 var isDataHoraUTC = atributoDataHoraServidor.IsDataHoraUTC;
@@ -278,22 +278,22 @@ internal class EstruturaCampo : EstruturaPropriedade
 
     private bool RetornarIsPossuiIndiceTextoCompleto()
     {
-        return this.Propriedade.GetCustomAttribute<IndexarTextoCompletoAttribute>() != null;
+        return CustomAttributeExtensions.GetCustomAttribute<IndexarTextoCompletoAttribute>(this.Propriedade) != null;
     }
 
     private bool RetornarIsFormatarSomenteNumero()
     {
-        return this.Propriedade.GetCustomAttribute<FormatarSomenteNumerosAttribute>() != null;
+        return CustomAttributeExtensions.GetCustomAttribute<FormatarSomenteNumerosAttribute>(this.Propriedade) != null;
     }
 
     private bool RetornarIsNotificarAlteracaoPropriedade()
     {
-        return this.Propriedade.GetCustomAttribute<NotificarAlteracaoPropriedadeAttribute>() != null;
+        return CustomAttributeExtensions.GetCustomAttribute<NotificarAlteracaoPropriedadeAttribute>(this.Propriedade) != null;
     }
 
     private bool RetornarIsAutorizarAlteracaoPropriedade()
     {
-        return this.Propriedade.GetCustomAttribute<AutorizarAlteracaoPropriedadeAttribute>() != null;
+        return CustomAttributeExtensions.GetCustomAttribute<AutorizarAlteracaoPropriedadeAttribute>(this.Propriedade) != null;
     }
 
     internal T RetornarAtributoValorPadrao<T>()

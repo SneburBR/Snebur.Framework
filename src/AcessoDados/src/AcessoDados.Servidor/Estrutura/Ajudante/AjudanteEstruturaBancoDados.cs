@@ -78,7 +78,7 @@ internal class AjudanteEstruturaBancoDados
                                                         {
                                                             if (ReflexaoUtil.IsPropriedadeRetornaTipoPrimario(x))
                                                             {
-                                                                var atributoChavePrimaria = x.GetCustomAttribute<KeyAttribute>();
+                                                                var atributoChavePrimaria = CustomAttributeExtensions.GetCustomAttribute<KeyAttribute>(x);
                                                                 return (atributoChavePrimaria != null);
                                                             }
                                                             return false;
@@ -226,8 +226,8 @@ internal class AjudanteEstruturaBancoDados
 
     private static bool IsPropriedadeMapeada(PropertyInfo propriedade)
     {
-        var atributoNaoMapear = propriedade.GetCustomAttribute<NaoMapearAttribute>();
-        var atributoNaoMapearInterno = propriedade.GetCustomAttribute<NaoMapearInternoAttribute>();
+        var atributoNaoMapear = CustomAttributeExtensions.GetCustomAttribute<NaoMapearAttribute>(propriedade);
+        var atributoNaoMapearInterno = CustomAttributeExtensions.GetCustomAttribute<NaoMapearInternoAttribute>(propriedade);
         return atributoNaoMapear == null && atributoNaoMapearInterno == null;
     }
 

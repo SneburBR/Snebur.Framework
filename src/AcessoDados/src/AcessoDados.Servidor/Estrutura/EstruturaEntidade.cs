@@ -240,7 +240,7 @@ internal partial class EstruturaEntidade
         var propriedades = AjudanteEstruturaBancoDados.RetornarPropriedadesRelacao(this.TipoEntidade);
         foreach (var proriedade in propriedades)
         {
-            var atributoRelacao = proriedade.GetCustomAttribute<BaseRelacaoAttribute>();
+            var atributoRelacao = CustomAttributeExtensions.GetCustomAttribute<BaseRelacaoAttribute>(proriedade);
             if (atributoRelacao is RelacaoPaiAttribute)
             {
                 this.AdicionarEstruturaRelacaoPai(proriedade, estruturasEntidade);
@@ -610,7 +610,7 @@ internal partial class EstruturaEntidade
     private void AdicionarEstruturaRelacaoUmUmReversa(PropertyInfo propriedade,
                                                         DicionarioEstrutura<EstruturaEntidade> estruturasEntidade)
     {
-        var atributoRelacaoUmUmReversa = propriedade.GetCustomAttribute<RelacaoUmUmReversaAttribute>();
+        var atributoRelacaoUmUmReversa = CustomAttributeExtensions.GetCustomAttribute<RelacaoUmUmReversaAttribute>(propriedade);
 
         Guard.NotNull(atributoRelacaoUmUmReversa);
 
@@ -656,7 +656,7 @@ internal partial class EstruturaEntidade
 
     private string RetornarNomeCampoLigacaoRelacaoFilhos(PropertyInfo propriedade)
     {
-        var atributoRelacaoFilhos = propriedade.GetCustomAttribute<RelacaoFilhosAttribute>();
+        var atributoRelacaoFilhos = CustomAttributeExtensions.GetCustomAttribute<RelacaoFilhosAttribute>(propriedade);
         Guard.NotNull(atributoRelacaoFilhos);
 
         if (!String.IsNullOrEmpty(atributoRelacaoFilhos.NomePropriedadeChaveEstrangeira))
@@ -682,7 +682,7 @@ internal partial class EstruturaEntidade
 
     private void AdicionarEstruturaRelacaoNn(PropertyInfo propriedade, DicionarioEstrutura<EstruturaEntidade> estruturasEntidade)
     {
-        var atributoRelacaoNn = propriedade.GetCustomAttribute<RelacaoNnAttribute>();
+        var atributoRelacaoNn = CustomAttributeExtensions.GetCustomAttribute<RelacaoNnAttribute>(propriedade);
         Guard.NotNull(atributoRelacaoNn);
         var tipoEntidadeFilho = AjudanteEstruturaBancoDados.RetornarTipoEntidadeLista(propriedade);
 
@@ -722,7 +722,7 @@ internal partial class EstruturaEntidade
         if (this.TipoEntidade.BaseType == typeof(Entidade))
         {
             var propriedadeChavePrimaria = this.EstruturaCampoChavePrimaria.Propriedade;
-            var atributoDataBase = propriedadeChavePrimaria.GetCustomAttribute<DatabaseGeneratedAttribute>();
+            var atributoDataBase = CustomAttributeExtensions.GetCustomAttribute<DatabaseGeneratedAttribute>(propriedadeChavePrimaria);
             if (atributoDataBase != null)
             {
                 return atributoDataBase.DatabaseGeneratedOption == DatabaseGeneratedOption.Identity;
@@ -792,7 +792,7 @@ internal partial class EstruturaEntidade
                 estruturasCampoComputado.Add(estruturaCampo);
             }
 
-            if (propriedade.GetCustomAttribute<PropriedadeComputadaBancoAttribute>() != null)
+            if (CustomAttributeExtensions.GetCustomAttribute<PropriedadeComputadaBancoAttribute>(propriedade) != null)
             {
                 estruturasCampoComputado.Add(estruturaCampo);
             }
@@ -806,7 +806,7 @@ internal partial class EstruturaEntidade
         foreach (var estruturaCampo in this.EstruturasCampos.Values)
         {
             var propriedade = estruturaCampo.Propriedade;
-            var atributoCampoComputado = propriedade.GetCustomAttribute<BasePropriedadeComputadaAttribute>();
+            var atributoCampoComputado = CustomAttributeExtensions.GetCustomAttribute<BasePropriedadeComputadaAttribute>(propriedade);
             if (atributoCampoComputado != null)
             {
                 if (!atributoCampoComputado.GetType().IsSubclassOf(typeof(PropriedadeComputadaBancoAttribute)))
@@ -824,7 +824,7 @@ internal partial class EstruturaEntidade
         var propriedades = ReflexaoUtil.RetornarPropriedades(this.TipoEntidade, true, true);
         foreach (var propriedade in propriedades)
         {
-            var atributo = propriedade.GetCustomAttribute<NotificarAlteracaoPropriedadeAttribute>();
+            var atributo = CustomAttributeExtensions.GetCustomAttribute<NotificarAlteracaoPropriedadeAttribute>(propriedade);
             if (atributo != null)
             {
                 if (this.EstruturasCampos.ContainsKey(propriedade.Name))
@@ -866,7 +866,7 @@ internal partial class EstruturaEntidade
         var propriedades = ReflexaoUtil.RetornarPropriedades(this.TipoEntidade, true, true);
         foreach (var propriedade in propriedades)
         {
-            var atributoNotificarPropriedade = propriedade.GetCustomAttribute<NotificarAlteracaoPropriedadeGenericaAttribute>();
+            var atributoNotificarPropriedade = CustomAttributeExtensions.GetCustomAttribute<NotificarAlteracaoPropriedadeGenericaAttribute>(propriedade);
             var isNotificarAlteracaoPropriedade = isNotificarTodasPropriedades || atributoNotificarPropriedade != null;
             if (isNotificarAlteracaoPropriedade)
             {
@@ -911,7 +911,7 @@ internal partial class EstruturaEntidade
 
     private int RetornarMaximoRegistroPorConsulta()
     {
-        var atributoMaximoRegistroPorConsulta = this.TipoEntidade.GetCustomAttribute<MaximoRegistroPorConsultaAttribute>();
+        var atributoMaximoRegistroPorConsulta = CustomAttributeExtensions.GetCustomAttribute<MaximoRegistroPorConsultaAttribute>(this.TipoEntidade);
         if (atributoMaximoRegistroPorConsulta != null)
         {
             return atributoMaximoRegistroPorConsulta.MaximoRegistroPorConsulta;

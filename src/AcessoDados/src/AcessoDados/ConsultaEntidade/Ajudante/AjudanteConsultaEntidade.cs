@@ -29,7 +29,7 @@ internal class AjudanteConsultaEntidade
             propriedade = ReflexaoUtil.RetornarPropriedade(tipoDeclarado, nomePropriedadeExplicida);
         }
 
-        var atributoProprieadeInterface = propriedade.GetCustomAttribute<PropriedadeInterfaceAttribute>();
+        var atributoProprieadeInterface = CustomAttributeExtensions.GetCustomAttribute<PropriedadeInterfaceAttribute>(propriedade);
         if (atributoProprieadeInterface != null)
         {
             propriedade = ReflexaoUtil.RetornarPropriedade(tipoDeclarado, atributoProprieadeInterface.NomePropriedade);

@@ -209,7 +209,7 @@ public partial class ConsultaEntidade<TEntidade> where TEntidade : IEntidade
 
     private PropertyInfo NormalizarPropriedadeRelacaoEspecializda(PropertyInfo propriedade)
     {
-        var atributoPropriedadeEspecializada = propriedade.GetCustomAttribute<PropriedadeTSEspecializadaAttribute>();
+        var atributoPropriedadeEspecializada = CustomAttributeExtensions.GetCustomAttribute<PropriedadeTSEspecializadaAttribute>(propriedade);
         if (atributoPropriedadeEspecializada != null)
         {
             var propridadeEspecializada = propriedade.DeclaringType?.GetProperty(atributoPropriedadeEspecializada.NomePropriedade);

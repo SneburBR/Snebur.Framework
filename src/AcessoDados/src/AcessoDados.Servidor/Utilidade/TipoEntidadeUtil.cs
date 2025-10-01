@@ -79,7 +79,7 @@ internal class TipoEntidadeUtil
     {
         try
         {
-            if (assembly.GetCustomAttribute<AssemblyEntidadesAttribute>() != null)
+            if (CustomAttributeExtensions.GetCustomAttribute<AssemblyEntidadesAttribute>(assembly) != null)
             {
                 return assembly.GetTypes().Where(x => x.IsSubclassOf(typeof(Entidade))).ToList();
             }

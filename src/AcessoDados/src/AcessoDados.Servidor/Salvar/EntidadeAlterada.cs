@@ -95,7 +95,7 @@ internal class EntidadeAlterada
     {
         foreach (var propriedade in this.EstruturaEntidade.TipoEntidade.GetProperties())
         {
-            var atributo = propriedade.GetCustomAttribute<ValorDeletadoConcatenarGuidAttribute>();
+            var atributo = CustomAttributeExtensions.GetCustomAttribute<ValorDeletadoConcatenarGuidAttribute>(propriedade);
             if (atributo != null)
             {
                 if (propriedade.PropertyType != typeof(string))
@@ -109,7 +109,7 @@ internal class EntidadeAlterada
                 propriedade.SetValue(this.Entidade, valorDeletado);
             }
 
-            var atributoDeletado = propriedade.GetCustomAttribute<ValorDeletadoAttribute>();
+            var atributoDeletado = CustomAttributeExtensions.GetCustomAttribute<ValorDeletadoAttribute>(propriedade);
             if (atributoDeletado != null)
             {
                 propriedade.SetValue(this.Entidade, atributoDeletado.Valor);

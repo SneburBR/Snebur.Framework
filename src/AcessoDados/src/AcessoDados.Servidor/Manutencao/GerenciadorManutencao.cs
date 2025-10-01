@@ -218,7 +218,7 @@ internal partial class GerenciadorManutencao : IDisposable
         var tipos = this.Contexto.GetType().Assembly.GetTypes().Where(x => x.IsSubclassOf(typeof(BaseManutencao)) && !x.IsAbstract).ToList();
         foreach (var tipo in tipos)
         {
-            var atributoMigrationId = tipo.GetCustomAttribute<MigracaoIdAttribute>();
+            var atributoMigrationId = CustomAttributeExtensions.GetCustomAttribute<MigracaoIdAttribute>(tipo);
             if (atributoMigrationId == null)
             {
                 throw new Erro($"O atributo {nameof(MigracaoIdAttribute)} não foi encontrado no tipo {tipo.Name}");
