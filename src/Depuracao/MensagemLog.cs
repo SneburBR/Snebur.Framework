@@ -1,22 +1,9 @@
-namespace Snebur.Depuracao;
-
-public class MensagemLog : Mensagem
+namespace Snebur.Depuracao
 {
-
-    #region Campos Privados
-
-    private string _mensagem;
-    private EnumTipoLog _tipoLog;
-
-    public MensagemLog(string mensagem, EnumTipoLog tipoLog)
+    public class MensagemLog : Mensagem
     {
-        this._mensagem = mensagem;
-        this._tipoLog = tipoLog;
+        public string Mensagem { get; set; }
+
+        public EnumTipoLog TipoLog { get; set; }
     }
-
-    #endregion
-
-    public string Mensagem { get => this.GetPropertyValue(this._mensagem); set => this.SetProperty(this._mensagem, this._mensagem = value); }
-
-    public EnumTipoLog TipoLog { get => this.GetPropertyValue(this._tipoLog); set => this.SetProperty(this._tipoLog, this._tipoLog = value); }
 }

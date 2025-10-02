@@ -1,18 +1,7 @@
-namespace Snebur.Depuracao;
-
-public class MensagemScriptAlterado : Mensagem
+namespace Snebur.Depuracao
 {
-
-    #region Campos Privados
-
-    private string _nomeArquivo;
-
-    public MensagemScriptAlterado(string nomeArquivo)
+    public class MensagemScriptAlterado : Mensagem
     {
-        this._nomeArquivo = nomeArquivo;
+        public string NomeArquivo { get; set; }
     }
-
-    #endregion
-
-    public string NomeArquivo { get => this.GetPropertyValue(this._nomeArquivo); set => this.SetProperty(this._nomeArquivo, this._nomeArquivo = value); }
 }

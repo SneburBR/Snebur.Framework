@@ -1,22 +1,19 @@
-namespace Snebur.Depuracao;
+using Snebur.Dominio;
+using Snebur.Dominio.Atributos;
 
-public class Contrato : BaseDominio
+namespace Snebur.Depuracao
 {
-
-    #region Campos Privados
-
-    #endregion
-
-    public required Mensagem? Mensagem { get; init; }
-
-    [IgnorarConstrutorTS]
-    public Contrato()
+    public class Contrato : BaseDominio
     {
 
-    }
 
-    public Contrato(Mensagem mensagem)
-    {
-        this.Mensagem = mensagem;
+#if NET6_0_OR_GREATER
+        public Mensagem? Mensagem { get; set; }
+#endif
+
+#if NET48
+        public Mensagem Mensagem { get; set; }
+#endif
+
     }
 }

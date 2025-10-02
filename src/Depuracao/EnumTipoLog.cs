@@ -1,11 +1,13 @@
-﻿namespace Snebur.Depuracao;
-
-public enum EnumTipoLog
+namespace Snebur.Depuracao
 {
-    [UndefinedEnumValue]
-    Normal,
-    Alerta,
-    Erro,
-    Sucesso,
-    Acao
+    public enum EnumTipoLog
+    {
+        [UndefinedEnumValue]
+        Normal,
+        Alerta,
+        Erro,
+        Sucesso,
+        Acao
+    }
 }
+
