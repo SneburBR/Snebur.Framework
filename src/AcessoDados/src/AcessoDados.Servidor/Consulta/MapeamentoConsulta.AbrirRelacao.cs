@@ -277,7 +277,7 @@ internal partial class MapeamentoConsulta
             listaEntidadeFilhos.IsAberta = true;
             if (listaEntidadeFilhos.Count > 0)
             {
-                if (propriedadeRelacaoFilhos.GetSetMethod() == null)
+                if (propriedadeRelacaoFilhos.SetMethod == null)
                 {
                     throw new Erro($"A propriedade {propriedadeRelacaoFilhos.Name} declarada na entidade {propriedadeRelacaoFilhos.DeclaringType?.Name} é somente leitura, Definir {{ get; set; }}");
                 }

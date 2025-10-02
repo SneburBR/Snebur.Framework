@@ -113,8 +113,8 @@ public static class MedidaUtil
             {
                 var propriedades = objeto.GetType()
                     .GetProperties()
-                    .Where(x => x.GetSetMethod() != null &&
-                                x.GetSetMethod()?.IsPublic == true);
+                    .Where(x => x.SetMethod != null &&
+                                x.SetMethod?.IsPublic == true);
 
                 foreach (var p in propriedades)
                 {

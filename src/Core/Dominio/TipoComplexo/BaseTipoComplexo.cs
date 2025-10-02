@@ -44,10 +44,10 @@ public abstract class BaseTipoComplexo : BaseDominio, ICloneable
         var tipo = this.GetType();
 
         this.PropriedadesMapeadas = tipo.GetProperties().Where(x => x.DeclaringType == tipo &&
-                                    x.GetGetMethod() != null &&
-                                    x.GetSetMethod() != null &&
-                                    x.GetSetMethod()?.IsPublic == true &&
-                                    x.GetGetMethod()?.IsPublic == true &&
+                                    x.GetMethod != null &&
+                                    x.SetMethod != null &&
+                                    x.SetMethod?.IsPublic == true &&
+                                    x.GetMethod?.IsPublic == true &&
                                     x.GetCustomAttribute<NaoMapearAttribute>() == null).ToList();
     }
 

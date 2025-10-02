@@ -10,11 +10,11 @@ public static class SerializacaoUtil
     {
         var propriedades = ReflexaoUtil.RetornarPropriedades(tipo, false);
         propriedades = propriedades.Where(x => x.CanRead && x.CanWrite &&
-                                               x.GetGetMethod()?.IsPublic == true &&
-                                               x.GetSetMethod()?.IsPublic == true).
+                                               x.GetMethod?.IsPublic == true &&
+                                               x.SetMethod?.IsPublic == true).
                                     Where(x =>
         {
-            if (x.GetGetMethod()?.GetParameters().Length > 0)
+            if (x.GetMethod?.GetParameters().Length > 0)
             {
                 return false;
             }
@@ -234,7 +234,7 @@ public static class SerializacaoUtil
     internal static bool IsPoderDerializarPropriedade(PropertyInfo propriedade,
                                                       EnumTipoSerializacao tipoSerializacao)
     {
-        if (propriedade.GetGetMethod()?.IsPublic == true)
+        if (propriedade.GetMethod?.IsPublic == true)
         {
             var atributopsIgnorar = new List<Type>
             {

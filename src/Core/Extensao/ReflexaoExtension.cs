@@ -74,8 +74,8 @@ public static class ReflexaoExtension
 
     public static bool IsOverride(this PropertyInfo propriedade)
     {
-        var getMethod = propriedade.GetGetMethod();
-        var setMethod = propriedade.GetSetMethod();
+        var getMethod = propriedade.GetMethod;
+        var setMethod = propriedade.SetMethod;
         var getIsOverride = (getMethod?.IsOverride() ?? false);
         var setIsOverride = (setMethod?.IsOverride() ?? false);
         return getIsOverride || setIsOverride;

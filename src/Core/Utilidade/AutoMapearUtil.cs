@@ -67,8 +67,8 @@ public static class AutoMapearUtil
         var propriedadesOrigem = ReflexaoUtil.RetornarPropriedades(origem.GetType(), false);
         var propriedadesDestino = ReflexaoUtil.RetornarPropriedades(destino.GetType(), false);
 
-        propriedadesOrigem = propriedadesOrigem.Where(x => x.CanRead && (x.GetGetMethod()?.IsPublic ?? false) && x.GetCustomAttribute<NotMappedAttribute>() == null).ToList();
-        propriedadesDestino = propriedadesDestino.Where(x => x.CanWrite && (x.GetSetMethod()?.IsPublic ?? false) && x.GetCustomAttribute<NotMappedAttribute>() == null).ToList();
+        propriedadesOrigem = propriedadesOrigem.Where(x => x.CanRead && (x.GetMethod?.IsPublic ?? false) && x.GetCustomAttribute<NotMappedAttribute>() == null).ToList();
+        propriedadesDestino = propriedadesDestino.Where(x => x.CanWrite && (x.SetMethod?.IsPublic ?? false) && x.GetCustomAttribute<NotMappedAttribute>() == null).ToList();
 
         if (destino is Entidade entidade)
         {

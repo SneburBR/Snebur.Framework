@@ -635,8 +635,8 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntityLifecycl
         if (incluirTiposPrimariosETipoCompleto)
         {
             var propriedades = this.__TipoEntidade.GetProperties(ReflexaoUtil.BindingFlags)
-                    .Where(x => x.GetGetMethod()?.IsPublic == true &&
-                                x.GetSetMethod()?.IsPublic == true &&
+                    .Where(x => x.GetMethod?.IsPublic == true &&
+                                x.SetMethod?.IsPublic == true &&
                                 (ReflexaoUtil.IsPropriedadeRetornaTipoPrimario(x, true) ||
                                  ReflexaoUtil.IsPropriedadeRetornaTipoComplexo(x, true)));
 

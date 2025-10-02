@@ -67,8 +67,8 @@ public static partial class ReflexaoUtil
         }
         if (publica)
         {
-            propriedades = propriedades.Where(x => (x.GetGetMethod()?.IsPublic) ?? false &&
-                                                   (x.GetSetMethod()?.IsPublic ?? false));
+            propriedades = propriedades.Where(x => (x.GetMethod?.IsPublic) ?? false &&
+                                                   (x.SetMethod?.IsPublic ?? false));
         }
         return propriedades.ToList();
     }

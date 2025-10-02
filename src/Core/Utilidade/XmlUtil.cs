@@ -54,8 +54,8 @@ public static class XmlUtil
 
             var type = objeto.GetType();
             var properties = type.GetProperties()
-                .Where(x => x.GetGetMethod()?.IsPublic == true && x.GetSetMethod() != null &&
-                            x.GetSetMethod()?.IsPublic == true).ToList();
+                .Where(x => x.GetMethod?.IsPublic == true && x.SetMethod != null &&
+                            x.SetMethod?.IsPublic == true).ToList();
 
             if (properties.Count > 0)
             {

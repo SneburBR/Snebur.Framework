@@ -69,8 +69,8 @@ public static partial class ReflexaoUtil
                                 Where(x =>
                                 {
                                     if (IsPropriedadeRetornaTipoPrimario(x, true) &&
-                                        x.GetGetMethod()?.IsPublic == true &&
-                                        x.GetSetMethod()?.IsPublic == true)
+                                        x.GetMethod?.IsPublic == true &&
+                                        x.SetMethod?.IsPublic == true)
                                     {
                                         var atrituboNaoMapear = CustomAttributeExtensions.GetCustomAttribute<NaoMapearAttribute>(x);
                                         return (atrituboNaoMapear == null);

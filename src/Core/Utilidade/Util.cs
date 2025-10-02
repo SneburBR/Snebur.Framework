@@ -139,7 +139,7 @@ public static class Util
             {
                 return;
             }
-            var proprieades = objeto.GetType().GetProperties().Where(x => x.GetGetMethod()?.IsPublic ?? false);
+            var proprieades = objeto.GetType().GetProperties().Where(x => x.GetMethod?.IsPublic ?? false);
             foreach (var p in proprieades)
             {
                 if (p.CanRead && p.CanWrite)

@@ -282,7 +282,7 @@ public class EntidadeUtil
                                     {
                                         var atributoChavePrimaria = CustomAttributeExtensions.GetCustomAttribute<KeyAttribute>(propriedade);
                                         var atributoPropriedadeProtegida = CustomAttributeExtensions.GetCustomAttribute<PropriedadeProtegidaAttribute>(propriedade);
-                                        var getMethod = propriedade.GetGetMethod();
+                                        var getMethod = propriedade.GetMethod;
                                         bool resultado = true;
 
                                         // ignorar propriedades sobreescritas - override
@@ -325,8 +325,8 @@ public class EntidadeUtil
         var atrituboNaoMapearInterno = CustomAttributeExtensions.GetCustomAttribute<NaoMapearInternoAttribute>(propriedade);
         if (atrituboNaoMapear == null && atrituboNaoMapearInterno == null)
         {
-            if (propriedade.GetGetMethod()?.IsPublic == true &&
-                propriedade.GetSetMethod()?.IsPublic == true)
+            if (propriedade.GetMethod?.IsPublic == true &&
+                propriedade.SetMethod?.IsPublic == true)
             {
                 if (propriedade.PropertyType.IsSubclassOf(typeof(BaseTipoComplexo)))
                 {

@@ -15,8 +15,8 @@
 //        {
 //            var propriedades = ReflexaoUtil.RetornarPropriedades(tipo, false);
 //            propriedades = propriedades.Where(x => x.CanRead && x.CanWrite &&
-//                                                   x.GetGetMethod() != null && x.GetGetMethod().IsPublic &&
-//                                                   x.GetSetMethod() != null && x.GetSetMethod().IsPublic).
+//                                                   x.GetMethod != null && x.GetMethod.IsPublic &&
+//                                                   x.SetMethod != null && x.SetMethod.IsPublic).
 //                                        Where(x =>
 //            {
 //                var atributoPropriedadeInterface = x.GetCustomAttribute(typeof(PropriedadeInterfaceAttribute));

@@ -103,7 +103,7 @@ public class Conexao : IDisposable
         var propriedades = tipo.GetProperties(BindingFlags.Public | BindingFlags.Instance).
                                 Where(x => x.DeclaringType != typeof(BaseDominio) &&
                                            x.GetCustomAttribute<NotMappedAttribute>(true) == null &&
-                                           x.GetGetMethod()?.IsPublic == true && (x.GetSetMethod()?.IsPublic == true));
+                                           x.GetMethod?.IsPublic == true && (x.SetMethod?.IsPublic == true));
 
         var propriedadesChavePrimaria = tipo.GetProperties().
                                              Where(x => x.GetCustomAttribute<KeyAttribute>() != null).
