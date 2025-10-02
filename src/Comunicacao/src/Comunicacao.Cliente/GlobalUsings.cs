@@ -1,4 +1,3 @@
-global using Snebur.Comunicacao.Dominio;
 global using Snebur.Comunicacao.Utilidade;
 global using Snebur.Dominio;
 global using Snebur.Seguranca;

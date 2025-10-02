@@ -1,4 +1,4 @@
-namespace Snebur.Comunicacao.Dominio;
+namespace Snebur.Comunicacao;
 
 public abstract class ResultadoChamada : BaseComunicao
 {

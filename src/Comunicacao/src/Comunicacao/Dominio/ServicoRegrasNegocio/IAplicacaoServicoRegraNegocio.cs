@@ -1,7 +1,7 @@
 using Snebur.AcessoDados;
 using Snebur.Dominio.Atributos;
 
-namespace Snebur.Comunicacao.Dominio;
+namespace Snebur.Comunicacao;
 
 [IgnorarInterfaceTS]
 public interface IAplicacaoServicoRegraNegocio
