@@ -241,7 +241,7 @@ internal partial class EstruturaEntidade
         foreach (var proriedade in propriedades)
         {
             var atributoRelacao = CustomAttributeExtensions.GetCustomAttribute<BaseRelacaoAttribute>(proriedade);
-            if (atributoRelacao is RelacaoPaiAttribute)
+            if (atributoRelacao is BaseRelacaoPaiAttribute)
             {
                 this.AdicionarEstruturaRelacaoPai(proriedade, estruturasEntidade);
             }

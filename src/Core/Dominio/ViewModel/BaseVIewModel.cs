@@ -4,4 +4,5 @@ namespace Snebur.Dominio;
 [IgnorarClasseTS]
 public abstract class BaseViewModel : BaseDominio
 {
+
 }

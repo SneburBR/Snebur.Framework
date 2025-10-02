@@ -1,11 +1,11 @@
-﻿using System.Reflection;
+using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
 
 [AttributeUsage(AttributeTargets.Property)]
 public class ValidacaoMoedaAttribute : BaseAtributoValidacao, IAtributoValidacao
 {
-    public static string MensagemValidacaoPadrao { get; set; } = "O valor campo {0} é invalido.";
+    public static string MensagemValidacaoPadrao { get; } = "O valor campo {0} é invalido.";
 
     [MensagemValidacao]
     public static string MensagemValidacaoNegativa { get; } = "O valor do campo {0} não pode ser negativo";
@@ -50,7 +50,7 @@ public class ValidacaoMoedaAttribute : BaseAtributoValidacao, IAtributoValidacao
         }
     }
 
-#region IAtributoValidacao
+    #region IAtributoValidacao
     public override bool IsValido(PropertyInfo propriedade, object? paiPropriedade, object? valorPropriedade)
     {
         if (!ValidacaoUtil.IsValidacaoRequerido(propriedade, valorPropriedade))
@@ -72,5 +72,5 @@ public class ValidacaoMoedaAttribute : BaseAtributoValidacao, IAtributoValidacao
         var rotulo = ReflexaoUtil.RetornarRotulo(propriedade);
         return String.Format(MensagemValidacaoPadrao, rotulo);
     }
-#endregion
+    #endregion
 }
