@@ -1,8 +1,12 @@
-﻿namespace Snebur.Dominio.Atributos;
+namespace Snebur.Dominio.Atributos;
 
-[AttributeUsage(AttributeTargets.Enum)]
-public class EnumTSString : BaseAtributoDominio
+[AttributeUsage(AttributeTargets.Field)]
+public class EnumTSStringAttribute : BaseAtributoDominio
 {
-
+    public string TSValue { get; }
+    public EnumTSStringAttribute(string tsValue)
+    {
+        this.TSValue = tsValue;
+    }
 }
 

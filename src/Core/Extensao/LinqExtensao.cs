@@ -712,4 +712,9 @@ public static class LinqExtensao
         return new HashSet<T>(colecao);
     }
 #endif
+
+    public static int CountEnumerable(this IEnumerable enumerable)
+    {
+        return enumerable.Cast<object>().Count();
+    }
 }

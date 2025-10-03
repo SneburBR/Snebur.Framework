@@ -1,3 +1,4 @@
+using Snebur.Reflexao;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Reflection;
@@ -44,7 +45,6 @@ public static class NullabilityHelpers
 
         if (method.ReturnType.IsValueType)
             return false;
-
 
         return GetNullabilityInfo(method).IsMemberNullable;
     }
@@ -116,8 +116,21 @@ public static class NullabilityHelpers
 
     private static MemberNullabilityInfoBase CreateNullabilityInfo(ParameterInfo parameter)
     {
-        var info = _context.Create(parameter);
-        return CreateMemberInfoNullabilityInternal(info, parameter.ParameterType);
+
+        try
+        {
+            var info = _context.Create(parameter);
+            return CreateMemberInfoNullabilityInternal(info, parameter.ParameterType);
+        }
+        catch (Exception)
+        {
+            if (Debugger.IsAttached)
+            {
+                Debugger.Break();
+                return CreateNullabilityInfo(parameter);
+            }
+            throw;
+        }
     }
 
     private static MemberNullabilityInfoBase CreateNullabilityInfo(MethodInfo method)

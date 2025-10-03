@@ -86,7 +86,7 @@ public static class PropertyInfoExtensions
     {
         // Check one accessor (get or set) to see if it overrides
         var accessor = property.GetMethod ?? property.SetMethod;
-        if (accessor == null)
+        if (accessor is null)
             return false;
 
         // Get base definition of this method
@@ -104,6 +104,12 @@ public static class PropertyInfoExtensions
     public static bool IsRequired(this PropertyInfo property)
     {
         return property.GetCustomAttributes(typeof(RequiredMemberAttribute), inherit: false).Any();
+    }
+
+    public static bool IsAbstract(this PropertyInfo property)
+    {
+        return (property.GetMethod?.IsAbstract == true) ||
+               (property.SetMethod?.IsAbstract == true);
     }
 
     public static bool IsNotMapped(this PropertyInfo property)
