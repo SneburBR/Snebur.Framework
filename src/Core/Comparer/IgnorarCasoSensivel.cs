@@ -1,3 +1,6 @@
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+
 namespace Snebur;
 
 public class IgnorarCasoSensivel : IEqualityComparer<string>
@@ -37,4 +40,26 @@ public class IgnorarCasoSensivelCaracter : IEqualityComparer<char>
     {
         return Char.ToLowerInvariant(obj).GetHashCode();
     }
+}
+
+public class CaseAndAccentInsensitiveStringComparer : IEqualityComparer<string?>
+{
+    private readonly CompareInfo _compareInfo;
+
+    public CaseAndAccentInsensitiveStringComparer(CultureInfo? culture)
+    {
+        _compareInfo = (culture ?? CultureInfo.InvariantCulture).CompareInfo;
+    }
+
+    public bool Equals(string? s1, string? s2)
+        => _compareInfo.Compare(s1, s2, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) == 0;
+
+    public int GetHashCode([DisallowNull] string? obj)
+        => _compareInfo.GetHashCode(obj, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase);
+}
+
+public static class StringCompareres
+{
+    public static CaseAndAccentInsensitiveStringComparer CaseAndAccentInsensitive
+        => field ??= new(new CultureInfo("pt-BR"));
 }

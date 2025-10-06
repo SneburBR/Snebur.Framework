@@ -1,5 +1,6 @@
-﻿namespace Snebur.Comunicacao;
+namespace Snebur.Comunicacao;
 
+[IgnorarServicoTS]
 public interface IBaseServico
 {
     bool Ping();
@@ -8,3 +9,9 @@ public interface IBaseServico
 
     //DateTime RetornarDataHora();
 }
+
+public interface IBaseNegocio
+{
+
+}
+

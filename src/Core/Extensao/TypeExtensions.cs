@@ -353,4 +353,7 @@ public static class TypeExtensions
         }
         return count;
     }
+
+    public static bool IsStatic(this Type type)
+        => type.IsAbstract && type.IsSealed;
 }

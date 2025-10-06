@@ -157,6 +157,30 @@ public static class StringExtensions
             return fallback;
         return value;
     }
+
+    public static bool Contains(
+        this string? source,
+        string value,
+        IEqualityComparer<string?> comparer)
+    {
+        if (source == null || value == null)
+            return false;
+
+        int valueLength = value.Length;
+        int sourceLength = source.Length;
+
+        if (valueLength > sourceLength)
+            return false;
+
+        for (int i = 0; i <= sourceLength - valueLength; i++)
+        {
+            var substring = source.Substring(i, valueLength);
+            if (comparer.Equals(substring, value))
+                return true;
+        }
+
+        return false;
+    }
 }
 
 public static class CharExtensions
