@@ -4,6 +4,7 @@ using System.Reflection;
 
 namespace Snebur.AcessoDados;
 
+[IgnorarServicoTS]
 public interface IServicoRegrasNegocio : IBaseServico
 {
     [IgnorarMetodoTS]
@@ -11,6 +12,7 @@ public interface IServicoRegrasNegocio : IBaseServico
 }
 
 [IgnorarInterfaceTS]
+[IgnorarServicoTS]
 public interface IServicoRegrasNegocioCliente : IBaseServico
 {
 

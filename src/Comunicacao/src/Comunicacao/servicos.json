@@ -1,0 +1,8 @@
+﻿{
+  "Servicos": [
+    {
+      "NomeInterface": "IServicoLogServicoArquivo",
+      "CaminhoTypeScript": "../../../../../Snebur.TS/src/Snebur.TS/src/Comunicacao/ServicoArquivo/BaseServicoLogServicoArquivo.ts"
+    }
+  ]
+}

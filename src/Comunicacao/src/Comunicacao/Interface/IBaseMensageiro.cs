@@ -7,6 +7,7 @@ public delegate void EventoMensagemHandler<TBaseDominho>(Remetente usario, TBase
 public delegate void EventoMensagemHandler(Remetente usario);
 
 [IgnorarInterfaceTS]
+[IgnorarServicoTS]
 public interface IBaseConexaoMensageiro
 {
     //event EventoMensagemHandler EventoNovaConectado;
