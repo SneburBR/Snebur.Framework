@@ -2,6 +2,7 @@ using Snebur.Comunicacao;
 
 namespace Snebur.AcessoDados;
 
+//[IgnorarServicoTS]
 public interface IServicoDados : IBaseServico
 {
     object? RetornarValorScalar(EstruturaConsulta estruturaConsulta);

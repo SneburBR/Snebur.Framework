@@ -1,0 +1,8 @@
+﻿{
+  "Servicos": [
+    {
+      "NomeInterface": "IServicoDados",
+      "CaminhoTypeScript": "../../../../../Snebur.TS/src/Snebur.TS/src/AcessoDados/ServicoDados/ServicoDadosCliente.ts"
+    }
+  ]
+}

@@ -1,11 +1,15 @@
+using Snebur.AcessoDados;
+using Snebur.Comunicacao;
+
 namespace Snebur.RegrasNegocio;
 
-public abstract class BaseNegocio
+public abstract class BaseNegocio : IBaseNegocio
 {
 
 }
 
 public abstract class BaseNegocio<TContextoDados> : BaseNegocio
+    where TContextoDados : __BaseContextoDados
 {
     public TContextoDados ContextoDados { get; }
 
