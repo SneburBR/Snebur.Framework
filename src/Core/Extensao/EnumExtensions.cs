@@ -1,3 +1,4 @@
+using Snebur.Helpers;
 using System.ComponentModel;
 using System.Reflection;
 
@@ -10,8 +11,15 @@ public static class EnumExtensions
         var field = value.GetType().GetField(value.ToString());
         if (field == null)
             return value.ToString();
-        var attribute = CustomAttributeExtensions.GetCustomAttribute<DescriptionAttribute>(field);
-        return attribute != null ? attribute.Description : value.ToString();
+
+        var labelAttribute = field.GetCustomAttribute<RotuloAttribute>();
+        if (labelAttribute is not null)
+            return labelAttribute.Rotulo;
+        var attribute = field.GetCustomAttribute<DescriptionAttribute>();
+
+        return attribute != null
+            ? attribute.Description
+            : value.ToString();
     }
 
     public static TEnum FallbackIfNotDefined<TEnum>(this TEnum value, TEnum fallback) where TEnum : struct, Enum
@@ -30,5 +38,15 @@ public static class EnumExtensions
             return fallback;
 
         return value;
+    }
+
+    public static bool IsDefined(this Enum value)
+    {
+        return EnumHelpers.IsDefined(value.GetType(), value);
+    }
+
+    public static string GetName(this Enum value)
+    {
+        return Enum.GetName(value.GetType(), value) ?? value.ToString();
     }
 }

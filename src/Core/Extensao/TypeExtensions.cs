@@ -178,6 +178,11 @@ public static class TypeExtensions
         return type.Name;
     }
 
+    public static string GetDisplayAssemblyQualifiedName(this Type type)
+    {
+        return $"{type.FullName}, {type.Assembly.GetName().Name}";
+    }
+
     public static bool IsSubclassOf<T>(this Type type)
     {
         return type.IsSubclassOf(typeof(T));
