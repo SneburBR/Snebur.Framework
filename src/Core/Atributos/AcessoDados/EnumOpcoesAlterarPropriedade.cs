@@ -1,5 +1,6 @@
-﻿namespace Snebur.Dominio;
+namespace Snebur.Dominio;
 
+[Flags]
 public enum EnumOpcoesAlterarPropriedade
 {
     [UndefinedEnumValue]

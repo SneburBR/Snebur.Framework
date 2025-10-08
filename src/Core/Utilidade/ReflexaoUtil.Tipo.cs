@@ -42,14 +42,14 @@ public static partial class ReflexaoUtil
                     return EnumTipoPrimario.Guid;
 
                 case nameof(Int16):
-
-                    return EnumTipoPrimario.Integer;
-
+                case nameof(UInt16):
                 case nameof(Int32):
+                case nameof(UInt32):
 
                     return EnumTipoPrimario.Integer;
 
                 case nameof(Int64):
+                case nameof(UInt64):
 
                     return EnumTipoPrimario.Long;
 
@@ -61,6 +61,9 @@ public static partial class ReflexaoUtil
 
                     return EnumTipoPrimario.Decimal;
 
+                case nameof(Single):
+
+                    return EnumTipoPrimario.Single;
                 case nameof(Double):
 
                     return EnumTipoPrimario.Double;
@@ -72,17 +75,14 @@ public static partial class ReflexaoUtil
 
                     return EnumTipoPrimario.TimeSpan;
 
-                case nameof(Object):
-
-                    return EnumTipoPrimario.Object;
-
-                case nameof(Single):
-
-                    return EnumTipoPrimario.Single;
-
                 case nameof(Char):
 
                     return EnumTipoPrimario.Char;
+
+
+                case nameof(Object):
+
+                    return EnumTipoPrimario.Object;
                 //case nameof(Uri):
 
                 //    return EnumTipoPrimario.Uri;
@@ -121,6 +121,10 @@ public static partial class ReflexaoUtil
             case EnumTipoPrimario.Long:
 
                 return typeof(long);
+
+            case EnumTipoPrimario.Single:
+
+                return typeof(float);
 
             case EnumTipoPrimario.Double:
 
@@ -175,6 +179,7 @@ public static partial class ReflexaoUtil
         {
             tipo = RetornarTipoSemNullable(tipo);
         }
+
         var tipoPrimarioEnum = RetornarTipoPrimarioEnum(tipo);
         return (tipoPrimarioEnum != EnumTipoPrimario.Desconhecido);
     }

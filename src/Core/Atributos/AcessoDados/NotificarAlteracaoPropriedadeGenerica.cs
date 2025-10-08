@@ -6,7 +6,7 @@ namespace Snebur.Dominio.Atributos;
 [AttributeUsage(AttributeTargets.Property)]
 public class NotificarAlteracaoPropriedadeGenericaAttribute : BaseAtributoDominio, INotificarAlteracaoPropriedade
 {
-    public EnumOpcoesAlterarPropriedade Opcoes { get; }
+    public EnumOpcoesAlterarPropriedade Opcoes { get; } = EnumOpcoesAlterarPropriedade.Nenhuma;
     public string? FormatacaoPersonalizada { get; set; }
     public string Formatacao { get; set; } = EnumFormatacao.Nenhuma.ToString().ToLower();
     public Type? TipoPropriedadeRelacao { get; set; }

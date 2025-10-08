@@ -1,6 +1,6 @@
-﻿namespace Snebur.Dominio.Atributos;
+namespace Snebur.Dominio.Atributos;
 
-[IgnorarAtributoTS]
+[IgnorarAtributoTS, IgnorarTSReflexao]
 [AttributeUsage(AttributeTargets.Property)]
 public class RelacaoNnEspecializadaAttribute : RelacaoNnAttribute
 {

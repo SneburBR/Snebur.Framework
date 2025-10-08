@@ -1,5 +1,8 @@
+using Snebur.Reflexao;
 using System.Collections;
+using System.Linq.Expressions;
 using System.Reflection;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 
 namespace Snebur.Extensao;
@@ -26,36 +29,63 @@ public static class TypeExtensions
         return type;
     }
 
+    public static bool IsSubclassOf<T>(this Type type)
+    {
+        return IsSubclassOfInternal(type, typeof(T));
+    }
+
     public static bool IsSubclassOfOrEqual<T>(this Type type)
     {
         return type.IsSubclassOfOrEqual(typeof(T));
     }
 
-    public static bool IsSubclassOfOrEqual(this Type type, Type baseType)
+    public static bool IsSubclassOfOrEqual(
+        this Type type,
+        Type baseType)
     {
         if (type is null || baseType is null)
         {
             return false;
         }
+
         if (type == baseType)
         {
             return true;
         }
+        return IsSubclassOfInternal(type, baseType);
+    }
+
+    private static bool IsSubclassOfInternal(
+        this Type type,
+        Type baseType)
+    {
+        if (type == baseType)
+            return false;
+
+        if (type.IsGenericType && baseType.IsGenericTypeDefinition)
+        {
+            var current = type;
+            if (current != type)
+                throw new InvalidOperationException();
+
+            while (current is not null)
+            {
+                if (current.IsGenericType && current.GetGenericTypeDefinition() == baseType)
+                {
+                    return true;
+                }
+                current = current.BaseType;
+            }
+            return false;
+        }
+
         if (baseType.IsInterface)
         {
             return type.GetInterfaces().Contains(baseType);
         }
-
-        while (type is not null && type != typeof(object))
-        {
-            if (type == baseType)
-            {
-                return true;
-            }
-            type = type.BaseType!;
-        }
-        return false;
+        return type.IsSubclassOf(baseType);
     }
+
     public static bool IsConcrete(this Type type)
     {
         Guard.NotNull(type);
@@ -168,7 +198,7 @@ public static class TypeExtensions
             var genericArguments = type.GetGenericArguments()
                 .Select(x => GetDisplayName(x, excludeNestedTypeNames));
 
-            return $"{type.Name.Split('`')[0]}<{string.Join(", ", genericArguments)}>";
+            return $"{type.GetSimpleName()}<{string.Join(", ", genericArguments)}>";
         }
 
         if (!excludeNestedTypeNames && type.IsNested && type.DeclaringType is not null)
@@ -178,14 +208,17 @@ public static class TypeExtensions
         return type.Name;
     }
 
+    public static string GetSimpleName(this Type type)
+    {
+        if (!type.IsGenericType)
+            return type.Name;
+
+        return type.Name.Split('`')[0];
+    }
+
     public static string GetDisplayAssemblyQualifiedName(this Type type)
     {
         return $"{type.FullName}, {type.Assembly.GetName().Name}";
-    }
-
-    public static bool IsSubclassOf<T>(this Type type)
-    {
-        return type.IsSubclassOf(typeof(T));
     }
 
     public static bool ImplementsInterface<T>(this Type type)
@@ -361,4 +394,26 @@ public static class TypeExtensions
 
     public static bool IsStatic(this Type type)
         => type.IsAbstract && type.IsSealed;
+
+    public static bool IsDomainPrimitiveType(this Type type)
+    {
+        var underlyingType = type.GetUnderlyingType();
+        if (type.IsPrimitive)
+            return true;
+
+        if (type.IsEnum)
+            return true;
+
+        return type == typeof(Guid)
+            || type == typeof(string)
+            || type == typeof(DateTime)
+            || type == typeof(DateTimeOffset)
+            || type == typeof(TimeSpan)
+            || type == typeof(decimal);
+    }
+
+    public static EnumTipoPrimario GetPrimitiveTypeEnum(this Type type)
+    {
+        return ReflexaoUtil.RetornarTipoPrimarioEnum(type);
+    }
 }

@@ -717,4 +717,12 @@ public static class LinqExtensao
     {
         return enumerable.Cast<object>().Count();
     }
+
+    public static List<T> ToList<T>(this IEnumerable enumerable)
+    {
+        return enumerable
+            .Cast<T>()
+            .ToList();
+    }
+    
 }

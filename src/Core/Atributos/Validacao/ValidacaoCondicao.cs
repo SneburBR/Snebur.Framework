@@ -5,7 +5,7 @@ namespace Snebur.Dominio.Atributos;
 /// <summary>
 /// Criar um atributo de validação de condição, onde um propreidade da Entidade ou ViewModel precisa ser valida
 /// </summary>
-[IgnorarAtributoTS]
+[IgnorarAtributoTS, IgnorarTSReflexao]
 [AttributeUsage(AttributeTargets.Property)]
 public class ValidacaoCondicaoAttribute : BaseAtributoValidacao
 {

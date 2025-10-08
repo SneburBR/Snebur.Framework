@@ -28,8 +28,8 @@ public static class EnumHelpers
         "Nenhuma",
         "Nada",
     };
-    public static bool IsFlagsType(Type type)
-        => CustomAttributeExtensions.GetCustomAttribute<FlagsAttribute>(type) is not null;
+    public static bool IsEnumFlagsType(this Type type)
+        => type.IsEnum && type.GetCustomAttribute<FlagsAttribute>() is not null;
 
     public static bool IsFlags<T>()
         where T : struct, Enum
@@ -74,10 +74,7 @@ public static class EnumHelpers
                 {
                     valueOrName = Convert.ChangeType(valueOrName, enumValueType);
                 }
-                if (Enum.IsDefined(enumType, valueOrName))
-                {
-                    return (Enum)Enum.ToObject(enumType, valueOrName);
-                }
+                return (Enum)Enum.ToObject(enumType, valueOrName);
             }
         }
 
@@ -149,28 +146,35 @@ public static class EnumHelpers
         {
             value = Convert.ChangeType(value, enumEnderlineType);
         }
-
-        if (!Enum.IsDefined(enumType, value))
-            return false;
-
-        Enum enumValue = (Enum)Enum.ToObject(enumType, value);
-        var undef = GetEnumUndefinedValue(enumType);
-        if (undef is not null && Equals(undef, enumValue))
-        {
-            return false;
-        }
-        return true;
+        return IsDefinedInternal(enumType, value);
     }
 
     public static bool IsDefined<TEnum>(TEnum value)
          where TEnum : struct, Enum
     {
         var enumType = typeof(TEnum);
-        var undef = GetEnumUndefinedValue(enumType);
-        if (undef is not null && Equals(undef, value))
-            return false;
+        return IsDefinedInternal(enumType, value);
+    }
 
-        return Enum.IsDefined(value);
+    private static bool IsDefinedInternal(Type enumType, object value)
+    {
+        Enum enumValue = (Enum)Enum.ToObject(enumType, value);
+        var undef = GetEnumUndefinedValue(enumType);
+        if (undef is not null && Equals(undef, enumValue))
+        {
+            return false;
+        }
+
+        if (Enum.IsDefined(enumType, value))
+        {
+            return true;
+        }
+
+        if (enumType.IsEnumFlagsType())
+        {
+            return IsValidFlagCombination(enumType, value);
+        }
+        return false;
     }
 
     public static T GetAllFlags<T>() where T : Enum
@@ -180,7 +184,7 @@ public static class EnumHelpers
 
     public static Enum GetAllFlags(Type enumType)
     {
-        if (IsFlagsType(enumType) == false)
+        if (IsEnumFlagsType(enumType) == false)
             throw new ArgumentException($"Type {enumType} is not a flags enum. Apply {nameof(FlagsAttribute)} to the enum definition.");
 
         ulong all = 0;
@@ -189,6 +193,31 @@ public static class EnumHelpers
             all |= Convert.ToUInt64(val);
         }
         return (Enum)Enum.ToObject(enumType, all);
+    }
+
+    public static Enum[] GetDefinedFlags(Type enumType, object value)
+    {
+        var input = Convert.ToInt64(value);
+        return Enum.GetValues(enumType)
+            .Cast<Enum>()
+            .Where(v =>
+            {
+                var flag = Convert.ToInt64(v);
+                return flag != 0 && (input & flag) == flag;
+            })
+            .ToArray();
+    }
+    public static TEnum[] GetDefinedFlags<TEnum>(TEnum value) where TEnum : Enum
+    {
+        var input = Convert.ToInt64(value);
+        return Enum.GetValues(typeof(TEnum))
+            .Cast<TEnum>()
+            .Where(v =>
+            {
+                var flag = Convert.ToInt64(v);
+                return flag != 0 && (input & flag) == flag;
+            })
+            .ToArray();
     }
 
     public static bool IsDefined(Enum enumValue)
@@ -200,5 +229,13 @@ public static class EnumHelpers
     {
         if (!type.IsEnum)
             throw new ArgumentException($"Type {type} is not an enum.");
+    }
+
+    private static bool IsValidFlagCombination(Type enumType, object value)
+    {
+        var allFlags = GetAllFlags(enumType);
+        var ulongValue = Convert.ToUInt64(value);
+        var ulongAllFlags = Convert.ToUInt64(allFlags);
+        return (ulongValue & ulongAllFlags) == ulongValue;
     }
 }
