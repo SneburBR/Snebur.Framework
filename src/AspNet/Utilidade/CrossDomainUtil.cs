@@ -1,7 +1,6 @@
 using System.Web;
 using Microsoft.AspNetCore.Http;
 
-
 namespace Snebur.Utilidade;
 
 public static class CrossDomainUtil

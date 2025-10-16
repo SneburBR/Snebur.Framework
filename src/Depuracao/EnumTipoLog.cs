@@ -2,7 +2,7 @@ namespace Snebur.Depuracao
 {
     public enum EnumTipoLog
     {
-        [UndefinedEnumValue]
+        [UndefinedEnumValue] Undefined = -1,
         Normal,
         Alerta,
         Erro,

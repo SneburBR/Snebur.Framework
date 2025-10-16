@@ -1,9 +1,9 @@
-﻿namespace Snebur.Imagens;
+namespace Snebur.Imagens;
 
 public enum EnumPosicaoGradiente
 {
+    [UndefinedEnumValue] Undefined = -1,
     [Rotulo("left top")]
-    [UndefinedEnumValue]
     LeftTop,
     [Rotulo("center top")]
     CenterTop,

@@ -14,7 +14,7 @@ public class InformacaoSessao : BaseDominio, IInformacaoSessao
 
     public required string? Cultura { get; set; }
 
-    public required string Idioma { get; set; }
+    public required string? Idioma { get; set; }
 
     public EnumPlataforma Plataforma { get; set; }
 

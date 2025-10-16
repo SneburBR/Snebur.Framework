@@ -1,8 +1,8 @@
-﻿namespace Snebur.UI;
+namespace Snebur.UI;
 
 public enum EnumTipoAnimacao
 {
-    [UndefinedEnumValue]
+    [UndefinedEnumValue] Undefined = -1,
     Nenhuma = 0,
     Deslizante = 1,
 }

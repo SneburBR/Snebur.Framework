@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace Snebur.Dominio;
 
 public partial class ValidarEntidades : IDisposable
@@ -34,6 +36,8 @@ public partial class ValidarEntidades : IDisposable
                         {
                             if (!atributoValidacao.IsValido(propriedade, entidade, valorPropriedade))
                             {
+                                Debugger.Break();
+
                                 var erroValidacao = new ErroValidacaoInfo
                                 {
                                     NomeTipoEntidade = entidade.__NomeTipoEntidade,
@@ -65,6 +69,8 @@ public partial class ValidarEntidades : IDisposable
                 {
                     if (!atributoEntidade.IsValido(contextoDados, this.Entidades, entidade))
                     {
+                        Debugger.Break();
+
                         var mensagem = String.Format("Entidade : '{0}' - {1}", entidade.__NomeTipoEntidade, atributoEntidade.RetornarMensagemValidacao(entidade));
                         var erroValidacao = new ErroValidacaoInfo
                         {

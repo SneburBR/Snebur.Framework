@@ -11,7 +11,8 @@ public abstract class Credencial : BaseDominio, ICredencial
 
     [IgnorarPropriedade]
     [IgnorarPropriedadeTSReflexao]
-    public bool IsAnonimo => Util.SaoIgual(this.IdentificadorUsuario, CredencialAnonimo.Anonimo.IdentificadorUsuario);
+    public bool IsAnonimo 
+        => Util.SaoIgual(this.IdentificadorUsuario, CredencialAnonimo.Anonimo.IdentificadorUsuario);
 
     [MemberNotNullWhen(true, nameof(IdentificadorUsuario))]
     [MemberNotNullWhen(true, nameof(Senha))]

@@ -1,9 +1,8 @@
-﻿namespace Snebur.UI;
+namespace Snebur.UI;
 
 public enum EnumFormatacaoTexto
 {
-    [UndefinedEnumValue]
-    Undefined = -1,
+    [UndefinedEnumValue] Undefined = -1,
     SemFormatacao = 1,
     CaixaAlta = 2,
     CaixaBaixa = 3,

@@ -11,8 +11,6 @@ public abstract class BaseAcessoDados : BaseDominio
 
     //public string Erro { get; set; }
 
-
-
     public string? MensagemErro { get => this.GetPropertyValue(this._mensagemErro); set => this.SetProperty(this._mensagemErro, this._mensagemErro = value); }
 
     public bool FalhaAutenticacao { get => this.GetPropertyValue(this._falhaAutenticacao); set => this.SetProperty(this._falhaAutenticacao, this._falhaAutenticacao = value); }

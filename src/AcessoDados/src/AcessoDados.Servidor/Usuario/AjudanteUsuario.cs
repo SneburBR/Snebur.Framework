@@ -372,6 +372,7 @@ public partial class CacheSessaoUsuario
             sessaoUsuario.IdentificadorProprietario = contexto.IdentificadorProprietario;
             sessaoUsuario.IPInformacao = ipInformacao;
             sessaoUsuario.IP = ipInformacao.IP;
+            sessaoUsuario.Idioma = informacaoSessaoUsuario.Idioma;
 
             (contexto as IContextoDadosSemNotificar).SalvarInternoSemNotificacao((Entidade)sessaoUsuario);
             return sessaoUsuario;

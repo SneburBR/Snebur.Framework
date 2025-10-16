@@ -29,6 +29,7 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntityLifecycl
     [OcultarColuna]
     [SomenteLeitura]
     [PropriedadeProtegida]
+    [IgnorarPropriedadeTSReflexao]
     [JsonIgnore]
     public string __NomeTipoEntidade { get; private set; }
 

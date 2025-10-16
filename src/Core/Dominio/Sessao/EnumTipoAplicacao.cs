@@ -5,8 +5,7 @@ namespace Snebur.Dominio;
 [IgnorarGlobalizacao]
 public enum EnumTipoAplicacao
 {
-    [UndefinedEnumValue]
-    Undefined = -1,
+    [UndefinedEnumValue] Undefined = -1,
 
     [Description("Typescript Client")]
     Typescript = 1,

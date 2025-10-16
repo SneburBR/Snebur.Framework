@@ -1,8 +1,8 @@
-﻿namespace Snebur.UI;
+namespace Snebur.UI;
 
 public enum EnumTipoEntrada
 {
-    [UndefinedEnumValue]
+    [UndefinedEnumValue] Undefined = -1,
     Nenhum = 0,
     Texto,
     Decimal,

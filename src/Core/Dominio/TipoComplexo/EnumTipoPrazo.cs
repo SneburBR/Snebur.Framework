@@ -1,9 +1,9 @@
-﻿namespace Snebur.Dominio;
+namespace Snebur.Dominio;
 
 public enum EnumTipoPrazo
 {
+    [UndefinedEnumValue] Undefined = -1,
     [Rotulo("Dias úteis")]
-    [UndefinedEnumValue]
     DiasUteis = 0,
     [Rotulo("Dias corridos")]
     DiasCorrido = 1,

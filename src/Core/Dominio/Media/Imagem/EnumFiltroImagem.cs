@@ -1,9 +1,9 @@
-﻿namespace Snebur.Dominio;
+namespace Snebur.Dominio;
 
 public enum EnumFiltroImagem
 {
+    [UndefinedEnumValue] Undefined = -1,
     [Rotulo("Exposição")]
-    [UndefinedEnumValue]
     Exposicao,
     [Rotulo("Brilho")]
     Brilho,

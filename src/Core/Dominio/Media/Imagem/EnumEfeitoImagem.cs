@@ -2,8 +2,7 @@ namespace Snebur.Dominio;
 
 public enum EnumEfeitoImagem
 {
-    [UndefinedEnumValue]
-    Undefined = -1,
+    [UndefinedEnumValue] Undefined = -1,
 
     [Rotulo("Nenhum")]
     Nenhum = 0,

@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Snebur.Linq;
 using Microsoft.Data.SqlClient;
 
-
 namespace Snebur.AcessoDados;
 
 internal class DepuracaoUtil

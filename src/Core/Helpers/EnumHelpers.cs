@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.IO;
 using System.Reflection;
 
 namespace Snebur.Helpers;
@@ -187,10 +185,13 @@ public static class EnumHelpers
         if (IsEnumFlagsType(enumType) == false)
             throw new ArgumentException($"Type {enumType} is not a flags enum. Apply {nameof(FlagsAttribute)} to the enum definition.");
 
-        ulong all = 0;
+        long all = 0;
         foreach (var val in Enum.GetValues(enumType))
         {
-            all |= Convert.ToUInt64(val);
+            var longValue = Convert.ToInt64(val);
+            if (longValue < 0)
+                continue;
+            all |= longValue;
         }
         return (Enum)Enum.ToObject(enumType, all);
     }

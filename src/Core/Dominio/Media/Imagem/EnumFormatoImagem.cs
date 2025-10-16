@@ -1,8 +1,9 @@
-﻿namespace Snebur.Dominio;
+namespace Snebur.Dominio;
 
 public enum EnumFormatoImagem
 {
-    [UndefinedEnumValue]
+    [UndefinedEnumValue] Undefined = -1,
+
     Desconhecido = 0,
     [Rotulo("Joint Photographic Experts Group")]
     JPEG = 1,

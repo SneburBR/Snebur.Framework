@@ -1,10 +1,9 @@
-﻿namespace Snebur.Utilidade
+namespace Snebur.Utilidade
 
 {
     public enum OpcoesCompararHora
     {
-        [UndefinedEnumValue]
-        Undefined = -1,
+        [UndefinedEnumValue] Undefined = -1,
         Padrao = 1,
         HoraDoDia = 2,
         HoraMinuto = 3,

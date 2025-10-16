@@ -2,8 +2,7 @@ namespace Snebur.Dominio;
 
 public enum EnumStatusCodigoRecuperarSenha
 {
-    [UndefinedEnumValue]
-    Undefined = -1,
+    [UndefinedEnumValue] Undefined = -1,
     Nenhum = 0,
     Novo = 1,
     TentativaInvalida = 2,

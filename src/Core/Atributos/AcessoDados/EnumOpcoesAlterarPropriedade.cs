@@ -3,7 +3,7 @@ namespace Snebur.Dominio;
 [Flags]
 public enum EnumOpcoesAlterarPropriedade
 {
-    [UndefinedEnumValue]
+    [UndefinedEnumValue] Undefined = -1,
     Nenhuma = 0,
     NotificarNovoCadastro = 2,
     VerificarAlteracaoNoBanco = 4,

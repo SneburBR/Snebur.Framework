@@ -6,20 +6,28 @@ namespace Snebur;
 
 public static class EnumExtensions
 {
+    public static bool IsHasUnderfinedAttribute(this Enum value)
+    {
+        return value.GetAttribute<UndefinedEnumValueAttribute>() != null;
+    }
+
     public static string GetDescription(this Enum value)
+    {
+        return value.GetAttribute<RotuloAttribute>()?.Rotulo
+            ?? value.ToString()
+            ?? value.GetAttribute<DescriptionAttribute>()?.Description
+            ?? value.ToString();
+    }
+    public static TAtribute? GetAttribute<TAtribute>(this Enum value)
+        where  TAtribute : Attribute
+
     {
         var field = value.GetType().GetField(value.ToString());
         if (field == null)
-            return value.ToString();
+            return null;
 
-        var labelAttribute = field.GetCustomAttribute<RotuloAttribute>();
-        if (labelAttribute is not null)
-            return labelAttribute.Rotulo;
-        var attribute = field.GetCustomAttribute<DescriptionAttribute>();
-
-        return attribute != null
-            ? attribute.Description
-            : value.ToString();
+        return field.GetCustomAttribute<TAtribute>();
+   
     }
 
     public static TEnum FallbackIfNotDefined<TEnum>(this TEnum value, TEnum fallback) where TEnum : struct, Enum

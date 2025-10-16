@@ -1,8 +1,8 @@
-﻿namespace Snebur.UI;
+namespace Snebur.UI;
 
 public enum EnumAlinhamentoHorizontal
 {
-    [UndefinedEnumValue]
+    [UndefinedEnumValue] Undefined = -1,
     Esquerda,
     Centro,
     Direita,

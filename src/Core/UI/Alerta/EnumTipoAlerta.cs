@@ -1,8 +1,8 @@
-﻿namespace Snebur.UI;
+namespace Snebur.UI;
 
 public enum EnumTipoAlerta
 {
-    [UndefinedEnumValue]
+    [UndefinedEnumValue] Undefined = -1,
     Atencao,
     Informacao,
     Sucesso,

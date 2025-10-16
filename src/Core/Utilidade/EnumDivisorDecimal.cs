@@ -1,8 +1,8 @@
-﻿namespace Snebur.Utilidade;
+namespace Snebur.Utilidade;
 
 public enum EnumDivisorDecimal
 {
-    [UndefinedEnumValue]
+    [UndefinedEnumValue] Undefined = -1,
     CulturaAtual,
     Ponto,
     Virgula

@@ -1,9 +1,11 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 
 namespace Snebur.ServicoArquivo;
 
 public enum EnumTipoErroServicoArquivo
 {
+    [UndefinedEnumValue] Undefined = -1,
+
     [Description("Checksum do arquivo diferentes")]
     ChecksumArquivoDiferente = 1,
     [Description("Checksum do pacote diferentes")]
@@ -13,7 +15,6 @@ public enum EnumTipoErroServicoArquivo
     [Description("Arquivo temp em uso")]
     ArquivoTempEmUso = 4,
     [Description("Desconhecido")]
-    [UndefinedEnumValue]
     Desconhecido = 5,
     ArquivoNaoEncontrado = 6,
     IdArquivoNaoExiste = 7

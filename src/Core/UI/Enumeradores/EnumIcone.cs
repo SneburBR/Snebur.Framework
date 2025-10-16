@@ -1,9 +1,8 @@
-﻿namespace Snebur.UI;
+namespace Snebur.UI;
 
 public enum EnumIcone
 {
-    [UndefinedEnumValue]
-    Undefined = -1,
+    [UndefinedEnumValue] Undefined = -1,
     [Rotulo("Vazio")]
     Vazio = BaseEnumApresentacao.Vazio,
     [Rotulo("Search")]

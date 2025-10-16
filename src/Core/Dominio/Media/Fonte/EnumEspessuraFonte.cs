@@ -1,9 +1,8 @@
-﻿namespace Snebur.Dominio;
+namespace Snebur.Dominio;
 
 public enum EnumEspessuraFonte
 {
-    [UndefinedEnumValue]
-    Undefined = -1,
+    [UndefinedEnumValue] Undefined = -1,
     [Rotulo("Fina")]
     Fina = 100,
     [Rotulo("Extra leve")]

@@ -1,8 +1,8 @@
-﻿namespace Snebur.Dominio.Interface.Media;
+namespace Snebur.Dominio.Interface.Media;
 
 public enum EnumFamiliaPerfilIcc
 {
-    [UndefinedEnumValue]
+    [UndefinedEnumValue] Undefined = -1,
     Desconhecido = 0,
     Rgb = 1,
     Cmyk = 2,

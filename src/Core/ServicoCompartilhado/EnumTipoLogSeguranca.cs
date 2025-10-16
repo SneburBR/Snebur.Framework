@@ -1,9 +1,8 @@
-﻿namespace Snebur.Servicos;
+namespace Snebur.Servicos;
 
 public enum EnumTipoLogSeguranca
 {
-    [UndefinedEnumValue]
-    Undefined = -1,
+    [UndefinedEnumValue] Undefined = -1,
     [Rotulo("Token expirado")]
     TokenExpirado = 1,
     [Rotulo("Token invalido")]

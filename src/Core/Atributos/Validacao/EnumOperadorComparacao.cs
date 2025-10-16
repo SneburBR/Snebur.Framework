@@ -1,9 +1,9 @@
-﻿namespace Snebur.Dominio.Atributos;
+namespace Snebur.Dominio.Atributos;
 
 [IgnorarTSReflexao]
 public enum EnumOperadorComparacao
 {
-    [UndefinedEnumValue]
+    [UndefinedEnumValue] Undefined = -1,
     Nenhum = 0,
     Igual = 1,
     Diferente = 2,

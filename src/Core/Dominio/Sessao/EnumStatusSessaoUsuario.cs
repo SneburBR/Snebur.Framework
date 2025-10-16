@@ -2,8 +2,7 @@ namespace Snebur.Dominio;
 
 public enum EnumStatusSessaoUsuario
 {
-    [UndefinedEnumValue]
-    Undefined = -1,
+    [UndefinedEnumValue] Undefined = -1,
 
     Desconhecido = 0,
     Nova = 100,

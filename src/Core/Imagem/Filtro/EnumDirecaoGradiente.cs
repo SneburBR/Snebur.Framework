@@ -1,9 +1,9 @@
-﻿namespace Snebur.Imagens;
+namespace Snebur.Imagens;
 
 public enum EnumDirecaoGradiente
 {
+    [UndefinedEnumValue] Undefined = -1,
     [Rotulo("to left")]
-    [UndefinedEnumValue]
     ToLeft,
     [Rotulo("to right")]
     ToRight,

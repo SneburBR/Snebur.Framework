@@ -2,8 +2,7 @@ namespace Snebur.AcessoDados;
 
 public enum EnumTipoFuncao
 {
-    [UndefinedEnumValue]
-    Undefined = -1,
+    [UndefinedEnumValue] Undefined = -1,
     Consulta = 1,
     Contar = 2,
     Somar = 3,

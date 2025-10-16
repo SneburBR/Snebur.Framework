@@ -1,8 +1,8 @@
-﻿namespace Snebur.UI;
+namespace Snebur.UI;
 
 public enum EnumResultadoAlerta
 {
-    [UndefinedEnumValue]
+    [UndefinedEnumValue] Undefined = -1,
     Sim,
     Nao,
     Continuar,

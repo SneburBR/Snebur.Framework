@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Snebur.Servicos;
+using System.Diagnostics;
 using System.IO;
 using System.Net.WebSockets;
 using System.Text;
@@ -71,45 +72,48 @@ public abstract partial class BaseManipuladorRequisicao : IHttpModule, IDisposab
     {
         var request = httpContext.Request;
 
-        if (this.IsRequicaoValida(request, true))
+        if (!this.IsRequicaoValida(request, true))
         {
-            var identificadorProprietario = this.RetornarIdentificadorProprietario(request);
-            if (!request.Headers.TryGetValue(ParametrosComunicacao.MANIPULADOR, out var manipuladorValues) ||
-                manipuladorValues.Count == 0 || String.IsNullOrWhiteSpace(manipuladorValues))
+            Debugger.Break();
+            return;
+        }
+        var identificadorProprietario = this.RetornarIdentificadorProprietario(request);
+        if (!request.Headers.TryGetValue(ParametrosComunicacao.MANIPULADOR, out var manipuladorValues) ||
+            manipuladorValues.Count == 0 || String.IsNullOrWhiteSpace(manipuladorValues))
+        {
+            this.NotificarLogSeguranca(request, EnumTipoLogSeguranca.ManipuladorNaoDefinido);
+            httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            return;
+        }
+
+        string nomeManipulador = manipuladorValues.ToString();
+        var tipoManipulador = this.RetornarTipoServico(nomeManipulador);
+        if (tipoManipulador is null)
+        {
+            this.NotificarServicoNaoEncontado(httpContext, nomeManipulador);
+            return;
+        }
+
+        var comicacaoServidor = Activator.CreateInstance(tipoManipulador) as BaseComunicacaoServidor
+            ?? throw new ErroComunicacao($"O manipulador {nomeManipulador} não é um {nameof(BaseComunicacaoServidor)} válido.");
+
+        using (var servico = comicacaoServidor)
+        {
+            try
             {
-                this.NotificarLogSeguranca(request, EnumTipoLogSeguranca.ManipuladorNaoDefinido);
-                httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return;
+                servico.IdentificadorProprietario = identificadorProprietario;
+                await servico.ProcessRequestAsync(httpContext);
             }
-
-            string nomeManipulador = manipuladorValues.ToString();
-            var tipoManipulador = this.RetornarTipoServico(nomeManipulador);
-            if (tipoManipulador is null)
+            catch (ErroRequisicao)
             {
-                this.NotificarServicoNaoEncontado(httpContext, nomeManipulador);
-                return;
+                throw;
             }
-
-            var comicacaoServidor = Activator.CreateInstance(tipoManipulador) as BaseComunicacaoServidor
-                ?? throw new ErroComunicacao($"O manipulador {nomeManipulador} não é um {nameof(BaseComunicacaoServidor)} válido.");
-
-            using (var servico = comicacaoServidor)
+            catch (Exception ex)
             {
-                try
-                {
-                    servico.IdentificadorProprietario = identificadorProprietario;
-                    await servico.ProcessRequestAsync(httpContext);
-                }
-                catch (ErroRequisicao)
-                {
-                    throw;
-                }
-                catch (Exception ex)
-                {
-                    throw new ErroWebService(ex, nomeManipulador ?? "manipulador não definido");
-                }
+                throw new ErroWebService(ex, nomeManipulador ?? "manipulador não definido");
             }
         }
+
     }
 
     private async Task<bool> IsExecutarServicoAsync(HttpContext httpContext)

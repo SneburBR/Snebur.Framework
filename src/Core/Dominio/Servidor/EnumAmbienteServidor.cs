@@ -2,7 +2,7 @@ namespace Snebur;
 
 public enum EnumAmbienteServidor
 {
-    [UndefinedEnumValue]
+    [UndefinedEnumValue] Undefined = -1,
     Localhost,
     Interno,
     Teste,

@@ -1,11 +1,9 @@
 using Snebur.Dominio;
-using Snebur.Dominio.Atributos;
 
 namespace Snebur.Depuracao
 {
     public class Contrato : BaseDominio
     {
-
 
 #if NET6_0_OR_GREATER
         public Mensagem? Mensagem { get; set; }

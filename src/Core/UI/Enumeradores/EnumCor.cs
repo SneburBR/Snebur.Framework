@@ -1,11 +1,13 @@
-﻿namespace Snebur.UI;
+namespace Snebur.UI;
 
 public enum EnumCor
 {
+    [UndefinedEnumValue] Undefined = -1,
+
     [Rotulo("Vazio")]
     Vazio = BaseEnumApresentacao.Vazio,
     [Rotulo("Transparente")]
-    [UndefinedEnumValue]
+
     Transparente = 0,
     [Rotulo("Padrão")]
     SistemaPadrao = 10,

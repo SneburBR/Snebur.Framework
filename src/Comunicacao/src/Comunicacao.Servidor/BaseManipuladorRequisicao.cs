@@ -2,7 +2,6 @@ using Snebur.Servicos;
 using System.Web;
 using Microsoft.AspNetCore.Http;
 
-
 namespace Snebur.Comunicacao;
 
 public abstract partial class BaseManipuladorRequisicao
@@ -44,10 +43,10 @@ public abstract partial class BaseManipuladorRequisicao
 
     private bool IsRequicaoValida(HttpRequest request, bool isValidarUrlMd5)
     {
-        if (DebugUtil.IsAttached)
-        {
-            return true;
-        }
+        //if (DebugUtil.IsAttached)
+        //{
+        //    return true;
+        //}
 
         if (!this.IsAplicacaoAutorizada(request))
         {

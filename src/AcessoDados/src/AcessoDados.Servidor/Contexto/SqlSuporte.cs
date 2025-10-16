@@ -24,7 +24,6 @@ public class BancoDadosSuporta
         this.IsDataHoraUtc = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.DataHoraUtc);
         this.IsDatabaseGeneratedOptionIdentityPadrao = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.DatabaseGeneratedOptionIdentityPadrao);
 
-
         this.IsSessaoUsuarioContextoAtual = this.IsSuporta(flags, EnumFlagBancoNaoSuportado.SessaoUsuario) &&
                                             this.IsSuporta(flags, EnumFlagBancoNaoSuportado.SessaoUsuarioHerdada);
         if (!this.IsSessaoUsuarioContextoAtual)

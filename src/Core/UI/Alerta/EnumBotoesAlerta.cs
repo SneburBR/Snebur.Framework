@@ -1,8 +1,8 @@
-﻿namespace Snebur.UI;
+namespace Snebur.UI;
 
 public enum EnumBotoesAlerta
 {
-    [UndefinedEnumValue]
+    [UndefinedEnumValue] Undefined = -1,
     SimNao,
     Fechar,
     FecharVoltar,

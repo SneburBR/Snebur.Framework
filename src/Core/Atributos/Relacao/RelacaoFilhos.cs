@@ -5,7 +5,7 @@ public class RelacaoFilhosAttribute : BaseRelacaoAttribute
 {
     public string? NomePropriedadeChaveEstrangeira { get; set; }
 
-    public RelacaoFilhosAttribute(string nomePropriedadeChaveEstrangeira)
+    public RelacaoFilhosAttribute([ParametroOpcionalTS] string nomePropriedadeChaveEstrangeira)
     {
         this.NomePropriedadeChaveEstrangeira = nomePropriedadeChaveEstrangeira;
     }

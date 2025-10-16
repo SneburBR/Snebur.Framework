@@ -1,9 +1,10 @@
-﻿namespace Snebur.Dominio;
+namespace Snebur.Dominio;
 
 public enum EnumDiaSemana
 {
+    [UndefinedEnumValue] Undefined = -1,
+
     [Rotulo("Domingo")]
-    [UndefinedEnumValue]
     Domingo = 0,
     [Rotulo("Segunda-feira")]
     SegundaFeira = 1,

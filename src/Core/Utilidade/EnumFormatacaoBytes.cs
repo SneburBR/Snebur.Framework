@@ -1,9 +1,8 @@
-﻿namespace Snebur.Utilidade;
+namespace Snebur.Utilidade;
 
 public enum EnumFormatacaoBytes
 {
-    [UndefinedEnumValue]
-    Undefined = -1,
+    [UndefinedEnumValue] Undefined = -1,
     Bytes = 1,
     Kilobytes = 2,
     Megabytes = 3,

@@ -1,9 +1,8 @@
-﻿namespace Snebur.Dominio;
+namespace Snebur.Dominio;
 
 public enum EnumStatusArquivo
 {
-    [UndefinedEnumValue]
-    Undefined = -1,
+    [UndefinedEnumValue] Undefined = -1,
     Novo = 1,
     Enviando = 2,
     EnvioConcluido = 3,

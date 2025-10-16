@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 
-
 namespace Snebur.Comunicacao;
 
 public abstract partial class BaseComunicacaoServidor : IHttpHandler, IDisposable, IBaseServico

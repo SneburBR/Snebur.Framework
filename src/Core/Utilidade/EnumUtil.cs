@@ -59,7 +59,10 @@ public static class EnumUtil
         //    .Where(x => x.IsLiteral)
         //    .Select(x => (Enum)x.GetValue(null)).ToArray();
 
-        return Enum.GetValues(tipoEnum).Cast<Enum>().ToArray();
+        return Enum.GetValues(tipoEnum)
+            .Cast<Enum>()
+            .Where(x=> !x.IsHasUnderfinedAttribute())
+            .ToArray();
     }
 
     public static string RetornarDescricao(Enum valor)

@@ -1,8 +1,8 @@
-﻿namespace Snebur.Dominio;
+namespace Snebur.Dominio;
 
 public enum EnunFlagAlteracaoPropriedade
 {
-    [UndefinedEnumValue]
+    [UndefinedEnumValue] Undefined = -1,
     None = 0,
     NotificarNovoCadastro = 2,
     VerificarAlteracaoNoBanco = 4,

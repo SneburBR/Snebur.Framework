@@ -1,8 +1,8 @@
-﻿namespace Snebur.Utilidade;
+namespace Snebur.Utilidade;
 
 public enum CaseType
 {
-    [UndefinedEnumValue]
+    [UndefinedEnumValue] Undefined = -1,
     Unknown,
     LowerCase,
     PascalCase,

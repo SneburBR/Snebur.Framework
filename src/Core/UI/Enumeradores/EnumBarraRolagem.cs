@@ -1,9 +1,8 @@
-﻿namespace Snebur.UI;
+namespace Snebur.UI;
 
 public enum EnumBarraRolagem
 {
-    [UndefinedEnumValue]
-    NaoDefino = 0,
+    [UndefinedEnumValue] Undefined = -1,
     Oculta = 1,
     Automatica = 2,
     Visivel = 3,

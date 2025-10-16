@@ -1,7 +1,6 @@
 using Snebur.ServicoArquivo.Servidor;
 using Snebur.Helpers;
 
-
 #if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Http;
 #endif

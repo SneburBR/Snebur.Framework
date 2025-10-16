@@ -1,10 +1,10 @@
-﻿namespace Snebur.UI;
+namespace Snebur.UI;
 
 public enum EnumPosicao
 {
+    [UndefinedEnumValue] Undefined = -1,
     [Rotulo("Vazio")]
     Vazio = BaseEnumApresentacao.Vazio,
-    [UndefinedEnumValue]
     Nenhum = 0,
     Esquerda = 1,
     Direita = 2,

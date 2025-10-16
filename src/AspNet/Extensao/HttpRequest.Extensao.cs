@@ -24,7 +24,6 @@ public static class HttpRequestExtensao
         return request.Form.Files;
     }
 
-
     public static string? GetValue(this HttpRequest request, string key)
     {
 

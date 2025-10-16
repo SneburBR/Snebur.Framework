@@ -1,8 +1,8 @@
-﻿namespace Snebur.Dominio.Atributos;
+namespace Snebur.Dominio.Atributos;
 
 public enum EnumOpcoesComparacaoAuxiliar
 {
-    [UndefinedEnumValue]
+    [UndefinedEnumValue] Undefined = -1,
     Nenhuma,
     True,
     False,

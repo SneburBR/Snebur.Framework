@@ -1,8 +1,8 @@
-﻿namespace Snebur.Utilidade;
+namespace Snebur.Utilidade;
 
 public enum EnumFormatacaoCodigo
 {
-    [UndefinedEnumValue]
+    [UndefinedEnumValue] Undefined = -1,
     PascalCase,
     CamelCase,
     SnakeCase,

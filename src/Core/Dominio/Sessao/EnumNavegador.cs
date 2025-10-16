@@ -5,8 +5,7 @@ namespace Snebur.Dominio;
 [IgnorarGlobalizacao]
 public enum EnumNavegador
 {
-    [UndefinedEnumValue]
-    Undefined = -1,
+    [UndefinedEnumValue] Undefined = -1,
     [Description("Internet Explorer")]
     InternetExplorer = 1,
     [Description("Chrome")]

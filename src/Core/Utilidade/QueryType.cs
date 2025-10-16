@@ -1,9 +1,8 @@
-﻿namespace Snebur.Utilidade;
+namespace Snebur.Utilidade;
 
 public enum QueryType
 {
-    [UndefinedEnumValue]
-    Undefined = -1,
+    [UndefinedEnumValue] Undefined = -1,
     A = 1,
     MX = 15,
     NS = 2,

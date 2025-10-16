@@ -79,7 +79,6 @@ public static partial class ReflexaoUtil
 
                     return EnumTipoPrimario.Char;
 
-
                 case nameof(Object):
 
                     return EnumTipoPrimario.Object;

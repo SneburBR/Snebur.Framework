@@ -1,11 +1,10 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 
 namespace Snebur.Dominio;
 
 public enum EnumTamanhoImagem
 {
-    [UndefinedEnumValue]
-    Undefined = -1,
+    [UndefinedEnumValue] Undefined = -1,
     [Description("Miniatura")]
     Miniatura = 2,
     [Description("Pequena")]

@@ -1,8 +1,8 @@
-﻿namespace Snebur.Dominio;
+namespace Snebur.Dominio;
 
 public enum EnumTipoData
 {
-    [UndefinedEnumValue]
+    [UndefinedEnumValue] Undefined = -1,
     Normal,
     DataPassadoFuturoProximo,
     DataPassadoFuturo,

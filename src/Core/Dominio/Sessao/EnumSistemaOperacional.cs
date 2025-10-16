@@ -5,8 +5,7 @@ namespace Snebur.Dominio;
 [IgnorarGlobalizacao]
 public enum EnumSistemaOperacional
 {
-    [UndefinedEnumValue]
-    Undefined = -1,
+    [UndefinedEnumValue] Undefined = -1,
 
     [Description("Windows")]
     Windows = 1,

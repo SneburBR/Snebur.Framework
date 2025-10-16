@@ -1,10 +1,10 @@
-﻿namespace Snebur.UI;
+namespace Snebur.UI;
 
 public enum EnumTonalidade
 {
+    [UndefinedEnumValue] Undefined = -1,
     [Rotulo("Vazio")]
     Vazio = BaseEnumApresentacao.Vazio,
-    [UndefinedEnumValue]
     Padrao = 0,
     T100 = 100,
     T200 = 200,

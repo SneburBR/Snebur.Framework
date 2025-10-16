@@ -18,7 +18,6 @@ public static class DictionaryExtensao
     //    return (dict as IEnumerable)?.SyncLock() ?? LinqExtensao.__lock;
     //}
 
-
     public static void RemoveAll<TKey, TValue>(this IDictionary<TKey, TValue> dicionario, IEnumerable<TKey> keys)
     {
         foreach (var key in keys)

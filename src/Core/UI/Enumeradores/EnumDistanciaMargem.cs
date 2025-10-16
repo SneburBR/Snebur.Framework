@@ -1,12 +1,11 @@
-﻿namespace Snebur.UI;
+namespace Snebur.UI;
 
 public enum EnumDistanciaMargem
 {
-    [UndefinedEnumValue]
-    Undefined = -1,
+    [UndefinedEnumValue] Undefined = -1,
     [Rotulo("Vazio")]
     Vazio = BaseEnumApresentacao.Vazio,
-#region Porcentagem
+    #region Porcentagem
     /// <summary>
     ///   8.33333%
     /// </summary>
@@ -76,8 +75,8 @@ public enum EnumDistanciaMargem
     [RotuloVSIntelliSense("Coluna-12")]
     [RotuloVSIntelliSense("100%")]
     _100P = BaseEnumComprimento._100P,
-#endregion
-#region Pixels
+    #endregion
+    #region Pixels
     //pixels
     [RotuloVSIntelliSense("4px")]
     _4px = BaseEnumComprimento._4px,
@@ -123,5 +122,5 @@ public enum EnumDistanciaMargem
     _256px = BaseEnumComprimento._256px,
     [RotuloVSIntelliSense("512px")]
     _512px = BaseEnumComprimento._512px
-#endregion
+    #endregion
 }

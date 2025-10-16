@@ -1,8 +1,8 @@
-﻿namespace Snebur.Dominio;
+namespace Snebur.Dominio;
 
 public enum EnumTipoValorPadrao
 {
-    [UndefinedEnumValue]
+    [UndefinedEnumValue] Undefined = -1,
     Nenhum,
     IndentificadorProprietario,
     SessaoUsuario_Id,

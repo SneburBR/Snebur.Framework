@@ -1,9 +1,9 @@
-﻿namespace Snebur.UI;
+namespace Snebur.UI;
 
 public enum EnumTamanhoIcone
 {
+    [UndefinedEnumValue] Undefined = -1,
     Vazio = BaseEnumApresentacao.Vazio,
-    [UndefinedEnumValue]
     Padrao = 0,
     Pequeno = 1,
     PequenoMedio = 2,

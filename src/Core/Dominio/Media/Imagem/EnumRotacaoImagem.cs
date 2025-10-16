@@ -1,8 +1,8 @@
-﻿namespace Snebur.Dominio;
+namespace Snebur.Dominio;
 
 public enum EnumRotacaoImagem
 {
-    [UndefinedEnumValue]
+    [UndefinedEnumValue] Undefined = -1,
     Normal = 0,
     Rotacao90 = 90,
     Rotacao180 = 180,

@@ -1,14 +1,17 @@
+using Snebur.Linq;
 using Snebur.Reflexao;
 using System.Collections;
-using System.Linq.Expressions;
 using System.Reflection;
-using System.Reflection.Metadata;
 using System.Threading.Tasks;
 
 namespace Snebur.Extensao;
 
 public static class TypeExtensions
 {
+    private const string VERSION_MARK = "Version=";
+    private const string START_GENERIC_MARK = "[[";
+    private const string END_GENERIC_MARK = "]]";
+
     public static Type GetUnderlyingType(this Type type)
     {
         if (type.IsNullableType())
@@ -207,7 +210,7 @@ public static class TypeExtensions
         }
         return type.Name;
     }
-
+     
     public static string GetSimpleName(this Type type)
     {
         if (!type.IsGenericType)
@@ -218,7 +221,30 @@ public static class TypeExtensions
 
     public static string GetDisplayAssemblyQualifiedName(this Type type)
     {
-        return $"{type.FullName}, {type.Assembly.GetName().Name}";
+        return $"{type.GetFullNameInternal()}, {type.Assembly.GetName().Name}";
+    }
+  
+    private static string GetFullNameInternal(this Type type)
+    {
+        var fullName = type.FullName ?? type.Name;
+        var indexVersion = fullName.IndexOf(VERSION_MARK, StringComparison.Ordinal);
+        if (indexVersion == -1)
+            return fullName;
+
+        if (type.IsGenericType)
+        {
+            var indexStartGeneric = fullName.IndexOf(START_GENERIC_MARK, StringComparison.Ordinal) + START_GENERIC_MARK.Length;
+            var indexEndGeneric = fullName.LastIndexOf(END_GENERIC_MARK, StringComparison.Ordinal);
+            var fullNameWithoutVersion = fullName.Substring(0, indexStartGeneric) + fullName.Substring(indexEndGeneric, END_GENERIC_MARK.Length);
+
+            var genericArguments = type.GetGenericArguments()
+              .Select(x => GetDisplayAssemblyQualifiedName(x)).StringJoin(", ");
+
+            return fullNameWithoutVersion.Insert(indexStartGeneric, genericArguments);
+
+            //"System.Collections.Generic.List`1[[
+        }
+        return fullName.Substring(0, indexVersion - 1);
     }
 
     public static bool ImplementsInterface<T>(this Type type)

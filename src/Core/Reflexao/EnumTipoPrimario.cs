@@ -8,8 +8,7 @@ namespace Snebur.Reflexao;
 public enum EnumTipoPrimario
 {
 
-    [UndefinedEnumValue]
-    Undefined = -1,
+    [UndefinedEnumValue] Undefined = -1,
 
     Desconhecido = -100,
 

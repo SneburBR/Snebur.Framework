@@ -1,5 +1,6 @@
 using Snebur.Linq;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace Snebur.AcessoDados.Servidor.Salvar;
@@ -57,6 +58,7 @@ internal partial class SalvarEntidades : IDisposable
             var errosValidacao = ValidarEntidades.Validar(this.Contexto, entidades.ToList());
             if (errosValidacao.Count > 0)
             {
+                Debugger.Break();
                 return this.RetornarResultadoSalvarErrosValidacao(errosValidacao);
             }
         }

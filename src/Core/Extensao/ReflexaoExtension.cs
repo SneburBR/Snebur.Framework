@@ -2,21 +2,31 @@ namespace System.Reflection;
 
 public static class ReflexaoExtension
 {
+    private static readonly Dictionary<Assembly, Type[]> _cache = new();
     public static IEnumerable<Type> GetAccessibleTypes(this Assembly assembly)
+    {
+        lock (_cache)
+        {
+            if (!_cache.TryGetValue(assembly, out var tipos))
+            {
+                tipos = assembly.GetAccessibleTypesInternal();
+                _cache[assembly] = tipos;
+            }
+            return tipos;
+        }
+    }
+
+    private static Type[] GetAccessibleTypesInternal(this Assembly assembly)
     {
         try
         {
-            //
-#if NET40
-            return assembly.GetTypes();
-#else
-            return assembly.DefinedTypes.Select(t => t.AsType());
-#endif
-
+            return assembly.DefinedTypes.Select(t => t.AsType()).ToArray();
         }
         catch (ReflectionTypeLoadException ex)
         {
-            return ex.Types.Where(t => t is not null)!;
+            return ex.Types
+                .Where(t => t is not null)
+                .ToArray()!;
         }
     }
 

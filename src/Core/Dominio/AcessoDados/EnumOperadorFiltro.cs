@@ -1,11 +1,10 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 
 namespace Snebur.AcessoDados;
 
 public enum EnumOperadorFiltro
 {
-    [UndefinedEnumValue]
-    Undefined = -1,
+    [UndefinedEnumValue] Undefined = -1,
     [Description("Igual")]
     Igual = 1,
     [Description("Igual absoluto")]

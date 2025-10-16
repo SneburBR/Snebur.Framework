@@ -1,12 +1,12 @@
-﻿namespace Snebur.UI;
+namespace Snebur.UI;
 
 public enum BaseEnumComprimento
 {
+    [UndefinedEnumValue] Undefined = -1,
     [Rotulo("Vazio")]
     Vazio = BaseEnumApresentacao.Vazio,
-    [UndefinedEnumValue]
     Auto = 0,
-#region Porcentagem 
+    #region Porcentagem 
     /// <summary>
     ///   8.33333%
     /// </summary>
@@ -67,8 +67,8 @@ public enum BaseEnumComprimento
     /// </summary>
     [RotuloVSIntelliSense("100%")]
     _100P = 10000000,
-#endregion
-#region Pixels
+    #endregion
+    #region Pixels
     //pixels
     [RotuloVSIntelliSense("4px")]
     _4px = 4,
@@ -114,5 +114,5 @@ public enum BaseEnumComprimento
     _256px = 256,
     [RotuloVSIntelliSense("512px")]
     _512px = 512
-#endregion
+    #endregion
 }

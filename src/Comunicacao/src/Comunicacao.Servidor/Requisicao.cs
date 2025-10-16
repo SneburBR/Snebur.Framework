@@ -4,6 +4,7 @@ using System.Xml.Serialization;
 using Snebur.Linq;
 using Newtonsoft.Json;
 using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics;
 
 #if NET6_0_OR_GREATER
 using System.Threading.Tasks;
@@ -175,7 +176,12 @@ public class Requisicao : IDisposable
         {
             throw new Erro("Identificador da sessão do usuário não foi definido");
         }
-        this.IsRequsicaoValida = this.CheckIsRequiscaoValida();
+        var isRequsicaoValida = this.CheckIsRequiscaoValida();
+        if (!isRequsicaoValida)
+        {
+            Debugger.Break();
+        }
+        this.IsRequsicaoValida = isRequsicaoValida;
     }
 
     #endregion

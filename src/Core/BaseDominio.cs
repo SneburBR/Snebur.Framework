@@ -154,7 +154,7 @@ public abstract class BaseDominio : IBaseDominio, IBaseDominioReferencia, INotif
     public BaseDominio()
     {
         var tipo = this.GetType();
-        this.__CaminhoTipo = String.Format("{0}.{1}", tipo.Namespace, tipo.Name);
+        this.__CaminhoTipo = $"{tipo.Namespace}.{tipo.Name}";
         //this.__AssemblyQualifiedName = $"{tipo.FullName}, {tipo.Assembly.GetName().Name}";
         this.__IdentificadorUnico = Guid.NewGuid();
         //this.__IdentificadorReferencia = this.__IdentificadorUnico;

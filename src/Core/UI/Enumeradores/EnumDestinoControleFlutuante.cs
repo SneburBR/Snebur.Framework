@@ -1,9 +1,8 @@
-﻿namespace Snebur.UI;
+namespace Snebur.UI;
 
 public enum EnumDestinoControleFlutuante
 {
-    [UndefinedEnumValue]
-    Undefined = -1,
+    [UndefinedEnumValue] Undefined = -1,
     //[Rotulo("Vazio")]
     //Vazio = BaseEnumApresentacao.Vazio,
     Automatico = 1,

@@ -2,7 +2,6 @@ using System.Data;
 using System.Data.Common;
 using System.Text;
 
-
 namespace Snebur.AcessoDados.Manutencao;
 
 internal partial class GerenciadorManutencao : IDisposable

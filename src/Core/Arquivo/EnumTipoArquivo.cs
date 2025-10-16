@@ -2,8 +2,7 @@ namespace Snebur.Arquivo;
 
 public enum EnumTipoArquivo
 {
-    [UndefinedEnumValue]
-    Undefined = -1,
+    [UndefinedEnumValue] Undefined = -1,
     Jpg = 1,
     Bmp = 2,
     Psd = 4,

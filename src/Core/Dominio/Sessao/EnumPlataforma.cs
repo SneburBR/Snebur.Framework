@@ -5,8 +5,7 @@ namespace Snebur.Dominio;
 [IgnorarGlobalizacao]
 public enum EnumPlataforma
 {
-    [UndefinedEnumValue]
-    Undefined = -1,
+    [UndefinedEnumValue] Undefined = -1,
 
     [Description("PC")]
     PC = 1,

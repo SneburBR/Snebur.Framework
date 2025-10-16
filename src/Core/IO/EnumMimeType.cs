@@ -1,9 +1,10 @@
-﻿namespace Snebur.Dominio;
+namespace Snebur.Dominio;
 
 public enum EnumMimeType
 {
+    [UndefinedEnumValue] Undefined = -1,
+
     [Rotulo("Desconhecido")]
-    [UndefinedEnumValue]
     Desconhecido = 0,
     [Rotulo("Arquivo de audio AAC")]
     Aac = 100,

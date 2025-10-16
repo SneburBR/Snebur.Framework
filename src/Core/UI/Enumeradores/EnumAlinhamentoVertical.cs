@@ -1,8 +1,8 @@
-﻿namespace Snebur.UI;
+namespace Snebur.UI;
 
 public enum EnumAlinhamentoVertical
 {
-    [UndefinedEnumValue]
+    [UndefinedEnumValue] Undefined = -1,
     Superior,
     Centro,
     Inferior,

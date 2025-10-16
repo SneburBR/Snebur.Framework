@@ -1,9 +1,8 @@
-﻿namespace Snebur.Utilidade;
+namespace Snebur.Utilidade;
 
 public enum EnumOpcoesCompararData
 {
-    [UndefinedEnumValue]
-    Undefined = -1,
+    [UndefinedEnumValue] Undefined = -1,
     /// <summary>
     /// Dia, Mes e Ano
     /// </summary>
