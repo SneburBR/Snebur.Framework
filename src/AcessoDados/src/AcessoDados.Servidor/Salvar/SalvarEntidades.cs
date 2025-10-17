@@ -225,7 +225,11 @@ internal partial class SalvarEntidades : IDisposable
                                         {
                                             if (!isIgnorarErro)
                                             {
-                                                throw new ErroConsultaSql(comando.SqlCommando, erro);
+                                                throw new ErroExecutarSql(
+                                                    comando.SqlCommando, 
+                                                    comando.RetornarParametros(),
+                                                    null,
+                                                    erro);
                                             }
                                         }
                                         finally
@@ -313,7 +317,7 @@ internal partial class SalvarEntidades : IDisposable
                     }
                     catch (Exception erro)
                     {
-                        throw new ErroConsultaSql(comando.SqlCommando, erro);
+                        throw new ErroExecutarSql(comando.SqlCommando, comando.RetornarParametros(), null, erro);
                     }
                     finally
                     {

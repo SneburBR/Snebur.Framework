@@ -1,5 +1,7 @@
 using Snebur.AcessoDados.Estrutura;
 using Snebur.Linq;
+using System.Diagnostics;
+using System.Threading;
 
 namespace Snebur.AcessoDados.Mapeamento;
 
@@ -20,14 +22,17 @@ internal class MapeamentoEntidade : BaseMapeamentoEntidade
         }
     }
 
-    internal protected List<Entidade> RetornarEntidades(BaseFiltroMapeamento filtro,
-                                                                  int tentativa = 0)
+    internal protected List<Entidade> RetornarEntidades(
+        BaseFiltroMapeamento filtro,
+        int tentativa = 0)
     {
         var sql = this.RetornarSql(filtro, isIncluirOrdenacaoPaginacao: true);
         try
         {
+
             var dataTable = this.ConexaoDB.RetornarDataTable(sql, this.ParametrosInfo);
             var entidades = AjudanteDataSetMapeamento.MapearDataTable(this.EstruturaConsulta, dataTable, this);
+
             if (this.EstruturaEntidade.IsInterceptar && entidades.Count > 0)
             {
                 var interceptor = this.EstruturaEntidade.Interceptador;
@@ -49,13 +54,9 @@ internal class MapeamentoEntidade : BaseMapeamentoEntidade
             }
             return entidades;
         }
-        catch
-        {
-            if (DebugUtil.IsAttached && tentativa < 50)
-            {
-                return this.RetornarEntidades(filtro, tentativa++);
-            }
-            throw;
+        catch(Exception ex)
+        { 
+            throw new ErroExecutarSql(sql, this.ParametrosInfo, filtro.ToString(), ex);
         }
     }
 

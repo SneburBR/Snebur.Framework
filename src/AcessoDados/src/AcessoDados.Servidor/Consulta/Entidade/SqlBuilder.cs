@@ -1,26 +1,28 @@
 using Snebur.AcessoDados.Estrutura;
+using System.Collections.Generic;
 
 namespace Snebur.AcessoDados.Mapeamento;
 
 internal abstract partial class BaseSqlBuilder
 {
-    private BaseMapeamentoEntidade mapeamentoConsulta;
-    protected EstruturaEntidadeApelido EstruturaEntidadeApelido => this.mapeamentoConsulta.EstruturaEntidadeApelido;
-    private BaseContextoDados Contexto => this.mapeamentoConsulta.Contexto;
-    private EstruturaEntidade EstruturaEntidade => this.mapeamentoConsulta.EstruturaEntidade;
-    private BaseConexao ConexaoDB => this.mapeamentoConsulta.ConexaoDB;
-    private EstruturaConsulta EstruturaConsulta => this.mapeamentoConsulta.EstruturaConsulta;
-    private EstruturaCampoApelido EstruturaCampoApelidoChavePrimaria => this.mapeamentoConsulta.EstruturaCampoApelidoChavePrimaria;
-    private List<ParametroInfo> ParametrosInfo => this.mapeamentoConsulta.ParametrosInfo;
+    private BaseMapeamentoEntidade _mapeamentoConsulta;
+    protected EstruturaEntidadeApelido EstruturaEntidadeApelido => this._mapeamentoConsulta.EstruturaEntidadeApelido;
+    private BaseContextoDados Contexto => this._mapeamentoConsulta.Contexto;
+    private EstruturaEntidade EstruturaEntidade => this._mapeamentoConsulta.EstruturaEntidade;
+    private BaseConexao ConexaoDB => this._mapeamentoConsulta.ConexaoDB;
+    private EstruturaConsulta EstruturaConsulta => this._mapeamentoConsulta.EstruturaConsulta;
+    private EstruturaCampoApelido EstruturaCampoApelidoChavePrimaria => this._mapeamentoConsulta.EstruturaCampoApelidoChavePrimaria;
+    private IReadOnlyCollection<ParametroInfo> ParametrosInfo 
+        => this._mapeamentoConsulta.ParametrosInfo;
     private DicionarioEstrutura<EstruturaCampoApelido> TodasEstruturaCampoApelidoMapeado
-        => this.mapeamentoConsulta.TodasEstruturaCampoApelidoMapeado;
+        => this._mapeamentoConsulta.TodasEstruturaCampoApelidoMapeado;
 
     protected int Skip { get; private set; }
     protected int Take { get; private set; }
 
     protected BaseSqlBuilder(BaseMapeamentoEntidade mapeamentoConsulta)
     {
-        this.mapeamentoConsulta = mapeamentoConsulta;
+        this._mapeamentoConsulta = mapeamentoConsulta;
         this.Skip = this.RetornarSkip();
         this.Take = this.RetornarTake();
     }

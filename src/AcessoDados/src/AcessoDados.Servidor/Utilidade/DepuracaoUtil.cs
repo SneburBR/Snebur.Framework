@@ -34,7 +34,7 @@ internal class DepuracaoUtil
 
     internal static void EscreverSaida(
         BaseContextoDados contexto,
-        List<ParametroInfo>? parametros,
+        IReadOnlyCollection<ParametroInfo>? parametros,
         string sql)
     {
         if (DebugUtil.IsAttached && ConfiguracaoUtil.IsLogDebugOutputSql)
@@ -50,7 +50,7 @@ internal class DepuracaoUtil
 
     private static void EscreverSaidaInterno(
         BaseContextoDados contexto,
-        List<ParametroInfo>? parametros,
+        IReadOnlyCollection<ParametroInfo>? parametros,
         string sql)
     {
 

@@ -1,4 +1,5 @@
 using Snebur.AcessoDados.Estrutura;
+using System.Collections.Generic;
 
 namespace Snebur.AcessoDados.Mapeamento;
 
@@ -6,7 +7,10 @@ internal abstract partial class BaseMapeamentoEntidade : IDisposable
 {
     #region Propriedades
 
-    internal List<ParametroInfo> ParametrosInfo { get; } = new List<ParametroInfo>();
+    private readonly HashSet<ParametroInfo> _parametroInfos = new();
+
+    internal IReadOnlyCollection<ParametroInfo> ParametrosInfo
+        => this._parametroInfos;
 
     internal BaseMapeamentoConsulta MapeamentoConsulta { get; }
 
@@ -158,8 +162,22 @@ internal abstract partial class BaseMapeamentoEntidade : IDisposable
 
     internal protected abstract string RetornarSqlCampos();
 
-    #endregion
+    internal void AdicionarParametroInfo(ParametroInfo parametroInfo)
+    {
+        if (this._parametroInfos.TryGetValue(parametroInfo, out var current))
+        {
+            if(current.EqualsStrict(parametroInfo))
+                return;
 
+            throw new ErroAcessoDadosGenerico(
+                $"Parâmetro {parametroInfo.ParameterName} duplicado com valores diferentes");
+        }
+        this._parametroInfos.Add(parametroInfo);
+         
+    }
+
+    #endregion
+ 
     #region IDisposable
 
     public void Dispose()

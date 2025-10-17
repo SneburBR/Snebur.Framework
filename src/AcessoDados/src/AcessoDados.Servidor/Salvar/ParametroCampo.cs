@@ -3,7 +3,7 @@ using System.Data;
 
 namespace Snebur.AcessoDados.Servidor.Salvar;
 
-internal class ParametroCampo
+internal class ParametroCampo : IParametroInfo
 {
     internal EstruturaCampo EstruturaCampo { get; }
 
@@ -42,4 +42,16 @@ internal class ParametroCampo
             return valor;
         }
     }
+
+    string IParametroInfo.ParameterName 
+        => this.Nome;
+
+    int? IParametroInfo.Size 
+        => this.EstruturaCampo.TamanhoMaximo;
+
+    object? IParametroInfo.Value 
+        => this.Valor;
+
+    SqlDbType IParametroInfo.SqlDbType 
+        =>this.Tipo;
 }

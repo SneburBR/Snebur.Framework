@@ -1,9 +1,6 @@
 using Snebur.AcessoDados.Estrutura;
 using System.Data;
 using System.Data.Common;
-using System.Diagnostics.CodeAnalysis;
-
-using Microsoft.Data.SqlClient;
 
 namespace Snebur.AcessoDados;
 
@@ -39,12 +36,12 @@ internal abstract class BaseConexao
 
     internal protected abstract DbCommand RetornarNovoComando(
         string sql,
-        List<ParametroInfo>? parametros,
+        IReadOnlyCollection<ParametroInfo>? parametros,
         DbConnection conexao);
 
     internal protected abstract DbCommand RetornarNovoComando(
         string sql,
-        List<ParametroInfo>? parametros,
+        IReadOnlyCollection<ParametroInfo>? parametros,
         DbConnection conexao,
         DbTransaction transacao);
 
@@ -56,9 +53,10 @@ internal abstract class BaseConexao
         int? size,
         object valor);
 
-    internal protected abstract DbParameter RetornarNovoParametro(EstruturaCampo estruturaCampo,
-                                                                  string nomeParametro,
-                                                                  object? valor);
+    internal protected abstract DbParameter RetornarNovoParametro(
+        EstruturaCampo estruturaCampo,
+        string nomeParametro,
+        object? valor);
 
     internal protected abstract DateTime RetornarDataHora(bool utc = true);
 
@@ -74,8 +72,9 @@ internal abstract class BaseConexao
 
     #region IConexaoBancoDados
 
-    internal DataTable RetornarDataTable(string sql,
-                                         List<ParametroInfo>? parametros)
+    internal DataTable RetornarDataTable(
+        string sql,
+        IReadOnlyCollection<ParametroInfo>? parametros)
     {
         if (this.ContextoDados.IsExisteTransacao)
         {
@@ -87,7 +86,9 @@ internal abstract class BaseConexao
         }
     }
 
-    internal DataTable RetornarDataTableNormal(string sql, List<ParametroInfo>? parametros)
+    internal DataTable RetornarDataTableNormal(
+        string sql,
+        IReadOnlyCollection<ParametroInfo>? parametros)
     {
         this.EscreverSaida(parametros, sql);
 
@@ -117,7 +118,11 @@ internal abstract class BaseConexao
             }
             catch (Exception erroInterno)
             {
-                throw new ErroConsultaSql($"Erro ao preencher o dataTable DataAdpater: Sql {sql} ", erroInterno);
+                if(erroInterno is ErroExecutarSql)
+                {
+                    throw;
+                }
+                throw new ErroExecutarSql(sql, parametros, null, erroInterno);
             }
             finally
             {
@@ -127,13 +132,17 @@ internal abstract class BaseConexao
         return dt;
     }
 
-    internal T RetornarValorScalar<T>(string sql, List<ParametroInfo>? parametros)
+    internal T RetornarValorScalar<T>(
+        string sql, 
+        IReadOnlyCollection<ParametroInfo>? parametros)
     {
         var valorScalar = this.RetornarValorScalar(sql, parametros);
         return ConverterUtil.Para<T>(valorScalar);
 
     }
-    internal object? RetornarValorScalar(string sql, List<ParametroInfo>? parametros)
+    internal object? RetornarValorScalar(
+        string sql,
+        IReadOnlyCollection<ParametroInfo>? parametros)
     {
         if (this.ContextoDados.IsExisteTransacao)
         {
@@ -147,7 +156,7 @@ internal abstract class BaseConexao
 
     internal object? RetornarValorScalarNormal(
         string sql,
-        List<ParametroInfo>? parametros)
+        IReadOnlyCollection<ParametroInfo>? parametros)
     {
         this.EscreverSaida(parametros, sql);
 
@@ -174,7 +183,7 @@ internal abstract class BaseConexao
             }
             catch (Exception erroInterno)
             {
-                throw new ErroConsultaSql(String.Format("Erro ao executar valor scalar do SQL {0} ", sql), erroInterno);
+                throw new ErroExecutarSql(sql, parametros, null, erroInterno);
             }
             finally
             {
@@ -184,7 +193,7 @@ internal abstract class BaseConexao
     }
 
     internal int ExecutarComando(string sql,
-        List<ParametroInfo>? parametros)
+        IReadOnlyCollection<ParametroInfo>? parametros)
     {
         if (this.ContextoDados.IsExisteTransacao)
         {
@@ -196,7 +205,7 @@ internal abstract class BaseConexao
         }
     }
 
-    private int ExecutarComandoNormal(string sql, List<ParametroInfo>? parametros)
+    private int ExecutarComandoNormal(string sql, IReadOnlyCollection<ParametroInfo>? parametros)
     {
         this.EscreverSaida(parametros, sql);
 
@@ -219,7 +228,7 @@ internal abstract class BaseConexao
 
     private int ExecutarComandoTransacao(
         string sql,
-        List<ParametroInfo>? parametrosInfo)
+        IReadOnlyCollection<ParametroInfo>? parametrosInfo)
     {
         this.EscreverSaida(parametrosInfo, sql);
 
@@ -237,14 +246,16 @@ internal abstract class BaseConexao
             return cmd.ExecuteNonQuery();
         }
     }
-    private void EscreverSaida(List<ParametroInfo>? parametros, string sql)
+    private void EscreverSaida(IReadOnlyCollection<ParametroInfo>? parametros, string sql)
     {
         DepuracaoUtil.EscreverSaida(this.ContextoDados, parametros, sql);
     }
 
     #region Transação
 
-    private DataTable RetornarDataTransacao(string sql, List<ParametroInfo>? parametros)
+    private DataTable RetornarDataTransacao(
+        string sql,
+        IReadOnlyCollection<ParametroInfo>? parametros)
     {
         this.EscreverSaida(parametros, sql);
 
@@ -270,7 +281,7 @@ internal abstract class BaseConexao
     }
 
     private object? RetornarValorScalarTransacao(string sql,
-                                                List<ParametroInfo>? parametros)
+                                                IReadOnlyCollection<ParametroInfo>? parametros)
     {
         this.EscreverSaida(parametros, sql);
 
@@ -294,98 +305,4 @@ internal abstract class BaseConexao
     #endregion
 
     #endregion
-}
-
-public class ParametroInfo
-{
-    private BaseConexao? BaseConexao;
-    public required string ParameterName { get; init; }
-    public required int? Size;
-    public required object? Value { get; set; }
-    public required SqlDbType SqlDbType { get; init; }
-    internal EstruturaCampo? EstruturaCampo { get; set; }
-
-    public ParametroInfo()
-    {
-    }
-
-    public static ParametroInfo Create<TEntidade>(
-       BaseContextoDados contextoDados,
-       Expression<Func<TEntidade, object?>> expressaoPropriedade)
-       where TEntidade : IEntidade
-    {
-        var estruturaEntidade = contextoDados.EstruturaBancoDados.RetornarEstruturaEntidade(typeof(TEntidade));
-        var propriedade = ExpressaoUtil.RetornarPropriedade(expressaoPropriedade);
-        var estruturaCampo = estruturaEntidade.RetornarEstruturaCampo(propriedade.Name);
-        return Create(contextoDados.Conexao, estruturaCampo, estruturaCampo.NomeParametro, null);
-    }
-
-    internal static ParametroInfo Create(
-        BaseConexao baseConexao,
-        EstruturaCampo estruturaCampo,
-        string nomeParametro,
-        object? valor)
-    {
-        Guard.NotNullOrWhiteSpace(nomeParametro);
-
-        return new ParametroInfo
-        {
-            ParameterName = nomeParametro,
-            SqlDbType = estruturaCampo.TipoSql,
-            Size = estruturaCampo.TamanhoMaximo,
-            Value = valor,
-            BaseConexao = baseConexao,
-            EstruturaCampo = estruturaCampo
-        };
-    }
-
-    [SetsRequiredMembers]
-    public ParametroInfo(string nomeParametro, object? value)
-        : this(nomeParametro, SqlUtil.GetBetterSqlDbType(value), value)
-    {
-        this.Size = SqlUtil.GetBetterSize(value);
-    }
-
-    [SetsRequiredMembers]
-    public ParametroInfo(string nomeParametro,
-                         SqlDbType sqlType,
-                         object? value)
-        : this(nomeParametro, sqlType, null, value)
-    {
-
-    }
-
-    [SetsRequiredMembers]
-    public ParametroInfo(string nomeParametro,
-                         SqlDbType sqlType,
-                         int? size,
-                         object? value)
-    {
-        this.ParameterName = nomeParametro;
-        this.Value = value;
-        this.SqlDbType = sqlType;
-        this.Size = size;
-    }
-
-    internal DbParameter GetDbParameter()
-    {
-        if (this.BaseConexao is not null &&
-            this.EstruturaCampo is not null)
-        {
-            return this.BaseConexao.RetornarNovoParametro(this.EstruturaCampo,
-                                                          this.ParameterName,
-                                                          this.Value);
-            //return this.BaseConexao.RetornarNovoParametro(this.ParameterName,
-            //                                              this.SqlDbType.Value,
-            //                                              this.Size,
-            //                                              this.Value);
-        }
-
-        return new SqlParameter(this.ParameterName, this.SqlDbType)
-        {
-            Value = this.Value ?? DBNull.Value,
-            Size = this.Size ?? 0,
-            IsNullable = this.Value == null
-        };
-    }
 }

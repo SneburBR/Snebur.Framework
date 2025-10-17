@@ -195,7 +195,7 @@ internal partial class BaseSqlBuilder
             else
             {
 
-                this.ParametrosInfo.Add(this.ConexaoDB.RetornarParametroInfo(estruturaCampoApelidoPropriedade.EstruturaCampo, nomeParametro, valorPropriedadeTipado));
+                this.AdicionarParametroInfo(this.ConexaoDB.RetornarParametroInfo(estruturaCampoApelidoPropriedade.EstruturaCampo, nomeParametro, valorPropriedadeTipado));
 
                 var condicaoNot = filtroPropriedade.TipoPrimarioEnum == EnumTipoPrimario.String &&
                                   filtroPropriedade.Operador == EnumOperadorFiltro.Diferente ?
@@ -204,6 +204,11 @@ internal partial class BaseSqlBuilder
                 return $"  ( {condicaoNot} {estruturaCampoApelidoPropriedade.CaminhoBanco} {operadorFiltroPropriedade} {nomeParametro} ) ";
             }
         }
+    }
+
+    private void AdicionarParametroInfo(ParametroInfo parametroInfo)
+    {
+        this._mapeamentoConsulta.AdicionarParametroInfo(parametroInfo);
     }
 
     private bool IsOperadorTextoPesquisa(EnumOperadorFiltro operador)
@@ -228,7 +233,7 @@ internal partial class BaseSqlBuilder
 
         var valor = filtroPropriedade.Valor as string ?? String.Empty;
         var valorPesquisa = this.RetornarValorPesquisaTextoCompleto(valor, filtroPropriedade.Operador);
-        this.ParametrosInfo.Add(this.ConexaoDB.RetornarParametroInfo(estruturasCampoApelidoPropriedade.First().EstruturaCampo, nomeParametro, valorPesquisa));
+        this.AdicionarParametroInfo(this.ConexaoDB.RetornarParametroInfo(estruturasCampoApelidoPropriedade.First().EstruturaCampo, nomeParametro, valorPesquisa));
         var prefixoNot = filtroPropriedade.Operador == EnumOperadorFiltro.Diferente ? " not " : "";
         var colunas = String.Join(", ", estruturasCampoApelidoPropriedade.Select(x => x.CaminhoBanco));
         return $" {prefixoNot} CONTAINS( ({colunas}), {nomeParametro} )   ";
@@ -240,7 +245,7 @@ internal partial class BaseSqlBuilder
     {
         var valor = filtroPropriedade.Valor as string ?? String.Empty;
         var valorPesquisa = this.RetornarValorPesquisaTextoCompleto(valor, filtroPropriedade.Operador);
-        this.ParametrosInfo.Add(this.ConexaoDB.RetornarParametroInfo(estruturaCampoApelidoPropriedade.EstruturaCampo, nomeParametro, valorPesquisa));
+        this.AdicionarParametroInfo(this.ConexaoDB.RetornarParametroInfo(estruturaCampoApelidoPropriedade.EstruturaCampo, nomeParametro, valorPesquisa));
         var prefixoNot = filtroPropriedade.Operador == EnumOperadorFiltro.Diferente ? " not " : "";
         return $" {prefixoNot} CONTAINS( ({estruturaCampoApelidoPropriedade.CaminhoBanco}), {nomeParametro} )   ";
     }

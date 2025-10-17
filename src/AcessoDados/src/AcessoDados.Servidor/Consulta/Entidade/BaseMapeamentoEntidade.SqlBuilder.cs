@@ -14,7 +14,7 @@ internal abstract partial class BaseMapeamentoEntidade : IDisposable
                                  isIncluirOrdenacaoPaginacao,
                                  isRelacaoFilhos);
     }
-
+     
     private BaseSqlBuilder RetornarSqlBuilder()
     {
         if (this.Contexto.SqlSuporte.IsOffsetFetch)
@@ -23,4 +23,6 @@ internal abstract partial class BaseMapeamentoEntidade : IDisposable
         }
         return new SqlBuilder2008(this);
     }
+
+   
 }

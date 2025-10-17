@@ -29,8 +29,9 @@ internal class MapeamentoConsultaValorScalar : BaseMapeamentoConsulta
         {
             mapeamento.EstruturaConsulta.Take = 1;
             var sqlValorScalar = mapeamento.RetornarSql(new FiltroMapeamentoVazio(), isIncluirOrdenacaoPaginacao: false);
-            return this.ConexaoDB.RetornarValorScalar(sqlValorScalar,
-                                                      mapeamento.ParametrosInfo);
+            return this.ConexaoDB.RetornarValorScalar(
+                sqlValorScalar,
+                mapeamento.ParametrosInfo);
         }
     }
 }

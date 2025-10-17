@@ -14,4 +14,9 @@ internal abstract class BaseFiltroMapeamento
     {
         this.FiltroMapeamentoBase = filtroMapaementoBase;
     }
+
+    public override string ToString()
+    {
+        return $"Type: {this.GetType().Name}, IsIdTipoEntidade: {this.IsIdTipoEntidade}, EstruturaCampoFiltro: {this.EstruturaCampoFiltro}, FiltroMapeamentoBase: {this.FiltroMapeamentoBase}";
+    }
 }

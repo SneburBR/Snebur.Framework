@@ -311,4 +311,9 @@ internal class EstruturaCampo : EstruturaPropriedade
     }
 
     #endregion
+
+    public override string ToString()
+    {
+        return $"NomeCampo: {this.NomeCampo}, TipoPrimarioEnum: {this.TipoPrimarioEnum}, TipoSql: {this.TipoSql}";
+    }
 }

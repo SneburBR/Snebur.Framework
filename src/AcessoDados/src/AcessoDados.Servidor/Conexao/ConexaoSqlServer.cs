@@ -18,7 +18,7 @@ internal class ConexaoSqlServer : BaseConexao
 
     internal protected override DbCommand RetornarNovoComando(
         string sql,
-        List<ParametroInfo>? parametrosInfo,
+        IReadOnlyCollection<ParametroInfo>? parametrosInfo,
         DbConnection conexao)
     {
         var cmd = new SqlCommand(sql, (SqlConnection)conexao);
@@ -34,7 +34,7 @@ internal class ConexaoSqlServer : BaseConexao
 
     internal protected override DbCommand RetornarNovoComando(
         string sql,
-        List<ParametroInfo>? parametros,
+        IReadOnlyCollection<ParametroInfo>? parametros,
         DbConnection conexao,
         DbTransaction transacao)
     {
