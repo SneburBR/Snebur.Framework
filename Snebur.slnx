@@ -1,0 +1,33 @@
+<Solution>
+  <Folder Name="/AcessoDados/">
+    <Project Path="src/AcessoDados/src/AcessoDados.Cliente/Snebur.AcessoDados.Cliente.csproj" />
+    <Project Path="src/AcessoDados/src/AcessoDados.Comunicacao/Snebur.AcessoDados.Comunicacao.csproj" />
+    <Project Path="src/AcessoDados/src/AcessoDados.Servidor/Snebur.AcessoDados.Servidor.csproj" />
+    <Project Path="src/AcessoDados/src/AcessoDados/Snebur.AcessoDados.csproj" />
+  </Folder>
+  <Folder Name="/Comunicacao/">
+    <Project Path="src/Comunicacao/src/Comunicacao.Cliente/Snebur.Comunicacao.Cliente.csproj" />
+    <Project Path="src/Comunicacao/src/Comunicacao.Servidor/Snebur.Comunicacao.Servidor.csproj" />
+    <Project Path="src/Comunicacao/src/Comunicacao/Snebur.Comunicacao.csproj" />
+  </Folder>
+  <Folder Name="/Core/">
+    <Project Path="src/AspNet/Snebur.AspNet.csproj" />
+    <Project Path="src/Computador/Snebur.Computador.csproj" />
+    <Project Path="src/Core/Snebur.csproj" />
+    <Project Path="src/Depuracao/Snebur.Depuracao.csproj" />
+    <Project Path="src/Imagem/Snebur.Imagens.csproj" />
+    <Project Path="src/Seguranca/Snebur.Seguranca.csproj" />
+    <Project Path="src/Windows/Snebur.Windows.csproj" />
+  </Folder>
+  <Folder Name="/ServicoArquivo/">
+    <Project Path="src/ServicoArquivo/src/.ServicoArquivo.Cliente/Snebur.ServicoArquivo.Cliente.csproj" />
+    <Project Path="src/ServicoArquivo/src/ServicoArquivo.Comunicacao/Snebur.ServicoArquivo.Comunicacao.csproj" />
+    <Project Path="src/ServicoArquivo/src/ServicoArquivo.Servidor/Snebur.ServicoArquivo.Servidor.csproj" />
+    <Project Path="src/ServicoArquivo/src/ServicoArquivo/Snebur.ServicoArquivo.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitattributes" />
+    <File Path=".gitignore" />
+  </Folder>
+</Solution>
