@@ -2,13 +2,9 @@
 
 
 	<PropertyGroup>
-		<TargetFrameworks>net9.0</TargetFrameworks>
+		<AssemblyName>Snebur.ServicoArquivo.Comunicacao</AssemblyName>
 		<RootNamespace>Snebur.ServicoArquivo</RootNamespace>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-		<Nullable>enable</Nullable>
-		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-		<LangVersion>preview</LangVersion>
 	</PropertyGroup>
 
 	<ItemGroup>

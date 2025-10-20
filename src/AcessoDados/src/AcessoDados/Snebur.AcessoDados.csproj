@@ -1,15 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net9.0</TargetFrameworks>
 		<RootNamespace>Snebur.AcessoDados</RootNamespace>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-		<Nullable>disable</Nullable>
 		<AssemblyName>Snebur.AcessoDados</AssemblyName>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<Nullable>enable</Nullable>
-		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-		<LangVersion>preview</LangVersion>
 	</PropertyGroup>
 
 	<ItemGroup>

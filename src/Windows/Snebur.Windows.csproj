@@ -6,42 +6,16 @@
 		<AssemblyName>Snebur.Computador</AssemblyName>
 		<RootNamespace>Snebur.Computador</RootNamespace>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<UseWPF>true</UseWPF>
-		<Nullable>enable</Nullable>
-		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-		<LangVersion>preview</LangVersion>
-
 	</PropertyGroup>
 
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net48' ">
-
-		<Reference Include="System.ServiceModel" />
-		<Reference Include="System.Web" />
-		<Reference Include="PresentationCore" />
-		<Reference Include="PresentationFramework" />
-		<Reference Include="WindowsBase" />
-
-		<PackageReference Include="WindowsAPICodePack-Core" version="1.1.2" />
-		<PackageReference Include="WindowsAPICodePack-Shell" version="1.1.1" />
-	</ItemGroup>
-
+  
 	<ItemGroup>
 		<Compile Remove="Converters\UrlImagemConverter.cs" />
 		<Compile Remove="Extensoes\IImagemExtensao.cs" />
 	</ItemGroup>
-
-
-
+ 
 	<ItemGroup>
 		<ProjectReference Include="..\Core\Snebur.csproj" />
 	</ItemGroup>
-
-
-
-	<ItemGroup>
-		<Folder Include="Utilidade\" />
-	</ItemGroup>
-
-</Project>
+ </Project>

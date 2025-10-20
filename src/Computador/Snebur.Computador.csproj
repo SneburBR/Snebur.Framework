@@ -2,21 +2,16 @@
 
 
 	<PropertyGroup>
-		<TargetFrameworks>net9.0</TargetFrameworks>
 		<AssemblyName>Snebur.Computador</AssemblyName>
 		<RootNamespace>Snebur.Computador</RootNamespace>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-		<Nullable>enable</Nullable>
-		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-		<LangVersion>preview</LangVersion>
 	</PropertyGroup>
 
 
 	<ItemGroup>
-		<PackageReference Include="System.DirectoryServices" Version="9.0.9" />
-		<PackageReference Include="System.DirectoryServices.AccountManagement" Version="9.0.9" />
-		<PackageReference Include="System.Management" Version="9.0.9" />
+		<PackageReference Include="System.DirectoryServices"  />
+		<PackageReference Include="System.DirectoryServices.AccountManagement"  />
+		<PackageReference Include="System.Management"   />
 	</ItemGroup>
 
 	<ItemGroup>

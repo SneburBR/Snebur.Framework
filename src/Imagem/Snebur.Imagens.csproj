@@ -6,25 +6,9 @@
 		<AssemblyName>Snebur.Imagens</AssemblyName>
 		<RootNamespace>Snebur.Imagens</RootNamespace>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-		<Nullable>enable</Nullable>
-		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-		<LangVersion>preview</LangVersion>
-
 	</PropertyGroup>
 
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'net48' ">
-
-		<Reference Include="System.ServiceModel" />
-		<Reference Include="System.Web" />
-		<Reference Include="PresentationCore" />
-		<Reference Include="PresentationFramework" />
-		<Reference Include="WindowsBase" />
-
-		<PackageReference Include="WindowsAPICodePack-Core" version="1.1.2" />
-		<PackageReference Include="WindowsAPICodePack-Shell" version="1.1.1" />
-	</ItemGroup>
 
 
 	<ItemGroup>
@@ -52,9 +36,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Magick.NET-Q8-AnyCPU" Version="14.8.2" />
-		<PackageReference Include="Magick.NET.SystemDrawing" Version="8.0.10" />
-		<PackageReference Include="Magick.NET.SystemWindowsMedia" Version="8.0.10" />
+		<PackageReference Include="Magick.NET-Q8-AnyCPU" />
+		<PackageReference Include="Magick.NET.SystemDrawing"   />
+		<PackageReference Include="Magick.NET.SystemWindowsMedia"  />
 	</ItemGroup>
 
 

@@ -2,14 +2,10 @@
 
 	<PropertyGroup>
 
-		<TargetFrameworks>net9.0</TargetFrameworks>
 		<RootNamespace>Snebur.AcessoDados</RootNamespace>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<AssemblyName>Snebur.AcessoDados.Comunicacao</AssemblyName>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<Nullable>enable</Nullable>
-		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-		<LangVersion>preview</LangVersion>
 
 	</PropertyGroup>
 

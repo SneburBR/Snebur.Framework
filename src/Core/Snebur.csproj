@@ -1,51 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net9.0</TargetFrameworks>
 		<AssemblyName>Snebur</AssemblyName>
 		<RootNamespace>Snebur</RootNamespace>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-		<Configurations>Debug;Release</Configurations>
-		<Nullable>enable</Nullable>
-		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-		<LangVersion>preview</LangVersion>
 	</PropertyGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+	<ItemGroup  >
+		<PackageReference Include="Microsoft.Data.SqlClient"  />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json"   />
+		<PackageReference Include="Newtonsoft.Json" />
 
-		<Reference Include="System.ServiceModel" />
-		<Reference Include="System.Configuration" />
-
-		<Reference Include="System.ComponentModel.DataAnnotations" />
-		<Reference Include="System.Net" />
-
-		<Reference Include="Microsoft.CSharp" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageReference Include="Microsoft.Bcl.HashCode" version="6.0.0" />
-		<Reference Include="System.ComponentModel" />
-		<Reference Include="System.IO.Compression" />
-		<Reference Include="System.Net.Http" />
-
-		<PackageReference Include="SevenZipSharp.Net45" Version="1.0.19" />
-
-	</ItemGroup>
-
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
-
-
-		<PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.1" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.9" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-
-		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-		<PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.9" />
-		<PackageReference Include="System.Diagnostics.EventLog" Version="9.0.9" />
-		<PackageReference Include="System.IO.Compression" Version="4.3.0" />
-		<PackageReference Include="System.IO.FileSystem.AccessControl" Version="5.0.0">
-
-		</PackageReference>
+		<PackageReference Include="System.ComponentModel.Annotations"  />
+		<PackageReference Include="System.Configuration.ConfigurationManager"   />
+		<PackageReference Include="System.Diagnostics.EventLog"  />
+		<PackageReference Include="System.IO.Compression"  />
+		<PackageReference Include="System.IO.FileSystem.AccessControl"  />
 
 	</ItemGroup>
 

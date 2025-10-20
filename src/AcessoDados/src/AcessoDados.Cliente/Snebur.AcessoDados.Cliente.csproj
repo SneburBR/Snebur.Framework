@@ -1,19 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   
 	<PropertyGroup>
-		<TargetFrameworks>net9.0</TargetFrameworks>
 		<RootNamespace>Snebur.AcessoDados</RootNamespace>
-		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-		<Nullable>disable</Nullable>
 		<AssemblyName>Snebur.AcessoDados.Cliente</AssemblyName>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	</PropertyGroup>
- 
-	<ItemGroup>
-		<Compile Remove="Properties\**" />
-		<EmbeddedResource Remove="Properties\**" />
-		<None Remove="Properties\**" />
-	</ItemGroup>
  
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Comunicacao\src\Comunicacao.Cliente\Snebur.Comunicacao.Cliente.csproj" />
