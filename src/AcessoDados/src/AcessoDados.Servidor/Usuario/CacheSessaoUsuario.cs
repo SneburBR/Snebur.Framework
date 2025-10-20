@@ -54,7 +54,7 @@ public partial class CacheSessaoUsuario : IDisposable
     private AjudanteSessaoUsuarioInterno AjudanteSessaoUsuario { get; }
     private bool IsNoticacaoStatusPendente { get; set; }
 
-    private Timer TimerAtualizarStatus = new Timer(TIMEOUT_ATUALIZAR_STATUS_SESSAO);
+    private System.Timers.Timer TimerAtualizarStatus = new System.Timers.Timer(TIMEOUT_ATUALIZAR_STATUS_SESSAO);
     public object BloqueioInicializar = new object();
     public bool IsInicializado = false;
 
@@ -138,7 +138,7 @@ public partial class CacheSessaoUsuario : IDisposable
         this.NotificarSessaoUsuarioAtivaInterno();
         if (this.TimerAtualizarStatus == null)
         {
-            this.TimerAtualizarStatus = new Timer(TIMEOUT_ATUALIZAR_STATUS_SESSAO);
+            this.TimerAtualizarStatus = new System.Timers.Timer(TIMEOUT_ATUALIZAR_STATUS_SESSAO);
         }
 
         this.DataHoraUltimoAcesso = DateTime.Now;

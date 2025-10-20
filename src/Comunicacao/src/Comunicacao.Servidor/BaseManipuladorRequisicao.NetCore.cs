@@ -113,7 +113,6 @@ public abstract partial class BaseManipuladorRequisicao : IHttpModule, IDisposab
                 throw new ErroWebService(ex, nomeManipulador ?? "manipulador não definido");
             }
         }
-
     }
 
     private async Task<bool> IsExecutarServicoAsync(HttpContext httpContext)

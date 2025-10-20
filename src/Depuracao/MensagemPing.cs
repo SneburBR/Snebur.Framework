@@ -1,5 +1,3 @@
-using System;
-
 namespace Snebur.Depuracao
 {
     public class MensagemPing : Mensagem

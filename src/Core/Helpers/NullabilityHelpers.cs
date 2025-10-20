@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Reflection;
 
@@ -35,6 +36,11 @@ public static class NullabilityHelpers
         return GetNullabilityInfo(parameter).IsMemberNullable;
     }
 
+    public static bool IsPrimaryKey(this PropertyInfo property)
+    {
+        Guard.NotNull(property);
+        return property.GetCustomAttribute<KeyAttribute>(false) is not null;
+    }
     public static bool IsReturnTypeNullable(this MethodInfo method)
     {
         Guard.NotNull(method);

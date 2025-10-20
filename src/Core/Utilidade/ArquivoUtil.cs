@@ -662,5 +662,4 @@ public static class ArquivoUtil
 
         ArquivoUtil.DeletarArquivo(path);
     }
-
 }

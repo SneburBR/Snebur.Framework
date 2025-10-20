@@ -13,21 +13,25 @@ public static class EnumExtensions
 
     public static string GetDescription(this Enum value)
     {
-        return value.GetAttribute<RotuloAttribute>()?.Rotulo
-            ?? value.ToString()
-            ?? value.GetAttribute<DescriptionAttribute>()?.Description
-            ?? value.ToString();
+        var labelAttr = value.GetAttribute<RotuloAttribute>();
+        if(labelAttr != null)
+            return labelAttr.Rotulo;
+
+        var descriptionAttr = value.GetAttribute<DescriptionAttribute>();
+        if(descriptionAttr != null)
+            return descriptionAttr.Description;
+
+        return value.ToString();
     }
     public static TAtribute? GetAttribute<TAtribute>(this Enum value)
         where  TAtribute : Attribute
 
     {
         var field = value.GetType().GetField(value.ToString());
-        if (field == null)
+        if (field is null)
             return null;
 
         return field.GetCustomAttribute<TAtribute>();
-   
     }
 
     public static TEnum FallbackIfNotDefined<TEnum>(this TEnum value, TEnum fallback) where TEnum : struct, Enum

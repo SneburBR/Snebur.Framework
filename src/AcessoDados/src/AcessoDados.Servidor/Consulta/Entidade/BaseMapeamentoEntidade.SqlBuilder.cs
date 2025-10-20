@@ -23,6 +23,4 @@ internal abstract partial class BaseMapeamentoEntidade : IDisposable
         }
         return new SqlBuilder2008(this);
     }
-
-   
 }

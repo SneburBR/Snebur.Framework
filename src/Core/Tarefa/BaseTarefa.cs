@@ -65,7 +65,7 @@ public abstract class BaseTarefa : ITarefa, INotifyPropertyChanged
 
     public static readonly object _bloqueio = new object();
 
-    private Timer? _timerAnalizarTimeout;
+    private System.Timers.Timer? _timerAnalizarTimeout;
 
     private TimeSpan IntervalorAnalisarTimeout { get; } = TIMEOUT_PADRAO;
 
@@ -90,7 +90,7 @@ public abstract class BaseTarefa : ITarefa, INotifyPropertyChanged
 
     private void Iniciar()
     {
-        this._timerAnalizarTimeout = new Timer((int)this.IntervalorAnalisarTimeout.TotalMilliseconds);
+        this._timerAnalizarTimeout = new System.Timers.Timer((int)this.IntervalorAnalisarTimeout.TotalMilliseconds);
         this._timerAnalizarTimeout.Start();
 
         this.Status = EnumStatusTarefa.Executando;

@@ -1,4 +1,4 @@
-﻿using Snebur.UI;
+using Snebur.UI;
 using System.Threading;
 
 namespace Snebur.Utilidade;

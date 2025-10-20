@@ -8,7 +8,6 @@ namespace Snebur;
 
 public static class Guard
 {
-
     public static void NotNull(
             [NotNull] object? value,
             [CallerArgumentExpression(nameof(value))] string? paramName = "")
@@ -176,6 +175,15 @@ public static class Guard
 
         _ = Extensao.TypeExtensions.GetRequiredProperty(obj.GetType(), propertyName);
 
+    }
+
+    public static void MustBe<T>(object ? value,
+        [CallerArgumentExpression(nameof(value))] string paramName = "")
+    {
+        if (value is null)
+            throw new ArgumentNullException(paramName, $"{paramName} cannot be null.");
+        if (value is not T)
+            throw new ArgumentException($"{paramName} must be of type {typeof(T).Name}.", paramName);
     }
 }
 

@@ -5,11 +5,11 @@ namespace Snebur.Depuracao
 
         public bool IsScript { get; set; }
 
-        public string UrlScriptRuntime { get; set; }
+        public string UrlScriptRuntime { get; set; } = "";
 
-        public string CaminhoConstrutor { get; set; }
+        public string CaminhoConstrutor { get; set; } = "";
 
-        public string NomeControle { get; set; }
+        public string NomeControle { get; set; } = "";
     }
 }
 

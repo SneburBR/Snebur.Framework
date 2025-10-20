@@ -724,5 +724,4 @@ public static class LinqExtensao
             .Cast<T>()
             .ToList();
     }
-    
 }

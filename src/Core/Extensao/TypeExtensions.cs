@@ -221,9 +221,25 @@ public static class TypeExtensions
 
     public static string GetDisplayAssemblyQualifiedName(this Type type)
     {
-        return $"{type.GetFullNameInternal()}, {type.Assembly.GetName().Name}";
+        return $"{type.GetFullNameInternal()}, {type.Assembly.GetDisplayName()}";
     }
-  
+
+    public static string GetDisplayName(this Assembly assembly)
+    {
+        var assemblyName = assembly.GetName().Name;
+        if (string.IsNullOrEmpty(assemblyName))
+        {
+            return assembly.FullName ?? "UnknownAssembly";
+        }
+
+        var startVersionIndex = assemblyName.IndexOf(VERSION_MARK, StringComparison.Ordinal);
+        if (startVersionIndex == -1)
+        {
+            return assemblyName;
+        }
+        return assemblyName.Substring(0, startVersionIndex - 1);
+    }
+
     private static string GetFullNameInternal(this Type type)
     {
         var fullName = type.FullName ?? type.Name;
@@ -233,12 +249,13 @@ public static class TypeExtensions
 
         if (type.IsGenericType)
         {
-            var indexStartGeneric = fullName.IndexOf(START_GENERIC_MARK, StringComparison.Ordinal) + START_GENERIC_MARK.Length;
+            var indexStartGeneric = fullName.IndexOf(START_GENERIC_MARK, StringComparison.Ordinal) + 1;
             var indexEndGeneric = fullName.LastIndexOf(END_GENERIC_MARK, StringComparison.Ordinal);
-            var fullNameWithoutVersion = fullName.Substring(0, indexStartGeneric) + fullName.Substring(indexEndGeneric, END_GENERIC_MARK.Length);
+            var fullNameWithoutVersion = fullName.Substring(0, indexStartGeneric) + fullName.Substring(indexEndGeneric, 1);
 
             var genericArguments = type.GetGenericArguments()
-              .Select(x => GetDisplayAssemblyQualifiedName(x)).StringJoin(", ");
+              .Select(x => $"[{GetDisplayAssemblyQualifiedName(x)}]")
+              .StringJoin(", ");
 
             return fullNameWithoutVersion.Insert(indexStartGeneric, genericArguments);
 
