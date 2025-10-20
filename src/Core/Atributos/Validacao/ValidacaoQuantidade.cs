@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 
 namespace Snebur.Dominio.Atributos;
 
@@ -14,25 +14,34 @@ public class ValidacaoQuantidadeAttribute : BaseAtributoValidacao, IAtributoVali
         {
             return true;
         }
-
-        if (valorPropriedade is int quantidade)
+         
+        if (valorPropriedade is int @int)
         {
-            return quantidade >= 0;
+            return @int >= 0;
         }
 
-        if (valorPropriedade is long quantidadeLong)
+        if (valorPropriedade is long @long)
         {
-            return quantidadeLong >= 0;
+            return @long >= 0;
         }
 
-        if (valorPropriedade is decimal quantidadeDecimal)
+        if (valorPropriedade is decimal @decimal)
         {
-            return quantidadeDecimal >= 0;
+            return @decimal >= 0;
         }
 
-        if (valorPropriedade is double quantidadeDouble)
+        if (valorPropriedade is double @double)
         {
-            return quantidadeDouble >= 0;
+            return @double >= 0;
+        }
+
+        if (valorPropriedade is byte @byte)
+        {
+            return @byte >= byte.MinValue;
+        }
+        if (valorPropriedade is float @float)
+        {
+            return @float >= byte.MinValue;
         }
 
         throw new ArgumentException($"O tipo '{valorPropriedade.GetType()}' não é suportado para validação de quantidade.");

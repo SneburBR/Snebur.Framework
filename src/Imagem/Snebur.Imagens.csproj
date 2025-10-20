@@ -2,13 +2,11 @@
 
 
 	<PropertyGroup>
-		<TargetFrameworks>net9.0-windows</TargetFrameworks>
+		<TargetFramework>net9.0-windows</TargetFramework>
 		<AssemblyName>Snebur.Imagens</AssemblyName>
 		<RootNamespace>Snebur.Imagens</RootNamespace>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	</PropertyGroup>
-
-
 
 
 	<ItemGroup>
