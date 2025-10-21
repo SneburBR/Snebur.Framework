@@ -285,6 +285,12 @@ public static class TypeExtensions
         => type.IsGenericType
         && type.GetGenericTypeDefinition() == typeof(Nullable<>);
 
+    public static bool IsHashSetType(this Type type)
+    {
+        type = type.GetUnderlyingType();
+        return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(HashSet<>);
+    }
+
     public static bool IsCollectionType(this Type type)
     {
         type = type.GetUnderlyingType();
@@ -445,7 +451,7 @@ public static class TypeExtensions
             return true;
 
         if (type.IsEnum)
-            return true;
+            return false;
 
         return type == typeof(Guid)
             || type == typeof(string)

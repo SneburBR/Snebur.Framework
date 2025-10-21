@@ -549,7 +549,8 @@ internal partial class SalvarEntidades : IDisposable
         return NormalizarEntidadeAlterada.RetornarEntidadesAlteradaNormalizada(this.Contexto, entidadesAlterada);
     }
 
-    private List<EntidadeAlterada> RetornarEntidadesAlteracoesPropriedadeGenericas(HashSet<Entidade> entidadesNormalizada)
+    private List<EntidadeAlterada> RetornarEntidadesAlteracoesPropriedadeGenericas(
+        HashSet<Entidade> entidadesNormalizada)
     {
         var contextoSessaoUsuario = this.Contexto.ContextoSessaoUsuario;
 
@@ -559,15 +560,17 @@ internal partial class SalvarEntidades : IDisposable
         entidadesNotificacaoPropriedadeAlteradaGenerica = NormalizarEntidade.RetornarEntidadesNormalizada(contextoSessaoUsuario, entidadesNotificacaoPropriedadeAlteradaGenerica);
         var entidadesAlterada = new List<EntidadeAlterada>();
 
-        foreach (var entidade in entidadesNotificacaoPropriedadeAlteradaGenerica)
+        foreach (var entidadeNotificarGenericao in entidadesNotificacaoPropriedadeAlteradaGenerica)
         {
-            if (entidade is not null)
+            if (entidadeNotificarGenericao is not null)
             {
-                var estruturaEntidade = contextoSessaoUsuario.EstruturaBancoDados.EstruturasEntidade[entidade.GetType().Name];
-                var entidadeAlterada = new EntidadeAlterada(contextoSessaoUsuario,
-                                                            entidade,
-                                                            estruturaEntidade,
-                                                            this.OpcaoSalvar);
+                var estruturaEntidade = contextoSessaoUsuario.EstruturaBancoDados.EstruturasEntidade[entidadeNotificarGenericao.GetType().Name];
+                var entidadeAlterada = new EntidadeAlterada(
+                    contextoSessaoUsuario,
+                    entidadeNotificarGenericao, 
+                    estruturaEntidade,
+                    EnumOpcaoSalvar.Salvar);
+
                 entidadesAlterada.Add(entidadeAlterada);
                 AtualizarValorPadrao.Atualizar(entidadeAlterada, contextoSessaoUsuario);
             }

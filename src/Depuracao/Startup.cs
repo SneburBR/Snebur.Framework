@@ -1,19 +1,10 @@
 #if NET6_0_OR_GREATER
 
 // Don't remove this using namespace declaration
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.StaticFiles;
-using Microsoft.Extensions.DependencyInjection;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
-using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Snebur;
 
@@ -21,6 +12,21 @@ public class Program
 {
     public static void Main(string[] args)
     {
+        var diretorioBase = Directory.GetCurrentDirectory();
+        if (!Directory.Exists(diretorioBase))
+        {
+            throw new DirectoryNotFoundException(diretorioBase);
+        }
+
+        if (File.Exists(Path.Combine(diretorioBase, "appsettings.json")))
+        {
+            var configBuilder = new ConfigurationBuilder()
+                      .SetBasePath(diretorioBase)
+                      .AddJsonFile("appsettings.json");
+        }
+
+      
+
         var builder = WebApplication.CreateBuilder(args);
         ConfigureServices(builder.Services);
         var pathRoot = builder.Environment.ContentRootPath;
@@ -156,6 +162,11 @@ public class StaticFileHandler
             return;
         }
 
+        if (path.Contains("chrome.devtools.json"))
+        {
+            return;
+        }
+
         var response = context.Response;
         var extensao = Path.GetExtension(path);
 
@@ -171,7 +182,7 @@ public class StaticFileHandler
                                        melhorMimeType);
             return;
         }
-  
+
         if (request.Method == "GET" && !IsFileName(path))
         {
             var caminhoIndexHtml = Path.Combine(this._applicationPath, "wwwroot/index.html");
@@ -338,7 +349,7 @@ public class FilePathBuiler
             return cachedPath;
         }
         var path = this.BuildInternal(relativePath);
-        if(path is null)
+        if (path is null)
             throw new FileNotFoundException(
                 $"Não foi possível localizar o arquivo '{relativePath}' nos diretórios conhecidos.",
                 relativePath);

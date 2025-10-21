@@ -184,7 +184,6 @@ public abstract class BaseServicoComunicacaoDados<TContextoDados> : BaseComunica
         if (this._isPodeDispensarServico)
         {
             base.Dispose();
-            this.ContextoDados?.Dispose();
         }
     }
 }

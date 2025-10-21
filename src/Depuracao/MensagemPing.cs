@@ -1,3 +1,7 @@
+#if NET48
+using System;
+#endif
+
 namespace Snebur.Depuracao
 {
     public class MensagemPing : Mensagem
