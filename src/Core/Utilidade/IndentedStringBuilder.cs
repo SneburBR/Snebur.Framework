@@ -1,7 +1,6 @@
 using System.Text;
 
 namespace Snebur.Utilidade;
-
 public class IndentedStringBuilder
 {
     private readonly StringBuilder _sb = new();
