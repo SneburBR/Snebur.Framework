@@ -49,11 +49,11 @@ internal class SqlOrdenacao : SqlMigracao
 
         if (this.OrdenacaoNovoRegistro == EnumOrdenacaoNovoRegistro.Fim)
         {
-            sb.AppendLine($"UPDATE [{this.Schema}].[{this.NomeTabela}] SET [{this.CampoOrdenacao}] = (SELECT COALESCE(MAX([{this.CampoOrdenacao}] ), 0) + 10 AS ProximoOrdenacao FROM [{this.Schema}].[{this.NomeTabela}]) FROM Inserted  WHERE [{this.Schema}].[{this.NomeTabela}].[{this.CampoChavePrimaria}] = Inserted.[{this.CampoChavePrimaria}]");
+            sb.AppendLine($"UPDATE [{this.Schema}].[{this.NomeTabela}] SET [{this.CampoOrdenacao}] = (SELECT COALESCE(MAX([{this.CampoOrdenacao}] ), 0) + 100 AS ProximoOrdenacao FROM [{this.Schema}].[{this.NomeTabela}]) FROM Inserted  WHERE [{this.Schema}].[{this.NomeTabela}].[{this.CampoChavePrimaria}] = Inserted.[{this.CampoChavePrimaria}]");
         }
         else
         {
-            sb.AppendLine($"UPDATE [{this.Schema}].[{this.NomeTabela}] SET [{this.CampoOrdenacao}] = (SELECT COALESCE(MIN([{this.CampoOrdenacao}] ), 0) - 10 AS ProximoOrdenacao FROM [{this.Schema}].[{this.NomeTabela}]) FROM Inserted  WHERE [{this.Schema}].[{this.NomeTabela}].[{this.CampoChavePrimaria}] = Inserted.[{this.CampoChavePrimaria}]");
+            sb.AppendLine($"UPDATE [{this.Schema}].[{this.NomeTabela}] SET [{this.CampoOrdenacao}] = (SELECT COALESCE(MIN([{this.CampoOrdenacao}] ), 0) - 100 AS ProximoOrdenacao FROM [{this.Schema}].[{this.NomeTabela}]) FROM Inserted  WHERE [{this.Schema}].[{this.NomeTabela}].[{this.CampoChavePrimaria}] = Inserted.[{this.CampoChavePrimaria}]");
         }
         sb.AppendLine("END");
         sb.AppendLine(" COMMIT ");
@@ -64,6 +64,6 @@ internal class SqlOrdenacao : SqlMigracao
 
     private string RetornarNomeGatilho()
     {
-        return String.Format("Gatilho_{0}_Ordencao", this.NomeTabela);
+        return $"Trigger_{this.NomeTabela}_Ordencao";
     }
 }

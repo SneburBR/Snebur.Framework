@@ -487,7 +487,13 @@ public abstract partial class BaseContextoDados : __BaseContextoDados, IServicoD
             {
                 throw resultado.Erro;
             }
-            return (ResultadoSalvar)salvarEntidades.Salvar();
+
+            if (resultado is ResultadoSalvar resultadoSalvar)
+            {
+                return resultadoSalvar;
+            }
+            throw new Exception(
+                $"O tipo do resultado {resultado?.GetType().Name ?? "null"}  é diferente do esperado {typeof(ResultadoSalvar).Name}");
         }
     }
 

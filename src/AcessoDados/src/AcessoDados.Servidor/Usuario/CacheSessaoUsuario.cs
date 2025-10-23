@@ -188,6 +188,7 @@ public partial class CacheSessaoUsuario : IDisposable
                 this.Usuario,
                 this.SessaoUsuario);
             statusSessaoUsuario = EnumStatusSessaoUsuario.Ativo;
+            this.IsNoticacaoStatusPendente = false;
         }
         this.StatusSessaoUsuario = statusSessaoUsuario;
         this.TimerAtualizarStatus?.Reiniciar();
