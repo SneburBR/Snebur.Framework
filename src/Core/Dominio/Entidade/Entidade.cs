@@ -1008,7 +1008,7 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntityLifecycl
                 return $"{descricao} (DELETADO)";
             }
         }
-        return descricao;
+        return descricao.Trim();
     }
 
     #endregion

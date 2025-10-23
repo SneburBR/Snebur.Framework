@@ -38,7 +38,7 @@ public class IndentedStringBuilder
     public void Clear()
         => _sb.Clear();
     public override string ToString()
-    => _sb.ToString();
+        => _sb.ToString();
 
     public string[] ToLines()
         => _sb.ToString().Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
