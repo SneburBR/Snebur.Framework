@@ -52,10 +52,13 @@ internal partial class SalvarEntidades : IDisposable
     {
         NotifyOnSaving();
 
+        
         if (this.OpcaoSalvar == EnumOpcaoSalvar.Salvar && !ignorarValidacao)
         {
             var entidades = Enumerable.Reverse(this.FilaEntidades).Select(x => x.Entidade).ToList();
-            var errosValidacao = ValidarEntidades.Validar(this.Contexto, entidades.ToList());
+            NormalizarEntidades.Normalizar(this.Contexto, entidades);
+           
+            var errosValidacao = ValidarEntidades.Validar(this.Contexto, entidades);
             if (errosValidacao.Count > 0)
             {
                 Debugger.Break();
@@ -63,6 +66,7 @@ internal partial class SalvarEntidades : IDisposable
             }
         }
 
+        
         var conexao = this.Contexto.Conexao;
         var fila = this.FilaEntidades;
         var resultado = this.SalvarEntidadesInterno(conexao, fila);
@@ -617,4 +621,36 @@ public enum EnumOpcaoSalvar
     Salvar = 0,
     Deletar = 1,
     DeletarRegistro = 2
+}
+
+public static class NormalizarEntidades
+{
+    internal static void Normalizar(
+        BaseContextoDados contexto,
+        List<Entidade> entidades)
+    {
+        foreach(var entidade in entidades)
+        {
+            var estruturaEntidade = contexto.EstruturaBancoDados
+                .RetornarEstruturaEntidade(entidade.GetType());
+
+            var estruturasCampos = estruturaEntidade.TodasEstruturasCamposNormalizarString;
+            foreach(var estruturaCampo in estruturasCampos)
+            {
+                var atributoNormalizar = estruturaCampo
+                    .AtributoNormalizarString;
+                
+                if (atributoNormalizar is not null)
+                {
+                    var propriedade = estruturaCampo.Propriedade;
+                    var valorAtual = propriedade.GetValue(entidade) as string;
+                    var valorNormalizado = atributoNormalizar.Normalizar(valorAtual);
+                    if(valorNormalizado!= valorAtual)
+                    {
+                        propriedade.SetValue(entidade, valorNormalizado);
+                    }
+                }
+            }
+        }
+    }
 }

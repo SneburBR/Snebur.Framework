@@ -18,6 +18,7 @@ internal partial class EstruturaEntidade
     private readonly EstruturaCampo? EstruturaCampoUsuarioInterno;
     private readonly EstruturaCampo[]? EstruturasCamposValorPadraoInsertInterno;
     private readonly EstruturaCampo[]? EstruturasCamposValorPadraoUpdateInterno;
+    private readonly EstruturaCampo[]? EstruturasCamposNormalizarStringInterno;
 
     private EstruturaAlteracaoPropriedade[]? EstruturasAlteracaoPropriedadeInterno;
     private EstruturaAlteracaoPropriedadeGenerica[]? EstruturasAlteracaoPropriedadeGenericaInterno;
@@ -89,6 +90,10 @@ internal partial class EstruturaEntidade
              => this.RetornarEstruturasCamposRecursivo(ref field!,
                  x => x.EstruturasCamposValorPadraoUpdateInterno)!;
 
+    internal EstruturaCampo[] TodasEstruturasCamposNormalizarString
+             => this.RetornarEstruturasCamposRecursivo(ref field!,
+                x => x.EstruturasCamposNormalizarStringInterno)!;
+
     internal EstruturaAlteracaoPropriedadeGenerica[] TodasEstruturasAlteracaoPropriedadeGenerica
              => this.RetornarEstruturasCamposRecursivo(ref field!,
                                               x => x.EstruturasAlteracaoPropriedadeGenericaInterno)!;
@@ -157,6 +162,7 @@ internal partial class EstruturaEntidade
 
         this.EstruturasCamposValorPadraoInsertInterno = this.RetornarEstruturasCampoValorPadraoInsert();
         this.EstruturasCamposValorPadraoUpdateInterno = this.RetornarEstruturasCampoValorPadraoUpdate();
+        this.EstruturasCamposNormalizarStringInterno = this.RetornarEstruturasCamposNormalizarStringInterno();
 
         this.EstruturasTipoComplexao = this.RetornarEstruturasTipoComplexo();
 
@@ -515,7 +521,14 @@ internal partial class EstruturaEntidade
         return this.EstruturasCamposValorPadraoInsertInterno
             .Where(x => x.AtributoValorPadrao?.IsValorPadraoOnUpdate == true)
             .ToArray();
+    }
 
+    private EstruturaCampo[] RetornarEstruturasCamposNormalizarStringInterno()
+    {
+        return this.EstruturasCampos
+            .Where(x => x.Value.AtributoNormalizarString != null)
+            .Select(x => x.Value)
+            .ToArray();
     }
 
     private DicionarioEstrutura<EstruturaTipoComplexo> RetornarEstruturasTipoComplexo()

@@ -40,6 +40,7 @@ internal class EstruturaCampo : EstruturaPropriedade
     public bool IsValorPadrao { get; }
 
     internal IBaseValorPadrao? AtributoValorPadrao { get; }
+    internal NormalizarStringAttribute? AtributoNormalizarString { get; }
 
     public EnumTipoValorPadrao TipoValorPadrao { get; }
     public int? TamanhoMaximo { get; }

@@ -152,7 +152,7 @@ public partial class CacheSessaoUsuario : IDisposable
 
     private void TimerAtualizarStatus_Elapsed(object? sender, ElapsedEventArgs e)
     {
-        if (this.IsDispensado)
+            if (this.IsDispensado)
         {
             return;
         }
