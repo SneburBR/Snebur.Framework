@@ -13,4 +13,9 @@ public class RemoverEspacosLateraisAttribute : NormalizarStringAttribute
         }
         return valor.Trim();
     }
+
+    public override string[] GetSqlFunctions()
+    {
+        return new[] { "LTRIM", "RTRIM" };
+    }
 }

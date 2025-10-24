@@ -4,9 +4,10 @@ namespace Snebur.Dominio.Atributos;
 public abstract class BaseValidacaoEntidadeAttribute : BaseAtributoDominio, IAtributoValidacaoEntidade
 {
 
-    public abstract bool IsValido(object contextoDados,
-                                  List<Entidade> todasEntidades,
-                                  Entidade entidade);
+    public abstract bool IsValido(
+        object contextoDados, 
+        IReadOnlyCollection<Entidade> todasEntidades,
+          Entidade entidade);
 
     public abstract string RetornarMensagemValidacao(Entidade entidade);
 

@@ -3,7 +3,6 @@ using System.Data;
 using System.Reflection;
 using System.Data.Common;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 
 namespace Snebur.BancoDados;

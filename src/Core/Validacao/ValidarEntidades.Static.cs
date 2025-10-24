@@ -1,8 +1,10 @@
+
 namespace Snebur.Dominio;
 
 public partial class ValidarEntidades
 {
-    public static List<ErroValidacaoInfo> Validar(object contextoDados, List<Entidade> entidades)
+    public static List<ErroValidacaoInfo> Validar(object contextoDados,
+        IReadOnlyCollection<Entidade> entidades)
     {
         using (var validar = new ValidarEntidades(entidades))
         {

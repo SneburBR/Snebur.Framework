@@ -1,12 +1,13 @@
+using System.Collections;
 using System.Diagnostics;
 
 namespace Snebur.Dominio;
 
 public partial class ValidarEntidades : IDisposable
 {
-    internal List<Entidade> Entidades { get; set; }
+    internal IReadOnlyCollection<Entidade> Entidades { get; set; }
 
-    private ValidarEntidades(List<Entidade> entidades)
+    private ValidarEntidades(IReadOnlyCollection<Entidade> entidades)
     {
         this.Entidades = entidades;
     }
