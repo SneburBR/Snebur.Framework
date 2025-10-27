@@ -169,7 +169,8 @@ public static class LinqExtensao
         IEnumerable<T?>? itens,
         [CallerArgumentExpression(nameof(colecao))] string? paramName = null)
     {
-        Guard.NotNull(paramName);
+
+        Guard.NotNull(colecao, paramName);
 
         if (itens == null)
         {
