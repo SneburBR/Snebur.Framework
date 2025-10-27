@@ -4,6 +4,7 @@
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.StaticFiles;
 using System.Diagnostics;
+using System.Runtime.Versioning;
 using System.Text;
 
 namespace Snebur;
@@ -24,8 +25,6 @@ public class Program
                       .SetBasePath(diretorioBase)
                       .AddJsonFile("appsettings.json");
         }
-
-      
 
         var builder = WebApplication.CreateBuilder(args);
         ConfigureServices(builder.Services);
@@ -340,7 +339,7 @@ public class FilePathBuiler
     {
         this._applicationPath = applicationPath;
         this._applicationDir = new DirectoryInfo(applicationPath);
-        this.PopuleKnowsPaths();
+        this.PopuleBasePaths();
     }
     public string Build(string relativePath)
     {
@@ -376,6 +375,7 @@ public class FilePathBuiler
     {
         var parts = relativePath
             .Split([Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar], StringSplitOptions.RemoveEmptyEntries)
+            .Select(Uri.UnescapeDataString)
             .ToArray();
 
         var queue = new Queue<string>(parts);
@@ -390,6 +390,8 @@ public class FilePathBuiler
                 {
                     return fullPath;
                 }
+                Trace.WriteLine($"Não foi possível localizar o arquivo '{relativePath}' no diretório base '{baseDir}'.");
+                Debugger.Break();
             }
         }
 
@@ -431,27 +433,34 @@ public class FilePathBuiler
         return Path.GetFullPath(Path.Combine(basePath, relativePath));
     }
 
-    private void PopuleKnowsPaths()
+    private void PopuleBasePaths()
     {
-        var knowsDirectory = new HashSet<string>(["Zyoncore", "SneburBR"], StringComparer.OrdinalIgnoreCase);
+        var mappings = new Dictionary<string, string>
+        {
+            { "Zyoncore.Sigi.TS", "Sigi/src/Zyoncore.Sigi.TS"},
+            { "Zyoncore.Sigi.FotoAlbum.TS", "Sigi/src/Zyoncore.Sigi.FotoAlbum.TS"},
+            { "Zyoncore.Sigi.Fotografo.TS", "Sigi/src/Zyoncore.Sigi.Fotografo.TS"}
+        };
+
         var current = new DirectoryInfo(this._applicationPath);
         while (current != null)
         {
-            if (knowsDirectory.Contains(current.Name))
+            if (current.Name.Equals("Zyoncore", StringComparison.OrdinalIgnoreCase))
             {
-                var sneburBRPath = Path.Combine(current.Parent?.FullName!, "sneburbr");
-                var zyoncorePath = Path.Combine(current.Parent?.FullName!, "zyoncore");
+                var zyoncorePath = current.FullName;
+                ArgumentNullException.ThrowIfNull(current.Parent);
 
-                if (!Directory.Exists(sneburBRPath))
-                    throw new DirectoryNotFoundException(
-                        "Não foi possível localizar o diretório conhecido SneburBR.");
+                var sneburBRPath = Path.Combine(current.Parent.FullName, "SneburBR");
 
-                if (!Directory.Exists(zyoncorePath))
-                    throw new DirectoryNotFoundException(
-                        "Não foi possível localizar o diretório conhecido Zyoncore.");
+                this.AddBaseDirectory("Zyoncore", zyoncorePath);
+                this.AddBaseDirectory("SneburBR", sneburBRPath);
 
-                this._baseDirectories.Add("sneburbr", sneburBRPath);
-                this._baseDirectories.Add("zyoncore", sneburBRPath);
+                foreach (var mapping in mappings)
+                {
+                    var mappedPath = Path.Combine(zyoncorePath, mapping.Value);
+                    this.AddBaseDirectory(mapping.Key, mappedPath);
+                }
+
                 return;
             }
             current = current.Parent;
@@ -459,6 +468,15 @@ public class FilePathBuiler
 
         throw new InvalidOperationException(
             "Não foi possível localizar os diretórios conhecidos Zyoncore ou SneburBR.");
+    }
+
+    private void AddBaseDirectory(string key, string mappedPath)
+    {
+        if (!Directory.Exists(mappedPath))
+            throw new DirectoryNotFoundException(
+                $"Não foi possível localizar o diretório conhecido {key}.");
+
+        this._baseDirectories.Add(key, mappedPath);
     }
 }
 
