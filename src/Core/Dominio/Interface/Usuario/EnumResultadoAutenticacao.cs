@@ -7,5 +7,6 @@ public enum EnumResultadoAutenticacao
     UsuarioNaoExiste = 2,
     SenhaInvalida = 3,
     MaximoTentativa = 4,
-    UsuarioBloqueado = 5
+    UsuarioBloqueado = 5,
+    ContaAtualNaoDefinida = 9
 }
