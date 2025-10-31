@@ -26,6 +26,7 @@ public static class ContextoDadosExtensao
             throw new Exception(" SalvarPropriedades não é permitido para entidades que não possui chave primária (ID)  autoincremento)");
         }
 
+
         if (entidade.__IsExisteAlteracao)
         {
             var clone = entidade.CloneSomenteId<TEntidade>(null);

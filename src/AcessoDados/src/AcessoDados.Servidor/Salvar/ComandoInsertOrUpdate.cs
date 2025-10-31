@@ -13,8 +13,12 @@ internal class ComandoInsertOrUpdate : Comando, IComandoUpdate
     internal ComandoInsertOrUpdate(EntidadeAlterada entidadeAlterada,
                                    EstruturaEntidade estruturaEntidade) : base(entidadeAlterada, estruturaEntidade)
     {
-        this.PropriedadesAlterada = entidadeAlterada.RetornarPropriedadesAlteradas();
+        if (entidadeAlterada.Entidade.__IsIdentity || estruturaEntidade.IsIdentity)
+        {
+            throw new InvalidOperationException($"Não suportado para entidade chave primaria Identity");
+        }
 
+        this.PropriedadesAlterada = entidadeAlterada.RetornarPropriedadesAlteradas();
         this.EstruturasCampoParametro.Clear();
 
         this.EstruturasCampoParametro.Add(this.EstruturaEntidade.EstruturaCampoChavePrimaria);

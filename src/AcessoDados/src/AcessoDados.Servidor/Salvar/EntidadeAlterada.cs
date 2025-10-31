@@ -35,13 +35,17 @@ internal class EntidadeAlterada
         this.EstruturaEntidade = estruturaEntidade;
         this.IsImplementaIDeletado = estruturaEntidade.IsImplementaInterfaceIDeletado && !estruturaEntidade.IsDeletarRegistro;
         this.TipoAlteracao = this.AnalisarOpcaoSalvar(opcaoSalvar);
+
+        if (entidade.__IsIdentity != estruturaEntidade.IsIdentity)
+        {
+            throw new ErroOperacaoInvalida("A entidade possui configuração inválida de chave primária Identity");
+        }
     }
 
     private EnumTipoAlteracao AnalisarOpcaoSalvar(EnumOpcaoSalvar opcaoSalvar)
     {
         var entidade = this.Entidade;
         var estruturaEntidade = this.EstruturaEntidade;
-
         if (opcaoSalvar == EnumOpcaoSalvar.Deletar ||
             opcaoSalvar == EnumOpcaoSalvar.DeletarRegistro)
         {
@@ -79,7 +83,7 @@ internal class EntidadeAlterada
             return EnumTipoAlteracao.Delete;
         }
 
-        if (!estruturaEntidade.IsEntity)
+        if (!estruturaEntidade.IsIdentity)
         {
             if (entidade.Id == 0)
             {

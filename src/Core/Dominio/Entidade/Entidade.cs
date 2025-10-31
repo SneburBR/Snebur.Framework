@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace Snebur.Dominio;
 
@@ -104,13 +105,9 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntityLifecycl
         this.__TipoEntidade = this.GetType();
         this.__NomeTipoEntidade = this.__TipoEntidade.Name;
 
-        var propriedadesTipoComplexo = this.__TipoEntidade
-            .GetProperties()
-            .Where(x => x.PropertyType.IsSubclassOf(typeof(BaseTipoComplexo)))
-            .Where(x => x.GetMethod is not null && x.SetMethod is not null && x.GetCustomAttribute<NotMappedAttribute>(false) is null)
-            .ToList();
+        var info = EntidadeInfoUtils.GetEntidadeInfo(this.__TipoEntidade);
 
-        foreach (var propriedadeTipoComplexo in propriedadesTipoComplexo)
+        foreach (var propriedadeTipoComplexo in info.PropriedadesTipoComplexo)
         {
             var tipoComplexo = this.RetornarValorPropriedadeTipoComplexo(propriedadeTipoComplexo);
             if (tipoComplexo != null)
@@ -128,9 +125,7 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntityLifecycl
                 }
             }
         }
-
-        var atributo = this.__TipoEntidade.GetCustomAttribute<DatabaseGeneratedAttribute>(true);
-        this.__IsIdentity = atributo == null || atributo.DatabaseGeneratedOption == DatabaseGeneratedOption.Identity;
+        this.__IsIdentity = info.IsIdentity;
     }
 
     private BaseTipoComplexo RetornarValorPropriedadeTipoComplexo(PropertyInfo propriedadeTipoComplexo)

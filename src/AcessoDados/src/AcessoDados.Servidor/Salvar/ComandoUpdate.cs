@@ -50,16 +50,14 @@ internal class ComandoUpdate : Comando, IComandoUpdate
                 if (!this.EntidadeAlterada.Contexto.IsPodeSobreEscrever(estruturaCampoSomenteLeitura))
                 {
                     estruturasCamposAlterados.Remove(estruturaCampoSomenteLeitura);
-                    var mensagem = $"Não é autorizado alterar valores das propriedades somente leitura" +
-                                    $" '{estruturaCampoSomenteLeitura.Propriedade.Name}' na entidade '{estruturaCampoSomenteLeitura.EstruturaEntidade.TipoEntidade.Name}'";
-
-                    if (DebugUtil.IsAttached)
-                    {
-                        Trace.TraceWarning(mensagem);
-                    }
-
+                   
                     if (estruturaCampoSomenteLeitura.OpcoesSomenteLeitura.IsNotificarSeguranca)
                     {
+                        var mensagem = $"Não é autorizado alterar valores das propriedades somente leitura" +
+                                   $" '{estruturaCampoSomenteLeitura.Propriedade.Name}' na entidade '{estruturaCampoSomenteLeitura.EstruturaEntidade.TipoEntidade.Name}'";
+
+                        Debugger.Break();
+                        Trace.TraceWarning(mensagem);
                         LogUtil.ErroAsync(new ErroSeguranca(mensagem, EnumTipoLogSeguranca.AlterarandoPropriedadeSomenteLeitura));
                     }
                 }

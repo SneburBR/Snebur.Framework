@@ -34,7 +34,7 @@ internal partial class EstruturaEntidade
     internal string NomeTabela { get; }
     internal string? GrupoArquivoIndices { get; }
     internal bool IsChavePrimariaAutoIncrimento { get; }
-    internal bool IsEntity { get; }
+    internal bool IsIdentity { get; }
     internal bool IsAbstrata { get; }
     internal bool IsEntidadeRelacaoNn { get; }
     internal EnumInterfaceEntidade InterfacesImplementasEnum { get; }
@@ -170,7 +170,7 @@ internal partial class EstruturaEntidade
         this.EstruturaEntidadeBase = estruturaEntidadeBase;
 
         this.IsChavePrimariaAutoIncrimento = this.RetornarIsChavePrimariaAutoIncrimento();
-        this.IsEntity = this.RetornarIsEntity();
+        this.IsIdentity = this.RetornarIsIdentity();
 
         this.IsImplementaInterfaceIDeletado = this.InterfacesImplementasEnum.HasFlag(EnumInterfaceEntidade.IDeletado);
         this.IsImplementaInterfaceIAtivo = this.InterfacesImplementasEnum.HasFlag(EnumInterfaceEntidade.IAtivo);
@@ -207,7 +207,7 @@ internal partial class EstruturaEntidade
         //    this.EstruturasCampos.Add(NOME_PROPRIEDADE_ID, this.EstruturaCampoChavePrimaria);
         //}
     }
-
+  
     #endregion
 
     #region Métodos Internos
@@ -723,11 +723,11 @@ internal partial class EstruturaEntidade
         this.EstruturasRelacoes.Add(propriedade.Name, estruturaRelacaoNn);
     }
 
-    private bool RetornarIsEntity()
+    private bool RetornarIsIdentity()
     {
         return this.TipoEntidade.BaseType == typeof(Entidade)
                 ? this.IsChavePrimariaAutoIncrimento
-                : this.EstruturaEntidadeBase?.IsEntity == true;
+                : this.EstruturaEntidadeBase?.IsIdentity == true;
     }
 
     private bool RetornarIsChavePrimariaAutoIncrimento()
@@ -740,7 +740,8 @@ internal partial class EstruturaEntidade
             {
                 return atributoDataBase.DatabaseGeneratedOption == DatabaseGeneratedOption.Identity;
             }
-            return this.SqlSuporte.IsDatabaseGeneratedOptionIdentityPadrao;
+            throw new InvalidOperationException($"A propriedade {propriedadeChavePrimaria.Name} da entidade {this.NomeTipoEntidade} deve possuir o atributo DatabaseGeneratedAttribute para definir se é auto incremento.");
+            //return this.SqlSuporte.IsDatabaseGeneratedOptionIdentityPadrao;
         }
 
         if (this.TipoEntidade.BaseType is not null && AjudanteEstruturaBancoDados.TipoEntidadeBaseNaoMepeada(this.TipoEntidade.BaseType))
