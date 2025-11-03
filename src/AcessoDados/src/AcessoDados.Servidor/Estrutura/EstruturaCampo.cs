@@ -1,5 +1,6 @@
 using Snebur.Reflexao;
 using System.Data;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Snebur.AcessoDados.Estrutura;
@@ -68,6 +69,7 @@ internal class EstruturaCampo : EstruturaPropriedade
     internal EstruturaCampo(PropertyInfo propriedade,
                             EstruturaEntidade estruturaEntidade) : base(propriedade, estruturaEntidade)
     {
+         
         this.Propriedade = propriedade;
         this.NomeCampo = this.RetornarNomeCampo();
         //this.ValorPadrao = ReflexaoUtil.RetornarValorPadraoPropriedade(this.Propriedade);

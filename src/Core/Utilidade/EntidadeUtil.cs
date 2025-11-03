@@ -1,5 +1,6 @@
 using Snebur.Linq;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 
 namespace Snebur.Utilidade;
@@ -340,10 +341,10 @@ public class EntidadeUtil
 
     public static string RetornarNomeCampo(PropertyInfo propriedade)
     {
-        var atributoCampo = CustomAttributeExtensions.GetCustomAttribute<CampoAttribute>(propriedade);
+        var atributoCampo = CustomAttributeExtensions.GetCustomAttribute<ColumnAttribute>(propriedade);
         if (atributoCampo != null)
         {
-            return atributoCampo.NomeCampo ?? propriedade.Name;
+            return atributoCampo.Name ?? propriedade.Name;
         }
         return propriedade.Name;
     }

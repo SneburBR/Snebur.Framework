@@ -1,4 +1,5 @@
 using Snebur.AcessoDados.Estrutura;
+using System.Diagnostics;
 
 namespace Snebur.AcessoDados.Mapeamento;
 
@@ -10,7 +11,8 @@ internal class EstruturaCampoApelido : BaseEstruturaApelido
     internal EstruturaCampo EstruturaCampo { get; set; }
 
     internal EstruturaEntidadeApelido EstruturaEntidadeApelido { get; set; }
-    public string ChavePropriedadeAdicional => this.CaminhoPropriedade.Replace("_", ".");
+    public string ChavePropriedadeAdicional 
+        => this.CaminhoPropriedade.Replace("_", ".");
 
     //public string ChavePropriedade { get; internal set; }
 
@@ -24,7 +26,6 @@ internal class EstruturaCampoApelido : BaseEstruturaApelido
         this.CaminhoPropriedade = caminhoPropriedade;
         this.EstruturaCampo = estruturaCampo;
         this.EstruturaEntidadeApelido = estruturaEntidadeApelido;
-         
     }
 
     private string RetornarChavePropriedade()

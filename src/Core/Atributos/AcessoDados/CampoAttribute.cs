@@ -6,16 +6,13 @@ namespace Snebur.Dominio.Atributos;
 [AttributeUsage(AttributeTargets.Property)]
 public class CampoAttribute : ColumnAttribute
 {
-
-    public string? NomeCampo { get; set; }
-
-    //public CampoAttribute() : base()
+    //public CampoAttribute()
     //{
-    //}
 
-    public CampoAttribute(string nomeCampo) : base(nomeCampo)
+    //}
+    public CampoAttribute(string columnName) : base(columnName)
     {
-        this.NomeCampo = nomeCampo;
+        
     }
 }
 
