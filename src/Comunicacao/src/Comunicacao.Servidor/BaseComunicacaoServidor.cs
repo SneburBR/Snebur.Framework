@@ -21,6 +21,8 @@ public abstract partial class BaseComunicacaoServidor : IHttpHandler, IDisposabl
     public string? IdentificadorProprietario { get; protected internal set; }
     public bool IsBloqueiarThreadSessaoUsuario { get; protected internal set; }
 
+    public string? UserAgent { get; protected internal set; }
+
     #endregion
 
     #region Construtor
@@ -46,7 +48,8 @@ public abstract partial class BaseComunicacaoServidor : IHttpHandler, IDisposabl
         return resultado;
     }
 
-    private string RetornarResultadoChamadaSerializadoInterno(Requisicao requisicao, HttpContext httpContext)
+    private string RetornarResultadoChamadaSerializadoInterno(Requisicao requisicao,
+        HttpContext httpContext)
     {
         var parametros = requisicao.Parametros;
         var operacao = requisicao.Operacao;

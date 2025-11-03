@@ -4,7 +4,7 @@ namespace Snebur.Comunicacao;
 
 //<IgnorarClasseJSReflexao()>
 [IgnorarGlobalizacao]
-public class BaseComunicao : BaseDominio
+public abstract class BaseComunicao : BaseDominio
 {
 
     #region Campos Privados

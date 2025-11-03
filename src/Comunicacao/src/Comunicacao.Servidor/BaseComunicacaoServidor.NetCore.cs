@@ -23,6 +23,11 @@ public abstract partial class BaseComunicacaoServidor
             response.Headers.Append("Pragma", "no-cache");
             response.Headers.Append("Expires", "0");
 
+            if (httpContext.Request.Headers.TryGetValue("User-Agent", out var userAgent))
+            {
+                this.UserAgent = userAgent.ToString();
+            }
+
             using (var requisicao = new Requisicao(httpContext,
                                                    this.CredencialServico,
                                                    this.IdentificadorProprietario,
