@@ -7,6 +7,8 @@ public abstract class Credencial : BaseDominio, ICredencial
 {
     public string? IdentificadorUsuario { get; set; }
 
+    public string? IdentificadorAmigavel { get; set; }
+
     public string? Senha { get; set; }
 
     [IgnorarPropriedade]
@@ -52,7 +54,8 @@ public abstract class Credencial : BaseDominio, ICredencial
 
     public bool Validar(ICredencial credencial)
     {
-        return this.Validar(credencial.IdentificadorUsuario, credencial.Senha);
+        return CredencialUtil.ValidarCredencial(this, credencial);
+        //return this.Validar(credencial.IdentificadorUsuario, credencial.Senha);
     }
 
     public bool Validar(string? identificadorUsuario, string? senha)
@@ -61,19 +64,9 @@ public abstract class Credencial : BaseDominio, ICredencial
         {
             return false;
         }
-        if (this.IdentificadorUsuario != null &&
-            this.IdentificadorUsuario.Equals(identificadorUsuario,
-            StringComparison.InvariantCultureIgnoreCase))
-        {
-            if (this.Senha.Equals(senha, StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-            return Md5Util.RetornarHash(senha) == this.Senha.ToLower() ||
-                   Md5Util.RetornarHash(this.Senha) == senha?.ToLower();
-        }
-        return false;
+        return CredencialUtil.ValidarCredencial(this, new CredencialUsuario(identificadorUsuario, senha));
     }
+
     [IgnorarPropriedade]
     [IgnorarPropriedadeTSReflexao]
     public bool IsEmpty
@@ -86,12 +79,11 @@ public abstract class Credencial : BaseDominio, ICredencial
     #region ICredencial
 
     string? ICredencial.IdentificadorUsuario
-    {
-        get => this.IdentificadorUsuario;
-        set => this.IdentificadorUsuario = value;
-    }
+        => this.IdentificadorUsuario;
+    
 
-    string? ICredencial.Senha { get => this.Senha; set => this.Senha = value; }
+    string? ICredencial.Senha 
+        => this.Senha;
 
     #endregion
 

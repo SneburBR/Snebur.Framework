@@ -3,9 +3,7 @@ namespace Snebur.Seguranca;
 public class CredencialUsuario : Credencial
 {
     public string? Nome { get; set; }
-
-    public string? IdentificadorAmigavel { get; set; }
-
+     
     public CredencialUsuario()
     {
     }
@@ -55,7 +53,7 @@ public class CredencialUsuario : Credencial
 
     public override bool Equals(object? obj)
     {
-        if (obj is CredencialUsuario credencial)
+        if (obj is ICredencial credencial)
         {
             return CredencialUtil.ValidarCredencial(this, credencial);
         }

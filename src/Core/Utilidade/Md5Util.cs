@@ -11,6 +11,7 @@ public static class Md5Util
         {
             return string.Empty;
         }
+        texto = texto.Trim();
         using (var md5 = MD5.Create())
         {
             var bytes = Encoding.UTF8.GetBytes(texto);
@@ -32,6 +33,7 @@ public static class Md5Util
             return Guid.Empty;
         }
 
+        texto = texto.Trim();
         using (var md5 = MD5.Create())
         {
             var bytes = Encoding.UTF8.GetBytes(texto);
