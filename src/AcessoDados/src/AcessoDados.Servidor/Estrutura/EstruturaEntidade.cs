@@ -207,7 +207,7 @@ internal partial class EstruturaEntidade
         //    this.EstruturasCampos.Add(NOME_PROPRIEDADE_ID, this.EstruturaCampoChavePrimaria);
         //}
     }
-  
+
     #endregion
 
     #region Métodos Internos
@@ -674,10 +674,9 @@ internal partial class EstruturaEntidade
 
         if (!String.IsNullOrEmpty(atributoRelacaoFilhos.NomePropriedadeChaveEstrangeira))
         {
-            if (DebugUtil.IsAttached)
-            {
-                Trace.TraceWarning($"Tester relação filhos  {propriedade.DeclaringType?.Name}{propriedade.Name} ");
-            }
+
+            TraceUtil.Warning(()=> $"Tester relação filhos  {propriedade.DeclaringType?.Name}{propriedade.Name} ");
+
             return atributoRelacaoFilhos.NomePropriedadeChaveEstrangeira;
         }
         else

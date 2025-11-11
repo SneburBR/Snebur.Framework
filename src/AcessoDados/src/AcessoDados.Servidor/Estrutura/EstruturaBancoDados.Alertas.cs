@@ -16,8 +16,7 @@ internal partial class EstruturaBancoDados
 
             if (this.Alertas.Count > 0)
             {
-                var mensagem = String.Join(Environment.NewLine, this.Alertas);
-                Trace.TraceWarning(mensagem);
+                TraceUtil.Warning(() => String.Join(Environment.NewLine, this.Alertas));
             }
         }
     }

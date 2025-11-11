@@ -57,7 +57,10 @@ public abstract class BaseServicoComunicacaoDados<TContextoDados> : BaseComunica
     {
         try
         {
+            var stopwatch = Stopwatch.StartNew();
             this.ContextoDados = this.RetornarNovoContextoInterno();
+            TraceUtil.Warning(() => $"[BaseServicoComunicacaoDados<{typeof(TContextoDados).Name}>] RetornarNovoContextoInterno - Tempo: {stopwatch.ElapsedMilliseconds} ms");
+     
             if (this.IsServicoTransacionadoDB)
             {
                 this.ContextoDados.IniciarNovaTransacao(this.IsolamentoTransacao);

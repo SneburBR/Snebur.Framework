@@ -82,13 +82,13 @@ internal class DepuracaoUtil
                 }
                 comandos.Add(sql.RemoverQuebraLinhas(true));
 
-                Trace.WriteLine("--  INICIO COMANDOS: " + DateTime.Now);
+                TraceUtil.Verbose(()=> "--  INICIO COMANDOS: " + DateTime.Now);
                 foreach (var comando in comandos.ToList())
                 {
                     var comandoFormatado = comando.RemoverQuebraLinhas(true);
-                    Trace.WriteLine(comandoFormatado);
+                    TraceUtil.Verbose(()=> comandoFormatado);
                 }
-                Trace.WriteLine("-- FIM");
+                TraceUtil.Verbose(()=> "-- FIM");
 
             }
         }

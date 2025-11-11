@@ -87,10 +87,8 @@ internal class ComandoInsertOrUpdate : Comando, IComandoUpdate
                     var mensagem = $"Não é autorizado alterar valores das propriedades somente leitura" +
                                     $" '{estruturaCampoSomenteLeitura.Propriedade.Name}' na entidade '{estruturaCampoSomenteLeitura.EstruturaEntidade.TipoEntidade.Name}'";
 
-                    if (DebugUtil.IsAttached)
-                    {
-                        Trace.TraceWarning(mensagem);
-                    }
+
+                    TraceUtil.Warning(() => mensagem);
 
                     if (estruturaCampoSomenteLeitura.OpcoesSomenteLeitura.IsNotificarSeguranca)
                     {

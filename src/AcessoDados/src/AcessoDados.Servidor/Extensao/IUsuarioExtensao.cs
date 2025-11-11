@@ -1,9 +1,10 @@
+using System.Collections.Concurrent;
+
 namespace Snebur;
 
 public static class UsuarioExtensao
 {
-    public static readonly Dictionary<Guid, object> _bloqueios = new Dictionary<Guid, object>();
-    private readonly static object _bloqueio = new object();
+    public static readonly ConcurrentDictionary<Guid, object> _bloqueios = new ConcurrentDictionary<Guid, object>();
 
     public static object RetornarBloqueio(this IUsuario usuario)
     {
@@ -13,16 +14,12 @@ public static class UsuarioExtensao
 
     private static object RetornarBloqueio(Guid identificador)
     {
-        if (!_bloqueios.ContainsKey(identificador))
+        if (_bloqueios.TryGetValue(identificador, out var lockObj))
         {
-            lock (_bloqueio)
-            {
-                if (!_bloqueios.ContainsKey(identificador))
-                {
-                    _bloqueios.Add(identificador, new object());
-                }
-            }
+            return lockObj;
         }
-        return _bloqueios[identificador];
+        var novoLockObj = new object();
+        _bloqueios.TryAdd(identificador, novoLockObj);
+        return novoLockObj;
     }
 }
