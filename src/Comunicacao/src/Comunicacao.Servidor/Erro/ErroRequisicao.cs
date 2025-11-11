@@ -4,24 +4,21 @@ namespace Snebur.Comunicacao;
 
 public class ErroRequisicao : Erro
 {
-    public string NomeManipulador { get; }
+    public ComunicaoRequisicaoInfo? Info { get; }
 
     public ErroRequisicao(Exception erroInterno,
-                         Requisicao requisicao,
+                         ComunicaoRequisicaoInfo? info,
                          [CallerMemberName] string nomeMetodo = "",
                          [CallerFilePath] string caminhoArquivo = "",
                          [CallerLineNumber] int linhaDoErro = 0) :
-                         base(RetornarMensagemErro(erroInterno, requisicao),
+                         base(RetornarMensagemErro(erroInterno, info),
                               erroInterno, nomeMetodo, caminhoArquivo, linhaDoErro)
     {
-        this.NomeManipulador = requisicao.NomeManipulador;
+        this.Info = info;
     }
 
-    private static string RetornarMensagemErro(Exception erro, 
-                                               Requisicao requisicao)
+    private static string RetornarMensagemErro(Exception erro,  ComunicaoRequisicaoInfo? info)
     {
-        return $"Manipulador {requisicao.NomeManipulador} \r\n " +
-               $"Operacao : {requisicao.Operacao} \r\n " +
-               $"Erro: {erro.Message}";
+        return $"Info: {info?.BuildInfo()}";
     }
 }

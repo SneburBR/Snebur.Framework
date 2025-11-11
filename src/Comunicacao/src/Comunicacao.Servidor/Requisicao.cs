@@ -17,12 +17,11 @@ namespace Snebur.Comunicacao;
 
 public class Requisicao : IDisposable
 {
-    private string? _jsonRequisacao;
-
     #region Propriedades
     public CredencialServico CredencialServico { get; }
     public string IdentificadorProprietario { get; }
     public string NomeManipulador { get; }
+    public string? IpRequisicao { get; }
     [XmlIgnore, JsonIgnore]
     public HttpContext HttpContext { get; }
     public string CaminhoAplicacao { get; }
@@ -35,6 +34,11 @@ public class Requisicao : IDisposable
         nameof(Operacao))]
     public bool IsRequsicaoValida { get; private set; }
     public string? Operacao { get; private set; }
+    public string? JsonRequiscao { get; private set; }
+
+    public string? UserAgent { get; }
+    public string Url { get; }
+
     public Cabecalho? Cabecalho { get; private set; }
     public ContratoChamada? ContratoChamada { get; private set; }
     public CredencialUsuario? CredencialUsuario { get; private set; }
@@ -46,8 +50,10 @@ public class Requisicao : IDisposable
     public Dictionary<string, object?> Parametros { get; } = new Dictionary<string, object?>();
 
     public bool IsSerializarJavascript { get; set; }
-    public EnumTipoSerializacao TipoSerializacao => this.IsSerializarJavascript ? EnumTipoSerializacao.Javascript :
-                                                                                  EnumTipoSerializacao.DotNet;
+    public EnumTipoSerializacao TipoSerializacao 
+        => this.IsSerializarJavascript ? EnumTipoSerializacao.Javascript :
+           EnumTipoSerializacao.DotNet;
+
 
     #endregion
 
@@ -70,6 +76,31 @@ public class Requisicao : IDisposable
         this.CredencialServico = credencialServico;
         this.IdentificadorProprietario = identificadorProprietario;
         this.NomeManipulador = nomeManipulador;
+        this.IpRequisicao = httpContext.Connection.RemoteIpAddress?.ToString();
+        this.Url = $"{httpContext.Request.Scheme}://{httpContext.Request.Host}{httpContext.Request.Path}{httpContext.Request.QueryString}";
+
+        if(httpContext.Request.Headers.TryGetValue("User-Agent", out var userAgent) && userAgent.Any())
+        {
+            this.UserAgent = userAgent.ToString();
+        }
+    }
+
+    internal ComunicaoRequisicaoInfo CreateRequisicaoInfo()
+    {
+        return new ComunicaoRequisicaoInfo
+        {
+            DataHoraInicio = DateTime.Now,
+            Identificador = Guid.NewGuid().ToString(),
+            Json = this.JsonRequiscao ?? string.Empty,
+            Url = this.Url,
+            UserAgent = this.UserAgent,
+            NomeManipulador = this.NomeManipulador,
+            Operacao = this.Operacao,
+            CredencialUsuario = this.CredencialUsuario?.IdentificadorUsuario,
+            IpRequisicao = this.IpRequisicao,
+            IdentificadorProprietario = this.IdentificadorProprietario
+
+        };
     }
 
 #if NET6_0_OR_GREATER
@@ -138,7 +169,7 @@ public class Requisicao : IDisposable
         var json = PacoteUtil.DescompactarPacote(streamRequisicao);
         if (DebugUtil.IsAttached)
         {
-            this._jsonRequisacao = json;
+            this.JsonRequiscao = json;
         }
 
         var contratoChamada = JsonUtil.Deserializar<ContratoChamada>(json, EnumTipoSerializacao.DotNet);

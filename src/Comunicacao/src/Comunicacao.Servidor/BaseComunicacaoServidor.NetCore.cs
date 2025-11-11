@@ -4,15 +4,18 @@ using Microsoft.AspNetCore.Http;
 using Snebur.Servicos;
 using Snebur.Utilidade;
 using System;
+using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
 
 public abstract partial class BaseComunicacaoServidor
 {
+    public ComunicaoRequisicaoInfo? Info { get; private set; }
     public HttpContext? HttpContext { get; private set; }
 
     public async Task ProcessRequestAsync(HttpContext httpContext)
     {
+        var sw = Stopwatch.StartNew();
         this.HttpContext = httpContext;
         var response = httpContext.Response;
         try
@@ -35,6 +38,7 @@ public abstract partial class BaseComunicacaoServidor
             {
                 await requisicao.ProcessarRequisicaoAsync();
 
+                this.Info = requisicao.CreateRequisicaoInfo();
                 if (requisicao.IsRequsicaoValida)
                 {
                     this.InformacaoSessao = requisicao.InformacaoSessaoUsuario;
@@ -60,7 +64,7 @@ public abstract partial class BaseComunicacaoServidor
                     }
                     catch (Exception ex)
                     {
-                        throw new ErroRequisicao(ex, requisicao);
+                        throw new ErroRequisicao(ex, this.Info);
                     }
                 }
                 else
@@ -80,8 +84,9 @@ public abstract partial class BaseComunicacaoServidor
                 }
             }
         }
-        catch (ErroDeserializarContrato)
+        catch (ErroDeserializarContrato ex)
         {
+            LogError("BaseComunicacaoServidor.ProcessRequestAsync", ex);
             response.StatusCode = (int)HttpStatusCode.BadRequest;
             //response.SubStatusCode = Convert.ToInt32(EnumTipoLogSeguranca.ContratoInvalido);
 
@@ -90,19 +95,58 @@ public abstract partial class BaseComunicacaoServidor
         }
         catch (ErroMetodoOperacaoNaoFoiEncontrado erro)
         {
+            LogError("BaseComunicacaoServidor.ProcessRequestAsync", erro);
             response.StatusCode = (int)HttpStatusCode.BadRequest;
             //response.SubStatusCode = Convert.ToInt32(EnumTipoLogSeguranca.MetodoOperacaoNaoEncontrado);
 
             var mensagemSeguranca = String.Format("O método '{0}' não foi encontrado no serviço '{1}'", erro.NomeMetodo, this.GetType().Name);
             LogUtil.SegurancaAsync(mensagemSeguranca, EnumTipoLogSeguranca.MetodoOperacaoNaoEncontrado);
         }
-        catch (ErroRequisicao)
+        catch (ErroRequisicao ex)
         {
+            LogError("BaseComunicacaoServidor.ProcessRequestAsync", ex);
             throw;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            LogError("BaseComunicacaoServidor.ProcessRequestAsync", ex);
             throw;
+        }
+        finally
+        {
+            this.LogTiming(()=> $"[BaseComunicacaoServidor.ProcessRequestAsync] Total ProcessRequestAsync - Tempo: {sw.ElapsedMilliseconds} ms", sw);
         }
     }
+     
+    protected void LogTiming(
+        Func<string> value,
+        Stopwatch stopwatch)
+    {
+        stopwatch.Stop();
+
+        var info = this.Info;
+        Func<string> messageFactory = () =>
+            $"{value()} - Tempo: {stopwatch.ElapsedMilliseconds} ms\r\n" +
+            $"Info: {info?.BuildInfo(newLineSeparator: false)}";
+
+        
+        TraceUtil.Timing(
+            messageFactory,
+            stopwatch);
+
+        if(stopwatch.ElapsedMilliseconds > 1500)
+        {
+            LogUtil.DesempenhoAsync(
+                messageFactory(),
+                stopwatch,
+                EnumTipoLogDesempenho.LentidaoServicoComunicacao,
+                erroIsAttach: false);
+        }
+    }
+
+    private void LogError(string identificador, Exception ex)
+    {
+        LogUtil.ErroAsync(new ErroRequisicao(ex, this.Info));
+    }
 }
+

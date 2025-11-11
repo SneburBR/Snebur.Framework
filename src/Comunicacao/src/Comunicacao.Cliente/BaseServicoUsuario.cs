@@ -103,6 +103,9 @@ public abstract class BaseServicoUsuarioCliente : BaseComunicacaoCliente, IServi
         var parametros = new object[] { credencial };
         return this.ChamarServico<EnumResultadoValidacaoCredencial>(MethodBase.GetCurrentMethod(), parametros);
     }
+
+    public abstract IContextoSessaoUsuario RetornarContextoSessaoUsuario(CredencialUsuario credencial, Guid identificadorSessaoUsuario);
+ 
     #endregion
 
     #region IServicoUsuarioAsync
@@ -174,6 +177,11 @@ public abstract class BaseServicoUsuarioCliente : BaseComunicacaoCliente, IServi
     public Task AtualizarInformacaoIpAsync(DadosIPInformacao ipInformacao)
     {
         return Task.Factory.StartNew(() => this.AtualizarInformacaoIp(ipInformacao));
+    }
+
+    public Task<IContextoSessaoUsuario> RetornarContextoSessaoUsuarioAsync(CredencialUsuario credencial, Guid identificadorSessaoUsuario)
+    {
+        return Task.Factory.StartNew(() => this.RetornarContextoSessaoUsuario(credencial, identificadorSessaoUsuario));
     }
 
     #endregion

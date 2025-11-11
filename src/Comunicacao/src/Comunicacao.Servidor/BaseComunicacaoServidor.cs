@@ -36,16 +36,11 @@ public abstract partial class BaseComunicacaoServidor : IHttpHandler, IDisposabl
 
     #region  IHttpHandler - Construtor 
 
-    private string RetornarResultadoChamadaSerializado(Requisicao requisicao,
-                                                       HttpContext httpContext)
+    protected virtual string RetornarResultadoChamadaSerializado(
+        Requisicao requisicao,
+        HttpContext httpContext)
     {
-        var tempo = Stopwatch.StartNew();
-        var resultado = this.RetornarResultadoChamadaSerializadoInterno(requisicao, httpContext);
-        if (tempo.ElapsedMilliseconds > this.RetonarTempoLimiteOperacao(requisicao))
-        {
-            this.NotificarLogLentidaoAsync(requisicao, tempo);
-        }
-        return resultado;
+        return this.RetornarResultadoChamadaSerializadoInterno(requisicao, httpContext);
     }
 
     private string RetornarResultadoChamadaSerializadoInterno(Requisicao requisicao,
@@ -127,14 +122,19 @@ public abstract partial class BaseComunicacaoServidor : IHttpHandler, IDisposabl
     {
         if (!this.IsBloqueiarThreadSessaoUsuario)
         {
-            return metodoOperacao.Invoke(this, parametros);
+            return InvocarOperacao(metodoOperacao, parametros);
         }
 
         var objetoBloqueio = this.RetornarObjetoBloqueioThread();
         lock (objetoBloqueio)
         {
-            return metodoOperacao.Invoke(this, parametros);
+            return InvocarOperacao(metodoOperacao, parametros);
         }
+    }
+
+    protected virtual object? InvocarOperacao(MethodInfo metodoOperacao, object?[] parametros)
+    {
+        return metodoOperacao.Invoke(this, parametros);
     }
 
     protected virtual void Inicializar(Requisicao requisicao)
@@ -145,24 +145,7 @@ public abstract partial class BaseComunicacaoServidor : IHttpHandler, IDisposabl
     {
         return BaseComunicacaoServidor.TEMPO_LIMITE_PADRAO_LOG_DESEMPEHO;
     }
-
-    private void NotificarLogLentidaoAsync(Requisicao requisicao,
-                                           Stopwatch tempo)
-    {
-        if (!DebugUtil.IsAttached)
-        {
-            var mensagem = this.RetornarMensagemLogLentidao(requisicao.Operacao, tempo);
-            LogUtil.DesempenhoAsync(mensagem, tempo, EnumTipoLogDesempenho.LentidaoServicoComunicacao, false,
-            (Guid identificador) =>
-            {
-                var json = JsonUtil.Serializar(requisicao, EnumTipoSerializacao.Javascript);
-                var nomeArquivo = identificador.ToString() + ".json";
-                var caminho = Path.Combine(ConfiguracaoUtil.CaminhoAppDataAplicacaoLogs, "Desempenho", nomeArquivo);
-                ArquivoUtil.SalvarArquivoTexto(caminho, json, Encoding.UTF8);
-            });
-        }
-    }
-
+     
     protected virtual string RetornarMensagemLogLentidao(string? operacao, Stopwatch tempo)
     {
         var sb = new StringBuilder();
