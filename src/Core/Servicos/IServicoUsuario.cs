@@ -12,6 +12,7 @@ public interface IServicoUsuario : IBaseServico
     EnumResultadoValidacaoCredencial ValidarCredencial(CredencialUsuario credencial);
 
     bool SessaoUsuarioAtiva(CredencialUsuario credencial, Guid identificadorSessaoUsuario);
+    IContextoSessaoUsuario RetornarContextoSessaoUsuario(CredencialUsuario credencial, Guid identificadorSessaoUsuario);
 
     IUsuario? RetornarUsuario(CredencialUsuario credencial);
 
@@ -32,3 +33,4 @@ public interface IServicoUsuario : IBaseServico
     void FinalizarSessaoUsuario(Guid identificadorSessaoUsuario);
 
 }
+

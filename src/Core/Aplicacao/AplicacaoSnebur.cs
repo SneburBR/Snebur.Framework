@@ -811,8 +811,7 @@ public abstract partial class AplicacaoSnebur
         return false;
     }
 
-    public virtual IUsuario? RetornarUsuario(object contextoDados,
-                                             CredencialUsuario credencial)
+    public virtual IUsuario? RetornarUsuario(object contextoDados, CredencialUsuario credencial)
     {
         return null;
     }

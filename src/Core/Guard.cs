@@ -57,6 +57,16 @@ public static class Guard
             throw new ArgumentOutOfRangeException($"{memberName} deve ser maior que zero.");
         }
     }
+    public static void MustBeGreaterOrEqualsZero<T>(
+        IComparable<T> value,
+        [CallerMemberName] string? memberName = "")
+        where T : struct
+    {
+        if (value.CompareTo(default) < 0)
+        {
+            throw new ArgumentOutOfRangeException($"{memberName} deve ser maior ou igual a zero.");
+        }
+    }
 
     public static void MustBeGreaterThanZero<T>(
        T? value,
@@ -184,6 +194,16 @@ public static class Guard
             throw new ArgumentNullException(paramName, $"{paramName} cannot be null.");
         if (value is not T)
             throw new ArgumentException($"{paramName} must be of type {typeof(T).Name}.", paramName);
+    }
+
+    public static void MustBeEmail(string? value,
+        [CallerArgumentExpression(nameof(value))] string paramName = "")
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            throw new ArgumentNullException(paramName, $"{paramName} cannot be null or empty.");
+        
+        if (!ValidacaoUtil.IsEmail(value))
+            throw new ArgumentException($"{paramName} must be a valid email address.", paramName);
     }
 }
 

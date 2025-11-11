@@ -1,4 +1,4 @@
-﻿namespace Snebur.Comunicacao;
+namespace Snebur.Comunicacao;
 
 public class ResultadoAutenticacao : BaseDominio
 {
@@ -10,3 +10,4 @@ public class ResultadoAutenticacao : BaseDominio
 
     public int TempoEsperar { get; set; }
 }
+
