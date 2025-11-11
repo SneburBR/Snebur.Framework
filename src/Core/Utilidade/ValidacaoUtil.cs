@@ -8,7 +8,7 @@ namespace Snebur.Utilidade;
 public static partial class ValidacaoUtil
 {
     private static readonly Regex RegexHasSpace = new Regex(@"\s", RegexOptions.Compiled);
-    private static readonly Regex RegexValidacaoEmail = new Regex(@"^[a-zA-Z0-9][a-zA-Z0-9\\._-]+@([a-zA-Z0-9\._-]+\.)[a-zA-Z-0-9]{2}", RegexOptions.Compiled);
+    private static readonly Regex RegexValidacaoEmail = new Regex(@"^[a-zA-Z0-9][a-zA-Z0-9\\._-]*@([a-zA-Z0-9\._-]+\.)[a-zA-Z-0-9]{2,}", RegexOptions.Compiled);
     private static readonly Regex RegexCorHexa = new Regex("^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3}|[a-fA-F0-9]{8})$", RegexOptions.Compiled);
     private static readonly Regex RegexCorRgba = new Regex(@"^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*(\d+(?:\.\d+)?)\s*)?\)$", RegexOptions.Compiled);
     private static readonly Regex RegexMd5 = new Regex("^[a-f0-9]{32}$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -237,7 +237,7 @@ public static partial class ValidacaoUtil
             return false;
         }
 
-        var url = new Regex(@"^[\w\-_]+((\.[\w\-_]+)+([a-z]))?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        var url = new Regex(@"^[a-zA-Z0-9\-]+((\.([a-zA-Z0-9\-]+))+([a-z]))?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         if (url.IsMatch(dominio))
         {
             return Uri.CheckHostName(dominio) == UriHostNameType.Dns;

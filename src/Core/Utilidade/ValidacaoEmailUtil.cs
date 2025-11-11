@@ -16,7 +16,18 @@ public static class ValidacaoEmailUtil
             return false;
         }
 
-        var dominio = email.Split('@')[1];
+        if (!email.Contains('@'))
+        {
+            return false;
+        }
+
+        var partes = email.Split('@');
+        if (partes.Length != 2)
+        {
+            return false;
+        }
+
+        var dominio = partes[1];
         var dnsRecords = DnsUtil.GetDnsRecords(dominio, QueryType.MX);
         if (dnsRecords?.Length > 0)
         {

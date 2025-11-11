@@ -110,16 +110,38 @@ public static partial class TextoUtil
         do
         {
             var isUpper = Char.IsUpper((char)caracter);
-            var isProximoLowerOrFim = Char.IsLower((char)reader.Peek());
-            if (isUpper && isProximoLowerOrFim && parteAtual.Length > 0)
+            var proximo = reader.Peek();
+            var isProximoLower = proximo != -1 && Char.IsLower((char)proximo);
+            
+            // Split before an uppercase letter if:
+            // 1. There's already content in the current part AND
+            // 2. Current char is uppercase AND next is lowercase (start of new word like "Ativo")
+            // OR current part ends with uppercase and next is lowercase (like "V" before "IP" isn't split, but "Ativo" before "VIP" is)
+            if (isUpper && parteAtual.Length > 0)
             {
-                var parte = parteAtual.ToString();
-                if (!String.IsNullOrEmpty(parte))
+                // If current is uppercase and next is lowercase, we're starting a new camelCase word
+                if (isProximoLower)
                 {
-                    partes.Add(parte);
+                    var parte = parteAtual.ToString();
+                    if (!String.IsNullOrEmpty(parte))
+                    {
+                        partes.Add(parte);
+                    }
+                    parteAtual.Clear();
                 }
-                parteAtual.Clear();
+                // If we have lowercase letters in current part and current char is uppercase
+                // this means we're starting a new word (or acronym)
+                else if (parteAtual.Length > 0 && Char.IsLower(parteAtual[parteAtual.Length - 1]))
+                {
+                    var parte = parteAtual.ToString();
+                    if (!String.IsNullOrEmpty(parte))
+                    {
+                        partes.Add(parte);
+                    }
+                    parteAtual.Clear();
+                }
             }
+            
             if (!Char.IsWhiteSpace((char)caracter))
             {
                 parteAtual.Append((char)caracter);

@@ -50,16 +50,36 @@ public static class Util
 
     public static bool SaoIgual<T>(T valor1, T valor2)
     {
+        // Special handling for strings: treat null and empty as equal
+        if (typeof(T) == typeof(string))
+        {
+            var str1 = valor1 as string;
+            var str2 = valor2 as string;
+            
+            if (str1 == null && str2 == null)
+            {
+                return true;
+            }
+            
+            if ((str1 == null && String.IsNullOrEmpty(str2)) ||
+                (str2 == null && String.IsNullOrEmpty(str1)))
+            {
+                return true;
+            }
+        }
+        
         return EqualityComparer<T>.Default.Equals(valor1, valor2);
     }
 
     public static bool SaoIgual(object? objeto1, object? objeto2)
     {
-        if (objeto1 != null && objeto2 != null)
+        // Handle both null
+        if (objeto1 == null && objeto2 == null)
         {
-            return objeto1.Equals(objeto2);
+            return true;
         }
 
+        // Handle null vs empty string in both directions
         if (objeto1 == null && objeto2 is string str2)
         {
             return String.IsNullOrEmpty(str2);
@@ -70,11 +90,23 @@ public static class Util
             return String.IsNullOrEmpty(str1);
         }
 
-        if (objeto1 == null ^ objeto2 == null)
+        // Handle empty string vs null in both directions
+        if (objeto1 is string s1 && String.IsNullOrEmpty(s1) && objeto2 == null)
         {
-            return false;
+            return true;
         }
-        return Equals(objeto1, objeto2);
+
+        if (objeto2 is string s2 && String.IsNullOrEmpty(s2) && objeto1 == null)
+        {
+            return true;
+        }
+
+        if (objeto1 != null && objeto2 != null)
+        {
+            return objeto1.Equals(objeto2);
+        }
+
+        return false;
     }
 
     public static bool SaoIgual(string? str, string? str2, StringComparison stringComparison)

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Snebur.Utilidade;
 
-internal class OperationWithTimeout
+public class OperationWithTimeout
 {
     public static Task<T> ExecuteWithTimeout<T>(Func<CancellationToken, T>[] operations,
                                                 double timeout)

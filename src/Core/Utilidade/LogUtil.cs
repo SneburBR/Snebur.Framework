@@ -36,6 +36,7 @@ public static class LogUtil
                                 [CallerFilePath] string caminhoArquivo = "",
                                 [CallerLineNumber] int linhaDoErro = 0)
     {
+        TraceUtil.Error(() => $"[Error] {ex.GetAllExceptionMessages()}");
         try
         {
             if (DebugUtil.IsAttached && IsParaErroDepuracaoAtachada(ex))

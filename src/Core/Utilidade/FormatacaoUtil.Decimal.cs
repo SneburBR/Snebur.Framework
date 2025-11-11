@@ -90,25 +90,22 @@ public static partial class FormatacaoUtil
 
     private static string FormatarDecimalInterno(decimal valor, int digitos)
     {
-        if (digitos == 0 || valor % 1 == 0)
+        if (digitos == 0)
         {
             return $"{valor:0}";
         }
 
-        if (digitos == 1 ||
-            ((valor - Math.Floor(valor)) * 10) % 1 == 0)
+        if (digitos == 1)
         {
             return $"{valor:0.0}";
         }
 
-        if (digitos == 2 ||
-             ((valor - Math.Floor(valor)) * 100) % 1 == 0)
+        if (digitos == 2)
         {
             return $"{valor:0.00}";
         }
 
-        if (digitos == 3 ||
-            ((valor - Math.Floor(valor)) * 1000) % 1 == 0)
+        if (digitos == 3)
         {
             return $"{valor:0.000}";
         }
