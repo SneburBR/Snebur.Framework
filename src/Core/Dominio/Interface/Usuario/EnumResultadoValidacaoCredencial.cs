@@ -6,5 +6,7 @@ public enum EnumResultadoValidacaoCredencial
     Sucesso = 1,
     UsuarioNaoExiste = 2,
     SenhaIncorreta = 3,
-    MaximoTentativaAtingido = 4
+    MaximoTentativaAtingido = 4,
+    EmailInvalido = 5,
+    UsuarioOuSenhaInvalido = 5,
 }

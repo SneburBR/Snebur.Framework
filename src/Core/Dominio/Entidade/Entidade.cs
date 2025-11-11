@@ -208,6 +208,9 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntityLifecycl
         T valor,
         [CallerMemberName] string nomePropriedade = "")
     {
+        if (nomePropriedade == nameof(Entidade.Id))
+            return valor;
+
         if (this.__IsControladorPropriedadesAlteradaAtivo)
         {
             var entidade = (this as IEntidadeInterna);
@@ -489,6 +492,10 @@ public abstract partial class Entidade : BaseDominio, IEntidade, IEntityLifecycl
         if (antigoValor > 0 && novoValor != antigoValor)
         {
             throw new ErroOperacaoInvalida("Não é permitido alterar o Id do proprietário de uma entidade");
+        }
+        if (nomePropriedade == nameof(Entidade.Id))
+        {
+            return;
         }
         this.Set(antigoValor, novoValor, nomePropriedade);
     }
