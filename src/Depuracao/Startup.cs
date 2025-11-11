@@ -1,6 +1,7 @@
 #if NET6_0_OR_GREATER
 
 // Don't remove this using namespace declaration
+using Microsoft.AspNetCore.Connections.Features;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.StaticFiles;
 using System.Diagnostics;
@@ -30,19 +31,6 @@ public class Program
         ConfigureServices(builder.Services);
         var pathRoot = builder.Environment.ContentRootPath;
 
-        //var pathCert = Path.GetFullPath(Path.Combine(builder.Environment.ContentRootPath, "../../../cert/sigi.pfx"));
-        //if (File.Exists(pathCert))
-        //{
-        //    var port = GetPortApplicationUrl(pathRoot);
-        //    builder.WebHost.ConfigureKestrel(options =>
-        //    {
-        //        options.ListenAnyIP(port, listenOptions =>
-        //        {
-        //            listenOptions.UseHttps(pathCert, "zyon@3319");
-        //        });
-        //    });
-        //}
-
         var app = builder.Build();
         var caminhoAplicacao = builder.Environment.ContentRootPath;
         var builderPath = new FilePathBuiler(caminhoAplicacao);
@@ -54,17 +42,16 @@ public class Program
         {
             try
             {
-                //await _lockAsync.WaitAsync();
                 await handler.ProcessAsync(context);
+            }
+            catch (FileNotFoundException)
+            {
+                context.Response.StatusCode = 404;
             }
             catch (Exception ex)
             {
                 Debugger.Break();
                 await context.Response.WriteAsync(ex.Message);
-            }
-            finally
-            {
-                //_lockAsync.Release();
             }
             await next();
         });
@@ -86,45 +73,12 @@ public class Program
                            .AllowAnyHeader();
                 });
         });
-        //services.AddControllersWithViews();
-        //services.AddControllers();
     }
 
     private static void Configure(WebApplication app, IWebHostEnvironment environment)
     {
-        //var pathBuild = Path.Combine(caminhoAplicacao, "build");
-        //var pathApresentacao = Path.Combine(caminhoAplicacao, "apresentacao");
-
         app.UseDeveloperExceptionPage();
         app.UseCors("CrossDomainAll");
-
-        //app.UseStaticFiles(new StaticFileOptions
-        //{
-        //    FileProvider = new PhysicalFileProvider(pathBuild),
-        //    RequestPath = "/build"
-        //});
-
-        //app.UseStaticFiles(new StaticFileOptions
-        //{
-        //    FileProvider = new PhysicalFileProvider(pathBuild),
-        //    RequestPath = "/apresentacao",
-        //    ContentTypeProvider = new FileExtensionContentTypeProvider
-        //    {
-        //        Mappings = { [".shtml"] = "text/html" }
-        //    }
-        //});
-
-        app.UseStaticFiles(new StaticFileOptions
-        {
-            ContentTypeProvider = new FileExtensionContentTypeProvider
-            {
-                Mappings = { [".shtml"] = "text/html" }
-            }
-        });
-
-        //var defaultFileOptions = new DefaultFilesOptions();
-        //defaultFileOptions.DefaultFileNames.Add("index.html");
-        //app.UseDefaultFiles(defaultFileOptions);
     }
 
     public static string BuildFullPath(string applicationPath, string relativePath)
@@ -171,9 +125,6 @@ public class StaticFileHandler
 
         if (this.IsArquivoSistema(extensao))
         {
-            if (extensao == ".map")
-                Debugger.Break();
-
             var fullPath = this._filePathBuiler.Build(path);
             var melhorMimeType = this.GetMimeType(extensao);
             await this.ReponderArquivoAsync(response,
@@ -181,16 +132,25 @@ public class StaticFileHandler
                                        melhorMimeType);
             return;
         }
-
+         
         if (request.Method == "GET" && !IsFileName(path))
         {
             var caminhoIndexHtml = Path.Combine(this._applicationPath, "wwwroot/index.html");
-            if (caminhoIndexHtml is null || !File.Exists(caminhoIndexHtml))
-            {
-                throw new FileNotFoundException("Arquivo index.html não encontrado na pasta wwwroot.", caminhoIndexHtml);
-            }
             await this.ReponderArquivoHtmlAsync(response, caminhoIndexHtml);
         }
+
+        if (this.IsHtml(path))
+        {
+            var caminhoHtml = Path.Combine(this._applicationPath, "wwwroot", path.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
+            await this.ReponderArquivoHtmlAsync(response, caminhoHtml);
+
+        }
+    }
+
+    private bool IsHtml(string path)
+    {
+        var extensao = Path.GetExtension(path);
+        return extensao == ".html" || extensao == ".htm";
     }
 
     private bool IsArquivoSistema(string extensao)
@@ -232,6 +192,10 @@ public class StaticFileHandler
     private Task ReponderArquivoHtmlAsync(HttpResponse response,
                                                string caminhoHtml)
     {
+        if (caminhoHtml is null || !File.Exists(caminhoHtml))
+        {
+            throw new FileNotFoundException($"Arquivo {Path.GetFileName(caminhoHtml)} não encontrado na pasta wwwroot.", caminhoHtml);
+        }
         return this.ReponderArquivoAsync(response, caminhoHtml, "text/html");
     }
 
@@ -390,7 +354,7 @@ public class FilePathBuiler
                 {
                     return fullPath;
                 }
-                Trace.WriteLine($"Não foi possível localizar o arquivo '{relativePath}' no diretório base '{baseDir}'.");
+                Trace.TraceError($"Não foi possível localizar o arquivo '{relativePath}' no diretório base '{baseDir}'.");
                 Debugger.Break();
             }
         }

@@ -223,7 +223,7 @@ public partial class CacheSessaoUsuario
                 var credenciasGlobal = contexto.RetornarCredenciaisGlobais();
                 var credencialUsuario = usuario.RetornarCredencial();
 
-                if (usuario.IsAnonimo || credenciasGlobal.Contains(credencialUsuario))
+                if (usuario.IsAnonimo() || credenciasGlobal.Contains(credencialUsuario))
                 {
                     return false;
                 }
@@ -235,7 +235,7 @@ public partial class CacheSessaoUsuario
                                              AbrirPropriedade(x => x.Senha).Single();
 
                 var credencialUsuarioSessao = usuarioSessao.RetornarCredencial();
-                if (usuarioSessao.IsAnonimo || credenciasGlobal.Contains(credencialUsuarioSessao))
+                if (usuarioSessao.IsAnonimo() || credenciasGlobal.Contains(credencialUsuarioSessao))
                 {
                     return false;
                 }
