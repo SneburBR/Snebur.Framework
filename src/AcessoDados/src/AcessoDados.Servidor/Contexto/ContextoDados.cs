@@ -417,7 +417,10 @@ public abstract partial class BaseContextoDados : __BaseContextoDados, IServicoD
     #endregion
 
     #region Salvar
-
+    public ResultadoSalvar Salvar(IEntidade entidade, bool silecioso)
+    {
+        return this.Salvar(entidades: [entidade], silecioso: true);
+    }
     public Task<ResultadoSalvar> SalvarAsync(params IEntidade[] entidades)
     {
         return Task.Run(() => this.Salvar(entidades));
@@ -438,22 +441,21 @@ public abstract partial class BaseContextoDados : __BaseContextoDados, IServicoD
         return this.Salvar(new List<IEntidade> { entidade }, false);
     }
 
-    public virtual ResultadoSalvar Salvar(IEnumerable<IEntidade> entidades,
-                                          bool isIgnorarErro)
+    public virtual ResultadoSalvar Salvar(IEnumerable<IEntidade> entidades, bool silecioso)
     {
         this.ValidarSessaoUsuario();
-
-        if (DebugUtil.IsAttached)
-        {
-            isIgnorarErro = false;
-        }
-
+         
         var resultado = this.SalvarPermissao(entidades);
-        if (resultado.Erro != null && (!isIgnorarErro))
+        if (resultado.Erro is null)
         {
-            throw resultado.Erro;
+            return resultado;
         }
-        return resultado;
+        Debugger.Break();
+        if (silecioso)
+        {
+            return resultado;
+        }
+        throw resultado.Erro;
     }
 
     private ResultadoSalvar SalvarPermissao(IEnumerable<IEntidade> entidades)
@@ -483,11 +485,6 @@ public abstract partial class BaseContextoDados : __BaseContextoDados, IServicoD
                                                          true))
         {
             var resultado = salvarEntidades.Salvar();
-            if (resultado.Erro is not null)
-            {
-                throw resultado.Erro;
-            }
-
             if (resultado is ResultadoSalvar resultadoSalvar)
             {
                 return resultadoSalvar;
@@ -593,9 +590,9 @@ public abstract partial class BaseContextoDados : __BaseContextoDados, IServicoD
         return (this as IContextoDadosSemNotificar).SalvarInternoSemNotificacao(entidade, false);
     }
 
-    ResultadoSalvar IContextoDadosSemNotificar.SalvarInternoSemNotificacao(IEntidade entidade, bool ignorarValidacao)
+    ResultadoSalvar IContextoDadosSemNotificar.SalvarInternoSemNotificacao(IEntidade entidade, bool silecioso)
     {
-        return (this as IContextoDadosSemNotificar).SalvarInternoSemNotificacao(new IEntidade[] { entidade }, ignorarValidacao);
+        return (this as IContextoDadosSemNotificar).SalvarInternoSemNotificacao(new IEntidade[] { entidade }, silecioso);
     }
 
     ResultadoSalvar IContextoDadosSemNotificar.SalvarInternoSemNotificacao(

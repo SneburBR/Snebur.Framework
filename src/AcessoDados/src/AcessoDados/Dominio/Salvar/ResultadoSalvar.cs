@@ -51,7 +51,7 @@ public class ResultadoSalvar : Resultado
             IsSucesso = false,
             ErrosValidacao = errosInfo,
             MensagemErro = ErroValidacao.RetornarMensagemErro(errosInfo),
-            Erro = new ErroValidacao(errosInfo)
+            Erro = erro
 
         };
     }

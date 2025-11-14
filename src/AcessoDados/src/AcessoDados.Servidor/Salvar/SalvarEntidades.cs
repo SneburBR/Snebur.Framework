@@ -61,7 +61,6 @@ internal partial class SalvarEntidades : IDisposable
             var errosValidacao = ValidarEntidades.Validar(this.Contexto, entidades);
             if (errosValidacao.Count > 0)
             {
-                Debugger.Break();
                 return this.RetornarResultadoSalvarErrosValidacao(errosValidacao);
             }
         }
