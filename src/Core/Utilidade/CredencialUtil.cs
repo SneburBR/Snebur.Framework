@@ -11,24 +11,37 @@ public class CredencialUtil
         {
             if (CredencialUtil.ValidarIdentificador(credencial1, credencial2))
             {
-                if (credencial1.Senha == credencial2.Senha)
-                {
-                    return true;
-                }
-
-                var senha1 = credencial1.Senha!.Trim().ToLower();
-                var senha2 = credencial2.Senha!.Trim().ToLower();
-                var senha1Md5 = Md5Util.RetornarHash(senha1);
-                var senha2Md5 = Md5Util.RetornarHash(senha2);
-
-                return senha1 == senha2 ||
-                       senha1 == senha2Md5 ||
-                       senha1Md5 == senha2 ||
-                       senha1Md5 == senha2Md5;
+                return ValidarSenha(credencial1.Senha, credencial2.Senha);
             }
         }
         return false;
 
+    }
+
+    public static bool ValidarSenha(string? senha1, string? senha2)
+    {
+        if (String.IsNullOrWhiteSpace(senha1) || String.IsNullOrWhiteSpace(senha2))
+        {
+            return false;
+        }
+
+        if (senha1 == senha2)
+        {
+            return true;
+        }
+
+        var senha1Md5 = NormalizarSenhaMd5(senha1);
+        var senha2Md5 = NormalizarSenhaMd5(senha2);
+        return senha1Md5.Equals(senha2Md5, StringComparison.OrdinalIgnoreCase);
+    }
+
+    public static string NormalizarSenhaMd5(string senha)
+    {
+        if (Md5Util.IsMd5(senha))
+        {
+            return senha;
+        }
+        return Md5Util.RetornarHash(senha);
     }
 
     private static bool ValidarIdentificador(ICredencial credencial1, ICredencial credencial2)

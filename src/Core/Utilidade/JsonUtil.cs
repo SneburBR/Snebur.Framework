@@ -108,8 +108,9 @@ public static class JsonUtil
                 return null;
             }
 
-            var configuracaoSerializacao = tipoSerializacao == EnumTipoSerializacao.Javascript ? ConfiguracoesJavascript :
-                                                                                                 ConfiguracoesDotNet;
+            var configuracaoSerializacao = tipoSerializacao == EnumTipoSerializacao.Javascript
+                ? ConfiguracoesJavascript
+                : ConfiguracoesDotNet;
 
             configuracaoSerializacao.Culture = culture ?? CultureInfo.InvariantCulture;
 

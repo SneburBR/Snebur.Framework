@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Snebur.Utilidade;
 
 public static class DateTimeExtensao
@@ -15,7 +17,8 @@ public static class DateTimeExtensao
         return new DateTime(dataHora.Year, dataHora.Month, dataHora.Day, 0, 0, 0);
     }
 
-    public static bool IsValidDate(this DateTime? data)
+    
+    public static bool IsValidDate([NotNullWhen(true)] this DateTime? data)
     {
         if (data.HasValue)
         {

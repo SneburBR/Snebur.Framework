@@ -51,10 +51,6 @@ public abstract partial class BaseManipuladorRequisicao : IHttpModule, IDisposab
             {
 
                 response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                if (DebugUtil.IsAttached)
-                {
-                    throw;
-                }
                 LogUtil.ErroAsync(ex);
             }
             finally

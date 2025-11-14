@@ -11,6 +11,10 @@ public class ValorPadraoNovoGuidAttribute : Attribute, IValorPadrao
                                      Entidade entidade,
                                      object? valorPropriedade)
     {
+        if(valorPropriedade is string str && !String.IsNullOrWhiteSpace(str))
+        {
+            return valorPropriedade;
+        }
         var guid = Guid.NewGuid();
         if (this.IsString || this.IsRemoverTracos)
         {

@@ -87,7 +87,7 @@ public static class LinqExtensao
         return default;
 
     }
-    public static void AddIfNotContains<T>(this ICollection<T> colecao, T item,
+    public static void AddIfNotContains<T>(this IList<T> colecao, T item,
         [CallerArgumentExpression(nameof(colecao))] string? paramName = null)
     {
         Guard.NotNull(colecao, paramName);

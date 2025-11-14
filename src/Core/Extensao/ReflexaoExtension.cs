@@ -20,7 +20,9 @@ public static class ReflexaoExtension
     {
         try
         {
-            return assembly.DefinedTypes.Select(t => t.AsType()).ToArray();
+            return assembly.DefinedTypes
+                .Select(t => t.AsType())
+                .ToArray();
         }
         catch (ReflectionTypeLoadException ex)
         {
@@ -30,7 +32,9 @@ public static class ReflexaoExtension
         }
     }
 
-    public static object? TryGetValueOrDefault(this PropertyInfo propriedade, object? obj)
+    public static object? TryGetValueOrDefault(
+        this PropertyInfo propriedade,
+        object? obj)
     {
         try
         {
@@ -42,10 +46,11 @@ public static class ReflexaoExtension
         }
     }
 
-    public static bool TrySetValue(this PropertyInfo propriedade,
-                                   object obj,
-                                   object? value,
-                                   bool isLogErro = false)
+    public static bool TrySetValue(
+        this PropertyInfo propriedade,
+        object obj,
+        object? value,
+        bool isLogErro = false)
     {
         try
         {

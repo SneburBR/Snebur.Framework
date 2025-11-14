@@ -50,11 +50,7 @@ public partial class ValidarEntidades : IDisposable
                                     NomeTipoValidacao = atributoValidacao.GetType().Name,
                                     ValorPropriedade = valorPropriedade,
                                 };
-
-                                if (DebugUtil.IsAttached)
-                                {
-                                    //throw new Erro(erroValidacao.Mensagem);
-                                }
+ 
                                 entityErros.Add(erroValidacao);
                             }
                         }
