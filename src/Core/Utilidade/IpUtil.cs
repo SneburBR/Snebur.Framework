@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 
@@ -5,6 +6,7 @@ namespace Snebur
 {
     public static class IpUtil
     {
+        private static readonly object lockObj = new object();
         private static string? _ipPublico;
         /// <summary>
         /// retornar 0.0.0.0
@@ -25,22 +27,29 @@ namespace Snebur
             return RetornarIPInformacao(String.Empty);
         }
 
+ 
         public static string? RetornarIpPublico()
         {
-            if (_ipPublico is null)
-            {
-                var ipString = HttpUtil.RetornarString("https://api.ipify.org", null, TimeSpan.FromSeconds(5), true);
-                if (ValidacaoUtil.IsIp(ipString))
-                {
-                    _ipPublico = ipString;
-                }
-                else
-                {
-                    _ipPublico = RetornarIPInformacao(String.Empty).IP;
-                }
-            }
-            return _ipPublico;
+            lock (lockObj) { return _ipPublico ??= RetornarIpPublicoInterno(); }
+        }
 
+
+        private static string? RetornarIpPublicoInterno()
+        {
+            if (Debugger.IsAttached)
+            {
+                return "127.0.0.1";
+            }
+
+            var ipString = HttpUtil.RetornarString("https://api.ipify.org", null, TimeSpan.FromSeconds(5), true);
+            if (ValidacaoUtil.IsIp(ipString))
+            {
+                return ipString;
+            }
+            else
+            {
+                return RetornarIPInformacao(String.Empty).IP;
+            }
         }
 
         public static DadosIPInformacao RetornarIPInformacao(string? ip)
